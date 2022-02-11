@@ -1,0 +1,592 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutPage_Author.Text" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="AboutPage_Author_Content.Text" xml:space="preserve">
+    <value>(Application,LaunchCore)</value>
+  </data>
+  <data name="AboutPage_Copyright.Text" xml:space="preserve">
+    <value>Copyright</value>
+  </data>
+  <data name="AboutPage_Dependencies.Text" xml:space="preserve">
+    <value>Dependencies</value>
+  </data>
+  <data name="AboutPage_Edition.Text" xml:space="preserve">
+    <value>Release Edition</value>
+  </data>
+  <data name="AboutPage_HyperlinkButton.Content" xml:space="preserve">
+    <value>Show More</value>
+  </data>
+  <data name="AboutPage_Statement.Text" xml:space="preserve">
+    <value>Statement</value>
+  </data>
+  <data name="AboutPage_Statement_Content.Text" xml:space="preserve">
+    <value>Minecraft is copyrighted by Mojang AB. We are not responsible for any copyright infringement arising from use of this software.</value>
+  </data>
+  <data name="AboutPage_ThanksTo.Text" xml:space="preserve">
+    <value>Thanks To</value>
+  </data>
+  <data name="AboutPage_WebService.Text" xml:space="preserve">
+    <value>WebService</value>
+  </data>
+  <data name="AccountPage_1_Annotate1.Text" xml:space="preserve">
+    <value>The character name in the game will depend on your account</value>
+  </data>
+  <data name="AccountPage_1_Annotate2.Text" xml:space="preserve">
+    <value>Some of the servers might not allow offline accounts to login.</value>
+  </data>
+  <data name="AccountPage_AccountDataTemplate_Refresh.Text" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="AccountPage_AccountsListViewItem_SubTitle.Text" xml:space="preserve">
+    <value>Click To Add</value>
+  </data>
+  <data name="AccountPage_AccountsListViewItem_Title.Text" xml:space="preserve">
+    <value>Add New Account</value>
+  </data>
+  <data name="AccountPage_AddAccountDialog_AccountTypeBox.PlaceholderText" xml:space="preserve">
+    <value>type</value>
+  </data>
+  <data name="AccountPage_AddAccountDialog_AccountTypeBox_Header.Text" xml:space="preserve">
+    <value>Account Type</value>
+  </data>
+  <data name="AccountPage_AddAccountDialog_Buy.Text" xml:space="preserve">
+    <value>Purchase Minecraft</value>
+  </data>
+  <data name="AccountPage_AddAccountDialog_DisplayNameBox.PlaceholderText" xml:space="preserve">
+    <value>display name</value>
+  </data>
+  <data name="AccountPage_AddAccountDialog_DisplayNameBox_Header.Text" xml:space="preserve">
+    <value>Display Name</value>
+  </data>
+  <data name="AccountPage_AddAccountDialog_Info_Content.Text" xml:space="preserve">
+    <value>You Should Click "Login" Button and Continue Login Process in the Opened WebBrowser</value>
+  </data>
+  <data name="AccountPage_AddAccountDialog_Info_Title.Text" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="AccountPage_AddAccountDialog_LoginButton_Content.Text" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="AccountPage_AddAccountDialog_Title.Text" xml:space="preserve">
+    <value>Add New Account</value>
+  </data>
+  <data name="AccountPage_SubTitle.Text" xml:space="preserve">
+    <value>Accounts</value>
+  </data>
+  <data name="AccountPage_Title.Text" xml:space="preserve">
+    <value>Account Settings</value>
+  </data>
+  <data name="BasicSettingPage_1_Annotate1.Text" xml:space="preserve">
+    <value>All the cores in the list come from the folder of your choice</value>
+  </data>
+  <data name="BasicSettingPage_1_Annotate2.Text" xml:space="preserve">
+    <value>When you add a new version, it will be installed in this folder</value>
+  </data>
+  <data name="BasicSettingPage_2_Annotate1.Text" xml:space="preserve">
+    <value>Current Java Environment Info</value>
+  </data>
+  <data name="BasicSettingPage_2_Annotate2.Text" xml:space="preserve">
+    <value>You need at least one to launcher your game</value>
+  </data>
+  <data name="BasicSettingPage_2_Annotate3.Text" xml:space="preserve">
+    <value>Please choose the most suitable environment for your computer</value>
+  </data>
+  <data name="BasicSettingPage_3_Annotate1.Text" xml:space="preserve">
+    <value>Too little memory can cause fps to be low</value>
+  </data>
+  <data name="BasicSettingPage_3_Annotate2.Text" xml:space="preserve">
+    <value>32 bit Java can only set 1024Mb of memory at most</value>
+  </data>
+  <data name="BasicSettingPage_4_Annotate1.Text" xml:space="preserve">
+    <value>The game will run in the folder of your choice</value>
+  </data>
+  <data name="BasicSettingPage_5_Annotate1.Text" xml:space="preserve">
+    <value>The language will change when you open launcher next time</value>
+  </data>
+  <data name="BasicSettingPage_AddFolderDialog_AddFolderNameBox.PlaceholderText" xml:space="preserve">
+    <value>name</value>
+  </data>
+  <data name="BasicSettingPage_AddFolderDialog_AddFolderNameBox_Header.Text" xml:space="preserve">
+    <value>Folder Name</value>
+  </data>
+  <data name="BasicSettingPage_AddFolderDialog_AddFolderPathBox.PlaceholderText" xml:space="preserve">
+    <value>path</value>
+  </data>
+  <data name="BasicSettingPage_AddFolderDialog_AddFolderPathBox_Header.Text" xml:space="preserve">
+    <value>Folder Path</value>
+  </data>
+  <data name="BasicSettingPage_AddFolderDialog_AddJavaNameBox.PlaceholderText" xml:space="preserve">
+    <value>name</value>
+  </data>
+  <data name="BasicSettingPage_AddFolderDialog_AddJavaNameBox_Header.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="BasicSettingPage_AddFolderDialog_AddJavaPathBox.PlaceholderText" xml:space="preserve">
+    <value>executable file path</value>
+  </data>
+  <data name="BasicSettingPage_AddFolderDialog_AddJavaPathBox_Header.Text" xml:space="preserve">
+    <value>Executable File Path</value>
+  </data>
+  <data name="BasicSettingPage_AddFolderDialog_Title.Text" xml:space="preserve">
+    <value>Add .minecraft Folder</value>
+  </data>
+  <data name="BasicSettingPage_AddJavaDialog_InstallJavaButton_Content.Text" xml:space="preserve">
+    <value>Install JavaRuntime</value>
+  </data>
+  <data name="BasicSettingPage_AddJavaDialog_SearchJavaButton_Content.Text" xml:space="preserve">
+    <value>Search JavaRuntime</value>
+  </data>
+  <data name="BasicSettingPage_AddJavaDialog_Title.Text" xml:space="preserve">
+    <value>Add Java Runtime Environment</value>
+  </data>
+  <data name="BasicSettingPage_FoldersListViewItem_SubTitle.Text" xml:space="preserve">
+    <value>Click To Choose</value>
+  </data>
+  <data name="BasicSettingPage_FoldersListViewItem_Title.Text" xml:space="preserve">
+    <value>Add New .minecraft Folder</value>
+  </data>
+  <data name="BasicSettingPage_JavasListViewItem_SubTitle.Text" xml:space="preserve">
+    <value>Click To Choose</value>
+  </data>
+  <data name="BasicSettingPage_JavasListViewItem_Title.Text" xml:space="preserve">
+    <value>Add New Java Executable file</value>
+  </data>
+  <data name="BasicSettingPage_LanguageComboBox.PlaceholderText" xml:space="preserve">
+    <value>Languages</value>
+  </data>
+  <data name="BasicSettingPage_LanguageComboBox_Header.Text" xml:space="preserve">
+    <value>Languages</value>
+  </data>
+  <data name="BasicSettingPage_MaxMemoryBox.Header" xml:space="preserve">
+    <value>MaxMemory:</value>
+  </data>
+  <data name="BasicSettingPage_MinMemoryBox.Header" xml:space="preserve">
+    <value>MinMemory:</value>
+  </data>
+  <data name="BasicSettingPage_ModeComboBox.PlaceholderText" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="BasicSettingPage_ModeComboBox_Header.Text" xml:space="preserve">
+    <value>Mode:</value>
+  </data>
+  <data name="BasicSettingPage_SubTitle1.Text" xml:space="preserve">
+    <value>.minecraft Folder</value>
+  </data>
+  <data name="BasicSettingPage_SubTitle2.Text" xml:space="preserve">
+    <value>Java Runtime Environment</value>
+  </data>
+  <data name="BasicSettingPage_SubTitle3.Text" xml:space="preserve">
+    <value>Java Runtime Memory</value>
+  </data>
+  <data name="BasicSettingPage_SubTitle4.Text" xml:space="preserve">
+    <value>Working Folder</value>
+  </data>
+  <data name="BasicSettingPage_SubTitle5.Text" xml:space="preserve">
+    <value>Language Setting</value>
+  </data>
+  <data name="BasicSettingPage_Title.Text" xml:space="preserve">
+    <value>Basic Settings</value>
+  </data>
+  <data name="BasicSettingsPage_InstallJavaDialog_Info.Text" xml:space="preserve">
+    <value>Please Wait..  This may take some time</value>
+  </data>
+  <data name="BasicSettingsPage_InstallJavaDialog_InstallProgressTitle.FontWeight" xml:space="preserve">
+    <value>Bold</value>
+  </data>
+  <data name="BasicSettingsPage_InstallJavaDialog_Title.Text" xml:space="preserve">
+    <value>Install Java Runtime</value>
+  </data>
+  <data name="ConsolePage_InfoGrid_CoreBox.PlaceholderText" xml:space="preserve">
+    <value>Core</value>
+  </data>
+  <data name="ConsolePage_InfoGrid_CoreBox_Header.Text" xml:space="preserve">
+    <value>Core</value>
+  </data>
+  <data name="ConsolePage_InfoGrid_ProcessBox.PlaceholderText" xml:space="preserve">
+    <value>Process</value>
+  </data>
+  <data name="ConsolePage_InfoGrid_ProcessBox_Header.Text" xml:space="preserve">
+    <value>Process</value>
+  </data>
+  <data name="ConsolePage_TipBorder_SubTitle.Content" xml:space="preserve">
+    <value>Go back to the home page and start</value>
+  </data>
+  <data name="ConsolePage_TipBorder_Title.Text" xml:space="preserve">
+    <value>There are no running processes</value>
+  </data>
+  <data name="ContentDialog_Add.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="ContentDialog_Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ContentDialog_Got.Text" xml:space="preserve">
+    <value>Got it</value>
+  </data>
+  <data name="ContentDialog_Install.Text" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="ContentDialog_Rename.Text" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="CoresPage_CheckBoxs_Header.Text" xml:space="preserve">
+    <value>Versions</value>
+  </data>
+  <data name="CoresPage_ComboboxTemplate_UpdataBlock.Text" xml:space="preserve">
+    <value>Update:</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_InfoPanel_Content.Text" xml:space="preserve">
+    <value>The selected core will be installed in the .minecraft folder.</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_InfoPanel_Title.Text" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_InstallProgressPanel_Start.Text" xml:space="preserve">
+    <value>Installing Minecraft</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_Loading.Text" xml:space="preserve">
+    <value>Please Wait</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_ModLoaderComboBox.PlaceholderText" xml:space="preserve">
+    <value>Select Mod Loader</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_ModLoaderComboBox_Header.Text" xml:space="preserve">
+    <value>Mod Loader</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_Title.Text" xml:space="preserve">
+    <value>Install New Minecraft Core</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_ToggleSwitch_OffContent.FontWeight" xml:space="preserve">
+    <value>Bold</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_ToggleSwitch_OffContent.Text" xml:space="preserve">
+    <value>Enabled Mod Loader Installer</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_ToggleSwitch_OnContent.FontWeight" xml:space="preserve">
+    <value>Bold</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_ToggleSwitch_OnContent.Text" xml:space="preserve">
+    <value>Disabled Mod Loader Installer</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_VersionComboBox.PlaceholderText" xml:space="preserve">
+    <value>Select Minecraft Core</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_VersionComboBox_Header.Text" xml:space="preserve">
+    <value>Minecraft Core</value>
+  </data>
+  <data name="CoresPage_RenameContentDialog_RenameAutoSuggestBox.PlaceholderText" xml:space="preserve">
+    <value>core name</value>
+  </data>
+  <data name="CoresPage_RenameContentDialog_RenameAutoSuggestBox_Header.Text" xml:space="preserve">
+    <value>Core Name</value>
+  </data>
+  <data name="CoresPage_RenameContentDialog_Title.Text" xml:space="preserve">
+    <value>Rename Minecraft Core</value>
+  </data>
+  <data name="CoresPage_SearchBox.PlaceholderText" xml:space="preserve">
+    <value>Search...</value>
+  </data>
+  <data name="CoresPage_SearchBox_Header.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="CoresPage_ShowDialogButton_Title.Text" xml:space="preserve">
+    <value>New..</value>
+  </data>
+  <data name="CoresPage_SortBox_Header.Text" xml:space="preserve">
+    <value>Sort By</value>
+  </data>
+  <data name="CoresPage_VersionDataTemplate_MenuFlyoutItem1.Text" xml:space="preserve">
+    <value>Launch this version</value>
+  </data>
+  <data name="CoresPage_VersionDataTemplate_MenuFlyoutItem2.Text" xml:space="preserve">
+    <value>Make a launch script</value>
+  </data>
+  <data name="CoresPage_VersionDataTemplate_MenuFlyoutItem3.Text" xml:space="preserve">
+    <value>Open .minecraft Folder</value>
+  </data>
+  <data name="CoresPage_VersionDataTemplate_MenuFlyoutItem4.Text" xml:space="preserve">
+    <value>Rename this version</value>
+  </data>
+  <data name="CoresPage_VersionDataTemplate_MenuFlyoutItem5.Text" xml:space="preserve">
+    <value>Delete this version</value>
+  </data>
+  <data name="CoresPage_VersionDataTemplate_PlayButton.Text" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="DownloadPage_1_Annotate1.Text" xml:space="preserve">
+    <value>The game will be downloaded using the selected download source</value>
+  </data>
+  <data name="DownloadPage_2_Annotate1.Text" xml:space="preserve">
+    <value>The maximum number of threads may not effectively increase the download speed</value>
+  </data>
+  <data name="DownloadPage_2_Annotate2.Text" xml:space="preserve">
+    <value>It should depend on your bandwidth</value>
+  </data>
+  <data name="DownloadPage_ContentComboBox.PlaceholderText" xml:space="preserve">
+    <value>source</value>
+  </data>
+  <data name="DownloadPage_ContentComboBox_Header.Text" xml:space="preserve">
+    <value>Source:</value>
+  </data>
+  <data name="DownloadPage_ContentDialog_OK.Text" xml:space="preserve">
+    <value>Got it</value>
+  </data>
+  <data name="DownloadPage_ContentDialog_Title.Text" xml:space="preserve">
+    <value>Dependencies</value>
+  </data>
+  <data name="DownloadPage_NumberBox.Header" xml:space="preserve">
+    <value>Max Threads:</value>
+  </data>
+  <data name="DownloadPage_NumberBox.PlaceholderText" xml:space="preserve">
+    <value>Int</value>
+  </data>
+  <data name="DownloadPage_SubTitle1.Text" xml:space="preserve">
+    <value>Download Source</value>
+  </data>
+  <data name="DownloadPage_SubTitle2.Text" xml:space="preserve">
+    <value>Max Number of Threads</value>
+  </data>
+  <data name="DownloadPage_ThreadsSlider.Header" xml:space="preserve">
+    <value>Value:</value>
+  </data>
+  <data name="DownloadPage_Title.Text" xml:space="preserve">
+    <value>Download Settings</value>
+  </data>
+  <data name="MainContainer_NavigationViewItem1.Content" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="MainContainer_NavigationViewItem2.Content" xml:space="preserve">
+    <value>News</value>
+  </data>
+  <data name="MainContainer_NavigationViewItem3.Content" xml:space="preserve">
+    <value>Cores</value>
+  </data>
+  <data name="MainContainer_NavigationViewItem4.Content" xml:space="preserve">
+    <value>Console</value>
+  </data>
+  <data name="MainContainer_NavigationViewItem5.Content" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="MainContainer_NavigationViewItem6.Content" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="MainPage_ContentDialog_Title.Text" xml:space="preserve">
+    <value>Launching Minecraft</value>
+  </data>
+  <data name="MainPage_LaunchButton_SubTitle.Text" xml:space="preserve">
+    <value>No Core Selected</value>
+  </data>
+  <data name="MainPage_LaunchButton_Title.Text" xml:space="preserve">
+    <value>Launch Minecraft</value>
+  </data>
+  <data name="MainPage_LaunchComboBox.PlaceholderText" xml:space="preserve">
+    <value>Pick a Minecraft Core</value>
+  </data>
+  <data name="MainPage_NewsBorder_Button_Content.FontWeight" xml:space="preserve">
+    <value>Bold</value>
+  </data>
+  <data name="MainPage_NewsBorder_Button_Content.Text" xml:space="preserve">
+    <value>Read the manuscript</value>
+  </data>
+  <data name="MainPage_NewsBorder_NewsException.Text" xml:space="preserve">
+    <value>Here is Something Wrong...</value>
+  </data>
+  <data name="MainPage_UpdataDialog_Title.Text" xml:space="preserve">
+    <value>Updata Change Logs</value>
+  </data>
+  <data name="NewsPage_CheckBoxs_Header.Text" xml:space="preserve">
+    <value>Sort</value>
+  </data>
+  <data name="NewsPage_NewsDataTemplate_Button_Content.FontWeight" xml:space="preserve">
+    <value>Bold</value>
+  </data>
+  <data name="NewsPage_NewsDataTemplate_Button_Content.Text" xml:space="preserve">
+    <value>Read the manuscript</value>
+  </data>
+  <data name="NewsPage_SearchBox.PlaceholderText" xml:space="preserve">
+    <value>News Title</value>
+  </data>
+  <data name="NewsPage_SearchBox_Header.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="SettingPage_NavigationView.PaneTitle" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SettingPage_NavigationViewItem1.Content" xml:space="preserve">
+    <value>Basic Settings</value>
+  </data>
+  <data name="SettingPage_NavigationViewItem2.Content" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="SettingPage_NavigationViewItem3.Content" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="SettingPage_NavigationViewItem4.Content" xml:space="preserve">
+    <value>Process</value>
+  </data>
+  <data name="SettingPage_NavigationViewItem5.Content" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="SettingPage_NavigationViewItem6.Content" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="UpdataLogTextBlock.Text" xml:space="preserve">
+    <value>Release Edition - 1.0.25.0
+
+Suppot Optfine install
+Added automatically discovery,installation and selection JVAV (If the Luancher uninstall,Jvav will uninstall together)
+Added automatically scrolling to the currently selected game core in corespage
+Added the display of the currently started game process information in the console page
+Added the Chinese of startup status at the startup game
+Added named game core
+Added generating startup script
+Fixed the error that the game can be started when the Jvav runtime is null
+Fixed the display error of current Java information when the Java runtime is empty under basicsettingspage
+Fixed the display error when the Java runtime path is too long in basicsettingspage
+Fixed the display error of information prompt box
+Fixed the loading background color error of the game installation dialog box in dark mode
+Fixed a title text error in the game installation dialog
+
+Preview Edition - 1.0.24.0
+
+Added multilingual support
+Added game installer, Now the launcher supports original versions and Forge-added versions' installation.
+Added display of update log.
+Added uninstall version
+Modified the popup dialog box when the game crashes to be a message box at the bottom of the page.
+Fixed a bug in the Console Page where the acrylic background colour is layered.
+Fixed a saving error in the Download Settings Page.
+Fixed the error of repeated loading of minecraft news
+Fixed the bug which caused downloads impossible using the official source.
+Fixed many other issues in FluentCore.
+
+Preview Edition - 1.0.23.0
+
+Major refactoring of launcher's code.
+Modified settings saving way
+Modified the Microsoft account login method (Adopt built-in browser by webview2)
+Modified the way of loading news, now we use multi-threaded asynchronous loading to do it.
+Modified the UI of the dialog box.
+Fixed many bugs which caused by MVVM.
+Added Microsoft account refresh in the account settings page instead of automatically refreshing the Microsoft account authentication token when the Launcher is opening</value>
+  </data>
+</root>

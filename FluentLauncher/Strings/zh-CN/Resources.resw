@@ -1,0 +1,644 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutPage_Author.Text" xml:space="preserve">
+    <value>作者</value>
+  </data>
+  <data name="AboutPage_Author_Content.Text" xml:space="preserve">
+    <value>(应用程序,启动核心)</value>
+  </data>
+  <data name="AboutPage_Copyright.Text" xml:space="preserve">
+    <value>版权</value>
+  </data>
+  <data name="AboutPage_Dependencies.Text" xml:space="preserve">
+    <value>依赖</value>
+  </data>
+  <data name="AboutPage_Edition.Text" xml:space="preserve">
+    <value>正式版本</value>
+  </data>
+  <data name="AboutPage_HyperlinkButton.Content" xml:space="preserve">
+    <value>显示更多</value>
+  </data>
+  <data name="AboutPage_Statement.Text" xml:space="preserve">
+    <value>声明</value>
+  </data>
+  <data name="AboutPage_Statement_Content.Text" xml:space="preserve">
+    <value>Minecraft版权归Mojang AB所有。 开发者对因使用本软件而引起的任何版权侵权不承担任何责任。</value>
+  </data>
+  <data name="AboutPage_ThanksTo.Text" xml:space="preserve">
+    <value>鸣谢</value>
+  </data>
+  <data name="AboutPage_WebService.Text" xml:space="preserve">
+    <value>网络服务</value>
+  </data>
+  <data name="AccountPage_1_Annotate1.Text" xml:space="preserve">
+    <value>游戏中的角色名字将会取决于你的账户</value>
+  </data>
+  <data name="AccountPage_1_Annotate2.Text" xml:space="preserve">
+    <value>某些服务器可能不支持离线账户进入</value>
+  </data>
+  <data name="AccountPage_AccountDataTemplate_Refresh.Text" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="AccountPage_AccountsListViewItem_SubTitle.Text" xml:space="preserve">
+    <value>点击以添加</value>
+  </data>
+  <data name="AccountPage_AccountsListViewItem_Title.Text" xml:space="preserve">
+    <value>添加一个新账户</value>
+  </data>
+  <data name="AccountPage_AddAccountDialog_AccountTypeBox.PlaceholderText" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="AccountPage_AddAccountDialog_AccountTypeBox_Header.Text" xml:space="preserve">
+    <value>账户类型</value>
+  </data>
+  <data name="AccountPage_AddAccountDialog_Buy.Text" xml:space="preserve">
+    <value>购买 Minecraft</value>
+  </data>
+  <data name="AccountPage_AddAccountDialog_DisplayNameBox.PlaceholderText" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="AccountPage_AddAccountDialog_DisplayNameBox_Header.Text" xml:space="preserve">
+    <value>游戏名称</value>
+  </data>
+  <data name="AccountPage_AddAccountDialog_Info_Content.Text" xml:space="preserve">
+    <value>你应该点击 "登录" 按钮，然后完成接下来的登录步骤在弹出的浏览器中</value>
+  </data>
+  <data name="AccountPage_AddAccountDialog_Info_Title.Text" xml:space="preserve">
+    <value>提示</value>
+  </data>
+  <data name="AccountPage_AddAccountDialog_LoginButton_Content.Text" xml:space="preserve">
+    <value>登录</value>
+  </data>
+  <data name="AccountPage_AddAccountDialog_Title.Text" xml:space="preserve">
+    <value>添加新的账户</value>
+  </data>
+  <data name="AccountPage_SubTitle.Text" xml:space="preserve">
+    <value>账户</value>
+  </data>
+  <data name="AccountPage_Title.Text" xml:space="preserve">
+    <value>账户设置</value>
+  </data>
+  <data name="BasicSettingPage_1_Annotate1.Text" xml:space="preserve">
+    <value>所有的游戏核心都来源于你选择的目录</value>
+  </data>
+  <data name="BasicSettingPage_1_Annotate2.Text" xml:space="preserve">
+    <value>当你安装一个新的版本时，它将会被安装在你选择的目录</value>
+  </data>
+  <data name="BasicSettingPage_2_Annotate1.Text" xml:space="preserve">
+    <value>当前 Java 运行时信息</value>
+  </data>
+  <data name="BasicSettingPage_2_Annotate2.Text" xml:space="preserve">
+    <value>你至少需要一个 Java 运行时来启动游戏</value>
+  </data>
+  <data name="BasicSettingPage_2_Annotate3.Text" xml:space="preserve">
+    <value>高版本（如1.17）需要 Java16 版本以上的运行时，所以请选择最合适的 Java 运行时来启动游戏</value>
+  </data>
+  <data name="BasicSettingPage_3_Annotate1.Text" xml:space="preserve">
+    <value>过小的内存可能会导致游戏帧数低</value>
+  </data>
+  <data name="BasicSettingPage_3_Annotate2.Text" xml:space="preserve">
+    <value>32位 Java 运行时最多只能加载1GB内存</value>
+  </data>
+  <data name="BasicSettingPage_4_Annotate1.Text" xml:space="preserve">
+    <value>游戏的运行目录将会以选定的模式执行</value>
+  </data>
+  <data name="BasicSettingPage_5_Annotate1.Text" xml:space="preserve">
+    <value>语言将在你下一次打开启动器时生效</value>
+  </data>
+  <data name="BasicSettingPage_AddFolderDialog_AddFolderNameBox.PlaceholderText" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="BasicSettingPage_AddFolderDialog_AddFolderNameBox_Header.Text" xml:space="preserve">
+    <value>文件夹昵称</value>
+  </data>
+  <data name="BasicSettingPage_AddFolderDialog_AddFolderPathBox.PlaceholderText" xml:space="preserve">
+    <value>路径</value>
+  </data>
+  <data name="BasicSettingPage_AddFolderDialog_AddFolderPathBox_Header.Text" xml:space="preserve">
+    <value>文件夹路径</value>
+  </data>
+  <data name="BasicSettingPage_AddFolderDialog_AddJavaNameBox.PlaceholderText" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="BasicSettingPage_AddFolderDialog_AddJavaNameBox_Header.Text" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="BasicSettingPage_AddFolderDialog_AddJavaPathBox.PlaceholderText" xml:space="preserve">
+    <value>可执行文件路径</value>
+  </data>
+  <data name="BasicSettingPage_AddFolderDialog_AddJavaPathBox_Header.Text" xml:space="preserve">
+    <value>可执行文件路径</value>
+  </data>
+  <data name="BasicSettingPage_AddFolderDialog_Title.Text" xml:space="preserve">
+    <value>添加 .minecraft 目录</value>
+  </data>
+  <data name="BasicSettingPage_AddJavaDialog_InstallJavaButton_Content.Text" xml:space="preserve">
+    <value>安装 Java 运行时</value>
+  </data>
+  <data name="BasicSettingPage_AddJavaDialog_SearchJavaButton_Content.Text" xml:space="preserve">
+    <value>搜索 Java 运行时</value>
+  </data>
+  <data name="BasicSettingPage_AddJavaDialog_Title.Text" xml:space="preserve">
+    <value>添加 Java 运行时</value>
+  </data>
+  <data name="BasicSettingPage_FoldersListViewItem_SubTitle.Text" xml:space="preserve">
+    <value>点击以选择</value>
+  </data>
+  <data name="BasicSettingPage_FoldersListViewItem_Title.Text" xml:space="preserve">
+    <value>添加 .minecraft 目录</value>
+  </data>
+  <data name="BasicSettingPage_JavasListViewItem_SubTitle.Text" xml:space="preserve">
+    <value>点击以选择</value>
+  </data>
+  <data name="BasicSettingPage_JavasListViewItem_Title.Text" xml:space="preserve">
+    <value>添加 Java 运行时</value>
+  </data>
+  <data name="BasicSettingPage_LanguageComboBox.PlaceholderText" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="BasicSettingPage_LanguageComboBox_Header.Text" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="BasicSettingPage_MaxMemoryBox.Header" xml:space="preserve">
+    <value>最大运行内存:</value>
+  </data>
+  <data name="BasicSettingPage_MinMemoryBox.Header" xml:space="preserve">
+    <value>最小运行内存:</value>
+  </data>
+  <data name="BasicSettingPage_ModeComboBox.PlaceholderText" xml:space="preserve">
+    <value>模式</value>
+  </data>
+  <data name="BasicSettingPage_ModeComboBox_Header.Text" xml:space="preserve">
+    <value>模式</value>
+  </data>
+  <data name="BasicSettingPage_SubTitle1.Text" xml:space="preserve">
+    <value>.minecraft 目录</value>
+  </data>
+  <data name="BasicSettingPage_SubTitle2.Text" xml:space="preserve">
+    <value>Java 运行时</value>
+  </data>
+  <data name="BasicSettingPage_SubTitle3.Text" xml:space="preserve">
+    <value>Java 运行内存</value>
+  </data>
+  <data name="BasicSettingPage_SubTitle4.Text" xml:space="preserve">
+    <value>游戏运行目录</value>
+  </data>
+  <data name="BasicSettingPage_SubTitle5.Text" xml:space="preserve">
+    <value>语言设置</value>
+  </data>
+  <data name="BasicSettingPage_Title.Text" xml:space="preserve">
+    <value>基础设置</value>
+  </data>
+  <data name="BasicSettingsPage_InstallJavaDialog_Info.Text" xml:space="preserve">
+    <value>请稍后.. 这可能需要花费一些时间</value>
+  </data>
+  <data name="BasicSettingsPage_InstallJavaDialog_InstallProgressTitle.FontWeight" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="BasicSettingsPage_InstallJavaDialog_Title.Text" xml:space="preserve">
+    <value>安装 Java 运行时</value>
+  </data>
+  <data name="ConsolePage_InfoGrid_CoreBox.PlaceholderText" xml:space="preserve">
+    <value>游戏核心</value>
+  </data>
+  <data name="ConsolePage_InfoGrid_CoreBox_Header.Text" xml:space="preserve">
+    <value>游戏核心</value>
+  </data>
+  <data name="ConsolePage_InfoGrid_ProcessBox.PlaceholderText" xml:space="preserve">
+    <value>进程</value>
+  </data>
+  <data name="ConsolePage_InfoGrid_ProcessBox_Header.Text" xml:space="preserve">
+    <value>进程</value>
+  </data>
+  <data name="ConsolePage_TipBorder_SubTitle.Content" xml:space="preserve">
+    <value>返回主页启动游戏</value>
+  </data>
+  <data name="ConsolePage_TipBorder_Title.Text" xml:space="preserve">
+    <value>没有运行中的游戏</value>
+  </data>
+  <data name="ContentDialog_Add.Text" xml:space="preserve">
+    <value>添加</value>
+  </data>
+  <data name="ContentDialog_Cancel.Text" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="ContentDialog_Got.Text" xml:space="preserve">
+    <value>了解</value>
+  </data>
+  <data name="ContentDialog_Install.Text" xml:space="preserve">
+    <value>安装</value>
+  </data>
+  <data name="ContentDialog_Rename.Text" xml:space="preserve">
+    <value>重命名</value>
+  </data>
+  <data name="CoresPage_CheckBoxs_Header.Text" xml:space="preserve">
+    <value>版本</value>
+  </data>
+  <data name="CoresPage_ComboboxTemplate_UpdataBlock.Text" xml:space="preserve">
+    <value>更新:</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_InfoPanel_Content.Text" xml:space="preserve">
+    <value>游戏核心将会被安装在选中的 .minecraft 目录中</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_InfoPanel_Title.Text" xml:space="preserve">
+    <value>提示</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_InstallProgressPanel_Start.Text" xml:space="preserve">
+    <value>正在安装游戏</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_Loading.Text" xml:space="preserve">
+    <value>请稍后</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_ModLoaderComboBox.PlaceholderText" xml:space="preserve">
+    <value>选择加载器</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_ModLoaderComboBox_Header.Text" xml:space="preserve">
+    <value>加载器</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_Title.Text" xml:space="preserve">
+    <value>安装新的游戏核心</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_ToggleSwitch_OffContent.FontWeight" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_ToggleSwitch_OffContent.Text" xml:space="preserve">
+    <value>启用加载器</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_ToggleSwitch_OnContent.FontWeight" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_ToggleSwitch_OnContent.Text" xml:space="preserve">
+    <value>禁用加载器</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_VersionComboBox.PlaceholderText" xml:space="preserve">
+    <value>选择游戏核心</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_VersionComboBox_Header.Text" xml:space="preserve">
+    <value>游戏核心</value>
+  </data>
+  <data name="CoresPage_RenameContentDialog_RenameAutoSuggestBox.PlaceholderText" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="CoresPage_RenameContentDialog_RenameAutoSuggestBox_Header.Text" xml:space="preserve">
+    <value>核心名称</value>
+  </data>
+  <data name="CoresPage_RenameContentDialog_Title.Text" xml:space="preserve">
+    <value>重命名游戏核心</value>
+  </data>
+  <data name="CoresPage_SearchBox.PlaceholderText" xml:space="preserve">
+    <value>搜索...</value>
+  </data>
+  <data name="CoresPage_SearchBox_Header.Text" xml:space="preserve">
+    <value>搜索</value>
+  </data>
+  <data name="CoresPage_ShowDialogButton_Title.FontSize" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="CoresPage_ShowDialogButton_Title.Text" xml:space="preserve">
+    <value>添加..</value>
+  </data>
+  <data name="CoresPage_SortBox_Header.Text" xml:space="preserve">
+    <value>排序</value>
+  </data>
+  <data name="CoresPage_VersionDataTemplate_MenuFlyoutItem1.Text" xml:space="preserve">
+    <value>运行该版本</value>
+  </data>
+  <data name="CoresPage_VersionDataTemplate_MenuFlyoutItem2.Text" xml:space="preserve">
+    <value>生成启动脚本</value>
+  </data>
+  <data name="CoresPage_VersionDataTemplate_MenuFlyoutItem3.Text" xml:space="preserve">
+    <value>打开 .minecraft 目录</value>
+  </data>
+  <data name="CoresPage_VersionDataTemplate_MenuFlyoutItem4.Text" xml:space="preserve">
+    <value>重命名</value>
+  </data>
+  <data name="CoresPage_VersionDataTemplate_MenuFlyoutItem5.Text" xml:space="preserve">
+    <value>删除该版本</value>
+  </data>
+  <data name="CoresPage_VersionDataTemplate_PlayButton.Text" xml:space="preserve">
+    <value>启动</value>
+  </data>
+  <data name="DownloadPage_1_Annotate1.Text" xml:space="preserve">
+    <value>安装游戏时，游戏将从你选择源中下载</value>
+  </data>
+  <data name="DownloadPage_2_Annotate1.Text" xml:space="preserve">
+    <value>最大下载线程数会影响下载速度和网络占用</value>
+  </data>
+  <data name="DownloadPage_2_Annotate2.Text" xml:space="preserve">
+    <value>这应该取决于你的实际情况</value>
+  </data>
+  <data name="DownloadPage_ContentComboBox.PlaceholderText" xml:space="preserve">
+    <value>源</value>
+  </data>
+  <data name="DownloadPage_ContentComboBox_Header.Text" xml:space="preserve">
+    <value>可用源:</value>
+  </data>
+  <data name="DownloadPage_ContentDialog_OK.Text" xml:space="preserve">
+    <value>了解</value>
+  </data>
+  <data name="DownloadPage_ContentDialog_Title.Text" xml:space="preserve">
+    <value>依赖</value>
+  </data>
+  <data name="DownloadPage_NumberBox.Header" xml:space="preserve">
+    <value>最大线程数:</value>
+  </data>
+  <data name="DownloadPage_NumberBox.PlaceholderText" xml:space="preserve">
+    <value>数</value>
+  </data>
+  <data name="DownloadPage_SubTitle1.Text" xml:space="preserve">
+    <value>下载源设置</value>
+  </data>
+  <data name="DownloadPage_SubTitle2.Text" xml:space="preserve">
+    <value>下载最大线程数</value>
+  </data>
+  <data name="DownloadPage_ThreadsSlider.Header" xml:space="preserve">
+    <value>值:</value>
+  </data>
+  <data name="DownloadPage_Title.Text" xml:space="preserve">
+    <value>下载设置</value>
+  </data>
+  <data name="MainContainer_NavigationViewItem1.Content" xml:space="preserve">
+    <value>主页</value>
+  </data>
+  <data name="MainContainer_NavigationViewItem1.FontSize" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="MainContainer_NavigationViewItem2.Content" xml:space="preserve">
+    <value>新闻</value>
+  </data>
+  <data name="MainContainer_NavigationViewItem2.FontSize" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="MainContainer_NavigationViewItem3.Content" xml:space="preserve">
+    <value>游戏核心</value>
+  </data>
+  <data name="MainContainer_NavigationViewItem3.FontSize" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="MainContainer_NavigationViewItem4.Content" xml:space="preserve">
+    <value>控制台</value>
+  </data>
+  <data name="MainContainer_NavigationViewItem4.FontSize" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="MainContainer_NavigationViewItem5.Content" xml:space="preserve">
+    <value>帮助</value>
+  </data>
+  <data name="MainContainer_NavigationViewItem5.FontSize" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="MainContainer_NavigationViewItem6.Content" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="MainContainer_NavigationViewItem6.FontSize" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="MainPage_ContentDialog_Title.Text" xml:space="preserve">
+    <value>正在启动游戏</value>
+  </data>
+  <data name="MainPage_LaunchButton_SubTitle.Text" xml:space="preserve">
+    <value>未选中核心</value>
+  </data>
+  <data name="MainPage_LaunchButton_Title.Text" xml:space="preserve">
+    <value>启动游戏</value>
+  </data>
+  <data name="MainPage_LaunchComboBox.PlaceholderText" xml:space="preserve">
+    <value>选择一个游戏核心</value>
+  </data>
+  <data name="MainPage_NewsBorder_Button_Content.FontWeight" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="MainPage_NewsBorder_Button_Content.Text" xml:space="preserve">
+    <value>阅读稿件</value>
+  </data>
+  <data name="MainPage_NewsBorder_NewsException.Text" xml:space="preserve">
+    <value>图片加载错误..</value>
+  </data>
+  <data name="MainPage_UpdataDialog_Title.Text" xml:space="preserve">
+    <value>更新日志</value>
+  </data>
+  <data name="MainPge_LaunchDialog_DownloadProgressText.FontWeight" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="MainPge_LaunchDialog_LaunchingProgressText.FontWeight" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="NewsPage_CheckBoxs_Header.Text" xml:space="preserve">
+    <value>分类</value>
+  </data>
+  <data name="NewsPage_NewsDataTemplate_Button_Content.FontWeight" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="NewsPage_NewsDataTemplate_Button_Content.Text" xml:space="preserve">
+    <value>阅读稿件</value>
+  </data>
+  <data name="NewsPage_SearchBox.PlaceholderText" xml:space="preserve">
+    <value>新闻标题</value>
+  </data>
+  <data name="NewsPage_SearchBox_Header.Text" xml:space="preserve">
+    <value>搜索</value>
+  </data>
+  <data name="SettingPage_NavigationView.FontSize" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="SettingPage_NavigationView.PaneTitle" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="SettingPage_NavigationViewItem1.Content" xml:space="preserve">
+    <value>基础设置</value>
+  </data>
+  <data name="SettingPage_NavigationViewItem1.FontSize" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="SettingPage_NavigationViewItem2.Content" xml:space="preserve">
+    <value>账户</value>
+  </data>
+  <data name="SettingPage_NavigationViewItem2.FontSize" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="SettingPage_NavigationViewItem3.Content" xml:space="preserve">
+    <value>下载</value>
+  </data>
+  <data name="SettingPage_NavigationViewItem3.FontSize" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="SettingPage_NavigationViewItem4.Content" xml:space="preserve">
+    <value>控制台</value>
+  </data>
+  <data name="SettingPage_NavigationViewItem4.FontSize" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="SettingPage_NavigationViewItem5.Content" xml:space="preserve">
+    <value>主题</value>
+  </data>
+  <data name="SettingPage_NavigationViewItem5.FontSize" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="SettingPage_NavigationViewItem6.Content" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="SettingPage_NavigationViewItem6.FontSize" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="UpdataLogTextBlock.Text" xml:space="preserve">
+    <value>正式版 - 1.0.25.0
+
+添加了游戏安装器对自动安装OptiFine的支持
+添加了启动游戏时自动选择合适版本的 Java 运行时的功能
+添加了查找计算机上现有的 Java 运行时的功能
+添加了自动安装 Java 运行时 的功能
+	当你删除启动器时，自动安装的 Java 运行时会一并删除
+添加了CoresPage中自动滚动到当前选定游戏核心的功能
+添加了ConsolePage中当前启动游戏进程信息的显示
+添加了启动游戏对话框中启动状态的中文
+添加了第一次打开启动器自动搜索 Java 运行时的功能
+添加了重名游戏核心的功能
+添加了生成启动脚本的功能
+修复了当 Java 运行时为空的时，还能进行启动游戏操作的错误
+修复了BasicSettingsPage下，当 Java 运行时为空时，当前Java信息的显示错误
+修复了BasicSettingsPage下，Java 运行时路径路径过长时的显示错误
+修复了信息提示框的显示错误
+修复了深色模式下游戏安装对话框的加载背景颜色错误
+修复了游戏安装对话框的标题文字错误
+
+预览版 - 1.0.24.0
+
+添加了游戏安装器 目前支持原版和Forge的安装
+添加了更新日志显示
+添加了Cores Page中删除版本的功能
+修改了游戏崩溃时弹出的对话框为页面底部的信息框
+修复了Console Page中亚克力背景颜色分层的错误
+修复了Download Settings Page中的保存错误
+修复了主页新闻重复加载的错误
+修复了使用官方源无法下载的错误
+修复了FluentCore中的诸多问题
+
+预览版 - 1.0.23.0
+
+启动器代码大规模重构
+修改了设置页面中设置的保存方式
+修改了Microsoft账户登录方式 采用应用内浏览器
+修改了新闻加载方式 采用了多线程异步加载
+修改了对话框的UI
+修复了诸多MVVM带来的错误
+删除了启动器打开时自动刷新Microsoft账户验证令牌
+添加了Account Settings Page中Microsoft账户刷新</value>
+  </data>
+</root>

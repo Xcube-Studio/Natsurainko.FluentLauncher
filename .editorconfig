@@ -1,0 +1,7 @@
+﻿[*.cs]
+
+# CS8305: 类型仅用于评估，在将来的更新中可能会被更改或删除。
+dotnet_diagnostic.CS8305.severity = none
+
+# CS0168: 声明了变量，但从未使用过
+dotnet_diagnostic.CS0168.severity = none

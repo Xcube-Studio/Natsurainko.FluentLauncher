@@ -1,0 +1,2 @@
+MainPackage=C:\Users\Admin\Desktop\FluentLauncher\FluentLauncher\FluentLauncher.Wrapper\bin\x86\Release\FluentLauncher.Wrapper_1.0.25.0_x86.msix
+SymbolPackage=C:\Users\Admin\Desktop\FluentLauncher\FluentLauncher\FluentLauncher.Wrapper\obj\x86\Release\Symbols\FluentLauncher.Wrapper_1.0.25.0_x86.appxsym

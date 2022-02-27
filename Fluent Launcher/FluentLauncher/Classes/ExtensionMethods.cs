@@ -11,19 +11,19 @@ namespace FluentLauncher.Classes
 {
     public static class ExtensionMethods
     {
-        public static void AddWithUpdata(this List<MinecraftFolder> list,MinecraftFolder add)
+        public static void AddWithUpdate(this List<MinecraftFolder> list,MinecraftFolder add)
         {
             list.Add(add);
             ShareResource.MinecraftFolders = list;
         }
 
-        public static void AddWithUpdata(this List<JavaRuntimeEnvironment> list, JavaRuntimeEnvironment add)
+        public static void AddWithUpdate(this List<JavaRuntimeEnvironment> list, JavaRuntimeEnvironment add)
         {
             list.Add(add);
             ShareResource.JavaRuntimeEnvironments = list;
         }
 
-        public static void AddWithUpdata(this List<MinecraftAccount> list, MinecraftAccount add)
+        public static void AddWithUpdate(this List<MinecraftAccount> list, MinecraftAccount add)
         {
             list.Add(add);
             ShareResource.MinecraftAccounts = list;
@@ -40,7 +40,7 @@ namespace FluentLauncher.Classes
 
         public static int GetIndex<T>(List<T> items, T item)
         {
-            if (item == null)
+            if (item == null || items == null)
                 return -1;
 
             for (int i = 0; i < items.Count; i++)

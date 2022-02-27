@@ -35,6 +35,7 @@ namespace FluentLauncher.Pages
         {
             this.InitializeComponent();
         }
+
         #region UI
 
         #region Grid
@@ -60,7 +61,7 @@ namespace FluentLauncher.Pages
             App.Settings.Values["MinecraftAccounts"] = JsonConvert.SerializeObject(ShareResource.MinecraftAccounts);
             if (!ShareResource.MinecraftAccounts.Contains(ShareResource.SelectedAccount))
                 ShareResource.SelectedAccount = null;
-            UpdataListView();
+            UpdateListView();
         }
 
         private void CancelAddAccount(object sender, RoutedEventArgs e) => AddAccountDialog.Hide();
@@ -108,10 +109,10 @@ namespace FluentLauncher.Pages
             }
 
             AddAccountDialog.Hide();
-            ShareResource.MinecraftAccounts.AddWithUpdata(newItem);
-            UpdataListView();
+            ShareResource.MinecraftAccounts.AddWithUpdate(newItem);
+            UpdateListView();
             ShareResource.SelectedAccount = newItem;
-            UpdataListView();
+            UpdateListView();
 
             await ShareResource.ShowInfoAsync("Add New Account Successfully", "", 3000, InfoBarSeverity.Success);
         }
@@ -142,7 +143,7 @@ namespace FluentLauncher.Pages
             };
 
             ShareResource.MinecraftAccounts.Remove(account);
-            ShareResource.MinecraftAccounts.AddWithUpdata(newItem);
+            ShareResource.MinecraftAccounts.AddWithUpdate(newItem);
 
             if (ShareResource.SelectedAccount.Uuid == newItem.Uuid)
                 ShareResource.SelectedAccount = newItem;
@@ -150,7 +151,7 @@ namespace FluentLauncher.Pages
             if (!ShareResource.MinecraftAccounts.Contains(ShareResource.SelectedAccount))
                 ShareResource.SelectedAccount = null;
 
-            UpdataListView();
+            UpdateListView();
 
             ((Button)sender).IsEnabled = ((Button)((StackPanel)((Button)sender).Parent).FindName("DeleteAccountButton")).IsEnabled = true;
             await ShareResource.ShowInfoAsync("Refresh Account Successfully", "", 3000, InfoBarSeverity.Success);
@@ -173,7 +174,7 @@ namespace FluentLauncher.Pages
         #region Page
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            UpdataListView();
+            UpdateListView();
             ContentListView.SelectionChanged += ContentListView_SelectionChanged;
 
             if (ShareResource.WebBrowserNavigateBack)
@@ -220,7 +221,7 @@ namespace FluentLauncher.Pages
         }
         #endregion
 
-        private void UpdataListView()
+        private void UpdateListView()
         {
             ContentListView.SetItemsSource(ShareResource.MinecraftAccounts);
             ContentListView.SetSelectedItem(ShareResource.SelectedAccount);

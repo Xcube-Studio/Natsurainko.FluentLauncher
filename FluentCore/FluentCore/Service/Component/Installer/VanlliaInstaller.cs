@@ -2,6 +2,9 @@
 using FluentCore.Service.Component.Launch;
 using FluentCore.Service.Local;
 using FluentCore.Service.Network;
+using System;
+using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -37,15 +40,34 @@ namespace FluentCore.Service.Component.Installer
                         if (res.HttpStatusCode != HttpStatusCode.OK)
                             return false;
 
-                        await new DependencesCompleter(this.CoreLocator.GetGameCoreFromId(mcVersion)).CompleteAsync();
+                        OnProgressChanged(0.1, $"Installing Vanllia Minecraft - Downloaded {res.FileInfo.Name}");
+
+                        var completer = new DependencesCompleter(this.CoreLocator.GetGameCoreFromId(mcVersion));
+                        int done = 0;
+                        completer.SingleDownloadedEvent += delegate (object sender, Model.HttpDownloadResponse e)
+                        {
+                            done++;
+                            double progress = 0.1 + (done / ((double)completer.NeedDownloadDependencesCount) * 0.9);
+
+                            OnProgressChanged(progress, string.Format("Installing Vanllia Minecraft - Downloaded {0} {1}/{2}", progress.ToString("P", new NumberFormatInfo
+                            {
+                                PercentDecimalDigits = 1,
+                                PercentPositivePattern = 1
+                            }), done, completer.NeedDownloadDependencesCount));
+                        };
+
+                        await completer.CompleteAsync();
+
+                        OnProgressChanged(1.0, $"Installing Vanllia Minecraft - Finished");
 
                         return true;
                     }
                 }
             }
             catch 
-            { 
-                throw; 
+            {
+                OnProgressChanged(1.0, $"Installing Vanllia Minecraft Core - Finished");
+                //throw; 
             }
             return false;
         }

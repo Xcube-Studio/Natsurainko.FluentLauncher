@@ -45,6 +45,8 @@ namespace FluentLauncher.Pages
         #region WebView2
         private void WebView_NavigationStarting(WebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationStartingEventArgs args)
         {
+            ProgressRing.Visibility = Visibility.Visible;
+
             if (WebView.Source.AbsoluteUri == "about:blank")
                 return;
 
@@ -62,6 +64,11 @@ namespace FluentLauncher.Pages
             }
 
             GC.Collect();
+        }
+
+        private void WebView_NavigationCompleted(WebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationCompletedEventArgs args)
+        {
+            ProgressRing.Visibility = Visibility.Collapsed;
         }
         #endregion
 

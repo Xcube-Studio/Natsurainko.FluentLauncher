@@ -122,6 +122,7 @@
     </Compile>
     <Compile Include="Classes\ExceptionHandler.cs" />
     <Compile Include="Classes\ExtensionMethods.cs" />
+    <Compile Include="Classes\IOHelper.cs" />
     <Compile Include="Classes\JavaHelper.cs" />
     <Compile Include="Classes\MinecraftProcessContainer.cs" />
     <Compile Include="Classes\SystemRuntimeInfo.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="Converters\ColorConverter.cs" />
     <Compile Include="Converters\CoreReleaseTimeSubString.cs" />
     <Compile Include="Converters\IconConverter.cs" />
+    <Compile Include="Converters\ListInfoBadgeConverter.cs" />
     <Compile Include="Converters\ModdedInfoBarConverter.cs" />
     <Compile Include="Converters\ProcessOutPutTypeToColor.cs" />
     <Compile Include="Converters\TextTrimmingConverter.cs" />

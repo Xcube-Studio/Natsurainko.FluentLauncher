@@ -260,7 +260,8 @@
             IsBackEnabled="{Binding ElementName=contentFrame, Path=CanGoBack}"
             IsSettingsVisible="False"
             IsTitleBarAutoPaddingEnabled="False"
-            ItemInvoked="NavigationView_ItemInvoked">
+            ItemInvoked="NavigationView_ItemInvoked"
+            PaneDisplayMode="LeftCompact">
             <controls:NavigationView.Resources>
                 <StaticResource x:Key="NavigationViewItemBorderBrushSelected" ResourceKey="SystemAccentColor" />
             </controls:NavigationView.Resources>
@@ -303,6 +304,13 @@
                             </controls:AnimatedIcon.FallbackIconSource>
                         </controls:AnimatedIcon>
                     </controls:NavigationViewItem.Icon>
+                    <controls:NavigationViewItem.InfoBadge>
+                        <controls:InfoBadge
+                            x:Name="InfoBadge"
+                            Background="{ThemeResource SystemAccentColor}"
+                            Style="{ThemeResource CautionIconInfoBadgeStyle}"
+                            Visibility="Collapsed" />
+                    </controls:NavigationViewItem.InfoBadge>
                 </controls:NavigationViewItem>
             </controls:NavigationView.FooterMenuItems>
             <Frame

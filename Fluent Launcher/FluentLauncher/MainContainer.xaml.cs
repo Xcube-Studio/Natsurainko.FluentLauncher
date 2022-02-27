@@ -69,6 +69,8 @@ namespace FluentLauncher
                 default:
                     break;
             }
+
+            UpdateInfoBadge();
         }
 
         private void NavigationView_BackRequested(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewBackRequestedEventArgs args) => contentFrame.GoBack();
@@ -86,6 +88,8 @@ namespace FluentLauncher
 
             contentFrame.Navigate(typeof(MainPage));
             HomeNavigationViewItem.IsSelected = true;
+
+            UpdateInfoBadge();
         }
         #endregion
 
@@ -109,6 +113,13 @@ namespace FluentLauncher
                 ShareResource.News.Entries[i].Date = Convert.ToDateTime(entry.Date, new DateTimeFormatInfo() { ShortDatePattern = "yyyy-MM-dd" })
                     .ToString("MMMM dd, yyyy", CultureInfo.CreateSpecificCulture("en-GB"));
             }
+        }
+
+        private void UpdateInfoBadge()
+        {
+            if (ShareResource.GetBasicSettingsProblem() || ShareResource.GetAccountProblem())
+                InfoBadge.Visibility = Visibility.Visible;
+            else InfoBadge.Visibility = Visibility.Collapsed;
         }
 
         #endregion

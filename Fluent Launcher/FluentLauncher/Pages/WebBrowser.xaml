@@ -14,7 +14,14 @@
         <controls:WebView2
             x:Name="WebView"
             NavigationStarting="WebView_NavigationStarting"
+            NavigationCompleted="WebView_NavigationCompleted"
             Source="https://login.live.com/oauth20_authorize.srf?client_id=0844e754-1d2e-4861-8e2b-18059609badb&amp;response_type=code&amp;redirect_uri=http://localhost:5001/fluentlauncher/auth-response&amp;scope=XboxLive.signin%20offline_access&amp;prompt=select_account" />
+        <controls:ProgressRing
+            x:Name="ProgressRing"
+            Width="64"
+            Height="64"
+            Foreground="{ThemeResource SystemAccentColor}"
+            IsIndeterminate="True" />
         <Grid
             x:Name="AppTitleBar"
             Height="48"

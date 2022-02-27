@@ -11,4 +11,5 @@
     <converters:AccountTypeToVisibilityConverter x:Key="AccountTypeToVisibilityConverter" />
     <converters:CoreReleaseTimeSubString x:Key="CoreReleaseTimeSubString" />
     <converters:ModdedInfoBarConverter x:Key="ModdedInfoBarConverter" />
+    <converters:ListInfoBadgeConverter x:Key="ListInfoBadgeConverter" />
 </ResourceDictionary>

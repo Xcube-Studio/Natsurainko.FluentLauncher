@@ -122,6 +122,12 @@ namespace FluentLauncher.DesktopBridge
                 case "GetRequiredJavaVersion":
                     response.Add("Response", MethodHandler.GetRequiredJavaVersion((string)args.Request.Message["Path"], (string)args.Request.Message["McVersion"]));
                     break;
+                case "FileExist":
+                    response.Add("Response", File.Exists((string)args.Request.Message["Message"]).ToString());
+                    break;
+                case "FolderExist":
+                    response.Add("Response", Directory.Exists((string)args.Request.Message["Message"]).ToString());
+                    break;
                 default:
                     break;
             }

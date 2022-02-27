@@ -76,6 +76,8 @@ namespace FluentCore.Service.Component.Installer.ForgeInstaller
 
             #region Get version.json
 
+            OnProgressChanged(0.1, $"Installing Forge Loader - Initializing");
+
             var versionJson = await ZipFileHelper.GetStringFromJsonEntryAsync
                 (archive.Entries.First(x => x.Name.Equals("version.json", StringComparison.OrdinalIgnoreCase)));
             var versionModel = JsonConvert.DeserializeObject<CoreModel>(versionJson);
@@ -86,6 +88,8 @@ namespace FluentCore.Service.Component.Installer.ForgeInstaller
                 versionJsonFile.Directory.Create();
 
             File.WriteAllText(versionJsonFile.FullName, versionJson);
+
+            OnProgressChanged(0.15, $"Installing Forge Loader - Initializing");
 
             #endregion
 
@@ -98,9 +102,13 @@ namespace FluentCore.Service.Component.Installer.ForgeInstaller
             forgeInstallProfile.Data["BINPATCH"].Client = $"[net.minecraftforge:forge:{forgeVersion}:clientdata@lzma]";
             forgeInstallProfile.Data["BINPATCH"].Server = $"[net.minecraftforge:forge:{forgeVersion}:serverdata@lzma]";
 
+            OnProgressChanged(0.2, $"Installing Forge Loader - Initialized");
+
             #endregion
 
             #region Get Lzma
+
+            OnProgressChanged(0.3, $"Installing Forge Loader - Extracting Files");
 
             var clientLzma = archive.Entries.FirstOrDefault(e => e.FullName.Equals("data/client.lzma", StringComparison.OrdinalIgnoreCase));
             var serverLzma = archive.Entries.FirstOrDefault(e => e.FullName.Equals("data/server.lzma", StringComparison.OrdinalIgnoreCase));
@@ -138,9 +146,13 @@ namespace FluentCore.Service.Component.Installer.ForgeInstaller
                 await ZipFileHelper.WriteAsync(forgeJar, file.Directory.FullName);
             }
 
+            OnProgressChanged(0.4, $"Installing Forge Loader - Extracted");
+
             #endregion
 
             #region Parser Processor
+
+            OnProgressChanged(0.4, $"Installing Forge Loader - Parsering Processor");
 
             var replaceValues = new Dictionary<string, string>
             {
@@ -192,11 +204,16 @@ namespace FluentCore.Service.Component.Installer.ForgeInstaller
 
                 forgeInstallProfile.Processors[i] = processModel;
             }
+
+            OnProgressChanged(0.5, $"Installing Forge Loader - Parsered Processor");
+
             #endregion
 
             #region Download Libraries
 
-            for(int i = 0;i < versionModel.Libraries.Count;i++)
+            OnProgressChanged(0.5, $"Installing Forge Loader - Downloading Libraries");
+
+            for (int i = 0;i < versionModel.Libraries.Count;i++)
                 if (versionModel.Libraries[i].Name == forgeInstallProfile.Path)
                     versionModel.Libraries.Remove(versionModel.Libraries[i]);
 
@@ -260,9 +277,13 @@ namespace FluentCore.Service.Component.Installer.ForgeInstaller
                     return x;
                 }));
 
+            OnProgressChanged(0.8, $"Installing Forge Loader - Downloaded Libraries");
+
             #endregion
 
             #region Run Process
+
+            OnProgressChanged(0.8, $"Installing Forge Loader - Processing");
 
             foreach (var process in forgeInstallProfile.Processors)
             {
@@ -300,7 +321,11 @@ namespace FluentCore.Service.Component.Installer.ForgeInstaller
                 processContainer.Dispose();
             }
 
+            OnProgressChanged(0.9, $"Installing Forge Loader - Processed");
+
             #endregion
+
+            OnProgressChanged(1.0, $"Installing Forge Loader - Finished");
 
             if (processErrorOutputs.Count > 0)
                 return new ForgeInstallerResultModel

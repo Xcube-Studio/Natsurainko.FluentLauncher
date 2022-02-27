@@ -1,6 +1,5 @@
-﻿using ABI.System;
+﻿using FluentCore.Event;
 using FluentCore.Event.Process;
-using FluentCore.Extend.Service.Component.Authenticator;
 using FluentCore.Model;
 using FluentCore.Model.Auth;
 using FluentCore.Model.Auth.Microsoft;
@@ -23,11 +22,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.IO.Pipes;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using Windows.Foundation.Collections;
@@ -394,15 +390,15 @@ namespace FluentLauncher.DesktopBridge
 
             #region InstallVanllia
 
-            SendProgress("InstallVanllia", 10);
             var installer = new VanlliaInstaller(locator);
+            installer.ProgressChanged += delegate (object sender, InstallerProgressChangedEventArgs e) 
+            {
+                SendProgress(e.StepName, e.Progress);
+            };
             var vanlliaInstallResult = installer.Install(installInfomation.McVersion);
 
             if (modLoader == null)
-            {
-                SendProgress("InstallVanllia", 100);
                 return vanlliaInstallResult;
-            }
 
             #endregion
 
@@ -411,8 +407,6 @@ namespace FluentLauncher.DesktopBridge
             if (!vanlliaInstallResult)
                 return false;
 
-            SendProgress("InstallVanllia", 25);
-
             switch (modLoader.Type)
             {
                 case "Forge":
@@ -420,24 +414,33 @@ namespace FluentLauncher.DesktopBridge
                     InstallerBase forgeInstaller;
 
                     var res = HttpHelper.HttpDownloadAsync($"{new Bmclapi().Url}/forge/download/{forgeBuild.Build}", downloadPath, "ForgeInstaller.jar").GetAwaiter().GetResult();
-                    SendProgress("DownloadJar", 50);
+                    SendProgress("Installing Forge Loader - Downloading Installer Package", 0.5);
+
                     if (res.HttpStatusCode != System.Net.HttpStatusCode.OK)
                         return false;
 
                     if (Convert.ToInt32(modLoader.McVersion.Split('.')[1]) < 13)
                     {
                         forgeInstaller = new LegacyForgeInstaller(locator, res.FileInfo.FullName);
+                        forgeInstaller.ProgressChanged += delegate (object sender, InstallerProgressChangedEventArgs e)
+                        {
+                            SendProgress(e.StepName, e.Progress);
+                        };
+
                         ((LegacyForgeInstaller)forgeInstaller).Install();
                     }
                     else
                     {
                         forgeInstaller = new ModernForgeInstaller(locator, installInfomation.McVersion, installInfomation.McVersion, installInfomation.JavaPath, res.FileInfo.FullName);
+                        forgeInstaller.ProgressChanged += delegate (object sender, InstallerProgressChangedEventArgs e)
+                        {
+                            SendProgress(e.StepName, e.Progress);
+                        };
+
                         ((ModernForgeInstaller)forgeInstaller).Install();
                     }
-                    SendProgress("InstallForge", 80);
 
                     res.FileInfo.Delete();
-                    SendProgress("InstallForge", 100);
                     return true;
                 case "Fabric":
                     break;
@@ -446,17 +449,19 @@ namespace FluentLauncher.DesktopBridge
                     OptiFineInstaller optifineInstaller;
 
                     res = HttpHelper.HttpDownloadAsync($"{new Bmclapi().Url}/optifine/{modLoader.McVersion}/{optiFineBuild.Type}/{optiFineBuild.Patch}", downloadPath, optiFineBuild.FileName).GetAwaiter().GetResult();
-                    SendProgress("DownloadJar", 50);
+                    SendProgress("Installing OptiFine Loader - Downloading Installer Package", 0.5);
+
                     if (res.HttpStatusCode != System.Net.HttpStatusCode.OK)
                         return false;
 
                     optifineInstaller = new OptiFineInstaller(locator, modLoader.McVersion, modLoader.McVersion, installInfomation.JavaPath, res.FileInfo.FullName);
+                    optifineInstaller.ProgressChanged += delegate (object sender, InstallerProgressChangedEventArgs e)
+                    {
+                        SendProgress(e.StepName, e.Progress);
+                    };
                     optifineInstaller.Install();
 
-                    SendProgress("InstallForge", 80);
-
                     res.FileInfo.Delete();
-                    SendProgress("InstallForge", 100);
                     return true;
                 default:
                     break;
@@ -480,7 +485,7 @@ namespace FluentLauncher.DesktopBridge
 
             string downloadfolder = Path.Combine(Program.StorageFolder, "Downloads");
             string runtimefolder = Path.Combine(Program.StorageFolder, "Runtimes");
-            string url = "https://d6.injdk.cn/openjdk/openjdk/17/openjdk-17.0.1_windows-x64_bin.zip";
+            string url = "https://aka.ms/download-jdk/microsoft-jdk-17.0.2.8.1-windows-x64.zip";
 
             bool result = true;
             string resultPath = string.Empty;
@@ -671,15 +676,19 @@ namespace FluentLauncher.DesktopBridge
 
             #endregion
 
-            var results = paths.Distinct().Select(path =>
+            var results = new List<JavaRuntimeEnvironment>();
+            foreach(var item in paths.Distinct())
             {
-                var model = JsonConvert.DeserializeObject<JreInfo>(GetJavaRuntimeEnvironmentInfo(path));
-                return new JavaRuntimeEnvironment
+                if (!File.Exists(item))
+                    continue;
+
+                var model = JsonConvert.DeserializeObject<JreInfo>(GetJavaRuntimeEnvironmentInfo(item));
+                results.Add(new JavaRuntimeEnvironment
                 {
-                    Path = path,
+                    Path = item,
                     Title = $"{model.JAVA_VM_NAME} {model.JAVA_VERSION}"
-                };
-            });
+                });
+            };
 
             values.Add("Response", JsonConvert.SerializeObject(results));
         }

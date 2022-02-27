@@ -52,7 +52,7 @@ namespace FluentLauncher.Pages
                 TipBorder.Visibility = Visibility.Collapsed;
                 InfoGrid.Visibility = Visibility.Visible;
 
-                UpdataInfoPanel();
+                UpdateInfoPanel();
                 ScrollToEnd();
             }
         }
@@ -61,7 +61,7 @@ namespace FluentLauncher.Pages
 
         #endregion
 
-        #region HyperlinkButton_Click
+        #region HyperlinkButton
         private void HyperlinkButton_Click(object sender, RoutedEventArgs e) => this.Frame.Navigate(typeof(MainPage));
         #endregion
 
@@ -82,11 +82,11 @@ namespace FluentLauncher.Pages
                 TipBorder.Visibility = Visibility.Visible;
                 InfoGrid.Visibility = Visibility.Collapsed;
 
-                UpdataInfoPanel();
+                UpdateInfoPanel();
             });
         }
 
-        private void UpdataInfoPanel()
+        private void UpdateInfoPanel()
         {
             CoreBox.Text = ShareResource.MinecraftProcess.McCore;
             ProcessBox.Text = ShareResource.MinecraftProcess.ProcessInfo;

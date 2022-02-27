@@ -31,12 +31,12 @@ namespace FluentCore.Model.Launch
         /// <summary>
         /// 额外前置参数
         /// </summary>
-        public string MoreFrontArgs { get; set; } = default;
+        public string MoreFrontArgs { get; set; } = string.Empty;
 
         /// <summary>
         /// 额外后置参数
         /// </summary>
-        public string MoreBehindArgs { get; set; } = default;
+        public string MoreBehindArgs { get; set; } = string.Empty;
 
         /// <summary>
         /// 客户端令牌

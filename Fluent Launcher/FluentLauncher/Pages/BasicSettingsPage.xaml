@@ -210,39 +210,47 @@
                         FontSize="16"
                         Style="{ThemeResource BaseTextBlockStyle}"
                         Text=".minecraft Folder" />
-                    <Border
-                        Margin="10,15"
-                        BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}"
-                        BorderThickness="1"
-                        CornerRadius="5">
-                        <StackPanel>
-                            <ListView
-                                x:Name="FoldersListView"
-                                CornerRadius="5,5,0,0"
-                                ItemContainerStyle="{ThemeResource ListViewItemStyle1}"
-                                ItemTemplate="{ThemeResource FolderDataTemplate}" />
-                            <ListViewItem
-                                Height="62"
-                                PointerReleased="AddFolder_PointerReleased"
-                                Style="{StaticResource ListViewItemStyle1}">
-                                <StackPanel Margin="10,0" Orientation="Horizontal">
-                                    <FontIcon FontSize="24" Glyph="&#xE8F4;" />
-                                    <StackPanel Margin="12,0">
-                                        <TextBlock
-                                            x:Uid="BasicSettingPage_FoldersListViewItem_Title"
-                                            Style="{ThemeResource BaseTextBlockStyle}"
-                                            Text="Add New .minecraft Folder" />
-                                        <TextBlock
-                                            x:Uid="BasicSettingPage_FoldersListViewItem_SubTitle"
-                                            FontSize="11"
-                                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                            Style="{ThemeResource BodyTextBlockStyle}"
-                                            Text="Click To Choose" />
+                    <Grid Margin="10,15">
+                        <controls:InfoBadge
+                            Margin="-15"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Background="{ThemeResource SystemAccentColor}"
+                            Style="{ThemeResource CautionIconInfoBadgeStyle}"
+                            Visibility="{Binding ElementName=FoldersListView, Path=SelectedItem, Converter={ThemeResource ListInfoBadgeConverter}}" />
+                        <Border
+                            BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                            <StackPanel>
+                                <ListView
+                                    x:Name="FoldersListView"
+                                    CornerRadius="5,5,0,0"
+                                    ItemContainerStyle="{ThemeResource ListViewItemStyle1}"
+                                    ItemTemplate="{ThemeResource FolderDataTemplate}" />
+                                <ListViewItem
+                                    Height="62"
+                                    PointerReleased="AddFolder_PointerReleased"
+                                    Style="{StaticResource ListViewItemStyle1}">
+                                    <StackPanel Margin="10,0" Orientation="Horizontal">
+                                        <FontIcon FontSize="24" Glyph="&#xE8F4;" />
+                                        <StackPanel Margin="12,0">
+                                            <TextBlock
+                                                x:Uid="BasicSettingPage_FoldersListViewItem_Title"
+                                                Style="{ThemeResource BaseTextBlockStyle}"
+                                                Text="Add New .minecraft Folder" />
+                                            <TextBlock
+                                                x:Uid="BasicSettingPage_FoldersListViewItem_SubTitle"
+                                                FontSize="11"
+                                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                Style="{ThemeResource BodyTextBlockStyle}"
+                                                Text="Click To Choose" />
+                                        </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
-                            </ListViewItem>
-                        </StackPanel>
-                    </Border>
+                                </ListViewItem>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
                     <StackPanel Margin="10,0">
                         <TextBlock
                             x:Uid="BasicSettingPage_1_Annotate1"
@@ -264,39 +272,47 @@
                         FontSize="16"
                         Style="{ThemeResource BaseTextBlockStyle}"
                         Text="Java Runtime Environment" />
-                    <Border
-                        Margin="10,15"
-                        BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}"
-                        BorderThickness="1"
-                        CornerRadius="5">
-                        <StackPanel>
-                            <ListView
-                                x:Name="JavasListView"
-                                CornerRadius="5,5,0,0"
-                                ItemContainerStyle="{ThemeResource ListViewItemStyle1}"
-                                ItemTemplate="{ThemeResource JavaRuntimeEnvironmentDataTemplate}" />
-                            <ListViewItem
-                                Height="62"
-                                PointerReleased="AddJava_PointerReleased"
-                                Style="{StaticResource ListViewItemStyle1}">
-                                <StackPanel Margin="10,0" Orientation="Horizontal">
-                                    <FontIcon FontSize="24" Glyph="&#xE8F4;" />
-                                    <StackPanel Margin="12,0">
-                                        <TextBlock
-                                            x:Uid="BasicSettingPage_JavasListViewItem_Title"
-                                            Style="{ThemeResource BaseTextBlockStyle}"
-                                            Text="Add New Java Executable file" />
-                                        <TextBlock
-                                            x:Uid="BasicSettingPage_JavasListViewItem_SubTitle"
-                                            FontSize="11"
-                                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                            Style="{ThemeResource BodyTextBlockStyle}"
-                                            Text="Click To Choose" />
+                    <Grid Margin="10,15">
+                        <controls:InfoBadge
+                            Margin="-15"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Background="{ThemeResource SystemAccentColor}"
+                            Style="{ThemeResource CautionIconInfoBadgeStyle}"
+                            Visibility="{Binding ElementName=JavasListView, Path=SelectedItem, Converter={ThemeResource ListInfoBadgeConverter}}" />
+                        <Border
+                            BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                            <StackPanel>
+                                <ListView
+                                    x:Name="JavasListView"
+                                    CornerRadius="5,5,0,0"
+                                    ItemContainerStyle="{ThemeResource ListViewItemStyle1}"
+                                    ItemTemplate="{ThemeResource JavaRuntimeEnvironmentDataTemplate}" />
+                                <ListViewItem
+                                    Height="62"
+                                    PointerReleased="AddJava_PointerReleased"
+                                    Style="{StaticResource ListViewItemStyle1}">
+                                    <StackPanel Margin="10,0" Orientation="Horizontal">
+                                        <FontIcon FontSize="24" Glyph="&#xE8F4;" />
+                                        <StackPanel Margin="12,0">
+                                            <TextBlock
+                                                x:Uid="BasicSettingPage_JavasListViewItem_Title"
+                                                Style="{ThemeResource BaseTextBlockStyle}"
+                                                Text="Add New Java Executable file" />
+                                            <TextBlock
+                                                x:Uid="BasicSettingPage_JavasListViewItem_SubTitle"
+                                                FontSize="11"
+                                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                Style="{ThemeResource BodyTextBlockStyle}"
+                                                Text="Click To Choose" />
+                                        </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
-                            </ListViewItem>
-                        </StackPanel>
-                    </Border>
+                                </ListViewItem>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
                     <StackPanel Margin="10,0">
                         <StackPanel x:Name="JreInfoStackPanel">
                             <TextBlock
@@ -580,7 +596,8 @@
                     Margin="0,10,0,0"
                     FontSize="12"
                     PlaceholderText="path"
-                    QuerySubmitted="AddFolderPathBox_QuerySubmitted">
+                    QuerySubmitted="AddFolderPathBox_QuerySubmitted"
+                    TextChanged="AddFolderPathBox_TextChanged">
                     <AutoSuggestBox.QueryIcon>
                         <FontIcon FontSize="16" Glyph="&#xE8DA;" />
                     </AutoSuggestBox.QueryIcon>
@@ -600,6 +617,7 @@
                     VerticalAlignment="Center"
                     Orientation="Horizontal">
                     <Button
+                        x:Name="AddFolderButton"
                         Width="75"
                         Height="31"
                         Background="{ThemeResource SystemAccentColor}"
@@ -658,7 +676,8 @@
                     Margin="0,10,0,0"
                     FontSize="12"
                     PlaceholderText="executable file path"
-                    QuerySubmitted="AddJavaPathBox_QuerySubmitted">
+                    QuerySubmitted="AddJavaPathBox_QuerySubmitted"
+                    TextChanged="AddJavaPathBox_TextChanged">
                     <AutoSuggestBox.QueryIcon>
                         <FontIcon FontSize="16" Glyph="&#xE8E5;" />
                     </AutoSuggestBox.QueryIcon>
@@ -704,6 +723,7 @@
                         VerticalAlignment="Center"
                         Orientation="Horizontal">
                         <Button
+                            x:Name="AddJavaButton"
                             Width="75"
                             Height="31"
                             Background="{ThemeResource SystemAccentColor}"

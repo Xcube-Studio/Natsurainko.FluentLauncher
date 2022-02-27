@@ -55,6 +55,7 @@ namespace FluentCore.Service.Component.Launch
             stringBuilder.Append($" -Xmx{this.LaunchConfig.MaximumMemory}M");
             stringBuilder.Append(this.LaunchConfig.MinimumMemory.HasValue ? $" -Xmn{this.LaunchConfig.MinimumMemory}M" : string.Empty);
 
+            this.LaunchConfig.MoreFrontArgs += "-Dfml.ignoreInvalidMinecraftCertificates=True -Dfml.ignorePatchDiscrepancies=True -Dlog4j2.formatMsgNoLookups=true";
             if (!string.IsNullOrEmpty($" {this.LaunchConfig.MoreFrontArgs}"))
                 stringBuilder.Append($" {this.LaunchConfig.MoreFrontArgs}");
 

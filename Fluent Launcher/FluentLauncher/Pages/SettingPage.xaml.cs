@@ -60,6 +60,8 @@ namespace FluentLauncher.Pages
                 default:
                     break;
             }
+
+            UpdateInfoBadge();
         }
         #endregion
 
@@ -78,12 +80,25 @@ namespace FluentLauncher.Pages
                 contentFrame.Navigate(typeof(BasicSettingsPage));
             }
             else ShareResource.WebBrowserNavigateBack = false;
+
+            UpdateInfoBadge();
         }
 
         private void UpdateAppTitle(CoreApplicationViewTitleBar coreTitleBar)
         {
             Thickness currMargin = AppTitleBar.Margin;
             AppTitleBar.Margin = new Thickness(currMargin.Left, currMargin.Top, coreTitleBar.SystemOverlayRightInset, currMargin.Bottom);
+        }
+
+        private void UpdateInfoBadge()
+        {
+            if (ShareResource.GetBasicSettingsProblem())
+                BasicInfoBadge.Visibility = Visibility.Visible;
+            else BasicInfoBadge.Visibility = Visibility.Collapsed;
+
+            if (ShareResource.GetAccountProblem())
+                AccountInfoBadge.Visibility = Visibility.Visible;
+            else AccountInfoBadge.Visibility = Visibility.Collapsed;
         }
 
         #endregion

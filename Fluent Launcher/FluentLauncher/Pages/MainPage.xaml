@@ -147,20 +147,30 @@
                     TextWrapping="NoWrap" />
             </StackPanel>
         </Button>
-        <ComboBox
-            x:Name="LaunchComboBox"
-            x:Uid="MainPage_LaunchComboBox"
+        <Grid
             Grid.Row="2"
             Width="250"
             Height="60"
             Margin="30,40"
-            Padding="14,0"
             HorizontalAlignment="Left"
-            VerticalAlignment="Bottom"
-            Background="{ThemeResource ApplicationThemeControlBackground}"
-            BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}"
-            ItemTemplate="{ThemeResource ComboboxTemplate}"
-            PlaceholderText="Pick a Minecraft Core" />
+            VerticalAlignment="Bottom">
+            <ComboBox
+                x:Name="LaunchComboBox"
+                x:Uid="MainPage_LaunchComboBox"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="{ThemeResource ApplicationThemeControlBackground}"
+                BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}"
+                ItemTemplate="{ThemeResource ComboboxTemplate}"
+                PlaceholderText="Pick a Minecraft Core" />
+            <controls:InfoBadge
+                Margin="-7.5"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Background="{ThemeResource SystemAccentColor}"
+                Style="{ThemeResource CautionIconInfoBadgeStyle}"
+                Visibility="{Binding ElementName=LaunchComboBox, Path=SelectedItem, Converter={ThemeResource ListInfoBadgeConverter}}" />
+        </Grid>
         <Border
             x:Name="NewsBorder"
             Grid.Row="1"
@@ -325,19 +335,22 @@
                 </StackPanel>
             </Grid>
         </ContentDialog>
-        <ContentDialog x:Name="UpdataDialog" Grid.RowSpan="3">
+        <ContentDialog
+            x:Name="UpdateDialog"
+            Grid.RowSpan="3"
+            d:IsHidden="True">
             <Grid Width="480" Height="320">
                 <TextBlock
-                    x:Uid="MainPage_UpdataDialog_Title"
+                    x:Uid="MainPage_UpdateDialog_Title"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     FontSize="18"
                     Style="{ThemeResource BaseTextBlockStyle}"
-                    Text="Updata Change Logs" />
+                    Text="Update Change Logs" />
                 <ScrollViewer Margin="0,40">
                     <TextBlock
-                        x:Name="UpdataLogTextBlock"
-                        x:Uid="UpdataLogTextBlock"
+                        x:Name="UpdateLogTextBlock"
+                        x:Uid="UpdateLogTextBlock"
                         FontSize="13" />
                 </ScrollViewer>
                 <StackPanel
@@ -348,7 +361,7 @@
                         Width="75"
                         Height="31"
                         Background="{ThemeResource SystemAccentColor}"
-                        Click="CloseUpdataDialog"
+                        Click="CloseUpdateDialog"
                         Foreground="White"
                         Style="{ThemeResource AccentButtonStyle}">
                         <TextBlock

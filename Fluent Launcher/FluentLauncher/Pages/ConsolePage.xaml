@@ -41,7 +41,7 @@
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <TextBox
+                <AutoSuggestBox
                     x:Name="ProcessBox"
                     x:Uid="ConsolePage_InfoGrid_ProcessBox"
                     Grid.Column="0"
@@ -52,16 +52,15 @@
                     Background="Transparent"
                     BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}"
                     FontSize="12"
-                    IsReadOnly="True"
                     PlaceholderText="Process">
-                    <TextBox.Header>
+                    <AutoSuggestBox.Header>
                         <TextBlock
                             x:Uid="ConsolePage_InfoGrid_ProcessBox_Header"
                             FontSize="12"
                             Style="{ThemeResource BaseTextBlockStyle}"
                             Text="Process" />
-                    </TextBox.Header>
-                </TextBox>
+                    </AutoSuggestBox.Header>
+                </AutoSuggestBox>
                 <AppBarSeparator
                     Grid.Column="0"
                     Width="5"
@@ -69,7 +68,7 @@
                     Margin="0,0,5,11"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom" />
-                <TextBox
+                <AutoSuggestBox
                     x:Name="CoreBox"
                     x:Uid="ConsolePage_InfoGrid_CoreBox"
                     Grid.Column="1"
@@ -79,16 +78,15 @@
                     Background="Transparent"
                     BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}"
                     FontSize="12"
-                    IsReadOnly="True"
                     PlaceholderText="Core">
-                    <TextBox.Header>
+                    <AutoSuggestBox.Header>
                         <TextBlock
                             x:Uid="ConsolePage_InfoGrid_CoreBox_Header"
                             FontSize="12"
                             Style="{ThemeResource BaseTextBlockStyle}"
                             Text="Core" />
-                    </TextBox.Header>
-                </TextBox>
+                    </AutoSuggestBox.Header>
+                </AutoSuggestBox>
             </Grid>
         </Grid>
         <ListBox

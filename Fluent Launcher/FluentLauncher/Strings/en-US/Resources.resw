@@ -130,7 +130,7 @@
     <value>Dependencies</value>
   </data>
   <data name="AboutPage_Edition.Text" xml:space="preserve">
-    <value>Release Edition</value>
+    <value>Preview Edition</value>
   </data>
   <data name="AboutPage_HyperlinkButton.Content" xml:space="preserve">
     <value>Show More</value>
@@ -139,7 +139,7 @@
     <value>Statement</value>
   </data>
   <data name="AboutPage_Statement_Content.Text" xml:space="preserve">
-    <value>Minecraft is copyrighted by Mojang AB. We are not responsible for any copyright infringement arising from use of this software.</value>
+    <value>Minecraft is copyrighted by Mojang Studios. We are not responsible for any copyright infringement arising from use of this software.</value>
   </data>
   <data name="AboutPage_ThanksTo.Text" xml:space="preserve">
     <value>Thanks To</value>
@@ -310,7 +310,7 @@
     <value>Please Wait..  This may take some time</value>
   </data>
   <data name="BasicSettingsPage_InstallJavaDialog_InstallProgressTitle.FontWeight" xml:space="preserve">
-    <value>Bold</value>
+    <value>SemiBold</value>
   </data>
   <data name="BasicSettingsPage_InstallJavaDialog_Title.Text" xml:space="preserve">
     <value>Install Java Runtime</value>
@@ -351,7 +351,7 @@
   <data name="CoresPage_CheckBoxs_Header.Text" xml:space="preserve">
     <value>Versions</value>
   </data>
-  <data name="CoresPage_ComboboxTemplate_UpdataBlock.Text" xml:space="preserve">
+  <data name="CoresPage_ComboboxTemplate_UpdateBlock.Text" xml:space="preserve">
     <value>Update:</value>
   </data>
   <data name="CoresPage_InstallContentDialog_InfoPanel_Content.Text" xml:space="preserve">
@@ -359,6 +359,9 @@
   </data>
   <data name="CoresPage_InstallContentDialog_InfoPanel_Title.Text" xml:space="preserve">
     <value>Info</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_InstallProgressPanel_Start.FontWeight" xml:space="preserve">
+    <value>SemiBold</value>
   </data>
   <data name="CoresPage_InstallContentDialog_InstallProgressPanel_Start.Text" xml:space="preserve">
     <value>Installing Minecraft</value>
@@ -376,13 +379,13 @@
     <value>Install New Minecraft Core</value>
   </data>
   <data name="CoresPage_InstallContentDialog_ToggleSwitch_OffContent.FontWeight" xml:space="preserve">
-    <value>Bold</value>
+    <value>SemiBold</value>
   </data>
   <data name="CoresPage_InstallContentDialog_ToggleSwitch_OffContent.Text" xml:space="preserve">
     <value>Enabled Mod Loader Installer</value>
   </data>
   <data name="CoresPage_InstallContentDialog_ToggleSwitch_OnContent.FontWeight" xml:space="preserve">
-    <value>Bold</value>
+    <value>SemiBold</value>
   </data>
   <data name="CoresPage_InstallContentDialog_ToggleSwitch_OnContent.Text" xml:space="preserve">
     <value>Disabled Mod Loader Installer</value>
@@ -413,6 +416,12 @@
   </data>
   <data name="CoresPage_SortBox_Header.Text" xml:space="preserve">
     <value>Sort By</value>
+  </data>
+  <data name="CoresPage_TipBorder_SubTitle.Content" xml:space="preserve">
+    <value>Go back to the settings page</value>
+  </data>
+  <data name="CoresPage_TipBorder_Title.Text" xml:space="preserve">
+    <value>There are no selected .minecraft Folder</value>
   </data>
   <data name="CoresPage_VersionDataTemplate_MenuFlyoutItem1.Text" xml:space="preserve">
     <value>Launch this version</value>
@@ -502,7 +511,7 @@
     <value>Pick a Minecraft Core</value>
   </data>
   <data name="MainPage_NewsBorder_Button_Content.FontWeight" xml:space="preserve">
-    <value>Bold</value>
+    <value>SemiBold</value>
   </data>
   <data name="MainPage_NewsBorder_Button_Content.Text" xml:space="preserve">
     <value>Read the manuscript</value>
@@ -510,14 +519,20 @@
   <data name="MainPage_NewsBorder_NewsException.Text" xml:space="preserve">
     <value>Here is Something Wrong...</value>
   </data>
-  <data name="MainPage_UpdataDialog_Title.Text" xml:space="preserve">
-    <value>Updata Change Logs</value>
+  <data name="MainPage_UpdateDialog_Title.Text" xml:space="preserve">
+    <value>Update Change Logs</value>
+  </data>
+  <data name="MainPge_LaunchDialog_DownloadProgressText.FontWeight" xml:space="preserve">
+    <value>SemiBold</value>
+  </data>
+  <data name="MainPge_LaunchDialog_LaunchingProgressText.FontWeight" xml:space="preserve">
+    <value>SemiBold</value>
   </data>
   <data name="NewsPage_CheckBoxs_Header.Text" xml:space="preserve">
     <value>Sort</value>
   </data>
   <data name="NewsPage_NewsDataTemplate_Button_Content.FontWeight" xml:space="preserve">
-    <value>Bold</value>
+    <value>SemiBold</value>
   </data>
   <data name="NewsPage_NewsDataTemplate_Button_Content.Text" xml:space="preserve">
     <value>Read the manuscript</value>
@@ -549,11 +564,25 @@
   <data name="SettingPage_NavigationViewItem6.Content" xml:space="preserve">
     <value>About</value>
   </data>
-  <data name="UpdataLogTextBlock.Text" xml:space="preserve">
-    <value>Release Edition - 1.0.25.0
+  <data name="UpdateLogTextBlock.Text" xml:space="preserve">
+    <value>Preview Edition - 1.0.26
 
-Suppot Optfine install
-Added automatically discovery,installation and selection JVAV (If the Luancher uninstall,Jvav will uninstall together)
+Added hint bubbles that are displayed when the conditions to start the game are insufficient
+Added hint in CoresPage when .minecraft directory is not selected
+Added the ability for the launcher language to automatically follow the system on first boot
+Added the function of real-time progress synchronization of the installation version progress bar
+Fixed a bug where the path in the Add .minecraft directory / Java runtime dialog can be added if the path is arbitrarily entered
+Fixed a bug where launching the game again after launching the game would cause the desktop bridge to crash
+Fixed bug where MinecraftCores didn't update when deleting a directory
+Fixed a bug where new versions could be installed without a .minecraft directory
+Fixed some spelling mistakes in English translations
+Fixed bug when installing vanilla game without Java runtime
+Removed window resizing on every startup now only resizes on first startup
+
+Release Edition - 1.0.25.0
+
+Support Optifine install
+Added automatically discovery,installation and selection Java Runtime (If the Luancher uninstall,Java Runtime will uninstall together)
 Added automatically scrolling to the currently selected game core in corespage
 Added the display of the currently started game process information in the console page
 Added the Chinese of startup status at the startup game

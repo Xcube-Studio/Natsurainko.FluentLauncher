@@ -130,7 +130,7 @@
     <value>依赖</value>
   </data>
   <data name="AboutPage_Edition.Text" xml:space="preserve">
-    <value>正式版本</value>
+    <value>预览版本</value>
   </data>
   <data name="AboutPage_HyperlinkButton.Content" xml:space="preserve">
     <value>显示更多</value>
@@ -139,7 +139,7 @@
     <value>声明</value>
   </data>
   <data name="AboutPage_Statement_Content.Text" xml:space="preserve">
-    <value>Minecraft版权归Mojang AB所有。 开发者对因使用本软件而引起的任何版权侵权不承担任何责任。</value>
+    <value>Minecraft 版权归 Mojang Studios 所有。 开发者对因使用本软件而引起的任何版权侵权不承担任何责任。</value>
   </data>
   <data name="AboutPage_ThanksTo.Text" xml:space="preserve">
     <value>鸣谢</value>
@@ -351,7 +351,7 @@
   <data name="CoresPage_CheckBoxs_Header.Text" xml:space="preserve">
     <value>版本</value>
   </data>
-  <data name="CoresPage_ComboboxTemplate_UpdataBlock.Text" xml:space="preserve">
+  <data name="CoresPage_ComboboxTemplate_UpdateBlock.Text" xml:space="preserve">
     <value>更新:</value>
   </data>
   <data name="CoresPage_InstallContentDialog_InfoPanel_Content.Text" xml:space="preserve">
@@ -359,6 +359,9 @@
   </data>
   <data name="CoresPage_InstallContentDialog_InfoPanel_Title.Text" xml:space="preserve">
     <value>提示</value>
+  </data>
+  <data name="CoresPage_InstallContentDialog_InstallProgressPanel_Start.FontWeight" xml:space="preserve">
+    <value>Normal</value>
   </data>
   <data name="CoresPage_InstallContentDialog_InstallProgressPanel_Start.Text" xml:space="preserve">
     <value>正在安装游戏</value>
@@ -416,6 +419,12 @@
   </data>
   <data name="CoresPage_SortBox_Header.Text" xml:space="preserve">
     <value>排序</value>
+  </data>
+  <data name="CoresPage_TipBorder_SubTitle.Content" xml:space="preserve">
+    <value>转到设置页面</value>
+  </data>
+  <data name="CoresPage_TipBorder_Title.Text" xml:space="preserve">
+    <value>没有选中的 .minecraft 目录</value>
   </data>
   <data name="CoresPage_VersionDataTemplate_MenuFlyoutItem1.Text" xml:space="preserve">
     <value>运行该版本</value>
@@ -531,7 +540,7 @@
   <data name="MainPage_NewsBorder_NewsException.Text" xml:space="preserve">
     <value>图片加载错误..</value>
   </data>
-  <data name="MainPage_UpdataDialog_Title.Text" xml:space="preserve">
+  <data name="MainPage_UpdateDialog_Title.Text" xml:space="preserve">
     <value>更新日志</value>
   </data>
   <data name="MainPge_LaunchDialog_DownloadProgressText.FontWeight" xml:space="preserve">
@@ -597,8 +606,22 @@
   <data name="SettingPage_NavigationViewItem6.FontSize" xml:space="preserve">
     <value>13</value>
   </data>
-  <data name="UpdataLogTextBlock.Text" xml:space="preserve">
-    <value>正式版 - 1.0.25.0
+  <data name="UpdateLogTextBlock.Text" xml:space="preserve">
+    <value>预览版 - 1.0.26
+
+添加了提示气泡 当启动游戏条件不足时会显示
+添加了CoresPage中当 .minecraft 目录未选中时的提示
+添加了第一次启动时启动器语言自动跟随系统的功能
+添加了安装版本进度条实时进度同步的功能
+修复了添加 .minecraft目录 / Java 运行时对话框中路径随意输入却可以添加的错误
+修复了启动游戏后再次启动游戏导致桌面桥崩溃的错误
+修复了删除目录时 MinecraftCores 没有更新的错误
+修复了无 .minecraft 目录时依然可以安装新版本的错误
+修复了部分英文翻译单词拼写错误
+修复了无 Java 运行时安装原版游戏时的错误
+删除了每次启动时都会调整窗口大小的操作 现在只会在第一次启动时调整
+
+正式版 - 1.0.25.0
 
 添加了游戏安装器对自动安装OptiFine的支持
 添加了启动游戏时自动选择合适版本的 Java 运行时的功能

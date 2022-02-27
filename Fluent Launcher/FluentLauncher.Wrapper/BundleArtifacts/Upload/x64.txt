@@ -1,8 +1,8 @@
-MainPackage=C:\Users\Admin\Desktop\FluentLauncher\FluentLauncher\FluentLauncher.Wrapper\bin\x64\Release\Upload\FluentLauncher.Wrapper_1.0.25.0_x64.msix
-SymbolPackage=C:\Users\Admin\Desktop\FluentLauncher\FluentLauncher\FluentLauncher.Wrapper\bin\x64\Release\Upload\FluentLauncher.Wrapper_1.0.25.0\FluentLauncher.Wrapper_1.0.25.0_x64.appxsym
-ResourcePack=C:\Users\Admin\Desktop\FluentLauncher\FluentLauncher\FluentLauncher.Wrapper\bin\x64\Release\Upload\FluentLauncher.Wrapper_1.0.25.0_language-en.msix
-ResourcePack=C:\Users\Admin\Desktop\FluentLauncher\FluentLauncher\FluentLauncher.Wrapper\bin\x64\Release\Upload\FluentLauncher.Wrapper_1.0.25.0_language-zh-hans.msix
-ResourcePack=C:\Users\Admin\Desktop\FluentLauncher\FluentLauncher\FluentLauncher.Wrapper\bin\x64\Release\Upload\FluentLauncher.Wrapper_1.0.25.0_scale-100.msix
-ResourcePack=C:\Users\Admin\Desktop\FluentLauncher\FluentLauncher\FluentLauncher.Wrapper\bin\x64\Release\Upload\FluentLauncher.Wrapper_1.0.25.0_scale-125.msix
-ResourcePack=C:\Users\Admin\Desktop\FluentLauncher\FluentLauncher\FluentLauncher.Wrapper\bin\x64\Release\Upload\FluentLauncher.Wrapper_1.0.25.0_scale-150.msix
-ResourcePack=C:\Users\Admin\Desktop\FluentLauncher\FluentLauncher\FluentLauncher.Wrapper\bin\x64\Release\Upload\FluentLauncher.Wrapper_1.0.25.0_scale-400.msix
+MainPackage=C:\Users\Admin\Desktop\FluentLauncher\FluentLauncher\FluentLauncher.Wrapper\bin\x64\Release\Upload\FluentLauncher.Wrapper_1.0.26.0_x64.msix
+SymbolPackage=C:\Users\Admin\Desktop\FluentLauncher\FluentLauncher\FluentLauncher.Wrapper\bin\x64\Release\Upload\FluentLauncher.Wrapper_1.0.26.0\FluentLauncher.Wrapper_1.0.26.0_x64.appxsym
+ResourcePack=C:\Users\Admin\Desktop\FluentLauncher\FluentLauncher\FluentLauncher.Wrapper\bin\x64\Release\Upload\FluentLauncher.Wrapper_1.0.26.0_language-en.msix
+ResourcePack=C:\Users\Admin\Desktop\FluentLauncher\FluentLauncher\FluentLauncher.Wrapper\bin\x64\Release\Upload\FluentLauncher.Wrapper_1.0.26.0_language-zh-hans.msix
+ResourcePack=C:\Users\Admin\Desktop\FluentLauncher\FluentLauncher\FluentLauncher.Wrapper\bin\x64\Release\Upload\FluentLauncher.Wrapper_1.0.26.0_scale-100.msix
+ResourcePack=C:\Users\Admin\Desktop\FluentLauncher\FluentLauncher\FluentLauncher.Wrapper\bin\x64\Release\Upload\FluentLauncher.Wrapper_1.0.26.0_scale-125.msix
+ResourcePack=C:\Users\Admin\Desktop\FluentLauncher\FluentLauncher\FluentLauncher.Wrapper\bin\x64\Release\Upload\FluentLauncher.Wrapper_1.0.26.0_scale-150.msix
+ResourcePack=C:\Users\Admin\Desktop\FluentLauncher\FluentLauncher\FluentLauncher.Wrapper\bin\x64\Release\Upload\FluentLauncher.Wrapper_1.0.26.0_scale-400.msix

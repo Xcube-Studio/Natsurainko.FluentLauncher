@@ -75,13 +75,14 @@ namespace FluentLauncher.Pages
 
             ShareResource.MinecraftProcess.Launch();
 
+            LaunchButton.IsEnabled = false;
             await LaunchDialog.ShowAsync();
         }
 
-        private void CloseUpdataDialog(object sender, RoutedEventArgs e)
+        private void CloseUpdateDialog(object sender, RoutedEventArgs e)
         {
-            ShareResource.ShownUpdata = ShareResource.Version;
-            UpdataDialog.Hide();
+            ShareResource.ShownUpdate = ShareResource.Version;
+            UpdateDialog.Hide();
         }
         #endregion
 
@@ -89,7 +90,7 @@ namespace FluentLauncher.Pages
         private void LaunchComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) 
         {
             ShareResource.SelectedCore = (MinecraftCoreInfo)LaunchComboBox.SelectedItem;
-            UpdataLaunchButton();
+            UpdateLaunchButton();
         }
 
         #endregion
@@ -97,14 +98,14 @@ namespace FluentLauncher.Pages
         #region Page
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if (ShareResource.ShownUpdata != ShareResource.Version)
-                _ = UpdataDialog.ShowAsync();
+            if (ShareResource.ShownUpdate != ShareResource.Version)
+                _ = UpdateDialog.ShowAsync();
 
             AccountButton.DataContext = ShareResource.SelectedAccount;
 
-            await ShareResource.UpdataMinecraftCoresAsync();
-            UpdataComboBox();
-            UpdataLaunchButton();
+            await ShareResource.UpdateMinecraftCoresAsync();
+            UpdateComboBox();
+            UpdateLaunchButton();
 
             HandleNavigateToLaunch();
 
@@ -187,6 +188,8 @@ namespace FluentLauncher.Pages
             {
                 ShareResource.ProcessOutputs.Clear();
                 ShareResource.ErrorProcessOutputs.Clear();
+
+                LaunchButton.IsEnabled = true;
             });
         }
 
@@ -199,21 +202,32 @@ namespace FluentLauncher.Pages
         private void HandleNavigateToLaunch()
         {
             if (ShareResource.NavigateToLaunch)
+            {
+                if (ShareResource.MinecraftProcess.IsRunning)
+                {
+                    _ = ShareResource.ShowInfoAsync("Failed to Launch", "There is already a running game");
+                    ShareResource.NavigateToLaunch = false;
+                    return;
+                }
                 LaunchButton_Click(null, null);
+            }
 
             ShareResource.NavigateToLaunch = false;
         }
 
-        private void UpdataComboBox()
+        private void UpdateComboBox()
         {
             LaunchComboBox.SetItemsSource(ShareResource.MinecraftCores);
             LaunchComboBox.SetSelectedItem(ShareResource.SelectedCore);
         }
 
-        private void UpdataLaunchButton()
+        private void UpdateLaunchButton()
         {
             LaunchButtonTag.Text = ShareResource.SelectedCore != null ? ShareResource.SelectedCore.Id : ShareResource.LanguageResource.MainPage_LaunchButton_SubTitle;
             LaunchButton.IsEnabled = ShareResource.SelectedCore != null;
+
+            if (ShareResource.MinecraftProcess.IsRunning)
+                LaunchButton.IsEnabled = false;
         }
         #endregion
     }

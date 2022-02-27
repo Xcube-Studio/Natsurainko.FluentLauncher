@@ -65,10 +65,10 @@ namespace FluentLauncher.Pages
                 Path = AddFolderPathBox.Text,
                 Title = AddFolderNameBox.Text
             };
-            ShareResource.MinecraftFolders.AddWithUpdata(newItem);
-            UpdataListBox("Folder");
+            ShareResource.MinecraftFolders.AddWithUpdate(newItem);
+            UpdateListBox("Folder");
             ShareResource.SelectedFolder = newItem;
-            UpdataListBox("Folder");
+            UpdateListBox("Folder");
             this.AddFolderDialog.Hide();
         }
 
@@ -79,11 +79,11 @@ namespace FluentLauncher.Pages
                 Path = AddJavaPathBox.Visibility == Visibility.Visible ? AddJavaPathBox.Text : ((JavaRuntimeEnvironment)SearchJavaPathComboBox.SelectedItem).Path,
                 Title = AddJavaNameBox.Text
             };
-            ShareResource.JavaRuntimeEnvironments.AddWithUpdata(newItem);
+            ShareResource.JavaRuntimeEnvironments.AddWithUpdate(newItem);
             ShareResource.SelectedJava = newItem;
-            UpdataListBox("Java");
+            UpdateListBox("Java");
             ShareResource.SelectedJava = newItem;
-            UpdataListBox("Java");
+            UpdateListBox("Java");
             this.AddJavaDialog.Hide();
         }
 
@@ -97,14 +97,15 @@ namespace FluentLauncher.Pages
                     App.Settings.Values["MinecraftFolders"] = JsonConvert.SerializeObject(ShareResource.MinecraftFolders);
                     if (!ShareResource.MinecraftFolders.Contains(ShareResource.SelectedFolder))
                         ShareResource.SelectedFolder = null;
-                    UpdataListBox("Folder");
+                    UpdateListBox("Folder");
+                    _ = ShareResource.UpdateMinecraftCoresAsync();
                     break;
                 case "Java":
                     ShareResource.JavaRuntimeEnvironments.Remove((JavaRuntimeEnvironment)button.DataContext);
                     App.Settings.Values["JavaRuntimeEnvironments"] = JsonConvert.SerializeObject(ShareResource.JavaRuntimeEnvironments);
                     if (!ShareResource.JavaRuntimeEnvironments.Contains(ShareResource.SelectedJava))
                         ShareResource.SelectedJava = null;
-                    UpdataListBox("Java");
+                    UpdateListBox("Java");
                     break;
                 default:
                     break;
@@ -195,9 +196,9 @@ namespace FluentLauncher.Pages
                     Path = res.Response,
                     Title = $"{info.JAVA_VM_NAME} {info.JAVA_VERSION}"
                 };
-                ShareResource.JavaRuntimeEnvironments.AddWithUpdata(newItem);
+                ShareResource.JavaRuntimeEnvironments.AddWithUpdate(newItem);
                 ShareResource.SelectedJava = newItem;
-                UpdataListBox("Java");
+                UpdateListBox("Java");
 
                 _ = ShareResource.ShowInfoAsync("Install Java Runtime Successfully", string.Empty, 3000, Microsoft.UI.Xaml.Controls.InfoBarSeverity.Success);
             }
@@ -246,6 +247,10 @@ namespace FluentLauncher.Pages
         private void MinMemoryBox_ValueChanged(Microsoft.UI.Xaml.Controls.NumberBox sender, Microsoft.UI.Xaml.Controls.NumberBoxValueChangedEventArgs args)
             => ShareResource.MinMemory = (int)args.NewValue;
 
+        private async void AddFolderPathBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args) => AddFolderButton.IsEnabled = await IOHelper.FolderExist(AddFolderPathBox.Text);
+
+        private async void AddJavaPathBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args) => AddJavaButton.IsEnabled = await IOHelper.FileExist(AddJavaPathBox.Text);
+
         #endregion
 
         #region ComboBox
@@ -269,6 +274,8 @@ namespace FluentLauncher.Pages
         {
             AddFolderNameBox.Text = "New Minecraft Folder";
             AddFolderPathBox.Text = string.Empty;
+            AddFolderButton.IsEnabled = false;
+
             await AddFolderDialog.ShowAsync();
         }
 
@@ -281,6 +288,8 @@ namespace FluentLauncher.Pages
 
             AddJavaNameBox.Text = "Java(TM) Platform SE Binary";
             AddJavaPathBox.Text = string.Empty;
+            AddJavaButton.IsEnabled = false;
+
             await AddJavaDialog.ShowAsync();
         }
         #endregion
@@ -306,8 +315,8 @@ namespace FluentLauncher.Pages
         #region Page
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            UpdataListBox("Folder");
-            UpdataListBox("Java");
+            UpdateListBox("Folder");
+            UpdateListBox("Java");
             MaxMemoryBox.Value = ShareResource.MaxMemory;
             MinMemoryBox.Value = ShareResource.MinMemory;
             ModeComboBox.SetItemsSource(ShareResource.WorkingFolders);
@@ -339,7 +348,7 @@ namespace FluentLauncher.Pages
         }
         #endregion
 
-        private void UpdataListBox(string name)
+        private void UpdateListBox(string name)
         {
             switch (name)
             {

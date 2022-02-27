@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -165,18 +166,17 @@ namespace FluentLauncher
         {
             DesktopBridge_Init = DesktopBridge.BeginInitAsync();
             LoadSettings();
-            LoadLanguage();
-
             if (ShareResource.RunForFirstTime)
                 RunForFirstTime();
+
+            LoadLanguage();
 
 #if DEBUG
             if (Debugger.IsAttached)
                 this.DebugSettings.EnableFrameRateCounter = true;
 #endif
-
-            Windows.UI.ViewManagement.ApplicationView.PreferredLaunchViewSize = new Size(850, 500);
-            Windows.UI.ViewManagement.ApplicationView.PreferredLaunchWindowingMode = Windows.UI.ViewManagement.ApplicationViewWindowingMode.PreferredLaunchViewSize;
+            if (!ShareResource.RunForFirstTime)
+                Windows.UI.ViewManagement.ApplicationView.PreferredLaunchWindowingMode = Windows.UI.ViewManagement.ApplicationViewWindowingMode.Auto;
         }
 
         private void LoadSettings()
@@ -222,8 +222,8 @@ namespace FluentLauncher
             ShareResource.Language = Settings.Values.ContainsKey("Language") && Settings.Values["Language"] != null ?
                 (string)Settings.Values["Language"] : "中文";
 
-            ShareResource.ShownUpdata = Settings.Values.ContainsKey("ShownUpdata") && Settings.Values["ShownUpdata"] != null ?
-                (string)Settings.Values["ShownUpdata"] : string.Empty;
+            ShareResource.ShownUpdate = Settings.Values.ContainsKey("ShownUpdate") && Settings.Values["ShownUpdate"] != null ?
+                (string)Settings.Values["ShownUpdate"] : string.Empty;
 
             ShareResource.RunForFirstTime = Settings.Values.ContainsKey("RunForFirstTime") && Settings.Values["RunForFirstTime"] != null ?
                 (bool)Settings.Values["RunForFirstTime"] : true;
@@ -257,6 +257,18 @@ namespace FluentLauncher
 
         private async void RunForFirstTime()
         {
+            #region Windows Size
+            Windows.UI.ViewManagement.ApplicationView.PreferredLaunchViewSize = new Size(920, 550);
+            Windows.UI.ViewManagement.ApplicationView.PreferredLaunchWindowingMode = Windows.UI.ViewManagement.ApplicationViewWindowingMode.PreferredLaunchViewSize;
+            #endregion
+
+            #region Language
+            if (CultureInfo.CurrentUICulture.Name == "zh-CN")
+                ShareResource.Language = "中文";
+            else ShareResource.Language = "English";
+            #endregion
+
+            #region Search Java Runtime
             await DesktopBridge_Init;
 
             var res = await DesktopBridge.SendAsync<StandardResponseModel>(new StandardRequestModel()
@@ -271,10 +283,11 @@ namespace FluentLauncher
 
                 if ( version == 8 || version == 17)
                 {
-                    ShareResource.JavaRuntimeEnvironments.AddWithUpdata(item);
+                    ShareResource.JavaRuntimeEnvironments.AddWithUpdate(item);
                     ShareResource.SelectedJava = item;
                 }
             }
+            #endregion
 
             ShareResource.RunForFirstTime = false;
         }

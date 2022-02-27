@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
@@ -29,6 +30,8 @@ namespace FluentCore.Service.Component.Installer.ForgeInstaller
         /// Forge安装包位置
         /// </summary>
         public string ForgeInstallerPackagePath { get; set; }
+
+        public List<HttpDownloadRequest> ErrorDownload = new List<HttpDownloadRequest>();
 
         public LegacyForgeInstaller(CoreLocator locator, string forgeInstallerPackagePath)
             : base(locator)
@@ -52,6 +55,8 @@ namespace FluentCore.Service.Component.Installer.ForgeInstaller
 
             #region Get install_profile.json
 
+            OnProgressChanged(0.1, $"Installing Forge Loader - Initializing");
+
             var forgeInstallProfile = await ZipFileHelper.GetObjectFromJsonEntryAsync<LegacyForgeInstallProfileModel>
                 (archive.Entries.First(x => x.Name.Equals("install_profile.json", StringComparison.OrdinalIgnoreCase)));
 
@@ -66,9 +71,13 @@ namespace FluentCore.Service.Component.Installer.ForgeInstaller
 
             File.WriteAllText(versionJsonFile.FullName, forgeInstallProfile.VersionInfo.ToString());
 
+            OnProgressChanged(0.2, $"Installing Forge Loader - Initialized");
+
             #endregion
 
             #region Extract Forge Jar
+
+            OnProgressChanged(0.3, $"Installing Forge Loader - Extracting Files");
 
             var legacyJarEntry = archive.Entries.FirstOrDefault(e => e.Name.Equals(forgeInstallProfile.Install.FilePath, StringComparison.OrdinalIgnoreCase));
             var model = JsonConvert.DeserializeObject<CoreModel>(forgeInstallProfile.VersionInfo.ToString());
@@ -77,44 +86,68 @@ namespace FluentCore.Service.Component.Installer.ForgeInstaller
             var fileLib = new FileInfo(Path.Combine(PathHelper.GetLibrariesFolder(this.CoreLocator.Root), lib.GetRelativePath()));
             await ZipFileHelper.WriteAsync(legacyJarEntry, fileLib.Directory.FullName, fileLib.Name);
 
+            OnProgressChanged(0.4, $"Installing Forge Loader - Extracted");
+
             #endregion
 
             #region Download Libraries
 
-            var api = SystemConfiguration.Api;
-            if (api.Equals(new Mojang()))
-                SystemConfiguration.Api = new Mcbbs();
+            OnProgressChanged(0.5, $"Installing Forge Loader - Downloading Libraries");
+
+            async Task Download(IEnumerable<HttpDownloadRequest> requests)
+            {
+                var manyBlock = new TransformManyBlock<IEnumerable<HttpDownloadRequest>, HttpDownloadRequest>(x => x);
+                var blockOptions = new ExecutionDataflowBlockOptions
+                {
+                    BoundedCapacity = DependencesCompleter.MaxThread,
+                    MaxDegreeOfParallelism = DependencesCompleter.MaxThread
+                };
+
+                var actionBlock = new ActionBlock<HttpDownloadRequest>(async x =>
+                {
+                    try
+                    {
+                        if (!x.Directory.Exists)
+                            x.Directory.Create();
+
+                        var res = await HttpHelper.HttpDownloadAsync(x, x.FileName);
+                        if (res.HttpStatusCode != HttpStatusCode.OK)
+                            this.ErrorDownload.Add(x);
+                    }
+                    catch
+                    {
+                        throw;
+                    }
+                }, blockOptions);
+
+                var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
+                _ = manyBlock.LinkTo(actionBlock, linkOptions);
+
+                _ = manyBlock.Post(requests);
+                manyBlock.Complete();
+
+                await actionBlock.Completion;
+                GC.Collect();
+            }
 
             var downloadList = model.Libraries.Select(x => x.GetDownloadRequest(this.CoreLocator.Root)).ToList();
             downloadList.Remove(downloadList.First(x => x.Url.Equals(lib.GetDownloadRequest(this.CoreLocator.Root).Url)));
 
-            var manyBlock = new TransformManyBlock<IEnumerable<HttpDownloadRequest>, HttpDownloadRequest>(x => x);
-            var blockOptions = new ExecutionDataflowBlockOptions
-            {
-                BoundedCapacity = DependencesCompleter.MaxThread,
-                MaxDegreeOfParallelism = DependencesCompleter.MaxThread
-            };
+            await Download(downloadList);
 
-            var actionBlock = new ActionBlock<HttpDownloadRequest>(async x =>
-            {
-                if (!x.Directory.Exists)
-                    x.Directory.Create();
+            //Try Again
+            if (ErrorDownload.Count > 0)
+                await Download(ErrorDownload.Select(x =>
+                {
+                    x.Url = x.Url.Replace($"{SystemConfiguration.Api.Url}/maven", "https://maven.minecraftforge.net");
+                    return x;
+                }));
 
-                var res = await HttpHelper.HttpDownloadAsync(x, x.FileName);
-            }, blockOptions);
-
-            var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
-            _ = manyBlock.LinkTo(actionBlock, linkOptions);
-
-            _ = manyBlock.Post(downloadList);
-            manyBlock.Complete();
-
-            await actionBlock.Completion;
-            GC.Collect();
-
-            SystemConfiguration.Api = api;
+            OnProgressChanged(0.8, $"Installing Forge Loader - Downloaded Libraries");
 
             #endregion
+
+            OnProgressChanged(1.0, $"Installing Forge Loader - Finished");
 
             return new ForgeInstallerResultModel
             {

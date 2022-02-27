@@ -37,7 +37,7 @@ namespace FluentLauncher.Pages
         #region UI
 
         #region Buttons
-        private async void ShowDialogButton(object sender, RoutedEventArgs e)
+        private async void ShowDialogButton_Click(object sender, RoutedEventArgs e)
         {
             if (ShareResource.DownloadVersionManifest == null)
                 ShareResource.DownloadVersionManifest = ShareResource.BeginDownloadVersionManifest();
@@ -56,8 +56,8 @@ namespace FluentLauncher.Pages
             await App.DesktopBridge.SendAsync<StandardResponseModel>
                 (new RenameMinecraftCoreRequest(core.Id, RenameAutoSuggestBox.Text));
 
-            await ShareResource.UpdataMinecraftCoresAsync();
-            UpdataListBox();
+            await ShareResource.UpdateMinecraftCoresAsync();
+            UpdateListBox();
             RenameContentDialog.Hide();
         }
 
@@ -79,8 +79,25 @@ namespace FluentLauncher.Pages
         #region Page
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            await ShareResource.UpdataMinecraftCoresAsync();
-            UpdataListBox();
+            var grid = ((Grid)ShowDialogButton.Parent);
+
+            if (ShareResource.SelectedFolder == null || ShareResource.MinecraftFolders.Count == 0)
+            {
+                ToolTipService.SetToolTip(grid, "You need to choose at least one .minecraft folder");
+                ShowDialogButton.IsEnabled = false;
+                TipGrid.Visibility = Visibility.Visible;
+                ContentGird.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                ToolTipService.SetToolTip(grid, null);
+                ShowDialogButton.IsEnabled = true;
+                TipGrid.Visibility = Visibility.Collapsed;
+                ContentGird.Visibility = Visibility.Visible;
+            }
+
+            await ShareResource.UpdateMinecraftCoresAsync();
+            UpdateListBox();
 
             ContentListBox.SelectionChanged += ContentListBox_SelectionChanged;
         }
@@ -134,8 +151,8 @@ namespace FluentLauncher.Pages
             await App.DesktopBridge.SendAsync<StandardResponseModel>
                 (new DeleteMinecraftCoreRequest() { Folder = ShareResource.SelectedFolder.Path , Name = core.Id });
 
-            await ShareResource.UpdataMinecraftCoresAsync();
-            UpdataListBox();
+            await ShareResource.UpdateMinecraftCoresAsync();
+            UpdateListBox();
         }
 
         private async void RenameMenuFlyoutItem(object sender, RoutedEventArgs e)
@@ -195,7 +212,7 @@ namespace FluentLauncher.Pages
                 ModLoaderToggleSwitch.IsEnabled = false;
                 ModLoaderToggleSwitch.IsOn = false;
 
-                UpdataModLoaderUI();
+                UpdateModLoaderUI();
                 return;
             }
 
@@ -210,14 +227,14 @@ namespace FluentLauncher.Pages
                 CheckModLoader();
             }
 
-            UpdataModLoaderUI();
+            UpdateModLoaderUI();
         }
 
-        private void ModLoaderComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => UpdataModLoaderUI();
+        private void ModLoaderComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => UpdateModLoaderUI();
         #endregion
 
         #region ToggleSwitch
-        private void ModLoaderToggleSwitch_Toggled(object sender, RoutedEventArgs e) => UpdataModLoaderUI();
+        private void ModLoaderToggleSwitch_Toggled(object sender, RoutedEventArgs e) => UpdateModLoaderUI();
         #endregion
 
         #region TextBox
@@ -235,9 +252,19 @@ namespace FluentLauncher.Pages
         }
         #endregion
 
+        #region HyperlinkButton
+        private void HyperlinkButton_Click(object sender, RoutedEventArgs e) => ((Frame)Window.Current.Content).Navigate(typeof(SettingPage));
+        #endregion
+
         private async Task BeginInstallAsync()
         {
-            CancelButton.IsEnabled = InstallButton.IsEnabled = false;
+            if (ModLoaderComboBox.SelectedItem != null && ShareResource.SelectedJava == null)
+            {
+                _ = ShareResource.ShowInfoAsync($"Failed to Install Minecraft {McInfoTextBlock.Text}", "You need at least one Java runtime to install the Mod loader", 3000, Microsoft.UI.Xaml.Controls.InfoBarSeverity.Error);
+                return;
+            }
+
+            VersionComboBox.IsEnabled = ModLoaderComboBox.IsEnabled = CancelButton.IsEnabled = InstallButton.IsEnabled = false;
             InstallProgressPanel.Visibility = Visibility.Visible;
 
             await ShareResource.SetDownloadSource();
@@ -249,7 +276,8 @@ namespace FluentLauncher.Pages
                     var model = JsonConvert.DeserializeObject<InstallMinecraftProgressResponse>(JsonConvert.SerializeObject(args.Request.Message));
                     await this.Dispatcher.RunAsync(default, delegate
                     {
-                        InstallProgressBar.Value = model.Progress;
+                        InstallProgressText.Text = model.Message;
+                        InstallProgressBar.Value = model.Progress * 100;
                         InstallProgressBar.IsIndeterminate = false;
                     });
                 }
@@ -259,7 +287,7 @@ namespace FluentLauncher.Pages
             var task = App.DesktopBridge.SendAsync<StandardResponseModel>(new InstallMinecraftRequest
             {
                 Folder = ShareResource.SelectedFolder.Path,
-                JavaPath = ShareResource.SelectedJava.Path,
+                JavaPath = ShareResource.SelectedJava?.Path,
                 McVersion = ((VersionManifestItem)VersionComboBox.SelectedItem).Id,
                 ModLoader = JsonConvert.SerializeObject(((AbstractModLoader)ModLoaderComboBox.SelectedItem))
             });
@@ -273,13 +301,13 @@ namespace FluentLauncher.Pages
             if (Convert.ToBoolean(res.Message))
             {
                 _ = ShareResource.ShowInfoAsync($"Installed Minecraft {McInfoTextBlock.Text} Successfully", string.Empty, 3000, Microsoft.UI.Xaml.Controls.InfoBarSeverity.Success);
-                await ShareResource.UpdataMinecraftCoresAsync();
-                UpdataListBox();
+                await ShareResource.UpdateMinecraftCoresAsync();
+                UpdateListBox();
             }
             else _ = ShareResource.ShowInfoAsync($"Failed to Install Minecraft {McInfoTextBlock.Text}", "There is something wrong..?", 3000, Microsoft.UI.Xaml.Controls.InfoBarSeverity.Error);
         }
 
-        private void UpdataModLoaderUI()
+        private void UpdateModLoaderUI()
         {
             string info = string.Empty;
 
@@ -304,7 +332,7 @@ namespace FluentLauncher.Pages
             if (ModLoaderToggleSwitch.IsOn && ModLoaderComboBox.SelectedItem != null)
             {
                 var item = (AbstractModLoader)ModLoaderComboBox.SelectedItem;
-                info += $" with {item.Type}";
+                info += $"-{item.Type}";
             }
 
             McInfoTextBlock.Text = info;
@@ -344,10 +372,14 @@ namespace FluentLauncher.Pages
         private async void LoadingDialog()
         {
             await ShareResource.DownloadVersionManifest;
-            VersionComboBox.ItemsSource = ShareResource.VersionManifest.Versions.ToList();
+
             InstallProgressBar.Value = 0;
             InstallProgressBar.IsIndeterminate = true;
+            InstallProgressText.Text = "";
+
+            VersionComboBox.ItemsSource = ShareResource.VersionManifest.Versions.ToList();
             VersionComboBox.SelectedIndex = 0;
+            VersionComboBox.IsEnabled = true;
 
             if (ShareResource.ForgeSupportMcVersionList == null)
                 ShareResource.ForgeSupportMcVersionList = await ShareResource.GetForgeSupportMcVersionList();
@@ -359,7 +391,7 @@ namespace FluentLauncher.Pages
             LoadingGrid.Visibility = Visibility.Collapsed;
         }
 
-        private void UpdataListBox()
+        private void UpdateListBox()
         {
             ContentListBox.SetItemsSource(ShareResource.MinecraftCores);
             ContentListBox.SetSelectedItem(ShareResource.SelectedCore);

@@ -62,6 +62,9 @@ namespace FluentCore.Service.Component.Installer
         public async Task<OptiFineInstallerResultModel> InstallAsync()
         {
             #region Initialize
+
+            OnProgressChanged(0.1, $"Installing OptiFine Loader - Initializing");
+
             using var archive = ZipFile.OpenRead(OptiFineInstallerPackagePath);
             using var stream = archive.GetEntry("changelog.txt").Open();
             using var streamReader = new StreamReader(stream);
@@ -117,9 +120,13 @@ namespace FluentCore.Service.Component.Installer
                     }
             };
 
+            OnProgressChanged(0.2, $"Installing OptiFine Loader - Initialized");
+
             #endregion
 
             #region Write
+
+            OnProgressChanged(0.4, $"Installing OptiFine Loader - Extracting Files");
 
             string inheritsFrom = Path.Combine(CoreLocator.Root, "versions", McVersionId, $"{McVersionId}.jar");
 
@@ -146,9 +153,13 @@ namespace FluentCore.Service.Component.Installer
                 launcherwrapperEntry.ExtractToFile(file.FullName, true);
             }
 
+            OnProgressChanged(0.5, $"Installing OptiFine Loader - Extracted");
+
             #endregion
 
             #region Process
+
+            OnProgressChanged(0.7, $"Installing OptiFine Loader - Processing Installer");
 
             var launchwrapperJar = new FileInfo(Path.Combine(CoreLocator.Root, "libraries", versionModel.Libraries[0].GetRelativePath()));
             if(!launchwrapperJar.Directory.Exists)
@@ -173,6 +184,10 @@ namespace FluentCore.Service.Component.Installer
             result.ProcessErrorOutput = processContainer.ErrorData;
             result.ProcessOutput = processContainer.OutputData;
 
+            OnProgressChanged(0.9, $"Installing OptiFine Loader - Processed Installer");
+
+            result.Message = $"Successfully Install {versionModel.Id}!";
+
             if (processContainer.ErrorData.Count > 0)
             {
                 result.Message = $"Failed Install {versionModel.Id}!";
@@ -183,7 +198,7 @@ namespace FluentCore.Service.Component.Installer
 
             #endregion
 
-            result.Message = $"Successfully Install {versionModel.Id}!";
+            OnProgressChanged(1.0, $"Installing OptiFine Loader - Finished");
 
             return result;
         }

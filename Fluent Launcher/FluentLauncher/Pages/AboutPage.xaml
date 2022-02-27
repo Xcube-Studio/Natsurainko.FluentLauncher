@@ -98,7 +98,7 @@
                             x:Uid="AboutPage_Statement_Content"
                             MaxWidth="425"
                             Margin="15,0"
-                            Text="Minecraft is copyrighted by Mojang AB. We are not responsible for any copyright infringement arising from use of this software."
+                            Text="Minecraft is copyrighted by Mojang Studios. We are not responsible for any copyright infringement arising from use of this software."
                             TextWrapping="WrapWholeWords" />
                     </StackPanel>
                     <StackPanel Margin="0,15,0,0" Orientation="Horizontal">

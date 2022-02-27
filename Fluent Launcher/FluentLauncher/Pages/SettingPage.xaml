@@ -35,11 +35,26 @@
                     x:Uid="SettingPage_NavigationViewItem1"
                     Content="Basic Settings"
                     Icon="Play"
-                    IsSelected="True" />
+                    IsSelected="True">
+                    <controls:NavigationViewItem.InfoBadge>
+                        <controls:InfoBadge
+                            x:Name="BasicInfoBadge"
+                            Background="{ThemeResource SystemAccentColor}"
+                            Style="{ThemeResource CautionIconInfoBadgeStyle}"
+                            Visibility="Collapsed" />
+                    </controls:NavigationViewItem.InfoBadge>
+                </controls:NavigationViewItem>
                 <controls:NavigationViewItem x:Uid="SettingPage_NavigationViewItem2" Content="Account">
                     <controls:NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE77B;" />
                     </controls:NavigationViewItem.Icon>
+                    <controls:NavigationViewItem.InfoBadge>
+                        <controls:InfoBadge
+                            x:Name="AccountInfoBadge"
+                            Background="{ThemeResource SystemAccentColor}"
+                            Style="{ThemeResource CautionIconInfoBadgeStyle}"
+                            Visibility="Collapsed" />
+                    </controls:NavigationViewItem.InfoBadge>
                 </controls:NavigationViewItem>
                 <controls:NavigationViewItem x:Uid="SettingPage_NavigationViewItem3" Content="Download">
                     <controls:NavigationViewItem.Icon>

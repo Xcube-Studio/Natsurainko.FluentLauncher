@@ -2,6 +2,7 @@
     x:Class="FluentLauncher.Pages.AccountPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:FluentLauncher.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -201,39 +202,47 @@
                         FontSize="16"
                         Style="{ThemeResource BaseTextBlockStyle}"
                         Text="Accounts" />
-                    <Border
-                        Margin="10,15"
-                        BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}"
-                        BorderThickness="1"
-                        CornerRadius="5">
-                        <StackPanel>
-                            <ListView
-                                x:Name="ContentListView"
-                                CornerRadius="5,5,0,0"
-                                ItemContainerStyle="{ThemeResource ListViewItemStyle1}"
-                                ItemTemplate="{ThemeResource AccountDataTemplate}" />
-                            <ListViewItem
-                                Height="62"
-                                PointerReleased="ListViewItem_PointerReleased"
-                                Style="{StaticResource ListViewItemStyle1}">
-                                <StackPanel Margin="10,0" Orientation="Horizontal">
-                                    <FontIcon FontSize="24" Glyph="&#xE8FA;" />
-                                    <StackPanel Margin="12,0">
-                                        <TextBlock
-                                            x:Uid="AccountPage_AccountsListViewItem_Title"
-                                            Style="{ThemeResource BaseTextBlockStyle}"
-                                            Text="Add New Account" />
-                                        <TextBlock
-                                            x:Uid="AccountPage_AccountsListViewItem_SubTitle"
-                                            FontSize="11"
-                                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                            Style="{ThemeResource BodyTextBlockStyle}"
-                                            Text="Click To Add" />
+                    <Grid Margin="10,15">
+                        <controls:InfoBadge
+                            Margin="-15"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Background="{ThemeResource SystemAccentColor}"
+                            Style="{ThemeResource CautionIconInfoBadgeStyle}"
+                            Visibility="{Binding ElementName=ContentListView, Path=SelectedItem, Converter={ThemeResource ListInfoBadgeConverter}}" />
+                        <Border
+                            BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                            <StackPanel>
+                                <ListView
+                                    x:Name="ContentListView"
+                                    CornerRadius="5,5,0,0"
+                                    ItemContainerStyle="{ThemeResource ListViewItemStyle1}"
+                                    ItemTemplate="{ThemeResource AccountDataTemplate}" />
+                                <ListViewItem
+                                    Height="62"
+                                    PointerReleased="ListViewItem_PointerReleased"
+                                    Style="{StaticResource ListViewItemStyle1}">
+                                    <StackPanel Margin="10,0" Orientation="Horizontal">
+                                        <FontIcon FontSize="24" Glyph="&#xE8FA;" />
+                                        <StackPanel Margin="12,0">
+                                            <TextBlock
+                                                x:Uid="AccountPage_AccountsListViewItem_Title"
+                                                Style="{ThemeResource BaseTextBlockStyle}"
+                                                Text="Add New Account" />
+                                            <TextBlock
+                                                x:Uid="AccountPage_AccountsListViewItem_SubTitle"
+                                                FontSize="11"
+                                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                Style="{ThemeResource BodyTextBlockStyle}"
+                                                Text="Click To Add" />
+                                        </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
-                            </ListViewItem>
-                        </StackPanel>
-                    </Border>
+                                </ListViewItem>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
                     <StackPanel Margin="10,0">
                         <TextBlock
                             x:Uid="AccountPage_1_Annotate1"

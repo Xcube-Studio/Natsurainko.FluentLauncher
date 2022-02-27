@@ -10,6 +10,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Dictionaries/ConvertersDictionary.xaml" />
                 <ResourceDictionary Source="/Dictionaries/AssetsDictionary.xaml" />
+                <ColorPaletteResources Accent="#FF92C7E7" />
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
             </ResourceDictionary.MergedDictionaries>
             <ResourceDictionary.ThemeDictionaries>
@@ -256,9 +257,7 @@
                             </Setter.Value>
                         </Setter>
                     </Style>
-                    <ResourceDictionary.MergedDictionaries>
-                        <ColorPaletteResources Accent="#FF92C7E7" />
-                    </ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary.MergedDictionaries />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>

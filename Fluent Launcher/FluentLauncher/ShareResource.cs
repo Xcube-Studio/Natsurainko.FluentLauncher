@@ -113,9 +113,9 @@ namespace FluentLauncher
         public static string Language
         { get => _language; set { _language = value; App.Settings.Values["Language"] = value; } }
 
-        private static string _shownUpdata;
-        public static string ShownUpdata
-        { get => _shownUpdata; set { _shownUpdata = value; App.Settings.Values["ShownUpdata"] = value; } }
+        private static string _shownUpdate;
+        public static string ShownUpdate
+        { get => _shownUpdate; set { _shownUpdate = value; App.Settings.Values["ShownUpdate"] = value; } }
 
         private static bool _runForFirstTime;
         public static bool RunForFirstTime
@@ -205,7 +205,7 @@ namespace FluentLauncher
             VersionManifest = JsonConvert.DeserializeObject<VersionManifestModel>(res.Response);
         }
 
-        public static async Task UpdataMinecraftCoresAsync()
+        public static async Task UpdateMinecraftCoresAsync()
         {
             await App.DesktopBridge_Init;
             if (SelectedFolder != null)
@@ -216,6 +216,11 @@ namespace FluentLauncher
                 MinecraftCores = JsonConvert.DeserializeObject<List<MinecraftCoreInfo>>(res.Response);
                 if (!MinecraftCores.Contains(SelectedCore))
                     SelectedCore = null;
+            }
+            else
+            {
+                MinecraftCores = null;
+                SelectedCore = null;
             }
         }
 
@@ -303,6 +308,34 @@ namespace FluentLauncher
         #endregion
 
         #endregion
+
+        public static bool GetBasicSettingsProblem()
+        {
+            if (MinecraftFolders.Count == 0)
+                return true;
+
+            if (SelectedFolder == null)
+                return true;
+
+            if (JavaRuntimeEnvironments.Count == 0)
+                return true;
+
+            if (SelectedJava == null)
+                return true;
+
+            return false;
+        }
+
+        public static bool GetAccountProblem()
+        {
+            if (MinecraftAccounts.Count == 0)
+                return true;
+
+            if (SelectedAccount == null)
+                return true;
+
+            return false;
+        }
 
         public static Task SetDownloadSource() => App.DesktopBridge.SendAsync<StandardResponseModel>(new SetDownloadOptitionsRequest());
 

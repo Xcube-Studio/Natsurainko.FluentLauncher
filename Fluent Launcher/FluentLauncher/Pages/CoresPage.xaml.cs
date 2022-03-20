@@ -3,22 +3,16 @@ using FluentLauncher.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -66,6 +60,11 @@ namespace FluentLauncher.Pages
             ShareResource.SelectedCore = (MinecraftCoreInfo)((Button)sender).DataContext;
             ShareResource.NavigateToLaunch = true;
             this.Frame.Navigate(typeof(MainPage));
+        }
+
+        private void OptionsButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(CoreOptionsPage));
         }
 
         private async void InstallMinecraft(object sender, RoutedEventArgs e)
@@ -128,7 +127,7 @@ namespace FluentLauncher.Pages
         private void ContentListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
             => ShareResource.SelectedCore = (MinecraftCoreInfo)ContentListBox.SelectedItem;
         #endregion
-        
+
         #region MenuFlyoutItem
         private void LaunchMenuFlyoutItem(object sender, RoutedEventArgs e)
         {
@@ -149,7 +148,7 @@ namespace FluentLauncher.Pages
             var core = (MinecraftCoreInfo)((MenuFlyoutItem)sender).DataContext;
 
             await App.DesktopBridge.SendAsync<StandardResponseModel>
-                (new DeleteMinecraftCoreRequest() { Folder = ShareResource.SelectedFolder.Path , Name = core.Id });
+                (new DeleteMinecraftCoreRequest() { Folder = ShareResource.SelectedFolder.Path, Name = core.Id });
 
             await ShareResource.UpdateMinecraftCoresAsync();
             UpdateListBox();
@@ -182,13 +181,15 @@ namespace FluentLauncher.Pages
 
             builder.AppendLine("@echo off");
             builder.AppendLine($"set APPDATA={new DirectoryInfo(ShareResource.SelectedFolder.Path).Parent.FullName}");
-            builder.AppendLine($"cd /D {ShareResource.SelectedFolder.Path}");
+            builder.AppendLine($"cd /D {(req.IsIndependent ? Path.Combine(req.GameFolder, "versions", req.Id) : ShareResource.SelectedFolder.Path)}");
             builder.AppendLine(res.Response);
             builder.AppendLine("pause");
-            var savePicker = new FileSavePicker();
-            savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            var savePicker = new FileSavePicker
+            {
+                SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
+                SuggestedFileName = "LaunchMinecraft"
+            };
             savePicker.FileTypeChoices.Add("批处理文件", new List<string>() { ".bat" });
-            savePicker.SuggestedFileName = "LaunchMinecraft";
 
             var file = await savePicker.PickSaveFileAsync();
 
@@ -292,7 +293,7 @@ namespace FluentLauncher.Pages
                 ModLoader = JsonConvert.SerializeObject(((AbstractModLoader)ModLoaderComboBox.SelectedItem))
             });
 
-            var res = await task; 
+            var res = await task;
             InstallProgressPanel.Visibility = Visibility.Collapsed;
             CancelButton.IsEnabled = true;
 
@@ -373,6 +374,12 @@ namespace FluentLauncher.Pages
         {
             await ShareResource.DownloadVersionManifest;
 
+            if (ShareResource.ForgeSupportMcVersionList == null)
+                ShareResource.ForgeSupportMcVersionList = await ShareResource.GetForgeSupportMcVersionList();
+
+            if (ShareResource.OptiFineSupportMcVersionList == null)
+                ShareResource.OptiFineSupportMcVersionList = ShareResource.GetOptiFineSupportMcVersionList();
+
             InstallProgressBar.Value = 0;
             InstallProgressBar.IsIndeterminate = true;
             InstallProgressText.Text = "";
@@ -380,12 +387,6 @@ namespace FluentLauncher.Pages
             VersionComboBox.ItemsSource = ShareResource.VersionManifest.Versions.ToList();
             VersionComboBox.SelectedIndex = 0;
             VersionComboBox.IsEnabled = true;
-
-            if (ShareResource.ForgeSupportMcVersionList == null)
-                ShareResource.ForgeSupportMcVersionList = await ShareResource.GetForgeSupportMcVersionList();
-
-            if (ShareResource.OptiFineSupportMcVersionList == null)
-                ShareResource.OptiFineSupportMcVersionList = ShareResource.GetOptiFineSupportMcVersionList();
 
             InstallContentDialogContentGrid.Opacity = 100;
             LoadingGrid.Visibility = Visibility.Collapsed;
@@ -404,5 +405,6 @@ namespace FluentLauncher.Pages
         }
 
         #endregion
+
     }
 }

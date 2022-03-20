@@ -39,6 +39,11 @@ namespace FluentCore.Model.Launch
         public string MoreBehindArgs { get; set; } = string.Empty;
 
         /// <summary>
+        /// 运行目录
+        /// </summary>
+        public string WorkingFolder { get; set; } = string.Empty;
+
+        /// <summary>
         /// 客户端令牌
         /// </summary>
         public string ClientToken { get; set; } = Guid.NewGuid().ToString("N");

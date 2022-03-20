@@ -565,7 +565,17 @@
     <value>About</value>
   </data>
   <data name="UpdateLogTextBlock.Text" xml:space="preserve">
-    <value>Preview Edition - 1.0.26
+    <value>Preview Edition - 1.0.27
+
+Added the ability to run the game core in isolation
+Added Chinese translation of the protocol interface
+Added setting options for a separate core [currently only the UI part is completed and cannot be used]
+Fixed the problem that the protocol interface could not be checked
+Fixed a bug where the same Java Runtime was added repeatedly on first launch
+Fixed many detail issues
+Removed launcher theme color
+
+Preview Edition - 1.0.26
 
 Added hint bubbles that are displayed when the conditions to start the game are insufficient
 Added hint in CoresPage when .minecraft directory is not selected

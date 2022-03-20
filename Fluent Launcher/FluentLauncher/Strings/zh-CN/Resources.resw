@@ -336,8 +336,14 @@
   <data name="ContentDialog_Add.Text" xml:space="preserve">
     <value>添加</value>
   </data>
+  <data name="ContentDialog_Agree.Text" xml:space="preserve">
+    <value>同意</value>
+  </data>
   <data name="ContentDialog_Cancel.Text" xml:space="preserve">
     <value>取消</value>
+  </data>
+  <data name="ContentDialog_Disagree.Text" xml:space="preserve">
+    <value>不同意</value>
   </data>
   <data name="ContentDialog_Got.Text" xml:space="preserve">
     <value>了解</value>
@@ -483,6 +489,69 @@
   <data name="DownloadPage_Title.Text" xml:space="preserve">
     <value>下载设置</value>
   </data>
+  <data name="Instructions_Bottom_CheckBox.Content" xml:space="preserve">
+    <value>我已阅读这份说明</value>
+  </data>
+  <data name="Instructions_Bottom_Tips.Text" xml:space="preserve">
+    <value>您需要阅读完整说明以勾选此选项</value>
+  </data>
+  <data name="Instructions_E_1.Text" xml:space="preserve">
+    <value>欢迎使用 Fluent Launcher</value>
+  </data>
+  <data name="Instructions_E_2.Text" xml:space="preserve">
+    <value>Xcube Studio，呈上</value>
+  </data>
+  <data name="Instructions_P1_1.Text" xml:space="preserve">
+    <value>1. Minecraft 版权归 Mojang Studios 所有。 开发者对因使用本软件而引起的任何版权侵权不承担任何责任。</value>
+  </data>
+  <data name="Instructions_P1_2.Text" xml:space="preserve">
+    <value>2. 本程序不会帮助您通过非法手段获得正版Minecraft</value>
+  </data>
+  <data name="Instructions_P1_3.Text" xml:space="preserve">
+    <value>3. 本程序不会收集您的个人隐私，更不会对您的计算机进行恶意更改</value>
+  </data>
+  <data name="Instructions_P1_4.Text" xml:space="preserve">
+    <value>支持正版，请到 minecraft.net 获取正版游戏</value>
+  </data>
+  <data name="Instructions_P1_T.Text" xml:space="preserve">
+    <value>声明 [重要]</value>
+  </data>
+  <data name="Instructions_P2_1.Text" xml:space="preserve">
+    <value>1. 启动游戏时会看到游戏的控制台输出，但输出内容与本应用无关，其内容不代表本应用的输出和报错，显示此输出也是此应用程序的功能之一 </value>
+  </data>
+  <data name="Instructions_P2_2.Text" xml:space="preserve">
+    <value>2. 同样，游戏崩溃会显示游戏崩溃提示框，显示游戏进程信息，这也是一个功能，不是应用错误</value>
+  </data>
+  <data name="Instructions_P2_3.Text" xml:space="preserve">
+    <value>3. 应用程序在使用过程中可能会出现概率性错误，但大部分不影响正常使用</value>
+  </data>
+  <data name="Instructions_P2_4.Text" xml:space="preserve">
+    <value>4. 我们建议让熟悉 Minecraft 的开发人员测试该应用程序</value>
+  </data>
+  <data name="Instructions_P2_T.Text" xml:space="preserve">
+    <value>开发说明 [这对于微软商店提交审核非常重要]</value>
+  </data>
+  <data name="Instructions_P3_1.Text" xml:space="preserve">
+    <value>1. 该应用程序需要网络连接才能正常运行，否则可能会出现问题</value>
+  </data>
+  <data name="Instructions_P3_2.Text" xml:space="preserve">
+    <value>2. 第一次使用本软件时，应先在设置界面添加.minecraft目录</value>
+  </data>
+  <data name="Instructions_P3_3.Text" xml:space="preserve">
+    <value>3. Minecraft 需要 Java 运行时支持才能启动，您可以选择外部添加或应用内安装</value>
+  </data>
+  <data name="Instructions_P3_4.Text" xml:space="preserve">
+    <value>4. 安装游戏受网速影响较大，可在设置页面切换下载源</value>
+  </data>
+  <data name="Instructions_P3_5.Text" xml:space="preserve">
+    <value>5. 该应用程序尚未开发完毕。很多功能还在更新中，所以有些控件无法使用。</value>
+  </data>
+  <data name="Instructions_P3_T.Text" xml:space="preserve">
+    <value>软件使用注意事项</value>
+  </data>
+  <data name="Instructions_Title.Text" xml:space="preserve">
+    <value>使用前须知</value>
+  </data>
   <data name="MainContainer_NavigationViewItem1.Content" xml:space="preserve">
     <value>主页</value>
   </data>
@@ -607,7 +676,17 @@
     <value>13</value>
   </data>
   <data name="UpdateLogTextBlock.Text" xml:space="preserve">
-    <value>预览版 - 1.0.26
+    <value>预览版 - 1.0.27
+
+添加了游戏核心隔离运行的功能
+添加了协议界面的中文翻译
+添加了单独核心的设置选项 [目前只完成了UI部分 不能使用]
+修复了协议界面无法勾选的问题
+修复了第一次启动时重复添加相同 Java Runtime 的错误
+修复了许多细节问题
+删除了启动器主题色
+
+预览版 - 1.0.26
 
 添加了提示气泡 当启动游戏条件不足时会显示
 添加了CoresPage中当 .minecraft 目录未选中时的提示

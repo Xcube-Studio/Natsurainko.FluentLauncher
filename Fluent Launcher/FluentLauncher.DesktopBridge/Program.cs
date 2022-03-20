@@ -7,6 +7,10 @@ using Windows.Foundation.Collections;
 using System.IO;
 using Windows.Graphics.Display;
 using Windows.Storage;
+using System.Net;
+using FluentCore.Service.Network;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace FluentLauncher.DesktopBridge
 {
@@ -24,6 +28,9 @@ namespace FluentLauncher.DesktopBridge
 
         public static async Task Main(string[] args)
         {
+            if (Debugger.IsAttached)
+                AllocConsole();
+
             InitializeAppServiceConnection();
 
             while (!IsDisconnceted)
@@ -32,6 +39,8 @@ namespace FluentLauncher.DesktopBridge
 
         private async static void InitializeAppServiceConnection()
         {
+            ServicePointManager.DefaultConnectionLimit = 512;
+
             Connection = new AppServiceConnection();
             Connection.AppServiceName = "FluentLauncher.DesktopBridge";
             Connection.PackageFamilyName = Package.Current.Id.FamilyName;
@@ -41,7 +50,16 @@ namespace FluentLauncher.DesktopBridge
 
             var status = await Connection.OpenAsync();
             if (status == AppServiceConnectionStatus.Success)
+            {
                 Console.WriteLine($"[{DateTime.Now:HH:mm:ss}][Application Started]");
+
+                if (!Debugger.IsAttached)
+                    await Task.Run(async () =>
+                    {
+                        if (await HttpHelper.VerifyHttpConnect("http://api.xcubestudio.net/fluentlauncher/statistics"))
+                            await HttpHelper.HttpPostAsync("http://api.xcubestudio.net/fluentlauncher/statistics", JsonConvert.SerializeObject(new { Type = "ApplicationStartUp" }));
+                    });
+            }
         }
 
         private static void Connection_ServiceClosed(AppServiceConnection sender, AppServiceClosedEventArgs args) => IsDisconnceted = true;
@@ -141,5 +159,8 @@ namespace FluentLauncher.DesktopBridge
                 debug = (string)response["Response"];
             Console.WriteLine($"[{DateTime.Now:HH:mm:ss}][SendResponseAsync][Method:{header}][{debug}]");
         }
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool AllocConsole();
     }
 }

@@ -2,6 +2,7 @@
 using FluentCore.Model.Launch;
 using FluentCore.Service.Local;
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -86,12 +87,14 @@ namespace FluentCore.Service.Component.Launch
             var stringBuilder = new StringBuilder();
 
             string assetsPath = PathHelper.GetAssetsFolder(this.GameCore.Root);
+            LaunchConfig.WorkingFolder = string.IsNullOrEmpty(LaunchConfig.WorkingFolder) || !Directory.Exists(LaunchConfig.WorkingFolder) 
+                ? this.GameCore.Root : LaunchConfig.WorkingFolder;
 
             stringBuilder.Append($" {this.GameCore.BehindArguments}");
 
             stringBuilder.Replace("${auth_player_name}", this.LaunchConfig.AuthDataModel.UserName);
             stringBuilder.Replace("${version_name}", this.GameCore.Id);
-            stringBuilder.Replace("${game_directory}", this.GameCore.Root.Contains(" ") ? $"\"{this.GameCore.Root}\"" : this.GameCore.Root);
+            stringBuilder.Replace("${game_directory}", LaunchConfig.WorkingFolder.Contains(" ") ? $"\"{LaunchConfig.WorkingFolder}\"" : LaunchConfig.WorkingFolder);
             stringBuilder.Replace("${assets_root}", assetsPath.Contains(" ") ? $"\"{assetsPath}\"" : assetsPath);
             stringBuilder.Replace("${assets_index_name}", this.GameCore.AsstesIndex.Id);
             stringBuilder.Replace("${auth_uuid}", this.LaunchConfig.AuthDataModel.Uuid.ToString("N"));

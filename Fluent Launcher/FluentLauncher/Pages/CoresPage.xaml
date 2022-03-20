@@ -137,9 +137,22 @@
                             <TextBlock
                                 x:Uid="CoresPage_VersionDataTemplate_PlayButton"
                                 FontSize="12"
-                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Style="{ThemeResource BaseTextBlockStyle}"
                                 Text="Play" />
+                        </Button>
+                        <Button
+                            x:Name="OptionsButton"
+                            Width="75"
+                            Height="31"
+                            Margin="10,0,0,0"
+                            Background="Transparent"
+                            BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}"
+                            Click="OptionsButton_Click"
+                            Style="{ThemeResource ButtonRevealStyle}">
+                            <TextBlock
+                                FontSize="12"
+                                Style="{ThemeResource BaseTextBlockStyle}"
+                                Text="Options" />
                         </Button>
                         <Button
                             Height="31"
@@ -147,10 +160,7 @@
                             Background="Transparent"
                             BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}"
                             Style="{ThemeResource ButtonRevealStyle}">
-                            <FontIcon
-                                FontSize="16"
-                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                Glyph="&#xE712;" />
+                            <FontIcon FontSize="16" Glyph="&#xE712;" />
                             <Button.Flyout>
                                 <MenuFlyout Placement="BottomEdgeAlignedRight">
                                     <MenuFlyoutItem

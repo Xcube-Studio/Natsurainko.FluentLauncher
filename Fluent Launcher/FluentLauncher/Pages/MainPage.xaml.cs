@@ -1,22 +1,11 @@
 ﻿using FluentLauncher.Classes;
 using FluentLauncher.Models;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
-using System.Threading.Tasks;
-using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -41,12 +30,16 @@ namespace FluentLauncher.Pages
         {
             NewsBorder.Visibility = Visibility.Visible;
             ShowNewsButton.Visibility = Visibility.Collapsed;
+
+            ShareResource.MainPageNewsVisibility = true;
         }
 
         private void CloseNewsBorder(object sender, RoutedEventArgs e)
         {
             NewsBorder.Visibility = Visibility.Collapsed;
             ShowNewsButton.Visibility = Visibility.Visible;
+
+            ShareResource.MainPageNewsVisibility = false;
         }
 
         private async void ReadMore(object sender, RoutedEventArgs e)
@@ -87,7 +80,7 @@ namespace FluentLauncher.Pages
         #endregion
 
         #region ComboBox
-        private void LaunchComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) 
+        private void LaunchComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ShareResource.SelectedCore = (MinecraftCoreInfo)LaunchComboBox.SelectedItem;
             UpdateLaunchButton();
@@ -102,6 +95,8 @@ namespace FluentLauncher.Pages
                 _ = UpdateDialog.ShowAsync();
 
             AccountButton.DataContext = ShareResource.SelectedAccount;
+            ShowNewsButton.Visibility = ShareResource.MainPageNewsVisibility ? Visibility.Collapsed : Visibility.Visible;
+            NewsBorder.Visibility = ShareResource.MainPageNewsVisibility ? Visibility.Visible : Visibility.Collapsed;
 
             await ShareResource.UpdateMinecraftCoresAsync();
             UpdateComboBox();
@@ -113,11 +108,16 @@ namespace FluentLauncher.Pages
 
             if (!NewsLoaded)
             {
-                await ShareResource.FirstNewsInitialized;
-                LoadingAnimation.Visibility = Visibility.Collapsed;
-                NewsBorder.DataContext = ShareResource.News.Entries[0];
-                NewsException.Visibility = ShareResource.News.Entries[0].BitmapImage == null ? Visibility.Visible : Visibility.Collapsed;
-                NewsLoaded = true;
+                try
+                {
+                    await ShareResource.FirstNewsInitialized;
+
+                    LoadingAnimation.Visibility = Visibility.Collapsed;
+                    NewsBorder.DataContext = ShareResource.News.Entries[0];
+                    NewsException.Visibility = ShareResource.News.Entries[0].BitmapImage == null ? Visibility.Visible : Visibility.Collapsed;
+                    NewsLoaded = true;
+                }
+                catch { }
             }
         }
 

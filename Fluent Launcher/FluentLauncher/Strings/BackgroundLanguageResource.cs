@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FluentLauncher.Strings
+﻿namespace FluentLauncher.Strings
 {
     public class BackgroundLanguageResource
-    { 
+    {
         public BackgroundLanguageResource(string language)
         {
             switch (language)

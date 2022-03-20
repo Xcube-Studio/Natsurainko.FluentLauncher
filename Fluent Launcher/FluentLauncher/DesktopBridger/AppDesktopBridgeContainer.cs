@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
+using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.AppService;
 using Windows.ApplicationModel.Background;
-using Windows.ApplicationModel;
 using Windows.Foundation.Collections;
 using Windows.UI.Popups;
-using Windows.ApplicationModel.Activation;
 
 namespace FluentLauncher.DesktopBridger
 {

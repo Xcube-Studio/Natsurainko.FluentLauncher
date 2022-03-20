@@ -4,6 +4,8 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Mime;
+using System.Reflection.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,6 +18,19 @@ namespace FluentCore.Service.Network
         public static readonly HttpClient HttpClient;
 
         static HttpHelper() => HttpClient = new HttpClient();
+
+        public static async Task<bool> VerifyHttpConnect(string url)
+        {
+            var requestMessage = new HttpRequestMessage(HttpMethod.Head, url);
+
+            var res = await HttpClient.SendAsync(requestMessage);
+            var ret = res.IsSuccessStatusCode;
+
+            res.Dispose();
+            requestMessage.Dispose();
+
+            return ret;
+        }
 
         public static async Task<HttpResponseMessage> HttpGetAsync(string url, Tuple<string, string> authorization = default, HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead)
         {

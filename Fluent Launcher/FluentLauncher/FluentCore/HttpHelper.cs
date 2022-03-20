@@ -17,6 +17,19 @@ namespace FluentCore.Service.Network
 
         static HttpHelper() => HttpClient = new HttpClient();
 
+        public static async Task<bool> VerifyHttpConnect(string url)
+        {
+            var requestMessage = new HttpRequestMessage(HttpMethod.Head, url);
+
+            var res = await HttpClient.SendAsync(requestMessage);
+            var ret = res.IsSuccessStatusCode;
+
+            res.Dispose();
+            requestMessage.Dispose();
+
+            return ret;
+        }
+
         public static async Task<HttpResponseMessage> HttpGetAsync(string url, Tuple<string, string> authorization = default, HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead)
         {
             using var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);

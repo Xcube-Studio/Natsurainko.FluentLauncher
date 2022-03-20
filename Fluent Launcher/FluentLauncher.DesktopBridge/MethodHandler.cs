@@ -23,6 +23,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Timers;
@@ -214,6 +215,7 @@ namespace FluentLauncher.DesktopBridge
             SendDetails("Info", LanguageResource.Launching_Info_1);
 
             var locator = new CoreLocator(model.GameFolder);
+
             var config = new LaunchConfig
             {
                 AuthDataModel = new AuthDataModel
@@ -224,7 +226,8 @@ namespace FluentLauncher.DesktopBridge
                 },
                 JavaPath = model.JavaPath,
                 MaximumMemory = model.MaximumMemory,
-                MinimumMemory = model.MinimumMemory
+                MinimumMemory = model.MinimumMemory,
+                WorkingFolder = model.IsIndependent ? PathHelper.GetVersionFolder(model.GameFolder, model.Id) : string.Empty
             };
             Launcher = new MinecraftLauncher(locator, config);
 
@@ -283,6 +286,14 @@ namespace FluentLauncher.DesktopBridge
                 #endregion
             });
 
+            #region Api
+            Task.Run(async () =>
+            {
+                if (await HttpHelper.VerifyHttpConnect("http://api.xcubestudio.net/fluentlauncher/statistics"))
+                    await HttpHelper.HttpPostAsync("http://api.xcubestudio.net/fluentlauncher/statistics", JsonConvert.SerializeObject(new { Type = "GameLaunch" }));
+            });
+            #endregion
+
             void OutputDataReceived(object sender, DataReceivedEventArgs e) => SendDetails("OutputReceived", e.Data);
             void ErrorDataReceived(object sender, DataReceivedEventArgs e) => SendDetails("ErrorOutputReceived", e.Data);
             void Crashed(object sender, ProcessCrashedEventArgs e) => SendDetails("Event", "Crashed");
@@ -311,7 +322,8 @@ namespace FluentLauncher.DesktopBridge
                 },
                 JavaPath = model.JavaPath,
                 MaximumMemory = model.MaximumMemory,
-                MinimumMemory = model.MinimumMemory
+                MinimumMemory = model.MinimumMemory,
+                WorkingFolder = model.IsIndependent ? PathHelper.GetVersionFolder(model.GameFolder, model.Id) : string.Empty
             };
 
             if (string.IsNullOrEmpty(config.NativesFolder))

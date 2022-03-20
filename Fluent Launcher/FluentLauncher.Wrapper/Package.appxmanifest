@@ -9,7 +9,7 @@
   <Identity
     Name="26553XcubeStudio.FluentLauncher"
     Publisher="CN=053EFB0E-6705-4A11-94B9-980C4C9E0047"
-    Version="1.0.26.0" />
+    Version="1.0.27.0" />
 
   <Properties>
     <DisplayName>Fluent Launcher</DisplayName>

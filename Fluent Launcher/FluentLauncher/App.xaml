@@ -10,11 +10,17 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Dictionaries/ConvertersDictionary.xaml" />
                 <ResourceDictionary Source="/Dictionaries/AssetsDictionary.xaml" />
-                <ColorPaletteResources Accent="#FF92C7E7" />
-                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls"/>
             </ResourceDictionary.MergedDictionaries>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Default">
+                    <!--
+                    <Color x:Key="SystemAccentColorDark1">#46b2ef</Color>
+                    <Color x:Key="SystemAccentColorDark2">#46b2ef</Color>
+                    <Color x:Key="SystemAccentColorDark3">#46b2ef</Color>
+                    <Color x:Key="SystemAccentColorLight1">#46b2ef</Color>
+                    <Color x:Key="SystemAccentColorLight2">#46b2ef</Color>
+                    <Color x:Key="SystemAccentColorLight3">#46b2ef</Color>-->
                     <Style TargetType="controls:InfoBar">
                         <Setter Property="IsTabStop" Value="False" />
                         <Setter Property="CloseButtonStyle" Value="{StaticResource InfoBarCloseButtonStyle}" />

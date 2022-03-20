@@ -1,11 +1,4 @@
 ﻿using FluentLauncher.DesktopBridger;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentLauncher.Models
 {
@@ -138,9 +131,12 @@ namespace FluentLauncher.Models
             JavaPath = ShareResource.SelectedJava.Path;
             GameFolder = ShareResource.SelectedFolder.Path;
             Id = ShareResource.SelectedCore.Id;
+            IsIndependent = ShareResource.WorkingFolder == "Independent [.minecraft/versions/{version}/]";
             MinimumMemory = ShareResource.MinMemory;
             MaximumMemory = ShareResource.MaxMemory;
         }
+
+        public bool IsIndependent { get; set; }
 
         public string Uuid { get; set; }
 

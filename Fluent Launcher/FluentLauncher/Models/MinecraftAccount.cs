@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FluentLauncher.Models
+﻿namespace FluentLauncher.Models
 {
     public class MinecraftAccount
     {
@@ -25,7 +19,7 @@ namespace FluentLauncher.Models
         public override bool Equals(object obj)
         {
             var item = (MinecraftAccount)obj;
-            if (this.Type == item.Type && this.UserName == item.UserName && 
+            if (this.Type == item.Type && this.UserName == item.UserName &&
                 this.Uuid == item.Uuid && this.AccessToken == item.AccessToken &&
                 this.RefreshToken == item.RefreshToken && this.ExpiresIn == item.ExpiresIn &&
                 this.Time == item.Time)

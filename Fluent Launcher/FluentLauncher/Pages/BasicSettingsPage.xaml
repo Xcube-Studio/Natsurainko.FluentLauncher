@@ -443,7 +443,6 @@
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
                                 FontSize="13"
-                                IsEnabled="False"
                                 PlaceholderText="Mode">
                                 <ComboBox.Header>
                                     <TextBlock

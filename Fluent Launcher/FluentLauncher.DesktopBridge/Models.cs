@@ -26,6 +26,8 @@ namespace FluentLauncher.DesktopBridge
 
         public string GameFolder { get; set; }
 
+        public bool IsIndependent { get; set; }
+
         public string Id { get; set; }
 
         public int MaximumMemory { get; set; } = 1024;

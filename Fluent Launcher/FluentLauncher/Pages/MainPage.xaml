@@ -339,7 +339,7 @@
             x:Name="UpdateDialog"
             Grid.RowSpan="3"
             d:IsHidden="True">
-            <Grid Width="480" Height="320">
+            <Grid Width="500" Height="300">
                 <TextBlock
                     x:Uid="MainPage_UpdateDialog_Title"
                     HorizontalAlignment="Left"

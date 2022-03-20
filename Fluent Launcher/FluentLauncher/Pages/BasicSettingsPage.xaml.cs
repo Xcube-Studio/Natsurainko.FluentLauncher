@@ -1,25 +1,13 @@
-﻿using System;
+﻿using FluentLauncher.Classes;
+using FluentLauncher.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Storage.Pickers;
 using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using FluentLauncher.Models;
-using FluentLauncher.Classes;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using Windows.Devices.Bluetooth.GenericAttributeProfile;
-using Windows.Web.Http.Diagnostics;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -295,7 +283,7 @@ namespace FluentLauncher.Pages
         #endregion
 
         #region ListView
-        private void FoldersListView_SelectionChanged(object sender, SelectionChangedEventArgs e) 
+        private void FoldersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
             => ShareResource.SelectedFolder = (MinecraftFolder)FoldersListView.SelectedItem;
 
         private async void JavasListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

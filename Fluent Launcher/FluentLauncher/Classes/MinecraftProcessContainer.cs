@@ -1,14 +1,8 @@
 ﻿using FluentLauncher.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
-using Windows.UI.Xaml;
 
 namespace FluentLauncher.Classes
 {
@@ -45,7 +39,7 @@ namespace FluentLauncher.Classes
 
             IsRunning = true;
             McCore = ShareResource.SelectedCore.Id;
-            
+
             App.DesktopBridge.Connection.RequestReceived += Connection_RequestReceived;
 
             await App.DesktopBridge.SendAsync<StandardResponseModel>(new LaunchMinecraftRequest());

@@ -137,8 +137,8 @@
                                 Margin="30,0"
                                 VerticalAlignment="Center"
                                 FontSize="13"
-                                Foreground="White"
                                 FontWeight="Bold"
+                                Foreground="White"
                                 Text="Read the manuscript" />
                         </Button>
                     </Grid>

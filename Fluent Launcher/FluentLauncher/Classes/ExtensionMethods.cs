@@ -1,8 +1,6 @@
 ﻿using FluentLauncher.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -11,7 +9,7 @@ namespace FluentLauncher.Classes
 {
     public static class ExtensionMethods
     {
-        public static void AddWithUpdate(this List<MinecraftFolder> list,MinecraftFolder add)
+        public static void AddWithUpdate(this List<MinecraftFolder> list, MinecraftFolder add)
         {
             list.Add(add);
             ShareResource.MinecraftFolders = list;
@@ -29,13 +27,13 @@ namespace FluentLauncher.Classes
             ShareResource.MinecraftAccounts = list;
         }
 
-        public static void SetItemsSource(this ItemsControl control,object source)
+        public static void SetItemsSource(this ItemsControl control, object source)
         {
             control.ItemsSource = null;
             control.ItemsSource = source;
         }
 
-        public static void SetSelectedItem<T>(this Selector selector,T source) 
+        public static void SetSelectedItem<T>(this Selector selector, T source)
             => selector.SelectedIndex = GetIndex((List<T>)selector.ItemsSource, source);
 
         public static int GetIndex<T>(List<T> items, T item)

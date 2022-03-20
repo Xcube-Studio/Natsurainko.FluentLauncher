@@ -7,15 +7,13 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
-using Windows.Foundation.Collections;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace FluentLauncher
@@ -51,7 +49,7 @@ namespace FluentLauncher
         public static List<string> DownloadSources
             => new List<string>() { "Official Source", "BmclApi Source", "Mcbbs Source" };
 
-        public static List<string> WorkingFolders 
+        public static List<string> WorkingFolders
             => new List<string>() { "Standard [.minecraft/]", "Independent [.minecraft/versions/{version}/]" };
 
         public static List<string> AccountTypes
@@ -68,6 +66,8 @@ namespace FluentLauncher
 
         public static Task DownloadVersionManifest { get; set; }
 
+        public static Task RunForFirstTimeTask { get; set; }
+
         #region Setttings
         private static List<MinecraftFolder> _minecraftFolders;
         public static List<MinecraftFolder> MinecraftFolders
@@ -76,7 +76,7 @@ namespace FluentLauncher
         private static MinecraftFolder _selectedFolder;
         public static MinecraftFolder SelectedFolder
         { get => _selectedFolder; set { _selectedFolder = value; App.Settings.Values["SelectedFolder"] = JsonConvert.SerializeObject(value); } }
-        
+
         private static List<JavaRuntimeEnvironment> _javaRuntimeEnvironments;
         public static List<JavaRuntimeEnvironment> JavaRuntimeEnvironments
         { get => _javaRuntimeEnvironments; set { _javaRuntimeEnvironments = value; App.Settings.Values["JavaRuntimeEnvironments"] = JsonConvert.SerializeObject(value); } }
@@ -129,9 +129,13 @@ namespace FluentLauncher
         public static MinecraftAccount SelectedAccount
         { get => _selectedAccount; set { _selectedAccount = value; App.Settings.Values["SelectedAccount"] = JsonConvert.SerializeObject(value); } }
 
+        private static bool _mainPageNewsVisibility;
+        public static bool MainPageNewsVisibility
+        { get => _mainPageNewsVisibility; set { _mainPageNewsVisibility = value; App.Settings.Values["MainPageNewsVisibility"] = value; } }
+
         #endregion
 
-        public static async Task ShowInfoAsync (string title = "Title", string message = "", int time = 3000, InfoBarSeverity severity = InfoBarSeverity.Informational)
+        public static async Task ShowInfoAsync(string title = "Title", string message = "", int time = 3000, InfoBarSeverity severity = InfoBarSeverity.Informational)
         {
             await CoreApplication.MainView.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async delegate
             {

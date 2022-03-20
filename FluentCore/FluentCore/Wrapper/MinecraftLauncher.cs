@@ -5,6 +5,7 @@ using FluentCore.Service.Component.Launch;
 using FluentCore.Service.Local;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace FluentCore.Wrapper
@@ -70,7 +71,7 @@ namespace FluentCore.Wrapper
             this.ProcessContainer = new ProcessContainer(
                 new ProcessStartInfo
                 {
-                    WorkingDirectory = core.Root,
+                    WorkingDirectory = Directory.Exists(LaunchConfig.WorkingFolder) ? LaunchConfig.WorkingFolder : core.Root,
                     Arguments = ArgumentsBuilder.BulidArguments(),
                     FileName = this.LaunchConfig.JavaPath,
                 });
@@ -149,7 +150,7 @@ namespace FluentCore.Wrapper
 
             var process = new ProcessContainer(new ProcessStartInfo
             {
-                WorkingDirectory = core.Root,
+                WorkingDirectory = Directory.Exists(config.WorkingFolder) ? config.WorkingFolder : core.Root,
                 Arguments = args,
                 FileName = config.JavaPath,
             });

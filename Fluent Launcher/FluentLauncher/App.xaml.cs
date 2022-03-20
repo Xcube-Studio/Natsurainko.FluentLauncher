@@ -2,29 +2,21 @@
 using FluentLauncher.Converters;
 using FluentLauncher.DesktopBridger;
 using FluentLauncher.Models;
+using FluentLauncher.Pages;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.UI;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace FluentLauncher
@@ -92,7 +84,7 @@ namespace FluentLauncher
                     // 当导航堆栈尚未还原时，导航到第一页，
                     // 并通过将所需信息作为导航参数传入来配置
                     // 参数
-                    rootFrame.Navigate(typeof(MainContainer), e.Arguments);
+                    rootFrame.Navigate(ShareResource.RunForFirstTime ? typeof(GuidePage) : typeof(MainContainer), e.Arguments);
                 }
                 // 确保当前窗口处于活动状态
                 Window.Current.Activate();
@@ -167,14 +159,10 @@ namespace FluentLauncher
             DesktopBridge_Init = DesktopBridge.BeginInitAsync();
             LoadSettings();
             if (ShareResource.RunForFirstTime)
-                RunForFirstTime();
+                ShareResource.RunForFirstTimeTask = RunForFirstTime();
 
             LoadLanguage();
 
-#if DEBUG
-            if (Debugger.IsAttached)
-                this.DebugSettings.EnableFrameRateCounter = true;
-#endif
             if (!ShareResource.RunForFirstTime)
                 Windows.UI.ViewManagement.ApplicationView.PreferredLaunchWindowingMode = Windows.UI.ViewManagement.ApplicationViewWindowingMode.Auto;
         }
@@ -189,6 +177,7 @@ namespace FluentLauncher
                 UserName = "Steve"
             };
 
+            #region Data Setting
             ShareResource.MinecraftFolders = Settings.Values.ContainsKey("MinecraftFolders") && Settings.Values["MinecraftFolders"] != null ?
                 JsonConvert.DeserializeObject<List<MinecraftFolder>>((string)Settings.Values["MinecraftFolders"]) : new List<MinecraftFolder>();
 
@@ -233,6 +222,12 @@ namespace FluentLauncher
 
             ShareResource.SelectedAccount = Settings.Values.ContainsKey("SelectedAccount") && Settings.Values["SelectedAccount"] != null ?
                 JsonConvert.DeserializeObject<MinecraftAccount>((string)Settings.Values["SelectedAccount"]) : cache_account;
+            #endregion
+
+            #region UI Setting
+            ShareResource.MainPageNewsVisibility = Settings.Values.ContainsKey("MainPageNewsVisibility") && Settings.Values["MainPageNewsVisibility"] != null ?
+                (bool)Settings.Values["MainPageNewsVisibility"] : true;
+            #endregion
         }
 
         private async void LoadLanguage()
@@ -255,10 +250,10 @@ namespace FluentLauncher
             await DesktopBridge.SendAsync<StandardResponseModel>(new StandardResponseModel() { Header = "SetLanguage", Message = ShareResource.Language });
         }
 
-        private async void RunForFirstTime()
+        private async Task RunForFirstTime()
         {
             #region Windows Size
-            Windows.UI.ViewManagement.ApplicationView.PreferredLaunchViewSize = new Size(920, 550);
+            Windows.UI.ViewManagement.ApplicationView.PreferredLaunchViewSize = new Size(920, 475);
             Windows.UI.ViewManagement.ApplicationView.PreferredLaunchWindowingMode = Windows.UI.ViewManagement.ApplicationViewWindowingMode.PreferredLaunchViewSize;
             #endregion
 
@@ -269,27 +264,33 @@ namespace FluentLauncher
             #endregion
 
             #region Search Java Runtime
+
+            ShareResource.JavaRuntimeEnvironments = new List<JavaRuntimeEnvironment>();
+
             await DesktopBridge_Init;
 
             var res = await DesktopBridge.SendAsync<StandardResponseModel>(new StandardRequestModel()
             {
                 Header = "SearchJavaRuntime"
             });
+
+            if (res == null)
+                return;
+
             var list = JsonConvert.DeserializeObject<List<JavaRuntimeEnvironment>>(res.Response);
 
-            foreach(var item in list)
+            foreach (var item in list)
             {
                 int version = await item.GetJavaVersionAsync();
 
-                if ( version == 8 || version == 17)
+                if (version == 8 || version == 17)
                 {
                     ShareResource.JavaRuntimeEnvironments.AddWithUpdate(item);
                     ShareResource.SelectedJava = item;
                 }
             }
-            #endregion
 
-            ShareResource.RunForFirstTime = false;
+            #endregion
         }
 
         private void RegisterExceptionHandlingSynchronizationContext() =>
@@ -304,7 +305,7 @@ namespace FluentLauncher
 
             if (stacktrace != null)
                 infobulider.AppendLine($"{stacktrace.GetMethod()} - {stacktrace.GetFileName()}[line:{stacktrace.GetFileLineNumber()},{stacktrace.GetFileColumnNumber()}]");
-            
+
             if (!string.IsNullOrEmpty(e.Exception.Source))
                 infobulider.AppendLine(e.Exception.Source);
             if (!string.IsNullOrEmpty(e.Exception.StackTrace))

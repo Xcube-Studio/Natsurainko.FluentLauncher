@@ -9,15 +9,20 @@
 
 帮助你快速启动、安装、管理 Minecraft
 
-![](https://github.com/dbader/readme-template/raw/master/header.png)
+![](https://github.com/Xcube-Studio/Fluent-Launcher/raw/main/Images/1.png)
 
-### Usage example 使用示例
+### Getting Started 使用
 
-给出更多使用演示和截图，并贴出相应代码。
+支持的功能
 
-### Getting Started 使用指南
-
-项目使用条件、如何安装部署、怎样运行使用以及使用演示
++ 支持启动 Minecraft 全版本
++ 支持启动时自动补全游戏文件
++ 支持自动查找 Java 运行时
++ 支持应用内安装 Java 运行时
++ 支持安装 Vanilla、Forge、OptiFine 的游戏核心
++ 支持微软登录、离线登录
++ 支持多线程高速下载
++ 获取 Minecraft 官方资讯
 
 ### Installation 安装
 
@@ -26,7 +31,16 @@
 Windows 10 2004 及以上版本:
 
 + [在 Microsoft Store 中下载](https://www.microsoft.com/store/productId/9MWX740P5W6N)
-+ 或安装 Release 中的安装包
++ 或安装 [Release](https://github.com/Xcube-Studio/Fluent-Launcher/releases) 中的安装包
+
+### Application Images 程序截图
+
+![](https://github.com/Xcube-Studio/Fluent-Launcher/raw/main/Images/2.png)
+![](https://github.com/Xcube-Studio/Fluent-Launcher/raw/main/Images/3.png)
+![](https://github.com/Xcube-Studio/Fluent-Launcher/raw/main/Images/4.png)
+![](https://github.com/Xcube-Studio/Fluent-Launcher/raw/main/Images/5.png)
+![](https://github.com/Xcube-Studio/Fluent-Launcher/raw/main/Images/6.png)
+![](https://github.com/Xcube-Studio/Fluent-Launcher/raw/main/Images/0.png)
 
 ### Release History 版本历史
 

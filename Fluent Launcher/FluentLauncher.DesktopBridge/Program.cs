@@ -100,6 +100,12 @@ namespace FluentLauncher.DesktopBridge
                 case "GetOfflineAuthenticatorResult":
                     MethodHandler.GetOfflineAuthenticatorResult(ref response, (string)args.Request.Message["Name"]);
                     break;
+                case "GetYggdrasilAuthenticatorResult":
+                    MethodHandler.GetYggdrasilAuthenticatorResult(ref response, JsonConvert.DeserializeObject<YggdrasilRequest>(JsonConvert.SerializeObject(args.Request.Message)));
+                    break;
+                case "GetAuthlibInjectorGetArguments":
+                    response.Add("Response", MethodHandler.GetAuthlibInjectorGetArguments((string)args.Request.Message["Message"]));
+                    break;
                 case "GetVersionManifest":
                     response.Add("Response", MethodHandler.GetVersionManifest());
                     break;

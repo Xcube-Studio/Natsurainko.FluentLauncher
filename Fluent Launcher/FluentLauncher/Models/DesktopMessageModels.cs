@@ -34,6 +34,8 @@ namespace FluentLauncher.Models
         public string Name { get; set; }
     }
 
+    #region
+
     public class MicrosoftAuthenticationRequest : StandardRequestModel
     {
         public MicrosoftAuthenticationRequest(string code)
@@ -104,6 +106,36 @@ namespace FluentLauncher.Models
         public string Name { get; set; }
     }
 
+    public class YggdrasilAuthenticationRequest : StandardRequestModel
+    {
+        public YggdrasilAuthenticationRequest(string email, string password, string serverUrl = null)
+        {
+            this.Header = "GetYggdrasilAuthenticatorResult";
+            this.Email = email;
+            this.Password = password;
+            this.YggdrasilServerUrl = serverUrl;
+        }
+
+        public string Email { get; set; }
+
+        public string Password { get; set; }
+
+        public string YggdrasilServerUrl { get; set; }
+    }
+
+    public class YggdrasilAuthenticationResponse : StandardResponseModel
+    {
+        public string Id { get; set; }
+
+        public string AccessToken { get; set; }
+
+        public string ClientToken { get; set; }
+
+        public string Name { get; set; }
+    }
+
+    #endregion
+
     public class SetDownloadOptitionsRequest : StandardRequestModel
     {
         public SetDownloadOptitionsRequest()
@@ -128,6 +160,7 @@ namespace FluentLauncher.Models
             Uuid = ShareResource.SelectedAccount.Uuid;
             AccessToken = ShareResource.SelectedAccount.AccessToken;
             UserName = ShareResource.SelectedAccount.UserName;
+
             JavaPath = ShareResource.SelectedJava.Path;
             GameFolder = ShareResource.SelectedFolder.Path;
             Id = ShareResource.SelectedCore.Id;
@@ -135,6 +168,10 @@ namespace FluentLauncher.Models
             MinimumMemory = ShareResource.MinMemory;
             MaximumMemory = ShareResource.MaxMemory;
         }
+
+        public string MoreFrontArgs { get; set; } = string.Empty;
+
+        public string MoreBehindArgs { get; set; } = string.Empty;
 
         public bool IsIndependent { get; set; }
 

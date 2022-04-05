@@ -7,7 +7,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:FluentLauncher.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
 
@@ -17,7 +16,7 @@
             <RowDefinition Height="80" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
-        <Grid Grid.RowSpan="2" />
+        <Grid Grid.RowSpan="2" Background="{ThemeResource SystemControlAcrylicElementBrush}" />
         <TextBlock
             Grid.Row="1"
             Height="32"
@@ -57,9 +56,14 @@
                 </controls:NavigationViewItem>
             </controls:NavigationView.MenuItems>
         </controls:NavigationView>
-        <Frame
-            x:Name="contentFrame"
-            Grid.Row="2"
-            Background="{ThemeResource ApplicationThemeBackground}" />
+        <Frame x:Name="contentFrame" Grid.Row="2">
+            <Frame.Background>
+                <AcrylicBrush
+                    BackgroundSource="Backdrop"
+                    TintColor="Transparent"
+                    TintLuminosityOpacity="0"
+                    TintTransitionDuration="0" />
+            </Frame.Background>
+        </Frame>
     </Grid>
 </Page>

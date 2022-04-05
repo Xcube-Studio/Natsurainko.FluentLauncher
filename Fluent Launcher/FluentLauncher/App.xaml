@@ -10,17 +10,17 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Dictionaries/ConvertersDictionary.xaml" />
                 <ResourceDictionary Source="/Dictionaries/AssetsDictionary.xaml" />
-                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls"/>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
             </ResourceDictionary.MergedDictionaries>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Default">
-                    <!--
-                    <Color x:Key="SystemAccentColorDark1">#46b2ef</Color>
-                    <Color x:Key="SystemAccentColorDark2">#46b2ef</Color>
-                    <Color x:Key="SystemAccentColorDark3">#46b2ef</Color>
-                    <Color x:Key="SystemAccentColorLight1">#46b2ef</Color>
-                    <Color x:Key="SystemAccentColorLight2">#46b2ef</Color>
-                    <Color x:Key="SystemAccentColorLight3">#46b2ef</Color>-->
+                    <Color x:Key="SystemAccentColor">#FF8C00</Color>
+                    <Color x:Key="SystemAccentColorDark1">#FF8C00</Color>
+                    <Color x:Key="SystemAccentColorDark2">#FF8C00</Color>
+                    <Color x:Key="SystemAccentColorDark3">#FF8C00</Color>
+                    <Color x:Key="SystemAccentColorLight1">#FF8C00</Color>
+                    <Color x:Key="SystemAccentColorLight2">#FF8C00</Color>
+                    <Color x:Key="SystemAccentColorLight3">#FF8C00</Color>
                     <Style TargetType="controls:InfoBar">
                         <Setter Property="IsTabStop" Value="False" />
                         <Setter Property="CloseButtonStyle" Value="{StaticResource InfoBarCloseButtonStyle}" />

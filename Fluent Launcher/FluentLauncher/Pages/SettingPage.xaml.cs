@@ -1,7 +1,16 @@
-﻿using Windows.ApplicationModel.Core;
+﻿using FluentLauncher.Models;
+using Microsoft.Toolkit.Uwp.UI;
+using System.Collections.Generic;
+using System;
+using Windows.ApplicationModel.Core;
+using Windows.Media.Core;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
+using FluentLauncher.Converters;
+using System.Threading.Tasks;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -15,12 +24,28 @@ namespace FluentLauncher.Pages
         public SettingPage()
         {
             this.InitializeComponent();
+
+            ShareResource.SettingPage = this;
         }
 
         #region UI
 
         #region Page
-        private void Page_Loaded(object sender, RoutedEventArgs e) => Initialize();
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            Initialize();
+
+            _ = this.Dispatcher.RunAsync(default, delegate
+            {
+                LoadBackground();
+            });
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            MediaPlayerElement.SetMediaPlayer(null);
+            MediaPlayerElement.Source = null;
+        }
         #endregion
 
         #region NavigationView
@@ -46,6 +71,10 @@ namespace FluentLauncher.Pages
                 case "下载":
                     _ = contentFrame.Navigate(typeof(DownloadPage));
                     break;
+                case "Theme":
+                case "主题":
+                    _ = contentFrame.Navigate(typeof(ThemePage));
+                    break;
                 default:
                     break;
             }
@@ -53,6 +82,62 @@ namespace FluentLauncher.Pages
             UpdateInfoBadge();
         }
         #endregion
+
+        public void LoadBackground()
+        {
+            RequestedTheme = ShareResource.SelectedTheme.ElementTheme;
+
+            Background = new SolidColorBrush(Colors.Transparent);
+            BackgroundImage.Source = null;
+            MediaPlayerElement.SetMediaPlayer(null);
+            MediaPlayerElement.Source = null;
+
+            switch (ShareResource.SelectedTheme.BackgroundType)
+            {
+                case BackgroundType.Normal:
+                    switch (ShareResource.SelectedTheme.ElementTheme)
+                    {
+                        case ElementTheme.Default:
+                        case ElementTheme.Light:
+                        default:
+                            Background = new SolidColorBrush(Colors.White);
+                            break;
+                        case ElementTheme.Dark:
+                            Background = new SolidColorBrush(ColorConverter.FromString("#202020"));
+                            break;
+                    }
+                    break;
+                case BackgroundType.Acrylic:
+                    Background = ShareResource.SelectedTheme.Brush.GetBrush();
+                    break;
+                case BackgroundType.Image:
+                    BackgroundImage.Source = new BitmapImage(new Uri(ShareResource.SelectedTheme.File));
+                    break;
+                case BackgroundType.Vedio:
+                    var player = new Windows.Media.Playback.MediaPlayer()
+                    {
+                        Source = MediaSource.CreateFromUri(new Uri(ShareResource.SelectedTheme.File))
+                    };
+                    player.CommandManager.IsEnabled = false;
+                    player.IsLoopingEnabled = true;
+                    player.Play();
+
+                    MediaPlayerElement.SetMediaPlayer(player);
+                    break;
+                default:
+                    break;
+            }
+
+            #region Color
+            this.Resources["SystemAccentColor"] = ShareResource.SelectedTheme.ThemeColor;
+            this.Resources["SystemAccentColorDark1"] = ShareResource.SelectedTheme.ThemeColor;
+            this.Resources["SystemAccentColorDark2"] = ShareResource.SelectedTheme.ThemeColor;
+            this.Resources["SystemAccentColorDark3"] = ShareResource.SelectedTheme.ThemeColor;
+            this.Resources["SystemAccentColorLight1"] = ShareResource.SelectedTheme.ThemeColor;
+            this.Resources["SystemAccentColorLight2"] = ShareResource.SelectedTheme.ThemeColor;
+            this.Resources["SystemAccentColorLight3"] = ShareResource.SelectedTheme.ThemeColor;
+            #endregion
+        }
 
         public void Initialize()
         {
@@ -65,8 +150,8 @@ namespace FluentLauncher.Pages
 
             if (!ShareResource.WebBrowserNavigateBack)
             {
-                MainNavigationViewItem.IsSelected = true;
                 contentFrame.Navigate(typeof(BasicSettingsPage));
+                MainNavigationViewItem.IsSelected = true;
             }
             else ShareResource.WebBrowserNavigateBack = false;
 

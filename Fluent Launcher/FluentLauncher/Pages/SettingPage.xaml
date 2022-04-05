@@ -10,17 +10,30 @@
     Background="{ThemeResource ApplicationThemeBackground}"
     Loaded="Page_Loaded"
     NavigationCacheMode="Required"
+    Unloaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
         <CornerRadius x:Key="NavigationViewContentGridCornerRadius">0</CornerRadius>
     </Page.Resources>
 
     <Grid>
+        <Grid>
+            <MediaPlayerElement
+                x:Name="MediaPlayerElement"
+                Stretch="UniformToFill"
+                Visibility="Collapsed" />
+            <Image x:Name="BackgroundImage" Stretch="UniformToFill" />
+            <Rectangle
+                Width="49"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Stretch"
+                Fill="{ThemeResource SystemControlAcrylicElementBrush}" />
+        </Grid>
         <controls:NavigationView
             x:Name="NavigationView"
             x:Uid="SettingPage_NavigationView"
             BackRequested="NavigationView_BackRequested"
-            Background="{ThemeResource SystemControlAcrylicWindowBrush}"
+            Background="Transparent"
             IsBackEnabled="True"
             IsPaneOpen="False"
             IsPaneToggleButtonVisible="True"
@@ -93,7 +106,10 @@
                     </AutoSuggestBox.QueryIcon>
                 </AutoSuggestBox>
             </controls:NavigationView.AutoSuggestBox>
-            <Frame x:Name="contentFrame" Margin="0,-1,0,0" />
+            <Frame
+                x:Name="contentFrame"
+                Margin="0,-1,0,0"
+                Background="Transparent" />
         </controls:NavigationView>
         <Grid
             x:Name="AppTitleBar"

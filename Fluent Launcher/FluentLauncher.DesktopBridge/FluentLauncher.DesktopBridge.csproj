@@ -26,6 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Libraries\authlib-injector-1.1.42.jar">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Libraries\JavaDetails.jar">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

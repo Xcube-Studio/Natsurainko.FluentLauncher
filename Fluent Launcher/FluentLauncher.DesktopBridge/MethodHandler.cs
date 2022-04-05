@@ -37,39 +37,8 @@ namespace FluentLauncher.DesktopBridge
 
         public static LanguageResource LanguageResource { get; set; }
 
-        public static void NavigateWebUrl(string url)
-        {
-            using var process = new Process()
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    RedirectStandardInput = true,
-                    FileName = "cmd"
-                },
-            };
-            process.Start();
-            process.StandardInput.WriteLine($"start \"\" \"{url}\"");
-            process.StandardInput.WriteLine("exit");
-            process.WaitForExit();
-        }
 
-        public static string GetMinecraftCoreList(string folder)
-        {
-            var locator = new CoreLocator(folder);
-
-            var list = locator.GetAllGameCores().Select(x =>
-            {
-                if (x.MainClass == "net.minecraft.client.main.Main")
-                    return new MinecraftCoreInfo() { Id = x.Id, Tag = $"{x.Type},{x.Id}" };
-                else return new MinecraftCoreInfo() { Id = x.Id, Tag = $"{x.Type},modded,{x.Id}" };
-            });
-
-            return JsonConvert.SerializeObject(list);
-        }
-
-        public static void SetLanguage(string language) => LanguageResource = new LanguageResource(language);   
+        #region Authenticator
 
         public static void GetMicrosoftAuthenticatorResult(ref ValueSet values, string code)
         {
@@ -147,228 +116,40 @@ namespace FluentLauncher.DesktopBridge
             values.Add("AccessToken", model.AccessToken);
         }
 
-        public static string GetVersionManifest() => JsonConvert.SerializeObject(SystemConfiguration.Api.GetVersionManifest().GetAwaiter().GetResult());
-
-        public static string GetRequiredJavaVersion(string path, string version)
+        public static void GetYggdrasilAuthenticatorResult(ref ValueSet values, YggdrasilRequest request)
         {
-            var locator = new CoreLocator(path);
-            var model = locator.GetGameCoreFromId(version);
+            var authenticator = new YggdrasilAuthenticator(request.Email, request.Password, request.YggdrasilServerUrl);
 
-            return model.JavaVersion.MajorVersion.ToString();
-        }
+            var res = authenticator.Authenticate();
 
-        public static void DeleteMinecraftCore(string folder, string mcVersionId)
-        {
-            var directory = new DirectoryInfo(Path.Combine(PathHelper.GetVersionsFolder(folder), mcVersionId));
-            FileHelper.DeleteAllFiles(directory);
-            directory.Delete();
-        }
-
-        public static void RenameMinecraftCore(string folder, string mcVersionId, string newId)
-        {
-            var oldDirectory = new DirectoryInfo(Path.Combine(PathHelper.GetVersionsFolder(folder), mcVersionId));
-
-            var json = new FileInfo(Path.Combine(PathHelper.GetVersionsFolder(folder), mcVersionId, $"{mcVersionId}.json"));
-            var jar = new FileInfo(Path.Combine(PathHelper.GetVersionsFolder(folder), mcVersionId, $"{mcVersionId}.jar"));
-
-            var newDirectory = new DirectoryInfo(Path.Combine(PathHelper.GetVersionsFolder(folder), newId));
-            if (!newDirectory.Exists)
-                newDirectory.Create();
-
-            var stream = json.OpenRead();
-            var reader = new StreamReader(stream);
-
-            var jobject = JObject.Parse(reader.ReadToEnd());
-
-            jobject.Remove("id");
-            jobject.Add("id", newId);
-
-            File.WriteAllText(Path.Combine(PathHelper.GetVersionsFolder(folder), newId, $"{newId}.json"), jobject.ToString(Formatting.Indented));
-
-            reader.Close();
-            reader.Dispose();
-            stream.Close();
-            stream.Dispose();
-
-            json.Delete();
-
-            if (jar.Exists)
+            switch (res.Item2)
             {
-                jar.MoveTo(Path.Combine(PathHelper.GetVersionsFolder(folder), newId, $"{newId}.jar"));
-                jar.Delete();
-            }
-
-            FileHelper.DeleteAllFiles(oldDirectory);
-            oldDirectory.Delete();
-        }
-
-        public static void LaunchMinecraft(LaunchModel model)
-        {
-            void SendDetails(string title,string message)
-            {
-                var res = new ValueSet() { { "Header", "MinecraftLauncherDetails" }, { "Message", title }, { "Response", message } };
-                _ = Program.Connection.SendMessageAsync(res);
-            }
-
-            #region Launch Arrangements
-
-            SendDetails("Info", LanguageResource.Launching_Info_1);
-
-            var locator = new CoreLocator(model.GameFolder);
-
-            var config = new LaunchConfig
-            {
-                AuthDataModel = new AuthDataModel
-                {
-                    AccessToken = model.AccessToken,
-                    UserName = model.UserName,
-                    Uuid = Guid.Parse(model.Uuid)
-                },
-                JavaPath = model.JavaPath,
-                MaximumMemory = model.MaximumMemory,
-                MinimumMemory = model.MinimumMemory,
-                WorkingFolder = model.IsIndependent ? PathHelper.GetVersionFolder(model.GameFolder, model.Id) : string.Empty
-            };
-            Launcher = new MinecraftLauncher(locator, config);
-
-            #endregion
-
-            #region DependencesCompleter
-
-            SendDetails("Info", LanguageResource.Launching_Info_2);
-            var completer = new DependencesCompleter(locator.GetGameCoreFromId(model.Id));
-
-            int done = 0;
-            void SingleDownloadedEvent(object sender, HttpDownloadResponse e)
-            {
-                done += 1;
-
-                if (e.HttpStatusCode == System.Net.HttpStatusCode.OK)
-                    SendDetails("DownloadInfo", string.Format(LanguageResource.Launching_DownloadInfo_1, e.FileInfo.Name, done, completer.NeedDownloadDependencesCount));
-            }
-
-            completer.SingleDownloadedEvent += SingleDownloadedEvent;
-            completer.CompleteAsync().Wait();
-
-            if (completer.ErrorDownloadResponses.Count > 0)
-                SendDetails("DownloadInfo", LanguageResource.Launching_DownloadInfo_2);
-            else SendDetails("DownloadInfo", string.Empty);
-
-            #endregion
-
-            #region Launch Process
-            SendDetails("Info", LanguageResource.Launching_Info_3);
-
-            Launcher.Launch(model.Id);
-            Task.Run(async () =>
-            {
-                try { Launcher.ProcessContainer.Process.WaitForInputIdle(); }
-                catch { }
-
-                SendDetails("Process", $"[{Launcher.ProcessContainer.Process.Id}] {model.JavaPath}");
-                SendDetails("Event", "WaitForInputIdle");
-
-                await Task.Delay(1000);
-
-                var result = await Launcher.WaitForResult();
-                SendDetails("Event", "Exited");
-
-                #region Dispose
-
-                Launcher.ProcessContainer.OutputDataReceived -= OutputDataReceived;
-                Launcher.ProcessContainer.ErrorDataReceived -= ErrorDataReceived;
-                Launcher.ProcessContainer.Crashed -= Crashed;
-
-                Launcher.Dispose();
-                Launcher = null;
-
-                GC.Collect();
-                #endregion
-            });
-
-            #region Api
-            Task.Run(async () =>
-            {
-                if (await HttpHelper.VerifyHttpConnect("http://api.xcubestudio.net/fluentlauncher/statistics"))
-                    await HttpHelper.HttpPostAsync("http://api.xcubestudio.net/fluentlauncher/statistics", JsonConvert.SerializeObject(new { Type = "GameLaunch" }));
-            });
-            #endregion
-
-            void OutputDataReceived(object sender, DataReceivedEventArgs e) => SendDetails("OutputReceived", e.Data);
-            void ErrorDataReceived(object sender, DataReceivedEventArgs e) => SendDetails("ErrorOutputReceived", e.Data);
-            void Crashed(object sender, ProcessCrashedEventArgs e) => SendDetails("Event", "Crashed");
-
-            Launcher.ProcessContainer.OutputDataReceived += OutputDataReceived;
-            Launcher.ProcessContainer.ErrorDataReceived += ErrorDataReceived;
-            Launcher.ProcessContainer.Crashed += Crashed;
-
-            #endregion
-        }
-
-        public static string GetLaunchArguments(LaunchModel model)
-        {
-            var javaw = new FileInfo(model.JavaPath);
-            if (!string.IsNullOrWhiteSpace(FileHelper.FindFile(javaw.Directory, "java.exe")))
-                model.JavaPath = FileHelper.FindFile(javaw.Directory, "java.exe");
-
-            var locator = new CoreLocator(model.GameFolder);
-            var config = new LaunchConfig
-            {
-                AuthDataModel = new AuthDataModel
-                {
-                    AccessToken = model.AccessToken,
-                    UserName = model.UserName,
-                    Uuid = Guid.Parse(model.Uuid)
-                },
-                JavaPath = model.JavaPath,
-                MaximumMemory = model.MaximumMemory,
-                MinimumMemory = model.MinimumMemory,
-                WorkingFolder = model.IsIndependent ? PathHelper.GetVersionFolder(model.GameFolder, model.Id) : string.Empty
-            };
-
-            if (string.IsNullOrEmpty(config.NativesFolder))
-                config.NativesFolder = $"{PathHelper.GetVersionFolder(locator.Root, model.Id)}{PathHelper.X}natives";
-
-            var builder = new ArgumentsBuilder(locator.GetGameCoreFromId(model.Id), config);
-            return builder.BulidArguments(true);
-        }
-
-        public static void NavigateFolder(string folder)
-        {
-            var process = new ProcessContainer(new ProcessStartInfo
-            {
-                FileName = "Explorer.exe",
-                Arguments = $"\"{folder}\""
-            });
-
-            process.Start();
-
-            Task.Run(async () =>
-            {
-                await process.Process.WaitForExitAsync();
-                process.Dispose();
-            });
-        }
-
-        public static void SetDownloadOptitions(int threads, string source)
-        {
-            DependencesCompleter.MaxThread = threads;
-
-            switch (source)
-            {
-                case "Official Source":
-                    SystemConfiguration.Api = new Mojang();
+                case AuthResponseType.Succeeded:
+                    var model = (YggdrasilResponseModel)res.Item1;
+                    values.Add("Response", "Succeeded");
+                    values.Add("Id", model.SelectedProfile.Id);
+                    values.Add("Name", model.SelectedProfile.Name);
+                    values.Add("AccessToken", model.AccessToken);
+                    if (!string.IsNullOrEmpty(model.ClientToken))
+                        values.Add("ClientToken", model.ClientToken);
                     break;
-                case "BmclApi Source":
-                    SystemConfiguration.Api = new Bmclapi();
-                    break;
-                case "Mcbbs Source":
-                    SystemConfiguration.Api = new Mcbbs();
+                case AuthResponseType.Failed:
+                    values.Add("Response", "Failed");
                     break;
                 default:
                     break;
             }
         }
+
+        public static string GetAuthlibInjectorGetArguments(string url)
+        {
+            var authlibInjector = new AuthlibInjector(url, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Libraries", "JavaDetails.jar"));
+            return $" {string.Join(' ', authlibInjector.GetArguments())}";
+        }
+
+        #endregion
+
+        #region Java Runtime
 
         public static string GetJavaRuntimeEnvironmentInfo(string path)
         {
@@ -386,101 +167,6 @@ namespace FluentLauncher.DesktopBridge
             process.Dispose();
 
             return value;
-        }
-
-        public static bool InstallMinecraft(InstallInfomation installInfomation)
-        {
-            void SendProgress(string message, double progress)
-            {
-                var res = new ValueSet() { { "Header", "InstallMinecraftProgress" }, { "Message", message }, { "Progress", progress } };
-                _ = Program.Connection.SendMessageAsync(res);
-            }
-
-            var modLoader = JsonConvert.DeserializeObject<AbstractModLoader>(installInfomation.ModLoader);
-            var locator = new CoreLocator(installInfomation.Folder);
-            var downloadPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-            #region InstallVanllia
-
-            var installer = new VanlliaInstaller(locator);
-            installer.ProgressChanged += delegate (object sender, InstallerProgressChangedEventArgs e) 
-            {
-                SendProgress(e.StepName, e.Progress);
-            };
-            var vanlliaInstallResult = installer.Install(installInfomation.McVersion);
-
-            if (modLoader == null)
-                return vanlliaInstallResult;
-
-            #endregion
-
-            #region InstallModLoader
-
-            if (!vanlliaInstallResult)
-                return false;
-
-            switch (modLoader.Type)
-            {
-                case "Forge":
-                    var forgeBuild = JsonConvert.DeserializeObject<ForgeBuild>(JsonConvert.SerializeObject(modLoader.Build));
-                    InstallerBase forgeInstaller;
-
-                    var res = HttpHelper.HttpDownloadAsync($"{new Bmclapi().Url}/forge/download/{forgeBuild.Build}", downloadPath, "ForgeInstaller.jar").GetAwaiter().GetResult();
-                    SendProgress("Installing Forge Loader - Downloading Installer Package", 0.5);
-
-                    if (res.HttpStatusCode != System.Net.HttpStatusCode.OK)
-                        return false;
-
-                    if (Convert.ToInt32(modLoader.McVersion.Split('.')[1]) < 13)
-                    {
-                        forgeInstaller = new LegacyForgeInstaller(locator, res.FileInfo.FullName);
-                        forgeInstaller.ProgressChanged += delegate (object sender, InstallerProgressChangedEventArgs e)
-                        {
-                            SendProgress(e.StepName, e.Progress);
-                        };
-
-                        ((LegacyForgeInstaller)forgeInstaller).Install();
-                    }
-                    else
-                    {
-                        forgeInstaller = new ModernForgeInstaller(locator, installInfomation.McVersion, installInfomation.McVersion, installInfomation.JavaPath, res.FileInfo.FullName);
-                        forgeInstaller.ProgressChanged += delegate (object sender, InstallerProgressChangedEventArgs e)
-                        {
-                            SendProgress(e.StepName, e.Progress);
-                        };
-
-                        ((ModernForgeInstaller)forgeInstaller).Install();
-                    }
-
-                    res.FileInfo.Delete();
-                    return true;
-                case "Fabric":
-                    break;
-                case "OptiFine":
-                    var optiFineBuild = JsonConvert.DeserializeObject<OptiFineBuild>(JsonConvert.SerializeObject(modLoader.Build));
-                    OptiFineInstaller optifineInstaller;
-
-                    res = HttpHelper.HttpDownloadAsync($"{new Bmclapi().Url}/optifine/{modLoader.McVersion}/{optiFineBuild.Type}/{optiFineBuild.Patch}", downloadPath, optiFineBuild.FileName).GetAwaiter().GetResult();
-                    SendProgress("Installing OptiFine Loader - Downloading Installer Package", 0.5);
-
-                    if (res.HttpStatusCode != System.Net.HttpStatusCode.OK)
-                        return false;
-
-                    optifineInstaller = new OptiFineInstaller(locator, modLoader.McVersion, modLoader.McVersion, installInfomation.JavaPath, res.FileInfo.FullName);
-                    optifineInstaller.ProgressChanged += delegate (object sender, InstallerProgressChangedEventArgs e)
-                    {
-                        SendProgress(e.StepName, e.Progress);
-                    };
-                    optifineInstaller.Install();
-
-                    res.FileInfo.Delete();
-                    return true;
-                default:
-                    break;
-            }
-            #endregion
-
-            return false;
         }
 
         public static void InstallJavaRuntime(ref ValueSet values)
@@ -608,7 +294,7 @@ namespace FluentLauncher.DesktopBridge
             process.Process.StandardInput.WriteLine("exit");
             process.Process.WaitForExit();
 
-            for(int i = 0; i < process.OutputData.Count; i++)
+            for (int i = 0; i < process.OutputData.Count; i++)
                 if (process.OutputData[i].Contains(">"))
                     process.OutputData.Remove(process.OutputData[i]);
 
@@ -622,7 +308,7 @@ namespace FluentLauncher.DesktopBridge
 
             var javaHomePaths = new List<string>();
 
-            List<string> ForRegistryKey(RegistryKey registryKey,string keyName)
+            List<string> ForRegistryKey(RegistryKey registryKey, string keyName)
             {
                 var result = new List<string>();
 
@@ -689,7 +375,7 @@ namespace FluentLauncher.DesktopBridge
             #endregion
 
             var results = new List<JavaRuntimeEnvironment>();
-            foreach(var item in paths.Distinct())
+            foreach (var item in paths.Distinct())
             {
                 if (!File.Exists(item))
                     continue;
@@ -704,5 +390,370 @@ namespace FluentLauncher.DesktopBridge
 
             values.Add("Response", JsonConvert.SerializeObject(results));
         }
+
+        #endregion
+
+        #region Set
+
+        public static void SetLanguage(string language) => LanguageResource = new LanguageResource(language);
+
+        public static void SetDownloadOptitions(int threads, string source)
+        {
+            DependencesCompleter.MaxThread = threads;
+
+            switch (source)
+            {
+                case "Official Source":
+                    SystemConfiguration.Api = new Mojang();
+                    break;
+                case "BmclApi Source":
+                    SystemConfiguration.Api = new Bmclapi();
+                    break;
+                case "Mcbbs Source":
+                    SystemConfiguration.Api = new Mcbbs();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        #endregion
+
+        #region Minecraft
+
+        public static void DeleteMinecraftCore(string folder, string mcVersionId)
+        {
+            var directory = new DirectoryInfo(Path.Combine(PathHelper.GetVersionsFolder(folder), mcVersionId));
+            FileHelper.DeleteAllFiles(directory);
+            directory.Delete();
+        }
+
+        public static void RenameMinecraftCore(string folder, string mcVersionId, string newId)
+        {
+            var oldDirectory = new DirectoryInfo(Path.Combine(PathHelper.GetVersionsFolder(folder), mcVersionId));
+
+            var json = new FileInfo(Path.Combine(PathHelper.GetVersionsFolder(folder), mcVersionId, $"{mcVersionId}.json"));
+            var jar = new FileInfo(Path.Combine(PathHelper.GetVersionsFolder(folder), mcVersionId, $"{mcVersionId}.jar"));
+
+            var newDirectory = new DirectoryInfo(Path.Combine(PathHelper.GetVersionsFolder(folder), newId));
+            if (!newDirectory.Exists)
+                newDirectory.Create();
+
+            var stream = json.OpenRead();
+            var reader = new StreamReader(stream);
+
+            var jobject = JObject.Parse(reader.ReadToEnd());
+
+            jobject.Remove("id");
+            jobject.Add("id", newId);
+
+            File.WriteAllText(Path.Combine(PathHelper.GetVersionsFolder(folder), newId, $"{newId}.json"), jobject.ToString(Formatting.Indented));
+
+            reader.Close();
+            reader.Dispose();
+            stream.Close();
+            stream.Dispose();
+
+            json.Delete();
+
+            if (jar.Exists)
+            {
+                jar.MoveTo(Path.Combine(PathHelper.GetVersionsFolder(folder), newId, $"{newId}.jar"));
+                jar.Delete();
+            }
+
+            FileHelper.DeleteAllFiles(oldDirectory);
+            oldDirectory.Delete();
+        }
+
+        public static void LaunchMinecraft(LaunchModel model)
+        {
+            void SendDetails(string title, string message)
+            {
+                var res = new ValueSet() { { "Header", "MinecraftLauncherDetails" }, { "Message", title }, { "Response", message } };
+                _ = Program.Connection.SendMessageAsync(res);
+            }
+
+            #region Launch Arrangements
+
+            SendDetails("Info", LanguageResource.Launching_Info_1);
+
+            var locator = new CoreLocator(model.GameFolder);
+
+            var config = new LaunchConfig
+            {
+                AuthDataModel = new AuthDataModel
+                {
+                    AccessToken = model.AccessToken,
+                    UserName = model.UserName,
+                    Uuid = Guid.Parse(model.Uuid)
+                },
+                JavaPath = model.JavaPath,
+                MaximumMemory = model.MaximumMemory,
+                MinimumMemory = model.MinimumMemory,
+                WorkingFolder = model.IsIndependent ? PathHelper.GetVersionFolder(model.GameFolder, model.Id) : string.Empty
+            };
+            Launcher = new MinecraftLauncher(locator, config);
+
+            #endregion
+
+            #region DependencesCompleter
+
+            SendDetails("Info", LanguageResource.Launching_Info_2);
+            var completer = new DependencesCompleter(locator.GetGameCoreFromId(model.Id));
+
+            int done = 0;
+            void SingleDownloadedEvent(object sender, HttpDownloadResponse e)
+            {
+                done += 1;
+
+                if (e.HttpStatusCode == System.Net.HttpStatusCode.OK)
+                    SendDetails("DownloadInfo", string.Format(LanguageResource.Launching_DownloadInfo_1, e.FileInfo.Name, done, completer.NeedDownloadDependencesCount));
+            }
+
+            completer.SingleDownloadedEvent += SingleDownloadedEvent;
+            completer.CompleteAsync().Wait();
+
+            if (completer.ErrorDownloadResponses.Count > 0)
+                SendDetails("DownloadInfo", LanguageResource.Launching_DownloadInfo_2);
+            else SendDetails("DownloadInfo", string.Empty);
+
+            #endregion
+
+            #region Launch Process
+            SendDetails("Info", LanguageResource.Launching_Info_3);
+
+            Launcher.Launch(model.Id);
+            Task.Run(async () =>
+            {
+                try { Launcher.ProcessContainer.Process.WaitForInputIdle(); }
+                catch { }
+
+                SendDetails("Process", $"[{Launcher.ProcessContainer.Process.Id}] {model.JavaPath}");
+                SendDetails("Event", "WaitForInputIdle");
+
+                await Task.Delay(1000);
+
+                var result = await Launcher.WaitForResult();
+                SendDetails("Event", "Exited");
+
+                #region Dispose
+
+                Launcher.ProcessContainer.OutputDataReceived -= OutputDataReceived;
+                Launcher.ProcessContainer.ErrorDataReceived -= ErrorDataReceived;
+                Launcher.ProcessContainer.Crashed -= Crashed;
+
+                Launcher.Dispose();
+                Launcher = null;
+
+                GC.Collect();
+                #endregion
+            });
+
+            #region Api
+            Task.Run(async () =>
+            {
+                if (await HttpHelper.VerifyHttpConnect("http://api.xcubestudio.net/fluentlauncher/statistics"))
+                    await HttpHelper.HttpPostAsync("http://api.xcubestudio.net/fluentlauncher/statistics", JsonConvert.SerializeObject(new { Type = "GameLaunch" }));
+            });
+            #endregion
+
+            void OutputDataReceived(object sender, DataReceivedEventArgs e) => SendDetails("OutputReceived", e.Data);
+            void ErrorDataReceived(object sender, DataReceivedEventArgs e) => SendDetails("ErrorOutputReceived", e.Data);
+            void Crashed(object sender, ProcessCrashedEventArgs e) => SendDetails("Event", "Crashed");
+
+            Launcher.ProcessContainer.OutputDataReceived += OutputDataReceived;
+            Launcher.ProcessContainer.ErrorDataReceived += ErrorDataReceived;
+            Launcher.ProcessContainer.Crashed += Crashed;
+
+            #endregion
+        }
+
+        public static bool InstallMinecraft(InstallInfomation installInfomation)
+        {
+            void SendProgress(string message, double progress)
+            {
+                var res = new ValueSet() { { "Header", "InstallMinecraftProgress" }, { "Message", message }, { "Progress", progress } };
+                _ = Program.Connection.SendMessageAsync(res);
+            }
+
+            var modLoader = JsonConvert.DeserializeObject<AbstractModLoader>(installInfomation.ModLoader);
+            var locator = new CoreLocator(installInfomation.Folder);
+            var downloadPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            #region InstallVanllia
+
+            var installer = new VanlliaInstaller(locator);
+            installer.ProgressChanged += delegate (object sender, InstallerProgressChangedEventArgs e)
+            {
+                SendProgress(e.StepName, e.Progress);
+            };
+            var vanlliaInstallResult = installer.Install(installInfomation.McVersion);
+
+            if (modLoader == null)
+                return vanlliaInstallResult;
+
+            #endregion
+
+            #region InstallModLoader
+
+            if (!vanlliaInstallResult)
+                return false;
+
+            switch (modLoader.Type)
+            {
+                case "Forge":
+                    var forgeBuild = JsonConvert.DeserializeObject<ForgeBuild>(JsonConvert.SerializeObject(modLoader.Build));
+                    InstallerBase forgeInstaller;
+
+                    var res = HttpHelper.HttpDownloadAsync($"{new Bmclapi().Url}/forge/download/{forgeBuild.Build}", downloadPath, "ForgeInstaller.jar").GetAwaiter().GetResult();
+                    SendProgress("Installing Forge Loader - Downloading Installer Package", 0.5);
+
+                    if (res.HttpStatusCode != System.Net.HttpStatusCode.OK)
+                        return false;
+
+                    if (Convert.ToInt32(modLoader.McVersion.Split('.')[1]) < 13)
+                    {
+                        forgeInstaller = new LegacyForgeInstaller(locator, res.FileInfo.FullName);
+                        forgeInstaller.ProgressChanged += delegate (object sender, InstallerProgressChangedEventArgs e)
+                        {
+                            SendProgress(e.StepName, e.Progress);
+                        };
+
+                        ((LegacyForgeInstaller)forgeInstaller).Install();
+                    }
+                    else
+                    {
+                        forgeInstaller = new ModernForgeInstaller(locator, installInfomation.McVersion, installInfomation.McVersion, installInfomation.JavaPath, res.FileInfo.FullName);
+                        forgeInstaller.ProgressChanged += delegate (object sender, InstallerProgressChangedEventArgs e)
+                        {
+                            SendProgress(e.StepName, e.Progress);
+                        };
+
+                        ((ModernForgeInstaller)forgeInstaller).Install();
+                    }
+
+                    res.FileInfo.Delete();
+                    return true;
+                case "Fabric":
+                    break;
+                case "OptiFine":
+                    var optiFineBuild = JsonConvert.DeserializeObject<OptiFineBuild>(JsonConvert.SerializeObject(modLoader.Build));
+                    OptiFineInstaller optifineInstaller;
+
+                    res = HttpHelper.HttpDownloadAsync($"{new Bmclapi().Url}/optifine/{modLoader.McVersion}/{optiFineBuild.Type}/{optiFineBuild.Patch}", downloadPath, optiFineBuild.FileName).GetAwaiter().GetResult();
+                    SendProgress("Installing OptiFine Loader - Downloading Installer Package", 0.5);
+
+                    if (res.HttpStatusCode != System.Net.HttpStatusCode.OK)
+                        return false;
+
+                    optifineInstaller = new OptiFineInstaller(locator, modLoader.McVersion, modLoader.McVersion, installInfomation.JavaPath, res.FileInfo.FullName);
+                    optifineInstaller.ProgressChanged += delegate (object sender, InstallerProgressChangedEventArgs e)
+                    {
+                        SendProgress(e.StepName, e.Progress);
+                    };
+                    optifineInstaller.Install();
+
+                    res.FileInfo.Delete();
+                    return true;
+                default:
+                    break;
+            }
+            #endregion
+
+            return false;
+        }
+
+        public static string GetMinecraftCoreList(string folder)
+        {
+            var locator = new CoreLocator(folder);
+
+            var list = locator.GetAllGameCores().Select(x =>
+            {
+                if (x.MainClass == "net.minecraft.client.main.Main")
+                    return new MinecraftCoreInfo() { Id = x.Id, Tag = $"{x.Type},{x.Id}" };
+                else return new MinecraftCoreInfo() { Id = x.Id, Tag = $"{x.Type},modded,{x.Id}" };
+            });
+
+            return JsonConvert.SerializeObject(list);
+        }
+
+        public static string GetLaunchArguments(LaunchModel model)
+        {
+            var javaw = new FileInfo(model.JavaPath);
+            if (!string.IsNullOrWhiteSpace(FileHelper.FindFile(javaw.Directory, "java.exe")))
+                model.JavaPath = FileHelper.FindFile(javaw.Directory, "java.exe");
+
+            var locator = new CoreLocator(model.GameFolder);
+            var config = new LaunchConfig
+            {
+                AuthDataModel = new AuthDataModel
+                {
+                    AccessToken = model.AccessToken,
+                    UserName = model.UserName,
+                    Uuid = Guid.Parse(model.Uuid)
+                },
+                JavaPath = model.JavaPath,
+                MaximumMemory = model.MaximumMemory,
+                MinimumMemory = model.MinimumMemory,
+                WorkingFolder = model.IsIndependent ? PathHelper.GetVersionFolder(model.GameFolder, model.Id) : string.Empty
+            };
+
+            if (string.IsNullOrEmpty(config.NativesFolder))
+                config.NativesFolder = $"{PathHelper.GetVersionFolder(locator.Root, model.Id)}{PathHelper.X}natives";
+
+            var builder = new ArgumentsBuilder(locator.GetGameCoreFromId(model.Id), config);
+            return builder.BulidArguments(true);
+        }
+
+        public static string GetVersionManifest() => JsonConvert.SerializeObject(SystemConfiguration.Api.GetVersionManifest().GetAwaiter().GetResult());
+
+        public static string GetRequiredJavaVersion(string path, string version)
+        {
+            var locator = new CoreLocator(path);
+            var model = locator.GetGameCoreFromId(version);
+
+            return model.JavaVersion.MajorVersion.ToString();
+        }
+
+        #endregion
+
+        #region Windows
+        public static void NavigateWebUrl(string url)
+        {
+            using var process = new Process()
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardInput = true,
+                    FileName = "cmd"
+                },
+            };
+            process.Start();
+            process.StandardInput.WriteLine($"start \"\" \"{url}\"");
+            process.StandardInput.WriteLine("exit");
+            process.WaitForExit();
+        }
+
+        public static void NavigateFolder(string folder)
+        {
+            var process = new ProcessContainer(new ProcessStartInfo
+            {
+                FileName = "Explorer.exe",
+                Arguments = $"\"{folder}\""
+            });
+
+            process.Start();
+
+            Task.Run(async () =>
+            {
+                await process.Process.WaitForExitAsync();
+                process.Dispose();
+            });
+        }
+
+        #endregion
     }
 }

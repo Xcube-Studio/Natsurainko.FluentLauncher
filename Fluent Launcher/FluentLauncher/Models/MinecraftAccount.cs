@@ -2,6 +2,8 @@
 {
     public class MinecraftAccount
     {
+        public string YggdrasilServerUrl { get; set; }
+
         public string Type { get; set; }
 
         public string UserName { get; set; }
@@ -9,6 +11,8 @@
         public string Uuid { get; set; }
 
         public string AccessToken { get; set; }
+
+        public string ClientToken { get; set; }
 
         public string RefreshToken { get; set; }
 
@@ -30,7 +34,7 @@
 
         public override int GetHashCode()
         {
-            return this.Uuid.GetHashCode() ^ this.Type.GetHashCode();
+            return this.Uuid.GetHashCode() ^ this.UserName.GetHashCode() ^ this.Type.GetHashCode();
         }
 
     }

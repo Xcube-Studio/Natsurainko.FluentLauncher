@@ -7,6 +7,15 @@ using System.Threading.Tasks;
 
 namespace FluentLauncher.DesktopBridge
 {
+    public class YggdrasilRequest
+    {
+        public string Email { get; set; }
+
+        public string Password { get; set; }
+
+        public string YggdrasilServerUrl { get; set; }
+    }
+
     public class MinecraftCoreInfo
     {
         public string Id { get; set; }
@@ -16,6 +25,10 @@ namespace FluentLauncher.DesktopBridge
 
     public class LaunchModel
     {
+        public string MoreFrontArgs { get; set; } = string.Empty;
+
+        public string MoreBehindArgs { get; set; } = string.Empty;
+
         public string Uuid { get; set; }
 
         public string AccessToken { get; set; }

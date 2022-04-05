@@ -42,7 +42,12 @@ namespace FluentLauncher.Classes
 
             App.DesktopBridge.Connection.RequestReceived += Connection_RequestReceived;
 
-            await App.DesktopBridge.SendAsync<StandardResponseModel>(new LaunchMinecraftRequest());
+            var req = new LaunchMinecraftRequest();
+            if (ShareResource.SelectedAccount.Type == "Authlib-injector Account")
+                req.MoreFrontArgs += (await App.DesktopBridge.SendAsync<StandardResponseModel>
+                    (new StandardRequestModel() { Header = "GetAuthlibInjectorGetArguments", Message = ShareResource.SelectedAccount.YggdrasilServerUrl })).Response;
+
+            await App.DesktopBridge.SendAsync<StandardResponseModel>(req);
         }
 
         private void Connection_RequestReceived(Windows.ApplicationModel.AppService.AppServiceConnection sender, Windows.ApplicationModel.AppService.AppServiceRequestReceivedEventArgs args)

@@ -483,10 +483,17 @@
                 x:Name="ContentListBox"
                 Margin="0,120,0,0"
                 Padding="0,0,0,20"
-                Background="Transparent"
                 ItemContainerStyle="{ThemeResource ListBoxItemStyle}"
                 ItemTemplate="{ThemeResource VersionDataTemplate}"
-                SelectionMode="Single" />
+                SelectionMode="Single">
+                <ListBox.Background>
+                    <AcrylicBrush
+                        BackgroundSource="Backdrop"
+                        TintColor="Transparent"
+                        TintLuminosityOpacity="0"
+                        TintTransitionDuration="0" />
+                </ListBox.Background>
+            </ListBox>
         </Grid>
         <Grid x:Name="TipGrid" Background="{ThemeResource SystemControlAcrylicElementBrush}">
             <Border

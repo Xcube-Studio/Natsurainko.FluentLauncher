@@ -135,6 +135,9 @@
   <data name="AboutPage_HyperlinkButton.Content" xml:space="preserve">
     <value>Show More</value>
   </data>
+  <data name="AboutPage_Sources.Text" xml:space="preserve">
+    <value>Sources</value>
+  </data>
   <data name="AboutPage_Statement.Text" xml:space="preserve">
     <value>Statement</value>
   </data>
@@ -565,7 +568,20 @@
     <value>About</value>
   </data>
   <data name="UpdateLogTextBlock.Text" xml:space="preserve">
-    <value>Preview Edition - 1.0.27
+    <value>Preview Edition - 1.0.28
+
+Added support for external login
+Added support for dragging and dropping urls for external logins
+Added theme function [New theme is not supported at the moment, the next version will open]
+Added the ability to switch launcher themes in real time
+Added support for pictures and videos as backgrounds
+Added support for theme colors [requires launcher to run]
+Added project open source address [in AboutPage]
+Added Chinese translation for account types
+Fixed a crash caused by a unit conversion error when installing the Java Runtime
+Fixed a lot of detail issues
+
+Preview Edition - 1.0.27
 
 Added the ability to run the game core in isolation
 Added Chinese translation of the protocol interface

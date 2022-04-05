@@ -3,6 +3,7 @@ using FluentLauncher.Converters;
 using FluentLauncher.DesktopBridger;
 using FluentLauncher.Models;
 using FluentLauncher.Pages;
+using Microsoft.Toolkit.Uwp.UI;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,8 @@ using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace FluentLauncher
@@ -35,6 +38,8 @@ namespace FluentLauncher
             BeforeInitialized();
 
             this.InitializeComponent();
+            LoadAppTheme();
+
             this.Suspending += OnSuspending;
             this.UnhandledException += App_UnhandledException;
         }
@@ -132,6 +137,8 @@ namespace FluentLauncher
 
         private void AfterOnLaunched()
         {
+            #region Windows
+
             var theme = (Models.ApplicationTheme)this.Resources["ApplicationTheme"];
 
             Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = Colors.Transparent;
@@ -152,6 +159,19 @@ namespace FluentLauncher
             }
 
             this.Resources["ApplicationTheme"] = theme;
+
+            #endregion
+
+            #region Color
+            this.Resources["SystemAccentColor"] = ShareResource.SelectedTheme.ThemeColor;
+            this.Resources["SystemAccentColorDark1"] = ShareResource.SelectedTheme.ThemeColor;
+            this.Resources["SystemAccentColorDark2"] = ShareResource.SelectedTheme.ThemeColor;
+            this.Resources["SystemAccentColorDark3"] = ShareResource.SelectedTheme.ThemeColor;
+            this.Resources["SystemAccentColorLight1"] = ShareResource.SelectedTheme.ThemeColor;
+            this.Resources["SystemAccentColorLight2"] = ShareResource.SelectedTheme.ThemeColor;
+            this.Resources["SystemAccentColorLight3"] = ShareResource.SelectedTheme.ThemeColor;
+            #endregion
+
         }
 
         private void BeforeInitialized()
@@ -225,9 +245,133 @@ namespace FluentLauncher
             #endregion
 
             #region UI Setting
+
             ShareResource.MainPageNewsVisibility = Settings.Values.ContainsKey("MainPageNewsVisibility") && Settings.Values["MainPageNewsVisibility"] != null ?
                 (bool)Settings.Values["MainPageNewsVisibility"] : true;
+
             #endregion
+        }
+
+        private void LoadAppTheme()
+        {
+            ShareResource.Themes = Settings.Values.ContainsKey("Themes") && Settings.Values["Themes"] != null ?
+            JsonConvert.DeserializeObject<List<ThemeModel>>((string)Settings.Values["Themes"]) :
+            new List<ThemeModel>()
+            {
+                new ThemeModel
+                {
+                    Name = "LightTheme",
+                    ThemeColor = ColorConverter.FromString("#FFBF00"),
+                    ElementTheme = ElementTheme.Light,
+                    BackgroundType = BackgroundType.Normal
+                },
+                new ThemeModel
+                {
+                    Name = "DarkTheme",
+                    ThemeColor = ColorConverter.FromString("#FFBF00"),
+                    ElementTheme = ElementTheme.Dark,
+                    BackgroundType = BackgroundType.Normal
+                },
+                new ThemeModel
+                {
+                    Name = "AcrylicLightTheme",
+                    ThemeColor = ColorConverter.FromString("#FFBF00"),
+                    ElementTheme = ElementTheme.Light,
+                    BackgroundType = BackgroundType.Acrylic,
+                    Brush = new UniversalBrush
+                    {
+                        BrushType = BrushType.Acyrlic,
+                        TintLuminosityOpacity = 0.5,
+                        TintOpacity = 0.5
+                    }
+                },
+                new ThemeModel
+                {
+                    Name = "AcrylicDarkTheme",
+                    ThemeColor = ColorConverter.FromString("#FFBF00"),
+                    ElementTheme = ElementTheme.Dark,
+                    BackgroundType = BackgroundType.Acrylic,
+                    Brush = new UniversalBrush
+                    {
+                        BrushType = BrushType.Acyrlic,
+                        Color = Colors.Black,
+                        TintLuminosityOpacity = 0.5,
+                        TintOpacity = 0.5
+                    }
+                }/*
+                ,new ThemeModel
+                {
+                    Name = "ImageDarkTheme-Test",
+                    ThemeColor = ColorConverter.FromString("#C0D1EB"),
+                    ElementTheme = ElementTheme.Dark,
+                    BackgroundType = BackgroundType.Image,
+                    File = "ms-appx:///Assets/67243791_p0.jpg"
+                },*/
+            };
+
+            ShareResource.SelectedTheme = Settings.Values.ContainsKey("SelectedTheme") && Settings.Values["SelectedTheme"] != null ?
+                JsonConvert.DeserializeObject<ThemeModel>((string)Settings.Values["SelectedTheme"]) : ShareResource.Themes[0];
+
+            switch (ShareResource.SelectedTheme.ElementTheme)
+            {
+                case ElementTheme.Default:
+                case ElementTheme.Light:
+                default:
+                    RequestedTheme = Windows.UI.Xaml.ApplicationTheme.Light;
+                    break;
+                case ElementTheme.Dark:
+                    RequestedTheme = Windows.UI.Xaml.ApplicationTheme.Dark;
+                    break;
+            }
+        }
+
+        public static void UpdateAppTheme()
+        {
+            var theme = (Models.ApplicationTheme)App.Current.Resources["ApplicationTheme"];
+
+            switch (ShareResource.SelectedTheme.ElementTheme)
+            {
+                case ElementTheme.Default:
+                case ElementTheme.Light:
+                default:
+                    Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.ButtonHoverForegroundColor = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.ButtonPressedForegroundColor = Colors.Black;
+                    Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.ButtonHoverBackgroundColor = ColorConverter.FromString("#19000000");
+                    Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.ButtonPressedBackgroundColor = ColorConverter.FromString("#3F000000");
+                    theme.SystemBackgroundColor = Colors.White;
+                    break;
+                case ElementTheme.Dark:
+                    theme.SystemBackgroundColor = Colors.Black;
+                    Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.ButtonHoverForegroundColor = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.ButtonPressedForegroundColor = Colors.White;
+                    Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.ButtonHoverBackgroundColor = ColorConverter.FromString("#19FFFFFF");
+                    Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.ButtonPressedBackgroundColor = ColorConverter.FromString("#3FFFFFFF");
+                    break;
+            }
+
+            #region Color
+            App.Current.Resources["SystemAccentColor"] = ShareResource.SelectedTheme.ThemeColor;
+            App.Current.Resources["SystemAccentColorDark1"] = ShareResource.SelectedTheme.ThemeColor;
+            App.Current.Resources["SystemAccentColorDark2"] = ShareResource.SelectedTheme.ThemeColor;
+            App.Current.Resources["SystemAccentColorDark3"] = ShareResource.SelectedTheme.ThemeColor;
+            App.Current.Resources["SystemAccentColorLight1"] = ShareResource.SelectedTheme.ThemeColor;
+            App.Current.Resources["SystemAccentColorLight2"] = ShareResource.SelectedTheme.ThemeColor;
+            App.Current.Resources["SystemAccentColorLight3"] = ShareResource.SelectedTheme.ThemeColor;
+            #endregion
+
+
+            App.Current.Resources["ApplicationTheme"] = theme;
+
+            ForChildren(((Frame)Window.Current.Content).FindChildren());
+            ForChildren(ShareResource.MainContainer.FindChildren());
+            ForChildren(ShareResource.SettingPage.FindChildren());
+
+            void ForChildren(IEnumerable<FrameworkElement> elements)
+            {
+                foreach (FrameworkElement element in elements)
+                {
+                    try { element.RequestedTheme = ShareResource.SelectedTheme.ElementTheme; } catch { }
+                    ForChildren(element.FindChildren());
+                }
+            }
         }
 
         private async void LoadLanguage()

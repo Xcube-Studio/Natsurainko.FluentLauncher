@@ -79,7 +79,7 @@
                                     NavigateUri="https://bmclapidoc.bangbang93.com/" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Mcbbs" />
+                                <TextBlock Text="mcbbs" />
                                 <HyperlinkButton
                                     Margin="5,0"
                                     Padding="0"
@@ -100,6 +100,21 @@
                             Margin="15,0"
                             Text="Minecraft is copyrighted by Mojang Studios. We are not responsible for any copyright infringement arising from use of this software."
                             TextWrapping="WrapWholeWords" />
+                    </StackPanel>
+                    <StackPanel Margin="0,15,0,0" Orientation="Horizontal">
+                        <TextBlock
+                            MinWidth="78"
+                            x:Uid="AboutPage_Sources"
+                            Text="Sources" />
+                        <StackPanel Margin="15,0" Orientation="Horizontal">
+                            <TextBlock Text="GitHub" />
+                            <HyperlinkButton
+                                    Margin="5,0"
+                                    Padding="0"
+                                    Content="https://github.com/Xcube-Studio/Fluent-Launcher"
+                                    FontSize="12"
+                                    NavigateUri="https://github.com/Xcube-Studio/Fluent-Launcher" />
+                        </StackPanel>
                     </StackPanel>
                     <StackPanel Margin="0,15,0,0" Orientation="Horizontal">
                         <TextBlock
@@ -137,7 +152,7 @@
                             Content="https://github.com/microsoft/microsoft-ui-xaml"
                             NavigateUri="https://github.com/microsoft/microsoft-ui-xaml" />
                     </StackPanel>
-                    <StackPanel>
+                    <StackPanel Margin="0,10,0,0">
                         <TextBlock FontSize="16" Text="Newtonsoft.Json" />
                         <HyperlinkButton
                             Padding="0"

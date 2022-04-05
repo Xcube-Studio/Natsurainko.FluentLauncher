@@ -12,4 +12,5 @@
     <converters:CoreReleaseTimeSubString x:Key="CoreReleaseTimeSubString" />
     <converters:ModdedInfoBarConverter x:Key="ModdedInfoBarConverter" />
     <converters:ListInfoBadgeConverter x:Key="ListInfoBadgeConverter" />
+    <converters:ApplicationThemeToStringConverter x:Key="ApplicationThemeToStringConverter" />
 </ResourceDictionary>

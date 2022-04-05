@@ -1,4 +1,6 @@
-﻿namespace FluentLauncher.Strings
+﻿using System.Collections.Generic;
+
+namespace FluentLauncher.Strings
 {
     public class BackgroundLanguageResource
     {
@@ -13,6 +15,8 @@
                     Background_SetSuitableJavaRuntime_True = "当前游戏需要 Java 运行时 版本 {major} 以上，已自动切换 Java 运行时";
                     Background_SearchJava_Error = "无法在你的计算机中找到Java运行时，请手动选择一个";
                     Background_MakeScript_Successfully = "成功生成启动脚本";
+                    AccountPage_DragSelectedItem = "外置登录账户";
+                    ShareResource.AccountTypes = new List<string>() { "微软账户", "离线账户", "外置登录账户" };
                     break;
                 case "English":
                     App_Exception = "Application Unhandled Exception";
@@ -21,6 +25,8 @@
                     Background_SetSuitableJavaRuntime_True = "Current game requires Java Runtime version {major}+, Java runtime switched automatically";
                     Background_SearchJava_Error = "Unable to find Java Runtime in your computer, please select one manually";
                     Background_MakeScript_Successfully = "Make the launch script successfully";
+                    AccountPage_DragSelectedItem = "Authlib-injector Account";
+                    ShareResource.AccountTypes = new List<string>() { "MicrosoftAccount", "OfflineAccount", "Authlib-injector Account" };
                     break;
                 default:
                     break;
@@ -28,6 +34,8 @@
         }
 
         public string App_Exception { get; private set; }
+
+        public string AccountPage_DragSelectedItem { get; private set; }
 
         public string MainPage_LaunchButton_SubTitle { get; private set; }
 

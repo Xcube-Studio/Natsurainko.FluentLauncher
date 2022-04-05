@@ -43,7 +43,15 @@
             </Setter>
         </Style>
         <Style x:Key="NewsListBox" TargetType="ListBox">
-            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <AcrylicBrush
+                        BackgroundSource="Backdrop"
+                        TintColor="Transparent"
+                        TintLuminosityOpacity="0"
+                        TintTransitionDuration="0" />
+                </Setter.Value>
+            </Setter>
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="ItemContainerStyle" Value="{StaticResource NewsListBoxItemStyle}" />

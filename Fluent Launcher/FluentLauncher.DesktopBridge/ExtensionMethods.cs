@@ -26,10 +26,6 @@ namespace FluentLauncher.DesktopBridge
             return Encoding.UTF8.GetString(valueBytes);
         }
 
-        public static string LengthToMb(this long value)
-        {
-            string[] parts = (value / (1024.0 * 1024.0)).ToString().Split(".");
-            return $"{parts[0]}.{parts[1][..1]} Mb";
-        }
+        public static string LengthToMb(this long value) => $"{value / (1024.0 * 1024.0):0.0} Mb";
     }
 }

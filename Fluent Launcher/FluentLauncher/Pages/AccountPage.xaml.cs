@@ -1,9 +1,12 @@
-﻿using FluentLauncher.Classes;
+﻿using FluentCore.Service.Network;
+using FluentLauncher.Classes;
 using FluentLauncher.Models;
+using FluentLauncher.Strings;
 using Microsoft.UI.Xaml.Controls;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -64,6 +67,7 @@ namespace FluentLauncher.Pages
             switch ((string)AccountTypeBox.SelectedItem)
             {
                 case "MicrosoftAccount":
+                case "微软账户":
                     newItem = new MinecraftAccount
                     {
                         AccessToken = ShareResource.AuthenticationResponse.AccessToken,
@@ -78,6 +82,7 @@ namespace FluentLauncher.Pages
                     ShareResource.AuthenticationResponse = null;
                     break;
                 case "OfflineAccount":
+                case "离线账户":
                     var req = new OfflineAuthenticationRequest(DisplayNameBox.Text);
                     var res = await App.DesktopBridge.SendAsync<OfflineAuthenticationResponse>(req);
 
@@ -87,6 +92,31 @@ namespace FluentLauncher.Pages
                         UserName = res.Name,
                         Uuid = res.Id,
                         Type = "OfflineAccount"
+                    };
+
+                    break;
+                case "Authlib-injector Account":
+                case "外置登录账户":
+                    var authReq = new YggdrasilAuthenticationRequest(Authlib_InjectorEmailBox.Text, Authlib_InjectorPasswordBox.Password, AuthenticateServerBox.Text);
+                    AddAccountButton.IsEnabled = false;
+                    var authRes = await App.DesktopBridge.SendAsync<YggdrasilAuthenticationResponse>(authReq);
+
+                    if (authRes == null || authRes.Response == "Failed")
+                    {
+                        AddAccountDialog.Hide();
+
+                        _ = ShareResource.ShowInfoAsync("Authenticate Failed..", "", 3000, InfoBarSeverity.Error);
+                        return;
+                    }
+
+                    newItem = new MinecraftAccount
+                    {
+                        AccessToken = authRes.AccessToken,
+                        ClientToken = authRes.ClientToken,
+                        YggdrasilServerUrl = AuthenticateServerBox.Text,
+                        UserName = authRes.Name,
+                        Uuid = authRes.Id,
+                        Type = "Authlib-injector Account"
                     };
 
                     break;
@@ -148,10 +178,17 @@ namespace FluentLauncher.Pages
         private async void ListViewItem_PointerReleased(object sender, PointerRoutedEventArgs e)
         {
             AccountTypeBox.SetItemsSource(ShareResource.AccountTypes);
-            AccountTypeBox.SetSelectedItem("MicrosoftAccount");
             DisplayNameBox.Text = "Steve";
             LoginStateText.Text = string.Empty;
             LoginStateButton.Visibility = Visibility.Collapsed;
+            AuthenticateServerVerifyText.Text = string.Empty;
+            AuthenticateServerBox.Text = string.Empty;
+            Authlib_InjectorEmailBox.Text = string.Empty;
+            Authlib_InjectorPasswordBox.Password = string.Empty;
+            AuthenticateServerLoading.Visibility = Visibility.Collapsed;
+            Authlib_InjectorAccountLoginControls.Visibility = Visibility.Collapsed;
+
+            Authlib_InjectorAccountBorder.Visibility = MicrosoftAccountBorder.Visibility = OfflineAccountBorder.Visibility = Visibility.Collapsed;
 
             await AddAccountDialog.ShowAsync();
         }
@@ -192,18 +229,76 @@ namespace FluentLauncher.Pages
             switch ((string)AccountTypeBox.SelectedItem)
             {
                 case "MicrosoftAccount":
-                    DisplayNameBox.Visibility = Visibility.Collapsed;
+                case "微软账户":
+                    OfflineAccountBorder.Visibility = Authlib_InjectorAccountBorder.Visibility = Visibility.Collapsed;
                     MicrosoftAccountBorder.Visibility = Visibility.Visible;
                     AddAccountButton.IsEnabled = ShareResource.AuthenticationResponse != null;
                     break;
                 case "OfflineAccount":
-                    DisplayNameBox.Visibility = Visibility.Visible;
-                    MicrosoftAccountBorder.Visibility = Visibility.Collapsed;
+                case "离线账户":
+                    OfflineAccountBorder.Visibility = Visibility.Visible;
+                    MicrosoftAccountBorder.Visibility = Authlib_InjectorAccountBorder.Visibility = Visibility.Collapsed;
                     AddAccountButton.IsEnabled = true;
+                    break;
+                case "Authlib-injector Account":
+                case "外置登录账户":
+                    Authlib_InjectorAccountBorder.Visibility = Visibility.Visible;
+                    OfflineAccountBorder.Visibility = MicrosoftAccountBorder.Visibility = Visibility.Collapsed;
+                    AddAccountButton.IsEnabled = false;
                     break;
                 default:
                     break;
             }
+        }
+        #endregion
+
+        #region InputBox
+        private async void AuthenticateServerBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            AuthenticateServerLoading.Visibility = Visibility.Visible;
+            AuthenticateServerVerifyText.Text = string.Empty;
+
+            if (await HttpHelper.VerifyHttpConnect(sender.Text))
+            {
+                Authlib_InjectorAccountLoginControls.Visibility = Visibility.Visible;
+                AddAccountButton.IsEnabled = true;
+            }
+            else
+            {
+                Authlib_InjectorAccountLoginControls.Visibility = Visibility.Collapsed;
+                AuthenticateServerVerifyText.Text = "Invalid Authentication Server";
+                AddAccountButton.IsEnabled = false;
+            }
+
+            AuthenticateServerLoading.Visibility = Visibility.Collapsed;
+        }
+        #endregion
+
+        #region Drag/Drop
+        private async void UrlDrop(object sender, DragEventArgs e)
+        {
+            var def = e.GetDeferral();
+            var content = await e.DataView.GetTextAsync();
+
+            if (e.DataView.Contains(StandardDataFormats.Text) && content.StartsWith("authlib-injector:yggdrasil-server:"))
+            {
+                AuthenticateServerBox.Text = System.Net.WebUtility.UrlDecode(content.Replace("authlib-injector:yggdrasil-server:", string.Empty));
+
+                if ((string)AccountTypeBox.SelectedItem != "Authlib-injector Account" || (string)AccountTypeBox.SelectedItem != "外置登录账户")
+                    AccountTypeBox.SetSelectedItem(ShareResource.LanguageResource.AccountPage_DragSelectedItem);
+            }
+
+            def.Complete();
+        }
+
+        private async void UrlDragEnter(object sender, DragEventArgs e)
+        {
+            var deferral = e.GetDeferral();
+            var content = await e.DataView.GetTextAsync();
+
+            e.AcceptedOperation = (e.DataView.Contains(StandardDataFormats.Text) && content.StartsWith("authlib-injector:yggdrasil-server:")) ? DataPackageOperation.Copy : DataPackageOperation.None;
+
+            deferral.Complete();
         }
         #endregion
 
@@ -237,7 +332,7 @@ namespace FluentLauncher.Pages
                 LoginStateText.Text = string.Empty;
                 LoginStateButton.Visibility = Visibility.Collapsed;
 
-                _ = ShareResource.ShowInfoAsync("Authenticate Failed..", null, 3000, Microsoft.UI.Xaml.Controls.InfoBarSeverity.Error);
+                _ = ShareResource.ShowInfoAsync("Authenticate Failed..", "", 3000, InfoBarSeverity.Error);
             }
             else
             {
@@ -250,7 +345,6 @@ namespace FluentLauncher.Pages
             ShareResource.WebBrowserLoginCode = null;
             CancelAddAccountButton.IsEnabled = LoginButton.IsEnabled = AccountTypeBox.IsEnabled = true;
         }
-
         #endregion
     }
 }

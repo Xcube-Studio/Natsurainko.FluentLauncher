@@ -27,6 +27,13 @@
             Style="{ThemeResource BaseTextBlockStyle}"
             Text="Download Settings" />
         <ScrollViewer Grid.Row="2">
+            <ScrollViewer.Background>
+                <AcrylicBrush
+                    BackgroundSource="Backdrop"
+                    TintColor="Transparent"
+                    TintLuminosityOpacity="0"
+                    TintTransitionDuration="0" />
+            </ScrollViewer.Background>
             <StackPanel Margin="37.5,15,37.5,37.5" HorizontalAlignment="Stretch">
                 <StackPanel HorizontalAlignment="Stretch">
                     <TextBlock

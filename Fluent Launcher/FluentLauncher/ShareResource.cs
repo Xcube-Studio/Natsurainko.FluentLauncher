@@ -1,18 +1,22 @@
 ﻿using FluentCore.Service.Network;
 using FluentLauncher.Classes;
 using FluentLauncher.Models;
+using FluentLauncher.Pages;
 using FluentLauncher.Strings;
 using Microsoft.UI.Xaml.Controls;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
+using Windows.UI;
+using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -20,6 +24,10 @@ namespace FluentLauncher
 {
     public static class ShareResource
     {
+        public static MainContainer MainContainer { get; set; }
+
+        public static SettingPage SettingPage { get; set; }
+
         public static InfoBar InfoBar { get; set; }
 
         public static MojangNews News { get; set; }
@@ -44,6 +52,11 @@ namespace FluentLauncher
 
         public static string Version => string.Format($"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}.{Package.Current.Id.Version.Revision}");
 
+        public static JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings()
+        {
+            NullValueHandling = NullValueHandling.Ignore
+        };
+
         public static MinecraftProcessContainer MinecraftProcess { get; set; } = new MinecraftProcessContainer();
 
         public static List<string> DownloadSources
@@ -52,11 +65,9 @@ namespace FluentLauncher
         public static List<string> WorkingFolders
             => new List<string>() { "Standard [.minecraft/]", "Independent [.minecraft/versions/{version}/]" };
 
-        public static List<string> AccountTypes
-            => new List<string>() { "MicrosoftAccount", "OfflineAccount" };
+        public static List<string> AccountTypes = new List<string>() { "MicrosoftAccount", "OfflineAccount", "Authlib-injector Account" };
 
-        public static List<string> Languages
-            => new List<string>() { "中文", "English" };
+        public static List<string> Languages => new List<string>() { "中文", "English" };
 
         public static Task DownloadNews { get; set; }
 
@@ -71,23 +82,31 @@ namespace FluentLauncher
         #region Setttings
         private static List<MinecraftFolder> _minecraftFolders;
         public static List<MinecraftFolder> MinecraftFolders
-        { get => _minecraftFolders; set { _minecraftFolders = value; App.Settings.Values["MinecraftFolders"] = JsonConvert.SerializeObject(value); } }
+        { get => _minecraftFolders; set { _minecraftFolders = value; App.Settings.Values["MinecraftFolders"] = JsonConvert.SerializeObject(value, JsonSerializerSettings); } }
 
         private static MinecraftFolder _selectedFolder;
         public static MinecraftFolder SelectedFolder
-        { get => _selectedFolder; set { _selectedFolder = value; App.Settings.Values["SelectedFolder"] = JsonConvert.SerializeObject(value); } }
+        { get => _selectedFolder; set { _selectedFolder = value; App.Settings.Values["SelectedFolder"] = JsonConvert.SerializeObject(value, JsonSerializerSettings); } }
 
         private static List<JavaRuntimeEnvironment> _javaRuntimeEnvironments;
         public static List<JavaRuntimeEnvironment> JavaRuntimeEnvironments
-        { get => _javaRuntimeEnvironments; set { _javaRuntimeEnvironments = value; App.Settings.Values["JavaRuntimeEnvironments"] = JsonConvert.SerializeObject(value); } }
+        { get => _javaRuntimeEnvironments; set { _javaRuntimeEnvironments = value; App.Settings.Values["JavaRuntimeEnvironments"] = JsonConvert.SerializeObject(value, JsonSerializerSettings); } }
 
         private static JavaRuntimeEnvironment _selectedJava;
         public static JavaRuntimeEnvironment SelectedJava
-        { get => _selectedJava; set { _selectedJava = value; App.Settings.Values["SelectedJava"] = JsonConvert.SerializeObject(value); } }
+        { get => _selectedJava; set { _selectedJava = value; App.Settings.Values["SelectedJava"] = JsonConvert.SerializeObject(value, JsonSerializerSettings); } }
 
         private static MinecraftCoreInfo _selectedCore;
         public static MinecraftCoreInfo SelectedCore
-        { get => _selectedCore; set { _selectedCore = value; App.Settings.Values["SelectedCore"] = JsonConvert.SerializeObject(value); } }
+        { get => _selectedCore; set { _selectedCore = value; App.Settings.Values["SelectedCore"] = JsonConvert.SerializeObject(value, JsonSerializerSettings); } }
+
+        private static List<ThemeModel> _themes;
+        public static List<ThemeModel> Themes
+        { get => _themes; set { _themes = value; App.Settings.Values["Themes"] = JsonConvert.SerializeObject(value, JsonSerializerSettings); } }
+
+        private static ThemeModel _selectedTheme;
+        public static ThemeModel SelectedTheme
+        { get => _selectedTheme; set { _selectedTheme = value; App.Settings.Values["SelectedTheme"] = JsonConvert.SerializeObject(value, JsonSerializerSettings); } }
 
         private static int _maxMemory;
         public static int MaxMemory
@@ -123,11 +142,11 @@ namespace FluentLauncher
 
         private static List<MinecraftAccount> _minecraftAccounts;
         public static List<MinecraftAccount> MinecraftAccounts
-        { get => _minecraftAccounts; set { _minecraftAccounts = value; App.Settings.Values["MinecraftAccounts"] = JsonConvert.SerializeObject(value); } }
+        { get => _minecraftAccounts; set { _minecraftAccounts = value; App.Settings.Values["MinecraftAccounts"] = JsonConvert.SerializeObject(value, JsonSerializerSettings); } }
 
         private static MinecraftAccount _selectedAccount;
         public static MinecraftAccount SelectedAccount
-        { get => _selectedAccount; set { _selectedAccount = value; App.Settings.Values["SelectedAccount"] = JsonConvert.SerializeObject(value); } }
+        { get => _selectedAccount; set { _selectedAccount = value; App.Settings.Values["SelectedAccount"] = JsonConvert.SerializeObject(value, JsonSerializerSettings); } }
 
         private static bool _mainPageNewsVisibility;
         public static bool MainPageNewsVisibility

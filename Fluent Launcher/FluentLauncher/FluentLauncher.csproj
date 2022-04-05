@@ -127,6 +127,7 @@
     <Compile Include="Classes\MinecraftProcessContainer.cs" />
     <Compile Include="Classes\SystemRuntimeInfo.cs" />
     <Compile Include="Converters\AccountTypeToVisibilityConverter.cs" />
+    <Compile Include="Converters\ApplicationThemeToStringConverter.cs" />
     <Compile Include="Converters\AppTitleVisibilityConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\ColorConverter.cs" />
@@ -154,6 +155,8 @@
     <Compile Include="Models\MinecraftFolder.cs" />
     <Compile Include="Models\MojangNews.cs" />
     <Compile Include="Models\ProcessOutput.cs" />
+    <Compile Include="Models\ThemeModel.cs" />
+    <Compile Include="Models\UniversalBrush.cs" />
     <Compile Include="Models\VersionManifestModels.cs" />
     <Compile Include="Pages\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
@@ -190,6 +193,9 @@
     </Compile>
     <Compile Include="Pages\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ThemePage.xaml.cs">
+      <DependentUpon>ThemePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\WebBrowser.xaml.cs">
       <DependentUpon>WebBrowser.xaml</DependentUpon>
@@ -228,6 +234,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.13</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI">
+      <Version>7.1.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.8.0-prerelease.220118001</Version>
@@ -305,6 +314,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\SettingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ThemePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

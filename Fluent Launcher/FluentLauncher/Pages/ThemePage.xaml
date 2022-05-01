@@ -7,6 +7,7 @@
     xmlns:local="using:FluentLauncher.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:FluentLauncher.Models"
+    xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
     Background="Transparent"
     Loaded="Page_Loaded"
     NavigationCacheMode="Required"
@@ -37,14 +38,39 @@
                     <Grid HorizontalAlignment="Right">
                         <StackPanel Name="Tools" Visibility="Collapsed">
                             <Button
+                                Width="16"
+                                Height="16"
+                                Margin="5"
+                                Padding="0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
-                                BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}"
-                                CornerRadius="0,5,0,0">
+                                CornerRadius="8"
+                                IsEnabled="{Binding Deletable}">
                                 <Button.Background>
-                                    <AcrylicBrush BackgroundSource="Backdrop" TintColor="Transparent" />
+                                    <AcrylicBrush
+                                        BackgroundSource="Backdrop"
+                                        TintColor="Red"
+                                        TintLuminosityOpacity="0.25" />
                                 </Button.Background>
-                                <FontIcon FontSize="12" Glyph="&#xE70F;" />
+                                <Button.Flyout>
+                                    <Flyout Placement="BottomEdgeAlignedRight">
+                                        <StackPanel>
+                                            <TextBlock
+                                                x:Uid="ThemePage_ContentDialog_Flyout_1"
+                                                MaxWidth="250"
+                                                FontWeight="SemiBold"
+                                                Text="Are you sure you want to delete this theme? Deleted cannot be recovered! "
+                                                TextWrapping="Wrap" />
+                                            <Button
+                                                x:Uid="ThemePage_ContentDialog_Flyout_1_Button"
+                                                Margin="0,10,0,0"
+                                                Click="Delete_Click"
+                                                Content="Delete"
+                                                FontWeight="SemiBold" />
+                                        </StackPanel>
+                                    </Flyout>
+                                </Button.Flyout>
+                                <FontIcon FontSize="6" Glyph="&#xE8BB;" />
                             </Button>
                         </StackPanel>
                         <Border
@@ -86,6 +112,441 @@
                 </Grid>
             </Border>
         </DataTemplate>
+        <Style x:Key="TeachingTipStyle" TargetType="controls:TeachingTip">
+            <Setter Property="Background" Value="{ThemeResource TeachingTipBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{ThemeResource TeachingTipForegroundBrush}" />
+            <Setter Property="BorderBrush" Value="{ThemeResource TeachingTipBorderBrush}" />
+            <Setter Property="BorderThickness" Value="{ThemeResource TeachingTipContentBorderThicknessUntargeted}" />
+            <Setter Property="ActionButtonStyle" Value="{ThemeResource DefaultButtonStyle}" />
+            <Setter Property="CloseButtonStyle" Value="{ThemeResource DefaultButtonStyle}" />
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="controls:TeachingTip">
+                        <Border
+                            x:Name="Container"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Background="Transparent">
+                            <Grid
+                                MinWidth="{ThemeResource TeachingTipMinWidth}"
+                                MinHeight="{ThemeResource TeachingTipMinHeight}"
+                                MaxWidth="{ThemeResource TeachingTipMaxWidth}"
+                                MaxHeight="{ThemeResource TeachingTipMaxHeight}"
+                                AutomationProperties.Name="{TemplateBinding AutomationProperties.Name}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{StaticResource TeachingTipTailShortSideLength}" />
+                                    <ColumnDefinition Width="{StaticResource TeachingTipTailMargin}" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="{StaticResource TeachingTipTailMargin}" />
+                                    <ColumnDefinition Width="{StaticResource TeachingTipTailShortSideLength}" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="{StaticResource TeachingTipTailShortSideLength}" />
+                                    <RowDefinition Height="{StaticResource TeachingTipTailMargin}" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="{StaticResource TeachingTipTailMargin}" />
+                                    <RowDefinition Height="{StaticResource TeachingTipTailShortSideLength}" />
+                                </Grid.RowDefinitions>
+                                <Grid
+                                    x:Name="TailOcclusionGrid"
+                                    Grid.RowSpan="5"
+                                    Grid.ColumnSpan="5"
+                                    MinWidth="{ThemeResource TeachingTipMinWidth}"
+                                    MinHeight="{ThemeResource TeachingTipMinHeight}"
+                                    MaxWidth="{ThemeResource TeachingTipMaxWidth}"
+                                    MaxHeight="{ThemeResource TeachingTipMaxHeight}"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="{StaticResource TeachingTipTailShortSideLength}" />
+                                        <ColumnDefinition Width="{StaticResource TeachingTipTailMargin}" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="{StaticResource TeachingTipTailMargin}" />
+                                        <ColumnDefinition Width="{StaticResource TeachingTipTailShortSideLength}" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="{StaticResource TeachingTipTailShortSideLength}" />
+                                        <RowDefinition Height="{StaticResource TeachingTipTailMargin}" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="{StaticResource TeachingTipTailMargin}" />
+                                        <RowDefinition Height="{StaticResource TeachingTipTailShortSideLength}" />
+                                    </Grid.RowDefinitions>
+                                    <Grid
+                                        x:Name="ContentRootGrid"
+                                        Grid.Row="1"
+                                        Grid.RowSpan="3"
+                                        Grid.Column="1"
+                                        Grid.ColumnSpan="3"
+                                        AutomationProperties.LandmarkType="Custom"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="{ThemeResource OverlayCornerRadius}"
+                                        FlowDirection="{TemplateBinding FlowDirection}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Border
+                                            x:Name="HeroContentBorder"
+                                            Grid.Row="0"
+                                            Background="{TemplateBinding Background}"
+                                            Child="{TemplateBinding HeroContent}" />
+                                        <Grid x:Name="NonHeroContentRootGrid" Grid.Row="1">
+                                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                                <StackPanel Margin="{StaticResource TeachingTipContentMargin}">
+                                                    <Grid Grid.Row="0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <ContentPresenter
+                                                            x:Name="IconPresenter"
+                                                            Grid.Column="0"
+                                                            Foreground="{TemplateBinding Foreground}">
+                                                            <Border Child="{Binding TemplateSettings.IconElement, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                                        </ContentPresenter>
+                                                        <StackPanel x:Name="TitlesStackPanel" Grid.Column="1">
+                                                            <TextBlock
+                                                                x:Name="TitleTextBlock"
+                                                                Grid.Column="0"
+                                                                FontFamily="{TemplateBinding FontFamily}"
+                                                                FontWeight="SemiBold"
+                                                                Foreground="{ThemeResource TeachingTipTitleForegroundBrush}"
+                                                                Text="{TemplateBinding Title}"
+                                                                TextWrapping="WrapWholeWords"
+                                                                Visibility="Collapsed" />
+                                                            <TextBlock
+                                                                x:Name="SubtitleTextBlock"
+                                                                Grid.Row="1"
+                                                                FontFamily="{TemplateBinding FontFamily}"
+                                                                FontWeight="SemiBold"
+                                                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                                Text="{TemplateBinding Subtitle}"
+                                                                TextWrapping="WrapWholeWords"
+                                                                Visibility="Collapsed" />
+                                                        </StackPanel>
+                                                    </Grid>
+                                                    <ContentPresenter
+                                                        x:Name="MainContentPresenter"
+                                                        Grid.Row="1"
+                                                        Background="{TemplateBinding Background}"
+                                                        Content="{TemplateBinding Content}"
+                                                        FontFamily="{TemplateBinding FontFamily}"
+                                                        FontSize="{TemplateBinding FontSize}"
+                                                        FontStretch="{TemplateBinding FontStretch}"
+                                                        FontStyle="{TemplateBinding FontStyle}"
+                                                        FontWeight="{TemplateBinding FontWeight}"
+                                                        Foreground="{TemplateBinding Foreground}" />
+                                                    <Grid Grid.Row="2">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <Button
+                                                            x:Name="ActionButton"
+                                                            HorizontalAlignment="Stretch"
+                                                            Command="{TemplateBinding ActionButtonCommand}"
+                                                            CommandParameter="{TemplateBinding ActionButtonCommandParameter}"
+                                                            Style="{TemplateBinding ActionButtonStyle}">
+                                                            <ContentPresenter Content="{TemplateBinding ActionButtonContent}" TextWrapping="WrapWholeWords" />
+                                                        </Button>
+                                                        <Button
+                                                            x:Name="CloseButton"
+                                                            Grid.Column="1"
+                                                            HorizontalAlignment="Stretch"
+                                                            Command="{TemplateBinding CloseButtonCommand}"
+                                                            CommandParameter="{TemplateBinding CloseButtonCommandParameter}"
+                                                            Style="{TemplateBinding CloseButtonStyle}">
+                                                            <ContentPresenter Content="{TemplateBinding CloseButtonContent}" TextWrapping="WrapWholeWords" />
+                                                        </Button>
+                                                    </Grid>
+                                                </StackPanel>
+                                            </ScrollViewer>
+                                            <Button x:Name="AlternateCloseButton" Style="{ThemeResource AlternateCloseButtonStyle}" />
+                                        </Grid>
+                                    </Grid>
+                                    <Polygon
+                                        x:Name="TailPolygon"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        Fill="{TemplateBinding Background}"
+                                        Stroke="{TemplateBinding BorderBrush}"
+                                        StrokeThickness="{StaticResource TeachingTipBorderThickness}" />
+                                </Grid>
+                            </Grid>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="LightDismissStates">
+                                    <VisualState x:Name="LightDismiss">
+                                        <VisualState.Setters>
+                                            <Setter Target="TailPolygon.Fill" Value="{ThemeResource TeachingTipTransientBackground}" />
+                                            <Setter Target="ContentRootGrid.Background" Value="{ThemeResource TeachingTipTransientBackground}" />
+                                            <Setter Target="MainContentPresenter.Background" Value="{ThemeResource TeachingTipTransientBackground}" />
+                                            <Setter Target="HeroContentBorder.Background" Value="{ThemeResource TeachingTipTransientBackground}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="NormalDismiss" />
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="ButtonsStates">
+                                    <VisualState x:Name="NoButtonsVisible">
+                                        <VisualState.Setters>
+                                            <Setter Target="CloseButton.Visibility" Value="Collapsed" />
+                                            <Setter Target="ActionButton.Visibility" Value="Collapsed" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="ActionButtonVisible">
+                                        <VisualState.Setters>
+                                            <Setter Target="CloseButton.Visibility" Value="Collapsed" />
+                                            <Setter Target="ActionButton.Visibility" Value="Visible" />
+                                            <Setter Target="ActionButton.(Grid.ColumnSpan)" Value="2" />
+                                            <Setter Target="ActionButton.Margin" Value="{ThemeResource TeachingTipButtonPanelMargin}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="CloseButtonVisible">
+                                        <VisualState.Setters>
+                                            <Setter Target="CloseButton.Visibility" Value="Visible" />
+                                            <Setter Target="CloseButton.Margin" Value="{ThemeResource TeachingTipButtonPanelMargin}" />
+                                            <Setter Target="CloseButton.(Grid.Column)" Value="0" />
+                                            <Setter Target="CloseButton.(Grid.ColumnSpan)" Value="2" />
+                                            <Setter Target="ActionButton.Visibility" Value="Collapsed" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="BothButtonsVisible">
+                                        <VisualState.Setters>
+                                            <Setter Target="CloseButton.Visibility" Value="Visible" />
+                                            <Setter Target="CloseButton.Margin" Value="{ThemeResource TeachingTipRightButtonMargin}" />
+                                            <Setter Target="ActionButton.Visibility" Value="Visible" />
+                                            <Setter Target="ActionButton.(Grid.Column)" Value="0" />
+                                            <Setter Target="ActionButton.Margin" Value="{ThemeResource TeachingTipLeftButtonMargin}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="ContentStates">
+                                    <VisualState x:Name="Content">
+                                        <VisualState.Setters>
+                                            <Setter Target="MainContentPresenter.Margin" Value="{StaticResource TeachingTipMainContentPresentMargin}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="NoContent">
+                                        <VisualState.Setters>
+                                            <Setter Target="MainContentPresenter.Margin" Value="{StaticResource TeachingTipMainContentAbsentMargin}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CloseButtonLocations">
+                                    <VisualState x:Name="HeaderCloseButton">
+                                        <VisualState.Setters>
+                                            <Setter Target="TitlesStackPanel.Margin" Value="{StaticResource TeachingTipTitleStackPanelMarginWithHeaderCloseButton}" />
+                                            <Setter Target="AlternateCloseButton.Visibility" Value="Visible" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="FooterCloseButton">
+                                        <VisualState.Setters>
+                                            <Setter Target="TitlesStackPanel.Margin" Value="{StaticResource TeachingTipTitleStackPanelMarginWithFooterCloseButton}" />
+                                            <Setter Target="AlternateCloseButton.Visibility" Value="Collapsed" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="IconStates">
+                                    <VisualState x:Name="Icon">
+                                        <VisualState.Setters>
+                                            <Setter Target="IconPresenter.Margin" Value="{StaticResource TeachingTipIconPresenterMarginWithIcon}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="NoIcon">
+                                        <VisualState.Setters>
+                                            <Setter Target="IconPresenter.Margin" Value="{StaticResource TeachingTipIconPresenterMarginWithoutIcon}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="HeroContentPlacementStates">
+                                    <VisualState x:Name="HeroContentTop">
+                                        <VisualState.Setters>
+                                            <Setter Target="HeroContentBorder.(Grid.Row)" Value="0" />
+                                            <Setter Target="HeroContentBorder.CornerRadius" Value="{Binding Converter={StaticResource TopCornerRadiusFilterConverter}, FallbackValue=0, Source={ThemeResource OverlayCornerRadius}}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="HeroContentBottom">
+                                        <VisualState.Setters>
+                                            <Setter Target="HeroContentBorder.(Grid.Row)" Value="2" />
+                                            <Setter Target="HeroContentBorder.CornerRadius" Value="{Binding Converter={StaticResource BottomCornerRadiusFilterConverter}, FallbackValue=0, Source={ThemeResource OverlayCornerRadius}}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="PlacementStates">
+                                    <VisualState x:Name="Top">
+                                        <VisualState.Setters>
+                                            <Setter Target="TailPolygon.Visibility" Value="Visible" />
+                                            <Setter Target="TailPolygon.Points" Value="0,0 10,10, 20,0" />
+                                            <Setter Target="TailPolygon.(Grid.Row)" Value="4" />
+                                            <Setter Target="TailPolygon.(Grid.Column)" Value="2" />
+                                            <Setter Target="TailPolygon.HorizontalAlignment" Value="Center" />
+                                            <Setter Target="TailPolygon.VerticalAlignment" Value="Bottom" />
+                                            <Setter Target="TailPolygon.Margin" Value="{StaticResource TeachingTipTailPolygonMarginTop}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="Bottom">
+                                        <VisualState.Setters>
+                                            <Setter Target="TailPolygon.Visibility" Value="Visible" />
+                                            <Setter Target="TailPolygon.Points" Value="0,10 10,0 20,10" />
+                                            <Setter Target="TailPolygon.(Grid.Row)" Value="0" />
+                                            <Setter Target="TailPolygon.(Grid.Column)" Value="2" />
+                                            <Setter Target="TailPolygon.HorizontalAlignment" Value="Center" />
+                                            <Setter Target="TailPolygon.VerticalAlignment" Value="Top" />
+                                            <Setter Target="TailPolygon.Margin" Value="{StaticResource TeachingTipTailPolygonMarginBottom}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="Left">
+                                        <VisualState.Setters>
+                                            <Setter Target="TailPolygon.Visibility" Value="Visible" />
+                                            <Setter Target="TailPolygon.Points" Value="0,0 10,10 0,20" />
+                                            <Setter Target="TailPolygon.(Grid.Row)" Value="2" />
+                                            <Setter Target="TailPolygon.(Grid.Column)" Value="4" />
+                                            <Setter Target="TailPolygon.HorizontalAlignment" Value="Right" />
+                                            <Setter Target="TailPolygon.VerticalAlignment" Value="Center" />
+                                            <Setter Target="TailPolygon.Margin" Value="{StaticResource TeachingTipTailPolygonMarginLeft}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="Right">
+                                        <VisualState.Setters>
+                                            <Setter Target="TailPolygon.Visibility" Value="Visible" />
+                                            <Setter Target="TailPolygon.Points" Value="10,0 0,10 10,20" />
+                                            <Setter Target="TailPolygon.(Grid.Row)" Value="2" />
+                                            <Setter Target="TailPolygon.(Grid.Column)" Value="0" />
+                                            <Setter Target="TailPolygon.HorizontalAlignment" Value="Left" />
+                                            <Setter Target="TailPolygon.VerticalAlignment" Value="Center" />
+                                            <Setter Target="TailPolygon.Margin" Value="{StaticResource TeachingTipTailPolygonMarginRight}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="TopRight">
+                                        <VisualState.Setters>
+                                            <Setter Target="TailPolygon.Visibility" Value="Visible" />
+                                            <Setter Target="TailPolygon.Points" Value="0,0 10,10 20,0" />
+                                            <Setter Target="TailPolygon.(Grid.Row)" Value="4" />
+                                            <Setter Target="TailPolygon.(Grid.Column)" Value="2" />
+                                            <Setter Target="TailPolygon.HorizontalAlignment" Value="Left" />
+                                            <Setter Target="TailPolygon.VerticalAlignment" Value="Bottom" />
+                                            <Setter Target="TailPolygon.Margin" Value="{StaticResource TeachingTipTailPolygonMarginTop}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="TopLeft">
+                                        <VisualState.Setters>
+                                            <Setter Target="TailPolygon.Visibility" Value="Visible" />
+                                            <Setter Target="TailPolygon.Points" Value="0,0 10,10 20,0" />
+                                            <Setter Target="TailPolygon.(Grid.Row)" Value="4" />
+                                            <Setter Target="TailPolygon.(Grid.Column)" Value="2" />
+                                            <Setter Target="TailPolygon.HorizontalAlignment" Value="Right" />
+                                            <Setter Target="TailPolygon.VerticalAlignment" Value="Bottom" />
+                                            <Setter Target="TailPolygon.Margin" Value="{StaticResource TeachingTipTailPolygonMarginTop}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="BottomRight">
+                                        <VisualState.Setters>
+                                            <Setter Target="TailPolygon.Visibility" Value="Visible" />
+                                            <Setter Target="TailPolygon.Points" Value="0,10 10,0 20,10" />
+                                            <Setter Target="TailPolygon.(Grid.Row)" Value="0" />
+                                            <Setter Target="TailPolygon.(Grid.Column)" Value="2" />
+                                            <Setter Target="TailPolygon.HorizontalAlignment" Value="Left" />
+                                            <Setter Target="TailPolygon.VerticalAlignment" Value="Top" />
+                                            <Setter Target="TailPolygon.Margin" Value="{StaticResource TeachingTipTailPolygonMarginBottom}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="BottomLeft">
+                                        <VisualState.Setters>
+                                            <Setter Target="TailPolygon.Visibility" Value="Visible" />
+                                            <Setter Target="TailPolygon.Points" Value="0,10 10,0 20,10" />
+                                            <Setter Target="TailPolygon.(Grid.Row)" Value="0" />
+                                            <Setter Target="TailPolygon.(Grid.Column)" Value="2" />
+                                            <Setter Target="TailPolygon.HorizontalAlignment" Value="Right" />
+                                            <Setter Target="TailPolygon.VerticalAlignment" Value="Top" />
+                                            <Setter Target="TailPolygon.Margin" Value="{StaticResource TeachingTipTailPolygonMarginBottom}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="LeftTop">
+                                        <VisualState.Setters>
+                                            <Setter Target="TailPolygon.Visibility" Value="Visible" />
+                                            <Setter Target="TailPolygon.Points" Value="0,0 10,10 0,20" />
+                                            <Setter Target="TailPolygon.(Grid.Row)" Value="2" />
+                                            <Setter Target="TailPolygon.(Grid.Column)" Value="4" />
+                                            <Setter Target="TailPolygon.HorizontalAlignment" Value="Right" />
+                                            <Setter Target="TailPolygon.VerticalAlignment" Value="Bottom" />
+                                            <Setter Target="TailPolygon.Margin" Value="{StaticResource TeachingTipTailPolygonMarginLeft}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="LeftBottom">
+                                        <VisualState.Setters>
+                                            <Setter Target="TailPolygon.Visibility" Value="Visible" />
+                                            <Setter Target="TailPolygon.Points" Value="0,0 10,10 0,20" />
+                                            <Setter Target="TailPolygon.(Grid.Row)" Value="2" />
+                                            <Setter Target="TailPolygon.(Grid.Column)" Value="4" />
+                                            <Setter Target="TailPolygon.HorizontalAlignment" Value="Right" />
+                                            <Setter Target="TailPolygon.VerticalAlignment" Value="Top" />
+                                            <Setter Target="TailPolygon.Margin" Value="{StaticResource TeachingTipTailPolygonMarginLeft}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="RightTop">
+                                        <VisualState.Setters>
+                                            <Setter Target="TailPolygon.Visibility" Value="Visible" />
+                                            <Setter Target="TailPolygon.Points" Value="10,0 0,10 10,20" />
+                                            <Setter Target="TailPolygon.(Grid.Row)" Value="2" />
+                                            <Setter Target="TailPolygon.(Grid.Column)" Value="0" />
+                                            <Setter Target="TailPolygon.HorizontalAlignment" Value="Left" />
+                                            <Setter Target="TailPolygon.VerticalAlignment" Value="Bottom" />
+                                            <Setter Target="TailPolygon.Margin" Value="{StaticResource TeachingTipTailPolygonMarginRight}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="RightBottom">
+                                        <VisualState.Setters>
+                                            <Setter Target="TailPolygon.Visibility" Value="Visible" />
+                                            <Setter Target="TailPolygon.Points" Value="10,0 0,10 10,20" />
+                                            <Setter Target="TailPolygon.(Grid.Row)" Value="2" />
+                                            <Setter Target="TailPolygon.(Grid.Column)" Value="0" />
+                                            <Setter Target="TailPolygon.HorizontalAlignment" Value="Left" />
+                                            <Setter Target="TailPolygon.VerticalAlignment" Value="Top" />
+                                            <Setter Target="TailPolygon.Margin" Value="{StaticResource TeachingTipTailPolygonMarginRight}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="Center">
+                                        <VisualState.Setters>
+                                            <Setter Target="TailPolygon.Visibility" Value="Visible" />
+                                            <Setter Target="TailPolygon.Points" Value="0,0 10,10, 20,0" />
+                                            <Setter Target="TailPolygon.(Grid.Row)" Value="4" />
+                                            <Setter Target="TailPolygon.(Grid.Column)" Value="2" />
+                                            <Setter Target="TailPolygon.HorizontalAlignment" Value="Center" />
+                                            <Setter Target="TailPolygon.VerticalAlignment" Value="Bottom" />
+                                            <Setter Target="TailPolygon.Margin" Value="{StaticResource TeachingTipTailPolygonMarginTop}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="Untargeted">
+                                        <VisualState.Setters>
+                                            <Setter Target="TailPolygon.Visibility" Value="Collapsed" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="TitleBlockStates">
+                                    <VisualState x:Name="ShowTitleTextBlock">
+                                        <VisualState.Setters>
+                                            <Setter Target="TitleTextBlock.Visibility" Value="Visible" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="CollapseTitleTextBlock" />
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="SubtitleBlockStates">
+                                    <VisualState x:Name="ShowSubtitleTextBlock">
+                                        <VisualState.Setters>
+                                            <Setter Target="SubtitleTextBlock.Visibility" Value="Visible" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="CollapseSubtitleTextBlock" />
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 
     <Grid>
@@ -96,6 +557,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.RowSpan="2" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" />
         <TextBlock
+            x:Uid="ThemePage_Title"
             Grid.Row="1"
             Height="32"
             Margin="37.5,0"
@@ -114,12 +576,9 @@
         <GridView
             x:Name="ContentGridView"
             Grid.Row="3"
-            Margin="37.5,15,37.5,37.5"
+            Padding="37.5,15,37.5,37.5"
             ItemTemplate="{ThemeResource GridViewItemTemplate}">
-            <GridViewItem
-                HorizontalContentAlignment="Stretch"
-                VerticalContentAlignment="Stretch"
-                IsEnabled="False">
+            <GridViewItem HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                 <Border
                     Width="225"
                     Height="120"
@@ -133,6 +592,7 @@
                             FontSize="36"
                             Glyph="&#xE710;" />
                         <TextBlock
+                            x:Uid="ThemePage_GridViewItem_Add"
                             Margin="0,10,0,0"
                             HorizontalAlignment="Center"
                             FontSize="16"
@@ -142,5 +602,230 @@
                 </Border>
             </GridViewItem>
         </GridView>
+        <Grid Grid.RowSpan="3">
+            <controls:TeachingTip
+                x:Uid="ThemePage_TeachingTip_1"
+                Title="Experimental Feature"
+                d:IsHidden="True"
+                IsOpen="True"
+                Style="{StaticResource TeachingTipStyle}"
+                Subtitle="Real-time subject switching can cause programs to be very unstable. We recommend restarting the program after switching themes." />
+            <controls:TeachingTip
+                x:Name="ChangeTip"
+                x:Uid="ThemePage_TeachingTip_2"
+                Title="Experimental Feature"
+                d:IsHidden="True"
+                IsOpen="False"
+                Style="{StaticResource TeachingTipStyle}"
+                Subtitle="For program stability consideration, we have turned off the function of switching themes in real time, please restart the program to update the theme" />
+            <ContentDialog
+                x:Name="AddDialog"
+                d:IsHidden="True"
+                Background="{ThemeResource SystemControlAcrylicElementBrush}">
+                <StackPanel Width="480">
+                    <TextBlock
+                        x:Uid="ThemePage_ContentDialog_Title"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        FontSize="18"
+                        Style="{ThemeResource BaseTextBlockStyle}"
+                        Text="Add New Theme" />
+                    <AutoSuggestBox
+                        x:Name="NameBox"
+                        x:Uid="ThemePage_ContentDialog_NameBox"
+                        Margin="0,10,0,0"
+                        FontSize="12"
+                        PlaceholderText="name">
+                        <AutoSuggestBox.Header>
+                            <TextBlock
+                                x:Uid="ThemePage_ContentDialog_NameBox_Header"
+                                FontSize="12"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Style="{ThemeResource BodyTextBlockStyle}"
+                                Text="Name" />
+                        </AutoSuggestBox.Header>
+                    </AutoSuggestBox>
+                    <StackPanel Margin="0,10,0,0">
+                        <TextBlock
+                            x:Uid="ThemePage_ContentDialog_Color"
+                            FontSize="12"
+                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                            Style="{ThemeResource BodyTextBlockStyle}"
+                            Text="Theme Color" />
+                        <controls:SplitButton
+                            Height="28"
+                            Margin="0,8,0,0"
+                            Padding="0"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            CornerRadius="5">
+                            <Border
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                CornerRadius="4,0,0,4">
+                                <Border.Background>
+                                    <SolidColorBrush Color="{Binding ElementName=ColorPicker, Path=Color}" />
+                                </Border.Background>
+                            </Border>
+                            <controls:SplitButton.Flyout>
+                                <Flyout Placement="Full">
+                                    <toolkit:ColorPicker x:Name="ColorPicker" />
+                                </Flyout>
+                            </controls:SplitButton.Flyout>
+                        </controls:SplitButton>
+                    </StackPanel>
+                    <ComboBox
+                        x:Name="ColorModeBox"
+                        x:Uid="ThemePage_ContentDialog_ColorModeBox"
+                        Height="53.6"
+                        Margin="0,10,0,0"
+                        HorizontalAlignment="Stretch"
+                        FontSize="12"
+                        PlaceholderText="type"
+                        SelectedIndex="0"
+                        Visibility="Visible">
+                        <ComboBox.Header>
+                            <TextBlock
+                                x:Uid="ThemePage_ContentDialog_ColorModeBox_Header"
+                                FontSize="12"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Style="{ThemeResource BodyTextBlockStyle}"
+                                Text="Color Mode" />
+                        </ComboBox.Header>
+                    </ComboBox>
+                    <ComboBox
+                        x:Name="BackgroundTypeBox"
+                        x:Uid="ThemePage_ContentDialog_BackgroundTypeBox"
+                        Height="53.6"
+                        Margin="0,10,0,0"
+                        HorizontalAlignment="Stretch"
+                        FontSize="12"
+                        PlaceholderText="type"
+                        SelectedIndex="0"
+                        SelectionChanged="BackgroundTypeBox_SelectionChanged"
+                        Visibility="Visible">
+                        <ComboBox.Header>
+                            <TextBlock
+                                x:Uid="ThemePage_ContentDialog_BackgroundTypeBox_Header"
+                                FontSize="12"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Style="{ThemeResource BodyTextBlockStyle}"
+                                Text="Background Type" />
+                        </ComboBox.Header>
+                    </ComboBox>
+                    <AutoSuggestBox
+                        x:Name="FilePathBox"
+                        x:Uid="ThemePage_ContentDialog_FilePathBox"
+                        Margin="0,10,0,0"
+                        FontSize="12"
+                        PlaceholderText="picture, video file path"
+                        QuerySubmitted="FilePathBox_QuerySubmitted">
+                        <AutoSuggestBox.QueryIcon>
+                            <FontIcon FontSize="16" Glyph="&#xE8E5;" />
+                        </AutoSuggestBox.QueryIcon>
+                        <AutoSuggestBox.Header>
+                            <TextBlock
+                                x:Uid="ThemePage_ContentDialog_FilePathBox_Header"
+                                FontSize="12"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Style="{ThemeResource BodyTextBlockStyle}"
+                                Text="Picture / Video file path" />
+                        </AutoSuggestBox.Header>
+                    </AutoSuggestBox>
+                    <Grid x:Name="AcrylicBrushArugmentsGrid" Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <controls:NumberBox
+                                x:Name="TintLuminosityOpacityBox"
+                                x:Uid="ThemePage_ContentDialog_TintLuminosityOpacityBox"
+                                FontSize="12"
+                                PlaceholderText="decimal">
+                                <controls:NumberBox.Header>
+                                    <TextBlock
+                                        x:Uid="ThemePage_ContentDialog_TintLuminosityOpacityBox_Header"
+                                        FontSize="12"
+                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                        Style="{ThemeResource BodyTextBlockStyle}"
+                                        Text="Tint Luminosity Opacity" />
+                                </controls:NumberBox.Header>
+                            </controls:NumberBox>
+                        </Grid>
+                        <Grid Grid.Column="2">
+                            <controls:NumberBox
+                                x:Name="TintOpacityBox"
+                                x:Uid="ThemePage_ContentDialog_TintOpacityBox"
+                                FontSize="12"
+                                PlaceholderText="decimal">
+                                <controls:NumberBox.Header>
+                                    <TextBlock
+                                        x:Uid="ThemePage_ContentDialog_TintOpacityBox_Header"
+                                        FontSize="12"
+                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                        Style="{ThemeResource BodyTextBlockStyle}"
+                                        Text="Tint Opacity" />
+                                </controls:NumberBox.Header>
+                            </controls:NumberBox>
+                        </Grid>
+                    </Grid>
+
+                    <Grid>
+                        <StackPanel
+                            Grid.Column="1"
+                            Margin="0,15,0,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                            <Button
+                                Width="75"
+                                Height="31"
+                                Background="{ThemeResource SystemAccentColor}"
+                                Click="Add_Click"
+                                Style="{ThemeResource AccentButtonStyle}">
+                                <TextBlock
+                                    x:Uid="ContentDialog_Add"
+                                    Foreground="White"
+                                    Style="{ThemeResource BaseTextBlockStyle}"
+                                    Text="Add" />
+                            </Button>
+                            <Button
+                                Width="75"
+                                Height="31"
+                                Margin="10,0,0,0"
+                                Click="Cancel_Click">
+                                <TextBlock
+                                    x:Uid="ContentDialog_Cancel"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource BaseTextBlockStyle}"
+                                    Text="Cancel" />
+                            </Button>
+                        </StackPanel>
+                        <StackPanel
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Orientation="Horizontal">
+                            <HyperlinkButton Padding="1" IsEnabled="False">
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon
+                                        Margin="5,0"
+                                        FontSize="12"
+                                        Glyph="&#xE898;" />
+                                    <TextBlock
+                                        x:Uid="ThemePage_ContentDialog_HyperlinkButton_Text"
+                                        Margin="0,0,5,0"
+                                        VerticalAlignment="Center"
+                                        FontSize="12"
+                                        Text="Import themes" />
+                                </StackPanel>
+                            </HyperlinkButton>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </ContentDialog>
+        </Grid>
     </Grid>
 </Page>

@@ -57,7 +57,7 @@ namespace FluentLauncher.Pages
 
         private void TryLogin(object sender, RoutedEventArgs e)
         {
-            ((Frame)Window.Current.Content).Navigate(typeof(WebBrowser));
+            ShareResource.MainContainer.ContentFrame.Navigate(typeof(WebBrowser));
             AddAccountDialog.Hide();
         }
 

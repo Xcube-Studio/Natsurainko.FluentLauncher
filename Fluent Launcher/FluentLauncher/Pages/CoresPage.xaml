@@ -147,12 +147,16 @@
                             Margin="10,0,0,0"
                             Background="Transparent"
                             BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}"
-                            Click="OptionsButton_Click"
                             Style="{ThemeResource ButtonRevealStyle}">
                             <TextBlock
                                 FontSize="12"
                                 Style="{ThemeResource BaseTextBlockStyle}"
                                 Text="Options" />
+                            <Button.Flyout>
+                                <Flyout>
+                                    <TextBlock FontWeight="SemiBold" Text="In development...stay tuned" />
+                                </Flyout>
+                            </Button.Flyout>
                         </Button>
                         <Button
                             Height="31"

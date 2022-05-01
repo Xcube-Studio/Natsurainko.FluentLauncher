@@ -152,6 +152,22 @@ namespace FluentLauncher.DesktopBridge
                 case "FolderExist":
                     response.Add("Response", Directory.Exists((string)args.Request.Message["Message"]).ToString());
                     break;
+                case "CopyToFolder":
+                    string CopyToFolder()
+                    {
+                        var file = new FileInfo((string)args.Request.Message["File"]);
+                        var tofile = new FileInfo((string)args.Request.Message["ToFile"]);
+
+                        if (!tofile.Directory.Exists)
+                            tofile.Directory.Create();
+
+                        file.CopyTo((string)args.Request.Message["ToFile"]);
+
+                        return File.Exists((string)args.Request.Message["ToFile"]).ToString();
+                    };
+
+                    response.Add("Response", CopyToFolder());
+                    break;
                 default:
                     break;
             }

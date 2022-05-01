@@ -591,28 +591,28 @@
   <data name="MainContainer_NavigationViewItem6.FontSize" xml:space="preserve">
     <value>13</value>
   </data>
-  <data name="MainPage_ContentDialog_Title.Text" xml:space="preserve">
+  <data name="HomePage_ContentDialog_Title.Text" xml:space="preserve">
     <value>正在启动游戏</value>
   </data>
-  <data name="MainPage_LaunchButton_SubTitle.Text" xml:space="preserve">
+  <data name="HomePage_LaunchButton_SubTitle.Text" xml:space="preserve">
     <value>未选中核心</value>
   </data>
-  <data name="MainPage_LaunchButton_Title.Text" xml:space="preserve">
+  <data name="HomePage_LaunchButton_Title.Text" xml:space="preserve">
     <value>启动游戏</value>
   </data>
-  <data name="MainPage_LaunchComboBox.PlaceholderText" xml:space="preserve">
+  <data name="HomePage_LaunchComboBox.PlaceholderText" xml:space="preserve">
     <value>选择一个游戏核心</value>
   </data>
-  <data name="MainPage_NewsBorder_Button_Content.FontWeight" xml:space="preserve">
+  <data name="HomePage_NewsBorder_Button_Content.FontWeight" xml:space="preserve">
     <value>Normal</value>
   </data>
-  <data name="MainPage_NewsBorder_Button_Content.Text" xml:space="preserve">
+  <data name="HomePage_NewsBorder_Button_Content.Text" xml:space="preserve">
     <value>阅读稿件</value>
   </data>
-  <data name="MainPage_NewsBorder_NewsException.Text" xml:space="preserve">
+  <data name="HomePage_NewsBorder_NewsException.Text" xml:space="preserve">
     <value>图片加载错误..</value>
   </data>
-  <data name="MainPage_UpdateDialog_Title.Text" xml:space="preserve">
+  <data name="HomePage_UpdateDialog_Title.Text" xml:space="preserve">
     <value>更新日志</value>
   </data>
   <data name="MainPge_LaunchDialog_DownloadProgressText.FontWeight" xml:space="preserve">
@@ -758,5 +758,74 @@
 修复了诸多MVVM带来的错误
 删除了启动器打开时自动刷新Microsoft账户验证令牌
 添加了Account Settings Page中Microsoft账户刷新</value>
+  </data>
+  <data name="String1ThemePage_ContentDialog_TintOpacityBox_Header.Text" xml:space="preserve">
+    <value>不透明度</value>
+  </data>
+  <data name="ThemePage_ContentDialog_BackgroundTypeBox.PlaceholderText" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="ThemePage_ContentDialog_BackgroundTypeBox_Header.Text" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="ThemePage_ContentDialog_Color.Text" xml:space="preserve">
+    <value>主题色</value>
+  </data>
+  <data name="ThemePage_ContentDialog_ColorModeBox.PlaceholderText" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="ThemePage_ContentDialog_ColorModeBox_Header.Text" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="ThemePage_ContentDialog_FilePathBox.PlaceholderText" xml:space="preserve">
+    <value>图片、视频文件路径</value>
+  </data>
+  <data name="ThemePage_ContentDialog_FilePathBox_Header.Text" xml:space="preserve">
+    <value>图片、视频文件路径</value>
+  </data>
+  <data name="ThemePage_ContentDialog_Flyout_1.Text" xml:space="preserve">
+    <value>你确定要删除此主题吗？删除后无法恢复！</value>
+  </data>
+  <data name="ThemePage_ContentDialog_Flyout_1_Button.Content" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="ThemePage_ContentDialog_HyperlinkButton_Text.Text" xml:space="preserve">
+    <value>导入主题</value>
+  </data>
+  <data name="ThemePage_ContentDialog_NameBox.PlaceholderText" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="ThemePage_ContentDialog_NameBox_Header.Text" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="ThemePage_ContentDialog_TintLuminosityOpacityBox.PlaceholderText" xml:space="preserve">
+    <value>小数</value>
+  </data>
+  <data name="ThemePage_ContentDialog_TintLuminosityOpacityBox_Header.Text" xml:space="preserve">
+    <value>亮度</value>
+  </data>
+  <data name="ThemePage_ContentDialog_TintOpacityBox.PlaceholderText" xml:space="preserve">
+    <value>小数</value>
+  </data>
+  <data name="ThemePage_ContentDialog_Title.Text" xml:space="preserve">
+    <value>添加新的主题</value>
+  </data>
+  <data name="ThemePage_GridViewItem_Add.Text" xml:space="preserve">
+    <value>添加一个新的主题</value>
+  </data>
+  <data name="ThemePage_TeachingTip_1.Subtitle" xml:space="preserve">
+    <value>实时主题切换会导致程序非常不稳定。 我们建议在切换主题后重新启动程序</value>
+  </data>
+  <data name="ThemePage_TeachingTip_1.Title" xml:space="preserve">
+    <value>实验性功能</value>
+  </data>
+  <data name="ThemePage_TeachingTip_2.Subtitle" xml:space="preserve">
+    <value>出于程序稳定性考虑，我们关闭了实时切换主题功能，请重启程序以更新主题</value>
+  </data>
+  <data name="ThemePage_TeachingTip_2.Title" xml:space="preserve">
+    <value>实验性功能</value>
+  </data>
+  <data name="ThemePage_Title.Text" xml:space="preserve">
+    <value>主题设置</value>
   </data>
 </root>

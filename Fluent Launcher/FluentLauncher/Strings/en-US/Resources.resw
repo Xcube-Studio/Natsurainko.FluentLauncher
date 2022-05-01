@@ -501,28 +501,28 @@
   <data name="MainContainer_NavigationViewItem6.Content" xml:space="preserve">
     <value>Settings</value>
   </data>
-  <data name="MainPage_ContentDialog_Title.Text" xml:space="preserve">
+  <data name="HomePage_ContentDialog_Title.Text" xml:space="preserve">
     <value>Launching Minecraft</value>
   </data>
-  <data name="MainPage_LaunchButton_SubTitle.Text" xml:space="preserve">
+  <data name="HomePage_LaunchButton_SubTitle.Text" xml:space="preserve">
     <value>No Core Selected</value>
   </data>
-  <data name="MainPage_LaunchButton_Title.Text" xml:space="preserve">
+  <data name="HomePage_LaunchButton_Title.Text" xml:space="preserve">
     <value>Launch Minecraft</value>
   </data>
-  <data name="MainPage_LaunchComboBox.PlaceholderText" xml:space="preserve">
+  <data name="HomePage_LaunchComboBox.PlaceholderText" xml:space="preserve">
     <value>Pick a Minecraft Core</value>
   </data>
-  <data name="MainPage_NewsBorder_Button_Content.FontWeight" xml:space="preserve">
+  <data name="HomePage_NewsBorder_Button_Content.FontWeight" xml:space="preserve">
     <value>SemiBold</value>
   </data>
-  <data name="MainPage_NewsBorder_Button_Content.Text" xml:space="preserve">
+  <data name="HomePage_NewsBorder_Button_Content.Text" xml:space="preserve">
     <value>Read the manuscript</value>
   </data>
-  <data name="MainPage_NewsBorder_NewsException.Text" xml:space="preserve">
+  <data name="HomePage_NewsBorder_NewsException.Text" xml:space="preserve">
     <value>Here is Something Wrong...</value>
   </data>
-  <data name="MainPage_UpdateDialog_Title.Text" xml:space="preserve">
+  <data name="HomePage_UpdateDialog_Title.Text" xml:space="preserve">
     <value>Update Change Logs</value>
   </data>
   <data name="MainPge_LaunchDialog_DownloadProgressText.FontWeight" xml:space="preserve">
@@ -643,5 +643,143 @@ Modified the way of loading news, now we use multi-threaded asynchronous loading
 Modified the UI of the dialog box.
 Fixed many bugs which caused by MVVM.
 Added Microsoft account refresh in the account settings page instead of automatically refreshing the Microsoft account authentication token when the Launcher is opening</value>
+  </data>
+  <data name="ContentDialog_Agree.Text" xml:space="preserve">
+    <value>Agree</value>
+  </data>
+  <data name="ContentDialog_Disagree.Text" xml:space="preserve">
+    <value>Disagree</value>
+  </data>
+  <data name="Instructions_Bottom_CheckBox.Content" xml:space="preserve">
+    <value>I have read this description</value>
+  </data>
+  <data name="Instructions_Bottom_Tips.Text" xml:space="preserve">
+    <value>You need to read the full instructions to check this option</value>
+  </data>
+  <data name="Instructions_E_1.Text" xml:space="preserve">
+    <value>Welcome to use Fluent Launcher</value>
+  </data>
+  <data name="Instructions_E_2.Text" xml:space="preserve">
+    <value>Xcube Studio ,Presented</value>
+  </data>
+  <data name="Instructions_P1_1.Text" xml:space="preserve">
+    <value>1. Minecraft is copyrighted by Mojang Studios. We are not responsible for any copyright infringement arising from use of this software.</value>
+  </data>
+  <data name="Instructions_P1_2.Text" xml:space="preserve">
+    <value>2. This program will not help you obtain genuine Minecraft through illegal means</value>
+  </data>
+  <data name="Instructions_P1_3.Text" xml:space="preserve">
+    <value>3. This program will not collect your personal privacy. And will not make malicious changes to your computer</value>
+  </data>
+  <data name="Instructions_P1_4.Text" xml:space="preserve">
+    <value>Support genuine, please go to minecraft.net to get genuine games</value>
+  </data>
+  <data name="Instructions_P1_T.Text" xml:space="preserve">
+    <value>Statement [Important]:</value>
+  </data>
+  <data name="Instructions_P2_1.Text" xml:space="preserve">
+    <value>1. When you start the game, you will see the console output of the game, but the output content has nothing to do with this application, its content does not represent the output and error reporting of this application, and displaying this output is also one of the functions of this application</value>
+  </data>
+  <data name="Instructions_P2_2.Text" xml:space="preserve">
+    <value>2. Similarly, the crash of the game will display a game crash prompt box, showing the game process information, this is also a function, not an application error</value>
+  </data>
+  <data name="Instructions_P2_3.Text" xml:space="preserve">
+    <value>3. The application may cause probabilistic errors during use, but most of them do not affect normal use</value>
+  </data>
+  <data name="Instructions_P2_4.Text" xml:space="preserve">
+    <value>4. We recommend having a developer familiar with Minecraft test the app</value>
+  </data>
+  <data name="Instructions_P2_T.Text" xml:space="preserve">
+    <value>Development Notes [This is very important for Microsoft Store submissions for review]</value>
+  </data>
+  <data name="Instructions_P3_1.Text" xml:space="preserve">
+    <value>1. The application requires a network connection to function properly, otherwise problems may occur</value>
+  </data>
+  <data name="Instructions_P3_2.Text" xml:space="preserve">
+    <value>2. When using this software for the first time, you should first add the .minecraft directory in the settings interface</value>
+  </data>
+  <data name="Instructions_P3_3.Text" xml:space="preserve">
+    <value>3. Minecraft requires Java runtime support to start, you can choose to add externally or install it in-app</value>
+  </data>
+  <data name="Instructions_P3_4.Text" xml:space="preserve">
+    <value>4. Installing the game will be greatly affected by the network speed, you can switch the download source on the settings page</value>
+  </data>
+  <data name="Instructions_P3_5.Text" xml:space="preserve">
+    <value>5. The application has not been written yet. Many functions are still being updated, so some controls cannot be used.</value>
+  </data>
+  <data name="Instructions_P3_T.Text" xml:space="preserve">
+    <value>Software usage precautions</value>
+  </data>
+  <data name="Instructions_Title.Text" xml:space="preserve">
+    <value>Instructions before use</value>
+  </data>
+  <data name="String1ThemePage_ContentDialog_TintOpacityBox_Header.Text" xml:space="preserve">
+    <value>Tint Opacity</value>
+  </data>
+  <data name="ThemePage_ContentDialog_BackgroundTypeBox.PlaceholderText" xml:space="preserve">
+    <value>type</value>
+  </data>
+  <data name="ThemePage_ContentDialog_BackgroundTypeBox_Header.Text" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="ThemePage_ContentDialog_Color.Text" xml:space="preserve">
+    <value>Theme Color</value>
+  </data>
+  <data name="ThemePage_ContentDialog_ColorModeBox.PlaceholderText" xml:space="preserve">
+    <value>type</value>
+  </data>
+  <data name="ThemePage_ContentDialog_ColorModeBox_Header.Text" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="ThemePage_ContentDialog_FilePathBox.PlaceholderText" xml:space="preserve">
+    <value>picture, video file path</value>
+  </data>
+  <data name="ThemePage_ContentDialog_FilePathBox_Header.Text" xml:space="preserve">
+    <value>Picture / Video File Path</value>
+  </data>
+  <data name="ThemePage_ContentDialog_Flyout_1.Text" xml:space="preserve">
+    <value>Are you sure you want to delete this theme? Deleted cannot be recovered!</value>
+  </data>
+  <data name="ThemePage_ContentDialog_Flyout_1_Button.Content" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ThemePage_ContentDialog_HyperlinkButton_Text.Text" xml:space="preserve">
+    <value>Import themes</value>
+  </data>
+  <data name="ThemePage_ContentDialog_NameBox.PlaceholderText" xml:space="preserve">
+    <value>name</value>
+  </data>
+  <data name="ThemePage_ContentDialog_NameBox_Header.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ThemePage_ContentDialog_TintLuminosityOpacityBox.PlaceholderText" xml:space="preserve">
+    <value>decimal</value>
+  </data>
+  <data name="ThemePage_ContentDialog_TintLuminosityOpacityBox_Header.Text" xml:space="preserve">
+    <value>Tint Luminosity Opacity</value>
+  </data>
+  <data name="ThemePage_ContentDialog_TintOpacityBox.PlaceholderText" xml:space="preserve">
+    <value>decimal</value>
+  </data>
+  <data name="ThemePage_ContentDialog_Title.Text" xml:space="preserve">
+    <value>Add New Theme</value>
+  </data>
+  <data name="ThemePage_GridViewItem_Add.Text" xml:space="preserve">
+    <value>Add a new theme</value>
+  </data>
+  <data name="ThemePage_TeachingTip_1.Subtitle" xml:space="preserve">
+    <value>Real-time subject switching can cause programs to be very unstable. We recommend restarting the program after switching themes.</value>
+  </data>
+  <data name="ThemePage_TeachingTip_1.Title" xml:space="preserve">
+    <value>Experimental Feature</value>
+  </data>
+  <data name="ThemePage_TeachingTip_2.Subtitle" xml:space="preserve">
+    <value>For program stability consideration, we have turned off the function of switching themes in real time, please restart the program to update the theme</value>
+  </data>
+  <data name="ThemePage_TeachingTip_2.Title" xml:space="preserve">
+    <value>Experimental Feature</value>
+  </data>
+  <data name="ThemePage_Title.Text" xml:space="preserve">
+    <value>Theme Settings</value>
   </data>
 </root>

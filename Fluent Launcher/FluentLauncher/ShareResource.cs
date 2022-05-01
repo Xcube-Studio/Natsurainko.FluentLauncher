@@ -15,21 +15,17 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
+using Windows.Storage;
 using Windows.UI;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace FluentLauncher
 {
     public static class ShareResource
     {
-        public static MainContainer MainContainer { get; set; }
-
-        public static SettingPage SettingPage { get; set; }
-
-        public static InfoBar InfoBar { get; set; }
-
         public static MojangNews News { get; set; }
 
         public static BackgroundLanguageResource LanguageResource { get; set; }
@@ -52,6 +48,8 @@ namespace FluentLauncher
 
         public static string Version => string.Format($"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}.{Package.Current.Id.Version.Revision}");
 
+        public static string StorageFolder = ApplicationData.Current.LocalFolder.Path;
+
         public static JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings()
         {
             NullValueHandling = NullValueHandling.Ignore
@@ -67,17 +65,11 @@ namespace FluentLauncher
 
         public static List<string> AccountTypes = new List<string>() { "MicrosoftAccount", "OfflineAccount", "Authlib-injector Account" };
 
+        public static List<string> BackgroundTypes = new List<string>() { "Normal", "Acrylic", "Image", "Video" };
+
+        public static List<string> ColorModes = new List<string>() { "Dark", "Light" };
+
         public static List<string> Languages => new List<string>() { "中文", "English" };
-
-        public static Task DownloadNews { get; set; }
-
-        public static Task InitializeNewsPicture { get; set; }
-
-        public static Task FirstNewsInitialized { get; set; }
-
-        public static Task DownloadVersionManifest { get; set; }
-
-        public static Task RunForFirstTimeTask { get; set; }
 
         #region Setttings
         private static List<MinecraftFolder> _minecraftFolders;
@@ -148,11 +140,23 @@ namespace FluentLauncher
         public static MinecraftAccount SelectedAccount
         { get => _selectedAccount; set { _selectedAccount = value; App.Settings.Values["SelectedAccount"] = JsonConvert.SerializeObject(value, JsonSerializerSettings); } }
 
-        private static bool _mainPageNewsVisibility;
-        public static bool MainPageNewsVisibility
-        { get => _mainPageNewsVisibility; set { _mainPageNewsVisibility = value; App.Settings.Values["MainPageNewsVisibility"] = value; } }
+        private static bool _HomePageNewsVisibility;
+        public static bool HomePageNewsVisibility
+        { get => _HomePageNewsVisibility; set { _HomePageNewsVisibility = value; App.Settings.Values["HomePageNewsVisibility"] = value; } }
 
         #endregion
+
+        #region Task
+
+        public static Task DownloadNews { get; set; }
+
+        public static Task InitializeNewsPicture { get; set; }
+
+        public static Task FirstNewsInitialized { get; set; }
+
+        public static Task DownloadVersionManifest { get; set; }
+
+        public static Task RunForFirstTimeTask { get; set; }
 
         public static async Task ShowInfoAsync(string title = "Title", string message = "", int time = 3000, InfoBarSeverity severity = InfoBarSeverity.Informational)
         {
@@ -246,6 +250,26 @@ namespace FluentLauncher
                 SelectedCore = null;
             }
         }
+
+        #endregion
+
+        #region UI Logic
+        private static bool _AppTitleVisible { get; set; }
+
+        public static bool AppTitleVisible { get => _AppTitleVisible; set { _AppTitleVisible = value; UpdataUI(); } }
+
+        public static MainContainer MainContainer { get; set; }
+
+        public static TextBlock MainContainer_TextBlock { get; set; }
+
+        public static InfoBar InfoBar { get; set; }
+
+        public static void UpdataUI()
+        {
+            MainContainer_TextBlock.Visibility = AppTitleVisible ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        #endregion
 
         #region Installer
 

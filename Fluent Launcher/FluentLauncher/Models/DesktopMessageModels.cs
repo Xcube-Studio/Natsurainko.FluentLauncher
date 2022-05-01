@@ -136,6 +136,19 @@ namespace FluentLauncher.Models
 
     #endregion
 
+    #region 
+
+    public class CopyToFolderRequest : StandardRequestModel
+    {
+        public CopyToFolderRequest() => this.Header = "CopyToFolder";
+
+        public string ToFile { get; set; }
+
+        public string File { get; set; }
+    }
+
+    #endregion
+
     public class SetDownloadOptitionsRequest : StandardRequestModel
     {
         public SetDownloadOptitionsRequest()

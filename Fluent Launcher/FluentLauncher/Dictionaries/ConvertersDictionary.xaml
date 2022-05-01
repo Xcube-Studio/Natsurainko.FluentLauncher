@@ -3,7 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="using:FluentLauncher.Converters">
 
-    <converters:AppTitleVisibilityConverter x:Key="AppTitleVisibilityConverter" />
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     <converters:TextTrimmingConverter x:Key="TextTrimmingConverter" />
     <converters:IconConverter x:Key="IconConverter" />

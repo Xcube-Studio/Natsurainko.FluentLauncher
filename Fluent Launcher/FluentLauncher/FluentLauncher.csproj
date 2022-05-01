@@ -128,7 +128,6 @@
     <Compile Include="Classes\SystemRuntimeInfo.cs" />
     <Compile Include="Converters\AccountTypeToVisibilityConverter.cs" />
     <Compile Include="Converters\ApplicationThemeToStringConverter.cs" />
-    <Compile Include="Converters\AppTitleVisibilityConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\ColorConverter.cs" />
     <Compile Include="Converters\CoreReleaseTimeSubString.cs" />
@@ -181,6 +180,9 @@
     </Compile>
     <Compile Include="Pages\GuidePage.xaml.cs">
       <DependentUpon>GuidePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\HomePage.xaml.cs">
+      <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -236,6 +238,9 @@
       <Version>6.2.13</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI">
+      <Version>7.1.2</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>7.1.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
@@ -298,6 +303,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\GuidePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\HomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

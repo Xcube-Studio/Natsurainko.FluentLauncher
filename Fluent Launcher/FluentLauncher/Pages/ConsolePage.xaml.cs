@@ -52,7 +52,7 @@ namespace FluentLauncher.Pages
         #endregion
 
         #region HyperlinkButton
-        private void HyperlinkButton_Click(object sender, RoutedEventArgs e) => this.Frame.Navigate(typeof(MainPage));
+        private void HyperlinkButton_Click(object sender, RoutedEventArgs e) => this.Frame.Navigate(typeof(HomePage));
         #endregion
 
         private void ProcessOutputs_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) => ScrollToEnd();

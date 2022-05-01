@@ -34,23 +34,16 @@
             Margin="37.5,20,37.5,0"
             ViewChanged="ScrollViewer_ViewChanged">
             <RichTextBlock FontSize="18" FontWeight="SemiBold">
-                <Paragraph
-                    FontSize="22"
-                    Foreground="DarkRed">
+                <Paragraph FontSize="22" Foreground="DarkRed">
                     <Run x:Uid="Instructions_P1_T" Text="Statement [Important]:" />
                 </Paragraph>
-                <Paragraph
-                    Margin="10,10,10,0"
-                    Foreground="DarkRed">
+                <Paragraph Margin="10,10,10,0" Foreground="DarkRed">
                     <Run x:Uid="Instructions_P1_1" Text="1. Minecraft is copyrighted by Mojang Studios. We are not responsible for any copyright infringement arising from use of this software. " />
                 </Paragraph>
-                <Paragraph
-                    Margin="10,0">
+                <Paragraph Margin="10,0">
                     <Run x:Uid="Instructions_P1_2" Text="2. This program will not help you obtain genuine Minecraft through illegal means" />
                 </Paragraph>
-                <Paragraph
-                    Margin="10,0"
-                    Foreground="DarkRed">
+                <Paragraph Margin="10,0" Foreground="DarkRed">
                     <Run x:Uid="Instructions_P1_3" Text="3. This program will not collect your personal privacy. And will not make malicious changes to your computer" />
                 </Paragraph>
                 <Paragraph
@@ -65,58 +58,41 @@
                     Foreground="DarkRed">
                     <Run x:Uid="Instructions_P2_T" Text="Development Notes [This is very important for Microsoft Store submissions for review]" />
                 </Paragraph>
-                <Paragraph
-                    Margin="10,10,10,0"
-                    Foreground="DarkRed">
+                <Paragraph Margin="10,10,10,0" Foreground="DarkRed">
                     <Run x:Uid="Instructions_P2_1" Text="1. When you start the game, you will see the console output of the game, but the output content has nothing to do with this application, its content does not represent the output and error reporting of this application, and displaying this output is also one of the functions of this application" />
                 </Paragraph>
-                <Paragraph
-                    Margin="10,0"
-                    Foreground="DarkRed">
+                <Paragraph Margin="10,0" Foreground="DarkRed">
                     <Run x:Uid="Instructions_P2_2" Text="2. Similarly, the crash of the game will display a game crash prompt box, showing the game process information, this is also a function, not an application error" />
                 </Paragraph>
                 <Paragraph Margin="10,0" Foreground="Goldenrod">
                     <Run x:Uid="Instructions_P2_3" Text="3. The application may cause probabilistic errors during use, but most of them do not affect normal use" />
                 </Paragraph>
-                <Paragraph
-                    Margin="10,0"
-                    Foreground="Goldenrod">
+                <Paragraph Margin="10,0" Foreground="Goldenrod">
                     <Run x:Uid="Instructions_P2_4" Text="4. We recommend having a developer familiar with Minecraft test the app" />
                 </Paragraph>
-                <Paragraph
-                    Margin="0,10,0,0"
-                    FontSize="22">
+                <Paragraph Margin="0,10,0,0" FontSize="22">
                     <Run x:Uid="Instructions_P3_T" Text="Software usage precautions" />
 
                 </Paragraph>
-                <Paragraph
-                    Margin="10,10,10,0">
+                <Paragraph Margin="10,10,10,0">
                     <Run x:Uid="Instructions_P3_1" Text="1. The application requires a network connection to function properly, otherwise problems may occur" />
                 </Paragraph>
-                <Paragraph
-                    Margin="10,0">
+                <Paragraph Margin="10,0">
                     <Run x:Uid="Instructions_P3_2" Text="2. When using this software for the first time, you should first add the .minecraft directory in the settings interface" />
                 </Paragraph>
-                <Paragraph
-                    Margin="10,0">
+                <Paragraph Margin="10,0">
                     <Run x:Uid="Instructions_P3_3" Text="3. Minecraft requires Java runtime support to start, you can choose to add externally or install it in-app" />
                 </Paragraph>
-                <Paragraph
-                    Margin="10,0">
+                <Paragraph Margin="10,0">
                     <Run x:Uid="Instructions_P3_4" Text="4. Installing the game will be greatly affected by the network speed, you can switch the download source on the settings page" />
                 </Paragraph>
-                <Paragraph
-                    Margin="10,0">
+                <Paragraph Margin="10,0">
                     <Run x:Uid="Instructions_P3_5" Text="5. The application has not been written yet. Many functions are still being updated, so some controls cannot be used." />
                 </Paragraph>
-                <Paragraph
-                    Margin="0,20,0,10"
-                    FontSize="24">
-                    <Run x:Uid="Instructions_E_1" Text="Welcome to use this software" />
+                <Paragraph Margin="0,20,0,10" FontSize="24">
+                    <Run x:Uid="Instructions_E_1" Text="Welcome to use Fluent Launcher" />
                 </Paragraph>
-                <Paragraph
-                    Margin="0,10"
-                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
+                <Paragraph Margin="0,10" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
                     <Run x:Uid="Instructions_E_2" Text="Xcube Studio ,Presented" />
                 </Paragraph>
             </RichTextBlock>

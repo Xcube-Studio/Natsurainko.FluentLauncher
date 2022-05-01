@@ -229,7 +229,7 @@ namespace FluentLauncher
                 (string)Settings.Values["DownloadSource"] : "Mcbbs Source";
 
             ShareResource.Language = Settings.Values.ContainsKey("Language") && Settings.Values["Language"] != null ?
-                (string)Settings.Values["Language"] : "中文";
+                (string)Settings.Values["Language"] : "English";
 
             ShareResource.ShownUpdate = Settings.Values.ContainsKey("ShownUpdate") && Settings.Values["ShownUpdate"] != null ?
                 (string)Settings.Values["ShownUpdate"] : string.Empty;
@@ -246,8 +246,8 @@ namespace FluentLauncher
 
             #region UI Setting
 
-            ShareResource.MainPageNewsVisibility = Settings.Values.ContainsKey("MainPageNewsVisibility") && Settings.Values["MainPageNewsVisibility"] != null ?
-                (bool)Settings.Values["MainPageNewsVisibility"] : true;
+            ShareResource.HomePageNewsVisibility = Settings.Values.ContainsKey("HomePageNewsVisibility") && Settings.Values["HomePageNewsVisibility"] != null ?
+                (bool)Settings.Values["HomePageNewsVisibility"] : true;
 
             #endregion
         }
@@ -263,14 +263,16 @@ namespace FluentLauncher
                     Name = "LightTheme",
                     ThemeColor = ColorConverter.FromString("#FFBF00"),
                     ElementTheme = ElementTheme.Light,
-                    BackgroundType = BackgroundType.Normal
+                    BackgroundType = BackgroundType.Normal,
+                    Deletable = false
                 },
                 new ThemeModel
                 {
                     Name = "DarkTheme",
                     ThemeColor = ColorConverter.FromString("#FFBF00"),
                     ElementTheme = ElementTheme.Dark,
-                    BackgroundType = BackgroundType.Normal
+                    BackgroundType = BackgroundType.Normal,
+                    Deletable = false
                 },
                 new ThemeModel
                 {
@@ -283,7 +285,8 @@ namespace FluentLauncher
                         BrushType = BrushType.Acyrlic,
                         TintLuminosityOpacity = 0.5,
                         TintOpacity = 0.5
-                    }
+                    },
+                    Deletable = false
                 },
                 new ThemeModel
                 {
@@ -297,32 +300,19 @@ namespace FluentLauncher
                         Color = Colors.Black,
                         TintLuminosityOpacity = 0.5,
                         TintOpacity = 0.5
-                    }
-                }/*
-                ,new ThemeModel
-                {
-                    Name = "ImageDarkTheme-Test",
-                    ThemeColor = ColorConverter.FromString("#C0D1EB"),
-                    ElementTheme = ElementTheme.Dark,
-                    BackgroundType = BackgroundType.Image,
-                    File = "ms-appx:///Assets/67243791_p0.jpg"
-                },*/
+                    },
+                    Deletable = false
+                }
             };
 
             ShareResource.SelectedTheme = Settings.Values.ContainsKey("SelectedTheme") && Settings.Values["SelectedTheme"] != null ?
                 JsonConvert.DeserializeObject<ThemeModel>((string)Settings.Values["SelectedTheme"]) : ShareResource.Themes[0];
 
-            switch (ShareResource.SelectedTheme.ElementTheme)
+            RequestedTheme = ShareResource.SelectedTheme.ElementTheme switch
             {
-                case ElementTheme.Default:
-                case ElementTheme.Light:
-                default:
-                    RequestedTheme = Windows.UI.Xaml.ApplicationTheme.Light;
-                    break;
-                case ElementTheme.Dark:
-                    RequestedTheme = Windows.UI.Xaml.ApplicationTheme.Dark;
-                    break;
-            }
+                ElementTheme.Dark => Windows.UI.Xaml.ApplicationTheme.Dark,
+                _ => Windows.UI.Xaml.ApplicationTheme.Light,
+            };
         }
 
         public static void UpdateAppTheme()
@@ -357,12 +347,9 @@ namespace FluentLauncher
             App.Current.Resources["SystemAccentColorLight3"] = ShareResource.SelectedTheme.ThemeColor;
             #endregion
 
-
             App.Current.Resources["ApplicationTheme"] = theme;
 
-            ForChildren(((Frame)Window.Current.Content).FindChildren());
             ForChildren(ShareResource.MainContainer.FindChildren());
-            ForChildren(ShareResource.SettingPage.FindChildren());
 
             void ForChildren(IEnumerable<FrameworkElement> elements)
             {
@@ -404,7 +391,6 @@ namespace FluentLauncher
             #region Language
             if (CultureInfo.CurrentUICulture.Name == "zh-CN")
                 ShareResource.Language = "中文";
-            else ShareResource.Language = "English";
             #endregion
 
             #region Search Java Runtime

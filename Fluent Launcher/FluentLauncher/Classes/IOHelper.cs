@@ -27,5 +27,16 @@ namespace FluentLauncher.Classes
 
             return Convert.ToBoolean(res.Response);
         }
+
+        public static async Task<bool> CopyToFolder(string filepath, string tofilepath)
+        {
+            var res = await App.DesktopBridge.SendAsync<StandardResponseModel>(new CopyToFolderRequest
+            {
+                File = filepath,
+                ToFile = tofilepath
+            });
+
+            return Convert.ToBoolean(res.Response);
+        }
     }
 }

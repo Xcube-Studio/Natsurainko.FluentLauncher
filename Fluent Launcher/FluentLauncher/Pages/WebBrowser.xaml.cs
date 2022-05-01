@@ -22,16 +22,6 @@ namespace FluentLauncher.Pages
 
         #region UI
 
-        #region Page
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            CoreApplication.GetCurrentView().TitleBar.LayoutMetricsChanged += (s, e) => UpdateAppTitle(s);
-            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-            Window.Current.SetTitleBar(AppTitleBar);
-            ApplicationView.GetForCurrentView().TitleBar.ButtonForegroundColor = ((SolidColorBrush)AppTitle.Foreground).Color;
-        }
-        #endregion
-
         #region WebView2
         private void WebView_NavigationStarting(WebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationStartingEventArgs args)
         {
@@ -61,12 +51,6 @@ namespace FluentLauncher.Pages
             ProgressRing.Visibility = Visibility.Collapsed;
         }
         #endregion
-
-        private void UpdateAppTitle(CoreApplicationViewTitleBar coreTitleBar)
-        {
-            Thickness currMargin = AppTitleBar.Margin;
-            AppTitleBar.Margin = new Thickness(currMargin.Left, currMargin.Top, coreTitleBar.SystemOverlayRightInset, currMargin.Bottom);
-        }
 
         #endregion
     }

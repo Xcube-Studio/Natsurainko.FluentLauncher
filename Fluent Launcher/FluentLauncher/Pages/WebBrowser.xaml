@@ -7,14 +7,13 @@
     xmlns:local="using:FluentLauncher.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    Loaded="Page_Loaded"
     mc:Ignorable="d">
 
     <Grid>
         <controls:WebView2
             x:Name="WebView"
-            NavigationStarting="WebView_NavigationStarting"
             NavigationCompleted="WebView_NavigationCompleted"
+            NavigationStarting="WebView_NavigationStarting"
             Source="https://login.live.com/oauth20_authorize.srf?client_id=0844e754-1d2e-4861-8e2b-18059609badb&amp;response_type=code&amp;redirect_uri=http://localhost:5001/fluentlauncher/auth-response&amp;scope=XboxLive.signin%20offline_access&amp;prompt=select_account" />
         <controls:ProgressRing
             x:Name="ProgressRing"
@@ -22,24 +21,5 @@
             Height="64"
             Foreground="{ThemeResource SystemAccentColor}"
             IsIndeterminate="True" />
-        <Grid
-            x:Name="AppTitleBar"
-            Height="48"
-            VerticalAlignment="Top"
-            Background="Transparent">
-            <TextBlock
-                x:Name="AppTitle"
-                Margin="15"
-                FontSize="12" />
-        </Grid>
-        <controls:InfoBar
-            x:Name="InfoBar"
-            Margin="25"
-            VerticalAlignment="Bottom"
-            Background="{ThemeResource SystemControlAcrylicElementBrush}"
-            CornerRadius="5"
-            IsClosable="True"
-            IsIconVisible="True"
-            IsOpen="False" />
     </Grid>
 </Page>

@@ -5,30 +5,16 @@
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:FluentLauncher.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Background="{ThemeResource ApplicationThemeBackground}"
+    Background="Transparent"
     Loaded="Page_Loaded"
     NavigationCacheMode="Required"
-    Unloaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
         <CornerRadius x:Key="NavigationViewContentGridCornerRadius">0</CornerRadius>
     </Page.Resources>
 
     <Grid>
-        <Grid>
-            <MediaPlayerElement
-                x:Name="MediaPlayerElement"
-                Stretch="UniformToFill"
-                Visibility="Collapsed" />
-            <Image x:Name="BackgroundImage" Stretch="UniformToFill" />
-            <Rectangle
-                Width="49"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Stretch"
-                Fill="{ThemeResource SystemControlAcrylicElementBrush}" />
-        </Grid>
         <controls:NavigationView
             x:Name="NavigationView"
             x:Uid="SettingPage_NavigationView"
@@ -40,7 +26,9 @@
             IsSettingsVisible="False"
             IsTitleBarAutoPaddingEnabled="False"
             ItemInvoked="NavigationView_ItemInvoked"
+            PaneClosing="NavigationView_PaneClosing"
             PaneDisplayMode="LeftCompact"
+            PaneOpening="NavigationView_PaneOpening"
             PaneTitle="Settings">
             <controls:NavigationView.MenuItems>
                 <controls:NavigationViewItem
@@ -111,26 +99,5 @@
                 Margin="0,-1,0,0"
                 Background="Transparent" />
         </controls:NavigationView>
-        <Grid
-            x:Name="AppTitleBar"
-            Height="{Binding ElementName=NavigationView, Path=CompactPaneLength}"
-            Margin="100,0,0,0"
-            VerticalAlignment="Top"
-            Background="Transparent">
-            <TextBlock
-                x:Name="AppTitle"
-                Margin="-35,15,15,15"
-                FontSize="12"
-                Text="Fluent Launcher"
-                Visibility="{Binding ElementName=NavigationView, Path=IsPaneOpen, Converter={ThemeResource BoolToVisibilityConverter}}" />
-        </Grid>
-        <controls:InfoBar
-            x:Name="InfoBar"
-            Margin="25"
-            VerticalAlignment="Bottom"
-            Background="{ThemeResource SystemControlAcrylicElementBrush}"
-            IsClosable="True"
-            IsIconVisible="True"
-            IsOpen="False" />
     </Grid>
 </Page>

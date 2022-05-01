@@ -32,9 +32,30 @@ namespace FluentLauncher.Models
 
         public ElementTheme ElementTheme { get; set; }
 
+        public bool Deletable { get; set; } = true;
+
         public string Name { get; set; }
 
         public string File { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (typeof(ThemeModel) != obj.GetType())
+                return false;
+
+            var item = (ThemeModel)obj;
+            if (this.BackgroundType == item.BackgroundType && this.Brush.Equals(item.Brush) &&
+                this.ThemeColor == item.ThemeColor && this.ElementTheme == item.ElementTheme &&
+                this.Name == item.Name && this.File == item.File)
+                return true;
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Name.GetHashCode() ^ this.File.GetHashCode() ^ this.ElementTheme.GetHashCode() ^ this.ThemeColor.GetHashCode() ^ this.BackgroundType.GetHashCode() ^ this.Brush.GetHashCode() ^ this.ThemeColor.GetHashCode();
+        }
     }
 
     public enum BackgroundType
@@ -42,6 +63,6 @@ namespace FluentLauncher.Models
         Normal = 0,
         Acrylic = 1,
         Image = 2,
-        Vedio = 3
+        Video = 3
     }
 }

@@ -525,7 +525,7 @@
                             x:Name="InstallProgressTitle"
                             x:Uid="BasicSettingsPage_InstallJavaDialog_InstallProgressTitle"
                             FontSize="13"
-                            FontWeight="Bold"
+                            FontWeight="SemiBold"
                             Text="Downloading the required files.." />
                         <Border Margin="0,5,0,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
                             <controls:ProgressBar

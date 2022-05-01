@@ -11,6 +11,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using FluentLauncher.Converters;
 using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Media.Playback;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -24,8 +26,6 @@ namespace FluentLauncher.Pages
         public SettingPage()
         {
             this.InitializeComponent();
-
-            ShareResource.SettingPage = this;
         }
 
         #region UI
@@ -34,22 +34,15 @@ namespace FluentLauncher.Pages
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             Initialize();
-
-            _ = this.Dispatcher.RunAsync(default, delegate
-            {
-                LoadBackground();
-            });
-        }
-
-        private void Page_Unloaded(object sender, RoutedEventArgs e)
-        {
-            MediaPlayerElement.SetMediaPlayer(null);
-            MediaPlayerElement.Source = null;
         }
         #endregion
 
         #region NavigationView
-        private void NavigationView_BackRequested(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewBackRequestedEventArgs args) => this.Frame.Navigate(typeof(MainContainer));
+        private void NavigationView_PaneOpening(Microsoft.UI.Xaml.Controls.NavigationView sender, object args) => ShareResource.AppTitleVisible = true;
+
+        private void NavigationView_PaneClosing(Microsoft.UI.Xaml.Controls.NavigationView sender, object args) => ShareResource.AppTitleVisible = false;
+
+        private void NavigationView_BackRequested(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewBackRequestedEventArgs args) => this.Frame.Navigate(typeof(MainPage));
 
         private void NavigationView_ItemInvoked(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs args)
         {
@@ -83,85 +76,16 @@ namespace FluentLauncher.Pages
         }
         #endregion
 
-        public void LoadBackground()
-        {
-            RequestedTheme = ShareResource.SelectedTheme.ElementTheme;
-
-            Background = new SolidColorBrush(Colors.Transparent);
-            BackgroundImage.Source = null;
-            MediaPlayerElement.SetMediaPlayer(null);
-            MediaPlayerElement.Source = null;
-
-            switch (ShareResource.SelectedTheme.BackgroundType)
-            {
-                case BackgroundType.Normal:
-                    switch (ShareResource.SelectedTheme.ElementTheme)
-                    {
-                        case ElementTheme.Default:
-                        case ElementTheme.Light:
-                        default:
-                            Background = new SolidColorBrush(Colors.White);
-                            break;
-                        case ElementTheme.Dark:
-                            Background = new SolidColorBrush(ColorConverter.FromString("#202020"));
-                            break;
-                    }
-                    break;
-                case BackgroundType.Acrylic:
-                    Background = ShareResource.SelectedTheme.Brush.GetBrush();
-                    break;
-                case BackgroundType.Image:
-                    BackgroundImage.Source = new BitmapImage(new Uri(ShareResource.SelectedTheme.File));
-                    break;
-                case BackgroundType.Vedio:
-                    var player = new Windows.Media.Playback.MediaPlayer()
-                    {
-                        Source = MediaSource.CreateFromUri(new Uri(ShareResource.SelectedTheme.File))
-                    };
-                    player.CommandManager.IsEnabled = false;
-                    player.IsLoopingEnabled = true;
-                    player.Play();
-
-                    MediaPlayerElement.SetMediaPlayer(player);
-                    break;
-                default:
-                    break;
-            }
-
-            #region Color
-            this.Resources["SystemAccentColor"] = ShareResource.SelectedTheme.ThemeColor;
-            this.Resources["SystemAccentColorDark1"] = ShareResource.SelectedTheme.ThemeColor;
-            this.Resources["SystemAccentColorDark2"] = ShareResource.SelectedTheme.ThemeColor;
-            this.Resources["SystemAccentColorDark3"] = ShareResource.SelectedTheme.ThemeColor;
-            this.Resources["SystemAccentColorLight1"] = ShareResource.SelectedTheme.ThemeColor;
-            this.Resources["SystemAccentColorLight2"] = ShareResource.SelectedTheme.ThemeColor;
-            this.Resources["SystemAccentColorLight3"] = ShareResource.SelectedTheme.ThemeColor;
-            #endregion
-        }
-
         public void Initialize()
         {
-            ShareResource.InfoBar = InfoBar;
-
-            CoreApplication.GetCurrentView().TitleBar.LayoutMetricsChanged += (s, e) => UpdateAppTitle(s);
-            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-            Window.Current.SetTitleBar(AppTitleBar);
-            Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.ButtonForegroundColor = ((SolidColorBrush)AppTitle.Foreground).Color;
-
             if (!ShareResource.WebBrowserNavigateBack)
             {
-                contentFrame.Navigate(typeof(BasicSettingsPage));
                 MainNavigationViewItem.IsSelected = true;
+                contentFrame.Navigate(typeof(BasicSettingsPage));
             }
             else ShareResource.WebBrowserNavigateBack = false;
 
             UpdateInfoBadge();
-        }
-
-        private void UpdateAppTitle(CoreApplicationViewTitleBar coreTitleBar)
-        {
-            Thickness currMargin = AppTitleBar.Margin;
-            AppTitleBar.Margin = new Thickness(currMargin.Left, currMargin.Top, coreTitleBar.SystemOverlayRightInset, currMargin.Bottom);
         }
 
         private void UpdateInfoBadge()

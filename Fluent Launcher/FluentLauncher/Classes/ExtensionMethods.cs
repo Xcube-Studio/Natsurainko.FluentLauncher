@@ -1,5 +1,6 @@
 ﻿using FluentLauncher.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
@@ -25,6 +26,12 @@ namespace FluentLauncher.Classes
         {
             list.Add(add);
             ShareResource.MinecraftAccounts = list;
+        }
+
+        public static void AddWithUpdate(this List<ThemeModel> list, ThemeModel add)
+        {
+            list.Add(add);
+            ShareResource.Themes = list;
         }
 
         public static void SetItemsSource(this ItemsControl control, object source)

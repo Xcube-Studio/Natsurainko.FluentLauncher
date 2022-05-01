@@ -59,7 +59,7 @@ namespace FluentLauncher.Pages
         {
             ShareResource.SelectedCore = (MinecraftCoreInfo)((Button)sender).DataContext;
             ShareResource.NavigateToLaunch = true;
-            this.Frame.Navigate(typeof(MainPage));
+            this.Frame.Navigate(typeof(HomePage));
         }
 
         private void OptionsButton_Click(object sender, RoutedEventArgs e)
@@ -133,7 +133,7 @@ namespace FluentLauncher.Pages
         {
             ShareResource.SelectedCore = (MinecraftCoreInfo)((MenuFlyoutItem)sender).DataContext;
             ShareResource.NavigateToLaunch = true;
-            this.Frame.Navigate(typeof(MainPage));
+            this.Frame.Navigate(typeof(HomePage));
         }
 
         private async void FolderMenuFlyoutItem(object sender, RoutedEventArgs e)

@@ -77,7 +77,7 @@ namespace FluentLauncher.Pages
 
         private void DeleteItem(object sender, RoutedEventArgs e)
         {
-            var button = ((Button)sender);
+            var button = (Button)sender;
             switch ((string)button.Tag)
             {
                 case "Folder":

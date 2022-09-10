@@ -9,6 +9,8 @@
 > —— 专为 Windows 11 定制的 Minecraft 启动器  
 > 努力在 Windows 11 获取最好的启动器体验
 
+![Alt text](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/blob/main/Images/L0.png "主页")
+
 ### Installation 安装
 
 > 仅支持 Windows 10.0.19041.0 及以上版本  
@@ -29,15 +31,6 @@
 + 支持自动安装 Fabric、Forge、OptiFine 等第三方加载器
 + 支持多线程高速下载
 + 获取 Minecraft 官方资讯
-
-### Application Images 程序截图
-
-![](https://github.com/Xcube-Studio/Fluent-Launcher/raw/main/Images/2.png)
-![](https://github.com/Xcube-Studio/Fluent-Launcher/raw/main/Images/3.png)
-![](https://github.com/Xcube-Studio/Fluent-Launcher/raw/main/Images/4.png)
-![](https://github.com/Xcube-Studio/Fluent-Launcher/raw/main/Images/5.png)
-![](https://github.com/Xcube-Studio/Fluent-Launcher/raw/main/Images/6.png)
-![](https://github.com/Xcube-Studio/Fluent-Launcher/raw/main/Images/0.png)
 
 ### Authors 关于作者
 

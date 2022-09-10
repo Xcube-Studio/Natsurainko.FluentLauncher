@@ -1,0 +1,7 @@
+MainPackage=D:\Projects\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher.Wrapper\bin\x64\Release\Upload\Natsurainko.FluentLauncher.Wrapper_2.0.7.0_x64.msix
+SymbolPackage=D:\Projects\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher.Wrapper\bin\x64\Release\Upload\Natsurainko.FluentLauncher.Wrapper_2.0.7.0\Natsurainko.FluentLauncher.Wrapper_2.0.7.0_x64.appxsym
+ResourcePack=D:\Projects\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher.Wrapper\bin\x64\Release\Upload\Natsurainko.FluentLauncher.Wrapper_2.0.7.0_language-en.msix
+ResourcePack=D:\Projects\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher.Wrapper\bin\x64\Release\Upload\Natsurainko.FluentLauncher.Wrapper_2.0.7.0_scale-100.msix
+ResourcePack=D:\Projects\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher.Wrapper\bin\x64\Release\Upload\Natsurainko.FluentLauncher.Wrapper_2.0.7.0_scale-125.msix
+ResourcePack=D:\Projects\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher.Wrapper\bin\x64\Release\Upload\Natsurainko.FluentLauncher.Wrapper_2.0.7.0_scale-150.msix
+ResourcePack=D:\Projects\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher.Wrapper\bin\x64\Release\Upload\Natsurainko.FluentLauncher.Wrapper_2.0.7.0_scale-400.msix

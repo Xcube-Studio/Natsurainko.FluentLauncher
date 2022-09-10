@@ -1,0 +1,286 @@
+﻿<Page
+    x:Class="Natsurainko.FluentLauncher.View.Pages.Settings.SettingAboutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ex="using:Richasy.ExpanderEx.Uwp"
+    xmlns:local="using:Natsurainko.FluentLauncher.View.Pages.Settings"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:settings="using:Natsurainko.FluentLauncher.ViewModel.Pages.Settings"
+    d:DataContext="{d:DesignInstance Type=settings:SettingAboutPageVM}"
+    Background="Transparent"
+    mc:Ignorable="d">
+
+    <ScrollViewer>
+        <StackPanel Padding="30,20">
+            <Button
+                Padding="0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch">
+                <Grid HorizontalAlignment="Stretch">
+                    <StackPanel Margin="15" Orientation="Horizontal">
+                        <FontIcon
+                            Margin="0,0,17,0"
+                            FontSize="20"
+                            Glyph="&#xecaa;" />
+                        <StackPanel HorizontalAlignment="Left">
+                            <TextBlock
+                                FontSize="16"
+                                FontWeight="SemiBold"
+                                Text="Fluent Launcher" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    FontSize="12"
+                                    FontWeight="SemiBold"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Text="{Binding Edition, Mode=OneWay}" />
+                                <TextBlock
+                                    Margin="10,0,0,0"
+                                    FontSize="12"
+                                    FontWeight="SemiBold"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Text="{Binding Version, Mode=OneWay}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                    <Button
+                        Margin="15"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Click="Button_Click"
+                        Content="在商店中检查更新" />
+                </Grid>
+            </Button>
+
+            <ex:ExpanderEx
+                Margin="0,15"
+                Click="AuthorExpanderEx_Click"
+                ForceUseExpander="True"
+                InternalExpanderStyle="{StaticResource RightExpanderStyle}">
+                <ex:ExpanderEx.Header>
+                    <ex:ExpanderExDescriptor
+                        x:Uid="SettingAboutPage_Ex_Author"
+                        Title="natsurainko"
+                        Description="本应用的开发者"
+                        FontWeight="SemiBold">
+                        <ex:ExpanderExDescriptor.Icon>
+                            <FontIcon Glyph="&#xe70f;" />
+                        </ex:ExpanderExDescriptor.Icon>
+                    </ex:ExpanderExDescriptor>
+                </ex:ExpanderEx.Header>
+            </ex:ExpanderEx>
+
+            <ex:ExpanderEx ForceUseExpander="True" InternalExpanderStyle="{StaticResource RightExpanderStyle}">
+                <ex:ExpanderEx.Header>
+                    <ex:ExpanderExDescriptor
+                        x:Uid="SettingAboutPage_Ex_Statement"
+                        Title="声明"
+                        Description="Minecraft 版权归 Mojang Studios 所有。 开发者对因使用本软件而引起的任何版权侵权不承担任何责任。">
+                        <ex:ExpanderExDescriptor.Icon>
+                            <FontIcon Glyph="&#xea1f;" />
+                        </ex:ExpanderExDescriptor.Icon>
+                    </ex:ExpanderExDescriptor>
+                </ex:ExpanderEx.Header>
+            </ex:ExpanderEx>
+
+            <ex:ExpanderEx Margin="0,15" IsExpanded="True">
+                <ex:ExpanderEx.Header>
+                    <ex:ExpanderExDescriptor
+                        x:Uid="SettingAboutPage_Ex_Thanks"
+                        Title="鸣谢"
+                        Height="64.8"
+                        Description="感谢所有为本应用提供的服务">
+                        <ex:ExpanderExDescriptor.Icon>
+                            <FontIcon Glyph="&#xe8b5;" />
+                        </ex:ExpanderExDescriptor.Icon>
+                    </ex:ExpanderExDescriptor>
+                </ex:ExpanderEx.Header>
+                <ex:ExpanderEx.Content>
+                    <StackPanel Margin="35,15,35,0" HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel>
+                                <TextBlock
+                                    FontSize="16"
+                                    FontWeight="SemiBold"
+                                    Text="bmclapi" />
+                                <TextBlock
+                                    x:Uid="SettingAboutPage_DownloadSource"
+                                    FontSize="12"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Text="提供下载镜像源" />
+                            </StackPanel>
+                            <HyperlinkButton
+                                Margin="20,0,0,0"
+                                Content="https://bmclapidoc.bangbang93.com/"
+                                NavigateUri="https://bmclapidoc.bangbang93.com/" />
+                        </StackPanel>
+                        <StackPanel Margin="0,15" Orientation="Horizontal">
+                            <StackPanel>
+                                <TextBlock
+                                    FontSize="16"
+                                    FontWeight="SemiBold"
+                                    Text="mcbbs" />
+                                <TextBlock
+                                    x:Uid="SettingAboutPage_DownloadSource"
+                                    FontSize="12"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Text="提供下载镜像源" />
+                            </StackPanel>
+                            <HyperlinkButton
+                                Margin="20,0,0,0"
+                                Content="https://download.mcbbs.net"
+                                NavigateUri="https://download.mcbbs.net" />
+                        </StackPanel>
+                    </StackPanel>
+                </ex:ExpanderEx.Content>
+            </ex:ExpanderEx>
+
+            <ex:ExpanderEx
+                Click="SourceExpanderEx_Click"
+                ForceUseExpander="True"
+                InternalExpanderStyle="{StaticResource RightExpanderStyle}">
+                <ex:ExpanderEx.Header>
+                    <ex:ExpanderExDescriptor
+                        x:Uid="SettingAboutPage_Ex_Sources"
+                        Title="开源"
+                        Description="点击此项跳转 GitHub 仓库">
+                        <ex:ExpanderExDescriptor.Icon>
+                            <FontIcon Glyph="&#xe8e4;" />
+                        </ex:ExpanderExDescriptor.Icon>
+                    </ex:ExpanderExDescriptor>
+                </ex:ExpanderEx.Header>
+            </ex:ExpanderEx>
+
+            <ex:ExpanderEx Margin="0,15" IsExpanded="True">
+                <ex:ExpanderEx.Header>
+                    <ex:ExpanderExDescriptor
+                        x:Uid="SettingAboutPage_Ex_Usings"
+                        Title="引用"
+                        Height="64.8"
+                        Description="本应用开发使用的库">
+                        <ex:ExpanderExDescriptor.Icon>
+                            <FontIcon Glyph="&#xe8f1;" />
+                        </ex:ExpanderExDescriptor.Icon>
+                    </ex:ExpanderExDescriptor>
+                </ex:ExpanderEx.Header>
+                <ex:ExpanderEx.Content>
+                    <StackPanel Margin="35,15" HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel>
+                                <TextBlock
+                                    FontSize="16"
+                                    FontWeight="SemiBold"
+                                    Text="Microsoft.UI.Xaml" />
+                                <TextBlock
+                                    FontSize="12"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Text="2.8.0" />
+                            </StackPanel>
+                            <HyperlinkButton
+                                Margin="20,0,0,0"
+                                Content="https://github.com/microsoft/microsoft-ui-xaml"
+                                NavigateUri="https://github.com/microsoft/microsoft-ui-xaml" />
+                        </StackPanel>
+                        <StackPanel Margin="0,15" Orientation="Horizontal">
+                            <StackPanel>
+                                <TextBlock
+                                    FontSize="16"
+                                    FontWeight="SemiBold"
+                                    Text="Newtonsoft.Json" />
+                                <TextBlock
+                                    FontSize="12"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Text="13.0.1" />
+                            </StackPanel>
+                            <HyperlinkButton
+                                Margin="20,0,0,0"
+                                Content="https://www.newtonsoft.com/json"
+                                NavigateUri="https://www.newtonsoft.com/json" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel>
+                                <TextBlock
+                                    FontSize="16"
+                                    FontWeight="SemiBold"
+                                    Text="ReactiveUI" />
+                                <TextBlock
+                                    FontSize="12"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Text="18.3.1" />
+                            </StackPanel>
+                            <HyperlinkButton
+                                Margin="20,0,0,0"
+                                Content="https://www.reactiveui.net/"
+                                NavigateUri="https://www.reactiveui.net/" />
+                        </StackPanel>
+                        <StackPanel Margin="0,15" Orientation="Horizontal">
+                            <StackPanel>
+                                <TextBlock
+                                    FontSize="16"
+                                    FontWeight="SemiBold"
+                                    Text="Richasy.ExpanderEx.UWP" />
+                                <TextBlock
+                                    FontSize="12"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Text="1.0.4" />
+                            </StackPanel>
+                            <HyperlinkButton
+                                Margin="20,0,0,0"
+                                Content="https://github.com/Richasy/ExpanderEx"
+                                NavigateUri="https://github.com/Richasy/ExpanderEx" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel>
+                                <TextBlock
+                                    FontSize="16"
+                                    FontWeight="SemiBold"
+                                    Text="Tomlyn" />
+                                <TextBlock
+                                    FontSize="12"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Text="0.15.0" />
+                            </StackPanel>
+                            <HyperlinkButton
+                                Margin="20,0,0,0"
+                                Content="https://github.com/xoofx/Tomlyn"
+                                NavigateUri="https://github.com/xoofx/Tomlyn" />
+                        </StackPanel>
+                        <StackPanel Margin="0,15" Orientation="Horizontal">
+                            <StackPanel>
+                                <TextBlock
+                                    FontSize="16"
+                                    FontWeight="SemiBold"
+                                    Text="Natsurainko.FluentCore" />
+                                <TextBlock
+                                    FontSize="12"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Text="2.0" />
+                            </StackPanel>
+                            <HyperlinkButton
+                                Margin="20,0,0,0"
+                                Content="https://github.com/Xcube-Studio/Natsurainko.FluentCore"
+                                NavigateUri="https://github.com/Xcube-Studio/Natsurainko.FluentCore" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel>
+                                <TextBlock
+                                    FontSize="16"
+                                    FontWeight="SemiBold"
+                                    Text="Natsurainko.Toolkits" />
+                                <TextBlock
+                                    FontSize="12"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Text="1.0" />
+                            </StackPanel>
+                            <HyperlinkButton
+                                Margin="20,0,0,0"
+                                Content="https://github.com/natsurainko/Natsurainko.Toolkits"
+                                NavigateUri="https://github.com/natsurainko/Natsurainko.Toolkits" />
+                        </StackPanel>
+                    </StackPanel>
+                </ex:ExpanderEx.Content>
+            </ex:ExpanderEx>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

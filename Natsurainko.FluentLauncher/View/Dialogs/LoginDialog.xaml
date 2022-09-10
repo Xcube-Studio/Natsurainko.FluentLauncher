@@ -1,0 +1,95 @@
+﻿<ContentDialog
+    x:Class="Natsurainko.FluentLauncher.View.Dialogs.LoginDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialogs="using:Natsurainko.FluentLauncher.ViewModel.Dialogs"
+    xmlns:local="using:Natsurainko.FluentLauncher.View.Dialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    d:DataContext="{d:DesignInstance Type=dialogs:LoginDialogVM}"
+    Style="{ThemeResource DefaultContentDialogStyle}"
+    mc:Ignorable="d">
+
+    <Grid Width="450">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock
+            Grid.Row="0"
+            Margin="0,0,0,10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontSize="18"
+            FontWeight="Bold"
+            Text="{Binding Title, Mode=OneWay}" />
+        <Grid Grid.Row="1" HorizontalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StackPanel>
+                <TextBox
+                    Margin="0,0,0,15"
+                    IsEnabled="{Binding ControlEnable, Mode=OneWay}"
+                    PlaceholderText="外置登录服务器地址："
+                    Text="{Binding YggdrasilServerUrl, Mode=TwoWay}"
+                    Visibility="{Binding UrlBoxVisibility, Mode=OneWay}" />
+                <TextBox
+                    IsEnabled="{Binding ControlEnable, Mode=OneWay}"
+                    PlaceholderText="邮箱/用户名："
+                    Text="{Binding Email, Mode=TwoWay}"
+                    Visibility="{Binding EmailBoxVisibility, Mode=OneWay}" />
+                <PasswordBox
+                    Margin="0,15,0,0"
+                    IsEnabled="{Binding ControlEnable, Mode=OneWay}"
+                    Password="{Binding Password, Mode=TwoWay}"
+                    PlaceholderText="密码："
+                    Visibility="{Binding PasswordBoxVisibility, Mode=OneWay}" />
+                <muxc:Expander
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    Header="没啥东西好放的，留空吧"
+                    Visibility="{Binding PlaceholderVisibity, Mode=OneWay}" />
+            </StackPanel>
+            <StackPanel
+                Grid.Row="1"
+                VerticalAlignment="Bottom"
+                Visibility="{Binding Message, Converter={ThemeResource ValueIsNullVisibilityConverter}, Mode=OneWay}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="验证器状态：" />
+                    <TextBlock Text="{Binding Message, Mode=OneWay}" />
+                </StackPanel>
+                <muxc:ProgressBar
+                    Margin="0,5,0,0"
+                    Maximum="1"
+                    Value="{Binding Progress, Mode=OneWay}" />
+            </StackPanel>
+        </Grid>
+        <ContentControl
+            Grid.Row="2"
+            Margin="0,10,0,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            IsEnabled="{Binding ControlEnable, Mode=OneWay}">
+            <StackPanel Orientation="Horizontal">
+                <Button
+                    Width="75"
+                    Background="{ThemeResource SystemAccentColor}"
+                    Click="ConfirmButton_Click"
+                    Foreground="White"
+                    Style="{ThemeResource AccentButtonStyle}">
+                    <TextBlock x:Uid="ContentDialog_Confirm" Text="确定" />
+                </Button>
+                <Button
+                    Width="75"
+                    Margin="15,0,0,0"
+                    Click="CancelButton_Click">
+                    <TextBlock x:Uid="ContentDialog_Cancel" Text="取消" />
+                </Button>
+            </StackPanel>
+        </ContentControl>
+    </Grid>
+</ContentDialog>

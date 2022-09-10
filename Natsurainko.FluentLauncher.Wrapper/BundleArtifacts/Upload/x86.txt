@@ -1,0 +1,2 @@
+MainPackage=D:\Projects\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher.Wrapper\bin\x86\Release\Upload\Natsurainko.FluentLauncher.Wrapper_2.0.6.0_x86.msix
+SymbolPackage=D:\Projects\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher.Wrapper\bin\x86\Release\Upload\Natsurainko.FluentLauncher.Wrapper_2.0.6.0\Natsurainko.FluentLauncher.Wrapper_2.0.6.0_x86.appxsym

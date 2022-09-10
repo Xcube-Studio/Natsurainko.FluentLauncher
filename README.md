@@ -16,7 +16,8 @@
 > 仅支持 Windows 10.0.19041.0 及以上版本  
 > 部分 UI 控件在 Windows 10 上显示效果会弱于 Windows 11
 
-- [![在 Microsoft Store 中获取 Natsurainko.FluentLauncher](https://user-images.githubusercontent.com/76810494/189479518-fc0f18a9-b0a4-4a63-8e7b-27a4284d93af.png)](https://apps.microsoft.com/store/detail/natsuriankofluentlauncher/9p4nqqxq942p?hl=zh-cn&gl=cn)
+- [在 Microsoft Store 中获取 Natsurainko.FluentLauncher](https://apps.microsoft.com/store/detail/natsuriankofluentlauncher/9p4nqqxq942p?hl=zh-cn&gl=cn)  
+ [![在 Microsoft Store 中获取 Natsurainko.FluentLauncher](https://user-images.githubusercontent.com/76810494/189479518-fc0f18a9-b0a4-4a63-8e7b-27a4284d93af.png)](https://apps.microsoft.com/store/detail/natsuriankofluentlauncher/9p4nqqxq942p?hl=zh-cn&gl=cn)
 - 或安装 [Release](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/releases) 中的 msixbundle 安装包
 
 ### Getting Started 开始使用

@@ -9,7 +9,7 @@
 > —— 专为 Windows 11 定制的 Minecraft 启动器  
 > 努力在 Windows 11 获取最好的启动器体验
 
-![Alt text](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/blob/main/Images/L0.png "主页")
+![预览图](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/blob/main/Images/L0.png "主页")
 
 ### Installation 安装
 

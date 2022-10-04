@@ -9,7 +9,7 @@
 > —— 专为 Windows 11 定制的 Minecraft 启动器  
 > 努力在 Windows 11 获取最好的启动器体验
 
-![Alt text](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/blob/main/Images/L0.png "主页")
+![预览图](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/blob/main/Images/L0.png "主页")
 
 ### Installation 安装
 
@@ -18,7 +18,8 @@
 
 - [在 Microsoft Store 中获取 Natsurainko.FluentLauncher](https://apps.microsoft.com/store/detail/natsuriankofluentlauncher/9p4nqqxq942p?hl=zh-cn&gl=cn)  
  [![在 Microsoft Store 中获取 Natsurainko.FluentLauncher](https://user-images.githubusercontent.com/76810494/189479518-fc0f18a9-b0a4-4a63-8e7b-27a4284d93af.png)](https://apps.microsoft.com/store/detail/natsuriankofluentlauncher/9p4nqqxq942p?hl=zh-cn&gl=cn)
-- 或安装 [Release](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/releases) 中的 msixbundle 安装包
+- 或安装 [Release](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/releases) 中的 Msixbundle 安装包
+    + [? 如何安装 Msixbundle 包](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85-Msixbundle-%E5%8C%85)
 
 ### Getting Started 开始使用
 

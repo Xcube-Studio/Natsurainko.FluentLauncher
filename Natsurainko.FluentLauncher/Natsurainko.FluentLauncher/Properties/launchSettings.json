@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Natsurainko.FluentLauncher": {
+      "commandName": "Project",
+      "nativeDebugging": false,
+      "hotReloadEnabled": false
+    }
+  }
+}

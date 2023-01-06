@@ -1,0 +1,165 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Pages.Settings.Account"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Natsurainko.FluentLauncher.UserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Pages.Settings"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Pages.Settings"
+    Background="Transparent"
+    mc:Ignorable="d">
+    <Page.DataContext>
+        <vm:Account />
+    </Page.DataContext>
+
+    <ScrollViewer>
+        <StackPanel Padding="30,20">
+            <Expander
+                Padding="0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                IsExpanded="True">
+                <Expander.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Margin="2,0,0,0" Glyph="&#xe77b;" />
+                        <StackPanel Margin="17,12.5">
+                            <TextBlock Text="Accounts" />
+                            <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="Account after entering the game" />
+                        </StackPanel>
+                    </StackPanel>
+                </Expander.Header>
+                <Expander.Content>
+                    <StackPanel HorizontalAlignment="Stretch">
+                        <controls:ExpanderContentItem>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="15" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock VerticalAlignment="Center" Text="Current account:" />
+                                <ComboBox
+                                    Grid.Column="2"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    FlowDirection="RightToLeft"
+                                    ItemsSource="{Binding Accounts}"
+                                    SelectedItem="{Binding CurrentAccount, Mode=TwoWay}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock TextTrimming="CharacterEllipsis">
+                                                <Run FontWeight="SemiBold" Text="{Binding Name}" />
+                                                <Run Text="," />
+                                                <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding Type}" />
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </Grid>
+                        </controls:ExpanderContentItem>
+                        <Border Style="{ThemeResource ExpanderSplitter}" Visibility="{Binding RemoveVisibility}" />
+                        <controls:ExpanderContentItem Visibility="{Binding RemoveVisibility}">
+                            <Grid>
+                                <TextBlock VerticalAlignment="Center" Text="Details of the current account:" />
+                                <Button HorizontalAlignment="Right" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal">
+                                        <FontIcon FontSize="16" Glyph="&#xE1A6;" />
+                                        <TextBlock Margin="5,0,0,0" Text="Check" />
+                                    </StackPanel>
+                                    <Button.Flyout>
+                                        <Flyout Placement="BottomEdgeAlignedRight">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="15" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <RichTextBlock
+                                                    MaxWidth="350"
+                                                    MaxHeight="{Binding MaxFlyoutHeight}"
+                                                    TextTrimming="CharacterEllipsis">
+                                                    <Paragraph>
+                                                        <Run FontWeight="SemiBold" Text="{Binding CurrentAccount.Name}" />
+                                                        <Run>,</Run>
+                                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding CurrentAccount.Type}" />
+                                                    </Paragraph>
+                                                    <Paragraph>
+                                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">Uuid:</Run>
+                                                        <Run Text="{Binding CurrentAccount.Uuid}" />
+                                                    </Paragraph>
+                                                    <Paragraph>
+                                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">Access Token:</Run>
+                                                        <Run Text="{Binding CurrentAccount.AccessToken}" />
+                                                    </Paragraph>
+                                                </RichTextBlock>
+                                                <ToggleButton
+                                                    Grid.Row="2"
+                                                    HorizontalAlignment="Right"
+                                                    Content="Expand"
+                                                    IsChecked="{Binding ExpandAccessToken, Mode=TwoWay}" />
+                                            </Grid>
+                                        </Flyout>
+                                    </Button.Flyout>
+                                </Button>
+                            </Grid>
+                        </controls:ExpanderContentItem>
+                        <Border Style="{ThemeResource ExpanderSplitter}" />
+                        <controls:ExpanderContentItem>
+                            <Grid>
+                                <TextBlock VerticalAlignment="Center" Text="Add new account:" />
+                                <Button
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding LoginCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <FontIcon FontSize="16" Glyph="&#xe8fa;" />
+                                        <TextBlock Margin="5,0,0,0" Text="Sign in" />
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                        </controls:ExpanderContentItem>
+                        <Border Style="{ThemeResource ExpanderSplitter}" Visibility="{Binding RemoveVisibility}" />
+                        <controls:ExpanderContentItem Visibility="{Binding RemoveVisibility}">
+                            <Grid>
+                                <TextBlock VerticalAlignment="Center" Text="Remove current account:" />
+                                <Button
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Background="{ThemeResource DeleteButtonBackground}"
+                                    BorderBrush="{ThemeResource DeleteButtonBorder}"
+                                    Command="{Binding RemoveCommand}"
+                                    Style="{ThemeResource ButtonRevealStyle}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <FontIcon
+                                            FontSize="16"
+                                            Foreground="White"
+                                            Glyph="&#xe74d;" />
+                                        <TextBlock
+                                            Margin="5,0,0,0"
+                                            Foreground="White"
+                                            Text="Remove" />
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                        </controls:ExpanderContentItem>
+                        <Border Style="{ThemeResource ExpanderSplitter}" />
+                        <controls:ExpanderContentItem>
+                            <Grid>
+                                <TextBlock VerticalAlignment="Center" Text="Launch the game with a Demo account:" />
+                                <ToggleSwitch
+                                    Margin="-75,-25"
+                                    Padding="0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    IsEnabled="True"
+                                    IsOn="{Binding EnableDemoUser, Mode=TwoWay}" />
+                            </Grid>
+                        </controls:ExpanderContentItem>
+                    </StackPanel>
+                </Expander.Content>
+            </Expander>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

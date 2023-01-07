@@ -1,0 +1,6 @@
+MainPackage=D:\Git\fluentlauncher-preview-edition\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher (Package)\bin\x64\Release\Upload\Natsurainko.FluentLauncher (Package)_2.1.0.0_x64.msix
+SymbolPackage=D:\Git\fluentlauncher-preview-edition\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher (Package)\bin\x64\Release\Upload\Natsurainko.FluentLauncher (Package)_2.1.0.0\Natsurainko.FluentLauncher (Package)_2.1.0.0_x64.appxsym
+ResourcePack=D:\Git\fluentlauncher-preview-edition\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher (Package)\bin\x64\Release\Upload\Natsurainko.FluentLauncher (Package)_2.1.0.0_scale-100.msix
+ResourcePack=D:\Git\fluentlauncher-preview-edition\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher (Package)\bin\x64\Release\Upload\Natsurainko.FluentLauncher (Package)_2.1.0.0_scale-125.msix
+ResourcePack=D:\Git\fluentlauncher-preview-edition\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher (Package)\bin\x64\Release\Upload\Natsurainko.FluentLauncher (Package)_2.1.0.0_scale-150.msix
+ResourcePack=D:\Git\fluentlauncher-preview-edition\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher (Package)\bin\x64\Release\Upload\Natsurainko.FluentLauncher (Package)_2.1.0.0_scale-400.msix

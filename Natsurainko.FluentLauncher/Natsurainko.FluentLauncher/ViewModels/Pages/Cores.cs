@@ -38,6 +38,9 @@ public partial class Cores : ObservableObject
     {
         Task.Run(() =>
         {
+            if (string.IsNullOrEmpty(CurrentGameFolder))
+                return;
+
             var cores = new GameCoreLocator(App.Configuration.CurrentGameFolder).GetGameCores();
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {

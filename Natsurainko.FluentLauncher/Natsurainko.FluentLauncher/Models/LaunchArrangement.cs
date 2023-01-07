@@ -142,7 +142,7 @@ public partial class LaunchArrangement : ObservableObject
 
         var coreLocator = new GameCoreLocator(App.Configuration.CurrentGameFolder);
         var launcher = new MinecraftLauncher(arrangement.LaunchSetting, coreLocator);
-        var resourceDownloader = new ResourceDownloader();
+        var resourceDownloader = new CrossProcessResourceDownload();
 
         resourceDownloader.DownloadProgressChanged += (object sender, ParallelDownloaderProgressChangedEventArgs e)
             => arrangement.ReportState($"Downloading Assets {e.CompletedTasks}/{e.TotleTasks}");

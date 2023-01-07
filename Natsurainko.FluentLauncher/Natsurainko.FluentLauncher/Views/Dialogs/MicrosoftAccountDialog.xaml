@@ -328,7 +328,7 @@
             Visibility="{Binding WebViewVisibility}">
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="NavigationCompleted">
-                    <mvvm:ModifiedInvokeCommandAction Command="{Binding ExecuteScriptCommand}"/>
+                    <mvvm:ModifiedInvokeCommandAction Command="{Binding ExecuteScriptCommand}" />
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
         </WebView2>

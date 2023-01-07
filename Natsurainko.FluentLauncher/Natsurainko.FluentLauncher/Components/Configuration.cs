@@ -48,6 +48,7 @@ public partial class Configuration : ObservableObject
             GameWindowTitle = string.Empty,
             Accounts = new() { OfflineAuthenticator.Default },
             EnableDemoUser = false,
+            AutoRefresh = true,
             CurrentDownloadSource= "Mcbbs",
             EnableFragmentDownload = true,
             MaxDownloadThreads = 128
@@ -120,6 +121,9 @@ public partial class Configuration
 
     [ObservableProperty]
     private bool enableDemoUser;
+
+    [ObservableProperty]
+    private bool autoRefresh;
 }
 
 public partial class Configuration

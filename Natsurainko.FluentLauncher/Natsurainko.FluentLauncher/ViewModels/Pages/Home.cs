@@ -56,21 +56,7 @@ public partial class Home : ObservableObject
     private Visibility accountTag;
 
     [RelayCommand]
-    public Task Launch() => Task.Run(() =>
-    {
-        LaunchArrangement.StartNew(CurrentGameCore);
-
-        App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-        {
-            var hyperlinkButton = new HyperlinkButton { Content = "Go to Activities>Launch Tasks" };
-            hyperlinkButton.Click += (_, _) => MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Activities.Navigation), typeof(Views.Pages.Activities.Launch));
-
-            MainContainer.ShowMessagesAsync(
-                $"Added Launch \"{CurrentGameCore.Id}\" into Arrangements",
-                "Go to Activities>Launch Tasks for details",
-                button: hyperlinkButton);
-        });
-    });
+    public Task Launch() => Task.Run(() => LaunchArrangement.StartNew(CurrentGameCore));
 
     [RelayCommand]
     public void Account() => MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Settings.Navigation), typeof(Views.Pages.Settings.Account));

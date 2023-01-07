@@ -50,6 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Assets\Libs\" />
     <Folder Include="ViewModels\Pages\Properties\" />
     <Folder Include="ViewModels\Pages\Resources\" />
     <Folder Include="Views\Pages\Properties\" />

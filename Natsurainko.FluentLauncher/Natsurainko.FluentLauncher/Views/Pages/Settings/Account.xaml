@@ -63,46 +63,60 @@
                         <controls:ExpanderContentItem Visibility="{Binding RemoveVisibility}">
                             <Grid>
                                 <TextBlock VerticalAlignment="Center" Text="Details of the current account:" />
-                                <Button HorizontalAlignment="Right" VerticalAlignment="Center">
-                                    <StackPanel Orientation="Horizontal">
-                                        <FontIcon FontSize="16" Glyph="&#xE1A6;" />
-                                        <TextBlock Margin="5,0,0,0" Text="Check" />
-                                    </StackPanel>
-                                    <Button.Flyout>
-                                        <Flyout Placement="BottomEdgeAlignedRight">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto" />
-                                                    <RowDefinition Height="15" />
-                                                    <RowDefinition Height="Auto" />
-                                                </Grid.RowDefinitions>
-                                                <RichTextBlock
-                                                    MaxWidth="350"
-                                                    MaxHeight="{Binding MaxFlyoutHeight}"
-                                                    TextTrimming="CharacterEllipsis">
-                                                    <Paragraph>
-                                                        <Run FontWeight="SemiBold" Text="{Binding CurrentAccount.Name}" />
-                                                        <Run>,</Run>
-                                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding CurrentAccount.Type}" />
-                                                    </Paragraph>
-                                                    <Paragraph>
-                                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">Uuid:</Run>
-                                                        <Run Text="{Binding CurrentAccount.Uuid}" />
-                                                    </Paragraph>
-                                                    <Paragraph>
-                                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">Access Token:</Run>
-                                                        <Run Text="{Binding CurrentAccount.AccessToken}" />
-                                                    </Paragraph>
-                                                </RichTextBlock>
-                                                <ToggleButton
-                                                    Grid.Row="2"
-                                                    HorizontalAlignment="Right"
-                                                    Content="Expand"
-                                                    IsChecked="{Binding ExpandAccessToken, Mode=TwoWay}" />
-                                            </Grid>
-                                        </Flyout>
-                                    </Button.Flyout>
-                                </Button>
+                                <StackPanel
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <Button Command="{Binding RefreshCommand}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <FontIcon FontSize="16" Glyph="&#xe72c;" />
+                                            <TextBlock Margin="5,0,0,0" Text="Refresh" />
+                                        </StackPanel>
+                                    </Button>
+                                    <Button
+                                        Margin="15,0,0,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal">
+                                            <FontIcon FontSize="16" Glyph="&#xE1A6;" />
+                                            <TextBlock Margin="5,0,0,0" Text="Check" />
+                                        </StackPanel>
+                                        <Button.Flyout>
+                                            <Flyout Placement="BottomEdgeAlignedRight">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="15" />
+                                                        <RowDefinition Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <RichTextBlock
+                                                        MaxWidth="350"
+                                                        MaxHeight="{Binding MaxFlyoutHeight}"
+                                                        TextTrimming="CharacterEllipsis">
+                                                        <Paragraph>
+                                                            <Run FontWeight="SemiBold" Text="{Binding CurrentAccount.Name}" />
+                                                            <Run>,</Run>
+                                                            <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding CurrentAccount.Type}" />
+                                                        </Paragraph>
+                                                        <Paragraph>
+                                                            <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">Uuid:</Run>
+                                                            <Run Text="{Binding CurrentAccount.Uuid}" />
+                                                        </Paragraph>
+                                                        <Paragraph>
+                                                            <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">Access Token:</Run>
+                                                            <Run Text="{Binding CurrentAccount.AccessToken}" />
+                                                        </Paragraph>
+                                                    </RichTextBlock>
+                                                    <ToggleButton
+                                                        Grid.Row="2"
+                                                        HorizontalAlignment="Right"
+                                                        Content="Expand"
+                                                        IsChecked="{Binding ExpandAccessToken, Mode=TwoWay}" />
+                                                </Grid>
+                                            </Flyout>
+                                        </Button.Flyout>
+                                    </Button>
+                                </StackPanel>
                             </Grid>
                         </controls:ExpanderContentItem>
                         <Border Style="{ThemeResource ExpanderSplitter}" />
@@ -157,6 +171,20 @@
                                     IsOn="{Binding EnableDemoUser, Mode=TwoWay}" />
                             </Grid>
                         </controls:ExpanderContentItem>
+                        <Border Style="{ThemeResource ExpanderSplitter}" />
+                        <controls:ExpanderContentItem>
+                            <Grid>
+                                <TextBlock VerticalAlignment="Center" Text="Auto refresh account: (more than 12h since last)" />
+                                <ToggleSwitch
+                                    Margin="-75,-25"
+                                    Padding="0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    IsEnabled="True"
+                                    IsOn="{Binding AutoRefresh, Mode=TwoWay}" />
+                            </Grid>
+                        </controls:ExpanderContentItem>
+
                     </StackPanel>
                 </Expander.Content>
             </Expander>

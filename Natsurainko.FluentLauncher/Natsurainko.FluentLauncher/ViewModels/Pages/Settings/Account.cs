@@ -1,10 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentCore.Interface;
+using Natsurainko.FluentCore.Model.Auth;
+using Natsurainko.FluentCore.Module.Authenticator;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Views.Dialogs;
 using Natsurainko.FluentLauncher.Views.Pages;
+using Natsurainko.FluentLauncher.Views.Pages.Settings;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -55,6 +59,60 @@ public partial class Account
         });
     });
 
+    [RelayCommand]
+    public Task Refresh() => Task.Run(async () =>
+    {
+        try
+        {
+            IAuthenticator authenticator = default;
+            IAccount refreshedAccount = default;
+            if (CurrentAccount.Type.Equals(AccountType.Microsoft))
+            {
+                var account = (MicrosoftAccount)CurrentAccount;
+                authenticator = new MicrosoftAuthenticator(
+                    account.RefreshToken,
+                    AuthenticatorMethod.Refresh);
+            }
+            else if (CurrentAccount.Type.Equals(AccountType.Yggdrasil))
+            {
+                var account = (YggdrasilAccount)CurrentAccount;
+                authenticator = new YggdrasilAuthenticator(
+                    AuthenticatorMethod.Refresh,
+                    account.AccessToken,
+                    account.ClientToken,
+                    yggdrasilServerUrl: account.YggdrasilServerUrl);
+            }
+            else if (CurrentAccount.Type.Equals(AccountType.Offline))
+                authenticator = new OfflineAuthenticator(CurrentAccount.Name, CurrentAccount.Uuid);
+
+            refreshedAccount = await authenticator.AuthenticateAsync();
+
+            App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+            {
+                Accounts.Remove(CurrentAccount);
+                CurrentAccount = null;
+
+                Accounts.Add(refreshedAccount);
+                CurrentAccount = refreshedAccount;
+
+                OnPropertyChanged(nameof(Accounts));
+            });
+
+            MainContainer.ShowMessagesAsync(
+                "Successfully refreshed Account",
+                $"Welcome back, {refreshedAccount.Name}", 
+                severity: InfoBarSeverity.Success);
+        }
+        catch (Exception ex)
+        {
+            MainContainer.ShowMessagesAsync(
+                "Failed to refresh account", 
+                ex.ToString(),
+                severity: InfoBarSeverity.Error,
+                delay: 1000 * 15);
+        }
+    });
+
     private void SetAccount(IAccount account) => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
     {
         Accounts.Add(account);
@@ -88,4 +146,7 @@ public partial class Account
 
     [ObservableProperty]
     private bool enableDemoUser;
+
+    [ObservableProperty]
+    private bool autoRefresh;
 }

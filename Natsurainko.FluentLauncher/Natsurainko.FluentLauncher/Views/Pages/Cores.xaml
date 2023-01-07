@@ -29,6 +29,7 @@
                     Width="200"
                     Background="Transparent"
                     ItemsSource="{Binding GameFolders}"
+                    PlaceholderText=".minecraft Folders"
                     SelectedItem="{Binding CurrentGameFolder, Mode=TwoWay}">
                     <ComboBox.Style>
                         <Style TargetType="ComboBox">
@@ -554,7 +555,16 @@
                 </Grid>
             </AppBarElementContainer>
             <CommandBar.SecondaryCommands>
-                <AppBarButton Label="Open .minecraft Folder">
+                <AppBarButton
+                    Command="{Binding InstallCoreCommand}"
+                    Icon="Download"
+                    Label="Install New Core">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="A" Modifiers="Control" />
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
+                <AppBarSeparator />
+                <AppBarButton Command="{Binding OpenFolderCommand}" Label="Open .minecraft Folder">
                     <AppBarButton.Icon>
                         <FontIcon Glyph="&#xe838;" />
                     </AppBarButton.Icon>
@@ -562,10 +572,39 @@
                         <KeyboardAccelerator Key="O" Modifiers="Control" />
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
-                <AppBarButton Icon="Download" Label="Install New Core">
+                <AppBarSeparator />
+                <AppBarButton Command="{Binding LaunchCommand}" Label="Launch">
                     <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="A" Modifiers="Control" />
+                        <KeyboardAccelerator Key="L" Modifiers="Control" />
                     </AppBarButton.KeyboardAccelerators>
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xe768;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton Command="{Binding RenameCommand}" Label="Rename">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="R" Modifiers="Control" />
+                    </AppBarButton.KeyboardAccelerators>
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xe8ac;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton Command="{Binding DeleteCommand}" Label="Delete">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="D" Modifiers="Control" />
+                    </AppBarButton.KeyboardAccelerators>
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xe74d;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarSeparator />
+                <AppBarButton Command="{Binding GenerateScriptCommand}" Label="Generate Launch Script">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="G" Modifiers="Control" />
+                    </AppBarButton.KeyboardAccelerators>
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xED0E;" />
+                    </AppBarButton.Icon>
                 </AppBarButton>
             </CommandBar.SecondaryCommands>
         </CommandBar>
@@ -709,5 +748,26 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <StackPanel
+            Grid.Row="1"
+            Margin="0,0,0,100"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Visibility="{Binding TipVisibility}">
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="26"
+                FontWeight="SemiBold"
+                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                Text="{Binding TipTitle}" />
+            <HyperlinkButton
+                Padding="0"
+                HorizontalAlignment="Center"
+                Command="{Binding GoToPageCommand}"
+                Content="{Binding TipSubTitle}"
+                FontSize="16"
+                FontWeight="SemiBold"
+                Opacity="0.75" />
+        </StackPanel>
     </Grid>
 </Page>

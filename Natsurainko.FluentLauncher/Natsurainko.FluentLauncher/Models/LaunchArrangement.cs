@@ -115,6 +115,17 @@ public partial class LaunchArrangement : ObservableObject
 
     public static void StartNew(GameCore core)
     {
+        App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+        {
+            var hyperlinkButton = new HyperlinkButton { Content = "Go to Activities>Launch Tasks" };
+            hyperlinkButton.Click += (_, _) => MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Activities.Navigation), typeof(Views.Pages.Activities.Launch));
+
+            MainContainer.ShowMessagesAsync(
+                $"Added Launch \"{core.Id}\" into Arrangements",
+                "Go to Activities>Launch Tasks for details",
+                button: hyperlinkButton);
+        });
+
         var arrangement = new LaunchArrangement
         {
             LaunchSetting = new()
@@ -140,7 +151,7 @@ public partial class LaunchArrangement : ObservableObject
 
         var thread = new Thread(() =>
         {
-            var launchResponse = launcher.LaunchMinecraft(core.Id, args => arrangement.ReportState(LanguageStringHandler.HandleLaunchState(args.Message)));
+            var launchResponse = launcher.LaunchMinecraft(core, args => arrangement.ReportState(LanguageStringHandler.HandleLaunchState(args.Message)));
             arrangement.LaunchResponse = launchResponse;
 
             if (launchResponse.State == LaunchState.Succeess)
@@ -165,7 +176,7 @@ public partial class LaunchArrangement : ObservableObject
                 {
                     arrangement.ReportState($"Game Exited");
 
-                    App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                    App.MainWindow.DispatcherQueue.SynchronousTryEnqueue(() =>
                     {
                         arrangement.ExitCode = e.ExitCode;
                         arrangement.GameRunning = Visibility.Collapsed;
@@ -191,11 +202,12 @@ public partial class LaunchArrangement : ObservableObject
                     severity: InfoBarSeverity.Error,
                     delay:1000 * 20);
 
-                App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
                 {
                     arrangement.Exception = launchResponse.Exception;
                     arrangement.Arguments = string.Join(" ", launchResponse.Arguemnts);
 
+                    await Task.Delay(TimeSpan.FromSeconds(2));
                     launchResponse.Dispose();
                 });
             }

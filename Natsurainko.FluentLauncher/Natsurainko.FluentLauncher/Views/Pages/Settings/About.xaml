@@ -231,7 +231,7 @@
                                     FontSize="16"
                                     FontWeight="SemiBold"
                                     Text="CommunityToolkit.Mvvm" />
-                                <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="1.0.3" />
+                                <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="8.0.0" />
                             </StackPanel>
                             <HyperlinkButton
                                 Grid.Column="2"
@@ -251,7 +251,7 @@
                                     FontSize="16"
                                     FontWeight="SemiBold"
                                     Text="Microsoft.Xaml.Behaviors.WinUI.Managed" />
-                                <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="1.0.3" />
+                                <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="2.0.9" />
                             </StackPanel>
                             <HyperlinkButton
                                 Grid.Column="2"
@@ -291,7 +291,7 @@
                                     FontSize="16"
                                     FontWeight="SemiBold"
                                     Text="Newtonsoft.Json" />
-                                <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="1.0.3" />
+                                <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="13.0.1" />
                             </StackPanel>
                             <HyperlinkButton
                                 Grid.Column="2"
@@ -311,7 +311,7 @@
                                     FontSize="16"
                                     FontWeight="SemiBold"
                                     Text="Tomlyn" />
-                                <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="1.0.3" />
+                                <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="0.15.0" />
                             </StackPanel>
                             <HyperlinkButton
                                 Grid.Column="2"

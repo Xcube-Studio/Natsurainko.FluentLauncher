@@ -50,7 +50,7 @@
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Stretch"
                         VerticalContentAlignment="Stretch"
-                        IsExpanded="True">
+                        IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
                         <Expander.Header>
                             <Grid>
                                 <Grid.ColumnDefinitions>

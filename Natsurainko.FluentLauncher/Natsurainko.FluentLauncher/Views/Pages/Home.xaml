@@ -18,15 +18,16 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Button
+        <SplitButton
             Grid.Row="0"
             Margin="30,20,30,30"
             Padding="10,2"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Background="Transparent"
+            BorderBrush="Transparent"
             Command="{Binding AccountCommand}"
-            Style="{ThemeResource ButtonRevealStyle}">
+            Style="{ThemeResource SplitButtonRevealStyle}">
             <StackPanel Orientation="Horizontal">
                 <TextBlock
                     VerticalAlignment="Center"
@@ -48,7 +49,25 @@
                     </TextBlock>
                 </StackPanel>
             </StackPanel>
-        </Button>
+            <SplitButton.Flyout>
+                <Flyout>
+                    <ListView
+                        Margin="-15,-12.5"
+                        ItemsSource="{Binding Accounts}"
+                        SelectedItem="{Binding CurrentAccount, Mode=TwoWay}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock TextTrimming="CharacterEllipsis">
+                                    <Run FontWeight="SemiBold" Text="{Binding Name}" />
+                                    <Run Text="," />
+                                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding Type}" />
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Flyout>
+            </SplitButton.Flyout>
+        </SplitButton>
 
         <Grid
             Grid.Row="2"
@@ -134,55 +153,6 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-        </Grid>
-
-        <Grid
-            Grid.Row="1"
-            Padding="30,0"
-            Visibility="Collapsed">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
-            <Button
-                Margin="2"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch" />
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*" />
-                    <RowDefinition Height="1*" />
-                </Grid.RowDefinitions>
-                <Button
-                    Margin="2"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Background="#3375cf" />
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
-                    <Button
-                        Margin="2"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Background="#ca4821" />
-                    <Button
-                        Grid.Column="1"
-                        Margin="2"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Background="#3375cf" />
-                    <Button
-                        Grid.Column="2"
-                        Margin="2"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Background="#459b52" />
-                </Grid>
-            </Grid>
         </Grid>
     </Grid>
 </Page>

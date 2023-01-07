@@ -19,13 +19,19 @@ public partial class Home : ObservableObject
 {
     public Home()
     {
+        Accounts = new(App.Configuration.Accounts);
         CurrentAccount = App.Configuration.CurrentAccount;
 
         if (!string.IsNullOrEmpty(App.Configuration.CurrentGameFolder))
-        {
-            GameCores = new(new GameCoreLocator(App.Configuration.CurrentGameFolder).GetGameCores());
-            CurrentGameCore = GameCores.Where(x => x.Id == App.Configuration.CurrentGameCore).FirstOrDefault();
-        }
+            Task.Run(() =>
+            {
+                var cores = new GameCoreLocator(App.Configuration.CurrentGameFolder).GetGameCores();
+                App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                {
+                    GameCores = new(cores);
+                    CurrentGameCore = GameCores.Where(x => x.Id == App.Configuration.CurrentGameCore).FirstOrDefault();
+                });
+            });
     }
 
     [ObservableProperty]
@@ -33,6 +39,9 @@ public partial class Home : ObservableObject
 
     [ObservableProperty]
     private IAccount currentAccount;
+
+    [ObservableProperty]
+    private ObservableCollection<IAccount> accounts;
 
     [ObservableProperty]
     private GameCore currentGameCore;
@@ -69,6 +78,9 @@ public partial class Home : ObservableObject
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
+
+        if (e.PropertyName == nameof(CurrentAccount))
+            App.Configuration.CurrentAccount = CurrentAccount;
 
         if (e.PropertyName == nameof(CurrentGameCore))
             App.Configuration.CurrentGameCore = CurrentGameCore?.Id;

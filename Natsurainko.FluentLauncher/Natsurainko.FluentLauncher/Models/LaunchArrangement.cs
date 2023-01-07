@@ -47,6 +47,9 @@ public partial class LaunchArrangement : ObservableObject
     private Exception exception;
 
     [ObservableProperty]
+    private bool isExpanded = true;
+
+    [ObservableProperty]
     private Visibility gameRunning = Visibility.Collapsed;
 
     [ObservableProperty]

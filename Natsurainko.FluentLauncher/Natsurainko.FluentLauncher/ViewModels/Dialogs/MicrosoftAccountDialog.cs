@@ -34,13 +34,18 @@ public partial class MicrosoftAccountDialog : DialogViewModel
     private string description;
 
     [RelayCommand]
-    public void ExecuteScript(object sender) => App.MainWindow.DispatcherQueue.TryEnqueue(async () 
-        => await (sender as WebView2).ExecuteScriptAsync(
+    public void ExecuteScript(object parameter) => App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
+    {
+        var e = parameter.As<WebView2, CoreWebView2NavigationCompletedEventArgs>();
+
+        if (e.args.IsSuccess)
+            await e.sender.ExecuteScriptAsync(
             "document.querySelector('body').style.overflow='scroll';" +
             "var style=document.createElement('style');" +
             "style.type='text/css';" +
             "style.innerHTML='::-webkit-scrollbar{display:none}';" +
-            "document.getElementsByTagName('body')[0].appendChild(style)"));
+            "document.getElementsByTagName('body')[0].appendChild(style)");
+    });
 
     private bool onloading = false;
 

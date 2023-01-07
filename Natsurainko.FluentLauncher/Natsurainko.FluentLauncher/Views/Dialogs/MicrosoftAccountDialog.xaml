@@ -7,6 +7,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mvvm="using:Natsurainko.FluentLauncher.Components.Mvvm"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Dialogs"
     x:Name="Dialog"
     d:DataContext="{d:DesignInstance Type=vm:MicrosoftAccountDialog}"
@@ -321,14 +322,13 @@
 
     <Grid Width="485" Height="580">
         <WebView2
-            x:Name="WebView2"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Source="{Binding Source, Mode=TwoWay}"
             Visibility="{Binding WebViewVisibility}">
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="NavigationCompleted">
-                    <core:InvokeCommandAction Command="{Binding ExecuteScriptCommand}" CommandParameter="{Binding ElementName=WebView2}" />
+                    <mvvm:ModifiedInvokeCommandAction Command="{Binding ExecuteScriptCommand}"/>
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
         </WebView2>

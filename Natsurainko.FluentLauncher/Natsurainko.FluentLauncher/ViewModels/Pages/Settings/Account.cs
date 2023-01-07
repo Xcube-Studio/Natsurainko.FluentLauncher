@@ -27,7 +27,6 @@ public partial class Account : SettingViewModel
 
         if (e.PropertyName != nameof(MaxFlyoutHeight))
             MaxFlyoutHeight = ExpandAccessToken ? 1000 : 100;
-
     }
 }
 

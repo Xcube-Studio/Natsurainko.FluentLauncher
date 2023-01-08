@@ -23,7 +23,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
-        <CommandBar DefaultLabelPosition="Right">
+        <CommandBar x:Name="CommandBar">
             <AppBarElementContainer Padding="10,2.5" VerticalAlignment="Center">
                 <ComboBox
                     Width="200"
@@ -484,13 +484,14 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
             </AppBarElementContainer>
-            <AppBarSeparator />
+            <AppBarSeparator x:Name="AppBarSeparator" />
             <AppBarElementContainer Padding="10,2.5" VerticalAlignment="Center">
                 <AutoSuggestBox
-                    MinWidth="150"
+                    Width="150"
                     HorizontalAlignment="Stretch"
                     Background="Transparent"
-                    PlaceholderText="Search Installed Core">
+                    PlaceholderText="Search Core"
+                    Text="{Binding Search, Mode=TwoWay}">
                     <AutoSuggestBox.QueryIcon>
                         <AnimatedIcon>
                             <AnimatedIcon.Source>
@@ -504,56 +505,99 @@
                 </AutoSuggestBox>
             </AppBarElementContainer>
             <AppBarSeparator />
-            <AppBarElementContainer
-                Padding="10,2.5"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Center"
-                HorizontalContentAlignment="Stretch">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="10" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Orientation="Horizontal">
-                        <FontIcon FontSize="16" Glyph="&#xe71c;" />
-                        <TextBlock
-                            Margin="12.5,0,0,0"
-                            VerticalAlignment="Center"
-                            Text="Sort by:" />
+            <CommandBar.Content>
+                <Grid
+                    Width="54"
+                    Height="{Binding ElementName=CommandBar, Path=ActualHeight}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="Transparent">
+                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                        <Button
+                            Width="48"
+                            Height="40"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Style="{ThemeResource CommandBarFlyoutEllipsisButtonStyle}">
+                            <SymbolIcon Symbol="AllApps" />
+                            <Button.Flyout>
+                                <Flyout>
+                                    <StackPanel Width="225" Margin="-12.5,-12,-16,-12">
+                                        <Grid Padding="10,2.5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="10" />
+                                                <ColumnDefinition Width="1*" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Orientation="Horizontal">
+                                                <FontIcon FontSize="16" Glyph="&#xe71c;" />
+                                                <TextBlock
+                                                    Margin="12.5,0,0,0"
+                                                    VerticalAlignment="Center"
+                                                    Text="Sort by:" />
+                                            </StackPanel>
+                                            <ComboBox
+                                                Grid.Column="2"
+                                                MinWidth="75"
+                                                HorizontalAlignment="Stretch"
+                                                Background="Transparent"
+                                                SelectedItem="{Binding SortBy, Mode=TwoWay}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                                <x:String>Name</x:String>
+                                                <x:String>Launch Date</x:String>
+                                            </ComboBox>
+                                        </Grid>
+                                        <Grid Padding="10,2.5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="10" />
+                                                <ColumnDefinition Width="1*" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Orientation="Horizontal">
+                                                <FontIcon FontSize="16" Glyph="&#xe8cb;" />
+                                                <TextBlock
+                                                    Margin="12.5,0,0,0"
+                                                    VerticalAlignment="Center"
+                                                    Text="Filter:" />
+                                            </StackPanel>
+                                            <ComboBox
+                                                Grid.Column="2"
+                                                MinWidth="75"
+                                                HorizontalAlignment="Stretch"
+                                                Background="Transparent"
+                                                SelectedItem="{Binding Filter, Mode=TwoWay}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                                <x:String>All</x:String>
+                                                <x:String>Release</x:String>
+                                                <x:String>Snapshot</x:String>
+                                                <x:String>Old</x:String>
+                                            </ComboBox>
+                                        </Grid>
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+                        <Border
+                            Width="1"
+                            Height="36"
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Stretch"
+                            Background="{Binding ElementName=AppBarSeparator, Path=Foreground}" />
                     </StackPanel>
-                    <ComboBox
-                        Grid.Column="2"
-                        MinWidth="75"
-                        HorizontalAlignment="Stretch"
-                        Background="Transparent" />
                 </Grid>
-            </AppBarElementContainer>
-            <AppBarElementContainer
-                Padding="10,2.5"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Center"
-                HorizontalContentAlignment="Stretch">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="10" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Orientation="Horizontal">
-                        <FontIcon FontSize="16" Glyph="&#xe8cb;" />
-                        <TextBlock
-                            Margin="12.5,0,0,0"
-                            VerticalAlignment="Center"
-                            Text="Filter:" />
-                    </StackPanel>
-                    <ComboBox
-                        Grid.Column="2"
-                        MinWidth="75"
-                        HorizontalAlignment="Stretch"
-                        Background="Transparent" />
-                </Grid>
-            </AppBarElementContainer>
+            </CommandBar.Content>
             <CommandBar.SecondaryCommands>
                 <AppBarButton
                     Command="{Binding InstallCoreCommand}"

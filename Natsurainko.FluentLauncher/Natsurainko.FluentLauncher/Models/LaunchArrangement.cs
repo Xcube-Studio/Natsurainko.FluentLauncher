@@ -4,25 +4,24 @@ using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentCore.Event;
+using Natsurainko.FluentCore.Model.Auth;
 using Natsurainko.FluentCore.Model.Launch;
-using Natsurainko.FluentCore.Module.Downloader;
-using Natsurainko.FluentCore.Module.Launcher;
+using Natsurainko.FluentCore.Module.Authenticator;
 using Natsurainko.FluentCore.Wrapper;
 using Natsurainko.FluentLauncher.Components;
+using Natsurainko.FluentLauncher.Components.CrossProcess;
 using Natsurainko.FluentLauncher.Views.Pages;
 using Natsurainko.Toolkits.Network.Downloader;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.Metrics;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using WinUIEx;
+using GameCore = Natsurainko.FluentLauncher.Components.FluentCore.GameCore;
+using GameCoreLocator = Natsurainko.FluentLauncher.Components.FluentCore.GameCoreLocator;
 
 namespace Natsurainko.FluentLauncher.Models;
 
@@ -142,12 +141,34 @@ public partial class LaunchArrangement : ObservableObject
 
         var coreLocator = new GameCoreLocator(App.Configuration.CurrentGameFolder);
         var launcher = new MinecraftLauncher(arrangement.LaunchSetting, coreLocator);
-        var resourceDownloader = new CrossProcessResourceDownload();
+        var resourceDownloader = new CrossProcessResourceDownloader();
 
         resourceDownloader.DownloadProgressChanged += (object sender, ParallelDownloaderProgressChangedEventArgs e)
             => arrangement.ReportState($"Downloading Assets {e.CompletedTasks}/{e.TotleTasks}");
 
         launcher.ResourceDownloader = resourceDownloader;
+
+        if (App.Configuration.AutoRefresh)
+        {
+            if (arrangement.LaunchSetting.Account.Type.Equals(AccountType.Microsoft))
+            {
+                var account = (MicrosoftAccount)arrangement.LaunchSetting.Account;
+                launcher.Authenticator = new MicrosoftAuthenticator(
+                    account.RefreshToken,
+                    AuthenticatorMethod.Refresh);
+            }
+            else if (arrangement.LaunchSetting.Account.Type.Equals(AccountType.Yggdrasil))
+            {
+                var account = (YggdrasilAccount)arrangement.LaunchSetting.Account;
+                launcher.Authenticator = new YggdrasilAuthenticator(
+                    AuthenticatorMethod.Refresh,
+                    account.AccessToken,
+                    account.ClientToken,
+                    yggdrasilServerUrl: account.YggdrasilServerUrl);
+            }
+            else if (arrangement.LaunchSetting.Account.Type.Equals(AccountType.Offline))
+                launcher.Authenticator = new OfflineAuthenticator(arrangement.LaunchSetting.Account.Name, arrangement.LaunchSetting.Account.Uuid);
+        }
 
         var thread = new Thread(() =>
         {
@@ -156,21 +177,12 @@ public partial class LaunchArrangement : ObservableObject
 
             if (launchResponse.State == LaunchState.Succeess)
             {
+                var timer = new System.Timers.Timer(1000);
+                timer.Elapsed += (_, e) => App.MainWindow.DispatcherQueue.TryEnqueue(() => arrangement.ElapsedTime = launchResponse.RunTime.Elapsed.ToString("hh\\:mm\\:ss"));
+                timer.Start();
+
                 void GameProcessOutput(object sender, GameProcessOutputArgs e)
                     => arrangement.ProcessOutputs.Add(e.GameProcessOutput);
-
-                launchResponse.GameProcessOutput += GameProcessOutput;
-
-                arrangement.ReportState($"Game Running");
-                App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-                {
-                    arrangement.GameRunning = arrangement.GameLogger = Visibility.Visible;
-                    arrangement.Arguments = string.Join(" ", launchResponse.Arguemnts);
-                });
-
-                var timer = new System.Timers.Timer(1000);
-                timer.Elapsed += (_,e) => App.MainWindow.DispatcherQueue.TryEnqueue(() => arrangement.ElapsedTime = launchResponse.RunTime.Elapsed.ToString("hh\\:mm\\:ss"));
-                timer.Start();
 
                 launchResponse.GameExited += (object sender, GameExitedArgs e) =>
                 {
@@ -192,6 +204,26 @@ public partial class LaunchArrangement : ObservableObject
                     launchResponse.GameProcessOutput -= GameProcessOutput;
                     launchResponse.Dispose();
                 };
+                launchResponse.GameProcessOutput += GameProcessOutput;
+
+                if (launcher.Authenticator != null)
+                {
+                    App.Configuration.Accounts.Remove(App.Configuration.CurrentAccount);
+
+                    App.Configuration.Accounts.Add(arrangement.LaunchSetting.Account);
+                    App.Configuration.CurrentAccount = arrangement.LaunchSetting.Account;
+
+                    App.Configuration.ReportPropertyChanged(new(nameof(App.Configuration.Accounts)));
+                }
+
+                arrangement.ReportState($"Game Running");
+                core.CoreProfile.LastLaunchTime = DateTime.Now;
+
+                App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                {
+                    arrangement.GameRunning = arrangement.GameLogger = Visibility.Visible;
+                    arrangement.Arguments = string.Join(" ", launchResponse.Arguemnts);
+                });
             }
             else
             {

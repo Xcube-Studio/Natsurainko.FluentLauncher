@@ -174,7 +174,7 @@
                         <Border Style="{ThemeResource ExpanderSplitter}" />
                         <controls:ExpanderContentItem>
                             <Grid>
-                                <TextBlock VerticalAlignment="Center" Text="Auto refresh account: (more than 12h since last)" />
+                                <TextBlock VerticalAlignment="Center" Text="Auto refresh account: (before launch)" />
                                 <ToggleSwitch
                                     Margin="-75,-25"
                                     Padding="0"

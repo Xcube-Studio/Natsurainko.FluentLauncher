@@ -1,15 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentCore.Interface;
-using Natsurainko.FluentCore.Model.Launch;
-using Natsurainko.FluentCore.Module.Launcher;
+using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Views.Pages;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 

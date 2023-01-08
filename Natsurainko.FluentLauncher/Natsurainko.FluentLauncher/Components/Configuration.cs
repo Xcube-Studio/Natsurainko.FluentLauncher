@@ -67,6 +67,9 @@ public partial class Configuration : ObservableObject
 
         Container.Values[e.PropertyName] = JsonConvert.SerializeObject(GetType().GetProperty(e.PropertyName).GetValue(this));
     }
+
+    public void ReportPropertyChanged(PropertyChangedEventArgs e)
+        => OnPropertyChanged(e);
 }
 
 public partial class Configuration
@@ -145,4 +148,13 @@ public partial class Configuration
 
     [ObservableProperty]
     private double appWindowHeight = 600;
+}
+
+public partial class Configuration
+{
+    [ObservableProperty]
+    private string coresSortBy = "Name";
+
+    [ObservableProperty]
+    private string coresFilter = "All";
 }

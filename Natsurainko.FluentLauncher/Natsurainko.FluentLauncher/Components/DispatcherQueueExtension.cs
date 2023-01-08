@@ -10,10 +10,13 @@ namespace Natsurainko.FluentLauncher.Components;
 public static class DispatcherQueueExtension
 {
     public static void SynchronousTryEnqueue(this DispatcherQueue dispatcher, DispatcherQueueHandler callback)
+        => SynchronousTryEnqueue(dispatcher, DispatcherQueuePriority.Normal, callback);
+
+    public static void SynchronousTryEnqueue(this DispatcherQueue dispatcher, DispatcherQueuePriority priority, DispatcherQueueHandler callback)
     {
         bool taskDone = false;
 
-        dispatcher.TryEnqueue(() =>
+        dispatcher.TryEnqueue(priority, () =>
         {
             callback.Invoke();
             taskDone = true;

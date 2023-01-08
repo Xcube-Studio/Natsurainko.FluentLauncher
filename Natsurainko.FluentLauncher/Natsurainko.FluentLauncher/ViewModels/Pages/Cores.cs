@@ -2,17 +2,17 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentCore.Model.Launch;
-using Natsurainko.FluentCore.Module.Launcher;
+using Natsurainko.FluentLauncher.Components;
+using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Views.Pages;
+using Natsurainko.Toolkits.Values;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.System;
 
@@ -22,6 +22,9 @@ public partial class Cores : ObservableObject
 {
     public Cores()
     {
+        filter = App.Configuration.CoresFilter;
+        sortBy = App.Configuration.CoresSortBy;
+
         GameFolders = new(App.Configuration.GameFolders);
         CurrentGameFolder = App.Configuration.CurrentGameFolder;
     }
@@ -41,11 +44,19 @@ public partial class Cores : ObservableObject
             if (string.IsNullOrEmpty(CurrentGameFolder))
                 return;
 
-            var cores = new GameCoreLocator(App.Configuration.CurrentGameFolder).GetGameCores();
+            seletedChangeable = false;
+            var cores = FilterAndSortGameCores(new GameCoreLocator(App.Configuration.CurrentGameFolder).GetGameCores());
+
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
                 GameCores = new(cores);
-                CurrentGameCore = GameCores.Where(x => x.Id == App.Configuration.CurrentGameCore).FirstOrDefault();
+
+                seletedChangeable = true;
+                var current = GameCores.Where(x => x.Id == App.Configuration.CurrentGameCore).FirstOrDefault();
+
+                if (current == CurrentGameCore)
+                    OnPropertyChanged(nameof(CurrentGameCore));
+                else CurrentGameCore = current;
 
                 if (ListView != null)
                     ListView.ScrollIntoView(ListView.SelectedItem);
@@ -65,14 +76,23 @@ public partial class Cores : ObservableObject
     {
         base.OnPropertyChanged(e);
 
-        if (e.PropertyName == nameof(CurrentGameCore))
+        if (e.PropertyName == nameof(CurrentGameCore) && seletedChangeable)
             App.Configuration.CurrentGameCore = CurrentGameCore?.Id;
 
-        if (e.PropertyName == nameof(CurrentGameFolder))
+        if (e.PropertyName == nameof(CurrentGameFolder) 
+            || e.PropertyName == nameof(Filter)
+            || e.PropertyName == nameof(SortBy)
+            || e.PropertyName == nameof(Search))
         {
             App.Configuration.CurrentGameFolder = CurrentGameFolder;
             RefreshCores();
         }
+
+        if (e.PropertyName == nameof(Filter))
+            App.Configuration.CoresFilter = Filter;
+
+        if (e.PropertyName == nameof(SortBy))
+            App.Configuration.CoresSortBy = SortBy;
 
         if (e.PropertyName == nameof(GameFolders))
         {
@@ -87,6 +107,33 @@ public partial class Cores : ObservableObject
             else TipVisibility = Visibility.Collapsed;
         }
     }
+
+    private IEnumerable<GameCore> FilterAndSortGameCores(IEnumerable<GameCore> cores)
+    {
+        IEnumerable<GameCore> filtered = default;
+
+        if (Filter.Equals("All"))
+            filtered = cores;
+        else if (Filter.Equals("Release"))
+            filtered = cores.Where(x => x.Type.Equals("release"));
+        else if (Filter.Equals("Snapshot"))
+            filtered = cores.Where(x => x.Type.Equals("snapshot"));
+        else if (Filter.Equals("Old"))
+            filtered = cores.Where(x => x.Type.Contains("old_"));
+
+        IEnumerable<GameCore> list = default;
+
+        list = SortBy == "Launch Date" 
+            ? filtered.OrderByDescending(x => x.CoreProfile.LastLaunchTime.GetValueOrDefault())
+            : filtered.OrderBy(x => x.Id);
+
+        if (Search != null)
+            list = list.Where(x => x.Id.ToLower().Contains(Search.ToLower()));
+
+        return list;
+    }
+
+    private bool seletedChangeable = true;
 }
 
 public partial class Cores
@@ -141,7 +188,7 @@ public partial class Cores
 public partial class Cores
 {
     [ObservableProperty]
-    private ObservableCollection<GameCore> gameCores;
+    private ObservableCollection<GameCore> gameCores = new();
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(LaunchCommand))]
@@ -163,6 +210,15 @@ public partial class Cores
 
     [ObservableProperty]
     private string tipSubTitle;
+
+    [ObservableProperty]
+    private string filter;
+
+    [ObservableProperty]
+    private string sortBy;
+
+    [ObservableProperty]
+    private string search;
 
     [ObservableProperty]
     private Visibility tipVisibility = Visibility.Collapsed;

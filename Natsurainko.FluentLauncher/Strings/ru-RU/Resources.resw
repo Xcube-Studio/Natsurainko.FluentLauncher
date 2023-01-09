@@ -1,0 +1,756 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountLoginPage_L_ST.Content" xml:space="preserve">
+    <value>Загрузка страницы входа</value>
+  </data>
+  <data name="AccountLoginPage_L_T.Text" xml:space="preserve">
+    <value>Подождите</value>
+  </data>
+  <data name="ActivitiesPage_NVI_Application.Content" xml:space="preserve">
+    <value>Приложение</value>
+  </data>
+  <data name="ActivitiesPage_NVI_Download.Content" xml:space="preserve">
+    <value>Задачи скачивания</value>
+  </data>
+  <data name="ActivitiesPage_NVI_Launch.Content" xml:space="preserve">
+    <value>Задачи запуска</value>
+  </data>
+  <data name="ActivitiesPage_NVI_News.Content" xml:space="preserve">
+    <value>Новости</value>
+  </data>
+  <data name="ActivityDownloadPage_Ex_W1.Text" xml:space="preserve">
+    <value>Прогресс скачивания:</value>
+  </data>
+  <data name="ActivityDownloadPage_Ex_W2.Text" xml:space="preserve">
+    <value>Расположение файла:</value>
+  </data>
+  <data name="ActivityDownloadPage_Ex_W3.Text" xml:space="preserve">
+    <value>Откройте папку, в которой находится файл.</value>
+  </data>
+  <data name="ActivityDownloadPage_Ex_W3_B.Text" xml:space="preserve">
+    <value>Обзор</value>
+  </data>
+  <data name="ActivityDownloadPage_I_ST.Content" xml:space="preserve">
+    <value>Перейдите в раздел Ресурсы/Ядро, чтобы создать задачу скачивания</value>
+  </data>
+  <data name="ActivityDownloadPage_I_T.Text" xml:space="preserve">
+    <value>Задач скачивания нет</value>
+  </data>
+  <data name="ActivityLaunchPage_Ex_W1.Text" xml:space="preserve">
+    <value>Логи запуска игры:</value>
+  </data>
+  <data name="ActivityLaunchPage_Ex_W1_B.Text" xml:space="preserve">
+    <value>Открыть в новом окне</value>
+  </data>
+  <data name="ActivityLaunchPage_Ex_W2.Text" xml:space="preserve">
+    <value>Параметры запуска игры:</value>
+  </data>
+  <data name="ActivityLaunchPage_Ex_W2_B.Text" xml:space="preserve">
+    <value>Скопировать параметры</value>
+  </data>
+  <data name="ActivityLaunchPage_Ex_W3.Text" xml:space="preserve">
+    <value>Время в игре:</value>
+  </data>
+  <data name="ActivityLaunchPage_Ex_W4.Text" xml:space="preserve">
+    <value>Немедленно выйдите из игры：</value>
+  </data>
+  <data name="ActivityLaunchPage_Ex_W4_B.Text" xml:space="preserve">
+    <value>Завершить процесс</value>
+  </data>
+  <data name="ActivityLaunchPage_Ex_W5.Text" xml:space="preserve">
+    <value>Ошибка запуска:</value>
+  </data>
+  <data name="ActivityLaunchPage_Ex_W5_B.Text" xml:space="preserve">
+    <value>Подробности</value>
+  </data>
+  <data name="ActivityLaunchPage_Ex_W5_B_1.Text" xml:space="preserve">
+    <value>Источник ошибки:</value>
+  </data>
+  <data name="ActivityLaunchPage_Ex_W5_B_2.Text" xml:space="preserve">
+    <value>Стек вызовов:</value>
+  </data>
+  <data name="ActivityLaunchPage_I_ST.Content" xml:space="preserve">
+    <value>Перейдите в раздел Главная/Ядро, чтобы создать задачу запуска.</value>
+  </data>
+  <data name="ActivityLaunchPage_I_T.Text" xml:space="preserve">
+    <value>Запущенных задач пока нет</value>
+  </data>
+  <data name="ActivityNewsPage_LITD_Ex_T1.Text" xml:space="preserve">
+    <value>Дата выпуска：</value>
+  </data>
+  <data name="ActivityNewsPage_LITD_Ex_T2.Text" xml:space="preserve">
+    <value>Открыть в браузере：</value>
+  </data>
+  <data name="AuthenticatorTypeDialog_C_H.Text" xml:space="preserve">
+    <value>Способ авторизации:</value>
+  </data>
+  <data name="AuthenticatorTypeDialog_T.Text" xml:space="preserve">
+    <value>Добавить новый аккаунт</value>
+  </data>
+  <data name="ContentDialog_Cancel.Text" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="ContentDialog_Confirm.Text" xml:space="preserve">
+    <value>Подтвердить</value>
+  </data>
+  <data name="ContentDialog_Finish" xml:space="preserve">
+    <value>Завершить</value>
+  </data>
+  <data name="CorePropertyPage_NVI_1.Content" xml:space="preserve">
+    <value>Подробности</value>
+  </data>
+  <data name="CorePropertyPage_NVI_2.Content" xml:space="preserve">
+    <value>Конфигурация запуска</value>
+  </data>
+  <data name="CorePropertyPage_NVI_3.Content" xml:space="preserve">
+    <value>Мод</value>
+  </data>
+  <data name="CorePropertyPage_NVI_4.Content" xml:space="preserve">
+    <value>Архив</value>
+  </data>
+  <data name="CorePropertyPage_T.Text" xml:space="preserve">
+    <value>Свойства</value>
+  </data>
+  <data name="CoresPage_LB_B.Content" xml:space="preserve">
+    <value>Запуск</value>
+  </data>
+  <data name="CoresPage_LB_M1.Text" xml:space="preserve">
+    <value>Запустить</value>
+  </data>
+  <data name="CoresPage_LB_M2.Text" xml:space="preserve">
+    <value>Переименовать</value>
+  </data>
+  <data name="CoresPage_LB_M3.Text" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="CoresPage_LB_M4.Text" xml:space="preserve">
+    <value>Сгенерировать сценарий запуска</value>
+  </data>
+  <data name="CoresPage_LB_M5.Text" xml:space="preserve">
+    <value>Открыть папку</value>
+  </data>
+  <data name="CoresPage_LB_M6.Text" xml:space="preserve">
+    <value>Свойства</value>
+  </data>
+  <data name="CoresPage_T_ASB.PlaceholderText" xml:space="preserve">
+    <value>Поиск установленных ядер</value>
+  </data>
+  <data name="CoresPage_T_B.Text" xml:space="preserve">
+    <value>Установить новое ядро</value>
+  </data>
+  <data name="HomePage_LB_T.FontWeight" xml:space="preserve">
+    <value>Жирный</value>
+  </data>
+  <data name="HomePage_LB_T.Text" xml:space="preserve">
+    <value>Начать игру</value>
+  </data>
+  <data name="HomePage_LC.PlaceholderText" xml:space="preserve">
+    <value>Выберите ядро игры</value>
+  </data>
+  <data name="InstallJavaDialog_C1.PlaceholderText" xml:space="preserve">
+    <value>Версия OpenJDK</value>
+  </data>
+  <data name="InstallJavaDialog_C2.PlaceholderText" xml:space="preserve">
+    <value>Источник скачивания</value>
+  </data>
+  <data name="InstallJavaDialog_T.Text" xml:space="preserve">
+    <value>Установка новой Java Runtime Environment</value>
+  </data>
+  <data name="LSS_ALP_CB_IS" xml:space="preserve">
+    <value>Автономный вход:Вход в Microsoft:Внешний вход</value>
+  </data>
+  <data name="LSS_ANP_Description" xml:space="preserve">
+    <value>Официальные новости</value>
+  </data>
+  <data name="LSS_CheckLaunch_1" xml:space="preserve">
+    <value>Ядро игры не выбрано!</value>
+  </data>
+  <data name="LSS_CheckLaunch_2" xml:space="preserve">
+    <value>Не вошли в систему!</value>
+  </data>
+  <data name="LSS_CheckLaunch_3" xml:space="preserve">
+    <value>Java Runtime Environment не выбрана, или её не существует!</value>
+  </data>
+  <data name="LSS_CP_CB1_IS" xml:space="preserve">
+    <value>Сортировать по имени:Сортировать по времени запуска</value>
+  </data>
+  <data name="LSS_CP_CB2_IS" xml:space="preserve">
+    <value>Показывать все:Показывать только Release:Показывать только Snapshot:Показывать только устаревшие</value>
+  </data>
+  <data name="LSS_CP_L1" xml:space="preserve">
+    <value>Перейдите в Настройки &gt; Общие настройки запуска, чтобы добавить каталог игры</value>
+  </data>
+  <data name="LSS_CP_L2" xml:space="preserve">
+    <value>Перейдите в Настройки &gt; Общие настройки запуска или выберите в поле со списком, чтобы выбрать каталог игры</value>
+  </data>
+  <data name="LSS_CP_L3" xml:space="preserve">
+    <value>Перейдите в раздел «Ресурсы» или нажмите «Установить новое игровое ядро», чтобы установить новое ядро.</value>
+  </data>
+  <data name="LSS_CP_T1" xml:space="preserve">
+    <value>Папки с игрой ещё нет</value>
+  </data>
+  <data name="LSS_CP_T2" xml:space="preserve">
+    <value>Папка с игрой ещё не выбрана</value>
+  </data>
+  <data name="LSS_CP_T3" xml:space="preserve">
+    <value>Ядер игр пока нет</value>
+  </data>
+  <data name="LSS_CreateProcessOutputWindow_Title" xml:space="preserve">
+    <value>{Id} - Логи запуска игры</value>
+  </data>
+  <data name="LSS_Download_Add_H" xml:space="preserve">
+    <value>Перейдите в раздел «Действия» &gt; «Задачи скачивания».</value>
+  </data>
+  <data name="LSS_Download_Add_ST" xml:space="preserve">
+    <value>Перейдите в раздел «События» > «Задачи скачивания», чтобы просмотреть подробности.</value>
+  </data>
+  <data name="LSS_Download_Add_T" xml:space="preserve">
+    <value>"{title}" успешно добавлено в задачи</value>
+  </data>
+  <data name="LSS_HP_Converter_Inherit" xml:space="preserve">
+    <value>Унаследовано от</value>
+  </data>
+  <data name="LSS_HP_Converter_NoAccount" xml:space="preserve">
+    <value>Не вошли в аккаунт</value>
+  </data>
+  <data name="LSS_HP_Converter_NoCore" xml:space="preserve">
+    <value>Ядро не выбрано</value>
+  </data>
+  <data name="LSS_HP_Converter_old_alpha" xml:space="preserve">
+    <value>Alpha</value>
+  </data>
+  <data name="LSS_HP_Converter_old_beta" xml:space="preserve">
+    <value>Beta</value>
+  </data>
+  <data name="LSS_HP_Converter_release" xml:space="preserve">
+    <value>Release</value>
+  </data>
+  <data name="LSS_HP_Converter_snapshot" xml:space="preserve">
+    <value>Snapshot</value>
+  </data>
+  <data name="LSS_Info_LaunchFailed" xml:space="preserve">
+    <value>Не удаётся запустить игру:</value>
+  </data>
+  <data name="LSS_Info_Launch_L" xml:space="preserve">
+    <value>Перейдите в раздел «Действия» &gt; «Задачи запуска».</value>
+  </data>
+  <data name="LSS_Info_Launch_ST" xml:space="preserve">
+    <value>Перейдите в раздел «Действия» &gt; «Задачи запуска», чтобы просмотреть подробности.</value>
+  </data>
+  <data name="LSS_Info_Launch_T" xml:space="preserve">
+    <value>К задаче успешно добавлено «Запуск ядра игры {Id}».</value>
+  </data>
+  <data name="LSS_JavaInstaller_Title" xml:space="preserve">
+    <value>Установка новой Java Runtime Environment: {title}</value>
+  </data>
+  <data name="LSS_MinecraftProcessor_ExitedDescription" xml:space="preserve">
+    <value>Код выхода: {code}</value>
+  </data>
+  <data name="LSS_MinecraftProcessor_ExitedMessage_1" xml:space="preserve">
+    <value>Игра вылетела:</value>
+  </data>
+  <data name="LSS_MinecraftProcessor_ExitedMessage_2" xml:space="preserve">
+    <value>Выход из игры：</value>
+  </data>
+  <data name="LSS_MinecraftProcessor_State_1" xml:space="preserve">
+    <value>Задача не запущена</value>
+  </data>
+  <data name="LSS_MinecraftProcessor_State_2" xml:space="preserve">
+    <value>Проверка игровых зависимостей</value>
+  </data>
+  <data name="LSS_MinecraftProcessor_State_3" xml:space="preserve">
+    <value>Игра запускается</value>
+  </data>
+  <data name="LSS_MinecraftProcessor_State_4" xml:space="preserve">
+    <value>Игра запущена</value>
+  </data>
+  <data name="LSS_MinecraftProcessor_State_5" xml:space="preserve">
+    <value>Не удалось запустить</value>
+  </data>
+  <data name="LSS_MinecraftProcessor_State_6" xml:space="preserve">
+    <value>Запуск отменён</value>
+  </data>
+  <data name="LSS_MinecraftProcessor_State_7" xml:space="preserve">
+    <value>Завершение игровых зависимостей: Завершено: {message}</value>
+  </data>
+  <data name="LSS_MinecraftProcessor_State_8" xml:space="preserve">
+    <value>Полные игровые зависимости</value>
+  </data>
+  <data name="LSS_MinecraftProcessor_State_9" xml:space="preserve">
+    <value>Выход из игры</value>
+  </data>
+  <data name="LSS_MinecraftProcessor_Title" xml:space="preserve">
+    <value>Ядро игры: {Id}</value>
+  </data>
+  <data name="LSS_ModDownload_Failed_ST1" xml:space="preserve">
+    <value>Файл мода не выбран!</value>
+  </data>
+  <data name="LSS_ModDownload_Failed_ST2" xml:space="preserve">
+    <value>Папка с игрой не выбрана или её не существует!</value>
+  </data>
+  <data name="LSS_ModDownload_Failed_T1" xml:space="preserve">
+    <value>Не удаётся скачать моды:</value>
+  </data>
+  <data name="LSS_ModDownload_Failed_T2" xml:space="preserve">
+    <value>Не удаётся скачать ресурсы мода: {fileName}</value>
+  </data>
+  <data name="LSS_ModDownload_Title" xml:space="preserve">
+    <value>Скачивание ресурсов мода: {fileName}</value>
+  </data>
+  <data name="LSS_PDP_Converter_Count" xml:space="preserve">
+    <value>Всего {count}</value>
+  </data>
+  <data name="LSS_PMP_Converter_ModDescription" xml:space="preserve">
+    <value>{name}; Версия: {version}; Автор: {authors}|，</value>
+  </data>
+  <data name="LSS_RMP_Converter_Day" xml:space="preserve">
+    <value>д.</value>
+  </data>
+  <data name="LSS_RMP_Converter_DownloadCount" xml:space="preserve">
+    <value>Скачиваний: {downloadCount}</value>
+  </data>
+  <data name="LSS_RMP_Converter_Hour" xml:space="preserve">
+    <value>ч.</value>
+  </data>
+  <data name="LSS_RMP_Converter_Update" xml:space="preserve">
+    <value>Обновлено {time} назад,</value>
+  </data>
+  <data name="LSS_SAP_Converter_Microsoft" xml:space="preserve">
+    <value>Аккаунт Microsoft</value>
+  </data>
+  <data name="LSS_SAP_Converter_Offline" xml:space="preserve">
+    <value>Автономный аккаунт</value>
+  </data>
+  <data name="LSS_SAP_Converter_Unknown" xml:space="preserve">
+    <value>Неизвестный</value>
+  </data>
+  <data name="LSS_SAP_Converter_Yggdrasil" xml:space="preserve">
+    <value>Внешний аккаунт</value>
+  </data>
+  <data name="LSS_SimpleDownloader_State_1" xml:space="preserve">
+    <value>Готов к началу скачивания</value>
+  </data>
+  <data name="LSS_SimpleDownloader_State_2" xml:space="preserve">
+    <value>Скачивание: {message}</value>
+  </data>
+  <data name="LSS_SimpleDownloader_State_3" xml:space="preserve">
+    <value>Скачивание завершено</value>
+  </data>
+  <data name="LSS_SLP_Converter_MaxMemory" xml:space="preserve">
+    <value>Макс. памяти (МБ)</value>
+  </data>
+  <data name="LSS_SLP_Converter_MinMemory" xml:space="preserve">
+    <value>Мин. памяти (МБ)</value>
+  </data>
+  <data name="MainContainer_NVI_Activities.Content" xml:space="preserve">
+    <value>Действия</value>
+  </data>
+  <data name="MainContainer_NVI_Cores.Content" xml:space="preserve">
+    <value>Ядра</value>
+  </data>
+  <data name="MainContainer_NVI_Home.Content" xml:space="preserve">
+    <value>Главная</value>
+  </data>
+  <data name="MainContainer_NVI_Resources.Content" xml:space="preserve">
+    <value>Ресурсы</value>
+  </data>
+  <data name="MainContainer_NVI_Settings.Content" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="OutputDialog_T.Text" xml:space="preserve">
+    <value>Логи запуска игры</value>
+  </data>
+  <data name="PropertyDetailsPage_B_1.Content" xml:space="preserve">
+    <value>Открыть папку</value>
+  </data>
+  <data name="PropertyDetailsPage_B_2.Text" xml:space="preserve">
+    <value>Удалить ядро</value>
+  </data>
+  <data name="PropertyDetailsPage_S_T_1.Text" xml:space="preserve">
+    <value>Путь:</value>
+  </data>
+  <data name="PropertyDetailsPage_S_T_2.Text" xml:space="preserve">
+    <value>Размер:</value>
+  </data>
+  <data name="PropertyDetailsPage_S_T_3_1.Text" xml:space="preserve">
+    <value>Загрузчик модов:</value>
+  </data>
+  <data name="PropertyDetailsPage_S_T_3_2.Text" xml:space="preserve">
+    <value>Установлено</value>
+  </data>
+  <data name="PropertyDetailsPage_S_T_4.Text" xml:space="preserve">
+    <value>Зависимые библиотеки:</value>
+  </data>
+  <data name="PropertyDetailsPage_S_T_5.Text" xml:space="preserve">
+    <value>Зависимые ресурсы:</value>
+  </data>
+  <data name="PropertyDetailsPage_S_T_6.Text" xml:space="preserve">
+    <value>Последний запуск:</value>
+  </data>
+  <data name="PropertyLaunchPage_Ex_H1.Text" xml:space="preserve">
+    <value>Включить отдельные настройки игры</value>
+  </data>
+  <data name="PropertyLaunchPage_Ex_W1.Text" xml:space="preserve">
+    <value>Изоляция версий：</value>
+  </data>
+  <data name="PropertyModPage_Ex_H.Title" xml:space="preserve">
+    <value>Изоляция версий не включена для ядра игры, и все моды автоматически наследуются из текущего выбранного игрового каталога.</value>
+  </data>
+  <data name="PropertyModPage_I_ST.Content" xml:space="preserve">
+    <value>Перейти к ресурсам для установки новых модов</value>
+  </data>
+  <data name="PropertyModPage_I_T.Text" xml:space="preserve">
+    <value>Установленных модов пока нет</value>
+  </data>
+  <data name="ResourcesModPage_A.PlaceholderText" xml:space="preserve">
+    <value>Поиск модов на CurseForge</value>
+  </data>
+  <data name="ResourcesModPage_B1.Content" xml:space="preserve">
+    <value>Очистить все параметры фильтра</value>
+  </data>
+  <data name="ResourcesModPage_B2.Content" xml:space="preserve">
+    <value>Добавить в задачу скачивания</value>
+  </data>
+  <data name="ResourcesModPage_B_T.Text" xml:space="preserve">
+    <value>Фильтр</value>
+  </data>
+  <data name="ResourcesModPage_C1.PlaceholderText" xml:space="preserve">
+    <value>Тип загрузчика</value>
+  </data>
+  <data name="ResourcesModPage_C2.PlaceholderText" xml:space="preserve">
+    <value>Версия игры</value>
+  </data>
+  <data name="ResourcesModPage_C3.PlaceholderText" xml:space="preserve">
+    <value>Выберите версию</value>
+  </data>
+  <data name="ResourcesModPage_C4.PlaceholderText" xml:space="preserve">
+    <value>Выберите файл мода</value>
+  </data>
+  <data name="ResourcesPage_ExD_1.Description" xml:space="preserve">
+    <value>Вы можете установить новое ядро и загрузчик, ядро установится в текущую папку</value>
+  </data>
+  <data name="ResourcesPage_ExD_1.Title" xml:space="preserve">
+    <value>Установить новое ядро</value>
+  </data>
+  <data name="ResourcesPage_ExD_2.Description" xml:space="preserve">
+    <value>Вы можете установить моды для выбранного ядра, выполнив поиск и скачав</value>
+  </data>
+  <data name="ResourcesPage_ExD_2.Title" xml:space="preserve">
+    <value>Поиск и скачивание модов</value>
+  </data>
+  <data name="ResourcesPage_ExD_3.Description" xml:space="preserve">
+    <value>Установите новую Java Runtime Environment, которая будет установлена внутри приложения</value>
+  </data>
+  <data name="ResourcesPage_ExD_3.Title" xml:space="preserve">
+    <value>Установить новую Java Runtime Environment</value>
+  </data>
+  <data name="ResourcesPage_ExD_4.Description" xml:space="preserve">
+    <value>Импортируйте пакет интеграции, и ядро, которое он содержит, будет установлено в текущей папке.</value>
+  </data>
+  <data name="ResourcesPage_ExD_4.Title" xml:space="preserve">
+    <value>Установить пакет интеграции Mcbbs</value>
+  </data>
+  <data name="ResourcesPage_ExD_5.Description" xml:space="preserve">
+    <value>Как следует из названия, простой загрузчик</value>
+  </data>
+  <data name="ResourcesPage_ExD_5.Title" xml:space="preserve">
+    <value>Многопоточный загрузчик фрагментов</value>
+  </data>
+  <data name="SettingAboutPage_DownloadSource.Text" xml:space="preserve">
+    <value>Укажите источник зеркала для скачивания</value>
+  </data>
+  <data name="SettingAboutPage_Ex_Author.Description" xml:space="preserve">
+    <value>Разработчик этого приложения</value>
+  </data>
+  <data name="SettingAboutPage_Ex_Sources.Description" xml:space="preserve">
+    <value>Нажмите эту кнопку, чтобы перейти к репозиторию GitHub</value>
+  </data>
+  <data name="SettingAboutPage_Ex_Sources.Title" xml:space="preserve">
+    <value>Открытый исходный код</value>
+  </data>
+  <data name="SettingAboutPage_Ex_Statement.Description" xml:space="preserve">
+    <value>Авторские права на Minecraft принадлежат Mojang Studios. Разработчик не несёт ответственности за любое нарушение авторских прав, вызванное использованием данного программного обеспечения.</value>
+  </data>
+  <data name="SettingAboutPage_Ex_Statement.Title" xml:space="preserve">
+    <value>Заявление</value>
+  </data>
+  <data name="SettingAboutPage_Ex_Thanks.Description" xml:space="preserve">
+    <value>Спасибо за все услуги, предоставляемые для этого приложения</value>
+  </data>
+  <data name="SettingAboutPage_Ex_Thanks.Title" xml:space="preserve">
+    <value>Благодарность</value>
+  </data>
+  <data name="SettingAboutPage_Ex_Usings.Description" xml:space="preserve">
+    <value>Библиотеки, используемые при разработке этого приложения</value>
+  </data>
+  <data name="SettingAboutPage_Ex_Usings.Title" xml:space="preserve">
+    <value>Использовано</value>
+  </data>
+  <data name="SettingAccountPage_Ex_H.Description" xml:space="preserve">
+    <value>Аккаунт после входа в игру</value>
+  </data>
+  <data name="SettingAccountPage_Ex_H.Title" xml:space="preserve">
+    <value>Аккаунт</value>
+  </data>
+  <data name="SettingAccountPage_Ex_W1.Text" xml:space="preserve">
+    <value>Текущий аккаунт:</value>
+  </data>
+  <data name="SettingAccountPage_Ex_W2.Text" xml:space="preserve">
+    <value>Данные текущего аккаунта:</value>
+  </data>
+  <data name="SettingAccountPage_Ex_W2_T1.Text" xml:space="preserve">
+    <value>Токен авторизации:</value>
+  </data>
+  <data name="SettingAccountPage_Ex_W2_T2.Text" xml:space="preserve">
+    <value>Сервер авторизации:</value>
+  </data>
+  <data name="SettingAccountPage_Ex_W3.Text" xml:space="preserve">
+    <value>Добавить новый аккаунт:</value>
+  </data>
+  <data name="SettingAccountPage_Ex_W3_B.Text" xml:space="preserve">
+    <value>Войти</value>
+  </data>
+  <data name="SettingAccountPage_Ex_W4.Text" xml:space="preserve">
+    <value>Удалить текущий аккаунт:</value>
+  </data>
+  <data name="SettingAccountPage_Ex_W4_B.Text" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="SettingAccountPage_Ex_W5.Text" xml:space="preserve">
+    <value>Начать игру с демо-аккаунтом:</value>
+  </data>
+  <data name="SettingDownloadPage_Ex_H.Description" xml:space="preserve">
+    <value>Настройкаи скачивания игровых ресурсов при запуске игры</value>
+  </data>
+  <data name="SettingDownloadPage_Ex_H.Title" xml:space="preserve">
+    <value>Загрузчик</value>
+  </data>
+  <data name="SettingDownloadPage_Ex_W1.Text" xml:space="preserve">
+    <value>Текущий источник скачивания:</value>
+  </data>
+  <data name="SettingDownloadPage_Ex_W2.Text" xml:space="preserve">
+    <value>Макс. количество потоков скачивания:</value>
+  </data>
+  <data name="SettingDownloadPage_Ex_W3.Text" xml:space="preserve">
+    <value>Включить загрузку фрагментов больших файлов:</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_H.Description" xml:space="preserve">
+    <value>Место хранения ядра вашей игры</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_H.Title" xml:space="preserve">
+    <value>Папка .minecraft</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_H1.Description" xml:space="preserve">
+    <value>Исполняемый файл, запускающий игру</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_H1.Title" xml:space="preserve">
+    <value>Java Runtime Environment</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_H2.Description" xml:space="preserve">
+    <value>Настройки запуска игры</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_H2.Title" xml:space="preserve">
+    <value>Настройки игры</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_H3.Title" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W1.Text" xml:space="preserve">
+    <value>Текущая папка .minecraft:</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W10.Text" xml:space="preserve">
+    <value>Изоляция общей версии:</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W11.Text" xml:space="preserve">
+    <value>Полноэкранный режим：</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W12.Text" xml:space="preserve">
+    <value>Разрешение игрового окна：</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W13.Text" xml:space="preserve">
+    <value>Адрес сервера：</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W14.Text" xml:space="preserve">
+    <value>Заголовок игрового окна:</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W2.Text" xml:space="preserve">
+    <value>Открыть папку .minecraft:</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W2_B.Text" xml:space="preserve">
+    <value>Обзор</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W3.Text" xml:space="preserve">
+    <value>Удалить текущую папку .minecraft:</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W3_B.Text" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W4.Text" xml:space="preserve">
+    <value>Текущая Java Runtime Environment:</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W5.Text" xml:space="preserve">
+    <value>Открыть папку Java Runtime Environment:</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W5_B.Text" xml:space="preserve">
+    <value>Обзор</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W5_B1.Text" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W6.Text" xml:space="preserve">
+    <value>Удалить текущую Java Runtime Environment:</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W6_B.Text" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W7.Text" xml:space="preserve">
+    <value>Оперативная память JVM:</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W8.Text" xml:space="preserve">
+    <value>Автовыделять оперативную память JVM:</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W9.Text" xml:space="preserve">
+    <value>Сведения о текущей Java Runtime Environment:</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W9_1.Text" xml:space="preserve">
+    <value>Версия виртуальной машины Java:</value>
+  </data>
+  <data name="SettingLaunchPage_Ex_W9_2.Text" xml:space="preserve">
+    <value>Издатель виртуальной машины Java:</value>
+  </data>
+  <data name="SettingsPage_NVI_About.Content" xml:space="preserve">
+    <value>О лаунчере</value>
+  </data>
+  <data name="SettingsPage_NVI_Account.Content" xml:space="preserve">
+    <value>Настройки аккаунта</value>
+  </data>
+  <data name="SettingsPage_NVI_Download.Content" xml:space="preserve">
+    <value>Настройки скачивания</value>
+  </data>
+  <data name="SettingsPage_NVI_Launch.Content" xml:space="preserve">
+    <value>Общие настройки запуска</value>
+  </data>
+  <data name="ToggleSwitch.OffContent" xml:space="preserve">
+    <value>Выкл</value>
+  </data>
+  <data name="ToggleSwitch.OnContent" xml:space="preserve">
+    <value>Вкл</value>
+  </data>
+</root>

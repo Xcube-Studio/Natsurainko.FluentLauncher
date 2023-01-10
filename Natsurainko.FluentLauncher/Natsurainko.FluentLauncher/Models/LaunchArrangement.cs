@@ -85,10 +85,15 @@ public partial class LaunchArrangement : ObservableObject
 
         window.Title = $"Logger - {GameCore.Id}";
 
+#if MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
+        window.AppWindow.SetIcon(Path.Combine(Directory.GetCurrentDirectory(), "Assets/AppIcon.ico"));
+#else 
+        window.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets/AppIcon.ico"));
+#endif
+
         window.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
         window.AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
         window.AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-        window.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets/AppIcon.ico"));
         window.Backdrop = Environment.OSVersion.Version.Build >= 22000
            ? new MicaSystemBackdrop() { Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt }
            : new AcrylicSystemBackdrop()

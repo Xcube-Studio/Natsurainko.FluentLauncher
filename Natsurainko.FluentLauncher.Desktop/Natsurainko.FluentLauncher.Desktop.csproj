@@ -30,8 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Natsurainko.FluentCore\Natsurainko.FluentCore.Extension.Windows\Natsurainko.FluentCore.Extension.Windows.csproj" />
-    <ProjectReference Include="..\..\Natsurainko.FluentCore\Natsurainko.FluentCore\Natsurainko.FluentCore.csproj" />
+    <ProjectReference Include="..\Natsurainko.FluentCore.Extension.Windows\Natsurainko.FluentCore.Extension.Windows.csproj" />
+    <ProjectReference Include="..\Natsurainko.FluentCore\Natsurainko.FluentCore.csproj" />
+    <ProjectReference Include="..\Natsurainko.Toolkits\Natsurainko.Toolkits.csproj" />
   </ItemGroup>
 
   <Import Project="..\Natsurainko.FluentLauncher.Shared\Natsurainko.FluentLauncher.Shared.projitems" Label="Shared" />

@@ -40,6 +40,9 @@ public sealed partial class LoginDialog : ContentDialog
     private void CancelButton_Click(object sender, RoutedEventArgs e)
     {
         this.Hide();
-        MainContainer.ShowInfoBarAsync($"已取消添加账户：", string.Empty, severity: InfoBarSeverity.Informational);
+
+        MainContainer.ShowInfoBarAsync(
+            ConfigurationManager.AppSettings.CurrentLanguage.GetString("SettingAccountPage_AddCancel"),
+            severity: InfoBarSeverity.Informational);
     }
 }

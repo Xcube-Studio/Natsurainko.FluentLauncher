@@ -11,10 +11,20 @@ public class LocalModInformationViewData : ViewDataBase<LocalModInformation>
         var template = ConfigurationManager.AppSettings.CurrentLanguage.GetString("PMP_Converter_ModDescription").Split('|')[0];
         string symbol = ConfigurationManager.AppSettings.CurrentLanguage.GetString("PMP_Converter_ModDescription").Split('|')[1];
 
-        Description = template
-            .Replace("{name}", data.Name)
-            .Replace("{version}", data.Version)
-            .Replace("{authors}", string.Join(symbol, data.Authors));
+        try
+        {
+            Description = template
+                .Replace("{name}", data.Name)
+                .Replace("{version}", data.Version)
+                .Replace("{authors}", string.Join(symbol, data.Authors));
+        }
+        catch
+        {
+            Description = template
+                .Replace("{name}", data.FileName)
+                .Replace("{version}", "Null")
+                .Replace("{authors}", "Null");
+        }
     }
 
     [Reactive]

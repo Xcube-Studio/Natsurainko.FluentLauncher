@@ -28,10 +28,13 @@ public class LocalModFinder
         {
             var info = new LocalModInformation();
 
+            info.FileInfo = file;
+            info.Enable = file.Extension == ".jar";
+            info.FileName = Path.GetFileNameWithoutExtension(file.FullName);
+
             try
             {
                 using var zip = ZipFile.OpenRead(file.FullName);
-                info.FileInfo = file;
 
                 if (zip.GetEntry("META-INF/mods.toml") != null)
                 {
@@ -40,7 +43,6 @@ public class LocalModFinder
 
                     var toml = ((TomlTableArray)Toml.Parse(reader.ReadToEnd()).ToModel()["mods"])[0];
 
-                    info.FileName = Path.GetFileNameWithoutExtension(file.FullName);
                     info.ModType = ModType.Forge;
                     info.Authors = toml.ContainsKey("authors") ? toml["authors"].ToString().Split(",").Select(x => x.Trim(' ')).ToArray() : Array.Empty<string>();
                     info.Name = toml["displayName"].ToString();
@@ -57,6 +59,33 @@ public class LocalModFinder
                                 info.Version = line.Replace("Implementation-Version: ", string.Empty);
                     }
                 }
+                
+                if (zip.GetEntry("mcmod.info") != null)
+                {
+                    using var contentStream = zip.GetEntry("mcmod.info").Open();
+                    using var reader = new StreamReader(contentStream);
+
+                    var jToken = JToken.Parse(reader.ReadToEnd());
+                    JObject jObject = null;
+
+                    if (jToken.Type == JTokenType.Array)
+                        jObject = (JObject)jToken.ToArray()[0];
+                    else jObject = (JObject)jToken["modList"].ToArray()[0];
+
+                    info.ModType = ModType.Forge;
+                    info.Name = jObject["name"].ToString();
+                    info.Version = jObject["version"].ToString();
+                    info.Description = jObject["description"].ToString();
+
+                    try
+                    {
+                        if (jObject.ContainsKey("authorList"))
+                            info.Authors = ((JArray)jObject["authorList"]).Select(x => x.Type == JTokenType.Object ? x["name"].ToString() : x.ToString()).ToArray();
+
+                        if (jObject.ContainsKey("authors"))
+                            info.Authors = ((JArray)jObject["authors"]).Select(x => x.Type == JTokenType.Object ? x["name"].ToString() : x.ToString()).ToArray();
+                    } catch { }
+                }
 
                 if (zip.GetEntry("fabric.mod.json") != null)
                 {
@@ -65,7 +94,6 @@ public class LocalModFinder
 
                     var jObject = JObject.Parse(reader.ReadToEnd());
 
-                    info.FileName = Path.GetFileNameWithoutExtension(file.FullName);
                     info.ModType = ModType.Fabric;
                     info.Authors = ((JArray)jObject["authors"]).Select(x => x.Type == JTokenType.Object ? x["name"].ToString() : x.ToString()).ToArray();
                     info.Name = jObject["name"].ToString();
@@ -75,12 +103,10 @@ public class LocalModFinder
 
                 if (zip.GetEntry("fabric.mod.json") != null && zip.GetEntry("META-INF/mods.toml") != null)
                     info.ModType = ModType.ForgeAndFabric;
-
-                info.Enable = file.Extension == ".jar";
             }
-            catch
-            {
-                return null;
+            catch (Exception ex) 
+            { 
+
             }
 
             return info;

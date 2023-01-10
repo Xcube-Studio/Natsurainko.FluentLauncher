@@ -25,6 +25,7 @@ public class HomePageVM : ViewModelBase<Page>
         {
             if (!string.IsNullOrEmpty(CurrentGameFolder))
             {
+                CurrentGameCore = ConfigurationManager.AppSettings.CurrentGameCore?.CreateViewData<GameCore, GameCoreViewData>();
                 GameCores = (await GameCoreLocator.GetGameCores(CurrentGameFolder)).CreateCollectionViewData<GameCore, GameCoreViewData>();
                 CurrentGameCore = ConfigurationManager.AppSettings.CurrentGameCore?.CreateViewData<GameCore, GameCoreViewData>();
             }
@@ -68,7 +69,7 @@ public class HomePageVM : ViewModelBase<Page>
     public string NewsButtonIcon { get; set; } = "\ue70d";
 
     [Reactive]
-    public string NewsButtonText { get; set; } = "显示新闻";
+    public string NewsButtonText { get; set; } = ConfigurationManager.AppSettings.CurrentLanguage.GetString("HomePage_NewsShow");
 
     public override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
@@ -79,7 +80,7 @@ public class HomePageVM : ViewModelBase<Page>
             NewsButtonIcon = ShowNews == Visibility.Collapsed ? "\ue70d" : "\ue70e";
 
         if (e.PropertyName != nameof(NewsButtonIcon))
-            NewsButtonText = ShowNews == Visibility.Collapsed ? "显示新闻" : "隐藏新闻";
+            NewsButtonText = ConfigurationManager.AppSettings.CurrentLanguage.GetString($"HomePage_News{(ShowNews == Visibility.Collapsed ? "Show" : "Hide")}");
 
         if (e.PropertyName == nameof(CurrentAccount))
             UpdateAccountDisplay();

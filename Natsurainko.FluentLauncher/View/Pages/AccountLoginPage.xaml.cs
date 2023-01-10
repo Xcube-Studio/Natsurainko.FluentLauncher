@@ -73,7 +73,10 @@ public sealed partial class AccountLoginPage : Page
             }
             else
             {
-                MainContainer.ShowInfoBarAsync($"登录账户失败：{error}", error_description, severity: Muxc.InfoBarSeverity.Error);
+                MainContainer.ShowInfoBarAsync(
+                    ConfigurationManager.AppSettings.CurrentLanguage.GetString("AccountLoginPage_LoginFailed") + error, 
+                    error_description, 
+                    severity: Muxc.InfoBarSeverity.Error);
             }
         }
     }

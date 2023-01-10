@@ -34,7 +34,7 @@ public sealed partial class HomePage : Page
     }
 
     private void LaunchButton_Click(object sender, RoutedEventArgs e)
-        => LauncherProcessViewData.CreateLaunchProcess(ViewModel.CurrentGameCore.Data, (Button)sender);
+        => LauncherProcessViewData.CreateLaunchProcess(ViewModel.CurrentGameCore?.Data, (Button)sender);
 
     private void AccountButton_Click(object sender, RoutedEventArgs e)
         => this.Frame.Navigate(typeof(SettingsPage), typeof(SettingAccountPage));

@@ -21,7 +21,10 @@ public sealed partial class InstallJavaDialog : ContentDialog
     private void CancelButton_Click(object sender, RoutedEventArgs e)
     {
         this.Hide();
-        MainContainer.ShowInfoBarAsync($"已取消安装 Java 运行时：", string.Empty, severity: InfoBarSeverity.Informational);
+
+        MainContainer.ShowInfoBarAsync(
+            ConfigurationManager.AppSettings.CurrentLanguage.GetString("InstallJavaDialog_InstallCancelled"),
+            severity: InfoBarSeverity.Informational);
     }
 
     private void ConfirmButton_Click(object sender, RoutedEventArgs e)

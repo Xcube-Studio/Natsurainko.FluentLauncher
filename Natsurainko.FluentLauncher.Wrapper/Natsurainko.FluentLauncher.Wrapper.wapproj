@@ -59,7 +59,7 @@
     <EntryPointProjectUniqueName>..\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher.csproj</EntryPointProjectUniqueName>
     <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
@@ -155,9 +155,6 @@
     <None Include="Package.StoreAssociation.xml" />
   </ItemGroup>
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.targets" />
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.1" PrivateAssets="all" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Natsurainko.FluentLauncher.Desktop\Natsurainko.FluentLauncher.Desktop.csproj" />
     <ProjectReference Include="..\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher.csproj" />

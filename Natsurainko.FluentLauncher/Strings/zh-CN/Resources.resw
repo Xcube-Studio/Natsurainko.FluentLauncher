@@ -273,6 +273,18 @@
   <data name="InstallJavaDialog_T.Text" xml:space="preserve">
     <value>安装新的 Java 运行时</value>
   </data>
+  <data name="LoginDialog_Email.PlaceholderText" xml:space="preserve">
+    <value>邮箱/用户名：</value>
+  </data>
+  <data name="LoginDialog_Passowrd.PlaceholderText" xml:space="preserve">
+    <value>密码：</value>
+  </data>
+  <data name="LoginDialog_ServerUrl.PlaceholderText" xml:space="preserve">
+    <value>外置登录服务器地址：</value>
+  </data>
+  <data name="LSS_AccountLoginPage_LoginFailed" xml:space="preserve">
+    <value>登录账户失败：</value>
+  </data>
   <data name="LSS_ALP_CB_IS" xml:space="preserve">
     <value>离线登录:微软登录:外置登录</value>
   </data>
@@ -315,6 +327,9 @@
   <data name="LSS_CreateProcessOutputWindow_Title" xml:space="preserve">
     <value>{Id} - 游戏运行日志</value>
   </data>
+  <data name="LSS_Debug" xml:space="preserve">
+    <value>调试版</value>
+  </data>
   <data name="LSS_Download_Add_H" xml:space="preserve">
     <value>转到 活动&gt;下载任务</value>
   </data>
@@ -323,6 +338,12 @@
   </data>
   <data name="LSS_Download_Add_T" xml:space="preserve">
     <value>成功将 "{title}" 添加到任务中</value>
+  </data>
+  <data name="LSS_HomePage_NewsHide" xml:space="preserve">
+    <value>隐藏新闻</value>
+  </data>
+  <data name="LSS_HomePage_NewsShow" xml:space="preserve">
+    <value>显示新闻</value>
   </data>
   <data name="LSS_HP_Converter_Inherit" xml:space="preserve">
     <value>继承自</value>
@@ -356,6 +377,9 @@
   </data>
   <data name="LSS_Info_Launch_T" xml:space="preserve">
     <value>成功将 "启动 游戏核心 {Id}" 添加到任务中</value>
+  </data>
+  <data name="LSS_InstallJavaDialog_InstallCancelled" xml:space="preserve">
+    <value>已取消安装 Java 运行时</value>
   </data>
   <data name="LSS_JavaInstaller_Title" xml:space="preserve">
     <value>安装新的 Java 运行时：{title}</value>
@@ -420,6 +444,9 @@
   <data name="LSS_PMP_Converter_ModDescription" xml:space="preserve">
     <value>{name}；版本：{version}；作者：{authors}|，</value>
   </data>
+  <data name="LSS_Release" xml:space="preserve">
+    <value>正式版</value>
+  </data>
   <data name="LSS_RMP_Converter_Day" xml:space="preserve">
     <value>天</value>
   </data>
@@ -443,6 +470,21 @@
   </data>
   <data name="LSS_SAP_Converter_Yggdrasil" xml:space="preserve">
     <value>外置账户</value>
+  </data>
+  <data name="LSS_SettingAccountPage_AddCancel" xml:space="preserve">
+    <value>已取消添加账户</value>
+  </data>
+  <data name="LSS_SettingAccountPage_AddFailed" xml:space="preserve">
+    <value>验证账户失败：</value>
+  </data>
+  <data name="LSS_SettingAccountPage_AddSuccess" xml:space="preserve">
+    <value>添加账户成功：{0} {1}</value>
+  </data>
+  <data name="LSS_SettingAccountPage_AddWelcome" xml:space="preserve">
+    <value>欢迎回来, {0}</value>
+  </data>
+  <data name="LSS_SettingLaunchPage_SearchJava" xml:space="preserve">
+    <value>已将搜索到的 Java 运行时 添加至运行时列表</value>
   </data>
   <data name="LSS_SimpleDownloader_State_1" xml:space="preserve">
     <value>准备开始下载</value>
@@ -519,6 +561,39 @@
   <data name="PropertyModPage_I_T.Text" xml:space="preserve">
     <value>还没有任何已安装的模组</value>
   </data>
+  <data name="ResourcesInstallPage_ComboBox.PlaceholderText" xml:space="preserve">
+    <value>选择要安装的游戏核心</value>
+  </data>
+  <data name="ResourcesInstallPage_Confirm.Text" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="ResourcesInstallPage_EnableIndependently.Text" xml:space="preserve">
+    <value>为该版本启用版本独立</value>
+  </data>
+  <data name="ResourcesInstallPage_EnableLoader.Text" xml:space="preserve">
+    <value>启用加载器</value>
+  </data>
+  <data name="ResourcesInstallPage_EnableLoader_Type.Text" xml:space="preserve">
+    <value>启用的加载器类型</value>
+  </data>
+  <data name="ResourcesInstallPage_Install.Text" xml:space="preserve">
+    <value>安装</value>
+  </data>
+  <data name="ResourcesInstallPage_SelectedLoader.Text" xml:space="preserve">
+    <value>当前选中的加载器：</value>
+  </data>
+  <data name="ResourcesInstallPage_ShowOld.Content" xml:space="preserve">
+    <value>显示远古版</value>
+  </data>
+  <data name="ResourcesInstallPage_ShowSnapshot.Content" xml:space="preserve">
+    <value>显示快照版</value>
+  </data>
+  <data name="ResourcesInstallPage_Title.Text" xml:space="preserve">
+    <value>安装新的游戏核心</value>
+  </data>
+  <data name="ResourcesInstallPage_UnsupportLoader.Text" xml:space="preserve">
+    <value>该版本不支持任何类型的加载器</value>
+  </data>
   <data name="ResourcesModPage_A.PlaceholderText" xml:space="preserve">
     <value>在 CurseForge 上搜索模组</value>
   </data>
@@ -572,6 +647,9 @@
   </data>
   <data name="ResourcesPage_ExD_5.Title" xml:space="preserve">
     <value>多线程分片下载器</value>
+  </data>
+  <data name="SettingAboutPage_CheckUpdate.Content" xml:space="preserve">
+    <value>在商店中检查更新</value>
   </data>
   <data name="SettingAboutPage_DownloadSource.Text" xml:space="preserve">
     <value>提供下载镜像源</value>

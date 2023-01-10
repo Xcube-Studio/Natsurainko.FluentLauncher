@@ -125,6 +125,9 @@ public class DownloaderProcessViewData : ViewDataBase<DownloaderProcess>
 
         if (string.IsNullOrEmpty(ConfigurationManager.AppSettings.CurrentGameFolder))
         {
+            MainContainer.ShowInfoBarAsync(ConfigurationManager.AppSettings.CurrentLanguage.GetString("CP_T1"), severity: Microsoft.UI.Xaml.Controls.InfoBarSeverity.Error);
+            control.IsEnabled = true;
+
             return;
         }
 

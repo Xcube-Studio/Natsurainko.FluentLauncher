@@ -255,9 +255,6 @@
   <data name="CoresPage_T_B.Text" xml:space="preserve">
     <value>Установить новое ядро</value>
   </data>
-  <data name="HomePage_LB_T.FontWeight" xml:space="preserve">
-    <value>Жирный</value>
-  </data>
   <data name="HomePage_LB_T.Text" xml:space="preserve">
     <value>Начать игру</value>
   </data>
@@ -272,6 +269,18 @@
   </data>
   <data name="InstallJavaDialog_T.Text" xml:space="preserve">
     <value>Установка новой Java Runtime Environment</value>
+  </data>
+  <data name="LoginDialog_Email.PlaceholderText" xml:space="preserve">
+    <value>Электронная почта/имя пользователя:</value>
+  </data>
+  <data name="LoginDialog_Passowrd.PlaceholderText" xml:space="preserve">
+    <value>Пароль:</value>
+  </data>
+  <data name="LoginDialog_ServerUrl.PlaceholderText" xml:space="preserve">
+    <value>URL-адрес сервера Yggdrasil:</value>
+  </data>
+  <data name="LSS_AccountLoginPage_LoginFailed" xml:space="preserve">
+    <value>Не удалось войти в учетную запись:</value>
   </data>
   <data name="LSS_ALP_CB_IS" xml:space="preserve">
     <value>Автономный вход:Вход в Microsoft:Внешний вход</value>
@@ -315,14 +324,23 @@
   <data name="LSS_CreateProcessOutputWindow_Title" xml:space="preserve">
     <value>{Id} - Логи запуска игры</value>
   </data>
+  <data name="LSS_Debug" xml:space="preserve">
+    <value>Отладочная версия</value>
+  </data>
   <data name="LSS_Download_Add_H" xml:space="preserve">
     <value>Перейдите в раздел «Действия» &gt; «Задачи скачивания».</value>
   </data>
   <data name="LSS_Download_Add_ST" xml:space="preserve">
-    <value>Перейдите в раздел «События» > «Задачи скачивания», чтобы просмотреть подробности.</value>
+    <value>Перейдите в раздел «События» &gt; «Задачи скачивания», чтобы просмотреть подробности.</value>
   </data>
   <data name="LSS_Download_Add_T" xml:space="preserve">
     <value>"{title}" успешно добавлено в задачи</value>
+  </data>
+  <data name="LSS_HomePage_NewsHide" xml:space="preserve">
+    <value>Скрыть новости</value>
+  </data>
+  <data name="LSS_HomePage_NewsShow" xml:space="preserve">
+    <value>Показать новости</value>
   </data>
   <data name="LSS_HP_Converter_Inherit" xml:space="preserve">
     <value>Унаследовано от</value>
@@ -356,6 +374,9 @@
   </data>
   <data name="LSS_Info_Launch_T" xml:space="preserve">
     <value>К задаче успешно добавлено «Запуск ядра игры {Id}».</value>
+  </data>
+  <data name="LSS_InstallJavaDialog_InstallCancelled" xml:space="preserve">
+    <value>Отменена установка Java Runtime</value>
   </data>
   <data name="LSS_JavaInstaller_Title" xml:space="preserve">
     <value>Установка новой Java Runtime Environment: {title}</value>
@@ -420,6 +441,9 @@
   <data name="LSS_PMP_Converter_ModDescription" xml:space="preserve">
     <value>{name}; Версия: {version}; Автор: {authors}|，</value>
   </data>
+  <data name="LSS_Release" xml:space="preserve">
+    <value>Релизное издание</value>
+  </data>
   <data name="LSS_RMP_Converter_Day" xml:space="preserve">
     <value>д.</value>
   </data>
@@ -443,6 +467,21 @@
   </data>
   <data name="LSS_SAP_Converter_Yggdrasil" xml:space="preserve">
     <value>Внешний аккаунт</value>
+  </data>
+  <data name="LSS_SettingAccountPage_AddCancel" xml:space="preserve">
+    <value>Отменено Добавить учетную запись</value>
+  </data>
+  <data name="LSS_SettingAccountPage_AddFailed" xml:space="preserve">
+    <value>Не удалось подтвердить учетную запись: </value>
+  </data>
+  <data name="LSS_SettingAccountPage_AddSuccess" xml:space="preserve">
+    <value>Учетная запись успешно добавлена: {0} {1}</value>
+  </data>
+  <data name="LSS_SettingAccountPage_AddWelcome" xml:space="preserve">
+    <value>С возвращением, {0}</value>
+  </data>
+  <data name="LSS_SettingLaunchPage_SearchJava" xml:space="preserve">
+    <value>Добавлена обнаруженная Java Rutime в список сред выполнения</value>
   </data>
   <data name="LSS_SimpleDownloader_State_1" xml:space="preserve">
     <value>Готов к началу скачивания</value>
@@ -519,6 +558,39 @@
   <data name="PropertyModPage_I_T.Text" xml:space="preserve">
     <value>Установленных модов пока нет</value>
   </data>
+  <data name="ResourcesInstallPage_ComboBox.PlaceholderText" xml:space="preserve">
+    <value>Выберите ядро для установки</value>
+  </data>
+  <data name="ResourcesInstallPage_Confirm.Text" xml:space="preserve">
+    <value>Подтверждать</value>
+  </data>
+  <data name="ResourcesInstallPage_EnableIndependently.Text" xml:space="preserve">
+    <value>Включить независимость ядра</value>
+  </data>
+  <data name="ResourcesInstallPage_EnableLoader.Text" xml:space="preserve">
+    <value>Включить загрузчик</value>
+  </data>
+  <data name="ResourcesInstallPage_EnableLoader_Type.Text" xml:space="preserve">
+    <value>Тип включенного загрузчика</value>
+  </data>
+  <data name="ResourcesInstallPage_Install.Text" xml:space="preserve">
+    <value>Установить</value>
+  </data>
+  <data name="ResourcesInstallPage_SelectedLoader.Text" xml:space="preserve">
+    <value>Текущий выбранный загрузчик:</value>
+  </data>
+  <data name="ResourcesInstallPage_ShowOld.Content" xml:space="preserve">
+    <value>Показать старую версию</value>
+  </data>
+  <data name="ResourcesInstallPage_ShowSnapshot.Content" xml:space="preserve">
+    <value>Показать версию снимка</value>
+  </data>
+  <data name="ResourcesInstallPage_Title.Text" xml:space="preserve">
+    <value>Установить новое игровое ядро</value>
+  </data>
+  <data name="ResourcesInstallPage_UnsupportLoader.Text" xml:space="preserve">
+    <value>Это ядро не поддерживает ни один тип загрузчика</value>
+  </data>
   <data name="ResourcesModPage_A.PlaceholderText" xml:space="preserve">
     <value>Поиск модов на CurseForge</value>
   </data>
@@ -572,6 +644,9 @@
   </data>
   <data name="ResourcesPage_ExD_5.Title" xml:space="preserve">
     <value>Многопоточный загрузчик фрагментов</value>
+  </data>
+  <data name="SettingAboutPage_CheckUpdate.Content" xml:space="preserve">
+    <value>Проверьте обновления в Microsoft Store</value>
   </data>
   <data name="SettingAboutPage_DownloadSource.Text" xml:space="preserve">
     <value>Укажите источник зеркала для скачивания</value>

@@ -1,4 +1,5 @@
-﻿using ReactiveUI.Fody.Helpers;
+﻿using Natsurainko.FluentLauncher.Class.Component;
+using ReactiveUI.Fody.Helpers;
 using Windows.ApplicationModel;
 using Windows.UI.Xaml.Controls;
 
@@ -15,9 +16,9 @@ public class SettingAboutPageVM : ViewModelBase<Page>
             Package.Current.Id.Version.Revision);
 
 #if DEBUG
-        Edition = "开发版";
+        Edition = ConfigurationManager.AppSettings.CurrentLanguage.GetString("Debug");
 #else
-        Edition = "正式版";
+        Edition = ConfigurationManager.AppSettings.CurrentLanguage.GetString("Release");
 #endif
     }
 

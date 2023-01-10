@@ -102,12 +102,19 @@ public class LoginDialogVM : ViewModelBase<LoginDialog>
 
             ConfigurationManager.Configuration.Save();
 
-            MainContainer.ShowInfoBarAsync($"添加账户成功：微软账户 {account.Name}", $"欢迎回来, {account.Name}", severity: InfoBarSeverity.Success);
+            MainContainer.ShowInfoBarAsync(
+                string.Format(ConfigurationManager.AppSettings.CurrentLanguage.GetString("SettingAccountPage_AddSuccess"), ConfigurationManager.AppSettings.CurrentLanguage.GetString("SAP_Converter_Microsoft"), account.Name), 
+                string.Format(ConfigurationManager.AppSettings.CurrentLanguage.GetString("SettingAccountPage_AddWelcome"), account.Name), 
+                severity: InfoBarSeverity.Success);
+
             MainContainer.ContentFrame.Navigate(typeof(SettingsPage), typeof(SettingAccountPage));
         }
         catch (Exception ex)
         {
-            MainContainer.ShowInfoBarAsync($"验证账户失败：{ex.Source}", $"{ex.Message}\r\n{ex.StackTrace}", severity: InfoBarSeverity.Error);
+            MainContainer.ShowInfoBarAsync(
+                ConfigurationManager.AppSettings.CurrentLanguage.GetString("SettingAccountPage_AddFailed") + ex.Source, 
+                $"{ex.Message}\r\n{ex.StackTrace}", 
+                severity: InfoBarSeverity.Error);
         }
 
         ControlEnable = true;
@@ -129,11 +136,17 @@ public class LoginDialogVM : ViewModelBase<LoginDialog>
 
             ConfigurationManager.Configuration.Save();
 
-            MainContainer.ShowInfoBarAsync($"添加账户成功：外置账户 {account.Name}", $"欢迎回来, {account.Name}", severity: InfoBarSeverity.Success);
+            MainContainer.ShowInfoBarAsync(
+                string.Format(ConfigurationManager.AppSettings.CurrentLanguage.GetString("SettingAccountPage_AddSuccess"), ConfigurationManager.AppSettings.CurrentLanguage.GetString("SAP_Converter_Yggdrasil"), account.Name),
+                string.Format(ConfigurationManager.AppSettings.CurrentLanguage.GetString("SettingAccountPage_AddWelcome"), account.Name),
+                severity: InfoBarSeverity.Success);
         }
         catch (Exception ex)
         {
-            MainContainer.ShowInfoBarAsync($"验证账户失败：{ex.Source}", $"{ex.Message}\r\n{ex.StackTrace}", severity: InfoBarSeverity.Error);
+            MainContainer.ShowInfoBarAsync(
+                ConfigurationManager.AppSettings.CurrentLanguage.GetString("SettingAccountPage_AddFailed") + ex.Source,
+                $"{ex.Message}\r\n{ex.StackTrace}",
+                severity: InfoBarSeverity.Error);
         }
 
         ControlEnable = true;
@@ -150,7 +163,10 @@ public class LoginDialogVM : ViewModelBase<LoginDialog>
 
         ConfigurationManager.Configuration.Save();
 
-        MainContainer.ShowInfoBarAsync($"添加账户成功：离线账户 {account.Name}", $"欢迎回来, {account.Name}", severity: InfoBarSeverity.Success);
+        MainContainer.ShowInfoBarAsync(
+            string.Format(ConfigurationManager.AppSettings.CurrentLanguage.GetString("SettingAccountPage_AddSuccess"), ConfigurationManager.AppSettings.CurrentLanguage.GetString("SAP_Converter_Offline"), account.Name),
+            string.Format(ConfigurationManager.AppSettings.CurrentLanguage.GetString("SettingAccountPage_AddWelcome"), account.Name),
+            severity: InfoBarSeverity.Success);
 
         this.Control.Hide();
     }

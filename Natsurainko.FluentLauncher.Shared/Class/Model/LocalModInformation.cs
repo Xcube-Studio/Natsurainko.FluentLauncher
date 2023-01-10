@@ -8,7 +8,7 @@ public class LocalModInformation
 
     public string FileName { get; set; }
 
-    public ModType ModType { get; set; } = 0;
+    public ModType ModType { get; set; } = ModType.Unknown;
 
     public string Name { get; set; }
 
@@ -23,6 +23,7 @@ public class LocalModInformation
 
 public enum ModType
 {
+    Unknown = -1,
     Forge = 0,
     Fabric = 1,
     ForgeAndFabric = 2

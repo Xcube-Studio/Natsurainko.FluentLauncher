@@ -32,17 +32,20 @@
             </Grid.RowDefinitions>
             <StackPanel>
                 <TextBox
+                    x:Uid="LoginDialog_ServerUrl"
                     Margin="0,0,0,15"
                     IsEnabled="{Binding ControlEnable, Mode=OneWay}"
                     PlaceholderText="外置登录服务器地址："
                     Text="{Binding YggdrasilServerUrl, Mode=TwoWay}"
                     Visibility="{Binding UrlBoxVisibility, Mode=OneWay}" />
                 <TextBox
+                    x:Uid="LoginDialog_Email"
                     IsEnabled="{Binding ControlEnable, Mode=OneWay}"
                     PlaceholderText="邮箱/用户名："
                     Text="{Binding Email, Mode=TwoWay}"
                     Visibility="{Binding EmailBoxVisibility, Mode=OneWay}" />
                 <PasswordBox
+                    x:Uid="LoginDialog_Passowrd"
                     Margin="0,15,0,0"
                     IsEnabled="{Binding ControlEnable, Mode=OneWay}"
                     Password="{Binding Password, Mode=TwoWay}"
@@ -51,7 +54,7 @@
                 <muxc:Expander
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Top"
-                    Header="没啥东西好放的，留空吧"
+                    Header="这里什么也没有 There is Nothing"
                     Visibility="{Binding PlaceholderVisibity, Mode=OneWay}" />
             </StackPanel>
             <StackPanel

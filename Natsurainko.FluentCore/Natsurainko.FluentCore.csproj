@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;netstandard2.0</TargetFrameworks>
+	<LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <Version>2.0.2</Version>
+    <Authors>Natsurainko</Authors>
+    <Description>一个高效的模块化的 Minecraft 启动核心</Description>
+    <Copyright>Copyright © Natsurainko 2022</Copyright>
+    <PackageProjectUrl>https://github.com/Xcube-Studio/Natsurainko.FluentCore</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/Xcube-Studio/Natsurainko.FluentCore</RepositoryUrl>
+    <NeutralLanguage>zh-CN</NeutralLanguage>
+    <PackageTags>FluentCore</PackageTags>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <LangVersion>10.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="LICENSE" />
+    <None Remove="README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="LICENSE" />
+    <EmbeddedResource Include="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Threading.Tasks.Dataflow" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Natsurainko.Toolkits\Natsurainko.Toolkits.csproj" />
+  </ItemGroup>
+</Project>

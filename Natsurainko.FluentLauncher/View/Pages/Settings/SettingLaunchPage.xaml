@@ -230,6 +230,7 @@
                                         Width="100"
                                         Margin="15,0,0,0"
                                         VerticalAlignment="Center"
+                                        Minimum="0"
                                         Value="{Binding JavaVirtualMachineMemory, Mode=TwoWay}" />
                                 </StackPanel>
                             </ex:ExpanderExWrapper.WrapContent>
@@ -361,6 +362,7 @@
                                     <muxc:NumberBox
                                         Width="75"
                                         VerticalAlignment="Center"
+                                        Minimum="0"
                                         Value="{Binding GameWindowWidth, Mode=TwoWay}" />
                                     <FontIcon
                                         Margin="10,0"
@@ -370,6 +372,7 @@
                                     <muxc:NumberBox
                                         Width="75"
                                         VerticalAlignment="Center"
+                                        Minimum="0"
                                         Value="{Binding GameWindowHeight, Mode=TwoWay}" />
                                 </StackPanel>
                             </ex:ExpanderExWrapper.WrapContent>

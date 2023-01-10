@@ -29,10 +29,23 @@ public sealed partial class MainContainer : Page
     public MainContainer()
     {
         this.InitializeComponent();
+        this.ActualThemeChanged += MainContainer_ActualThemeChanged;
 
         ContentFrame = contentFrame;
         InformationListBox = InformationList;
         SharedShadow.Receivers.Add(BackgroundGrid);
+    }
+
+    private void MainContainer_ActualThemeChanged(FrameworkElement sender, object args)
+    {
+        if (Environment.OSVersion.Version.Build >= 22000)
+            BackdropMaterial.SetApplyToRootOrPageBackground(this, true);
+        else this.Background = (AcrylicBrush)this.Resources["SystemControlAcrylicWindowBrush"];
+
+        var applicationViewTitleBar = ApplicationView.GetForCurrentView().TitleBar;
+        applicationViewTitleBar.ButtonForegroundColor = ((SolidColorBrush)AppTitle.Foreground).Color;
+        applicationViewTitleBar.ButtonBackgroundColor = Colors.Transparent;
+        applicationViewTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
     }
 
     private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -81,7 +94,7 @@ public sealed partial class MainContainer : Page
     }
 
     private void NavigationViewControl_PaneClosing(Muxc.NavigationView sender, object _)
-    => UpdateAppTitleMargin(sender);
+        => UpdateAppTitleMargin(sender);
 
     private void NavigationViewControl_PaneOpening(Muxc.NavigationView sender, object _)
         => UpdateAppTitleMargin(sender);
@@ -96,7 +109,7 @@ public sealed partial class MainContainer : Page
     {
         foreach (Muxc.NavigationViewItem item in NavigationViewControl.MenuItems.Union(NavigationViewControl.FooterMenuItems).Cast<Muxc.NavigationViewItem>())
         {
-            if ((string)item.Tag == e.SourcePageType.Name)
+            if ((((string)item.Tag).Contains(".") ? ((string)item.Tag).Split('.')[1] : (string)item.Tag) == e.SourcePageType.Name)
             {
                 NavigationViewControl.SelectedItem = item;
                 item.IsSelected = true;

@@ -83,6 +83,6 @@ public sealed partial class SettingLaunchPage : Page
 
         ViewModel.OnPropertyChanged(new PropertyChangedEventArgs(nameof(ViewModel.JavaRuntimes)));
 
-        MainContainer.ShowInfoBarAsync("已将搜索到的 Java 运行时 添加至运行时列表");
+        MainContainer.ShowInfoBarAsync(ConfigurationManager.AppSettings.CurrentLanguage.GetString("SettingLaunchPage_SearchJava"));
     }
 }

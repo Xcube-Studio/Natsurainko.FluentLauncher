@@ -14,7 +14,8 @@ internal static class GlobalResources
     public static List<Language> SupportedLanguages => new()
     {
         new() { Code = "zh-CN", DisplayName = "简体中文" },
-        new() { Code = "en-US", DisplayName = "English (United States)"}
+        new() { Code = "en-US", DisplayName = "English (United States)"},
+        new() { Code = "ru-RU", DisplayName = "Русский (Russian)"}
     };
 
     public static Dictionary<string, KeyValuePair<string, string>[]> OpenJdkDownloadSources => new()
@@ -23,12 +24,14 @@ internal static class GlobalResources
             "OpenJDK 8",
             new KeyValuePair<string, string>[]
             {
+                new ("Liberica JDK", "https://download.bell-sw.com/java/8u345+1/bellsoft-jdk8u345+1-windows-amd64-full.zip"),
                 new ("jdk.java.net","https://download.java.net/openjdk/jdk8u42/ri/openjdk-8u42-b03-windows-i586-14_jul_2022.zip")
             }
         },
         {
             "OpenJDK 11", new KeyValuePair<string, string>[]
             {
+                new ("Liberica JDK", "https://download.bell-sw.com/java/11.0.16.1+1/bellsoft-jdk11.0.16.1+1-windows-amd64.zip"),
                 new ("jdk.java.net", "https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip"),
                 new ("Microsoft", "https://aka.ms/download-jdk/microsoft-jdk-11.0.16-windows-x64.zip")
             }
@@ -36,6 +39,7 @@ internal static class GlobalResources
         {
             "OpenJDK 17", new KeyValuePair<string, string>[]
             {
+                new ("Liberica JDK", "https://download.bell-sw.com/java/17.0.4.1+1/bellsoft-jdk17.0.4.1+1-windows-amd64.zip"),
                 new ("jdk.java.net", "https://download.java.net/openjdk/jdk17/ri/openjdk-17+35_windows-x64_bin.zip"),
                 new ("Microsoft", "https://aka.ms/download-jdk/microsoft-jdk-17.0.4-windows-x64.zip")
             }
@@ -43,6 +47,7 @@ internal static class GlobalResources
         {
             "OpenJDK 18", new KeyValuePair<string, string>[]
             {
+                new ("Liberica JDK", "https://download.bell-sw.com/java/18.0.2.1+1/bellsoft-jdk18.0.2.1+1-windows-amd64.zip"),
                 new ("jdk.java.net", "https://download.java.net/openjdk/jdk18/ri/openjdk-18+36_windows-x64_bin.zip")
             }
         }

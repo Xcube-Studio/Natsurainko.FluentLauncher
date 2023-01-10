@@ -1,4 +1,5 @@
-﻿using Natsurainko.FluentCore.Class.Model.Launch;
+﻿using Natsurainko.FluentCore.Class.Model.Auth;
+using Natsurainko.FluentCore.Class.Model.Launch;
 using Natsurainko.FluentLauncher.Class.AppData;
 using Natsurainko.FluentLauncher.Class.Component;
 using Natsurainko.FluentLauncher.Shared.Mapping;
@@ -150,6 +151,20 @@ public class LauncherProcessViewData : ViewDataBase<LauncherProcess>
     {
         control.IsEnabled = false;
 
+        var checkLaunchResult = CheckLaunch
+        (
+            gameCore,
+            ConfigurationManager.AppSettings.CurrentAccount,
+            ConfigurationManager.AppSettings.CurrentJavaRuntime
+        );
+
+        if (!checkLaunchResult.Item1)
+        {
+            MainContainer.ShowInfoBarAsync(checkLaunchResult.Item2, severity: Microsoft.UI.Xaml.Controls.InfoBarSeverity.Error);
+            control.IsEnabled = true;
+
+            return;
+        }
         var launcherProcess = new LauncherProcess(gameCore).CreateViewData<LauncherProcess, LauncherProcessViewData>();
 
         CacheResources.LauncherProcesses.Insert(0, launcherProcess);
@@ -166,4 +181,29 @@ public class LauncherProcessViewData : ViewDataBase<LauncherProcess>
 
         control.IsEnabled = true;
     }
+
+    public static (bool, string) CheckLaunch(GameCore core, Account account, string java)
+    {
+        bool canLaunch = true;
+        string message = string.Empty;
+
+        if (core == null)
+        {
+            canLaunch = false;
+            message = ConfigurationManager.AppSettings.CurrentLanguage.GetString("CheckLaunch_1");
+        }
+        else if (account == null)
+        {
+            canLaunch = false;
+            message = ConfigurationManager.AppSettings.CurrentLanguage.GetString("CheckLaunch_2");
+        }
+        if (java == null)
+        {
+            canLaunch = false;
+            message = ConfigurationManager.AppSettings.CurrentLanguage.GetString("CheckLaunch_3");
+        }
+
+        return (canLaunch, message);
+    }
+
 }

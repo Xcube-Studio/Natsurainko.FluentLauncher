@@ -400,20 +400,22 @@
     <PRIResource Include="Strings\zh-CN\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Natsurainko.Toolkits\Natsurainko.Toolkits\Natsurainko.Toolkits.csproj">
-      <Project>{6ee56a98-9fd3-4d63-960d-e29d121358c9}</Project>
-      <Name>Natsurainko.Toolkits</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Natsurainko.FluentCore">
-      <HintPath>..\..\Natsurainko.FluentCore\Natsurainko.FluentCore\bin\Debug\netstandard2.0\Natsurainko.FluentCore.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\.editorconfig">
       <Link>.editorconfig</Link>
     </None>
+    <PRIResource Include="Strings\ru-RU\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Natsurainko.FluentCore, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Natsurainko.FluentCore\bin\Release\netstandard2.0\Natsurainko.FluentCore.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Natsurainko.Toolkits\Natsurainko.Toolkits.csproj">
+      <Project>{13bf0f36-ffb0-4200-8c48-7876fc07a097}</Project>
+      <Name>Natsurainko.Toolkits</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\Natsurainko.FluentLauncher.Shared\Natsurainko.FluentLauncher.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 #if WINDOWS_UWP
 using Natsurainko.FluentLauncher.Class.Component;
+using Natsurainko.FluentLauncher.Class.ViewData;
 #endif
 
 namespace Natsurainko.FluentLauncher.Shared.Mapping;
@@ -27,22 +28,22 @@ public static class LocalModManager
         return (await DesktopServiceManager.Service.SendAsync<List<LocalModInformation>>(builder.Build())).Response;
     }
 
-    public static async Task SwitchModOfGameCore(LocalModInformation modInformation)
+    public static async Task<bool> SwitchModOfGameCore(LocalModInformation modInformation)
     {
         var builder = MethodRequestBuilder.Create()
             .AddParameter(modInformation)
             .SetMethod("SwitchModOfGameCore");
 
-        await DesktopServiceManager.Service.SendAsyncWithoutResponse(builder.Build());
+        return (await DesktopServiceManager.Service.SendAsync<bool>(builder.Build())).Response;
     }
 
-    public static async Task DeleteModOfGameCore(LocalModInformation modInformation)
+    public static async Task<bool> DeleteModOfGameCore(LocalModInformation modInformation)
     {
         var builder = MethodRequestBuilder.Create()
             .AddParameter(modInformation)
             .SetMethod("DeleteModOfGameCore");
 
-        await DesktopServiceManager.Service.SendAsyncWithoutResponse(builder.Build());
+        return (await DesktopServiceManager.Service.SendAsync<bool>(builder.Build())).Response;
     }
 
 #endif
@@ -58,16 +59,28 @@ public static class LocalModManager
         return modParser.GetLocalModInformations().ToList();
     }
 
-    public static void SwitchModOfGameCore(LocalModInformation localModInformation)
+    public static bool SwitchModOfGameCore(LocalModInformation localModInformation)
     {
-        if (localModInformation.FileInfo.Extension.Equals(".jar"))
-            localModInformation.FileInfo.MoveTo(localModInformation.FileInfo.FullName.Replace(".jar", ".disabled"));
-        else localModInformation.FileInfo.MoveTo(localModInformation.FileInfo.FullName.Replace(".disabled", ".jar"));
+        try
+        {
+            if (localModInformation.FileInfo.Extension.Equals(".jar"))
+                localModInformation.FileInfo.MoveTo(localModInformation.FileInfo.FullName.Replace(".jar", ".disabled"));
+            else localModInformation.FileInfo.MoveTo(localModInformation.FileInfo.FullName.Replace(".disabled", ".jar"));
+
+            return true;
+        }
+        catch { return false; }
     }
 
-    public static void DeleteModOfGameCore(LocalModInformation localModInformation)
+    public static bool DeleteModOfGameCore(LocalModInformation localModInformation)
     {
-        localModInformation.FileInfo.Delete();
+        try
+        {
+            localModInformation.FileInfo.Delete();
+
+            return true;
+        }
+        catch { return false; }
     }
 #endif
 }

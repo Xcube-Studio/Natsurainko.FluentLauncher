@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <Version>2.0.2</Version>
+    <Authors>Natsurainko</Authors>
+    <Description>一个高效的模块化的 Minecraft 启动核心
+Natsurainko.FluentCore 的 Windows 扩展</Description>
+    <Copyright>Copyright © Natsurainko 2022</Copyright>
+    <PackageProjectUrl>https://github.com/Xcube-Studio/Natsurainko.FluentCore</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Xcube-Studio/Natsurainko.FluentCore</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <NeutralLanguage>zh-CN</NeutralLanguage>
+    <PackageTags>Natsurainko.FluentCore</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="LICENSE" />
+    <None Remove="README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="LICENSE" />
+    <EmbeddedResource Include="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Natsurainko.FluentCore\Natsurainko.FluentCore.csproj" />
+  </ItemGroup>
+
+</Project>

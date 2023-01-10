@@ -68,6 +68,8 @@ public class CoresPageVM : ViewModelBase<Page>
 
     public Action TipsAction { get; private set; }
 
+    public bool CoresLoaded { get; private set; } = false;
+
     public override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(CurrentGameFolder) || e.PropertyName == nameof(GameCores))
@@ -76,11 +78,11 @@ public class CoresPageVM : ViewModelBase<Page>
         if (e.PropertyName == nameof(CurrentGameFolder) || e.PropertyName == nameof(CoreSortBy) || e.PropertyName == nameof(CoreVisibility))
             UpdateGameCores();
 
-        if (e.PropertyName == nameof(CurrentGameCore))
-            DispatcherHelper.RunAsync(() => ConfigurationManager.AppSettings.CurrentGameCore = CurrentGameCore?.Data);
-
         DispatcherHelper.RunAsync(() =>
         {
+            if (e.PropertyName == nameof(CurrentGameCore) && CoresLoaded)
+                ConfigurationManager.AppSettings.CurrentGameCore = CurrentGameCore?.Data;
+
             ConfigurationManager.AppSettings.GameFolders = GameFolders.ToList();
             ConfigurationManager.AppSettings.CurrentGameFolder = CurrentGameFolder;
 
@@ -131,11 +133,11 @@ public class CoresPageVM : ViewModelBase<Page>
 
             CurrentGameCore = ConfigurationManager.AppSettings.CurrentGameCore?.CreateViewData<GameCore, GameCoreViewData>();
 
-            ConfigurationManager.AppSettings.CurrentGameCore = CurrentGameCore?.Data;
-            ConfigurationManager.Configuration.Save();
-
             UpdateTips();
             CoresList.ScrollIntoView(CurrentGameCore);
+
+            if (!CoresLoaded)
+                CoresLoaded = true;
         });
     }
 

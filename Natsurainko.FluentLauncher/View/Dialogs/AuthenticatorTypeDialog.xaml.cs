@@ -30,6 +30,8 @@ public sealed partial class AuthenticatorTypeDialog : ContentDialog
         Canceled = true;
         this.Hide();
 
-        MainContainer.ShowInfoBarAsync($"已取消添加账户：", string.Empty, severity: InfoBarSeverity.Informational);
+        MainContainer.ShowInfoBarAsync(
+            ConfigurationManager.AppSettings.CurrentLanguage.GetString("SettingAccountPage_AddCancel"),
+            severity: InfoBarSeverity.Informational);
     }
 }

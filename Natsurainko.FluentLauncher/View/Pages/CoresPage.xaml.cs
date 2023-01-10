@@ -38,7 +38,8 @@ public sealed partial class CoresPage : Page
     private void Launch_Click(object sender, RoutedEventArgs e)
     {
         var control = (Control)sender;
-        LauncherProcessViewData.CreateLaunchProcess((control.DataContext as GameCoreViewData).Data, sender as Control);
+
+        LauncherProcessViewData.CreateLaunchProcess((control.DataContext as GameCoreViewData)?.Data, sender as Control);
     }
 
     private async void OpenFolder_Click(object sender, RoutedEventArgs e)

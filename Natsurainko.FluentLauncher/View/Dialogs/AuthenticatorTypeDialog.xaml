@@ -54,8 +54,7 @@
             <Button
                 Width="75"
                 Margin="15,0,0,0"
-                Click="CancelButton_Click"
-                Foreground="White">
+                Click="CancelButton_Click">
                 <TextBlock x:Uid="ContentDialog_Cancel" Text="取消" />
             </Button>
         </StackPanel>

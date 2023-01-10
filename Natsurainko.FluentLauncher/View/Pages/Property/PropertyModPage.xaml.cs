@@ -1,4 +1,5 @@
-﻿using Natsurainko.FluentLauncher.Class.Component;
+﻿using DynamicData;
+using Natsurainko.FluentLauncher.Class.Component;
 using Natsurainko.FluentLauncher.Class.ViewData;
 using Natsurainko.FluentLauncher.Shared.Class.Model;
 using Natsurainko.FluentLauncher.Shared.Mapping;
@@ -43,8 +44,11 @@ public sealed partial class PropertyModPage : Page
 
     private async void DeleteButton_Click(object sender, RoutedEventArgs e)
     {
-        await LocalModManager.DeleteModOfGameCore((LocalModInformation)((Button)sender).DataContext);
-        ViewModel.UpdateMods();
+        var data = ((LocalModInformationViewData)((Button)sender).DataContext);
+
+        if (await LocalModManager.DeleteModOfGameCore(data.Data))
+            ViewModel.Mods.Remove(data);
+        else MainContainer.ShowInfoBarAsync("删除模组失败", "请检查文件是否被占用！", severity: Microsoft.UI.Xaml.Controls.InfoBarSeverity.Error);
     }
 
     private async void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
@@ -54,9 +58,11 @@ public sealed partial class PropertyModPage : Page
 
         var info = (LocalModInformationViewData)((ToggleSwitch)sender).DataContext;
 
-        info.Data.FileInfo = new FileInfo(Path.Combine(info.Data.FileInfo.Directory.FullName, info.Data.FileName + (info.Data.Enable ? ".jar" : ".disabled")));
-
-        await LocalModManager.SwitchModOfGameCore(info.Data);
-        info.Data.Enable = !info.Data.Enable;
+        if (await LocalModManager.SwitchModOfGameCore(info.Data))
+        {
+            info.Data.Enable = !info.Data.Enable;
+            info.Data.FileInfo = new FileInfo(Path.Combine(info.Data.FileInfo.Directory.FullName, info.Data.FileName + (info.Data.Enable ? ".jar" : ".disabled")));
+        }
+        else MainContainer.ShowInfoBarAsync("开关模组失败", "请检查文件是否被占用！", severity: Microsoft.UI.Xaml.Controls.InfoBarSeverity.Error);
     }
 }

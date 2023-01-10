@@ -41,8 +41,9 @@
                                             Grid.Column="1"
                                             Margin="15,0,0,0"
                                             VerticalAlignment="Center">
-                                            <TextBlock Text="启用加载器" />
+                                            <TextBlock x:Uid="ResourcesInstallPage_EnableLoader" Text="启用加载器" />
                                             <TextBlock
+                                                x:Uid="ResourcesInstallPage_UnsupportLoader"
                                                 FontSize="12"
                                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                                 Text="该版本不支持任何类型的加载器"
@@ -78,13 +79,13 @@
                                         Grid.Column="1"
                                         Margin="15,0,0,0"
                                         VerticalAlignment="Center">
-                                        <TextBlock Text="启用的加载器类型" />
+                                        <TextBlock x:Uid="ResourcesInstallPage_EnableLoader_Type" Text="启用的加载器类型" />
                                         <TextBlock
                                             FontSize="12"
                                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                             TextTrimming="CharacterEllipsis"
                                             Visibility="{Binding SelectedModLoader, Converter={ThemeResource ValueIsNullVisibilityConverter}}">
-                                            <Run Text="当前选中的加载器：" />
+                                            <Run x:Uid="ResourcesInstallPage_SelectedLoader" Text="当前选中的加载器：" />
                                             <Run Text="{Binding SelectedModLoader.Data.LoaderName}" />
                                             <Run Text="{Binding SelectedModLoader.Data.Version}" />
                                         </TextBlock>
@@ -154,7 +155,7 @@
                         </Grid>
                     </ex:ExpanderEx.Content>
                 </ex:ExpanderEx>
-                <ex:ExpanderEx Margin="0,7.5">
+                <ex:ExpanderEx Margin="0,7.5" IsEnabled="False">
                     <ex:ExpanderEx.Header>
                         <ex:ExpanderExWrapper InlineIntermediatePadding="16,0,60,0" WrapMargin="16,0,0,0">
                             <ex:ExpanderExWrapper.MainContent>
@@ -169,7 +170,7 @@
                                             Grid.Column="1"
                                             Margin="15,0,0,0"
                                             VerticalAlignment="Center">
-                                            <TextBlock Text="为该版本启用版本独立" />
+                                            <TextBlock x:Uid="ResourcesInstallPage_EnableIndependently" Text="为该版本启用版本独立" />
                                         </StackPanel>
                                     </Grid>
                                     <ToggleSwitch
@@ -198,7 +199,7 @@
                                             Grid.Column="1"
                                             Margin="15,0,0,0"
                                             VerticalAlignment="Center">
-                                            <TextBlock Text="安装" />
+                                            <TextBlock x:Uid="ResourcesInstallPage_Install" Text="安装" />
                                         </StackPanel>
                                     </Grid>
                                     <Button
@@ -211,7 +212,7 @@
                                         Foreground="White"
                                         IsEnabled="{Binding CanStart, Mode=OneWay}"
                                         Style="{ThemeResource AccentButtonStyle}">
-                                        <TextBlock Text="确认" />
+                                        <TextBlock x:Uid="ResourcesInstallPage_Confirm" Text="确认" />
                                     </Button>
                                 </Grid>
                             </ex:ExpanderExWrapper.MainContent>
@@ -222,10 +223,12 @@
         </ScrollViewer>
         <StackPanel Margin="30,15,30,0">
             <TextBlock
+                x:Uid="ResourcesInstallPage_Title"
                 FontSize="16"
                 FontWeight="Bold"
                 Text="安装新的游戏核心" />
             <ComboBox
+                x:Uid="ResourcesInstallPage_ComboBox"
                 Height="58"
                 Margin="0,15,0,0"
                 Padding="20,0"
@@ -278,10 +281,12 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <CheckBox
+                    x:Uid="ResourcesInstallPage_ShowSnapshot"
                     Grid.Column="0"
                     Content="显示快照版"
                     IsChecked="{Binding ShowSnapshotEdition, Mode=TwoWay}" />
                 <CheckBox
+                    x:Uid="ResourcesInstallPage_ShowOld"
                     Grid.Column="2"
                     Content="显示远古版"
                     IsChecked="{Binding ShowOldEdition, Mode=TwoWay}" />

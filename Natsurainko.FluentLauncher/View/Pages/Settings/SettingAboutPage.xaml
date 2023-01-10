@@ -45,6 +45,7 @@
                         </StackPanel>
                     </StackPanel>
                     <Button
+                        x:Uid="SettingAboutPage_CheckUpdate"
                         Margin="15"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"

@@ -521,7 +521,7 @@
                             Style="{ThemeResource CommandBarFlyoutEllipsisButtonStyle}">
                             <SymbolIcon Symbol="AllApps" />
                             <Button.Flyout>
-                                <Flyout>
+                                <Flyout Placement="BottomEdgeAlignedLeft">
                                     <StackPanel Width="225" Margin="-12.5,-12,-16,-12">
                                         <Grid Padding="10,2.5">
                                             <Grid.ColumnDefinitions>

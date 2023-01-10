@@ -5,13 +5,15 @@ VisualStudioVersion = 17.3.32811.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "Natsurainko.FluentLauncher (Package)", "Natsurainko.FluentLauncher\Natsurainko.FluentLauncher (Package)\Natsurainko.FluentLauncher (Package).wapproj", "{629A381B-0A63-432D-8F41-1250ABB41CDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Natsurainko.FluentLauncher", "Natsurainko.FluentLauncher\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher.csproj", "{25A06654-F92D-43C8-BA6C-4B84BED2A505}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Natsurainko.FluentLauncher", "Natsurainko.FluentLauncher\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher.csproj", "{25A06654-F92D-43C8-BA6C-4B84BED2A505}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Natsurainko.FluentCore", "..\Natsurainko.FluentCore\Natsurainko.FluentCore\Natsurainko.FluentCore.csproj", "{A16112E3-DC85-445A-9E59-A64203F449FE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Natsurainko.FluentCore.Extension.Windows", "..\Natsurainko.FluentCore\Natsurainko.FluentCore.Extension.Windows\Natsurainko.FluentCore.Extension.Windows.csproj", "{855D9C39-2E50-4C21-99F3-D2DB153B427A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Natsurainko.Toolkits", "..\Natsurainko.Toolkits\Natsurainko.Toolkits\Natsurainko.Toolkits.csproj", "{2958D370-BA2A-448D-A318-E3092B213F81}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Natsurainko.FluentLauncher (SelfContained)", "Natsurainko.FluentLauncher\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher (SelfContained).csproj", "{7C1AD2DA-6E71-4142-99B6-B15A80D3A1C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +115,22 @@ Global
 		{2958D370-BA2A-448D-A318-E3092B213F81}.Release|x64.Build.0 = Release|Any CPU
 		{2958D370-BA2A-448D-A318-E3092B213F81}.Release|x86.ActiveCfg = Release|Any CPU
 		{2958D370-BA2A-448D-A318-E3092B213F81}.Release|x86.Build.0 = Release|Any CPU
+		{7C1AD2DA-6E71-4142-99B6-B15A80D3A1C5}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{7C1AD2DA-6E71-4142-99B6-B15A80D3A1C5}.Debug|Any CPU.Build.0 = Debug|x64
+		{7C1AD2DA-6E71-4142-99B6-B15A80D3A1C5}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{7C1AD2DA-6E71-4142-99B6-B15A80D3A1C5}.Debug|ARM64.Build.0 = Debug|ARM64
+		{7C1AD2DA-6E71-4142-99B6-B15A80D3A1C5}.Debug|x64.ActiveCfg = Debug|x64
+		{7C1AD2DA-6E71-4142-99B6-B15A80D3A1C5}.Debug|x64.Build.0 = Debug|x64
+		{7C1AD2DA-6E71-4142-99B6-B15A80D3A1C5}.Debug|x86.ActiveCfg = Debug|x86
+		{7C1AD2DA-6E71-4142-99B6-B15A80D3A1C5}.Debug|x86.Build.0 = Debug|x86
+		{7C1AD2DA-6E71-4142-99B6-B15A80D3A1C5}.Release|Any CPU.ActiveCfg = Release|x64
+		{7C1AD2DA-6E71-4142-99B6-B15A80D3A1C5}.Release|Any CPU.Build.0 = Release|x64
+		{7C1AD2DA-6E71-4142-99B6-B15A80D3A1C5}.Release|ARM64.ActiveCfg = Release|ARM64
+		{7C1AD2DA-6E71-4142-99B6-B15A80D3A1C5}.Release|ARM64.Build.0 = Release|ARM64
+		{7C1AD2DA-6E71-4142-99B6-B15A80D3A1C5}.Release|x64.ActiveCfg = Release|x64
+		{7C1AD2DA-6E71-4142-99B6-B15A80D3A1C5}.Release|x64.Build.0 = Release|x64
+		{7C1AD2DA-6E71-4142-99B6-B15A80D3A1C5}.Release|x86.ActiveCfg = Release|x86
+		{7C1AD2DA-6E71-4142-99B6-B15A80D3A1C5}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

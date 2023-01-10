@@ -35,7 +35,7 @@ public partial class Cores : ObservableObject
         => CurrentGameCore != null;
 
     private bool EnableFolderCommand()
-        => CurrentGameFolder != null;
+        => !string.IsNullOrEmpty(CurrentGameFolder);
 
     private void RefreshCores()
     {

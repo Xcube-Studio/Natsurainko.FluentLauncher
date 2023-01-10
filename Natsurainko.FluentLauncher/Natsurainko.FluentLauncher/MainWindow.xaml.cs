@@ -13,7 +13,11 @@ public sealed partial class MainWindow : WindowEx
     {
         InitializeComponent();
 
+#if MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
+        AppWindow.SetIcon(Path.Combine(Directory.GetCurrentDirectory(), "Assets/AppIcon.png"));
+#else 
         AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets/AppIcon.png"));
+#endif
 
         AppWindow.Title = "Natsurainko.FluentLauncher";
         AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;

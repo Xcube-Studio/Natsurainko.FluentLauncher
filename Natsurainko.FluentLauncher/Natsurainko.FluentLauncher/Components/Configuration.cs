@@ -4,6 +4,7 @@ using Natsurainko.FluentCore.Module.Authenticator;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using Windows.Storage;
 
@@ -11,6 +12,31 @@ namespace Natsurainko.FluentLauncher.Components;
 
 public partial class Configuration : ObservableObject
 {
+#if MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
+    public static string DataFilePath => Path.Combine(Directory.GetCurrentDirectory(), "ApplicationDataContainer.json");
+
+    public static Configuration Load()
+    {
+        var file = new FileInfo(DataFilePath);
+
+        if (!file.Exists)
+        {
+            var defaultData = Default();
+            File.WriteAllText(file.FullName, JsonConvert.SerializeObject(defaultData, Formatting.Indented));
+            return defaultData;
+        }
+
+        return JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(file.FullName));
+    }
+
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+
+        File.WriteAllText(DataFilePath, JsonConvert.SerializeObject(this, Formatting.Indented));
+    }
+
+#else
     public static Configuration Load()
         => Container.Values.Any()
         ? Create()
@@ -28,6 +54,16 @@ public partial class Configuration : ObservableObject
 
         return configuration;
     }
+
+    public static ApplicationDataContainer Container => ApplicationData.Current.LocalSettings;
+
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+
+        Container.Values[e.PropertyName] = JsonConvert.SerializeObject(GetType().GetProperty(e.PropertyName).GetValue(this));
+    }
+#endif
 
     public static Configuration Default()
     {
@@ -49,7 +85,7 @@ public partial class Configuration : ObservableObject
             Accounts = new() { OfflineAuthenticator.Default },
             EnableDemoUser = false,
             AutoRefresh = true,
-            CurrentDownloadSource= "Mcbbs",
+            CurrentDownloadSource = "Mcbbs",
             EnableFragmentDownload = true,
             MaxDownloadThreads = 128
         };
@@ -59,102 +95,93 @@ public partial class Configuration : ObservableObject
         return configuration;
     }
 
-    public static ApplicationDataContainer Container => ApplicationData.Current.LocalSettings;
-
-    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-    {
-        base.OnPropertyChanged(e);
-
-        Container.Values[e.PropertyName] = JsonConvert.SerializeObject(GetType().GetProperty(e.PropertyName).GetValue(this));
-    }
-
     public void ReportPropertyChanged(PropertyChangedEventArgs e)
         => OnPropertyChanged(e);
 }
 
 public partial class Configuration
 {
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private string currentGameCore;
 
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private List<string> gameFolders;
 
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private string currentGameFolder;
 
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private List<string> javaRuntimes;
 
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private string currentJavaRuntime;
 
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private int javaVirtualMachineMemory;
 
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private bool enableAutoMemory;
 
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private string gameWindowTitle;
 
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private int gameWindowWidth;
 
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private int gameWindowHeight;
 
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private string gameServerAddress;
 
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private bool enableFullScreen;
 
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private bool enableIndependencyCore;
 }
 
 public partial class Configuration
 {
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private List<IAccount> accounts;
 
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private IAccount currentAccount;
 
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private bool enableDemoUser;
 
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private bool autoRefresh;
 }
 
 public partial class Configuration
 {
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private string currentDownloadSource;
 
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private int? maxDownloadThreads;
 
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private bool? enableFragmentDownload;
 }
 
 public partial class Configuration
 {
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private double appWindowWidth = 800;
 
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private double appWindowHeight = 600;
 }
 
 public partial class Configuration
 {
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private string coresSortBy = "Name";
 
-    [ObservableProperty]
+    [ObservableProperty] [JsonIgnore]
     private string coresFilter = "All";
 }

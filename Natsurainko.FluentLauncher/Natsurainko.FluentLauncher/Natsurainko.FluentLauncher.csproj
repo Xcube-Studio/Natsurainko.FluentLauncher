@@ -13,6 +13,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Assets\AppIcon.ico" />
+    <None Remove="Assets\Libs\authlib-injector-1.2.1.jar" />
     <None Remove="UserControls\ExpanderContentItem.xaml" />
     <None Remove="Views\Dialogs\ChooseAccountTypeDialog.xaml" />
     <None Remove="Views\Dialogs\MicrosoftAccountDialog.xaml" />
@@ -53,7 +54,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Assets\Libs\" />
     <Folder Include="ViewModels\Pages\Properties\" />
     <Folder Include="ViewModels\Pages\Resources\" />
     <Folder Include="Views\Pages\Properties\" />

@@ -63,7 +63,7 @@ public partial class Launch
         var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
         WinRT.Interop.InitializeWithWindow.Initialize(filePicker, hwnd);
 
-        filePicker.FileTypeFilter.Add("*");
+        filePicker.FileTypeFilter.Add(".exe");
         var file = await filePicker.PickSingleFileAsync();
 
         if (file != null)
@@ -131,6 +131,9 @@ public partial class Launch
 
     [ObservableProperty]
     private bool enableAutoMemory;
+
+    [ObservableProperty]
+    private bool enableAutoJava;
 
     [ObservableProperty]
     private string gameWindowTitle;

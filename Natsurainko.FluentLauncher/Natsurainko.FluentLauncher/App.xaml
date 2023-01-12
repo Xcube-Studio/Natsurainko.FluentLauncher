@@ -33,7 +33,7 @@
             <converters:JavaInfoConverter x:Key="JavaInfoConverter" />
             <converters:GameCoreIconConverter x:Key="GameCoreIconConverter" />
             <converters:GameCoreTagConverter x:Key="GameCoreTagConverter" />
-
+            <converters:TeachingTipTitleConverter x:Key="TeachingTipTitleConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -40,7 +40,7 @@ public partial class YggdrasilAccountDialog : DialogViewModel
                 FluentCore.Model.Auth.AuthenticatorMethod.Login,
                 email: Email,
                 password: Password,
-                yggdrasilServerUrl: $"{Url}/authserver");
+                yggdrasilServerUrl: Url);
 
             SetAccountAction(authenticator.Authenticate());
         }

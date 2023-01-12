@@ -4,6 +4,8 @@ using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentCore.Event;
+using Natsurainko.FluentCore.Extension;
+using Natsurainko.FluentCore.Extension.Windows.Extension;
 using Natsurainko.FluentCore.Model.Auth;
 using Natsurainko.FluentCore.Model.Launch;
 using Natsurainko.FluentCore.Module.Authenticator;
@@ -15,6 +17,7 @@ using Natsurainko.Toolkits.Network.Downloader;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
@@ -27,6 +30,12 @@ namespace Natsurainko.FluentLauncher.Models;
 
 public partial class LaunchArrangement : ObservableObject
 {
+    public LaunchArrangement(GameCore core) 
+    { 
+        this.LaunchSetting = core.GetLaunchSetting();
+        this.GameCore = core;
+    }
+
     [ObservableProperty]
     private string state;
 
@@ -117,8 +126,10 @@ public partial class LaunchArrangement : ObservableObject
     private void ReportState(string state) 
         => App.MainWindow.DispatcherQueue.TryEnqueue(() => State = state);
 
-    public static void StartNew(GameCore core)
+    public static void StartNew(GameCore core) => Task.Run(async () =>
     {
+        var arrangement = new LaunchArrangement(core);
+
         App.MainWindow.DispatcherQueue.TryEnqueue(() =>
         {
             var hyperlinkButton = new HyperlinkButton { Content = "Go to Activities>Launch Tasks" };
@@ -128,21 +139,9 @@ public partial class LaunchArrangement : ObservableObject
                 $"Added Launch \"{core.Id}\" into Arrangements",
                 "Go to Activities>Launch Tasks for details",
                 button: hyperlinkButton);
-        });
 
-        var arrangement = new LaunchArrangement
-        {
-            LaunchSetting = new()
-            {
-                Account = App.Configuration.CurrentAccount,
-                JvmSetting = new()
-                {
-                    Javaw = new FileInfo(App.Configuration.CurrentJavaRuntime),
-                    MinMemory = App.Configuration.JavaVirtualMachineMemory,
-                }
-            },
-            GameCore = core
-        };
+            GlobalActivitiesCache.LaunchArrangements.Insert(0, arrangement);
+        });
 
         var coreLocator = new GameCoreLocator(App.Configuration.CurrentGameFolder);
         var launcher = new MinecraftLauncher(arrangement.LaunchSetting, coreLocator);
@@ -175,7 +174,18 @@ public partial class LaunchArrangement : ObservableObject
                 launcher.Authenticator = new OfflineAuthenticator(arrangement.LaunchSetting.Account.Name, arrangement.LaunchSetting.Account.Uuid);
         }
 
-        var thread = new Thread(() =>
+        if (arrangement.LaunchSetting.Account.Type.Equals(AccountType.Yggdrasil))
+        {
+#if MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
+            var authlibPath = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Libs", "authlib-injector-1.2.1.jar");
+#else
+            var authlibPath = Path.Combine(Package.Current.InstalledPath, "Natsurainko.FluentLauncher", "Assets", "Libs", "authlib-injector-1.2.1.jar");
+#endif
+            await foreach (var args in ((YggdrasilAccount)arrangement.LaunchSetting.Account).GetAuthlibArgumentsAsync(authlibPath))
+                arrangement.LaunchSetting.JvmSetting.AdvancedArguments.Add(args);
+        }
+
+        await Task.Run(() =>
         {
             var launchResponse = launcher.LaunchMinecraft(core, args => arrangement.ReportState(LanguageStringHandler.HandleLaunchState(args.Message)));
             arrangement.LaunchResponse = launchResponse;
@@ -211,6 +221,8 @@ public partial class LaunchArrangement : ObservableObject
                 };
                 launchResponse.GameProcessOutput += GameProcessOutput;
 
+                arrangement.ReportState($"Game Running");
+
                 if (launcher.Authenticator != null)
                 {
                     App.Configuration.Accounts.Remove(App.Configuration.CurrentAccount);
@@ -221,13 +233,15 @@ public partial class LaunchArrangement : ObservableObject
                     App.Configuration.ReportPropertyChanged(new(nameof(App.Configuration.Accounts)));
                 }
 
-                arrangement.ReportState($"Game Running");
+                if (!string.IsNullOrEmpty(arrangement.LaunchSetting.GameWindowSetting.WindowTitle))
+                    launchResponse.SetMainWindowTitle(arrangement.LaunchSetting.GameWindowSetting.WindowTitle);
+
                 core.CoreProfile.LastLaunchTime = DateTime.Now;
 
                 App.MainWindow.DispatcherQueue.TryEnqueue(() =>
                 {
                     arrangement.GameRunning = arrangement.GameLogger = Visibility.Visible;
-                    arrangement.Arguments = string.Join(" ", launchResponse.Arguemnts);
+                    arrangement.Arguments = string.Join("\r\n", launchResponse.Arguemnts);
                 });
             }
             else
@@ -237,7 +251,7 @@ public partial class LaunchArrangement : ObservableObject
                     launchResponse.Exception.ToString(),
                     $"Failed to Launch \"{core.Id}\"",
                     severity: InfoBarSeverity.Error,
-                    delay:1000 * 20);
+                    delay: 1000 * 20);
 
                 App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
                 {
@@ -249,8 +263,5 @@ public partial class LaunchArrangement : ObservableObject
                 });
             }
         });
-        thread.Start();
-
-        GlobalActivitiesCache.LaunchArrangements.Insert(0, arrangement);
-    }
+    });
 }

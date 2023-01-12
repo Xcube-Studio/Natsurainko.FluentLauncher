@@ -35,7 +35,6 @@ public partial class Configuration : ObservableObject
 
         File.WriteAllText(DataFilePath, JsonConvert.SerializeObject(this, Formatting.Indented));
     }
-
 #else
     public static Configuration Load()
         => Container.Values.Any()
@@ -76,11 +75,12 @@ public partial class Configuration : ObservableObject
             JavaRuntimes = new(),
             JavaVirtualMachineMemory = 1024,
             EnableAutoMemory = true,
+            EnableAutoJava = true,
             EnableFullScreen = false,
             EnableIndependencyCore = false,
             GameServerAddress = string.Empty,
-            GameWindowHeight = 854,
-            GameWindowWidth = 480,
+            GameWindowHeight = 480,
+            GameWindowWidth = 854,
             GameWindowTitle = string.Empty,
             Accounts = new() { OfflineAuthenticator.Default },
             EnableDemoUser = false,
@@ -121,6 +121,9 @@ public partial class Configuration
 
     [ObservableProperty] [JsonIgnore]
     private bool enableAutoMemory;
+
+    [ObservableProperty] [JsonIgnore]
+    private bool enableAutoJava;
 
     [ObservableProperty] [JsonIgnore]
     private string gameWindowTitle;

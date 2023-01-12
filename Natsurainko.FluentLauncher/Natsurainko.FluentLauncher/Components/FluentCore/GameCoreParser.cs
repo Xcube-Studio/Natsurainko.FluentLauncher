@@ -105,7 +105,7 @@ public class GameCoreParser : Natsurainko.FluentCore.Module.Parser.GameCoreParse
         }
     }
 
-    public CoreProfile GetProfile(GameCore core)
+    public static CoreProfile GetProfile(GameCore core)
     {
         var file = core.GetFileOfProfile();
 

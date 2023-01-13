@@ -1,10 +1,14 @@
 ﻿using Natsurainko.FluentCore.Extension.Windows.Extension;
 using Natsurainko.FluentCore.Extension.Windows.Service;
 using Natsurainko.FluentCore.Model.Launch;
+using Natsurainko.FluentCore.Module.Launcher;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.Toolkits.Values;
+using Natsurainko.Toolkits.Text;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Windows.ApplicationModel;
 
 namespace Natsurainko.FluentLauncher.Components.FluentCore;
@@ -78,5 +82,23 @@ public class GameCore : Natsurainko.FluentCore.Model.Launch.GameCore
             return javaInformations.MaxBy(x => x.Value.Version).Key;
 
         return sameMajorJava.MaxBy(x => x.Value.Version).Key;
+    }
+
+    public string MakeLaunchScript()
+    {
+        var launchSetting = GetLaunchSetting();
+        var builder = new ArgumentsBuilder(this, launchSetting);
+        var arguments = new List<string>(builder.Build());
+        var stringBuilder = new StringBuilder();
+
+        arguments.Insert(0, launchSetting.JvmSetting.Javaw.FullName.ToPath());
+
+        stringBuilder.AppendLine("@echo off");
+        stringBuilder.AppendLine($"set APPDATA={Root.Parent.FullName}");
+        stringBuilder.AppendLine($"cd /{Root.FullName[0]} {Root.FullName}");
+        stringBuilder.AppendLine(string.Join(' ', arguments));
+        stringBuilder.AppendLine("pause");
+
+        return stringBuilder.ToString();
     }
 }

@@ -99,7 +99,7 @@ public class GameCoreParser : Natsurainko.FluentCore.Module.Parser.GameCoreParse
             item.IsVanilla = GetIsVanilla(item);
             item.ModLoaders = GetModLoaders(item);
             item.CoreProfile = GetProfile(item);
-            (item.AssetsCount, item.LibrariesCount, item.TotalSize) = GetStatisticFiles(item);
+            //(item.AssetsCount, item.LibrariesCount, item.TotalSize) = GetStatisticFiles(item);
 
             yield return item;
         }

@@ -39,9 +39,6 @@ public partial class Cores : ObservableObject
 
     private ListView ListView;
 
-    private bool EnableCoreCommand()
-        => CurrentGameCore != null;
-
     private bool EnableFolderCommand()
         => !string.IsNullOrEmpty(CurrentGameFolder);
 
@@ -166,63 +163,93 @@ public partial class Cores
             e.sender.ScrollIntoView(e.sender.SelectedItem);
         });
 
-    [RelayCommand(CanExecute = nameof(EnableCoreCommand))]
-    private Task Launch() => Task.Run(() => LaunchArrangement.StartNew(CurrentGameCore));
+    [RelayCommand]
+    private Task Launch(GameCore core) => Task.Run(() => LaunchArrangement.StartNew(core));
 
-    [RelayCommand(CanExecute = nameof(EnableCoreCommand))]
-    private void OpenDelete() => DeleteIsOpen = true;
+    [RelayCommand]
+    private void OpenDelete(GameCore data)
+    {
+        if (data.Equals(ToDelete))
+            OnPropertyChanged(nameof(ToDelete));
 
-    [RelayCommand(CanExecute = nameof(EnableCoreCommand))]
-    private void OpenRename() => RenameIsOpen = true;
+        ToDelete = data;
+        DeleteIsOpen = true;
+    }
+
+    [RelayCommand]
+    private void OpenRename(GameCore data)
+    {
+        if (data.Equals(ToRename))
+            OnPropertyChanged(nameof(ToRename));
+
+        ToRename = data;
+        RenameIsOpen = true;
+    }
+
+    [RelayCommand]
+    private void CancelRename()
+    {
+        NewName = null;
+        RenameIsOpen = false;
+    }
+
+    [RelayCommand]
+    private Task OpenFolder(GameCore core) => Task.Run(async () => await Launcher.LaunchFolderPathAsync(core.Root.FullName));
 
     [RelayCommand(CanExecute = nameof(EnableFolderCommand))]
-    private Task OpenFolder() 
-        => Task.Run(async () => await Launcher.LaunchFolderPathAsync(CurrentGameFolder));
-
-    [RelayCommand(CanExecute = nameof(EnableFolderCommand))]
-    private void InstallCore()
-        => MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Resources.Navigation));
+    private void InstallCore() => MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Resources.Navigation));
 
     [RelayCommand]
     private void Delete()
     {
-        if (File.Exists(CurrentGameCore.CoreProfile.FilePath))
-            File.Delete(CurrentGameCore.CoreProfile.FilePath);
+        if (File.Exists(ToDelete.CoreProfile.FilePath))
+            File.Delete(ToDelete.CoreProfile.FilePath);
 
-        CurrentGameCore.Delete();
-        CurrentGameCore = null;
+        ToDelete.Delete();
+
+        if (ToRename.Equals(CurrentGameCore))
+        {
+            CurrentGameCore = null;
+            OnPropertyChanged(new PropertyChangedEventArgs(nameof(CurrentGameCore)));
+        }
 
         RefreshCores();
+
         DeleteIsOpen = false;
+        ToDelete = null;
     }
 
     [RelayCommand(CanExecute = nameof(EnableRenameCommand))]
-    private void Rename() 
+    private void Rename()
     {
-        CurrentGameCore.Rename(NewName);
+        ToRename.Rename(NewName);
 
-        if (File.Exists(CurrentGameCore.CoreProfile.FilePath))
+        if (File.Exists(ToRename.CoreProfile.FilePath))
         {
-            File.Delete(CurrentGameCore.CoreProfile.FilePath);
+            File.Delete(ToRename.CoreProfile.FilePath);
 
-            CurrentGameCore.CoreProfile.FilePath = CurrentGameCore.GetFileOfProfile().FullName;
-            CurrentGameCore.CoreProfile.Id = newName;
+            ToRename.CoreProfile.FilePath = ToRename.GetFileOfProfile().FullName;
+            ToRename.CoreProfile.Id = NewName;
         }
 
-        OnPropertyChanged(new PropertyChangedEventArgs(nameof(CurrentGameCore)));
+        if (ToRename.Equals(CurrentGameCore))
+            App.Configuration.CurrentGameCore = NewName;
 
         RefreshCores();
+
         RenameIsOpen = false;
+        NewName = null;
+        ToRename = null;
     }
 
-    [RelayCommand(CanExecute = nameof(EnableCoreCommand))]
-    private Task GenerateScript() => Task.Run(async () =>
+    [RelayCommand]
+    private Task GenerateScript(GameCore core) => Task.Run(async () =>
     {
         var savePicker = new FileSavePicker();
 
         savePicker.SuggestedStartLocation = PickerLocationId.Desktop;
         savePicker.FileTypeChoices.Add("Batch File", new List<string>() { ".bat" });
-        savePicker.SuggestedFileName = $"{CurrentGameCore.Id}-LaunchScript";
+        savePicker.SuggestedFileName = $"{core.Id}-LaunchScript";
 
         var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
         WinRT.Interop.InitializeWithWindow.Initialize(savePicker, hwnd);
@@ -231,20 +258,7 @@ public partial class Cores
 
         if (file != null)
         {
-            var launchSetting = CurrentGameCore.GetLaunchSetting();
-            var builder = new ArgumentsBuilder(CurrentGameCore, launchSetting);
-            var arguments = new List<string>(builder.Build());
-            var stringBuilder = new StringBuilder();
-
-            arguments.Insert(0, launchSetting.JvmSetting.Javaw.FullName.ToPath());
-
-            stringBuilder.AppendLine("@echo off");
-            stringBuilder.AppendLine($"set APPDATA={CurrentGameCore.Root.Parent.FullName}");
-            stringBuilder.AppendLine($"cd /{CurrentGameCore.Root.FullName[0]} {CurrentGameCore.Root.FullName}");
-            stringBuilder.AppendLine(string.Join(' ', arguments));
-            stringBuilder.AppendLine("pause");
-
-            await File.WriteAllTextAsync(file.Path, stringBuilder.ToString());
+            await File.WriteAllTextAsync(file.Path, core.MakeLaunchScript());
 
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
@@ -260,12 +274,12 @@ public partial class Cores
                 hyperlinkButton.Click += (_, e) => _ = Launcher.LaunchFolderPathAsync(new FileInfo(file.Path).Directory.FullName);
 
                 MainContainer.ShowMessagesAsync(
-                    $"Succeffully Generate Launch Script for {CurrentGameCore.Id}",
+                    $"Succeffully Generate Launch Script for {core.Id}",
                     severity: InfoBarSeverity.Success,
                     button: hyperlinkButton);
             });
         }
-        else MainContainer.ShowMessagesAsync($"Cancelled Generate Launch Script for {CurrentGameCore.Id}");
+        else MainContainer.ShowMessagesAsync($"Cancelled Generate Launch Script for {core.Id}");
     });
 }
 
@@ -316,4 +330,10 @@ public partial class Cores
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(RenameCommand))]
     private string newName;
+
+    [ObservableProperty]
+    private GameCore toRename;
+
+    [ObservableProperty]
+    private GameCore toDelete;
 }

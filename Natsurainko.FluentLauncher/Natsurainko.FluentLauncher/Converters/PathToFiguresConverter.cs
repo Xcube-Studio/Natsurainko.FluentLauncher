@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Natsurainko.FluentLauncher.Components.FluentCore;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Shapes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,16 +9,13 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Converters;
 
-public class TeachingTipTitleConverter : IValueConverter
+public class PathToFiguresConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value == null || parameter == null)
-            return null;
-        if (value is GameCore core)
-            return $"{parameter} {core.Id}";
-
-        return null;
+        var path = value as Path;
+        var figures = (path.Data as PathGeometry).Figures;
+        return figures;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)

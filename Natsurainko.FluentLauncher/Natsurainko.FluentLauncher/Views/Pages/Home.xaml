@@ -52,7 +52,7 @@
             <SplitButton.Flyout>
                 <Flyout>
                     <ListView
-                        Margin="-15,-12.5"
+                        Margin="-15,-13,-15.5,-15"
                         ItemsSource="{Binding Accounts}"
                         SelectedItem="{Binding CurrentAccount, Mode=TwoWay}">
                         <ListView.ItemTemplate>

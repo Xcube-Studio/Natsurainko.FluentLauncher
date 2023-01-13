@@ -67,16 +67,33 @@
                 <NavigationViewItem Content="Cores" Tag="Natsurainko.FluentLauncher.Views.Pages.Cores">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE71D;" />
+                        <!--
+                        <PathIcon Margin="-2.5,-2,0,0" >
+                            <PathIcon.Resources>
+                                <Path x:Key="path_1" Data="M6.049 7.984a.75.75 0 0 1 .967-.435L12 9.439l4.984-1.89a.75.75 0 1 1 .532 1.402L12.75 10.76v5.491a.75.75 0 0 1-1.5 0v-5.49L6.484 8.95a.75.75 0 0 1-.435-.967Z" />
+                                <Path x:Key="path_2" Data="M10.591 2.512a3.75 3.75 0 0 1 2.818 0l7.498 3.04A1.75 1.75 0 0 1 22 7.174v9.652a1.75 1.75 0 0 1-1.093 1.622l-7.498 3.04a3.75 3.75 0 0 1-2.818 0l-7.498-3.04A1.75 1.75 0 0 1 2 16.826V7.175a1.75 1.75 0 0 1 1.093-1.622l7.498-3.04Zm2.254 1.39a2.25 2.25 0 0 0-1.69 0l-7.499 3.04a.25.25 0 0 0-.156.232v9.652a.25.25 0 0 0 .156.232l7.499 3.04a2.25 2.25 0 0 0 1.69 0l7.499-3.04a.25.25 0 0 0 .156-.232V7.175a.25.25 0 0 0-.156-.232l-7.499-3.04Z" />
+                            </PathIcon.Resources>
+                            <PathIcon.Data>
+                                <GeometryGroup>
+                                    <PathGeometry Figures="{Binding Source={StaticResource path_1}, Converter={ThemeResource PathToFiguresConverter}}" />
+                                    <PathGeometry Figures="{Binding Source={StaticResource path_2}, Converter={ThemeResource PathToFiguresConverter}}" />
+                                </GeometryGroup>
+                            </PathIcon.Data>
+                        </PathIcon>
+                            -->
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem Content="Activities" Tag="Natsurainko.FluentLauncher.Views.Pages.Activities.Navigation">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE945;" />
+                        <!--
+                        <PathIcon Margin="-3,-2,0,0" Data="M13.25 8.5a.75.75 0 0 0 0 1.5h3.5a.75.75 0 0 0 0-1.5h-3.5Zm-.75 6.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 1 1 0 1.5h-3.5a.75.75 0 0 1-.75-.75Zm-1.72-7.03a.75.75 0 0 1 0 1.06l-2 2a.75.75 0 0 1-1.06 0l-1-1a.75.75 0 0 1 1.06-1.06l.47.47 1.47-1.47a.75.75 0 0 1 1.06 0Zm0 6.56a.75.75 0 1 0-1.06-1.06l-1.47 1.47-.47-.47a.75.75 0 0 0-1.06 1.06l1 1a.75.75 0 0 0 1.06 0l2-2ZM5.25 3A2.25 2.25 0 0 0 3 5.25v13.5A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V5.25A2.25 2.25 0 0 0 18.75 3H5.25ZM4.5 5.25a.75.75 0 0 1 .75-.75h13.5a.75.75 0 0 1 .75.75v13.5a.75.75 0 0 1-.75.75H5.25a.75.75 0 0 1-.75-.75V5.25Z" />
+                        -->
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem Content="Resources" Tag="Natsurainko.FluentLauncher.Views.Pages.Resources.Navigation">
                     <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xe896;" />
+                        <FontIcon Margin="1,0,0,0" Glyph="&#xe896;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>

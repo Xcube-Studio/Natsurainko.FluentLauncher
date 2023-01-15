@@ -7,6 +7,7 @@ using Natsurainko.FluentCore.Module.Launcher;
 using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Views.Dialogs;
 using Natsurainko.FluentLauncher.Views.Pages;
 using Natsurainko.Toolkits.Text;
 using System;
@@ -73,7 +74,7 @@ public partial class Cores : ObservableObject
                 {
                     TipVisibility = Visibility.Visible;
                     TipTitle = "No Game Cores";
-                    TipSubTitle = "Go to Resources to install";
+                    TipSubTitle = "Go to Install to install";
                 }
                 else TipVisibility = Visibility.Collapsed;
             });
@@ -150,7 +151,7 @@ public partial class Cores
     private void GoToPage()
     {
         if (TipTitle.Equals("No Game Cores"))
-            MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Resources.Navigation));
+        { }//MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Install));
         else if (TipTitle.Equals("No Game Folders"))
             MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Settings.Navigation));
     }
@@ -196,8 +197,32 @@ public partial class Cores
     [RelayCommand]
     private Task OpenFolder(GameCore core) => Task.Run(async () => await Launcher.LaunchFolderPathAsync(core.Root.FullName));
 
+    [RelayCommand]
+    private void OpenOptions(GameCore core)
+    {
+        App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
+        {
+            var coreOptionsDialog = new CoreOptionsDialog
+            {
+                XamlRoot = MainContainer._XamlRoot,
+                DataContext = core
+            };
+            await coreOptionsDialog.ShowAsync();
+        });
+    }
+
     [RelayCommand(CanExecute = nameof(EnableFolderCommand))]
-    private void InstallCore() => MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Resources.Navigation));
+    private void OpenInstall() 
+    {
+        App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
+        {
+            var installCoreDialog = new InstallCoreDialog
+            {
+                XamlRoot = MainContainer._XamlRoot
+            };
+            await installCoreDialog.ShowAsync();
+        });
+    }
 
     [RelayCommand]
     private void Delete()
@@ -300,7 +325,7 @@ public partial class Cores
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenFolderCommand))]
-    [NotifyCanExecuteChangedFor(nameof(InstallCoreCommand))]
+    [NotifyCanExecuteChangedFor(nameof(OpenInstallCommand))]
     private string currentGameFolder;
 
     [ObservableProperty]

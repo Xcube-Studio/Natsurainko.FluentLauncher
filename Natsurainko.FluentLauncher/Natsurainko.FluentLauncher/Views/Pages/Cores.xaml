@@ -142,7 +142,7 @@
                 </AutoSuggestBox.QueryIcon>
             </AutoSuggestBox>
             <StackPanel Orientation="Horizontal">
-                <Button Background="Transparent">
+                <Button Background="Transparent" Command="{Binding OpenInstallCommand}">
                     <StackPanel Orientation="Horizontal">
                         <FontIcon FontSize="14" Glyph="&#xE710;" />
                         <TextBlock
@@ -368,7 +368,7 @@
                                 VerticalAlignment="Center"
                                 CornerRadius="4">
                                 <Border.Background>
-                                    <ImageBrush ImageSource="{Binding Converter={ThemeResource GameCoreIconConverter}}" />
+                                    <ImageBrush ImageSource="{Binding Converter={ThemeResource IconConverter}}" />
                                 </Border.Background>
                             </Border>
                             <Grid
@@ -470,6 +470,12 @@
                                                 CommandParameter="{Binding}"
                                                 Style="{StaticResource ListViewItemCommandButtonStyle}"
                                                 ToolTipService.ToolTip="Options">
+                                                <i:Interaction.Behaviors>
+                                                    <mvvm:AncestorBindingBehavior
+                                                        AncestorType="ListView"
+                                                        Binding="{Binding DataContext.OpenOptionsCommand}"
+                                                        TargetPropertyName="Command" />
+                                                </i:Interaction.Behaviors>
                                                 <FontIcon FontSize="14" Glyph="&#xe713;" />
                                             </Button>
                                             <Button Style="{StaticResource ListViewItemCommandButtonStyle}" ToolTipService.ToolTip="More">

@@ -23,7 +23,7 @@ public partial class App
         WinRT.ComWrappersSupport.InitializeComWrappers();
 
         Microsoft.UI.Xaml.Application.Start((p) =>
-        {   
+        {
             SynchronizationContext.SetSynchronizationContext(new DispatcherQueueSynchronizationContext(DispatcherQueue.GetForCurrentThread()));
             new App();
         });

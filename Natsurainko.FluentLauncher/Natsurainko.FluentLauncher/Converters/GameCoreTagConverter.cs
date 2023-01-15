@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Data;
+using Natsurainko.FluentCore.Model.Install.Vanilla;
 using Natsurainko.FluentLauncher.Components.FluentCore;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,16 @@ public class GameCoreTagConverter : IValueConverter
 
             return string.Join(" ", strings);
         }
+
+        if (value is CoreManifestItem coreManifestItem)
+            return coreManifestItem.Type switch
+            {
+                "release" => "Release",
+                "snapshot" => "Snapshot",
+                "old_beta" => "Old Beta",
+                "old_alpha" => "Old Alpha",
+                _ => "Unknown"
+            };
 
         return null;
     }

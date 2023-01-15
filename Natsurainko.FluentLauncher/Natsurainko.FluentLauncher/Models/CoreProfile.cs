@@ -53,6 +53,6 @@ public partial class CoreProfile : ObservableObject
     {
         base.OnPropertyChanged(e);
 
-        File.WriteAllText(FilePath, JsonConvert.SerializeObject(this, Formatting.Indented));
+        File.WriteAllText(FilePath, JsonConvert.SerializeObject(this, Formatting.Indented,new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore}));
     }
 }

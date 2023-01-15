@@ -1,0 +1,110 @@
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Natsurainko.FluentCore.Model.Install;
+using Natsurainko.FluentCore.Module.Installer;
+using Natsurainko.FluentLauncher.Components.Mvvm;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Natsurainko.FluentLauncher.Models;
+
+public partial class ModLoader : ObservableObject
+{
+    public ModLoader(ModLoaderType type, string mcVerion)
+    { 
+        Type = type;
+        McVersion = mcVerion;
+
+        Task.Run(async () =>
+        {
+            IEnumerable<object> builds = type switch
+            {
+                ModLoaderType.Forge => await MinecraftForgeInstaller.GetForgeBuildsFromMcVersionAsync(mcVerion),
+                ModLoaderType.OptiFine => await MinecraftOptiFineInstaller.GetOptiFineBuildsFromMcVersionAsync(mcVerion),
+                ModLoaderType.Fabric => await MinecraftFabricInstaller.GetFabricBuildsFromMcVersionAsync(mcVerion),
+                _ => null,
+            };
+
+            App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+            {
+                Builds = builds.ToList();
+                SelectedBuild = builds.Any() 
+                    ? Builds[0] : null;
+
+                UnsupportedVisibility = builds.Any() 
+                    ? Visibility.Collapsed : Visibility.Visible;
+                SupportedVisibility = builds.Any()
+                    ? Visibility.Visible : Visibility.Collapsed;
+            }); 
+        });
+    }
+
+    private ListViewItem Item;
+
+    [ObservableProperty]
+    private string mcVersion;
+
+    [ObservableProperty]
+    private ModLoaderType type;
+
+    [ObservableProperty]
+    private bool isSelected = false;
+
+    [ObservableProperty]
+    private bool isEnable = true;
+
+    [ObservableProperty]
+    private Visibility comboBoxVisibility = Visibility.Collapsed;
+
+    [ObservableProperty]
+    private Visibility unsupportedVisibility = Visibility.Collapsed;
+
+    [ObservableProperty]
+    private Visibility supportedVisibility = Visibility.Visible;
+
+    [ObservableProperty]
+    private List<object> builds;
+
+    [ObservableProperty]
+    private object selectedBuild;
+
+    [RelayCommand]
+    public void Loaded(object parameter)
+    {
+        Item = parameter as ListViewItem;
+
+        BindingOperations.SetBinding(Item, ListViewItem.IsSelectedProperty, new Binding()
+        {
+            Mode = BindingMode.TwoWay,
+            Source = this,
+            Path = new Microsoft.UI.Xaml.PropertyPath(nameof(IsSelected))
+        });
+
+        BindingOperations.SetBinding(Item, ListViewItem.IsEnabledProperty, new Binding()
+        {
+            Mode = BindingMode.TwoWay,
+            Source = this,
+            Path = new Microsoft.UI.Xaml.PropertyPath(nameof(IsEnable))
+        });
+    }
+
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+
+        if (e.PropertyName == nameof(IsSelected))
+            ComboBoxVisibility = IsSelected
+                ? Visibility.Visible 
+                : Visibility.Collapsed;
+
+    }
+}

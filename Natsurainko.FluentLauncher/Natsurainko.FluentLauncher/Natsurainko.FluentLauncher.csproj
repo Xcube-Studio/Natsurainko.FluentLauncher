@@ -16,6 +16,8 @@
     <None Remove="Assets\Libs\authlib-injector-1.2.1.jar" />
     <None Remove="UserControls\ExpanderContentItem.xaml" />
     <None Remove="Views\Dialogs\ChooseAccountTypeDialog.xaml" />
+    <None Remove="Views\Dialogs\CoreOptionsDialog.xaml" />
+    <None Remove="Views\Dialogs\InstallCoreDialog.xaml" />
     <None Remove="Views\Dialogs\MicrosoftAccountDialog.xaml" />
     <None Remove="Views\Dialogs\OfflineAccountDialog.xaml" />
     <None Remove="Views\Dialogs\YggdrasilAccountDialog.xaml" />
@@ -26,9 +28,14 @@
     <None Remove="Views\Pages\Activities\News.xaml" />
     <None Remove="Views\Pages\Cores.xaml" />
     <None Remove="Views\Pages\Home.xaml" />
+    <None Remove="Views\Pages\Installations\Core.xaml" />
     <None Remove="Views\Pages\Logger.xaml" />
     <None Remove="Views\Pages\MainContainer.xaml" />
-    <None Remove="Views\Pages\Resources\Navigation.xaml" />
+    <None Remove="Views\Pages\Mods\Navigation.xaml" />
+    <None Remove="Views\Pages\Properties\Information.xaml" />
+    <None Remove="Views\Pages\Properties\Launch.xaml" />
+    <None Remove="Views\Pages\Properties\Mod.xaml" />
+    <None Remove="Views\Pages\Properties\Save.xaml" />
     <None Remove="Views\Pages\Settings\About.xaml" />
     <None Remove="Views\Pages\Settings\Account.xaml" />
     <None Remove="Views\Pages\Settings\Download.xaml" />
@@ -54,9 +61,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\Pages\Properties\" />
-    <Folder Include="ViewModels\Pages\Resources\" />
-    <Folder Include="Views\Pages\Properties\" />
+    <Page Update="Views\Dialogs\InstallCoreDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Dialogs\CoreOptionsDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Pages\Mods\Navigation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>
@@ -91,12 +110,6 @@
 
   <ItemGroup>
     <Page Update="UserControls\ExpanderContentItem.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Update="Views\Pages\Resources\Navigation.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
@@ -175,6 +188,36 @@
 
   <ItemGroup>
     <Page Update="Views\Pages\MainContainer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Pages\Properties\Save.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Pages\Properties\Mod.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Pages\Properties\Launch.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Pages\Properties\Information.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Pages\Installations\Core.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

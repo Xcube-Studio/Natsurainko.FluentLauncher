@@ -32,10 +32,11 @@
             </Style>
 
             <converters:JavaInfoConverter x:Key="JavaInfoConverter" />
-            <converters:GameCoreIconConverter x:Key="GameCoreIconConverter" />
+            <converters:IconConverter x:Key="IconConverter" />
             <converters:GameCoreTagConverter x:Key="GameCoreTagConverter" />
             <converters:TeachingTipTitleConverter x:Key="TeachingTipTitleConverter" />
             <converters:PathToFiguresConverter x:Key="PathToFiguresConverter" />
+            <converters:LoaderBuildVersionConverter x:Key="LoaderBuildVersionConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

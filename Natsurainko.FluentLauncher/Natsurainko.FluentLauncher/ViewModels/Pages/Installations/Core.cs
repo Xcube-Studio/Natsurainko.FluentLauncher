@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentCore.Model.Install;
 using Natsurainko.FluentCore.Model.Install.Vanilla;
@@ -62,7 +63,7 @@ public partial class Core : ObservableObject
         Task.Run(async () =>
         {
             if (CoreManifest == null)
-                CoreManifest = await MinecraftVanlliaInstaller.GetCoreManifest();
+                CoreManifest = await MinecraftVanlliaInstaller.GetCoreManifestAsync();
 
             var filtered = GetFilteredCores();
 
@@ -103,6 +104,9 @@ public partial class Core : ObservableObject
                 }
         });
     }
+
+    [RelayCommand]
+    public void RemoveLoader() => SelectedModLoader = null;
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {

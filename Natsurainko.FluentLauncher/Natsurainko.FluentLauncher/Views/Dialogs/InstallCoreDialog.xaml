@@ -314,7 +314,7 @@
         </Style>
     </ContentDialog.Style>
 
-    <Grid Height="460" MinWidth="650">
+    <Grid Height="460">
         <NavigationView
             IsBackButtonVisible="Collapsed"
             IsBackEnabled="False"

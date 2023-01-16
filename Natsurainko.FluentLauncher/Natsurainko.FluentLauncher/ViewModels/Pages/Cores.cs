@@ -74,7 +74,7 @@ public partial class Cores : ObservableObject
                 {
                     TipVisibility = Visibility.Visible;
                     TipTitle = "No Game Cores";
-                    TipSubTitle = "Go to Install to install";
+                    TipSubTitle = "Click \"Install New Core\" to install";
                 }
                 else TipVisibility = Visibility.Collapsed;
             });
@@ -151,7 +151,7 @@ public partial class Cores
     private void GoToPage()
     {
         if (TipTitle.Equals("No Game Cores"))
-        { }//MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Install));
+            OpenInstall();
         else if (TipTitle.Equals("No Game Folders"))
             MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Settings.Navigation));
     }

@@ -1,6 +1,3 @@
-
-
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,19 +13,12 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 
+namespace Natsurainko.FluentLauncher.Views.Pages.Activities;
 
-
-
-namespace Natsurainko.FluentLauncher.Views.Pages.Activities
+public sealed partial class News : Page
 {
-
-    /// An empty page that can be used on its own or navigated to within a Frame.
-
-    public sealed partial class News : Page
+    public News()
     {
-        public News()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

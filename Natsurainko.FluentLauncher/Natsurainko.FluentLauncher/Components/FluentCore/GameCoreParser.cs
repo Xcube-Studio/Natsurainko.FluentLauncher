@@ -96,10 +96,9 @@ public class GameCoreParser : Natsurainko.FluentCore.Module.Parser.GameCoreParse
                 else continue;
             }
 
-            item.IsVanilla = GetIsVanilla(item);
             item.ModLoaders = GetModLoaders(item);
+            item.IsVanilla = GetIsVanilla(item);
             item.CoreProfile = GetProfile(item);
-            //(item.AssetsCount, item.LibrariesCount, item.TotalSize) = GetStatisticFiles(item);
 
             yield return item;
         }
@@ -118,6 +117,6 @@ public class GameCoreParser : Natsurainko.FluentCore.Module.Parser.GameCoreParse
             core,
             jObject["LastLaunchTime"].ToObject<DateTime?>(),
             (bool)jObject["EnableSpecialSetting"],
-            jObject["LaunchSetting"].ToObject<LaunchSetting>());
+            jObject["LaunchSetting"]?.ToObject<LaunchSetting>());
     }
 }

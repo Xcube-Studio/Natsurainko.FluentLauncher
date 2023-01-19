@@ -31,6 +31,7 @@
     <None Remove="Views\Pages\Installations\Core.xaml" />
     <None Remove="Views\Pages\Logger.xaml" />
     <None Remove="Views\Pages\MainContainer.xaml" />
+    <None Remove="Views\Pages\Mods\CurseForge.xaml" />
     <None Remove="Views\Pages\Mods\Navigation.xaml" />
     <None Remove="Views\Pages\Properties\Information.xaml" />
     <None Remove="Views\Pages\Properties\Launch.xaml" />
@@ -45,12 +46,12 @@
 
   <ItemGroup>
     <PackageReference Include="ColorCode.WinUI" Version="2.0.14" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.221209.1" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.755" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
-    <PackageReference Include="WinUIEx" Version="2.0.0" />
+    <PackageReference Include="WinUIEx" Version="2.1.0" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 
@@ -58,6 +59,12 @@
     <ProjectReference Include="..\..\..\Natsurainko.FluentCore\Natsurainko.FluentCore.Extension.Windows\Natsurainko.FluentCore.Extension.Windows.csproj" />
     <ProjectReference Include="..\..\..\Natsurainko.FluentCore\Natsurainko.FluentCore\Natsurainko.FluentCore.csproj" />
     <ProjectReference Include="..\..\..\Natsurainko.Toolkits\Natsurainko.Toolkits\Natsurainko.Toolkits.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Pages\Mods\CurseForge.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>

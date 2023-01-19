@@ -26,9 +26,8 @@ public sealed partial class InstallCoreDialog : ContentDialog
     private void Button_Click(object sender, RoutedEventArgs e) => Hide();
 
     private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
-        => contentFrame.Navigate(Type.GetType(((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()));
+        => contentFrame.Navigate(Type.GetType(((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()), this);
 
     private void Dialog_Loaded(object sender, RoutedEventArgs e)
-        => contentFrame.Navigate(typeof(Core), this.DataContext);
-
+        => contentFrame.Navigate(typeof(Core), this);
 }

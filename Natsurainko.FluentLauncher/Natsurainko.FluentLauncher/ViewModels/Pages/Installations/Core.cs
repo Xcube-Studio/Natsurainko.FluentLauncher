@@ -1,9 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentCore.Model.Install;
 using Natsurainko.FluentCore.Model.Install.Vanilla;
 using Natsurainko.FluentCore.Module.Installer;
+using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Models;
 using System;
 using System.Collections.Generic;
@@ -11,7 +13,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using MinecraftVanlliaInstaller = Natsurainko.FluentCore.Module.Installer.MinecraftVanlliaInstaller;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Pages.Installations;
 
@@ -22,14 +26,19 @@ public partial class Core : ObservableObject
         LoadCores();
     }
 
-    private Dictionary<ModLoaderType, string[]> SupportedVersion;
-
     private static CoreManifest CoreManifest;
+
+    private static readonly Regex NameRegex = new("^[^/\\\\:\\*\\?\\<\\>\\|\"]{1,255}$");
+
+    private IEnumerable<string> CoreNames;
+
+    public ContentDialog ContentDialog { get; set; }
 
     [ObservableProperty]
     private ObservableCollection<CoreManifestItem> cores;
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(InstallCommand))]
     private CoreManifestItem selectedCoreManifestItem;
 
     [ObservableProperty]
@@ -43,6 +52,16 @@ public partial class Core : ObservableObject
 
     [ObservableProperty]
     private Visibility buildVisibility = Visibility.Collapsed;
+
+    [ObservableProperty]
+    private bool nameTipOpen;
+
+    [ObservableProperty]
+    private bool enableCoreIndependent;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(InstallCommand))]
+    private string coreName;
 
     public ObservableCollection<CoreManifestItem> GetFilteredCores()
     {
@@ -72,41 +91,50 @@ public partial class Core : ObservableObject
                 Cores = filtered;
                 SelectedCoreManifestItem = filtered[0];
             });
+
+            CoreNames = new GameCoreLocator(App.Configuration.CurrentGameFolder).GetGameCores().Select(x => x.Id);
         });
     }
 
     public void LoadLoaders()
     {
-        Task.Run(async () =>
+        Task.Run(() =>
         {
-            var loaders = new ObservableCollection<ModLoader>();
+            App.MainWindow.DispatcherQueue.TryEnqueue(() => Loaders = new ());
 
-            if (SupportedVersion == null)
+            var loaderTypes = new ModLoaderType[] 
             {
-                SupportedVersion = new();
+                ModLoaderType.Forge, 
+                ModLoaderType.Fabric, 
+                ModLoaderType.OptiFine,
+                ModLoaderType.Quilt
+            };
 
-                SupportedVersion.Add(ModLoaderType.Forge, await MinecraftForgeInstaller.GetSupportedMcVersionsAsync());
-                SupportedVersion.Add(ModLoaderType.Fabric, await MinecraftFabricInstaller.GetSupportedMcVersionsAsync());
-                SupportedVersion.Add(ModLoaderType.OptiFine, await MinecraftOptiFineInstaller.GetSupportedMcVersionsAsync());
+            foreach (var loaderType in loaderTypes)
+            {
+                var modloader = new ModLoader(loaderType, SelectedCoreManifestItem?.Id);
+
+                App.MainWindow.DispatcherQueue.TryEnqueue(() => Loaders.Add(modloader));
             }
-
-            App.MainWindow.DispatcherQueue.TryEnqueue(() => Loaders = loaders);
-
-            if (SupportedVersion != null)
-                foreach (var kvp in SupportedVersion)
-                {
-                    var modloader = new ModLoader(kvp.Key, SelectedCoreManifestItem?.Id)
-                    {
-                        IsEnable = kvp.Value.Contains(SelectedCoreManifestItem?.Id),
-                    };
-
-                    App.MainWindow.DispatcherQueue.TryEnqueue(() => loaders.Add(modloader));
-                }
         });
     }
 
+    public bool EnableInstall() 
+        => SelectedCoreManifestItem != null && !NameTipOpen;
+
     [RelayCommand]
     public void RemoveLoader() => SelectedModLoader = null;
+
+    [RelayCommand(CanExecute = nameof(EnableInstall))]
+    public void Install()
+    {
+        if (SelectedModLoader?.SelectedBuild != null)
+            InstallArrangement.StartNew(SelectedModLoader.SelectedBuild, CoreName, enableCoreIndependent);
+        else if (SelectedCoreManifestItem != null)
+            InstallArrangement.StartNew(SelectedCoreManifestItem, CoreName, enableCoreIndependent);
+
+        ContentDialog.Hide();
+    }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
@@ -122,5 +150,18 @@ public partial class Core : ObservableObject
             BuildVisibility = SelectedModLoader?.SelectedBuild == null
                 ? Visibility.Collapsed 
                 : Visibility.Visible;
+
+        if ((e.PropertyName == nameof(SelectedCoreManifestItem) || e.PropertyName == nameof(SelectedModLoader)) 
+            && SelectedCoreManifestItem != null)
+        {
+            if (SelectedModLoader?.SelectedBuild == null)
+                CoreName = SelectedCoreManifestItem.Id;
+            else CoreName = $"{SelectedCoreManifestItem.Id}-" +
+                    $"{SelectedModLoader?.SelectedBuild.ModLoaderType}-" +
+                    $"{SelectedModLoader?.SelectedBuild.BuildVersion}";
+        }
+
+        if (e.PropertyName == nameof(CoreName))
+            NameTipOpen = (CoreNames?.Contains(CoreName)).GetValueOrDefault(false) || !NameRegex.Matches(CoreName).Any();
     }
 }

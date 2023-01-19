@@ -18,6 +18,10 @@ using WinUIEx;
 using System.Threading.Tasks;
 using Natsurainko.FluentLauncher.Models;
 using Microsoft.UI;
+using Natsurainko.FluentLauncher.Components;
+using Natsurainko.FluentCore.Module.Installer;
+using System.Windows.Media.Media3D;
+using Windows.UI;
 
 namespace Natsurainko.FluentLauncher.Views.Pages;
 
@@ -31,6 +35,11 @@ public sealed partial class MainContainer : Page
 
     public MainContainer()
     {
+        /*
+        this.Resources.Add("NavigationViewContentBackground", new SolidColorBrush(Colors.Transparent));
+        this.Resources.Add("NavigationViewPaneContentGridMargin", new Thickness(-1, 0, -1, 0));
+        this.Resources.Add("NavigationViewContentGridCornerRadius", new CornerRadius(0));
+        */
         InitializeComponent();
 
         InformationListBox = InformationList;
@@ -84,6 +93,24 @@ public sealed partial class MainContainer : Page
         contentFrame.Navigate(typeof(Home));
 
         RefreshDragArea();
+    }
+
+    public static DependencyObject FindChildByName(DependencyObject parant, string ControlName)
+    {
+        int count = VisualTreeHelper.GetChildrenCount(parant);
+
+        for (int i = 0; i < count; i++)
+        {
+            var MyChild = VisualTreeHelper.GetChild(parant, i);
+            if (MyChild is FrameworkElement && ((FrameworkElement)MyChild).Name == ControlName)
+                return MyChild;
+
+            var FindResult = FindChildByName(MyChild, ControlName);
+            if (FindResult != null)
+                return FindResult;
+        }
+
+        return null;
     }
 
     private void Page_SizeChanged(object sender, SizeChangedEventArgs e) 
@@ -154,4 +181,42 @@ public sealed partial class MainContainer : Page
         if (!obj.Removed)
             InformationListBox.Items.Remove(obj);
     });
+
+    private void NavigationViewControl_Loaded(object sender, RoutedEventArgs e)
+    {
+        /*
+        var PaneContentGrid = FindChildByName(NavigationViewControl, "PaneContentGrid");
+
+        if (PaneContentGrid != null)
+        {
+            var acrylic = new AcrylicBrush
+            {
+                TintOpacity = 0.25,
+                TintLuminosityOpacity = 0.25,
+                FallbackColor = ActualTheme == ElementTheme.Dark ? Colors.Black : Colors.White,
+                TintColor = ActualTheme == ElementTheme.Dark ? Colors.Black : Colors.White
+            };
+
+            PaneContentGrid.SetValue(Grid.BackgroundProperty, acrylic);
+        }*/
+    }
+
+    private void Page_ActualThemeChanged(FrameworkElement sender, object args)
+    {
+        /*
+        var PaneContentGrid = FindChildByName(NavigationViewControl, "PaneContentGrid");
+
+        if (PaneContentGrid != null)
+        {
+            var acrylic = new AcrylicBrush
+            {
+                TintOpacity = 0.25,
+                TintLuminosityOpacity = 0.25,
+                FallbackColor = ActualTheme == ElementTheme.Dark ? Colors.Black : Colors.White,
+                TintColor = ActualTheme == ElementTheme.Dark ? Colors.Black : Colors.White
+            };
+
+            PaneContentGrid.SetValue(Grid.BackgroundProperty, acrylic);
+        }*/
+    }
 }

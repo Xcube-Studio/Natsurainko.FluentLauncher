@@ -21,5 +21,4 @@ public partial class Launch : ObservableObject
 
     [RelayCommand]
     public void Home() => MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Home));
-
 }

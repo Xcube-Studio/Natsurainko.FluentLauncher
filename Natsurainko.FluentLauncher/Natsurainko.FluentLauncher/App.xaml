@@ -36,7 +36,6 @@
             <converters:GameCoreTagConverter x:Key="GameCoreTagConverter" />
             <converters:TeachingTipTitleConverter x:Key="TeachingTipTitleConverter" />
             <converters:PathToFiguresConverter x:Key="PathToFiguresConverter" />
-            <converters:LoaderBuildVersionConverter x:Key="LoaderBuildVersionConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

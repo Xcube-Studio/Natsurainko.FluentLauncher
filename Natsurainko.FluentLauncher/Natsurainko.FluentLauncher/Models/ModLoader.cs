@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Imaging;
+using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentCore.Model.Install;
 using Natsurainko.FluentCore.Module.Installer;
 using Natsurainko.FluentLauncher.Components.Mvvm;
@@ -26,11 +27,12 @@ public partial class ModLoader : ObservableObject
 
         Task.Run(async () =>
         {
-            IEnumerable<object> builds = type switch
+            IEnumerable<IModLoaderInstallBuild> builds = type switch
             {
                 ModLoaderType.Forge => await MinecraftForgeInstaller.GetForgeBuildsFromMcVersionAsync(mcVerion),
                 ModLoaderType.OptiFine => await MinecraftOptiFineInstaller.GetOptiFineBuildsFromMcVersionAsync(mcVerion),
                 ModLoaderType.Fabric => await MinecraftFabricInstaller.GetFabricBuildsFromMcVersionAsync(mcVerion),
+                ModLoaderType.Quilt => await MinecraftQuiltInstaller.GetQuiltBuildsFromMcVersionAsync(mcVerion),
                 _ => null,
             };
 
@@ -39,6 +41,7 @@ public partial class ModLoader : ObservableObject
                 Builds = builds.ToList();
                 SelectedBuild = builds.Any() 
                     ? Builds[0] : null;
+                IsEnable = builds.Any();
 
                 UnsupportedVisibility = builds.Any() 
                     ? Visibility.Collapsed : Visibility.Visible;
@@ -60,7 +63,7 @@ public partial class ModLoader : ObservableObject
     private bool isSelected = false;
 
     [ObservableProperty]
-    private bool isEnable = true;
+    private bool isEnable = false;
 
     [ObservableProperty]
     private Visibility comboBoxVisibility = Visibility.Collapsed;
@@ -72,10 +75,10 @@ public partial class ModLoader : ObservableObject
     private Visibility supportedVisibility = Visibility.Visible;
 
     [ObservableProperty]
-    private List<object> builds;
+    private List<IModLoaderInstallBuild> builds;
 
     [ObservableProperty]
-    private object selectedBuild;
+    private IModLoaderInstallBuild selectedBuild;
 
     [RelayCommand]
     public void Loaded(object parameter)

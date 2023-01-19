@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation and Contributors.
-// Licensed under the MIT License.
-
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -16,19 +13,28 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+namespace Natsurainko.FluentLauncher.Views.Pages.Mods;
 
-namespace Natsurainko.FluentLauncher.Views.Pages.Mods
+public sealed partial class Navigation : Page
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class Navigation : Page
+    public Navigation()
     {
-        public Navigation()
+        this.InitializeComponent();
+    }
+
+    private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        => contentFrame.Navigate(Type.GetType(((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()));
+
+    private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
+    {
+        foreach (NavigationViewItem item in NavigationView.MenuItems.Union(NavigationView.FooterMenuItems).Cast<NavigationViewItem>())
         {
-            this.InitializeComponent();
+            if (Type.GetType((string)item.Tag) == e.SourcePageType)
+            {
+                NavigationView.SelectedItem = item;
+                item.IsSelected = true;
+                return;
+            }
         }
     }
 }

@@ -13,18 +13,12 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
-namespace Natsurainko.FluentLauncher.Views.Pages.Installations;
+namespace Natsurainko.FluentLauncher.Views.Pages.Mods;
 
-public sealed partial class Core : Page
+public sealed partial class CurseForge : Page
 {
-    public Core()
+    public CurseForge()
     {
         this.InitializeComponent();
-    }
-
-    protected override void OnNavigatedTo(NavigationEventArgs e)
-    {
-        base.OnNavigatedTo(e);
-        this.DataContext = new ViewModels.Pages.Installations.Core() { ContentDialog = e.Parameter as ContentDialog };
     }
 }

@@ -71,6 +71,5 @@ public partial class NewsData : ObservableObject
             }
             else Loading = Visibility.Collapsed;
         });
-
     }
 }

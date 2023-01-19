@@ -231,7 +231,7 @@
                                     FontSize="16"
                                     FontWeight="SemiBold"
                                     Text="CommunityToolkit.Mvvm" />
-                                <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="8.0.0" />
+                                <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="8.1.0" />
                             </StackPanel>
                             <HyperlinkButton
                                 Grid.Column="2"
@@ -271,7 +271,7 @@
                                     FontSize="16"
                                     FontWeight="SemiBold"
                                     Text="WinUIEx" />
-                                <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="2.0.0" />
+                                <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="2.1.0" />
                             </StackPanel>
                             <HyperlinkButton
                                 Grid.Column="2"

@@ -232,7 +232,7 @@ public partial class Cores
 
         ToDelete.Delete();
 
-        if (ToRename.Equals(CurrentGameCore))
+        if (ToDelete.Equals(CurrentGameCore))
         {
             CurrentGameCore = null;
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(CurrentGameCore)));

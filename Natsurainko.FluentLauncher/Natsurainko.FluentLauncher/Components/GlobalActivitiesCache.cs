@@ -14,6 +14,8 @@ public static class GlobalActivitiesCache
 {
     public static List<LaunchArrangement> LaunchArrangements { get; private set; } = new List<LaunchArrangement>();
 
+    public static List<DownloadArrangement> DownloadArrangements { get; private set; } = new List<DownloadArrangement>();
+
     public static List<NewsData> MojangNews { get; private set; }
 
     public static async Task BeginDownloadNews()

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32811.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "Natsurainko.FluentLauncher (Package)", "Natsurainko.FluentLauncher\Natsurainko.FluentLauncher (Package)\Natsurainko.FluentLauncher (Package).wapproj", "{629A381B-0A63-432D-8F41-1250ABB41CDD}"
+Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "Natsurainko.FluentLauncher (Package)", "Natsurainko.FluentLauncher (Package)\Natsurainko.FluentLauncher (Package).wapproj", "{629A381B-0A63-432D-8F41-1250ABB41CDD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Natsurainko.FluentLauncher", "Natsurainko.FluentLauncher\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher.csproj", "{25A06654-F92D-43C8-BA6C-4B84BED2A505}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Natsurainko.FluentLauncher", "Natsurainko.FluentLauncher\Natsurainko.FluentLauncher.csproj", "{25A06654-F92D-43C8-BA6C-4B84BED2A505}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Natsurainko.FluentCore", "..\Natsurainko.FluentCore\Natsurainko.FluentCore\Natsurainko.FluentCore.csproj", "{A16112E3-DC85-445A-9E59-A64203F449FE}"
 EndProject
@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Natsurainko.FluentCore.Exte
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Natsurainko.Toolkits", "..\Natsurainko.Toolkits\Natsurainko.Toolkits\Natsurainko.Toolkits.csproj", "{2958D370-BA2A-448D-A318-E3092B213F81}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Natsurainko.FluentLauncher (SelfContained)", "Natsurainko.FluentLauncher\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher (SelfContained).csproj", "{7C1AD2DA-6E71-4142-99B6-B15A80D3A1C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Natsurainko.FluentLauncher (SelfContained)", "Natsurainko.FluentLauncher\Natsurainko.FluentLauncher (SelfContained).csproj", "{7C1AD2DA-6E71-4142-99B6-B15A80D3A1C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

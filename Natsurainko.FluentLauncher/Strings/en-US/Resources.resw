@@ -150,6 +150,15 @@
   <data name="About_Statements_Content.Text" xml:space="preserve">
     <value>Minecraft is copyrighted by Mojang Studios. We are not responsible for any copyright infringement arising from use of this software.</value>
   </data>
+  <data name="Guide_Back.Content" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Guide_Next.Content" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="Guide_Welcome.Text" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
   <data name="Navigation_Activities.Content" xml:space="preserve">
     <value>Activities</value>
   </data>

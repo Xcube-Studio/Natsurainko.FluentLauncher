@@ -65,8 +65,7 @@ public partial class Configuration : ObservableObject
 #endif
 
     public static Configuration Default()
-    {
-        var configuration = new Configuration
+        => new Configuration
         {
             CurrentGameCore = string.Empty,
             CurrentGameFolder = string.Empty,
@@ -82,19 +81,17 @@ public partial class Configuration : ObservableObject
             GameWindowHeight = 480,
             GameWindowWidth = 854,
             GameWindowTitle = string.Empty,
-            Accounts = new() { OfflineAuthenticator.Default },
+            Accounts = new(),
             EnableDemoUser = false,
             AutoRefresh = true,
             CurrentDownloadSource = "Mcbbs",
             EnableFragmentDownload = true,
             MaxDownloadThreads = 128,
-            CurrentLanguage = "en-US, English"
+            CurrentLanguage = "en-US, English",
+            AppWindowHeight = 500,
+            AppWindowWidth = 950,
+            FinishGuide = false
         };
-
-        configuration.CurrentAccount = configuration.Accounts[0];
-
-        return configuration;
-    }
 
     public void ReportPropertyChanged(PropertyChangedEventArgs e)
         => OnPropertyChanged(e);
@@ -178,10 +175,13 @@ public partial class Configuration
 public partial class Configuration
 {
     [ObservableProperty] [JsonIgnore]
-    private double appWindowWidth = 800;
+    private double appWindowWidth = 500;
 
     [ObservableProperty] [JsonIgnore]
-    private double appWindowHeight = 600;
+    private double appWindowHeight = 950;
+
+    [ObservableProperty] [JsonIgnore]
+    private bool finishGuide = false;
 }
 
 public partial class Configuration

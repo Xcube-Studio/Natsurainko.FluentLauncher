@@ -8,6 +8,6 @@
     mc:Ignorable="d">
 
     <ScrollViewer>
-        <StackPanel MinHeight="400" />
+        <StackPanel MinHeight="250" />
     </ScrollViewer>
 </Page>

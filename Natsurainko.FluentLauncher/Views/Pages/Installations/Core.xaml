@@ -247,7 +247,8 @@
                                 Margin="-75,-25"
                                 Padding="0"
                                 HorizontalAlignment="Right"
-                                VerticalAlignment="Center" />
+                                VerticalAlignment="Center"
+                                IsOn="{Binding EnableCoreIndependent, Mode=TwoWay}" />
                         </Grid>
                     </StackPanel>
                 </Border>

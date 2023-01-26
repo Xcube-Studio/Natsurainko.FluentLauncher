@@ -1,6 +1,7 @@
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Views.Pages;
+using System;
 using System.IO;
 using Windows.ApplicationModel;
 using Windows.Globalization;
@@ -32,6 +33,18 @@ public sealed partial class MainWindow : WindowEx
         (MinWidth, MinHeight) = (516, 328);
         (Width, Height) = (App.Configuration.AppWindowWidth, App.Configuration.AppWindowHeight);
 
-        Frame.Navigate(typeof(MainContainer));
+        Backdrop = Environment.OSVersion.Version.Build >= 22000
+           ? new MicaSystemBackdrop() { Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt }
+           : new AcrylicSystemBackdrop()
+           {
+               DarkTintOpacity = 0.75,
+               DarkLuminosityOpacity = 0.75,
+               DarkTintColor = Colors.Black,
+               DarkFallbackColor = Colors.Black
+           };
+
+        if (App.Configuration.FinishGuide) 
+            Frame.Navigate(typeof(Views.Pages.MainContainer));
+        else Frame.Navigate(typeof(Views.Pages.Guides.Navigation));
     }
 }

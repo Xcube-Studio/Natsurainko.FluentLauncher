@@ -15,12 +15,14 @@
                     <SolidColorBrush x:Key="DeleteButtonBorder" Color="#BFCC0000" />
                     <x:Double x:Key="ExpanderSplitterOpacity">1</x:Double>
                     <SolidColorBrush x:Key="AntiTheme" Color="Black" />
+                    <SolidColorBrush x:Key="IconBorder" Color="#25000000" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="DeleteButtonBackground" Color="#3FFF0000" />
                     <SolidColorBrush x:Key="DeleteButtonBorder" Color="#59FF0000" />
                     <x:Double x:Key="ExpanderSplitterOpacity">0.1</x:Double>
                     <SolidColorBrush x:Key="AntiTheme" Color="White" />
+                    <SolidColorBrush x:Key="IconBorder" Color="#10FFFFFF" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 

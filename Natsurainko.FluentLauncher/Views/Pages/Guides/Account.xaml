@@ -1,0 +1,114 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Pages.Guides.Account"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Pages.Guides"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Pages.Guides"
+    mc:Ignorable="d">
+    <Page.DataContext>
+        <vm:Account />
+    </Page.DataContext>
+
+    <Grid Padding="75,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="45" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="2" VerticalAlignment="Center">
+            <TextBlock
+                Margin="20,0,0,0"
+                FontSize="22"
+                FontWeight="Bold"
+                Text="Account" />
+            <Border
+                Margin="0,20,0,0"
+                Padding="20,0"
+                HorizontalAlignment="Stretch"
+                Background="{ThemeResource CardBackgroundFillColorDefault}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="8">
+                <StackPanel>
+                    <Grid Height="55.2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="15" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                            <FontIcon Glyph="&#xe77b;" />
+                            <TextBlock Margin="17,0" Text="Accounts:" />
+                        </StackPanel>
+                        <Grid
+                            Grid.Column="2"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ComboBox
+                                HorizontalAlignment="Stretch"
+                                FlowDirection="RightToLeft"
+                                ItemsSource="{Binding Accounts}"
+                                SelectedItem="{Binding CurrentAccount, Mode=TwoWay}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextTrimming="CharacterEllipsis">
+                                            <Run FontWeight="SemiBold" Text="{Binding Name}" />
+                                            <Run Text="," />
+                                            <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding Type}" />
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Button
+                                Grid.Column="2"
+                                Height="32"
+                                Padding="10,0"
+                                Command="{Binding LoginCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                                Style="{ThemeResource AccentButtonStyle}">
+                                <TextBlock Text="Login Microsoft Account" />
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    <Border Style="{ThemeResource ExpanderSplitter}" />
+                    <Grid Height="55.2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <HyperlinkButton Grid.Column="2" NavigateUri="https://www.minecraft.net/zh-hans">
+                            <TextBlock Text="Minecraft Official Website" TextTrimming="CharacterEllipsis" />
+                        </HyperlinkButton>
+                        <HyperlinkButton Command="{Binding OfflineLoginCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                            <TextBlock Text="Don't have a Microsoft account?" TextTrimming="CharacterEllipsis" />
+                        </HyperlinkButton>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+        <RichTextBlock
+            VerticalAlignment="Center"
+            FontWeight="SemiBold"
+            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
+            <Paragraph>
+                <Run Text="You need at least one account to start the game" />
+            </Paragraph>
+            <Paragraph>
+                <Run Text="Access to online servers is only possible with a Microsoft account" />
+            </Paragraph>
+            <Paragraph Margin="0,25,0,0">
+                <Run Text="Offline accounts will not be verified by the server" />
+            </Paragraph>
+        </RichTextBlock>
+    </Grid>
+</Page>

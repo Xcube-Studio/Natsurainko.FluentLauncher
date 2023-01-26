@@ -73,6 +73,7 @@ public partial class InstallArrangement : DownloadArrangement
         Title = CustomName = customName;
 
         CoreManifestItem = coreManifestItem;
+        EnableCoreIndependent = enableCoreIndependent;
 
         var gameCoreLocator = new GameCoreLocator(App.Configuration.CurrentGameFolder);
         GameCoreInstaller = new MinecraftVanlliaInstaller(gameCoreLocator, coreManifestItem, customName);
@@ -88,6 +89,8 @@ public partial class InstallArrangement : DownloadArrangement
         Title = CustomName = customName;
 
         InstallBuild = installBuild;
+        EnableCoreIndependent = enableCoreIndependent;
+
         var gameCoreLocator = new GameCoreLocator(App.Configuration.CurrentGameFolder);
 
         GameCoreInstaller = installBuild.ModLoaderType switch
@@ -125,6 +128,8 @@ public partial class InstallArrangement : DownloadArrangement
     public FluentCore.Module.Installer.BaseGameCoreInstaller GameCoreInstaller { get; private set; }
 
     public string CustomName { get; private set; }
+
+    public bool EnableCoreIndependent { get; private set; }
 
     private Stopwatch Stopwatch = new Stopwatch();
 
@@ -198,10 +203,22 @@ public partial class InstallArrangement : DownloadArrangement
 
             if (installerResponse.Success)
             {
-                ReportState("Installed Successfully");
+                if (EnableCoreIndependent)
+                {
+                    var core = (installerResponse.GameCore as GameCore);
+
+                    core.CoreProfile.EnableSpecialSetting = true;
+                    core.CoreProfile.LaunchSetting = new()
+                    {
+                        EnableIndependencyCore = true
+                    };
+                }
 
                 MainContainer.ShowMessagesAsync($"Installed Core {CustomName} Successfully", 
                     severity: InfoBarSeverity.Success);
+                GameCoreInstaller.ProgressChanged -= GameCoreInstaller_ProgressChanged;
+
+                ReportState("Installed Successfully");
             }
             else
             {

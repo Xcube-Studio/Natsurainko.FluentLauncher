@@ -16,6 +16,8 @@ public class TeachingTipTitleConverter : IValueConverter
             return null;
         if (value is GameCore core)
             return $"{parameter} {core.Id}";
+        if (value is ModInfo mod)
+            return $"{parameter} {mod.Name}";
 
         return null;
     }

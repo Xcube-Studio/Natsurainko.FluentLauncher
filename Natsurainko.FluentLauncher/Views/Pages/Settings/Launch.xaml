@@ -342,10 +342,7 @@
                 </Expander.Content>
             </Expander>
 
-            <ContentControl
-                HorizontalContentAlignment="Stretch"
-                VerticalContentAlignment="Stretch"
-                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
+            <ContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                 <Border
                     Margin="0,15"
                     HorizontalAlignment="Stretch"

@@ -52,9 +52,11 @@ public class GameCore : Natsurainko.FluentCore.Model.Launch.GameCore
         if (!string.IsNullOrEmpty(App.Configuration.GameServerAddress))
             globalSetting.ServerSetting = new ServerSetting(App.Configuration.GameServerAddress);
 
-        if (App.Configuration.EnableAutoJava)
-            globalSetting.JvmSetting = new(GetSuitableJava());
-        else globalSetting.JvmSetting = new(App.Configuration.CurrentJavaRuntime);
+        if (App.Configuration.JavaRuntimes.Any())
+            if (App.Configuration.EnableAutoJava)
+                globalSetting.JvmSetting = new(GetSuitableJava());
+            else globalSetting.JvmSetting = new(App.Configuration.CurrentJavaRuntime);
+        else globalSetting.JvmSetting = new();
 
         if (App.Configuration.EnableAutoMemory)
             globalSetting.JvmSetting.AutoSetMemory();
@@ -77,6 +79,9 @@ public class GameCore : Natsurainko.FluentCore.Model.Launch.GameCore
     {
         var javaInformations = App.Configuration.JavaRuntimes.ToDictionary(x => x, x => JavaHelper.GetJavaRuntimeInfo(x));
         var sameMajorJava = javaInformations.Where(kvp => kvp.Value.Version.Major.Equals(JavaVersion));
+
+        if (!javaInformations.Any())
+            return string.Empty;
 
         if (!sameMajorJava.Any())
             return javaInformations.MaxBy(x => x.Value.Version).Key;

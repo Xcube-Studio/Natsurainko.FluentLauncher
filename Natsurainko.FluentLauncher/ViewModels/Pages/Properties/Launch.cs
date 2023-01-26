@@ -18,23 +18,29 @@ namespace Natsurainko.FluentLauncher.ViewModels.Pages.Properties;
 
 public partial class Launch : ObservableObject
 {
+    private bool isLoading = true;
+
     public Launch(GameCore core) 
     {
         CoreProfile = core.CoreProfile;
 
-        enableSpecialSetting = CoreProfile.EnableSpecialSetting;
-        width = (CoreProfile.LaunchSetting?.GameWindowSetting?.Width).GetValueOrDefault(854);
-        height = (CoreProfile.LaunchSetting?.GameWindowSetting?.Height).GetValueOrDefault(480);
-        enableFullScreen = (CoreProfile.LaunchSetting?.GameWindowSetting?.IsFullscreen).GetValueOrDefault(false);
-        title = CoreProfile.LaunchSetting?.GameWindowSetting?.WindowTitle;
-        profilePath = CoreProfile.FilePath;
-        serverAddress = (CoreProfile.LaunchSetting != null && CoreProfile.LaunchSetting.ServerSetting != null)
+        EnableSpecialSetting = CoreProfile.EnableSpecialSetting;
+        EnableFullScreen = (CoreProfile.LaunchSetting?.GameWindowSetting?.IsFullscreen).GetValueOrDefault(false);
+        EnableIndependencyCore = (CoreProfile.LaunchSetting?.EnableIndependencyCore).GetValueOrDefault(false);
+
+        Width = (CoreProfile.LaunchSetting?.GameWindowSetting?.Width).GetValueOrDefault(854);
+        Height = (CoreProfile.LaunchSetting?.GameWindowSetting?.Height).GetValueOrDefault(480);
+        Title = CoreProfile.LaunchSetting?.GameWindowSetting?.WindowTitle;
+        ProfilePath = CoreProfile.FilePath;
+        ServerAddress = (CoreProfile.LaunchSetting != null && CoreProfile.LaunchSetting.ServerSetting != null)
             ? CoreProfile.LaunchSetting.ServerSetting.ToString() 
             : null;
 
-        pathVisibility = File.Exists(CoreProfile.FilePath)
+        PathVisibility = File.Exists(CoreProfile.FilePath)
                 ? Visibility.Visible
                 : Visibility.Collapsed;
+
+        isLoading = false;
     }
 
     public CoreProfile CoreProfile;
@@ -70,7 +76,15 @@ public partial class Launch : ObservableObject
     {
         base.OnPropertyChanged(e);
 
-        CoreProfile.EnableSpecialSetting= enableSpecialSetting;
+        if (e.PropertyName != nameof(PathVisibility))
+            PathVisibility = File.Exists(CoreProfile.FilePath)
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+
+        if (isLoading)
+            return;
+
+        CoreProfile.EnableSpecialSetting = enableSpecialSetting;
         CoreProfile.LaunchSetting = new LaunchSetting
         {
             EnableIndependencyCore = enableIndependencyCore,
@@ -85,11 +99,6 @@ public partial class Launch : ObservableObject
                 ? new ServerSetting(serverAddress)
                 : null
         };
-
-        if (e.PropertyName != nameof(PathVisibility))
-            PathVisibility = File.Exists(CoreProfile.FilePath)
-                ? Visibility.Visible
-                : Visibility.Collapsed;
     }
 
     [RelayCommand]

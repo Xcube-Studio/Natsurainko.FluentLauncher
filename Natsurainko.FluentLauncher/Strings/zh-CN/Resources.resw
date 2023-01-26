@@ -150,6 +150,15 @@
   <data name="About_Statements_Content.Text" xml:space="preserve">
     <value>Minecraft 版权归 Mojang Studios 所有。 开发者对因使用本软件而引起的任何版权侵权不承担任何责任。</value>
   </data>
+  <data name="Guide_Back.Content" xml:space="preserve">
+    <value>上一步</value>
+  </data>
+  <data name="Guide_Next.Content" xml:space="preserve">
+    <value>下一步</value>
+  </data>
+  <data name="Guide_Welcome.Text" xml:space="preserve">
+    <value>欢迎</value>
+  </data>
   <data name="Navigation_Activities.Content" xml:space="preserve">
     <value>活动</value>
   </data>

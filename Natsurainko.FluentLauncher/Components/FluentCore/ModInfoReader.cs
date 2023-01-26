@@ -1,10 +1,12 @@
-﻿using Natsurainko.FluentCore.Model.Install;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Natsurainko.FluentCore.Model.Install;
 using Natsurainko.FluentCore.Model.Mod;
 using Natsurainko.Toolkits.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -15,8 +17,10 @@ using Tomlyn.Model;
 
 namespace Natsurainko.FluentLauncher.Components.FluentCore;
 
-public class ModInfo
+public partial class ModInfo : ObservableObject
 {
+    public FileInfo File { get; set; }
+
     public string Name { get; set; }
 
     public string Description { get; set; }
@@ -27,7 +31,26 @@ public class ModInfo
 
     public IEnumerable<ModLoaderType> ModLoaders { get; set; }
 
-    public bool IsEnable { get; set; }
+    [ObservableProperty]
+    public bool isEnable;
+
+    [ObservableProperty]
+    public string displayAuthors;
+
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+
+        if (e.PropertyName == nameof(IsEnable))
+        {
+            var fileName = Path.Combine(
+                File.DirectoryName,
+                Path.GetFileNameWithoutExtension(File.FullName) + (IsEnable ? ".jar" : ".disabled"));
+
+            if (!File.FullName.Equals(fileName))
+                File.MoveTo(fileName);
+        }
+    }
 }
 
 public class ModInfoReader
@@ -140,7 +163,10 @@ public class ModInfoReader
             if (modInfos.Any())
             {
                 var modInfo = modInfos.First();
-                modInfo.IsEnable = !file.Extension.Equals(".disabled");
+
+                modInfo.File = file;
+                modInfo.isEnable = !file.Extension.Equals(".disabled");
+                modInfo.displayAuthors = string.Join(", ", modInfo.Authors);
 
                 modInfos.ForEach(x => modInfo.ModLoaders = modInfo.ModLoaders.Union(x.ModLoaders));
                 yield return modInfo;

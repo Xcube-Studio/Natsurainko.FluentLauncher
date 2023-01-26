@@ -11,11 +11,18 @@ namespace Natsurainko.FluentLauncher.Components;
 
 public static class LanguageResources
 {
+#if MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
+    public static readonly List<string> SupportedLanguages = new()
+    {
+        "en-US, English"
+    };
+#else
     public static readonly List<string> SupportedLanguages = new()
     {
         "en-US, English",
         "zh-CN, 简体中文"
     };
+#endif
 
     public static string HandleLaunchState(string message)
     {

@@ -35,6 +35,7 @@
                                     MinHeight="{ThemeResource ContentDialogMinHeight}"
                                     MaxWidth="{ThemeResource ContentDialogMaxWidth}"
                                     MaxHeight="{ThemeResource ContentDialogMaxHeight}"
+                                    Margin="0,15"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Background="{TemplateBinding Background}"
@@ -351,5 +352,11 @@
                 FontWeight="SemiBold"
                 Text="{Binding Description}" />
         </StackPanel>
+        <Button
+            Margin="5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Command="{Binding CancelClickCommand}"
+            Style="{ThemeResource AlternateCloseButtonStyle}" />
     </Grid>
 </ContentDialog>

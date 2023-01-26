@@ -142,7 +142,7 @@ public partial class LaunchArrangement : ObservableObject
 
             GlobalActivitiesCache.LaunchArrangements.Insert(0, arrangement);
         });
-
+            
         var coreLocator = new GameCoreLocator(App.Configuration.CurrentGameFolder);
         var launcher = new MinecraftLauncher(arrangement.LaunchSetting, coreLocator);
         var resourceDownloader = new CrossProcessResourceDownloader();

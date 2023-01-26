@@ -79,16 +79,6 @@ public sealed partial class MainContainer : Page
     private void Page_Loaded(object sender, RoutedEventArgs e)
     {
         _XamlRoot = XamlRoot;
-
-        App.MainWindow.Backdrop = Environment.OSVersion.Version.Build >= 22000
-           ? new MicaSystemBackdrop() { Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt }
-           : new AcrylicSystemBackdrop() 
-           { 
-               DarkTintOpacity = 0.75,
-               DarkLuminosityOpacity = 0.75,
-               DarkTintColor = Colors.Black,
-               DarkFallbackColor = Colors.Black  
-           };
         
         App.MainWindow.SetTitleBar(AppTitleBar);
         contentFrame.Navigate(typeof(Home));
@@ -168,6 +158,9 @@ public sealed partial class MainContainer : Page
         ButtonBase button = null)
     => App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
     {
+        if (InformationListBox == null)
+            return;
+
         var obj = new MessageData
         {
             Button = button,

@@ -27,6 +27,11 @@
     <None Remove="Views\Pages\Activities\Navigation.xaml" />
     <None Remove="Views\Pages\Activities\News.xaml" />
     <None Remove="Views\Pages\Cores.xaml" />
+    <None Remove="Views\Pages\Guides\Account.xaml" />
+    <None Remove="Views\Pages\Guides\Basic.xaml" />
+    <None Remove="Views\Pages\Guides\GetStarted.xaml" />
+    <None Remove="Views\Pages\Guides\Language.xaml" />
+    <None Remove="Views\Pages\Guides\Navigation.xaml" />
     <None Remove="Views\Pages\Home.xaml" />
     <None Remove="Views\Pages\Installations\Core.xaml" />
     <None Remove="Views\Pages\Logger.xaml" />
@@ -60,6 +65,30 @@
     <ProjectReference Include="..\..\Natsurainko.FluentCore\Natsurainko.FluentCore.Extension.Windows\Natsurainko.FluentCore.Extension.Windows.csproj" />
     <ProjectReference Include="..\..\Natsurainko.FluentCore\Natsurainko.FluentCore\Natsurainko.FluentCore.csproj" />
     <ProjectReference Include="..\..\Natsurainko.Toolkits\Natsurainko.Toolkits\Natsurainko.Toolkits.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Pages\Guides\GetStarted.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Pages\Guide\Account.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Pages\Guide\Basic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Pages\Guide\Language.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>
@@ -226,6 +255,12 @@
 
   <ItemGroup>
     <Page Update="Views\Pages\Installations\Core.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Pages\Guide\Navigation.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

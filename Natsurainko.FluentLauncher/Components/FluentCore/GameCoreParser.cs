@@ -115,7 +115,7 @@ public class GameCoreParser : Natsurainko.FluentCore.Module.Parser.GameCoreParse
         return new(
             file.FullName,
             core,
-            jObject["LastLaunchTime"].ToObject<DateTime?>(),
+            jObject["LastLaunchTime"]?.ToObject<DateTime?>(),
             (bool)jObject["EnableSpecialSetting"],
             jObject["LaunchSetting"]?.ToObject<LaunchSetting>());
     }

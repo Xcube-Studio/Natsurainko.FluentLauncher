@@ -11,7 +11,7 @@
     mc:Ignorable="d">
 
     <ScrollViewer>
-        <StackPanel MinHeight="400" Margin="20">
+        <StackPanel MinHeight="350" Margin="20">
             <Button
                 Height="55.2"
                 Margin="0,0,0,15"
@@ -20,6 +20,8 @@
                 VerticalAlignment="Top"
                 HorizontalContentAlignment="Stretch"
                 VerticalContentAlignment="Stretch"
+                Background="{ThemeResource CardBackgroundFillColorDefault}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                 Visibility="{Binding PathVisibility}">
                 <Grid>
                     <Grid.ColumnDefinitions>

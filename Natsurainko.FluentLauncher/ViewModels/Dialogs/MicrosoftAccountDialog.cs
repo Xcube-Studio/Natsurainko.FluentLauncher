@@ -47,6 +47,9 @@ public partial class MicrosoftAccountDialog : DialogViewModel
             "document.getElementsByTagName('body')[0].appendChild(style)");
     });
 
+    [RelayCommand]
+    public void CancelClick() => OnCancel();
+
     private bool onloading = false;
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)

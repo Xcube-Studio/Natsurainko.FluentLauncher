@@ -6,12 +6,10 @@ using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.Toolkits.Values;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage.Pickers;
 
@@ -19,7 +17,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.Pages.Guides;
 
 public partial class Basic : SettingViewModel
 {
-    public Basic() : base() 
+    public Basic() : base()
     {
         OnPropertyChanged("CanNext");
     }
@@ -45,7 +43,7 @@ public partial class Basic : SettingViewModel
     protected override void _OnPropertyChanged(PropertyChangedEventArgs e)
     {
         if (e.PropertyName != nameof(CanNext))
-            CanNext = 
+            CanNext =
                 !string.IsNullOrEmpty(CurrentGameFolder) &&
                 !string.IsNullOrEmpty(CurrentJavaRuntime) &&
                 Directory.Exists(CurrentGameFolder) &&

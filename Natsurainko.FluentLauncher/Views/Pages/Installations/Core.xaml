@@ -272,8 +272,9 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             Command="{Binding InstallCommand}"
-                            Content="Install"
-                            Style="{ThemeResource AccentButtonStyle}" />
+                            Style="{ThemeResource AccentButtonStyle}">
+                            <TextBlock x:Uid="_Buttons_Install" Text="Install" />
+                        </Button>
                     </Grid>
                 </Border>
             </StackPanel>

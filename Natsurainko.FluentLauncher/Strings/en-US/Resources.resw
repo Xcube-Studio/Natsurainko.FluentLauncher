@@ -150,14 +150,95 @@
   <data name="About_Statements_Content.Text" xml:space="preserve">
     <value>Minecraft is copyrighted by Mojang Studios. We are not responsible for any copyright infringement arising from use of this software.</value>
   </data>
+  <data name="Cores_Install.Text" xml:space="preserve">
+    <value>Install New Core</value>
+  </data>
+  <data name="Cores_Search.PlaceholderText" xml:space="preserve">
+    <value>Search Core...</value>
+  </data>
+  <data name="Guide_Account_Accounts.Text" xml:space="preserve">
+    <value>Accounts</value>
+  </data>
+  <data name="Guide_Account_Login.Text" xml:space="preserve">
+    <value>Login Microsoft Account</value>
+  </data>
+  <data name="Guide_Account_Offline.Text" xml:space="preserve">
+    <value>Don't have a Microsoft account?</value>
+  </data>
+  <data name="Guide_Account_Para_1.Text" xml:space="preserve">
+    <value>You need at least one account to start the game</value>
+  </data>
+  <data name="Guide_Account_Para_2.Text" xml:space="preserve">
+    <value>Access to online servers is only possible with a Microsoft account</value>
+  </data>
+  <data name="Guide_Account_Para_3.Text" xml:space="preserve">
+    <value>Offline accounts will not be verified by the server</value>
+  </data>
+  <data name="Guide_Account_Title.Text" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="Guide_Account_Website.Text" xml:space="preserve">
+    <value>Minecraft Official Website</value>
+  </data>
   <data name="Guide_Back.Content" xml:space="preserve">
     <value>Back</value>
+  </data>
+  <data name="Guide_Basic_Folder.Text" xml:space="preserve">
+    <value>.minecraft Folder:</value>
+  </data>
+  <data name="Guide_Basic_Java.Text" xml:space="preserve">
+    <value>Java Runtimes:</value>
+  </data>
+  <data name="Guide_Basic_Para_1.Text" xml:space="preserve">
+    <value>You need at least a .minecraft directory to store your game cores</value>
+  </data>
+  <data name="Guide_Basic_Para_2.Text" xml:space="preserve">
+    <value>You need at least a Java Runtime to start your game core</value>
+  </data>
+  <data name="Guide_Basic_Para_3.Text" xml:space="preserve">
+    <value>Once done, you can also modify these settings in the global game settings</value>
+  </data>
+  <data name="Guide_Basic_Title.Text" xml:space="preserve">
+    <value>Basic Launch Settings</value>
+  </data>
+  <data name="Guide_GetStarted_Description.Text" xml:space="preserve">
+    <value>You have all the basic settings done</value>
+  </data>
+  <data name="Guide_GetStarted_Start.Content" xml:space="preserve">
+    <value>Let's Get Started</value>
+  </data>
+  <data name="Guide_GetStarted_Title.Text" xml:space="preserve">
+    <value>All Finished</value>
+  </data>
+  <data name="Guide_Navigation_Account.Text" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="Guide_Navigation_Basic.Text" xml:space="preserve">
+    <value>Basic Settings</value>
+  </data>
+  <data name="Guide_Navigation_GetStarted.Text" xml:space="preserve">
+    <value>Get Started</value>
+  </data>
+  <data name="Guide_Navigation_Language.Text" xml:space="preserve">
+    <value>Language</value>
   </data>
   <data name="Guide_Next.Content" xml:space="preserve">
     <value>Next</value>
   </data>
   <data name="Guide_Welcome.Text" xml:space="preserve">
     <value>Welcome</value>
+  </data>
+  <data name="Home_Account.Text" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="Home_ComboBox.PlaceholderText" xml:space="preserve">
+    <value>Select Game Core</value>
+  </data>
+  <data name="Home_Launch.Text" xml:space="preserve">
+    <value>Launch Minecraft</value>
+  </data>
+  <data name="Home_NoAccount.Text" xml:space="preserve">
+    <value>No Account</value>
   </data>
   <data name="Navigation_Activities.Content" xml:space="preserve">
     <value>Activities</value>
@@ -209,5 +290,146 @@
   </data>
   <data name="Navigation_Settings_Launch.Content" xml:space="preserve">
     <value>Global Launch Settings</value>
+  </data>
+  <data name="Settings_Account_Header.Text" xml:space="preserve">
+    <value>Accounts</value>
+  </data>
+  <data name="Settings_Account_Item_1.Text" xml:space="preserve">
+    <value>Current account:</value>
+  </data>
+  <data name="Settings_Account_Item_2.Text" xml:space="preserve">
+    <value>Details of the current account:</value>
+  </data>
+  <data name="Settings_Account_Item_3.Text" xml:space="preserve">
+    <value>Add new account:</value>
+  </data>
+  <data name="Settings_Account_Item_4.Text" xml:space="preserve">
+    <value>Remove current account:</value>
+  </data>
+  <data name="Settings_Account_Item_5.Text" xml:space="preserve">
+    <value>Launch the game with a Demo account:</value>
+  </data>
+  <data name="Settings_Account_Item_6.Text" xml:space="preserve">
+    <value>Auto refresh account: (before launch)</value>
+  </data>
+  <data name="Settings_Account_Subtitle.Text" xml:space="preserve">
+    <value>Account after entering the game</value>
+  </data>
+  <data name="Settings_Download_Header.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="Settings_Download_Item_1.Text" xml:space="preserve">
+    <value>Current download sources:</value>
+  </data>
+  <data name="Settings_Download_Item_2.Text" xml:space="preserve">
+    <value>Maximum number of download threads:</value>
+  </data>
+  <data name="Settings_Download_Item_3.Text" xml:space="preserve">
+    <value>Enable fragmented download of large files:</value>
+  </data>
+  <data name="Settings_Download_Subtitle.Text" xml:space="preserve">
+    <value>Configuration for download game resources</value>
+  </data>
+  <data name="Settings_Launch_Header_1.Text" xml:space="preserve">
+    <value>.minecraft Folder</value>
+  </data>
+  <data name="Settings_Launch_Header_2.Text" xml:space="preserve">
+    <value>Java Runtime</value>
+  </data>
+  <data name="Settings_Launch_Header_3.Text" xml:space="preserve">
+    <value>Game Settings</value>
+  </data>
+  <data name="Settings_Launch_Header_4.Text" xml:space="preserve">
+    <value>Language Settings</value>
+  </data>
+  <data name="Settings_Launch_Item_1.Text" xml:space="preserve">
+    <value>Current .minecraft folder:</value>
+  </data>
+  <data name="Settings_Launch_Item_10.Text" xml:space="preserve">
+    <value>Global core independent:</value>
+  </data>
+  <data name="Settings_Launch_Item_11.Text" xml:space="preserve">
+    <value>Full screen mode:</value>
+  </data>
+  <data name="Settings_Launch_Item_12.Text" xml:space="preserve">
+    <value>Game window resolution:</value>
+  </data>
+  <data name="Settings_Launch_Item_13.Text" xml:space="preserve">
+    <value>Server address:</value>
+  </data>
+  <data name="Settings_Launch_Item_14.Text" xml:space="preserve">
+    <value>Game window title:</value>
+  </data>
+  <data name="Settings_Launch_Item_2.Text" xml:space="preserve">
+    <value>Open the .minecraft folder:</value>
+  </data>
+  <data name="Settings_Launch_Item_3.Text" xml:space="preserve">
+    <value>Remove the current .minecraft folder:</value>
+  </data>
+  <data name="Settings_Launch_Item_4.Text" xml:space="preserve">
+    <value>Current Java runtime:</value>
+  </data>
+  <data name="Settings_Launch_Item_5.Text" xml:space="preserve">
+    <value>Open the Java runtime:</value>
+  </data>
+  <data name="Settings_Launch_Item_6.Text" xml:space="preserve">
+    <value>Automatically select the suitable Java:</value>
+  </data>
+  <data name="Settings_Launch_Item_7.Text" xml:space="preserve">
+    <value>Remove the current Java runtime:</value>
+  </data>
+  <data name="Settings_Launch_Item_8.Text" xml:space="preserve">
+    <value>JVM memory:</value>
+  </data>
+  <data name="Settings_Launch_Item_9.Text" xml:space="preserve">
+    <value>Automatically allocate JVM memory:</value>
+  </data>
+  <data name="Settings_Launch_Subtitle_1.Text" xml:space="preserve">
+    <value>Where to store the core of your game</value>
+  </data>
+  <data name="Settings_Launch_Subtitle_2.Text" xml:space="preserve">
+    <value>Executable to launch the game</value>
+  </data>
+  <data name="Settings_Launch_Subtitle_3.Text" xml:space="preserve">
+    <value>Game play settings</value>
+  </data>
+  <data name="_Buttons_Back.Text" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="_Buttons_Browse.Text" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="_Buttons_Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="_Buttons_Check.Text" xml:space="preserve">
+    <value>Check</value>
+  </data>
+  <data name="_Buttons_Confirm.Text" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="_Buttons_Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="_Buttons_Expand.Text" xml:space="preserve">
+    <value>Expand</value>
+  </data>
+  <data name="_Buttons_Install.Text" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="_Buttons_Next.Text" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="_Buttons_Refresh.Text" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="_Buttons_Remove.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="_Buttons_Search.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="_Buttons_SignIn.Text" xml:space="preserve">
+    <value>Sign in</value>
   </data>
 </root>

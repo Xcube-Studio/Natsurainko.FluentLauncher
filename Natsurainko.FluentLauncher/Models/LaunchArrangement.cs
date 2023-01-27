@@ -17,8 +17,6 @@ using Natsurainko.Toolkits.Network.Downloader;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
@@ -30,8 +28,8 @@ namespace Natsurainko.FluentLauncher.Models;
 
 public partial class LaunchArrangement : ObservableObject
 {
-    public LaunchArrangement(GameCore core) 
-    { 
+    public LaunchArrangement(GameCore core)
+    {
         this.LaunchSetting = core.GetLaunchSetting();
         this.GameCore = core;
     }
@@ -78,7 +76,7 @@ public partial class LaunchArrangement : ObservableObject
     public void Kill() => LaunchResponse.Stop();
 
     [RelayCommand]
-    public void Copy() 
+    public void Copy()
     {
         var dataPackage = new DataPackage();
         dataPackage.SetText(string.Join(' ', Arguments));
@@ -123,7 +121,7 @@ public partial class LaunchArrangement : ObservableObject
         window.Show();
     }
 
-    private void ReportState(string state) 
+    private void ReportState(string state)
         => App.MainWindow.DispatcherQueue.TryEnqueue(() => State = state);
 
     public static void StartNew(GameCore core) => Task.Run(async () =>
@@ -142,7 +140,7 @@ public partial class LaunchArrangement : ObservableObject
 
             GlobalActivitiesCache.LaunchArrangements.Insert(0, arrangement);
         });
-            
+
         var coreLocator = new GameCoreLocator(App.Configuration.CurrentGameFolder);
         var launcher = new MinecraftLauncher(arrangement.LaunchSetting, coreLocator);
         var resourceDownloader = new CrossProcessResourceDownloader();

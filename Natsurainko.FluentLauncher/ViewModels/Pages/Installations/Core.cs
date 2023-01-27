@@ -4,7 +4,6 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentCore.Model.Install;
 using Natsurainko.FluentCore.Model.Install.Vanilla;
-using Natsurainko.FluentCore.Module.Installer;
 using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Models;
 using System;
@@ -12,7 +11,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MinecraftVanlliaInstaller = Natsurainko.FluentCore.Module.Installer.MinecraftVanlliaInstaller;
@@ -21,7 +19,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.Pages.Installations;
 
 public partial class Core : ObservableObject
 {
-    public Core() 
+    public Core()
     {
         LoadCores();
     }
@@ -100,12 +98,12 @@ public partial class Core : ObservableObject
     {
         Task.Run(() =>
         {
-            App.MainWindow.DispatcherQueue.TryEnqueue(() => Loaders = new ());
+            App.MainWindow.DispatcherQueue.TryEnqueue(() => Loaders = new());
 
-            var loaderTypes = new ModLoaderType[] 
+            var loaderTypes = new ModLoaderType[]
             {
-                ModLoaderType.Forge, 
-                ModLoaderType.Fabric, 
+                ModLoaderType.Forge,
+                ModLoaderType.Fabric,
                 ModLoaderType.OptiFine,
                 ModLoaderType.Quilt
             };
@@ -119,7 +117,7 @@ public partial class Core : ObservableObject
         });
     }
 
-    public bool EnableInstall() 
+    public bool EnableInstall()
         => SelectedCoreManifestItem != null && !NameTipOpen;
 
     [RelayCommand]
@@ -148,10 +146,10 @@ public partial class Core : ObservableObject
 
         if (e.PropertyName == nameof(SelectedModLoader))
             BuildVisibility = SelectedModLoader?.SelectedBuild == null
-                ? Visibility.Collapsed 
+                ? Visibility.Collapsed
                 : Visibility.Visible;
 
-        if ((e.PropertyName == nameof(SelectedCoreManifestItem) || e.PropertyName == nameof(SelectedModLoader)) 
+        if ((e.PropertyName == nameof(SelectedCoreManifestItem) || e.PropertyName == nameof(SelectedModLoader))
             && SelectedCoreManifestItem != null)
         {
             if (SelectedModLoader?.SelectedBuild == null)

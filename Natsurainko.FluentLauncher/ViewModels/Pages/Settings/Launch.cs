@@ -12,7 +12,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.Globalization;
 using Windows.Storage.Pickers;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Pages.Settings;
@@ -85,7 +84,7 @@ public partial class Launch
     });
 
     [RelayCommand]
-    public void SearchJava() 
+    public void SearchJava()
     {
         JavaRuntimes.AddNotRepeating(JavaHelper.SearchJavaRuntime());
         CurrentJavaRuntime = JavaRuntimes.Any() ? JavaRuntimes[0] : null;

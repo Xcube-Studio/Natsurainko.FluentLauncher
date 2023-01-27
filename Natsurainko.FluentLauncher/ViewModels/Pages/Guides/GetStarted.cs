@@ -3,19 +3,12 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Pages.Guides;
 
 public partial class GetStarted : ObservableObject
 {
-    public GetStarted() 
+    public GetStarted()
     {
         WeakReferenceMessenger.Default.Send(new GuideNavigationMessage()
         {

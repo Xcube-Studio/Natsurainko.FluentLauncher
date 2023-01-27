@@ -3,20 +3,17 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentCore.Extension;
-using Natsurainko.FluentCore.Module.Launcher;
 using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Views.Dialogs;
 using Natsurainko.FluentLauncher.Views.Pages;
-using Natsurainko.Toolkits.Text;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Storage.Pickers;
@@ -27,7 +24,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.Pages;
 
 public partial class Cores : ObservableObject
 {
-    private static readonly Regex NameRegex = new("^[^/\\\\:\\*\\?\\<\\>\\|\"]{1,255}$");  
+    private static readonly Regex NameRegex = new("^[^/\\\\:\\*\\?\\<\\>\\|\"]{1,255}$");
 
     public Cores()
     {
@@ -61,7 +58,7 @@ public partial class Cores : ObservableObject
                 GameCores = new(cores);
 
                 seletedChangeable = true;
-                var current = GameCores.Where(x => x.Id == App.Configuration.CurrentGameCore).FirstOrDefault();
+                var current = GameCores.Where(x => x.Id == App.Configuration.CurrentGameCore).FirstOrDefault(cores.FirstOrDefault());
 
                 if (current == CurrentGameCore)
                     OnPropertyChanged(nameof(CurrentGameCore));
@@ -88,7 +85,7 @@ public partial class Cores : ObservableObject
         if (e.PropertyName == nameof(CurrentGameCore) && seletedChangeable)
             App.Configuration.CurrentGameCore = CurrentGameCore?.Id;
 
-        if (e.PropertyName == nameof(CurrentGameFolder) 
+        if (e.PropertyName == nameof(CurrentGameFolder)
             || e.PropertyName == nameof(Filter)
             || e.PropertyName == nameof(SortBy)
             || e.PropertyName == nameof(Search))
@@ -132,7 +129,7 @@ public partial class Cores : ObservableObject
 
         IEnumerable<GameCore> list = default;
 
-        list = SortBy == "Launch Date" 
+        list = SortBy == "Launch Date"
             ? filtered.OrderByDescending(x => x.CoreProfile.LastLaunchTime.GetValueOrDefault())
             : filtered.OrderBy(x => x.Id);
 
@@ -212,7 +209,7 @@ public partial class Cores
     }
 
     [RelayCommand(CanExecute = nameof(EnableFolderCommand))]
-    private void OpenInstall() 
+    private void OpenInstall()
     {
         App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
         {

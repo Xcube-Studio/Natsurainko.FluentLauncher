@@ -3,17 +3,13 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Media.Imaging;
 using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentCore.Model.Install;
 using Natsurainko.FluentCore.Module.Installer;
-using Natsurainko.FluentLauncher.Components.Mvvm;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Models;
@@ -21,7 +17,7 @@ namespace Natsurainko.FluentLauncher.Models;
 public partial class ModLoader : ObservableObject
 {
     public ModLoader(ModLoaderType type, string mcVerion)
-    { 
+    {
         Type = type;
         McVersion = mcVerion;
 
@@ -39,15 +35,15 @@ public partial class ModLoader : ObservableObject
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
                 Builds = builds.ToList();
-                SelectedBuild = builds.Any() 
+                SelectedBuild = builds.Any()
                     ? Builds[0] : null;
                 IsEnable = builds.Any();
 
-                UnsupportedVisibility = builds.Any() 
+                UnsupportedVisibility = builds.Any()
                     ? Visibility.Collapsed : Visibility.Visible;
                 SupportedVisibility = builds.Any()
                     ? Visibility.Visible : Visibility.Collapsed;
-            }); 
+            });
         });
     }
 
@@ -106,7 +102,7 @@ public partial class ModLoader : ObservableObject
 
         if (e.PropertyName == nameof(IsSelected))
             ComboBoxVisibility = IsSelected
-                ? Visibility.Visible 
+                ? Visibility.Visible
                 : Visibility.Collapsed;
 
     }

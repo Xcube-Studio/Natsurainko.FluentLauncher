@@ -7,13 +7,9 @@ using Natsurainko.Toolkits.Values;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Markup;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Pages.Mods;
 
@@ -35,7 +31,7 @@ public partial class CurseForge : ObservableObject
             App.MainWindow.DispatcherQueue.TryEnqueue(() => CurseForgeCategories = new(Categories));
 
             if (Versions == null)
-                Versions = new string[] { "All" } .Union(await CurseForgeApi.GetMinecraftVersions());
+                Versions = new string[] { "All" }.Union(await CurseForgeApi.GetMinecraftVersions());
 
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
@@ -52,7 +48,7 @@ public partial class CurseForge : ObservableObject
 
     public partial class Category : ObservableObject
     {
-        public Category(CurseForgeCategory category) 
+        public Category(CurseForgeCategory category)
         {
             Name = category.Name;
             Id = category.Id;
@@ -74,7 +70,7 @@ public partial class CurseForge : ObservableObject
                     res.Dispose();
                 });
             });
-        }   
+        }
 
         [ObservableProperty]
         private string name;

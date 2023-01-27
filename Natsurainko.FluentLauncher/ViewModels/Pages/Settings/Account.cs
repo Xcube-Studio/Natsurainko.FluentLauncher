@@ -8,9 +8,7 @@ using Natsurainko.FluentCore.Module.Authenticator;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Views.Dialogs;
 using Natsurainko.FluentLauncher.Views.Pages;
-using Natsurainko.FluentLauncher.Views.Pages.Settings;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -100,13 +98,13 @@ public partial class Account
 
             MainContainer.ShowMessagesAsync(
                 "Successfully refreshed Account",
-                $"Welcome back, {refreshedAccount.Name}", 
+                $"Welcome back, {refreshedAccount.Name}",
                 severity: InfoBarSeverity.Success);
         }
         catch (Exception ex)
         {
             MainContainer.ShowMessagesAsync(
-                "Failed to refresh account", 
+                "Failed to refresh account",
                 ex.ToString(),
                 severity: InfoBarSeverity.Error,
                 delay: 1000 * 15);

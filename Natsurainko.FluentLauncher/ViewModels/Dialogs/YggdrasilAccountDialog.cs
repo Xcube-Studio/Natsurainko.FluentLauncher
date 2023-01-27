@@ -5,11 +5,6 @@ using Natsurainko.FluentCore.Module.Authenticator;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Views.Pages;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
 

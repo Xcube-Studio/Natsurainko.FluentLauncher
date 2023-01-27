@@ -9,9 +9,7 @@ using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Views.Pages;
 using System;
 using System.ComponentModel;
-using System.Threading.Tasks;
 using System.Web;
-using Windows.UI.WebUI;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
 

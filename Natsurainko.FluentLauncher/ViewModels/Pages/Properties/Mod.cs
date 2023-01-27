@@ -2,15 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Components.FluentCore;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Markup;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Pages.Properties;
 

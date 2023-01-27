@@ -15,7 +15,7 @@ public partial class Launch : ObservableObject
     private List<LaunchArrangement> launchArrangements = GlobalActivitiesCache.LaunchArrangements;
 
     [ObservableProperty]
-    private Visibility tipVisibility = GlobalActivitiesCache.LaunchArrangements.Any() 
+    private Visibility tipVisibility = GlobalActivitiesCache.LaunchArrangements.Any()
         ? Visibility.Collapsed
         : Visibility.Visible;
 

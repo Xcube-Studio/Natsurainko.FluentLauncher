@@ -3,11 +3,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.Xaml.Interactivity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Components.Mvvm;
 
@@ -39,7 +35,7 @@ public class AncestorBindingBehavior : DependencyObject, IBehavior
         var targetProperty = GetDependencyProperty(this.AssociatedObject.GetType(), this.TargetPropertyName);
 
         if (source == null || targetProperty == null) { return; }
-            this.Binding.Source = source;
+        this.Binding.Source = source;
 
         ((FrameworkElement)this.AssociatedObject).SetBinding(targetProperty, this.Binding);
     }

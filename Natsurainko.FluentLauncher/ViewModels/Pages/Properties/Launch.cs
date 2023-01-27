@@ -2,16 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentCore.Model.Launch;
-using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GameCore = Natsurainko.FluentLauncher.Components.FluentCore.GameCore;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Pages.Properties;
@@ -20,7 +14,7 @@ public partial class Launch : ObservableObject
 {
     private bool isLoading = true;
 
-    public Launch(GameCore core) 
+    public Launch(GameCore core)
     {
         CoreProfile = core.CoreProfile;
 
@@ -33,7 +27,7 @@ public partial class Launch : ObservableObject
         Title = CoreProfile.LaunchSetting?.GameWindowSetting?.WindowTitle;
         ProfilePath = CoreProfile.FilePath;
         ServerAddress = (CoreProfile.LaunchSetting != null && CoreProfile.LaunchSetting.ServerSetting != null)
-            ? CoreProfile.LaunchSetting.ServerSetting.ToString() 
+            ? CoreProfile.LaunchSetting.ServerSetting.ToString()
             : null;
 
         PathVisibility = File.Exists(CoreProfile.FilePath)

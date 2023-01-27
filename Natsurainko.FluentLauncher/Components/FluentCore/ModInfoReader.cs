@@ -1,8 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Natsurainko.FluentCore.Model.Install;
-using Natsurainko.FluentCore.Model.Mod;
 using Natsurainko.Toolkits.IO;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -11,7 +9,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Tomlyn;
 using Tomlyn.Model;
 
@@ -75,7 +72,7 @@ public class ModInfoReader
         {
             ModLoaders = new ModLoaderType[] { ModLoaderType.Quilt },
             Authors = keyValuePairs["metadata"]["contributors"]
-                .ToObject<Dictionary<string,string>>()
+                .ToObject<Dictionary<string, string>>()
                 .Where(x => x.Value.Equals("Owner"))
                 .Select(x => x.Key),
             Name = keyValuePairs["metadata"]["name"].ToString(),

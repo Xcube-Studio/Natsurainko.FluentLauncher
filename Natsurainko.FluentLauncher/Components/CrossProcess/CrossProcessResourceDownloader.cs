@@ -1,12 +1,10 @@
 ﻿using Natsurainko.FluentCore.Interface;
-using Natsurainko.FluentCore.Model.Launch;
 using Natsurainko.Toolkits.Network.Downloader;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Components.CrossProcess;

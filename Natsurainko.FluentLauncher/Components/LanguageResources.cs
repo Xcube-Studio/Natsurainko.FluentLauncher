@@ -1,10 +1,6 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.Windows.AppLifecycle;
-using Natsurainko.FluentLauncher.Views.Pages;
+﻿using Microsoft.Windows.AppLifecycle;
 using Natsurainko.Toolkits.Text;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Windows.Globalization;
 
 namespace Natsurainko.FluentLauncher.Components;
@@ -26,7 +22,7 @@ public static class LanguageResources
 
     public static string HandleLaunchState(string message)
     {
-        var replaceDictionary = new Dictionary<string, string>() 
+        var replaceDictionary = new Dictionary<string, string>()
         {
             { "正在查找游戏核心","Finding Game Core" },
             { "正在补全游戏文件","Completing Game Assets" },

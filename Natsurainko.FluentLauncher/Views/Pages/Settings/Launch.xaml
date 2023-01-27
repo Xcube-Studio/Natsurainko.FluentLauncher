@@ -26,8 +26,11 @@
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Margin="2,0,0,0" Glyph="&#xe8b7;" />
                         <StackPanel Margin="17,12.5">
-                            <TextBlock Text=".minecraft Folder" />
-                            <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="Where to store the core of your game" />
+                            <TextBlock x:Uid="Settings_Launch_Header_1" Text=".minecraft Folder" />
+                            <TextBlock
+                                x:Uid="Settings_Launch_Subtitle_1"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Text="Where to store the core of your game" />
                         </StackPanel>
                     </StackPanel>
                 </Expander.Header>
@@ -40,7 +43,10 @@
                                     <ColumnDefinition Width="15" />
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock VerticalAlignment="Center" Text="Current .minecraft folder:" />
+                                <TextBlock
+                                    x:Uid="Settings_Launch_Item_1"
+                                    VerticalAlignment="Center"
+                                    Text="Current .minecraft folder:" />
                                 <ComboBox
                                     Grid.Column="2"
                                     HorizontalAlignment="Right"
@@ -59,14 +65,20 @@
                         <Border Style="{ThemeResource ExpanderSplitter}" />
                         <controls:ExpanderContentItem>
                             <Grid>
-                                <TextBlock VerticalAlignment="Center" Text="Open the .minecraft folder:" />
+                                <TextBlock
+                                    x:Uid="Settings_Launch_Item_2"
+                                    VerticalAlignment="Center"
+                                    Text="Open the .minecraft folder:" />
                                 <Button
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     Command="{Binding BrowserFolderCommand}">
                                     <StackPanel Orientation="Horizontal">
                                         <FontIcon FontSize="16" Glyph="&#xe838;" />
-                                        <TextBlock Margin="5,0,0,0" Text="Browse" />
+                                        <TextBlock
+                                            x:Uid="_Buttons_Browse"
+                                            Margin="5,0,0,0"
+                                            Text="Browse" />
                                     </StackPanel>
                                 </Button>
                             </Grid>
@@ -74,7 +86,10 @@
                         <Border Style="{ThemeResource ExpanderSplitter}" Visibility="{Binding RemoveFolderVisibility}" />
                         <controls:ExpanderContentItem Visibility="{Binding RemoveFolderVisibility}">
                             <Grid>
-                                <TextBlock VerticalAlignment="Center" Text="Remove the current .minecraft folder:" />
+                                <TextBlock
+                                    x:Uid="Settings_Launch_Item_3"
+                                    VerticalAlignment="Center"
+                                    Text="Remove the current .minecraft folder:" />
                                 <Button
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
@@ -88,6 +103,7 @@
                                             Foreground="White"
                                             Glyph="&#xe74d;" />
                                         <TextBlock
+                                            x:Uid="_Buttons_Remove"
                                             Margin="5,0,0,0"
                                             Foreground="White"
                                             Text="Remove" />
@@ -110,8 +126,11 @@
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Margin="2,0,0,0" Glyph="&#xe8f1;" />
                         <StackPanel Margin="17,12.5">
-                            <TextBlock Text="Java Runtime" />
-                            <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="Executable to launch the game" />
+                            <TextBlock x:Uid="Settings_Launch_Header_2" Text="Java Runtime" />
+                            <TextBlock
+                                x:Uid="Settings_Launch_Subtitle_2"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Text="Executable to launch the game" />
                         </StackPanel>
                     </StackPanel>
                 </Expander.Header>
@@ -124,7 +143,10 @@
                                     <ColumnDefinition Width="15" />
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock VerticalAlignment="Center" Text="Current Java runtime:" />
+                                <TextBlock
+                                    x:Uid="Settings_Launch_Item_4"
+                                    VerticalAlignment="Center"
+                                    Text="Current Java runtime:" />
                                 <ComboBox
                                     Grid.Column="2"
                                     HorizontalAlignment="Right"
@@ -147,7 +169,10 @@
                         <Border Style="{ThemeResource ExpanderSplitter}" />
                         <controls:ExpanderContentItem>
                             <Grid>
-                                <TextBlock VerticalAlignment="Center" Text="Open the Java runtime:" />
+                                <TextBlock
+                                    x:Uid="Settings_Launch_Item_5"
+                                    VerticalAlignment="Center"
+                                    Text="Open the Java runtime:" />
                                 <StackPanel
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
@@ -162,13 +187,19 @@
                                                     <SymbolIconSource Symbol="Find" />
                                                 </AnimatedIcon.FallbackIconSource>
                                             </AnimatedIcon>
-                                            <TextBlock Margin="5,0,0,0" Text="Search" />
+                                            <TextBlock
+                                                x:Uid="_Buttons_Search"
+                                                Margin="5,0,0,0"
+                                                Text="Search" />
                                         </StackPanel>
                                     </Button>
                                     <Button Margin="15,0,0,0" Command="{Binding BrowserJavaCommand}">
                                         <StackPanel Orientation="Horizontal">
                                             <FontIcon FontSize="16" Glyph="&#xe838;" />
-                                            <TextBlock Margin="5,0,0,0" Text="Browse" />
+                                            <TextBlock
+                                                x:Uid="_Buttons_Browse"
+                                                Margin="5,0,0,0"
+                                                Text="Browse" />
                                         </StackPanel>
                                     </Button>
                                 </StackPanel>
@@ -177,7 +208,10 @@
                         <Border Style="{ThemeResource ExpanderSplitter}" />
                         <controls:ExpanderContentItem>
                             <Grid>
-                                <TextBlock VerticalAlignment="Center" Text="Automatically select the suitable Java:" />
+                                <TextBlock
+                                    x:Uid="Settings_Launch_Item_6"
+                                    VerticalAlignment="Center"
+                                    Text="Automatically select the suitable Java:" />
                                 <ToggleSwitch
                                     Margin="-75,-25"
                                     Padding="0"
@@ -189,7 +223,10 @@
                         <Border Style="{ThemeResource ExpanderSplitter}" Visibility="{Binding RemoveJavaVisibility}" />
                         <controls:ExpanderContentItem Visibility="{Binding RemoveJavaVisibility}">
                             <Grid>
-                                <TextBlock VerticalAlignment="Center" Text="Remove the current Java runtime:" />
+                                <TextBlock
+                                    x:Uid="Settings_Launch_Item_7"
+                                    VerticalAlignment="Center"
+                                    Text="Remove the current Java runtime:" />
                                 <Button
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
@@ -203,6 +240,7 @@
                                             Foreground="White"
                                             Glyph="&#xe74d;" />
                                         <TextBlock
+                                            x:Uid="_Buttons_Remove"
                                             Margin="5,0,0,0"
                                             Foreground="White"
                                             Text="Remove" />
@@ -213,7 +251,10 @@
                         <Border Style="{ThemeResource ExpanderSplitter}" />
                         <controls:ExpanderContentItem>
                             <Grid>
-                                <TextBlock VerticalAlignment="Center" Text="JVM memory:" />
+                                <TextBlock
+                                    x:Uid="Settings_Launch_Item_8"
+                                    VerticalAlignment="Center"
+                                    Text="JVM memory:" />
                                 <NumberBox
                                     Width="100"
                                     HorizontalAlignment="Right"
@@ -225,7 +266,10 @@
                         <Border Style="{ThemeResource ExpanderSplitter}" />
                         <controls:ExpanderContentItem>
                             <Grid>
-                                <TextBlock VerticalAlignment="Center" Text="Automatically allocate JVM memory:" />
+                                <TextBlock
+                                    x:Uid="Settings_Launch_Item_9"
+                                    VerticalAlignment="Center"
+                                    Text="Automatically allocate JVM memory:" />
                                 <ToggleSwitch
                                     Margin="-75,-25"
                                     Padding="0"
@@ -248,8 +292,11 @@
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Margin="2,0,0,0" Glyph="&#xe737;" />
                         <StackPanel Margin="17,12.5">
-                            <TextBlock Text="Game Settings" />
-                            <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="Game play settings" />
+                            <TextBlock x:Uid="Settings_Launch_Header_3" Text="Game Settings" />
+                            <TextBlock
+                                x:Uid="Settings_Launch_Subtitle_3"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Text="Game play settings" />
                         </StackPanel>
                     </StackPanel>
                 </Expander.Header>
@@ -257,7 +304,10 @@
                     <StackPanel HorizontalAlignment="Stretch">
                         <controls:ExpanderContentItem>
                             <Grid>
-                                <TextBlock VerticalAlignment="Center" Text="Global core independent:" />
+                                <TextBlock
+                                    x:Uid="Settings_Launch_Item_10"
+                                    VerticalAlignment="Center"
+                                    Text="Global core independent:" />
                                 <ToggleSwitch
                                     Margin="-75,-25"
                                     Padding="0"
@@ -270,7 +320,10 @@
                         <Border Style="{ThemeResource ExpanderSplitter}" />
                         <controls:ExpanderContentItem>
                             <Grid>
-                                <TextBlock VerticalAlignment="Center" Text="Full screen mode:" />
+                                <TextBlock
+                                    x:Uid="Settings_Launch_Item_11"
+                                    VerticalAlignment="Center"
+                                    Text="Full screen mode:" />
                                 <ToggleSwitch
                                     Margin="-75,-25"
                                     Padding="0"
@@ -283,7 +336,10 @@
                         <Border Style="{ThemeResource ExpanderSplitter}" />
                         <controls:ExpanderContentItem>
                             <Grid>
-                                <TextBlock VerticalAlignment="Center" Text="Game window resolution:" />
+                                <TextBlock
+                                    x:Uid="Settings_Launch_Item_12"
+                                    VerticalAlignment="Center"
+                                    Text="Game window resolution:" />
                                 <StackPanel
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
@@ -314,7 +370,10 @@
                                     <ColumnDefinition Width="15" />
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock VerticalAlignment="Center" Text="Server address:" />
+                                <TextBlock
+                                    x:Uid="Settings_Launch_Item_13"
+                                    VerticalAlignment="Center"
+                                    Text="Server address:" />
                                 <TextBox
                                     Grid.Column="2"
                                     HorizontalAlignment="Stretch"
@@ -330,7 +389,10 @@
                                     <ColumnDefinition Width="15" />
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock VerticalAlignment="Center" Text="Game window title:" />
+                                <TextBlock
+                                    x:Uid="Settings_Launch_Item_14"
+                                    VerticalAlignment="Center"
+                                    Text="Game window title:" />
                                 <TextBox
                                     Grid.Column="2"
                                     HorizontalAlignment="Stretch"
@@ -354,7 +416,7 @@
                         <StackPanel Orientation="Horizontal">
                             <FontIcon Margin="18,0,0,0" Glyph="&#xf2b7;" />
                             <StackPanel Margin="17,12.5">
-                                <TextBlock Text="Language Settings" />
+                                <TextBlock x:Uid="Settings_Launch_Header_4" Text="Language Settings" />
                             </StackPanel>
                         </StackPanel>
                         <ComboBox

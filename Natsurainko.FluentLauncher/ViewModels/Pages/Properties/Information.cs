@@ -7,15 +7,13 @@ using Natsurainko.Toolkits.Values;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Pages.Properties;
 
 public partial class Information : ObservableObject
 {
-    public Information(GameCore core) 
-    { 
+    public Information(GameCore core)
+    {
         Core = core;
         core.LoadStatistic();
 
@@ -25,8 +23,8 @@ public partial class Information : ObservableObject
         ModLoaders = core.ModLoaders;
         LastLaunchTime = core.CoreProfile.LastLaunchTime;
 
-        TimeVisibility = LastLaunchTime == null 
-            ? Visibility.Collapsed 
+        TimeVisibility = LastLaunchTime == null
+            ? Visibility.Collapsed
             : Visibility.Visible;
 
         LoaderVisibility = ModLoaders.Any()

@@ -1,7 +1,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using System.Linq;
 using System;
+using System.Linq;
 
 namespace Natsurainko.FluentLauncher.Views.Pages;
 

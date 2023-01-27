@@ -10,7 +10,7 @@ public class MessageData
     public string Title { get; set; }
 
     public ButtonBase Button { get; set; }
-    
+
     public InfoBarSeverity Severity { get; set; }
 
     public bool Removed { get; set; }

@@ -1,5 +1,4 @@
-﻿using Accessibility;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -16,15 +15,12 @@ using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Views.Pages;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
-using Windows.Web.Http;
 
 namespace Natsurainko.FluentLauncher.Models;
 
@@ -96,10 +92,10 @@ public partial class InstallArrangement : DownloadArrangement
         GameCoreInstaller = installBuild.ModLoaderType switch
         {
             ModLoaderType.Forge => new MinecraftForgeInstaller(
-                gameCoreLocator, 
+                gameCoreLocator,
                 (ForgeInstallBuild)installBuild,
                 App.Configuration.CurrentJavaRuntime,
-                customId:customName),
+                customId: customName),
             ModLoaderType.Fabric => new MinecraftFabricInstaller(
                 gameCoreLocator,
                 (FabricInstallBuild)installBuild,
@@ -214,7 +210,7 @@ public partial class InstallArrangement : DownloadArrangement
                     };
                 }
 
-                MainContainer.ShowMessagesAsync($"Installed Core {CustomName} Successfully", 
+                MainContainer.ShowMessagesAsync($"Installed Core {CustomName} Successfully",
                     severity: InfoBarSeverity.Success);
                 GameCoreInstaller.ProgressChanged -= GameCoreInstaller_ProgressChanged;
 

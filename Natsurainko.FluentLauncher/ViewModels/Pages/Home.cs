@@ -26,7 +26,7 @@ public partial class Home : ObservableObject
                 App.MainWindow.DispatcherQueue.TryEnqueue(() =>
                 {
                     GameCores = new(cores);
-                    CurrentGameCore = GameCores.Where(x => x.Id == App.Configuration.CurrentGameCore).FirstOrDefault();
+                    CurrentGameCore = GameCores.Where(x => x.Id == App.Configuration.CurrentGameCore).FirstOrDefault(cores.FirstOrDefault());
                 });
             });
     }

@@ -150,14 +150,92 @@
   <data name="About_Statements_Content.Text" xml:space="preserve">
     <value>Minecraft 版权归 Mojang Studios 所有。 开发者对因使用本软件而引起的任何版权侵权不承担任何责任。</value>
   </data>
+  <data name="Cores_Install.Text" xml:space="preserve">
+    <value>安装新的核心</value>
+  </data>
+  <data name="Cores_Search.PlaceholderText" xml:space="preserve">
+    <value>搜索核心...</value>
+  </data>
+  <data name="Guide_Account_Accounts.Text" xml:space="preserve">
+    <value>账户</value>
+  </data>
+  <data name="Guide_Account_Login.Text" xml:space="preserve">
+    <value>登录 Microsoft 账户</value>
+  </data>
+  <data name="Guide_Account_Offline.Text" xml:space="preserve">
+    <value>没有 Microsoft 账户？</value>
+  </data>
+  <data name="Guide_Account_Para_1.Text" xml:space="preserve">
+    <value>您至少需要一个账号才能启动游戏</value>
+  </data>
+  <data name="Guide_Account_Para_2.Text" xml:space="preserve">
+    <value>只有 Microsoft 帐户才能进入在线服务器</value>
+  </data>
+  <data name="Guide_Account_Para_3.Text" xml:space="preserve">
+    <value>离线帐户无法通过服务器验证</value>
+  </data>
+  <data name="Guide_Account_Title.Text" xml:space="preserve">
+    <value>账户</value>
+  </data>
+  <data name="Guide_Account_Website.Text" xml:space="preserve">
+    <value>Minecraft 官方网站</value>
+  </data>
   <data name="Guide_Back.Content" xml:space="preserve">
     <value>上一步</value>
+  </data>
+  <data name="Guide_Basic_Folder.Text" xml:space="preserve">
+    <value>.minecraft 目录:</value>
+  </data>
+  <data name="Guide_Basic_Java.Text" xml:space="preserve">
+    <value>Java 运行时:</value>
+  </data>
+  <data name="Guide_Basic_Para_1.Text" xml:space="preserve">
+    <value>您至少需要一个 .minecraft 目录来存储您的游戏核心</value>
+  </data>
+  <data name="Guide_Basic_Para_2.Text" xml:space="preserve">
+    <value>您至少需要一个 Java 运行时来启动你的游戏核心</value>
+  </data>
+  <data name="Guide_Basic_Para_3.Text" xml:space="preserve">
+    <value>完成后，您还可以在全局游戏设置中修改这些设置</value>
+  </data>
+  <data name="Guide_Basic_Title.Text" xml:space="preserve">
+    <value>基础启动设置</value>
+  </data>
+  <data name="Guide_GetStarted_Description.Text" xml:space="preserve">
+    <value>您已完成所有基本设置</value>
+  </data>
+  <data name="Guide_GetStarted_Start.Content" xml:space="preserve">
+    <value>开始使用吧</value>
+  </data>
+  <data name="Guide_GetStarted_Title.Text" xml:space="preserve">
+    <value>大功告成</value>
+  </data>
+  <data name="Guide_Navigation_Account.Text" xml:space="preserve">
+    <value>账户</value>
+  </data>
+  <data name="Guide_Navigation_Basic.Text" xml:space="preserve">
+    <value>基础设置</value>
+  </data>
+  <data name="Guide_Navigation_GetStarted.Text" xml:space="preserve">
+    <value>开始使用</value>
+  </data>
+  <data name="Guide_Navigation_Language.Text" xml:space="preserve">
+    <value>语言</value>
   </data>
   <data name="Guide_Next.Content" xml:space="preserve">
     <value>下一步</value>
   </data>
   <data name="Guide_Welcome.Text" xml:space="preserve">
     <value>欢迎</value>
+  </data>
+  <data name="Home_Account.Text" xml:space="preserve">
+    <value>账户</value>
+  </data>
+  <data name="Home_ComboBox.PlaceholderText" xml:space="preserve">
+    <value>选择游戏核心</value>
+  </data>
+  <data name="Home_Launch.Text" xml:space="preserve">
+    <value>启动 Minecraft</value>
   </data>
   <data name="Navigation_Activities.Content" xml:space="preserve">
     <value>活动</value>
@@ -209,5 +287,146 @@
   </data>
   <data name="Navigation_Settings_Launch.Content" xml:space="preserve">
     <value>全局启动设置</value>
+  </data>
+  <data name="Settings_Account_Header.Text" xml:space="preserve">
+    <value>账户</value>
+  </data>
+  <data name="Settings_Account_Item_1.Text" xml:space="preserve">
+    <value>当前的账户:</value>
+  </data>
+  <data name="Settings_Account_Item_2.Text" xml:space="preserve">
+    <value>当前账户的详细信息:</value>
+  </data>
+  <data name="Settings_Account_Item_3.Text" xml:space="preserve">
+    <value>添加新的账户:</value>
+  </data>
+  <data name="Settings_Account_Item_4.Text" xml:space="preserve">
+    <value>移除当前账户:</value>
+  </data>
+  <data name="Settings_Account_Item_5.Text" xml:space="preserve">
+    <value>以 Demo 账户启动游戏:</value>
+  </data>
+  <data name="Settings_Account_Item_6.Text" xml:space="preserve">
+    <value>自动刷新账户: (每次启动之前)</value>
+  </data>
+  <data name="Settings_Account_Subtitle.Text" xml:space="preserve">
+    <value>游戏进入后的账户</value>
+  </data>
+  <data name="Settings_Download_Header.Text" xml:space="preserve">
+    <value>下载</value>
+  </data>
+  <data name="Settings_Download_Item_1.Text" xml:space="preserve">
+    <value>当前的下载源:</value>
+  </data>
+  <data name="Settings_Download_Item_2.Text" xml:space="preserve">
+    <value>最大下载线程数:</value>
+  </data>
+  <data name="Settings_Download_Item_3.Text" xml:space="preserve">
+    <value>启用大文件分片下载:</value>
+  </data>
+  <data name="Settings_Download_Subtitle.Text" xml:space="preserve">
+    <value>启动游戏时下载游戏资源的配置</value>
+  </data>
+  <data name="Settings_Launch_Header_1.Text" xml:space="preserve">
+    <value>.minecraft 目录</value>
+  </data>
+  <data name="Settings_Launch_Header_2.Text" xml:space="preserve">
+    <value>Java 运行时</value>
+  </data>
+  <data name="Settings_Launch_Header_3.Text" xml:space="preserve">
+    <value>游戏设置</value>
+  </data>
+  <data name="Settings_Launch_Header_4.Text" xml:space="preserve">
+    <value>语言设置</value>
+  </data>
+  <data name="Settings_Launch_Item_1.Text" xml:space="preserve">
+    <value>当前的 .minecraft 目录:</value>
+  </data>
+  <data name="Settings_Launch_Item_10.Text" xml:space="preserve">
+    <value>全局版本隔离:</value>
+  </data>
+  <data name="Settings_Launch_Item_11.Text" xml:space="preserve">
+    <value>全屏模式:</value>
+  </data>
+  <data name="Settings_Launch_Item_12.Text" xml:space="preserve">
+    <value>游戏窗口分辨率:</value>
+  </data>
+  <data name="Settings_Launch_Item_13.Text" xml:space="preserve">
+    <value>服务器地址:</value>
+  </data>
+  <data name="Settings_Launch_Item_14.Text" xml:space="preserve">
+    <value>游戏窗口标题:</value>
+  </data>
+  <data name="Settings_Launch_Item_2.Text" xml:space="preserve">
+    <value>打开 .minecraft 目录:</value>
+  </data>
+  <data name="Settings_Launch_Item_3.Text" xml:space="preserve">
+    <value>移除当前 .minecraft 目录:</value>
+  </data>
+  <data name="Settings_Launch_Item_4.Text" xml:space="preserve">
+    <value>当前的 Java 运行时:</value>
+  </data>
+  <data name="Settings_Launch_Item_5.Text" xml:space="preserve">
+    <value>打开 Java 运行时:</value>
+  </data>
+  <data name="Settings_Launch_Item_6.Text" xml:space="preserve">
+    <value>自动选择合适的 Java 运行时:</value>
+  </data>
+  <data name="Settings_Launch_Item_7.Text" xml:space="preserve">
+    <value>移除当前 Java 运行时:</value>
+  </data>
+  <data name="Settings_Launch_Item_8.Text" xml:space="preserve">
+    <value>JVM 内存:</value>
+  </data>
+  <data name="Settings_Launch_Item_9.Text" xml:space="preserve">
+    <value>自动分配 JVM 内存:</value>
+  </data>
+  <data name="Settings_Launch_Subtitle_1.Text" xml:space="preserve">
+    <value>储存你游戏核心的地方</value>
+  </data>
+  <data name="Settings_Launch_Subtitle_2.Text" xml:space="preserve">
+    <value>启动游戏的可执行文件</value>
+  </data>
+  <data name="Settings_Launch_Subtitle_3.Text" xml:space="preserve">
+    <value>游戏运行设置</value>
+  </data>
+  <data name="_Buttons_Back.Text" xml:space="preserve">
+    <value>上一步</value>
+  </data>
+  <data name="_Buttons_Browse.Text" xml:space="preserve">
+    <value>浏览</value>
+  </data>
+  <data name="_Buttons_Cancel.Text" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="_Buttons_Check.Text" xml:space="preserve">
+    <value>检查</value>
+  </data>
+  <data name="_Buttons_Confirm.Text" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="_Buttons_Delete.Text" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="_Buttons_Expand.Text" xml:space="preserve">
+    <value>展开</value>
+  </data>
+  <data name="_Buttons_Install.Text" xml:space="preserve">
+    <value>安装</value>
+  </data>
+  <data name="_Buttons_Next.Text" xml:space="preserve">
+    <value>下一步</value>
+  </data>
+  <data name="_Buttons_Refresh.Text" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="_Buttons_Remove.Text" xml:space="preserve">
+    <value>移除</value>
+  </data>
+  <data name="_Buttons_Search.Text" xml:space="preserve">
+    <value>搜索</value>
+  </data>
+  <data name="_Buttons_SignIn.Text" xml:space="preserve">
+    <value>登录</value>
   </data>
 </root>

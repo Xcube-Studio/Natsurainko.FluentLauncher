@@ -121,6 +121,7 @@
                 <ColumnDefinition MinWidth="210" MaxWidth="280" />
             </Grid.ColumnDefinitions>
             <AutoSuggestBox
+                x:Uid="Cores_Search"
                 Grid.Column="2"
                 Height="32"
                 HorizontalAlignment="Stretch"
@@ -147,6 +148,7 @@
                         <FontIcon FontSize="14" Glyph="&#xE710;" />
                         <TextBlock
                             x:Name="InstallButtonText"
+                            x:Uid="Cores_Install"
                             Margin="7.5,0,0,0"
                             FontSize="12"
                             Style="{ThemeResource BodyTextBlockStyle}"

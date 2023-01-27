@@ -20,6 +20,7 @@
 
         <StackPanel VerticalAlignment="Center">
             <TextBlock
+                x:Uid="Guide_Basic_Title"
                 Margin="20,0,0,0"
                 FontSize="22"
                 FontWeight="Bold"
@@ -41,7 +42,10 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                             <FontIcon Glyph="&#xe8b7;" />
-                            <TextBlock Margin="17,0" Text=".minecraft Folder:" />
+                            <TextBlock
+                                x:Uid="Guide_Basic_Folder"
+                                Margin="17,0"
+                                Text=".minecraft Folder:" />
                         </StackPanel>
                         <Grid
                             Grid.Column="2"
@@ -85,7 +89,10 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                             <FontIcon Glyph="&#xe8f1;" />
-                            <TextBlock Margin="17,0" Text="Java Runtimes" />
+                            <TextBlock
+                                x:Uid="Guide_Basic_Java"
+                                Margin="17,0"
+                                Text="Java Runtimes:" />
                         </StackPanel>
                         <Grid
                             Grid.Column="2"
@@ -129,6 +136,7 @@
                                     Style="{ThemeResource AccentButtonStyle}">
                                     <Button.Content>
                                         <TextBlock
+                                            x:Uid="_Buttons_Search"
                                             FontWeight="SemiBold"
                                             Foreground="White"
                                             Text="Search" />
@@ -147,13 +155,13 @@
             FontWeight="SemiBold"
             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
             <Paragraph>
-                <Run Text="You need at least a .minecraft directory to store your game cores" />
+                <Run x:Uid="Guide_Basic_Para_1" Text="You need at least a .minecraft directory to store your game cores" />
             </Paragraph>
             <Paragraph>
-                <Run Text="You need at least a Java Runtime to start your game core" />
+                <Run x:Uid="Guide_Basic_Para_2" Text="You need at least a Java Runtime to start your game core" />
             </Paragraph>
             <Paragraph Margin="0,25,0,0">
-                <Run Text="Once done, you can also modify these settings in the global game settings" />
+                <Run x:Uid="Guide_Basic_Para_3" Text="Once done, you can also modify these settings in the global game settings" />
             </Paragraph>
         </RichTextBlock>
     </Grid>

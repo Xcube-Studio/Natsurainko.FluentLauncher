@@ -18,24 +18,24 @@
             VerticalAlignment="Bottom"
             Orientation="Horizontal">
             <Button
-                x:Uid="Guide_Back"
                 Width="85"
                 Command="{Binding BackCommand}"
                 CommandParameter="{Binding ElementName=contentFrame}"
-                Content="Back"
                 FontWeight="SemiBold"
-                IsEnabled="{Binding ElementName=contentFrame, Path=CanGoBack}" />
+                IsEnabled="{Binding ElementName=contentFrame, Path=CanGoBack}">
+                <TextBlock x:Uid="_Buttons_Back" Text="Back" />
+            </Button>
             <Button
-                x:Uid="Guide_Next"
                 Width="85"
                 Margin="15,0,0,0"
                 Command="{Binding NextCommand}"
                 CommandParameter="{Binding ElementName=contentFrame}"
-                Content="Next"
                 FontWeight="SemiBold"
                 Foreground="White"
                 IsEnabled="{Binding CanNext}"
-                Style="{ThemeResource AccentButtonStyle}" />
+                Style="{ThemeResource AccentButtonStyle}">
+                <TextBlock x:Uid="_Buttons_Next" Text="Next" />
+            </Button>
         </StackPanel>
         <NavigationView
             x:Name="NavigationView"
@@ -46,7 +46,10 @@
             <NavigationView.MenuItems>
                 <NavigationViewItem IsSelected="True" Tag="Natsurainko.FluentLauncher.Views.Pages.Guides.Language">
                     <NavigationViewItem.Content>
-                        <TextBlock FontWeight="SemiBold" Text="Language" />
+                        <TextBlock
+                            x:Uid="Guide_Navigation_Language"
+                            FontWeight="SemiBold"
+                            Text="Language" />
                     </NavigationViewItem.Content>
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xf2b7;" />
@@ -57,7 +60,10 @@
                         <FontIcon Glyph="&#xe713;" />
                     </NavigationViewItem.Icon>
                     <NavigationViewItem.Content>
-                        <TextBlock FontWeight="SemiBold" Text="Basic Settings" />
+                        <TextBlock
+                            x:Uid="Guide_Navigation_Basic"
+                            FontWeight="SemiBold"
+                            Text="Basic Settings" />
                     </NavigationViewItem.Content>
                 </NavigationViewItem>
                 <NavigationViewItem Tag="Natsurainko.FluentLauncher.Views.Pages.Guides.Account">
@@ -65,7 +71,10 @@
                         <FontIcon Glyph="&#xe77b;" />
                     </NavigationViewItem.Icon>
                     <NavigationViewItem.Content>
-                        <TextBlock FontWeight="SemiBold" Text="Account" />
+                        <TextBlock
+                            x:Uid="Guide_Navigation_Account"
+                            FontWeight="SemiBold"
+                            Text="Account" />
                     </NavigationViewItem.Content>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
@@ -75,7 +84,10 @@
                         <FontIcon Glyph="&#xE736;" />
                     </NavigationViewItem.Icon>
                     <NavigationViewItem.Content>
-                        <TextBlock FontWeight="SemiBold" Text="Get Started" />
+                        <TextBlock
+                            x:Uid="Guide_Navigation_GetStarted"
+                            FontWeight="SemiBold"
+                            Text="Get Started" />
                     </NavigationViewItem.Content>
                 </NavigationViewItem>
             </NavigationView.FooterMenuItems>

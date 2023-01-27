@@ -2,21 +2,17 @@
 using Natsurainko.FluentCore.Model.Parser;
 using Natsurainko.FluentCore.Module.Parser;
 using Natsurainko.FluentLauncher.Models;
-using Natsurainko.Toolkits.Values;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Components.FluentCore;
 
 public class GameCoreParser : Natsurainko.FluentCore.Module.Parser.GameCoreParser
 {
-    public GameCoreParser(DirectoryInfo root, IEnumerable<VersionJsonEntity> jsonEntities) 
+    public GameCoreParser(DirectoryInfo root, IEnumerable<VersionJsonEntity> jsonEntities)
         : base(root, jsonEntities) { }
 
     public override IEnumerable<GameCore> GetGameCores()

@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Natsurainko.FluentCore.Interface;
-using Natsurainko.FluentCore.Module.Authenticator;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -99,96 +98,123 @@ public partial class Configuration : ObservableObject
 
 public partial class Configuration
 {
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private string currentGameCore;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private List<string> gameFolders;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private string currentGameFolder;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private List<string> javaRuntimes;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private string currentJavaRuntime;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private int javaVirtualMachineMemory;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private bool enableAutoMemory;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private bool enableAutoJava;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private string gameWindowTitle;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private int gameWindowWidth;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private int gameWindowHeight;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private string gameServerAddress;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private bool enableFullScreen;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private bool enableIndependencyCore;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private string currentLanguage;
 }
 
 public partial class Configuration
 {
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private List<IAccount> accounts;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private IAccount currentAccount;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private bool enableDemoUser;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private bool autoRefresh;
 }
 
 public partial class Configuration
 {
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private string currentDownloadSource;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private int? maxDownloadThreads;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private bool? enableFragmentDownload;
 }
 
 public partial class Configuration
 {
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private double appWindowWidth = 500;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private double appWindowHeight = 950;
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private bool finishGuide = false;
 }
 
 public partial class Configuration
 {
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private string coresSortBy = "Name";
 
-    [ObservableProperty] [JsonIgnore]
+    [ObservableProperty]
+    [JsonIgnore]
     private string coresFilter = "All";
 }

@@ -1,14 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Natsurainko.FluentCore.Model.Launch;
-using Natsurainko.FluentLauncher.Components.FluentCore;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GameCore = Natsurainko.FluentLauncher.Components.FluentCore.GameCore;
 
 namespace Natsurainko.FluentLauncher.Models;
@@ -53,6 +48,6 @@ public partial class CoreProfile : ObservableObject
     {
         base.OnPropertyChanged(e);
 
-        File.WriteAllText(FilePath, JsonConvert.SerializeObject(this, Formatting.Indented,new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore}));
+        File.WriteAllText(FilePath, JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
     }
 }

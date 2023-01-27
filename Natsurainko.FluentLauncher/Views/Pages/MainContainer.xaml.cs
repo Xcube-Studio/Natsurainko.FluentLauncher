@@ -1,3 +1,6 @@
+
+/* 项目“Natsurainko.FluentLauncher (SelfContained)”的未合并的更改
+在此之前:
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -5,13 +8,17 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+在此之后:
+using Microsoft.UI;
+*/
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+
+/* 项目“Natsurainko.FluentLauncher (SelfContained)”的未合并的更改
+在此之前:
 using Windows.ApplicationModel.Core;
 using Windows.Graphics;
 using WinUIEx;
@@ -20,9 +27,37 @@ using Natsurainko.FluentLauncher.Models;
 using Microsoft.UI;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentCore.Module.Installer;
-using System.Windows.Media.Media3D;
+在此之后:
+using Natsurainko.FluentCore.Module.Installer;
+using Natsurainko.FluentCore.Module.Mod;
+using Natsurainko.FluentLauncher.Components;
+using Natsurainko.FluentLauncher.Models;
+using System;
+using System.Collections.Generic;
+using System.FluentLauncher.Models;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
+*/
+using Natsurainko.FluentCore.Module.Mod;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+/* 项目“Natsurainko.FluentLauncher (SelfContained)”的未合并的更改
+在此之前:
 using Windows.UI;
 using Natsurainko.FluentCore.Module.Mod;
+在此之后:
+using Windows.ApplicationModel.Core;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+using Windows.Graphics;
+using Windows.UI;
+using WinUIEx;
+*/
+using Windows.Graphics;
 
 namespace Natsurainko.FluentLauncher.Views.Pages;
 
@@ -79,7 +114,7 @@ public sealed partial class MainContainer : Page
     private void Page_Loaded(object sender, RoutedEventArgs e)
     {
         _XamlRoot = XamlRoot;
-        
+
         App.MainWindow.SetTitleBar(AppTitleBar);
         contentFrame.Navigate(typeof(Home));
         CurseForgeApi.InitApiKey("$2a$10$Awb53b9gSOIJJkdV3Zrgp.CyFP.dI13QKbWn/4UZI4G4ff18WneB6");
@@ -105,7 +140,7 @@ public sealed partial class MainContainer : Page
         return null;
     }
 
-    private void Page_SizeChanged(object sender, SizeChangedEventArgs e) 
+    private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
     {
         RefreshDragArea();
 

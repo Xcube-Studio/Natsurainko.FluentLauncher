@@ -1,6 +1,5 @@
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.Views.Pages;
 using System;
 using System.IO;
 using Windows.ApplicationModel;
@@ -43,7 +42,7 @@ public sealed partial class MainWindow : WindowEx
                DarkFallbackColor = Colors.Black
            };
 
-        if (App.Configuration.FinishGuide) 
+        if (App.Configuration.FinishGuide)
             Frame.Navigate(typeof(Views.Pages.MainContainer));
         else Frame.Navigate(typeof(Views.Pages.Guides.Navigation));
     }

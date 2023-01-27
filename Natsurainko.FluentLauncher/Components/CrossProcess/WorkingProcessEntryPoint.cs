@@ -1,21 +1,9 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using Natsurainko.FluentCore.Interface;
-using Natsurainko.FluentCore.Model.Launch;
-using Natsurainko.FluentCore.Module.Downloader;
+﻿using Natsurainko.FluentCore.Module.Downloader;
 using Natsurainko.FluentCore.Module.Launcher;
 using Natsurainko.FluentCore.Service;
-using Natsurainko.Toolkits.Network.Downloader;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.CommandLine;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.StartScreen;
 
 namespace Natsurainko.FluentLauncher.Components.CrossProcess;
 

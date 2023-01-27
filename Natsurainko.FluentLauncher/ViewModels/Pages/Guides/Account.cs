@@ -7,20 +7,15 @@ using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.ViewModels.Dialogs;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Windows.UI.ApplicationSettings;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Pages.Guides;
 
 public partial class Account : SettingViewModel
 {
-    public Account() : base() 
+    public Account() : base()
     {
         OnPropertyChanged("CanNext");
     }

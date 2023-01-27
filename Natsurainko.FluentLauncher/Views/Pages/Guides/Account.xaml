@@ -20,6 +20,7 @@
 
         <StackPanel Grid.Column="2" VerticalAlignment="Center">
             <TextBlock
+                x:Uid="Guide_Account_Title"
                 Margin="20,0,0,0"
                 FontSize="22"
                 FontWeight="Bold"
@@ -41,7 +42,10 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                             <FontIcon Glyph="&#xe77b;" />
-                            <TextBlock Margin="17,0" Text="Accounts:" />
+                            <TextBlock
+                                x:Uid="Guide_Account_Accounts"
+                                Margin="17,0"
+                                Text="Accounts:" />
                         </StackPanel>
                         <Grid
                             Grid.Column="2"
@@ -74,7 +78,7 @@
                                 Command="{Binding LoginCommand}"
                                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
                                 Style="{ThemeResource AccentButtonStyle}">
-                                <TextBlock Text="Login Microsoft Account" />
+                                <TextBlock x:Uid="Guide_Account_Login" Text="Login Microsoft Account" />
                             </Button>
                         </Grid>
                     </Grid>
@@ -86,10 +90,16 @@
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
                         <HyperlinkButton Grid.Column="2" NavigateUri="https://www.minecraft.net/zh-hans">
-                            <TextBlock Text="Minecraft Official Website" TextTrimming="CharacterEllipsis" />
+                            <TextBlock
+                                x:Uid="Guide_Account_Website"
+                                Text="Minecraft Official Website"
+                                TextTrimming="CharacterEllipsis" />
                         </HyperlinkButton>
                         <HyperlinkButton Command="{Binding OfflineLoginCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
-                            <TextBlock Text="Don't have a Microsoft account?" TextTrimming="CharacterEllipsis" />
+                            <TextBlock
+                                x:Uid="Guide_Account_Offline"
+                                Text="Don't have a Microsoft account?"
+                                TextTrimming="CharacterEllipsis" />
                         </HyperlinkButton>
                     </Grid>
                 </StackPanel>
@@ -101,13 +111,13 @@
             FontWeight="SemiBold"
             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
             <Paragraph>
-                <Run Text="You need at least one account to start the game" />
+                <Run x:Uid="Guide_Account_Para_1" Text="You need at least one account to start the game" />
             </Paragraph>
             <Paragraph>
-                <Run Text="Access to online servers is only possible with a Microsoft account" />
+                <Run x:Uid="Guide_Account_Para_2" Text="Access to online servers is only possible with a Microsoft account" />
             </Paragraph>
             <Paragraph Margin="0,25,0,0">
-                <Run Text="Offline accounts will not be verified by the server" />
+                <Run x:Uid="Guide_Account_Para_3" Text="Offline accounts will not be verified by the server" />
             </Paragraph>
         </RichTextBlock>
     </Grid>

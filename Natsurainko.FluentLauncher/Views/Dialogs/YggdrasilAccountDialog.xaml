@@ -45,15 +45,17 @@
                 Background="{ThemeResource SystemAccentColor}"
                 Command="{Binding ConfirmCommand}"
                 CommandParameter="{Binding ElementName=Dialog}"
-                Content="Confirm"
                 Foreground="White"
-                Style="{ThemeResource AccentButtonStyle}" />
+                Style="{ThemeResource AccentButtonStyle}">
+                <TextBlock x:Uid="_Buttons_Confirm" Text="Confirm" />
+            </Button>
             <Button
                 Width="75"
                 Margin="15,0,0,0"
                 Command="{Binding CancelCommand}"
-                CommandParameter="{Binding ElementName=Dialog}"
-                Content="Cancel" />
+                CommandParameter="{Binding ElementName=Dialog}">
+                <TextBlock x:Uid="_Buttons_Cancel" Text="Cancel" />
+            </Button>
         </StackPanel>
     </Grid>
 </ContentDialog>

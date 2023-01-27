@@ -4,15 +4,13 @@ using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Pages.Activities;
 
 public partial class News : ObservableObject
 {
-    public News() 
+    public News()
     {
         Loading = Visibility.Visible;
 

@@ -352,6 +352,7 @@
                 <NavigationViewItem
                     x:Uid="Navigation_Options_Saves"
                     Content="Saves"
+                    IsEnabled="False"
                     Tag="Natsurainko.FluentLauncher.Views.Pages.Properties.Save">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe81e;" />

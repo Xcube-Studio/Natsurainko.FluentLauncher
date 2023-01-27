@@ -1,11 +1,14 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+
+/* 项目“Natsurainko.FluentLauncher (SelfContained)”的未合并的更改
+在此之前:
 using Newtonsoft.Json;
+在此之后:
+using Newtonsoft.Json.Linq;
+*/
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Components;
 

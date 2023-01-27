@@ -1,21 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentCore.Model.Launch;
 using Natsurainko.FluentLauncher.Models;
-using Natsurainko.FluentLauncher.Views.Pages;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Pages;
 
 public partial class Logger : ObservableObject
 {
-    public Logger(List<GameProcessOutput> processOutputs,LaunchResponse launchResponse, Views.Pages.Logger view) 
+    public Logger(List<GameProcessOutput> processOutputs, LaunchResponse launchResponse, Views.Pages.Logger view)
     {
         View = view;
 

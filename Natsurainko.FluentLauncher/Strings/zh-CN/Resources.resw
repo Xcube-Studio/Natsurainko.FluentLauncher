@@ -156,6 +156,27 @@
   <data name="Cores_Search.PlaceholderText" xml:space="preserve">
     <value>搜索核心...</value>
   </data>
+  <data name="Cores_ToolTip_1.Text" xml:space="preserve">
+    <value>打开目录</value>
+  </data>
+  <data name="Cores_ToolTip_2.Text" xml:space="preserve">
+    <value>重命名</value>
+  </data>
+  <data name="Cores_ToolTip_3.Text" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="Cores_ToolTip_4.Text" xml:space="preserve">
+    <value>生成启动脚本</value>
+  </data>
+  <data name="Cores_ToolTip_5.Text" xml:space="preserve">
+    <value>选项</value>
+  </data>
+  <data name="Cores_ToolTip_6.Text" xml:space="preserve">
+    <value>更多</value>
+  </data>
+  <data name="Cores_ToolTip_7.Text" xml:space="preserve">
+    <value>启动</value>
+  </data>
   <data name="Guide_Account_Accounts.Text" xml:space="preserve">
     <value>账户</value>
   </data>
@@ -287,6 +308,42 @@
   </data>
   <data name="Navigation_Settings_Launch.Content" xml:space="preserve">
     <value>全局启动设置</value>
+  </data>
+  <data name="Properties_Information_Header.Text" xml:space="preserve">
+    <value>属性</value>
+  </data>
+  <data name="Properties_Information_Item_1.Text" xml:space="preserve">
+    <value>路径:</value>
+  </data>
+  <data name="Properties_Information_Item_2.Text" xml:space="preserve">
+    <value>最后一次启动时间:</value>
+  </data>
+  <data name="Properties_Information_Item_3.Text" xml:space="preserve">
+    <value>模组加载器:</value>
+  </data>
+  <data name="Properties_Information_Item_4.Text" xml:space="preserve">
+    <value>占用的磁盘空间:</value>
+  </data>
+  <data name="Properties_Information_Item_5.Text" xml:space="preserve">
+    <value>依赖的库文件数量:</value>
+  </data>
+  <data name="Properties_Information_Item_6.Text" xml:space="preserve">
+    <value>依赖的资源文件数量:</value>
+  </data>
+  <data name="Properties_Information_Subtitle.Text" xml:space="preserve">
+    <value>核心基本属性</value>
+  </data>
+  <data name="Properties_Launch_Header_1.Text" xml:space="preserve">
+    <value>配置保存到:</value>
+  </data>
+  <data name="Properties_Launch_Header_2.Text" xml:space="preserve">
+    <value>启用特定游戏设置</value>
+  </data>
+  <data name="Properties_Launch_Item.Text" xml:space="preserve">
+    <value>版本隔离:</value>
+  </data>
+  <data name="Properties_Mod_Header.Text" xml:space="preserve">
+    <value>模组文件夹:</value>
   </data>
   <data name="Settings_Account_Header.Text" xml:space="preserve">
     <value>账户</value>
@@ -423,10 +480,19 @@
   <data name="_Buttons_Remove.Text" xml:space="preserve">
     <value>移除</value>
   </data>
+  <data name="_Buttons_Rename.Text" xml:space="preserve">
+    <value>重命名</value>
+  </data>
   <data name="_Buttons_Search.Text" xml:space="preserve">
     <value>搜索</value>
   </data>
   <data name="_Buttons_SignIn.Text" xml:space="preserve">
     <value>登录</value>
+  </data>
+  <data name="_TeachingTips_Delete.Subtitle" xml:space="preserve">
+    <value>您确定你要删除吗? 删除后将无法恢复</value>
+  </data>
+  <data name="_TeachingTips_Rename.Subtitle" xml:space="preserve">
+    <value>请输入一个有效的名字</value>
   </data>
 </root>

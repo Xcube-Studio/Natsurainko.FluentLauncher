@@ -43,8 +43,9 @@ public sealed partial class Cores : Page
             for (int i = 0; i < visible; i++)
             {
                 others[i].Visibility = Visibility.Visible;
+                var text = ToolTipService.GetToolTip(others[i]) as TextBlock;
 
-                menuFlyout.Items.Where(x => x.Tag.Equals(ToolTipService.GetToolTip(others[i]).ToString()))
+                menuFlyout.Items.Where(x => x.Tag.Equals(text.Text))
                     .ToList().ForEach(x => menuFlyout.Items.Remove(x));
             }
 
@@ -53,16 +54,17 @@ public sealed partial class Cores : Page
             for (int i = 0; i < others.Count - visible; i++)
             {
                 others[i].Visibility = Visibility.Collapsed;
+                var text = ToolTipService.GetToolTip(others[i]) as TextBlock;
 
-                if (!menuFlyout.Items.Where(x => x.Tag.Equals(ToolTipService.GetToolTip(others[i]).ToString())).Any())
+                if (!menuFlyout.Items.Where(x => x.Tag.Equals(text.Text)).Any())
                 {
                     var icon = (others[i] as Button).Content as FontIcon;
 
                     menuFlyout.Items.Insert(0, new MenuFlyoutItem
                     {
                         Icon = new FontIcon() { Glyph = icon.Glyph, FontSize = icon.FontSize },
-                        Text = ToolTipService.GetToolTip(others[i]).ToString(),
-                        Tag = ToolTipService.GetToolTip(others[i]).ToString(),
+                        Text = text.Text,
+                        Tag = text.Text,
                         Command = (others[i] as Button).Command,
                         CommandParameter = (others[i] as Button).CommandParameter
                     });

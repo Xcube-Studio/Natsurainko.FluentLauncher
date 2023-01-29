@@ -1,5 +1,7 @@
 using Microsoft.UI;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Natsurainko.FluentLauncher.Components;
 using System;
 using System.IO;
 using Windows.ApplicationModel;
@@ -13,7 +15,8 @@ public sealed partial class MainWindow : WindowEx
     public MainWindow()
     {
 #if !MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
-        ApplicationLanguages.PrimaryLanguageOverride = App.Configuration.CurrentLanguage.Split(',')[0];
+        if (string.IsNullOrEmpty(ApplicationLanguages.PrimaryLanguageOverride))
+            LanguageResources.ApplyLanguage(App.Configuration.CurrentLanguage);
 #endif
 
         InitializeComponent();

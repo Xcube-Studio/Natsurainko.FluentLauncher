@@ -32,7 +32,10 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                             <FontIcon Glyph="&#xe8b7;" />
-                            <TextBlock Margin="17,0" Text="Mods Folder:" />
+                            <TextBlock
+                                x:Uid="Properties_Mod_Header"
+                                Margin="17,0"
+                                Text="Mods Folder:" />
                         </StackPanel>
                         <HyperlinkButton
                             Grid.Column="1"
@@ -170,6 +173,8 @@
                                                 ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
                                             <Grid Grid.Row="1">
                                                 <TextBlock
+                                                    MaxWidth="375"
+                                                    HorizontalAlignment="Left"
                                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                                     TextTrimming="CharacterEllipsis"
                                                     ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}">
@@ -219,7 +224,6 @@
                                     </Grid>
                                 </Grid>
                             </Border>
-
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -246,9 +250,9 @@
         </StackPanel>
 
         <TeachingTip
+            x:Uid="_TeachingTips_Delete"
             ActionButtonCommand="{Binding DeleteCommand}"
             ActionButtonCommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag}"
-            CloseButtonContent="Cancel"
             IsOpen="{Binding DeleteIsOpen, Mode=TwoWay}"
             PreferredPlacement="Auto"
             Subtitle="Are you sure you want to delete? Once deleted it cannot be restored"
@@ -277,12 +281,15 @@
                         Foreground="White"
                         Glyph="&#xe74d;" />
                     <TextBlock
+                        x:Uid="_Buttons_Delete"
                         Margin="5,0,0,0"
                         Foreground="White"
                         Text="Delete" />
                 </StackPanel>
             </TeachingTip.ActionButtonContent>
+            <TeachingTip.CloseButtonContent>
+                <TextBlock x:Uid="_Buttons_Cancel" Text="Cancel" />
+            </TeachingTip.CloseButtonContent>
         </TeachingTip>
-
     </Grid>
 </Page>

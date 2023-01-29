@@ -118,384 +118,381 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About_Acknowledgments.Text" xml:space="preserve">
-    <value>Acknowledgments</value>
+    <value>鳴謝</value>
   </data>
   <data name="About_Acknowledgments_Content.Text" xml:space="preserve">
-    <value>Thanks for all the services provided to this app</value>
+    <value>感謝所有為本應用提供的服務</value>
   </data>
   <data name="About_CheckUpdate.Text" xml:space="preserve">
-    <value>Check Updates in the Microsoft Store</value>
+    <value></value>
   </data>
   <data name="About_Developer_Tag.Text" xml:space="preserve">
-    <value>the Developer of this Application</value>
+    <value>本應用的開發者</value>
   </data>
   <data name="About_ProvideDownloadSource.Text" xml:space="preserve">
-    <value>Provide Download Source</value>
+    <value>提供下載源</value>
   </data>
   <data name="About_References.Text" xml:space="preserve">
-    <value>References</value>
+    <value>引用</value>
   </data>
   <data name="About_References_Content.Text" xml:space="preserve">
-    <value>Libraries used for this application development</value>
+    <value>本應用引用的庫</value>
   </data>
   <data name="About_Sources.Text" xml:space="preserve">
-    <value>Sources</value>
+    <value>開源</value>
   </data>
   <data name="About_Sources_Content.Text" xml:space="preserve">
-    <value>Navigate to the GitHub repository</value>
+    <value>轉到 GitHub 倉庫</value>
   </data>
   <data name="About_Statements.Text" xml:space="preserve">
-    <value>Statements</value>
+    <value>聲明</value>
   </data>
   <data name="About_Statements_Content.Text" xml:space="preserve">
-    <value>Minecraft is copyrighted by Mojang Studios. We are not responsible for any copyright infringement arising from use of this software.</value>
+    <value>Minecraft 版權歸 Mojang Studios 所有。 開發者對因使用本應用而引起的任何版權糾紛不承擔任何責任。</value>
   </data>
   <data name="Cores_Install.Text" xml:space="preserve">
-    <value>Install New Core</value>
+    <value>安裝新的核心</value>
   </data>
   <data name="Cores_Search.PlaceholderText" xml:space="preserve">
-    <value>Search Core...</value>
+    <value>搜尋核心...</value>
   </data>
   <data name="Cores_ToolTip_1.Text" xml:space="preserve">
-    <value>Open Folder</value>
+    <value>打開目錄</value>
   </data>
   <data name="Cores_ToolTip_2.Text" xml:space="preserve">
-    <value>Rename</value>
+    <value>重命名</value>
   </data>
   <data name="Cores_ToolTip_3.Text" xml:space="preserve">
-    <value>Delete</value>
+    <value>刪除</value>
   </data>
   <data name="Cores_ToolTip_4.Text" xml:space="preserve">
-    <value>Generate Launch Script</value>
+    <value>生成啟動腳本</value>
   </data>
   <data name="Cores_ToolTip_5.Text" xml:space="preserve">
-    <value>Options</value>
+    <value>選項</value>
   </data>
   <data name="Cores_ToolTip_6.Text" xml:space="preserve">
-    <value>More</value>
+    <value>更多</value>
   </data>
   <data name="Cores_ToolTip_7.Text" xml:space="preserve">
-    <value>Launch</value>
+    <value>啟動</value>
   </data>
   <data name="Guide_Account_Accounts.Text" xml:space="preserve">
-    <value>Accounts</value>
+    <value>賬戶</value>
   </data>
   <data name="Guide_Account_Login.Text" xml:space="preserve">
-    <value>Login Microsoft Account</value>
+    <value>登錄 Microsoft 賬戶</value>
   </data>
   <data name="Guide_Account_Offline.Text" xml:space="preserve">
-    <value>Don't have a Microsoft account?</value>
+    <value>沒有 Microsoft 賬戶？</value>
   </data>
   <data name="Guide_Account_Para_1.Text" xml:space="preserve">
-    <value>You need at least one account to start the game</value>
+    <value>您至少需要一個賬戶才能啟動遊戲</value>
   </data>
   <data name="Guide_Account_Para_2.Text" xml:space="preserve">
-    <value>Access to online servers is only possible with a Microsoft account</value>
+    <value>只有 Microsoft 賬戶才能進入在線伺服器</value>
   </data>
   <data name="Guide_Account_Para_3.Text" xml:space="preserve">
-    <value>Offline accounts will not be verified by the server</value>
+    <value>離線賬戶無法通過伺服器驗證</value>
   </data>
   <data name="Guide_Account_Title.Text" xml:space="preserve">
-    <value>Account</value>
+    <value>賬戶</value>
   </data>
   <data name="Guide_Account_Website.Text" xml:space="preserve">
-    <value>Minecraft Official Website</value>
+    <value>Minecraft 官方網站</value>
   </data>
   <data name="Guide_Back.Content" xml:space="preserve">
-    <value>Back</value>
+    <value>上一步</value>
   </data>
   <data name="Guide_Basic_Folder.Text" xml:space="preserve">
-    <value>.minecraft Folder:</value>
+    <value>.minecraft 目錄:</value>
   </data>
   <data name="Guide_Basic_Java.Text" xml:space="preserve">
-    <value>Java Runtimes:</value>
+    <value>Java Runtime:</value>
   </data>
   <data name="Guide_Basic_Para_1.Text" xml:space="preserve">
-    <value>You need at least a .minecraft directory to store your game cores</value>
+    <value>您至少需要一個 .minecraft 目錄來儲存您的遊戲核心</value>
   </data>
   <data name="Guide_Basic_Para_2.Text" xml:space="preserve">
-    <value>You need at least a Java Runtime to start your game core</value>
+    <value>您至少需要一個 Java Runtime 來啟動您的遊戲核心</value>
   </data>
   <data name="Guide_Basic_Para_3.Text" xml:space="preserve">
-    <value>Once done, you can also modify these settings in the global game settings</value>
+    <value>完成後，您還可以在全局遊戲設置中修改這些選項</value>
   </data>
   <data name="Guide_Basic_Title.Text" xml:space="preserve">
-    <value>Basic Launch Settings</value>
+    <value>基礎啟動設置</value>
   </data>
   <data name="Guide_GetStarted_Description.Text" xml:space="preserve">
-    <value>You have all the basic settings done</value>
+    <value>您已完成所有基礎設置</value>
   </data>
   <data name="Guide_GetStarted_Start.Content" xml:space="preserve">
-    <value>Let's Get Started</value>
+    <value>開始使用吧</value>
   </data>
   <data name="Guide_GetStarted_Title.Text" xml:space="preserve">
-    <value>All Finished</value>
+    <value>大功告成</value>
   </data>
   <data name="Guide_Navigation_Account.Text" xml:space="preserve">
-    <value>Account</value>
+    <value>賬戶</value>
   </data>
   <data name="Guide_Navigation_Basic.Text" xml:space="preserve">
-    <value>Basic Settings</value>
+    <value>基礎設置</value>
   </data>
   <data name="Guide_Navigation_GetStarted.Text" xml:space="preserve">
-    <value>Get Started</value>
+    <value>開始使用</value>
   </data>
   <data name="Guide_Navigation_Language.Text" xml:space="preserve">
-    <value>Language</value>
+    <value>語言</value>
   </data>
   <data name="Guide_Next.Content" xml:space="preserve">
-    <value>Next</value>
+    <value>下一步</value>
   </data>
   <data name="Guide_Welcome.Text" xml:space="preserve">
-    <value>Welcome</value>
+    <value>歡迎</value>
   </data>
   <data name="Home_Account.Text" xml:space="preserve">
-    <value>Account</value>
+    <value>賬戶</value>
   </data>
   <data name="Home_ComboBox.PlaceholderText" xml:space="preserve">
-    <value>Select Game Core</value>
+    <value>選擇遊戲核心</value>
   </data>
   <data name="Home_Launch.Text" xml:space="preserve">
-    <value>Launch Minecraft</value>
-  </data>
-  <data name="Home_NoAccount.Text" xml:space="preserve">
-    <value>No Account</value>
+    <value>啟動 Minecraft</value>
   </data>
   <data name="Navigation_Activities.Content" xml:space="preserve">
-    <value>Activities</value>
+    <value>活動</value>
   </data>
   <data name="Navigation_Activities_Application.Content" xml:space="preserve">
-    <value>Application</value>
+    <value>應用</value>
   </data>
   <data name="Navigation_Activities_Download.Content" xml:space="preserve">
-    <value>Download Task</value>
+    <value>下載任務</value>
   </data>
   <data name="Navigation_Activities_Launch.Content" xml:space="preserve">
-    <value>Launch Task</value>
+    <value>啟動任務</value>
   </data>
   <data name="Navigation_Activities_News.Content" xml:space="preserve">
-    <value>News</value>
+    <value>新聞</value>
   </data>
   <data name="Navigation_Cores.Content" xml:space="preserve">
-    <value>Cores</value>
+    <value>核心</value>
   </data>
   <data name="Navigation_Home.Content" xml:space="preserve">
-    <value>Home</value>
+    <value>主頁</value>
   </data>
   <data name="Navigation_Mods.Content" xml:space="preserve">
-    <value>Mods</value>
+    <value>模組</value>
   </data>
   <data name="Navigation_Options_Launch.Content" xml:space="preserve">
-    <value>Launch Settings</value>
+    <value>啟動設置</value>
   </data>
   <data name="Navigation_Options_Mods.Content" xml:space="preserve">
-    <value>Mods</value>
+    <value>模組</value>
   </data>
   <data name="Navigation_Options_Property.Text" xml:space="preserve">
-    <value>Property</value>
+    <value>屬性</value>
   </data>
   <data name="Navigation_Options_Saves.Content" xml:space="preserve">
-    <value>Saves</value>
+    <value>存檔</value>
   </data>
   <data name="Navigation_Settings.Content" xml:space="preserve">
-    <value>Settings</value>
+    <value>設置</value>
   </data>
   <data name="Navigation_Settings_About.Content" xml:space="preserve">
-    <value>About</value>
+    <value>關於</value>
   </data>
   <data name="Navigation_Settings_Account.Content" xml:space="preserve">
-    <value>Account Settings</value>
+    <value>賬戶設置</value>
   </data>
   <data name="Navigation_Settings_Download.Content" xml:space="preserve">
-    <value>Download Settings</value>
+    <value>下載設置</value>
   </data>
   <data name="Navigation_Settings_Launch.Content" xml:space="preserve">
-    <value>Global Launch Settings</value>
+    <value>全局啟動設置</value>
   </data>
   <data name="Properties_Information_Header.Text" xml:space="preserve">
-    <value>Property</value>
+    <value>屬性</value>
   </data>
   <data name="Properties_Information_Item_1.Text" xml:space="preserve">
-    <value>Path:</value>
+    <value>路徑:</value>
   </data>
   <data name="Properties_Information_Item_2.Text" xml:space="preserve">
-    <value>Last launch time:</value>
+    <value>最後一次啟動時間:</value>
   </data>
   <data name="Properties_Information_Item_3.Text" xml:space="preserve">
-    <value>Mod Loaders:</value>
+    <value>模組加載器:</value>
   </data>
   <data name="Properties_Information_Item_4.Text" xml:space="preserve">
-    <value>Occupied disk space size:</value>
+    <value>佔用的磁碟空間:</value>
   </data>
   <data name="Properties_Information_Item_5.Text" xml:space="preserve">
-    <value>Number of dependent library files:</value>
+    <value>依賴的庫檔案數量:</value>
   </data>
   <data name="Properties_Information_Item_6.Text" xml:space="preserve">
-    <value>Number of dependent asset files:</value>
+    <value>依賴的資源檔數量:</value>
   </data>
   <data name="Properties_Information_Subtitle.Text" xml:space="preserve">
-    <value>Basic properties of the core</value>
+    <value>核心基本屬性</value>
   </data>
   <data name="Properties_Launch_Header_1.Text" xml:space="preserve">
-    <value>Profile saved to:</value>
+    <value>配置存儲到:</value>
   </data>
   <data name="Properties_Launch_Header_2.Text" xml:space="preserve">
-    <value>Enable spcific game settings</value>
+    <value>啟用特定遊戲設置</value>
   </data>
   <data name="Properties_Launch_Item.Text" xml:space="preserve">
-    <value>Core independent:</value>
+    <value>版本隔離:</value>
   </data>
   <data name="Properties_Mod_Header.Text" xml:space="preserve">
-    <value>Mods Folder:</value>
+    <value>模組資料夾:</value>
   </data>
   <data name="Settings_Account_Header.Text" xml:space="preserve">
-    <value>Accounts</value>
+    <value>賬戶</value>
   </data>
   <data name="Settings_Account_Item_1.Text" xml:space="preserve">
-    <value>Current account:</value>
+    <value>當前賬戶:</value>
   </data>
   <data name="Settings_Account_Item_2.Text" xml:space="preserve">
-    <value>Details of the current account:</value>
+    <value>當前帳戶的詳細資訊:</value>
   </data>
   <data name="Settings_Account_Item_3.Text" xml:space="preserve">
-    <value>Add new account:</value>
+    <value>增添新的賬戶:</value>
   </data>
   <data name="Settings_Account_Item_4.Text" xml:space="preserve">
-    <value>Remove current account:</value>
+    <value>移除當前賬戶:</value>
   </data>
   <data name="Settings_Account_Item_5.Text" xml:space="preserve">
-    <value>Launch the game with a Demo account:</value>
+    <value>以 Demo 賬戶啟動遊戲:</value>
   </data>
   <data name="Settings_Account_Item_6.Text" xml:space="preserve">
-    <value>Auto refresh account: (before launch)</value>
+    <value>自動刷新賬戶: (每次啟動前)</value>
   </data>
   <data name="Settings_Account_Subtitle.Text" xml:space="preserve">
-    <value>Account after entering the game</value>
+    <value>遊戲進入後的賬戶</value>
   </data>
   <data name="Settings_Download_Header.Text" xml:space="preserve">
-    <value>Download</value>
+    <value>下載</value>
   </data>
   <data name="Settings_Download_Item_1.Text" xml:space="preserve">
-    <value>Current download sources:</value>
+    <value>當前的下載源:</value>
   </data>
   <data name="Settings_Download_Item_2.Text" xml:space="preserve">
-    <value>Maximum number of download threads:</value>
+    <value>最大下載緒程數:</value>
   </data>
   <data name="Settings_Download_Item_3.Text" xml:space="preserve">
-    <value>Enable fragmented download of large files:</value>
+    <value>啟用大檔案分片下載:</value>
   </data>
   <data name="Settings_Download_Subtitle.Text" xml:space="preserve">
-    <value>Configuration for download game resources</value>
+    <value>啟動遊戲時下載遊戲資源的配寘</value>
   </data>
   <data name="Settings_Launch_Header_1.Text" xml:space="preserve">
-    <value>.minecraft Folder</value>
+    <value>.minecraft 目錄</value>
   </data>
   <data name="Settings_Launch_Header_2.Text" xml:space="preserve">
     <value>Java Runtime</value>
   </data>
   <data name="Settings_Launch_Header_3.Text" xml:space="preserve">
-    <value>Game Settings</value>
+    <value>遊戲設置</value>
   </data>
   <data name="Settings_Launch_Header_4.Text" xml:space="preserve">
-    <value>Language Settings</value>
+    <value>語言設置</value>
   </data>
   <data name="Settings_Launch_Item_1.Text" xml:space="preserve">
-    <value>Current .minecraft folder:</value>
+    <value>當前的 .minecraft 目錄:</value>
   </data>
   <data name="Settings_Launch_Item_10.Text" xml:space="preserve">
-    <value>Global core independent:</value>
+    <value>全局版本隔離:</value>
   </data>
   <data name="Settings_Launch_Item_11.Text" xml:space="preserve">
-    <value>Full screen mode:</value>
+    <value>全屏模式:</value>
   </data>
   <data name="Settings_Launch_Item_12.Text" xml:space="preserve">
-    <value>Game window resolution:</value>
+    <value>遊戲視窗分辨率:</value>
   </data>
   <data name="Settings_Launch_Item_13.Text" xml:space="preserve">
-    <value>Server address:</value>
+    <value>伺服器地址:</value>
   </data>
   <data name="Settings_Launch_Item_14.Text" xml:space="preserve">
-    <value>Game window title:</value>
+    <value>遊戲視窗標題:</value>
   </data>
   <data name="Settings_Launch_Item_2.Text" xml:space="preserve">
-    <value>Open the .minecraft folder:</value>
+    <value>打開 .minecraft 目錄:</value>
   </data>
   <data name="Settings_Launch_Item_3.Text" xml:space="preserve">
-    <value>Remove the current .minecraft folder:</value>
+    <value>移除當前 .minecraft 目錄:</value>
   </data>
   <data name="Settings_Launch_Item_4.Text" xml:space="preserve">
-    <value>Current Java runtime:</value>
+    <value>當前的 Java Runtime:</value>
   </data>
   <data name="Settings_Launch_Item_5.Text" xml:space="preserve">
-    <value>Open the Java runtime:</value>
+    <value>打開 Java Runtime:</value>
   </data>
   <data name="Settings_Launch_Item_6.Text" xml:space="preserve">
-    <value>Automatically select the suitable Java:</value>
+    <value>自動選擇合適的 Java Runtime:</value>
   </data>
   <data name="Settings_Launch_Item_7.Text" xml:space="preserve">
-    <value>Remove the current Java runtime:</value>
+    <value>移除當前 Java Runtime:</value>
   </data>
   <data name="Settings_Launch_Item_8.Text" xml:space="preserve">
-    <value>JVM memory:</value>
+    <value>JVM 記憶體:</value>
   </data>
   <data name="Settings_Launch_Item_9.Text" xml:space="preserve">
-    <value>Automatically allocate JVM memory:</value>
+    <value>自動分配 JVM 記憶體:</value>
   </data>
   <data name="Settings_Launch_Subtitle_1.Text" xml:space="preserve">
-    <value>Where to store the core of your game</value>
+    <value>儲存你的遊戲核心的地方</value>
   </data>
   <data name="Settings_Launch_Subtitle_2.Text" xml:space="preserve">
-    <value>Executable to launch the game</value>
+    <value>啟動遊戲的可執行文件</value>
   </data>
   <data name="Settings_Launch_Subtitle_3.Text" xml:space="preserve">
-    <value>Game play settings</value>
+    <value>遊戲運行設置</value>
   </data>
   <data name="_Buttons_Back.Text" xml:space="preserve">
-    <value>Back</value>
+    <value>上一步</value>
   </data>
   <data name="_Buttons_Browse.Text" xml:space="preserve">
-    <value>Browse</value>
+    <value>瀏覽</value>
   </data>
   <data name="_Buttons_Cancel.Text" xml:space="preserve">
-    <value>Cancel</value>
+    <value>取消</value>
   </data>
   <data name="_Buttons_Check.Text" xml:space="preserve">
-    <value>Check</value>
+    <value>檢查</value>
   </data>
   <data name="_Buttons_Confirm.Text" xml:space="preserve">
-    <value>Confirm</value>
+    <value>確認</value>
   </data>
   <data name="_Buttons_Delete.Text" xml:space="preserve">
-    <value>Delete</value>
+    <value>刪除</value>
   </data>
   <data name="_Buttons_Expand.Text" xml:space="preserve">
-    <value>Expand</value>
+    <value>展開</value>
   </data>
   <data name="_Buttons_Install.Text" xml:space="preserve">
-    <value>Install</value>
+    <value>安裝</value>
   </data>
   <data name="_Buttons_Next.Text" xml:space="preserve">
-    <value>Next</value>
+    <value>下一步</value>
   </data>
   <data name="_Buttons_Refresh.Text" xml:space="preserve">
-    <value>Refresh</value>
+    <value>刷新</value>
   </data>
   <data name="_Buttons_Remove.Text" xml:space="preserve">
-    <value>Remove</value>
+    <value>移除</value>
   </data>
   <data name="_Buttons_Rename.Text" xml:space="preserve">
-    <value>Rename</value>
+    <value>重命名</value>
   </data>
   <data name="_Buttons_Search.Text" xml:space="preserve">
-    <value>Search</value>
+    <value>搜尋</value>
   </data>
   <data name="_Buttons_SignIn.Text" xml:space="preserve">
-    <value>Sign in</value>
+    <value>登入</value>
   </data>
   <data name="_TeachingTips_Delete.Subtitle" xml:space="preserve">
-    <value>Are you sure you want to delete? Once deleted it cannot be restored</value>
+    <value>您確定要刪除嗎？刪除後將無法恢復！</value>
   </data>
   <data name="_TeachingTips_Rename.Subtitle" xml:space="preserve">
-    <value>Please enter a valid name</value>
+    <value>請輸入一個有效的名字</value>
   </data>
 </root>

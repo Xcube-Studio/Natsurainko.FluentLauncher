@@ -60,8 +60,11 @@
                                             <Image
                                                 Grid.Column="0"
                                                 Width="32"
-                                                Height="32"
-                                                Source="{Binding BitmapImage}" />
+                                                Height="32">
+                                                <Image.Source>
+                                                    <BitmapImage UriSource="{Binding Uri}" />
+                                                </Image.Source>
+                                            </Image>
                                             <TextBlock
                                                 Grid.Column="2"
                                                 VerticalAlignment="Center"
@@ -178,6 +181,7 @@
                                     Background="{ThemeResource CardBackgroundFillColorDefault}"
                                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                                     BorderThickness="1"
+                                    Command="{Binding OpenCommand}"
                                     CornerRadius="4">
                                     <Grid Padding="15,10" HorizontalAlignment="Stretch">
                                         <Grid.ColumnDefinitions>
@@ -192,7 +196,11 @@
                                             HorizontalAlignment="Left"
                                             CornerRadius="4">
                                             <Border.Background>
-                                                <ImageBrush ImageSource="{Binding BitmapImage}" />
+                                                <ImageBrush>
+                                                    <ImageBrush.ImageSource>
+                                                        <BitmapImage UriSource="{Binding Icon}" />
+                                                    </ImageBrush.ImageSource>
+                                                </ImageBrush>
                                             </Border.Background>
                                         </Border>
                                         <StackPanel

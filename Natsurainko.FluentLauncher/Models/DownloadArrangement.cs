@@ -10,15 +10,19 @@ using Natsurainko.FluentCore.Model.Install.Forge;
 using Natsurainko.FluentCore.Model.Install.OptiFine;
 using Natsurainko.FluentCore.Model.Install.Quilt;
 using Natsurainko.FluentCore.Model.Install.Vanilla;
+using Natsurainko.FluentCore.Model.Mod.CureseForge;
+using Natsurainko.FluentCore.Module.Mod;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Views.Pages;
+using Natsurainko.Toolkits.Network.Downloader;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -270,5 +274,106 @@ public partial class InstallArrangement : DownloadArrangement
         });
 
         installArrangement.Start();
+    });
+}
+
+public partial class ModDownloadArrangement : DownloadArrangement
+{
+    public ModDownloadArrangement(string fileName, Func<DownloadRequest> downloadRequest)
+    {
+        TaskName = "Download Arrangement";
+        Title = FileName = fileName;
+        GetDownloadRequest = downloadRequest;
+
+        ReportState("Not Started");
+    }
+
+    public string FileName { get; private set; }
+
+    public Func<DownloadRequest> GetDownloadRequest { get; private set; }
+
+    private Stopwatch Stopwatch = new Stopwatch();
+
+    public override void Start()
+    {
+        Stopwatch.Start();
+
+        var timer = new Timer(1000);
+        timer.Elapsed += (_, e) => App.MainWindow.DispatcherQueue.TryEnqueue(() => TimeSpan = Stopwatch.Elapsed.ToString("hh\\:mm\\:ss"));
+        timer.Start();
+
+        Task.Run(async () =>
+        {
+            ReportState("Downloading");
+
+            var downloadRequest = GetDownloadRequest();
+
+            using IDownloader<SimpleDownloaderResponse, SimpleDownloaderProgressChangedEventArgs> downloader
+                = App.Configuration.EnableFragmentDownload.GetValueOrDefault(true) && downloadRequest.FileSize.GetValueOrDefault(0L) >= 1572864L
+                ? new FragmentDownloader(downloadRequest)
+                : new SimpleDownloader(downloadRequest);
+
+            downloader.DownloadProgressChanged += Downloader_DownloadProgressChanged;
+
+            App.MainWindow.DispatcherQueue.TryEnqueue(() => TimeSpan = Stopwatch.Elapsed.ToString("hh\\:mm\\:ss"));
+
+            downloader.BeginDownload();
+            var response = await downloader.CompleteAsync();
+
+            if (response.Success)
+            {
+                MainContainer.ShowMessagesAsync($"Downloaded Mod {FileName} Successfully",
+                    severity: InfoBarSeverity.Success);
+
+                ReportState("Downloaded Successfully");
+            }
+            else
+            {
+                ReportState("Failed");
+
+                MainContainer.ShowMessagesAsync($"Failed to Download Mod {FileName}",
+                    response.Exception.ToString(),
+                    delay: 1000 * 15,
+                    severity: InfoBarSeverity.Error);
+            }
+
+            Stopwatch.Stop();
+            timer.Stop();
+            timer.Dispose();
+        });
+    }
+
+    private void Downloader_DownloadProgressChanged(object sender, SimpleDownloaderProgressChangedEventArgs e)
+    {
+        App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+        {
+            TotalProgress = e.Progress;
+            Percentage = $"{e.Progress * 100:0.0}%";
+        });
+    }
+
+    public override void OnLoaded(object parameter) => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+    {
+        parameter.As<ContentPresenter, object>(e => e.sender.ContentTemplate = e.sender.Resources["DownloadControlTemplate"] as DataTemplate);
+    });
+
+    public static void StartNew(string fileName, Func<DownloadRequest> downloadRequest) => Task.Run(() =>
+    {
+        var modDownloadArrangement = new ModDownloadArrangement(fileName, downloadRequest);
+
+        App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+        {
+            var hyperlinkButton = new HyperlinkButton { Content = "Go to Activities>Download Tasks" };
+            hyperlinkButton.Click += (_, _) => MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Activities.Navigation), typeof(Views.Pages.Activities.Download));
+
+            MainContainer.ShowMessagesAsync(
+                $"Added Download Mod \"{fileName}\" into Arrangements",
+                "Go to Activities>Download Tasks for details",
+                button: hyperlinkButton);
+
+            GlobalActivitiesCache.DownloadArrangements.Insert(0, modDownloadArrangement);
+        });
+
+        modDownloadArrangement.Start();
     });
 }

@@ -95,7 +95,7 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
                             TextWrapping="WrapWholeWords">
-                            <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="Description:" />
+                            <Run Text="Description:" />
                             <Run FontWeight="SemiBold" Text="{Binding Resource.Description}" />
                         </TextBlock>
                     </Grid>
@@ -109,7 +109,7 @@
                             Margin="17,0,0,0"
                             VerticalAlignment="Center"
                             TextWrapping="WrapWholeWords">
-                            <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="Categories:" />
+                            <Run Text="Categories:" />
                         </TextBlock>
                         <GridView
                             Grid.Column="1"
@@ -226,7 +226,6 @@
                     <TextBlock
                         Margin="20,0"
                         FontWeight="SemiBold"
-                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Text="Supported versions:" />
                 </Expander.Header>
                 <Expander.Content>
@@ -344,7 +343,6 @@
                             Margin="17,0"
                             VerticalAlignment="Center"
                             FontWeight="SemiBold"
-                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                             Text="Screenshots:" />
                     </Grid>
                     <Border Style="{ThemeResource ExpanderSplitter}" />

@@ -58,7 +58,7 @@ public class ModInfoReader
     {
         Actions.Add("quilt.mod.json", HandleQuiltModJson);
         Actions.Add("fabric.mod.json", HandleFabricModJson);
-        Actions.Add("mods.toml", HandleModsToml);
+        Actions.Add("META-INF/mods.toml", HandleModsToml);
         Actions.Add("mcmod.info", HandleMcmodInfo);
     }
 

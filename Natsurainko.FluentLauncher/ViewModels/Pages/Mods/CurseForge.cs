@@ -30,7 +30,7 @@ public partial class CurseForge : ObservableObject
         Task.Run(async () =>
         {
             if (Categories == null)
-                Categories = (await CurseForgeApi.GetCategoriesMain()).ToList().Select(x => new Category(x));
+                Categories = (await CurseForgeApi.GetCategoriesMain()).Select(x => new Category(x));
 
             App.MainWindow.DispatcherQueue.TryEnqueue(() => CurseForgeCategories = new(Categories));
 
@@ -44,7 +44,7 @@ public partial class CurseForge : ObservableObject
             });
 
             if (FeatruedResources == null)
-                FeatruedResources = (await CurseForgeApi.GetFeaturedResources()).ToList().Select(x => new Resource(x));
+                FeatruedResources = (await CurseForgeApi.GetFeaturedResources()).Select(x => new Resource(x));
 
             App.MainWindow.DispatcherQueue.TryEnqueue(() => Resources = new(FeatruedResources));
         });
@@ -80,7 +80,7 @@ public partial class CurseForge : ObservableObject
             DownloadCount = resource.DownloadCount.FormatUnit();
             UpdateTime = resource.DateModified;
             Authors = string.Join(", ", resource.Author.Select(x => x.Name));
-            Icon = resource.Logo.Url;
+            Icon = resource.Logo?.Url;
         }
 
         public CurseForgeResource Data { get; private set; }
@@ -131,4 +131,18 @@ public partial class CurseForge : ObservableObject
 
     [ObservableProperty]
     private string selectedVersion;
+
+    [ObservableProperty]
+    private bool enableCategory;
+
+    [RelayCommand]
+    public Task Search(string name) => Task.Run(async () =>
+    {
+        var resources = (await CurseForgeApi.SearchResources(
+            name,
+            gameVersion: selectedVersion.Equals("All") ? default : selectedVersion,
+            categoryId: enableCategory ? selectedCategory.Id : default)).Select(x => new Resource(x));
+
+        App.MainWindow.DispatcherQueue.TryEnqueue(() => Resources = new ObservableCollection<Resource>(resources));
+    });
 }

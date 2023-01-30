@@ -1,0 +1,2 @@
+MainPackage=F:\Code\Git\fluentlauncher-preview-edition\Natsurainko.FluentLauncher (Package)\bin\x86\Release\Natsurainko.FluentLauncher (Package)_2.1.0.0_x86.msix
+SymbolPackage=F:\Code\Git\fluentlauncher-preview-edition\Natsurainko.FluentLauncher (Package)\obj\x86\Release\Symbols\Natsurainko.FluentLauncher (Package)_2.1.0.0_x86.appxsym

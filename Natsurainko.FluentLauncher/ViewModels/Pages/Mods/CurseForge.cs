@@ -1,7 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Natsurainko.FluentCore.Model.Mod.CureseForge;
 using Natsurainko.FluentCore.Module.Mod;
+using Natsurainko.FluentLauncher.Views.Dialogs;
+using Natsurainko.FluentLauncher.Views.Pages;
 using Natsurainko.Toolkits.Network;
 using Natsurainko.Toolkits.Values;
 using System;
@@ -26,7 +30,7 @@ public partial class CurseForge : ObservableObject
         Task.Run(async () =>
         {
             if (Categories == null)
-                Categories = (await CurseForgeApi.GetCategoriesMain()).ToList().Select(x => new Category(x));
+                Categories = (await CurseForgeApi.GetCategoriesMain()).Select(x => new Category(x));
 
             App.MainWindow.DispatcherQueue.TryEnqueue(() => CurseForgeCategories = new(Categories));
 
@@ -40,7 +44,7 @@ public partial class CurseForge : ObservableObject
             });
 
             if (FeatruedResources == null)
-                FeatruedResources = (await CurseForgeApi.GetFeaturedResources()).ToList().Select(x => new Resource(x));
+                FeatruedResources = (await CurseForgeApi.GetFeaturedResources()).Select(x => new Resource(x));
 
             App.MainWindow.DispatcherQueue.TryEnqueue(() => Resources = new(FeatruedResources));
         });
@@ -52,24 +56,7 @@ public partial class CurseForge : ObservableObject
         {
             Name = category.Name;
             Id = category.Id;
-
-            Task.Run(async () =>
-            {
-                if (BitmapImage != null)
-                    return;
-
-                var res = await HttpWrapper.HttpGetAsync(category.IconUrl);
-
-                App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
-                {
-                    using var stream = await res.Content.ReadAsStreamAsync();
-
-                    BitmapImage = new BitmapImage();
-                    await BitmapImage.SetSourceAsync(stream.AsRandomAccessStream());
-
-                    res.Dispose();
-                });
-            });
+            Uri = category.IconUrl;
         }
 
         [ObservableProperty]
@@ -79,40 +66,24 @@ public partial class CurseForge : ObservableObject
         private int id;
 
         [ObservableProperty]
-        private BitmapImage bitmapImage;
+        private string uri;
     }
 
     public partial class Resource : ObservableObject
     {
         public Resource(CurseForgeResource resource)
         {
+            Data = resource;
             Name = resource.Name;
             Id = resource.Id;
             Description = resource.Summary;
             DownloadCount = resource.DownloadCount.FormatUnit();
             UpdateTime = resource.DateModified;
             Authors = string.Join(", ", resource.Author.Select(x => x.Name));
-
-            Task.Run(async () =>
-            {
-                if (BitmapImage != null)
-                    return;
-
-                var res = await HttpWrapper.HttpGetAsync(resource.Logo.Url);
-
-                App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
-                {
-                    using var stream = await res.Content.ReadAsStreamAsync();
-
-                    BitmapImage = new BitmapImage();
-                    await BitmapImage.SetSourceAsync(stream.AsRandomAccessStream());
-
-                    res.Dispose();
-                });
-            });
+            Icon = resource.Logo?.Url;
         }
 
-        private CurseForgeResource Data { get; set; }
+        public CurseForgeResource Data { get; private set; }
 
         [ObservableProperty]
         private string name;
@@ -133,7 +104,17 @@ public partial class CurseForge : ObservableObject
         private int id;
 
         [ObservableProperty]
-        private BitmapImage bitmapImage;
+        private string icon;
+
+        [RelayCommand]
+        public async void Open()
+        {
+            var dialog = new CurseForgeModDialog();
+            dialog.DataContext = this;
+            dialog.XamlRoot = MainContainer._XamlRoot;
+
+            await dialog.ShowAsync();
+        }
     }
 
     [ObservableProperty]
@@ -150,4 +131,18 @@ public partial class CurseForge : ObservableObject
 
     [ObservableProperty]
     private string selectedVersion;
+
+    [ObservableProperty]
+    private bool enableCategory;
+
+    [RelayCommand]
+    public Task Search(string name) => Task.Run(async () =>
+    {
+        var resources = (await CurseForgeApi.SearchResources(
+            name,
+            gameVersion: selectedVersion.Equals("All") ? default : selectedVersion,
+            categoryId: enableCategory ? selectedCategory.Id : default)).Select(x => new Resource(x));
+
+        App.MainWindow.DispatcherQueue.TryEnqueue(() => Resources = new ObservableCollection<Resource>(resources));
+    });
 }

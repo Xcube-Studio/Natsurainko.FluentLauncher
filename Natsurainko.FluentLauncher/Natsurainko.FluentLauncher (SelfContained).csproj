@@ -16,11 +16,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="bin\**" />
+    <Compile Remove="ViewModels\Pages\Resources\**" />
     <Content Remove="bin\**" />
+    <Content Remove="ViewModels\Pages\Resources\**" />
     <EmbeddedResource Remove="bin\**" />
+    <EmbeddedResource Remove="ViewModels\Pages\Resources\**" />
     <None Remove="bin\**" />
+    <None Remove="ViewModels\Pages\Resources\**" />
     <Page Remove="bin\**" />
+    <Page Remove="ViewModels\Pages\Resources\**" />
     <PRIResource Remove="bin\**" />
+    <PRIResource Remove="ViewModels\Pages\Resources\**" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\AppIcon.ico" />
@@ -61,7 +67,6 @@
   <ItemGroup>
     <Folder Include="Assets\Libs\" />
     <Folder Include="ViewModels\Pages\Properties\" />
-    <Folder Include="ViewModels\Pages\Resources\" />
     <Folder Include="Views\Pages\Properties\" />
   </ItemGroup>
 

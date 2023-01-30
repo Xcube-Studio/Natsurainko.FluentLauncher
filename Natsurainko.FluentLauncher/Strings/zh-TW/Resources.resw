@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -52,6 +52,11 @@
     mimetype: application/x-microsoft.net.object.soap.base64
     value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
@@ -113,381 +118,381 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About_Acknowledgments.Text" xml:space="preserve">
-    <value>Отдельная благодарность</value>
+    <value>鳴謝</value>
   </data>
   <data name="About_Acknowledgments_Content.Text" xml:space="preserve">
-    <value>Спасибо за все сервисы, предоставляемые этому приложению</value>
+    <value>感謝所有為本應用提供的服務</value>
   </data>
   <data name="About_CheckUpdate.Text" xml:space="preserve">
-    <value>Проверьте обновления в магазине Microsoft Store</value>
+    <value></value>
   </data>
   <data name="About_Developer_Tag.Text" xml:space="preserve">
-    <value>Разработчик этого приложения</value>
+    <value>本應用的開發者</value>
   </data>
   <data name="About_ProvideDownloadSource.Text" xml:space="preserve">
-    <value>Укажите источник скачивания</value>
+    <value>提供下載源</value>
   </data>
   <data name="About_References.Text" xml:space="preserve">
-    <value>Ссылки</value>
+    <value>引用</value>
   </data>
   <data name="About_References_Content.Text" xml:space="preserve">
-    <value>Библиотеки, используемые для разработки этого приложения</value>
+    <value>本應用引用的庫</value>
   </data>
   <data name="About_Sources.Text" xml:space="preserve">
-    <value>Источники</value>
+    <value>開源</value>
   </data>
   <data name="About_Sources_Content.Text" xml:space="preserve">
-    <value>Перейдите в репозиторий GitHub</value>
+    <value>轉到 GitHub 倉庫</value>
   </data>
   <data name="About_Statements.Text" xml:space="preserve">
-    <value>Заявления</value>
+    <value>聲明</value>
   </data>
   <data name="About_Statements_Content.Text" xml:space="preserve">
-    <value>Авторские права на Minecraft принадлежат Mojang Studios. Мы не несем ответственности за любые нарушения авторских прав, связанные с использованием этого программного обеспечения.</value>
+    <value>Minecraft 版權歸 Mojang Studios 所有。 開發者對因使用本應用而引起的任何版權糾紛不承擔任何責任。</value>
   </data>
   <data name="Cores_Install.Text" xml:space="preserve">
-    <value>Установить новое ядро</value>
+    <value>安裝新的核心</value>
   </data>
   <data name="Cores_Search.PlaceholderText" xml:space="preserve">
-    <value>Поиск ядра...</value>
+    <value>搜尋核心...</value>
   </data>
   <data name="Cores_ToolTip_1.Text" xml:space="preserve">
-    <value>Открыть папку</value>
+    <value>打開目錄</value>
   </data>
   <data name="Cores_ToolTip_2.Text" xml:space="preserve">
-    <value>Переименовать</value>
+    <value>重命名</value>
   </data>
   <data name="Cores_ToolTip_3.Text" xml:space="preserve">
-    <value>Удалить</value>
+    <value>刪除</value>
   </data>
   <data name="Cores_ToolTip_4.Text" xml:space="preserve">
-    <value>Сгенерировать сценарий запуска</value>
+    <value>生成啟動腳本</value>
   </data>
   <data name="Cores_ToolTip_5.Text" xml:space="preserve">
-    <value>Параметры</value>
+    <value>選項</value>
   </data>
   <data name="Cores_ToolTip_6.Text" xml:space="preserve">
-    <value>Дополнительно</value>
+    <value>更多</value>
   </data>
   <data name="Cores_ToolTip_7.Text" xml:space="preserve">
-    <value>Запустить</value>
+    <value>啟動</value>
   </data>
   <data name="Guide_Account_Accounts.Text" xml:space="preserve">
-    <value>Аккаунты</value>
+    <value>賬戶</value>
   </data>
   <data name="Guide_Account_Login.Text" xml:space="preserve">
-    <value>Вход в аккаунт Microsoft</value>
+    <value>登錄 Microsoft 賬戶</value>
   </data>
   <data name="Guide_Account_Offline.Text" xml:space="preserve">
-    <value>У вас нет аккаунта Microsoft?</value>
+    <value>沒有 Microsoft 賬戶？</value>
   </data>
   <data name="Guide_Account_Para_1.Text" xml:space="preserve">
-    <value>Нужен хотя бы один аккаунт, чтобы начать игру</value>
+    <value>您至少需要一個賬戶才能啟動遊戲</value>
   </data>
   <data name="Guide_Account_Para_2.Text" xml:space="preserve">
-    <value>Доступ к онлайн-серверам возможен только с аккаунтом Microsoft</value>
+    <value>只有 Microsoft 賬戶才能進入在線伺服器</value>
   </data>
   <data name="Guide_Account_Para_3.Text" xml:space="preserve">
-    <value>Автономные аккаунты не будут проверяться сервером</value>
+    <value>離線賬戶無法通過伺服器驗證</value>
   </data>
   <data name="Guide_Account_Title.Text" xml:space="preserve">
-    <value>Аккаунт</value>
+    <value>賬戶</value>
   </data>
   <data name="Guide_Account_Website.Text" xml:space="preserve">
-    <value>Официальный сайт Minecraft</value>
+    <value>Minecraft 官方網站</value>
   </data>
   <data name="Guide_Back.Content" xml:space="preserve">
-    <value>Назад</value>
+    <value>上一步</value>
   </data>
   <data name="Guide_Basic_Folder.Text" xml:space="preserve">
-    <value>Папка .minecraft:</value>
+    <value>.minecraft 目錄:</value>
   </data>
   <data name="Guide_Basic_Java.Text" xml:space="preserve">
-    <value>Java Runtimes:</value>
+    <value>Java Runtime:</value>
   </data>
   <data name="Guide_Basic_Para_1.Text" xml:space="preserve">
-    <value>Нужна хотябы папка .minecraft для хранения игровых ядер</value>
+    <value>您至少需要一個 .minecraft 目錄來儲存您的遊戲核心</value>
   </data>
   <data name="Guide_Basic_Para_2.Text" xml:space="preserve">
-    <value>Для запуска игрового ядра, требуется как минимум Java Runtime</value>
+    <value>您至少需要一個 Java Runtime 來啟動您的遊戲核心</value>
   </data>
   <data name="Guide_Basic_Para_3.Text" xml:space="preserve">
-    <value>После этого можно изменить эти настройки в глобальных настройках игры</value>
+    <value>完成後，您還可以在全局遊戲設置中修改這些選項</value>
   </data>
   <data name="Guide_Basic_Title.Text" xml:space="preserve">
-    <value>Основные настройки запуска</value>
+    <value>基礎啟動設置</value>
   </data>
   <data name="Guide_GetStarted_Description.Text" xml:space="preserve">
-    <value>Вы выполнили все основные настройки</value>
+    <value>您已完成所有基礎設置</value>
   </data>
   <data name="Guide_GetStarted_Start.Content" xml:space="preserve">
-    <value>Давайте начнём</value>
+    <value>開始使用吧</value>
   </data>
   <data name="Guide_GetStarted_Title.Text" xml:space="preserve">
-    <value>Все готово</value>
+    <value>大功告成</value>
   </data>
   <data name="Guide_Navigation_Account.Text" xml:space="preserve">
-    <value>Аккаунт</value>
+    <value>賬戶</value>
   </data>
   <data name="Guide_Navigation_Basic.Text" xml:space="preserve">
-    <value>Основные настройки</value>
+    <value>基礎設置</value>
   </data>
   <data name="Guide_Navigation_GetStarted.Text" xml:space="preserve">
-    <value>Начало</value>
+    <value>開始使用</value>
   </data>
   <data name="Guide_Navigation_Language.Text" xml:space="preserve">
-    <value>Язык</value>
+    <value>語言</value>
   </data>
   <data name="Guide_Next.Content" xml:space="preserve">
-    <value>Далее</value>
+    <value>下一步</value>
   </data>
   <data name="Guide_Welcome.Text" xml:space="preserve">
-    <value>Добро пожаловать</value>
+    <value>歡迎</value>
   </data>
   <data name="Home_Account.Text" xml:space="preserve">
-    <value>Аккаунт</value>
+    <value>賬戶</value>
   </data>
   <data name="Home_ComboBox.PlaceholderText" xml:space="preserve">
-    <value>Выбрать ядро игры</value>
+    <value>選擇遊戲核心</value>
   </data>
   <data name="Home_Launch.Text" xml:space="preserve">
-    <value>Запустить Minecraft</value>
+    <value>啟動 Minecraft</value>
   </data>
   <data name="Navigation_Activities.Content" xml:space="preserve">
-    <value>Активности</value>
+    <value>活動</value>
   </data>
   <data name="Navigation_Activities_Application.Content" xml:space="preserve">
-    <value>Приложение</value>
+    <value>應用</value>
   </data>
   <data name="Navigation_Activities_Download.Content" xml:space="preserve">
-    <value>Загрузки</value>
+    <value>下載任務</value>
   </data>
   <data name="Navigation_Activities_Launch.Content" xml:space="preserve">
-    <value>Запуск</value>
+    <value>啟動任務</value>
   </data>
   <data name="Navigation_Activities_News.Content" xml:space="preserve">
-    <value>Новости</value>
+    <value>新聞</value>
   </data>
   <data name="Navigation_Cores.Content" xml:space="preserve">
-    <value>Ядра</value>
+    <value>核心</value>
   </data>
   <data name="Navigation_Home.Content" xml:space="preserve">
-    <value>Главная</value>
+    <value>主頁</value>
   </data>
   <data name="Navigation_Mods.Content" xml:space="preserve">
-    <value>Моды</value>
+    <value>模組</value>
   </data>
   <data name="Navigation_Options_Launch.Content" xml:space="preserve">
-    <value>Настройки запуска</value>
+    <value>啟動設置</value>
   </data>
   <data name="Navigation_Options_Mods.Content" xml:space="preserve">
-    <value>Моды</value>
+    <value>模組</value>
   </data>
   <data name="Navigation_Options_Property.Text" xml:space="preserve">
-    <value>Параметры</value>
+    <value>屬性</value>
   </data>
   <data name="Navigation_Options_Saves.Content" xml:space="preserve">
-    <value>Сохранения</value>
+    <value>存檔</value>
   </data>
   <data name="Navigation_Settings.Content" xml:space="preserve">
-    <value>Настройки</value>
+    <value>設置</value>
   </data>
   <data name="Navigation_Settings_About.Content" xml:space="preserve">
-    <value>О лаунчере</value>
+    <value>關於</value>
   </data>
   <data name="Navigation_Settings_Account.Content" xml:space="preserve">
-    <value>Настройки аккаунта</value>
+    <value>賬戶設置</value>
   </data>
   <data name="Navigation_Settings_Download.Content" xml:space="preserve">
-    <value>Настройки скачивания</value>
+    <value>下載設置</value>
   </data>
   <data name="Navigation_Settings_Launch.Content" xml:space="preserve">
-    <value>Глобальные настройки запуска</value>
+    <value>全局啟動設置</value>
   </data>
   <data name="Properties_Information_Header.Text" xml:space="preserve">
-    <value>Свойства</value>
+    <value>屬性</value>
   </data>
   <data name="Properties_Information_Item_1.Text" xml:space="preserve">
-    <value>Путь:</value>
+    <value>路徑:</value>
   </data>
   <data name="Properties_Information_Item_2.Text" xml:space="preserve">
-    <value>Последний запуск:</value>
+    <value>最後一次啟動時間:</value>
   </data>
   <data name="Properties_Information_Item_3.Text" xml:space="preserve">
-    <value>Загрузчик модов:</value>
+    <value>模組加載器:</value>
   </data>
   <data name="Properties_Information_Item_4.Text" xml:space="preserve">
-    <value>Занятое место на диске:</value>
+    <value>佔用的磁碟空間:</value>
   </data>
   <data name="Properties_Information_Item_5.Text" xml:space="preserve">
-    <value>Зависимых библиотек:</value>
+    <value>依賴的庫檔案數量:</value>
   </data>
   <data name="Properties_Information_Item_6.Text" xml:space="preserve">
-    <value>Зависимых ресурсов:</value>
+    <value>依賴的資源檔數量:</value>
   </data>
   <data name="Properties_Information_Subtitle.Text" xml:space="preserve">
-    <value>Основные базовые атрибуты</value>
+    <value>核心基本屬性</value>
   </data>
   <data name="Properties_Launch_Header_1.Text" xml:space="preserve">
-    <value>Параметры сохранены в:</value>
+    <value>配置存儲到:</value>
   </data>
   <data name="Properties_Launch_Header_2.Text" xml:space="preserve">
-    <value>Включить определенные настройки игры</value>
+    <value>啟用特定遊戲設置</value>
   </data>
   <data name="Properties_Launch_Item.Text" xml:space="preserve">
-    <value>Изоляция версии:</value>
+    <value>版本隔離:</value>
   </data>
   <data name="Properties_Mod_Header.Text" xml:space="preserve">
-    <value>Папка с модами:</value>
+    <value>模組資料夾:</value>
   </data>
   <data name="Settings_Account_Header.Text" xml:space="preserve">
-    <value>Аккаунты</value>
+    <value>賬戶</value>
   </data>
   <data name="Settings_Account_Item_1.Text" xml:space="preserve">
-    <value>Текущий аккаунт:</value>
+    <value>當前賬戶:</value>
   </data>
   <data name="Settings_Account_Item_2.Text" xml:space="preserve">
-    <value>Подробности текущего аккаунта:</value>
+    <value>當前帳戶的詳細資訊:</value>
   </data>
   <data name="Settings_Account_Item_3.Text" xml:space="preserve">
-    <value>Добавить новый аккаунт:</value>
+    <value>增添新的賬戶:</value>
   </data>
   <data name="Settings_Account_Item_4.Text" xml:space="preserve">
-    <value>Удалить текущий аккаунт:</value>
+    <value>移除當前賬戶:</value>
   </data>
   <data name="Settings_Account_Item_5.Text" xml:space="preserve">
-    <value>Запустить игру с демо-аккаунта:</value>
+    <value>以 Demo 賬戶啟動遊戲:</value>
   </data>
   <data name="Settings_Account_Item_6.Text" xml:space="preserve">
-    <value>Автообновление аккаунта: (перед запуском)</value>
+    <value>自動刷新賬戶: (每次啟動前)</value>
   </data>
   <data name="Settings_Account_Subtitle.Text" xml:space="preserve">
-    <value>Аккаунт после входа в игру</value>
+    <value>遊戲進入後的賬戶</value>
   </data>
   <data name="Settings_Download_Header.Text" xml:space="preserve">
-    <value>Скачивание</value>
+    <value>下載</value>
   </data>
   <data name="Settings_Download_Item_1.Text" xml:space="preserve">
-    <value>Текущий источник скачивания:</value>
+    <value>當前的下載源:</value>
   </data>
   <data name="Settings_Download_Item_2.Text" xml:space="preserve">
-    <value>Макс. потоков скачивания:</value>
+    <value>最大下載緒程數:</value>
   </data>
   <data name="Settings_Download_Item_3.Text" xml:space="preserve">
-    <value>Включить фрагментированную загрузку больших файлов:</value>
+    <value>啟用大檔案分片下載:</value>
   </data>
   <data name="Settings_Download_Subtitle.Text" xml:space="preserve">
-    <value>Параметры скачивания игровых ресурсов при запуске игры</value>
+    <value>啟動遊戲時下載遊戲資源的配寘</value>
   </data>
   <data name="Settings_Launch_Header_1.Text" xml:space="preserve">
-    <value>Папка .minecraft</value>
+    <value>.minecraft 目錄</value>
   </data>
   <data name="Settings_Launch_Header_2.Text" xml:space="preserve">
     <value>Java Runtime</value>
   </data>
   <data name="Settings_Launch_Header_3.Text" xml:space="preserve">
-    <value>Настройки игры</value>
+    <value>遊戲設置</value>
   </data>
   <data name="Settings_Launch_Header_4.Text" xml:space="preserve">
-    <value>Настройки языка</value>
+    <value>語言設置</value>
   </data>
   <data name="Settings_Launch_Item_1.Text" xml:space="preserve">
-    <value>Текущая папка .minecraft:</value>
+    <value>當前的 .minecraft 目錄:</value>
   </data>
   <data name="Settings_Launch_Item_10.Text" xml:space="preserve">
-    <value>Изоляция глобальной версии:</value>
+    <value>全局版本隔離:</value>
   </data>
   <data name="Settings_Launch_Item_11.Text" xml:space="preserve">
-    <value>Полноэкранный режим:</value>
+    <value>全屏模式:</value>
   </data>
   <data name="Settings_Launch_Item_12.Text" xml:space="preserve">
-    <value>Разрешение игрового окна:</value>
+    <value>遊戲視窗分辨率:</value>
   </data>
   <data name="Settings_Launch_Item_13.Text" xml:space="preserve">
-    <value>Адрес сервера:</value>
+    <value>伺服器地址:</value>
   </data>
   <data name="Settings_Launch_Item_14.Text" xml:space="preserve">
-    <value>Заголовок игрового окна:</value>
+    <value>遊戲視窗標題:</value>
   </data>
   <data name="Settings_Launch_Item_2.Text" xml:space="preserve">
-    <value>Открыть папку .minecraft:</value>
+    <value>打開 .minecraft 目錄:</value>
   </data>
   <data name="Settings_Launch_Item_3.Text" xml:space="preserve">
-    <value>Удалить текущую папку .minecraft:</value>
+    <value>移除當前 .minecraft 目錄:</value>
   </data>
   <data name="Settings_Launch_Item_4.Text" xml:space="preserve">
-    <value>Текущая Java runtime:</value>
+    <value>當前的 Java Runtime:</value>
   </data>
   <data name="Settings_Launch_Item_5.Text" xml:space="preserve">
-    <value>Открыть Java runtime:</value>
+    <value>打開 Java Runtime:</value>
   </data>
   <data name="Settings_Launch_Item_6.Text" xml:space="preserve">
-    <value>Автовыбирать подходящую Java:</value>
+    <value>自動選擇合適的 Java Runtime:</value>
   </data>
   <data name="Settings_Launch_Item_7.Text" xml:space="preserve">
-    <value>Убрать текущую Java runtime:</value>
+    <value>移除當前 Java Runtime:</value>
   </data>
   <data name="Settings_Launch_Item_8.Text" xml:space="preserve">
-    <value>Память JVM:</value>
+    <value>JVM 記憶體:</value>
   </data>
   <data name="Settings_Launch_Item_9.Text" xml:space="preserve">
-    <value>Автовыделять память JVM:</value>
+    <value>自動分配 JVM 記憶體:</value>
   </data>
   <data name="Settings_Launch_Subtitle_1.Text" xml:space="preserve">
-    <value>Где хранить ядро вашей игры</value>
+    <value>儲存你的遊戲核心的地方</value>
   </data>
   <data name="Settings_Launch_Subtitle_2.Text" xml:space="preserve">
-    <value>Исполняемый файл для запуска игры</value>
+    <value>啟動遊戲的可執行文件</value>
   </data>
   <data name="Settings_Launch_Subtitle_3.Text" xml:space="preserve">
-    <value>Настройки игрового процесса</value>
+    <value>遊戲運行設置</value>
   </data>
   <data name="_Buttons_Back.Text" xml:space="preserve">
-    <value>Назад</value>
+    <value>上一步</value>
   </data>
   <data name="_Buttons_Browse.Text" xml:space="preserve">
-    <value>Обзор</value>
+    <value>瀏覽</value>
   </data>
   <data name="_Buttons_Cancel.Text" xml:space="preserve">
-    <value>Отмена</value>
+    <value>取消</value>
   </data>
   <data name="_Buttons_Check.Text" xml:space="preserve">
-    <value>Проверить</value>
+    <value>檢查</value>
   </data>
   <data name="_Buttons_Confirm.Text" xml:space="preserve">
-    <value>Подтвердить</value>
+    <value>確認</value>
   </data>
   <data name="_Buttons_Delete.Text" xml:space="preserve">
-    <value>Удалить</value>
+    <value>刪除</value>
   </data>
   <data name="_Buttons_Expand.Text" xml:space="preserve">
-    <value>Раскрыть</value>
+    <value>展開</value>
   </data>
   <data name="_Buttons_Install.Text" xml:space="preserve">
-    <value>Установить</value>
+    <value>安裝</value>
   </data>
   <data name="_Buttons_Next.Text" xml:space="preserve">
-    <value>Далее</value>
+    <value>下一步</value>
   </data>
   <data name="_Buttons_Refresh.Text" xml:space="preserve">
-    <value>Перезагрузить</value>
+    <value>刷新</value>
   </data>
   <data name="_Buttons_Remove.Text" xml:space="preserve">
-    <value>Убрать</value>
+    <value>移除</value>
   </data>
   <data name="_Buttons_Rename.Text" xml:space="preserve">
-    <value>Переименовать</value>
+    <value>重命名</value>
   </data>
   <data name="_Buttons_Search.Text" xml:space="preserve">
-    <value>Поиск</value>
+    <value>搜尋</value>
   </data>
   <data name="_Buttons_SignIn.Text" xml:space="preserve">
-    <value>Войти</value>
+    <value>登入</value>
   </data>
   <data name="_TeachingTips_Delete.Subtitle" xml:space="preserve">
-    <value>Точно удалить? После удаления невозможно восстановить.</value>
+    <value>您確定要刪除嗎？刪除後將無法恢復！</value>
   </data>
   <data name="_TeachingTips_Rename.Subtitle" xml:space="preserve">
-    <value>Введите правильное имя</value>
+    <value>請輸入一個有效的名字</value>
   </data>
 </root>

@@ -17,6 +17,7 @@
     <None Remove="UserControls\ExpanderContentItem.xaml" />
     <None Remove="Views\Dialogs\ChooseAccountTypeDialog.xaml" />
     <None Remove="Views\Dialogs\CoreOptionsDialog.xaml" />
+    <None Remove="Views\Dialogs\CurseForgeModDialog.xaml" />
     <None Remove="Views\Dialogs\InstallCoreDialog.xaml" />
     <None Remove="Views\Dialogs\MicrosoftAccountDialog.xaml" />
     <None Remove="Views\Dialogs\OfflineAccountDialog.xaml" />
@@ -37,6 +38,8 @@
     <None Remove="Views\Pages\Logger.xaml" />
     <None Remove="Views\Pages\MainContainer.xaml" />
     <None Remove="Views\Pages\Mods\CurseForge.xaml" />
+    <None Remove="Views\Pages\Mods\CurseForgeModFile.xaml" />
+    <None Remove="Views\Pages\Mods\CurseForgeModInfo.xaml" />
     <None Remove="Views\Pages\Mods\Navigation.xaml" />
     <None Remove="Views\Pages\Properties\Information.xaml" />
     <None Remove="Views\Pages\Properties\Launch.xaml" />
@@ -65,6 +68,24 @@
     <ProjectReference Include="..\..\Natsurainko.FluentCore\Natsurainko.FluentCore.Extension.Windows\Natsurainko.FluentCore.Extension.Windows.csproj" />
     <ProjectReference Include="..\..\Natsurainko.FluentCore\Natsurainko.FluentCore\Natsurainko.FluentCore.csproj" />
     <ProjectReference Include="..\..\Natsurainko.Toolkits\Natsurainko.Toolkits\Natsurainko.Toolkits.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Pages\Mods\CurseForgeModFile.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Pages\Mods\CurseForgeModInfo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Dialogs\CurseForgeModDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>

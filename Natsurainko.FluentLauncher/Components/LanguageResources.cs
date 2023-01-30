@@ -16,7 +16,9 @@ public static class LanguageResources
     public static readonly List<string> SupportedLanguages = new()
     {
         "en-US, English",
-        "zh-CN, 简体中文"
+        "ru-RU, Russian",
+        "zh-CN, 简体中文 (中国)",
+        "zh-TW, 繁体中文 (中国台湾)"
     };
 #endif
 

@@ -156,6 +156,27 @@
   <data name="Cores_Search.PlaceholderText" xml:space="preserve">
     <value>Search Core...</value>
   </data>
+  <data name="Cores_ToolTip_1.Text" xml:space="preserve">
+    <value>Open Folder</value>
+  </data>
+  <data name="Cores_ToolTip_2.Text" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="Cores_ToolTip_3.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Cores_ToolTip_4.Text" xml:space="preserve">
+    <value>Generate Launch Script</value>
+  </data>
+  <data name="Cores_ToolTip_5.Text" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="Cores_ToolTip_6.Text" xml:space="preserve">
+    <value>More</value>
+  </data>
+  <data name="Cores_ToolTip_7.Text" xml:space="preserve">
+    <value>Launch</value>
+  </data>
   <data name="Guide_Account_Accounts.Text" xml:space="preserve">
     <value>Accounts</value>
   </data>
@@ -290,6 +311,42 @@
   </data>
   <data name="Navigation_Settings_Launch.Content" xml:space="preserve">
     <value>Global Launch Settings</value>
+  </data>
+  <data name="Properties_Information_Header.Text" xml:space="preserve">
+    <value>Property</value>
+  </data>
+  <data name="Properties_Information_Item_1.Text" xml:space="preserve">
+    <value>Path:</value>
+  </data>
+  <data name="Properties_Information_Item_2.Text" xml:space="preserve">
+    <value>Last launch time:</value>
+  </data>
+  <data name="Properties_Information_Item_3.Text" xml:space="preserve">
+    <value>Mod Loaders:</value>
+  </data>
+  <data name="Properties_Information_Item_4.Text" xml:space="preserve">
+    <value>Occupied disk space size:</value>
+  </data>
+  <data name="Properties_Information_Item_5.Text" xml:space="preserve">
+    <value>Number of dependent library files:</value>
+  </data>
+  <data name="Properties_Information_Item_6.Text" xml:space="preserve">
+    <value>Number of dependent asset files:</value>
+  </data>
+  <data name="Properties_Information_Subtitle.Text" xml:space="preserve">
+    <value>Basic properties of the core</value>
+  </data>
+  <data name="Properties_Launch_Header_1.Text" xml:space="preserve">
+    <value>Profile saved to:</value>
+  </data>
+  <data name="Properties_Launch_Header_2.Text" xml:space="preserve">
+    <value>Enable spcific game settings</value>
+  </data>
+  <data name="Properties_Launch_Item.Text" xml:space="preserve">
+    <value>Core independent:</value>
+  </data>
+  <data name="Properties_Mod_Header.Text" xml:space="preserve">
+    <value>Mods Folder:</value>
   </data>
   <data name="Settings_Account_Header.Text" xml:space="preserve">
     <value>Accounts</value>
@@ -426,10 +483,19 @@
   <data name="_Buttons_Remove.Text" xml:space="preserve">
     <value>Remove</value>
   </data>
+  <data name="_Buttons_Rename.Text" xml:space="preserve">
+    <value>Rename</value>
+  </data>
   <data name="_Buttons_Search.Text" xml:space="preserve">
     <value>Search</value>
   </data>
   <data name="_Buttons_SignIn.Text" xml:space="preserve">
     <value>Sign in</value>
+  </data>
+  <data name="_TeachingTips_Delete.Subtitle" xml:space="preserve">
+    <value>Are you sure you want to delete? Once deleted it cannot be restored</value>
+  </data>
+  <data name="_TeachingTips_Rename.Subtitle" xml:space="preserve">
+    <value>Please enter a valid name</value>
   </data>
 </root>

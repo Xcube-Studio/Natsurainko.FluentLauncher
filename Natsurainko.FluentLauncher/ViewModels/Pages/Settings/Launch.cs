@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
+using Microsoft.Win32;
 using Natsurainko.FluentCore.Extension.Windows.Service;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.Mvvm;
@@ -63,25 +64,21 @@ public partial class Launch
     });
 
     [RelayCommand]
-    public Task BrowserJava() => Task.Run(async () =>
+    public void BrowserJava()
     {
-        var filePicker = new FileOpenPicker();
+        var openFileDialog = new OpenFileDialog();
+        openFileDialog.Multiselect = false;
+        openFileDialog.Filter = "Javaw Executable File|javaw.exe|Java Executable File|java.exe";
 
-        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
-        WinRT.Interop.InitializeWithWindow.Initialize(filePicker, hwnd);
-
-        filePicker.FileTypeFilter.Add(".exe");
-        var file = await filePicker.PickSingleFileAsync();
-
-        if (file != null)
+        if (openFileDialog.ShowDialog().GetValueOrDefault(false))
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                JavaRuntimes.Add(file.Path);
+                JavaRuntimes.Add(openFileDialog.FileName);
                 OnPropertyChanged(nameof(JavaRuntimes));
 
-                CurrentJavaRuntime = file.Path;
+                CurrentJavaRuntime = openFileDialog.FileName;
             });
-    });
+    }
 
     [RelayCommand]
     public void SearchJava()

@@ -80,15 +80,11 @@
                                         BorderThickness="1"
                                         CornerRadius="8">
                                         <Grid>
-                                            <Image Source="{Binding ImageSource}" Stretch="Uniform" />
-                                            <ProgressRing
-                                                Width="32"
-                                                Height="32"
-                                                Margin="0,15"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                IsActive="True"
-                                                Visibility="{Binding Loading}" />
+                                            <Image Stretch="Uniform">
+                                                <Image.Source>
+                                                    <BitmapImage UriSource="{Binding NewsPageImage.Uri}" />
+                                                </Image.Source>
+                                            </Image>
                                         </Grid>
                                     </Border>
                                 </controls:ExpanderContentItem>

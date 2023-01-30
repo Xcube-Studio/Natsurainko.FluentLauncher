@@ -11,9 +11,7 @@
     mc:Ignorable="d">
 
     <ScrollViewer>
-        <StackPanel
-            MinHeight="350"
-            Margin="20">
+        <StackPanel MinHeight="350" Margin="20">
             <Button
                 Height="55.2"
                 Padding="20,0"
@@ -68,8 +66,11 @@
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Margin="2,0,0,0" Glyph="&#xe946;" />
                         <StackPanel Margin="17,12.5">
-                            <TextBlock Text="Property" />
-                            <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="Basic properties of the core" />
+                            <TextBlock x:Uid="Properties_Information_Header" Text="Property" />
+                            <TextBlock
+                                x:Uid="Properties_Information_Subtitle"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Text="Basic properties of the core" />
                         </StackPanel>
                     </StackPanel>
                 </Expander.Header>
@@ -82,7 +83,10 @@
                                     <ColumnDefinition Width="15" />
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock VerticalAlignment="Center" Text="Path:" />
+                                <TextBlock
+                                    x:Uid="Properties_Information_Item_1"
+                                    VerticalAlignment="Center"
+                                    Text="Path:" />
                                 <TextBlock
                                     Grid.Column="2"
                                     HorizontalAlignment="Right"
@@ -100,7 +104,10 @@
                                     <ColumnDefinition Width="15" />
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock VerticalAlignment="Center" Text="Last launch time:" />
+                                <TextBlock
+                                    x:Uid="Properties_Information_Item_2"
+                                    VerticalAlignment="Center"
+                                    Text="Last launch time:" />
                                 <TextBlock
                                     Grid.Column="2"
                                     HorizontalAlignment="Right"
@@ -118,7 +125,10 @@
                                     <ColumnDefinition Width="15" />
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock VerticalAlignment="Center" Text="Mod Loaders:" />
+                                <TextBlock
+                                    x:Uid="Properties_Information_Item_3"
+                                    VerticalAlignment="Center"
+                                    Text="Mod Loaders:" />
                                 <GridView
                                     Grid.Column="2"
                                     Height="30"
@@ -229,7 +239,10 @@
                                     <ColumnDefinition Width="15" />
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock VerticalAlignment="Center" Text="Occupied disk space size:" />
+                                <TextBlock
+                                    x:Uid="Properties_Information_Item_4"
+                                    VerticalAlignment="Center"
+                                    Text="Occupied disk space size:" />
                                 <TextBlock
                                     Grid.Column="2"
                                     HorizontalAlignment="Right"
@@ -247,7 +260,10 @@
                                     <ColumnDefinition Width="15" />
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock VerticalAlignment="Center" Text="Number of dependent library files:" />
+                                <TextBlock
+                                    x:Uid="Properties_Information_Item_5"
+                                    VerticalAlignment="Center"
+                                    Text="Number of dependent library files:" />
                                 <TextBlock
                                     Grid.Column="2"
                                     HorizontalAlignment="Right"
@@ -265,7 +281,10 @@
                                     <ColumnDefinition Width="15" />
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock VerticalAlignment="Center" Text="Number of dependent asset files:" />
+                                <TextBlock
+                                    x:Uid="Properties_Information_Item_6"
+                                    VerticalAlignment="Center"
+                                    Text="Number of dependent asset files:" />
                                 <TextBlock
                                     Grid.Column="2"
                                     HorizontalAlignment="Right"

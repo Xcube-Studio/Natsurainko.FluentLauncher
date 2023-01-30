@@ -71,6 +71,7 @@ public class GameCore : Natsurainko.FluentCore.Model.Launch.GameCore
 
         if (globalSetting.EnableIndependencyCore)
             globalSetting.WorkingFolder = new(Path.Combine(Root.FullName, "versions", Id));
+        else globalSetting.WorkingFolder = new(Root.FullName);
 
         return globalSetting;
     }

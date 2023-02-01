@@ -41,16 +41,23 @@ public partial class Configuration : ObservableObject
         : Default();
 
     public static Configuration Create()
-    {
-        var configuration = new Configuration();
-
-        foreach (var key in Container.Values.Keys)
+    {   
+        try
         {
-            var property = configuration.GetType().GetProperty(key);
-            property.SetValue(configuration, JsonConvert.DeserializeObject((string)Container.Values[key], property.PropertyType));
-        }
+            var configuration = new Configuration();
 
-        return configuration;
+            foreach (var key in Container.Values.Keys)
+            {
+                var property = configuration.GetType().GetProperty(key);
+                property.SetValue(configuration, JsonConvert.DeserializeObject((string)Container.Values[key], property.PropertyType));
+            }
+
+            return configuration;
+        }
+        catch
+        {
+            return Default();
+        }
     }
 
     public static ApplicationDataContainer Container => ApplicationData.Current.LocalSettings;

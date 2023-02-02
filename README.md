@@ -15,7 +15,7 @@
 
 <p align="center">
   <a href="https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/">
-    <img src="Assets/AppIcon.png" alt="Logo" width="80" height="80">
+    <img src="Natsurainko.FluentLauncher/Assets/AppIcon.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Natsurainko.FluentLauncher</h3>

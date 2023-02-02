@@ -24,7 +24,7 @@ public class GameCore : Natsurainko.FluentCore.Model.Launch.GameCore
 #if MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
         var profilesFolder = new DirectoryInfo(Path.Combine(Directory.GetCurrentDirectory(), "Natsurainko.FluentLauncher", "CoreProfiles"));
 #else
-        var profilesFolder = new DirectoryInfo(Path.Combine(Package.Current.InstalledLocation.Path, "Natsurainko.FluentLauncher", "CoreProfiles"));
+        var profilesFolder = new DirectoryInfo(Path.Combine(App.StoragePath, "Natsurainko.FluentLauncher", "CoreProfiles"));
 #endif
 
         if (!profilesFolder.Exists)

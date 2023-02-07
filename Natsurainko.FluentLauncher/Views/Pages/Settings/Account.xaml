@@ -117,10 +117,10 @@
                                                             <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">Uuid:</Run>
                                                             <Run Text="{Binding CurrentAccount.Uuid}" />
                                                         </Paragraph>
-                                                        <Paragraph>
+                                                    <!--    <Paragraph>
                                                             <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">Access Token:</Run>
                                                             <Run Text="{Binding CurrentAccount.AccessToken}" />
-                                                        </Paragraph>
+                                                        </Paragraph> -->
                                                     </RichTextBlock>
                                                     <ToggleButton
                                                         Grid.Row="2"

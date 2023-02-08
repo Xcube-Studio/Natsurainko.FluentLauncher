@@ -122,12 +122,12 @@
                                                             <Run Text="{Binding CurrentAccount.AccessToken}" />
                                                         </Paragraph> -->
                                                     </RichTextBlock>
-                                                    <ToggleButton
+                                                    <!-- <ToggleButton
                                                         Grid.Row="2"
                                                         HorizontalAlignment="Right"
                                                         IsChecked="{Binding ExpandAccessToken, Mode=TwoWay}">
                                                         <TextBlock x:Uid="_Buttons_Expand" Text="Expand" />
-                                                    </ToggleButton>
+                                                    </ToggleButton> -->
                                                 </Grid>
                                             </Flyout>
                                         </Button.Flyout>

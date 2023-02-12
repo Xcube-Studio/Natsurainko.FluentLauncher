@@ -180,7 +180,7 @@ public partial class LaunchArrangement : ObservableObject
             if (arrangement.LaunchSetting.Account.Type.Equals(AccountType.Yggdrasil))
             {
 #if MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
-            var authlibPath = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Libs", "authlib-injector-1.2.1.jar");
+                var authlibPath = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Libs", "authlib-injector-1.2.1.jar");
 #else
                 var authlibPath = Path.Combine(App.StoragePath, "Libraries", "authlib-injector-1.2.1.jar");
 

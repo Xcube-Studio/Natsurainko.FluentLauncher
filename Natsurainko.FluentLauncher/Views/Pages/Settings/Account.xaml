@@ -98,37 +98,17 @@
                                         </StackPanel>
                                         <Button.Flyout>
                                             <Flyout Placement="BottomEdgeAlignedRight">
-                                                <Grid>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="Auto" />
-                                                        <RowDefinition Height="15" />
-                                                        <RowDefinition Height="Auto" />
-                                                    </Grid.RowDefinitions>
-                                                    <RichTextBlock
-                                                        MaxWidth="350"
-                                                        MaxHeight="{Binding MaxFlyoutHeight}"
-                                                        TextTrimming="CharacterEllipsis">
-                                                        <Paragraph>
-                                                            <Run FontWeight="SemiBold" Text="{Binding CurrentAccount.Name}" />
-                                                            <Run>,</Run>
-                                                            <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding CurrentAccount.Type}" />
-                                                        </Paragraph>
-                                                        <Paragraph>
-                                                            <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">Uuid:</Run>
-                                                            <Run Text="{Binding CurrentAccount.Uuid}" />
-                                                        </Paragraph>
-                                                    <!--    <Paragraph>
-                                                            <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">Access Token:</Run>
-                                                            <Run Text="{Binding CurrentAccount.AccessToken}" />
-                                                        </Paragraph> -->
-                                                    </RichTextBlock>
-                                                    <!-- <ToggleButton
-                                                        Grid.Row="2"
-                                                        HorizontalAlignment="Right"
-                                                        IsChecked="{Binding ExpandAccessToken, Mode=TwoWay}">
-                                                        <TextBlock x:Uid="_Buttons_Expand" Text="Expand" />
-                                                    </ToggleButton> -->
-                                                </Grid>
+                                                <RichTextBlock TextTrimming="CharacterEllipsis">
+                                                    <Paragraph>
+                                                        <Run FontWeight="SemiBold" Text="{Binding CurrentAccount.Name}" />
+                                                        <Run>,</Run>
+                                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding CurrentAccount.Type}" />
+                                                    </Paragraph>
+                                                    <Paragraph>
+                                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">Uuid:</Run>
+                                                        <Run Text="{Binding CurrentAccount.Uuid}" />
+                                                    </Paragraph>
+                                                </RichTextBlock>
                                             </Flyout>
                                         </Button.Flyout>
                                     </Button>

@@ -112,11 +112,11 @@ public class ModInfoReader
         {
             ModLoaders = new ModLoaderType[] { ModLoaderType.Forge },
             Authors = keyValuePairs.ContainsKey("authors")
-                ? keyValuePairs["authors"].ToString().Split(",").Select(x => x.Trim(' ')).ToArray()
+                ? GetStringFromTomlTable(keyValuePairs, "authors").Split(",").Select(x => x.Trim(' ')).ToArray()
                 : Array.Empty<string>(),
-            Name = keyValuePairs["displayName"].ToString(),
-            Version = keyValuePairs["version"].ToString(),
-            Description = keyValuePairs["description"].ToString()
+            Name = GetStringFromTomlTable(keyValuePairs, "displayName"),
+            Version = GetStringFromTomlTable(keyValuePairs, "version"),
+            Description = GetStringFromTomlTable(keyValuePairs, "description")
         };
     }
 
@@ -169,5 +169,13 @@ public class ModInfoReader
                 yield return modInfo;
             }
         }
+    }
+
+    public static string GetStringFromTomlTable(TomlTable keyValuePairs, string key)
+    {
+        if (!keyValuePairs.ContainsKey(key))
+            return string.Empty;
+
+        return keyValuePairs[key].ToString();
     }
 }

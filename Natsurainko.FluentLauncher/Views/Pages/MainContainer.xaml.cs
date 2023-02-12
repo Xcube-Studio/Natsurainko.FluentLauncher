@@ -74,24 +74,6 @@ public sealed partial class MainContainer : Page
         RefreshDragArea();
     }
 
-    public static DependencyObject FindChildByName(DependencyObject parant, string ControlName)
-    {
-        int count = VisualTreeHelper.GetChildrenCount(parant);
-
-        for (int i = 0; i < count; i++)
-        {
-            var MyChild = VisualTreeHelper.GetChild(parant, i);
-            if (MyChild is FrameworkElement && ((FrameworkElement)MyChild).Name == ControlName)
-                return MyChild;
-
-            var FindResult = FindChildByName(MyChild, ControlName);
-            if (FindResult != null)
-                return FindResult;
-        }
-
-        return null;
-    }
-
     private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
     {
         RefreshDragArea();
@@ -201,4 +183,24 @@ public sealed partial class MainContainer : Page
             PaneContentGrid.SetValue(Grid.BackgroundProperty, acrylic);
         }*/
     }
+
+    /*
+    public static DependencyObject FindChildByName(DependencyObject parant, string ControlName)
+    {
+        int count = VisualTreeHelper.GetChildrenCount(parant);
+
+        for (int i = 0; i < count; i++)
+        {
+            var MyChild = VisualTreeHelper.GetChild(parant, i);
+            if (MyChild is FrameworkElement && ((FrameworkElement)MyChild).Name == ControlName)
+                return MyChild;
+
+            var FindResult = FindChildByName(MyChild, ControlName);
+            if (FindResult != null)
+                return FindResult;
+        }
+
+        return null;
+    }*/
+
 }

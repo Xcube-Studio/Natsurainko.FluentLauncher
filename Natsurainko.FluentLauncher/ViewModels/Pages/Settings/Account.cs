@@ -26,9 +26,6 @@ public partial class Account : SettingViewModel
             RemoveVisibility = CurrentAccount == null
                 ? Visibility.Collapsed
                 : Visibility.Visible;
-
-        if (e.PropertyName != nameof(MaxFlyoutHeight))
-            MaxFlyoutHeight = ExpandAccessToken ? 1000 : 100;
     }
 }
 
@@ -129,12 +126,6 @@ public partial class Account
 {
     [ObservableProperty]
     private Visibility removeVisibility;
-
-    [ObservableProperty]
-    private int maxFlyoutHeight;
-
-    [ObservableProperty]
-    private bool expandAccessToken;
 
     [ObservableProperty]
     private ObservableCollection<IAccount> accounts;

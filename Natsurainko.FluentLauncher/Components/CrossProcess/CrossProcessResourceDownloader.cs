@@ -1,5 +1,6 @@
 ﻿using Natsurainko.FluentCore.Interface;
 using Natsurainko.Toolkits.Network.Downloader;
+using Natsurainko.Toolkits.Text;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ public class CrossProcessResourceDownloader : IResourceDownloader
             RedirectStandardError = true,
             RedirectStandardOutput = true,
             Arguments = $"downloader " +
-                $"--folder {GameCore.Root.FullName} " +
+                $"--folder {GameCore.Root.FullName.ToPath()} " +
                 $"--core {GameCore.Id} " +
                 $"--thread-number {App.Configuration.MaxDownloadThreads}"
         };

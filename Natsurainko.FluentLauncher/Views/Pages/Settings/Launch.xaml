@@ -45,13 +45,14 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
                                     x:Uid="Settings_Launch_Item_1"
+                                    HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
                                     Text="Current .minecraft folder:" />
                                 <ComboBox
                                     Grid.Column="2"
                                     HorizontalAlignment="Right"
+                                    Width="300"
                                     VerticalAlignment="Center"
-                                    FlowDirection="RightToLeft"
                                     ItemsSource="{Binding GameFolders}"
                                     SelectedItem="{Binding CurrentGameFolder, Mode=TwoWay}">
                                     <ComboBox.ItemTemplate>
@@ -151,7 +152,7 @@
                                     Grid.Column="2"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
-                                    FlowDirection="RightToLeft"
+                                    Width="500"
                                     ItemsSource="{Binding JavaRuntimes}"
                                     SelectedItem="{Binding CurrentJavaRuntime, Mode=TwoWay}">
                                     <ComboBox.ItemTemplate>

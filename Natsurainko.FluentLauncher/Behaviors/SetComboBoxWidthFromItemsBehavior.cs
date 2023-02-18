@@ -61,55 +61,34 @@ namespace Natsurainko.FluentLauncher.Behaviors
         private static void OnComboBoxLoaded(object sender, RoutedEventArgs e)
         {
             ComboBox comboBox = (ComboBox) sender;
-
-            comboBox.DispatcherQueue.TryEnqueue(() => { comboBox.SetWidthFromItems(); });
+            comboBox.DispatcherQueue.TryEnqueue(() => { SetComboBoxWidth(comboBox); });
         }
-    }
 
-    public static class ComboBoxExtensionMethods
-    {
-        public static void SetWidthFromItems(this ComboBox comboBox)
+        /// <summary>
+        /// Set the width of a ComboBox to the longest item in its drop down menu
+        /// </summary>
+        /// <param name="comboBox">Target</param>
+        private static void SetComboBoxWidth(ComboBox comboBox)
         {
-            double comboBoxWidth = 60; // size of combobox without content
+            // Open ComboBox drop down and prepare ItemContainerGenerator
+            comboBox.IsDropDownOpen = true;
+            comboBox.ItemContainerGenerator.StartAt(new GeneratorPosition(0, 0), GeneratorDirection.Forward, true);
 
-            // Create the peer and provider to expand the comboBox in code behind. 
-            ComboBoxAutomationPeer peer = new ComboBoxAutomationPeer(comboBox);
-            IExpandCollapseProvider provider = (IExpandCollapseProvider)peer.GetPattern(PatternInterface.ExpandCollapse);
-
-            EventHandler<object> eventHandler = null;
-            eventHandler = new EventHandler<object>((_, _) =>
+            double maxWidth = 0;
+            ComboBoxItem? item;
+            while ((item = comboBox.ItemContainerGenerator.GenerateNext(out _) as ComboBoxItem) != null)
             {
-                if (comboBox.IsDropDownOpen //&&
-                    /*comboBox.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated*/)
+                item.Measure(new Windows.Foundation.Size(double.PositiveInfinity, double.PositiveInfinity));
+                var size = item.DesiredSize;
+                if (size.Width > maxWidth)
                 {
-                    double width = 0;
-
-                    // Get the container of the item
-                    foreach (var item in comboBox.Items)
-                    {
-                        //TODO: combobox.items are not necessarily ComboBoxItems
-                        // var cont = comboBox.ContainerFromIndex(0);
-                        // var a = comboBox.ItemContainerGenerator.ContainerFromItem(item);
-                        TextBlock comboBoxItem = new TextBlock { Text = item.ToString() };
-                        comboBoxItem.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                        if (comboBoxItem.DesiredSize.Width > width)
-                        {
-                            width = comboBoxItem.DesiredSize.Width;
-                        }
-                    }
-                    comboBox.Width = comboBoxWidth + width;
-                    // Remove the event handler. 
-                    // comboBox.ItemContainerGenerator.StatusChanged -= eventHandler;
-                    comboBox.DropDownOpened -= eventHandler;
-                    provider.Collapse();
+                    maxWidth = size.Width;
                 }
-            });
+            }
 
-            // comboBox.ItemContainerGenerator.StatusChanged += eventHandler;
-            comboBox.DropDownOpened += eventHandler;
-
-            // Expand the comboBox to generate all its ComboBoxItem's. 
-            provider.Expand();
+            comboBox.Width = maxWidth + 20; // This constant adds more space to include the drop down button and paddings
+            comboBox.ItemContainerGenerator.Stop();
+            comboBox.IsDropDownOpen = false;
         }
     }
 }

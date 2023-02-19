@@ -53,7 +53,6 @@
                                 <ComboBox
                                     Grid.Column="2"
                                     HorizontalAlignment="Right"
-                                    Width="300"
                                     VerticalAlignment="Center"
                                     ItemsSource="{Binding GameFolders}"
                                     MaxWidth="{Binding ElementName=container1, Path=ActualWidth, Mode=OneTime}"
@@ -158,7 +157,6 @@
                                     Grid.Column="2"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
-                                    Width="500"
                                     ItemsSource="{Binding JavaRuntimes}"
                                     SelectedItem="{Binding CurrentJavaRuntime, Mode=TwoWay}">
                                     <ComboBox.ItemTemplate>

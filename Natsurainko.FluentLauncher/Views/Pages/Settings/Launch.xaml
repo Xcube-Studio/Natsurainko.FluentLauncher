@@ -8,7 +8,9 @@
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Pages.Settings"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Pages.Settings"
+    xmlns:behaviors ="using:Natsurainko.FluentLauncher.Behaviors"
     Background="Transparent"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
     mc:Ignorable="d">
     <Page.DataContext>
         <vm:Launch />
@@ -41,19 +43,23 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="15" />
-                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" x:Name="container1"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
                                     x:Uid="Settings_Launch_Item_1"
+                                    HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
                                     Text="Current .minecraft folder:" />
                                 <ComboBox
                                     Grid.Column="2"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
-                                    FlowDirection="RightToLeft"
                                     ItemsSource="{Binding GameFolders}"
+                                    MaxWidth="{Binding ElementName=container1, Path=ActualWidth, Mode=OneTime}"
                                     SelectedItem="{Binding CurrentGameFolder, Mode=TwoWay}">
+                                    <i:Interaction.Behaviors>
+                                        <behaviors:SetComboBoxWidthFromItemsBehavior SetComboBoxWidthFromItems="True"/>
+                                    </i:Interaction.Behaviors>
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate x:DataType="x:String">
                                             <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
@@ -151,7 +157,6 @@
                                     Grid.Column="2"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
-                                    FlowDirection="RightToLeft"
                                     ItemsSource="{Binding JavaRuntimes}"
                                     SelectedItem="{Binding CurrentJavaRuntime, Mode=TwoWay}">
                                     <ComboBox.ItemTemplate>

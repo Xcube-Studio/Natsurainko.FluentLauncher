@@ -36,27 +36,6 @@ class SetComboBoxWidthFromItemsBehavior : Behavior<ComboBox>
 
     #endregion
 
-    #region AutoMaxWidthProperty
-
-    public static readonly DependencyProperty AutoMaxWidthProperty =
-        DependencyProperty.RegisterAttached
-        (
-            "AutoMaxWidthProperty",
-            typeof(bool),
-            typeof(SetComboBoxWidthFromItemsBehavior),
-            new PropertyMetadata(null, OnAutoMaxWidthPropertyChanged)
-        );
-
-    public bool AutoMaxWidth
-    {
-        get => (bool)GetValue(AutoMaxWidthProperty);
-        set => SetValue(AutoMaxWidthProperty, value);
-    }
-
-    #endregion
-
-    FrameworkElement container = null;
-
     private static void OnSetWidthFromItemsPropertyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
@@ -67,13 +46,12 @@ class SetComboBoxWidthFromItemsBehavior : Behavior<ComboBox>
         bool newValue = (bool)e.NewValue;
         bool oldValue = (bool)e.OldValue;
 
-        if (comboBox != null && newValue != oldValue)
+        if (comboBox is not null && newValue != oldValue)
         {
             if (newValue == true)
             {
                 comboBox.Loaded += behavior.OnComboBoxLoaded;
                 comboBox.Items.VectorChanged += behavior.Items_VectorChanged;
-
             }
             else
             {
@@ -81,14 +59,6 @@ class SetComboBoxWidthFromItemsBehavior : Behavior<ComboBox>
                 comboBox.Items.VectorChanged -= behavior.Items_VectorChanged;
             }
         }
-    }
-
-    private static void OnAutoMaxWidthPropertyChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-    {
-        // TODO:
-        // TODO: Calculate MaxWidth on loaded
     }
 
     protected override void OnAttached()
@@ -108,38 +78,7 @@ class SetComboBoxWidthFromItemsBehavior : Behavior<ComboBox>
     private void OnComboBoxLoaded(object sender, RoutedEventArgs e)
     {
         SetComboBoxWidth(AssociatedObject);
-        container = AssociatedObject.Parent as FrameworkElement;
-
-        if (container is null) return;
-
-        if (container is FrameworkElement fe)
-        {
-            fe.SizeChanged += Container_SizeChanged;
-        }
     }
-
-    private void Container_SizeChanged(object sender, SizeChangedEventArgs e)
-    {
-        // Find the total width allowed in the parent of the ComboBox
-        if (sender is Grid g)
-        {
-            int column = (int)AssociatedObject.GetValue(Grid.ColumnProperty);
-            int columnSpan = (int)AssociatedObject.GetValue(Grid.ColumnSpanProperty);
-            var columns = g.ColumnDefinitions;
-
-            double totalWidth = 0;
-            for (int i = column; i < column + columnSpan; i++)
-            {
-                totalWidth += columns[i].ActualWidth;
-            }
-            AssociatedObject.MaxWidth = totalWidth;
-        }
-        else if (sender is FrameworkElement fe)
-        {
-            AssociatedObject.MaxWidth = fe.ActualWidth;
-        }
-    }
-
 
     /// <summary>
     /// Set the width of a ComboBox to the longest item in its drop down menu

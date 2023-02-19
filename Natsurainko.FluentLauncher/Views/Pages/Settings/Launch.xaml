@@ -43,7 +43,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="15" />
-                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" x:Name="container1"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
                                     x:Uid="Settings_Launch_Item_1"
@@ -56,6 +56,7 @@
                                     Width="300"
                                     VerticalAlignment="Center"
                                     ItemsSource="{Binding GameFolders}"
+                                    MaxWidth="{Binding ElementName=container1, Path=ActualWidth, Mode=OneTime}"
                                     SelectedItem="{Binding CurrentGameFolder, Mode=TwoWay}">
                                     <i:Interaction.Behaviors>
                                         <behaviors:SetComboBoxWidthFromItemsBehavior SetComboBoxWidthFromItems="True"/>

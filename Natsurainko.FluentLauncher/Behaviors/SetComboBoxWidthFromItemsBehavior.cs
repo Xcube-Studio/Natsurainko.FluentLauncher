@@ -96,7 +96,8 @@ namespace Natsurainko.FluentLauncher.Behaviors
                 }
             }
 
-            comboBox.Width = maxWidth + 20; // This constant adds more space to include the drop down button and paddings
+            maxWidth += 20; // This constant adds more space to include the drop down button and paddings
+            comboBox.Width = maxWidth > 70 ? maxWidth : 70; // Ensures a MinWidth of 70 when there is no content; Less width will result in issues with appearance
             comboBox.ItemContainerGenerator.Stop();
             comboBox.IsDropDownOpen = false;
         }

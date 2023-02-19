@@ -39,11 +39,11 @@
                 <Expander.Content>
                     <StackPanel HorizontalAlignment="Stretch">
                         <controls:ExpanderContentItem>
-                            <Grid>
+                            <Grid x:Name="container1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="15" />
-                                    <ColumnDefinition x:Name="container1" Width="1*" />
+                                    <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
                                     x:Uid="Settings_Launch_Item_1"
@@ -52,13 +52,13 @@
                                     Text="Current .minecraft folder:" />
                                 <ComboBox
                                     Grid.Column="2"
-                                    MaxWidth="{Binding ElementName=container1, Path=ActualWidth, Mode=OneTime}"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     ItemsSource="{Binding GameFolders}"
                                     SelectedItem="{Binding CurrentGameFolder, Mode=TwoWay}">
                                     <i:Interaction.Behaviors>
-                                        <behaviors:SetComboBoxWidthFromItemsBehavior SetComboBoxWidthFromItems="True" />
+                                        <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True"/>
+                                        <behaviors:AutoMaxWidthBehavior AutoMaxWidth="True"/>
                                     </i:Interaction.Behaviors>
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate x:DataType="x:String">
@@ -143,11 +143,11 @@
                 <Expander.Content>
                     <StackPanel HorizontalAlignment="Stretch">
                         <controls:ExpanderContentItem>
-                            <Grid>
+                            <Grid x:Name="container2">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="15" />
-                                    <ColumnDefinition x:Name="container2" Width="1*" />
+                                    <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
                                     x:Uid="Settings_Launch_Item_4"
@@ -155,13 +155,13 @@
                                     Text="Current Java runtime:" />
                                 <ComboBox
                                     Grid.Column="2"
-                                    MaxWidth="{Binding ElementName=container2, Path=ActualWidth, Mode=OneTime}"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     ItemsSource="{Binding JavaRuntimes}"
                                     SelectedItem="{Binding CurrentJavaRuntime, Mode=TwoWay}">
                                     <i:Interaction.Behaviors>
-                                        <behaviors:SetComboBoxWidthFromItemsBehavior SetComboBoxWidthFromItems="True" />
+                                        <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True"/>
+                                        <behaviors:AutoMaxWidthBehavior AutoMaxWidth="True"/>
                                     </i:Interaction.Behaviors>
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>

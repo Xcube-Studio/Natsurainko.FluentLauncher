@@ -22,6 +22,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage;
 using WinUIEx;
 using GameCore = Natsurainko.FluentLauncher.Components.FluentCore.GameCore;
 using GameCoreLocator = Natsurainko.FluentLauncher.Components.FluentCore.GameCoreLocator;
@@ -182,15 +183,7 @@ public partial class LaunchArrangement : ObservableObject
 #if MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
                 var authlibPath = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Libs", "authlib-injector-1.2.1.jar");
 #else
-                var authlibPath = Path.Combine(App.StoragePath, "Libraries", "authlib-injector-1.2.1.jar");
-
-                if (!File.Exists(authlibPath))
-                {
-                    if (!Directory.Exists(Path.Combine(App.StoragePath, "Libraries")))
-                        Directory.CreateDirectory(Path.Combine(App.StoragePath, "Libraries"));
-
-                    File.Copy(Path.Combine(Package.Current.InstalledPath, "Natsurainko.FluentLauncher", "Assets", "Libs", "authlib-injector-1.2.1.jar"), authlibPath);
-                }
+                var authlibPath = (await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/Libs/authlib-injector-1.2.1.jar"))).Path;
 #endif
                 await foreach (var args in ((YggdrasilAccount)arrangement.LaunchSetting.Account).GetAuthlibArgumentsAsync(authlibPath))
                     arrangement.LaunchSetting.JvmSetting.AdvancedArguments.Add(args);

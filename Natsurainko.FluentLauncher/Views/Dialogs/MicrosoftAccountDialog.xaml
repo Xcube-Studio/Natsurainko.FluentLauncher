@@ -357,6 +357,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Command="{Binding CancelClickCommand}"
+            Foreground="Black"
             Style="{ThemeResource AlternateCloseButtonStyle}" />
     </Grid>
 </ContentDialog>

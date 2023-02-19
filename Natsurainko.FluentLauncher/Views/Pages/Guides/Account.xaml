@@ -58,7 +58,6 @@
                             </Grid.ColumnDefinitions>
                             <ComboBox
                                 HorizontalAlignment="Stretch"
-                                FlowDirection="RightToLeft"
                                 ItemsSource="{Binding Accounts}"
                                 SelectedItem="{Binding CurrentAccount, Mode=TwoWay}">
                                 <ComboBox.ItemTemplate>

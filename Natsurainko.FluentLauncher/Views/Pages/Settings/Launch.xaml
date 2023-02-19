@@ -3,8 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.Behaviors"
     xmlns:controls="using:Natsurainko.FluentLauncher.UserControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Pages.Settings"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Pages.Settings"
@@ -41,19 +43,23 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="15" />
-                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition x:Name="container1" Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
                                     x:Uid="Settings_Launch_Item_1"
+                                    HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
                                     Text="Current .minecraft folder:" />
                                 <ComboBox
                                     Grid.Column="2"
+                                    MaxWidth="{Binding ElementName=container1, Path=ActualWidth, Mode=OneTime}"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
-                                    FlowDirection="RightToLeft"
                                     ItemsSource="{Binding GameFolders}"
                                     SelectedItem="{Binding CurrentGameFolder, Mode=TwoWay}">
+                                    <i:Interaction.Behaviors>
+                                        <behaviors:SetComboBoxWidthFromItemsBehavior SetComboBoxWidthFromItems="True" />
+                                    </i:Interaction.Behaviors>
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate x:DataType="x:String">
                                             <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
@@ -141,7 +147,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="15" />
-                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition x:Name="container2" Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
                                     x:Uid="Settings_Launch_Item_4"
@@ -149,11 +155,14 @@
                                     Text="Current Java runtime:" />
                                 <ComboBox
                                     Grid.Column="2"
+                                    MaxWidth="{Binding ElementName=container2, Path=ActualWidth, Mode=OneTime}"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
-                                    FlowDirection="RightToLeft"
                                     ItemsSource="{Binding JavaRuntimes}"
                                     SelectedItem="{Binding CurrentJavaRuntime, Mode=TwoWay}">
+                                    <i:Interaction.Behaviors>
+                                        <behaviors:SetComboBoxWidthFromItemsBehavior SetComboBoxWidthFromItems="True" />
+                                    </i:Interaction.Behaviors>
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock TextTrimming="CharacterEllipsis">

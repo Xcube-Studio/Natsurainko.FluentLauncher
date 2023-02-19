@@ -58,7 +58,6 @@
                             </Grid.ColumnDefinitions>
                             <ComboBox
                                 HorizontalAlignment="Stretch"
-                                FlowDirection="RightToLeft"
                                 ItemsSource="{Binding GameFolders}"
                                 SelectedItem="{Binding CurrentGameFolder, Mode=TwoWay}">
                                 <ComboBox.ItemTemplate>
@@ -105,7 +104,6 @@
                             </Grid.ColumnDefinitions>
                             <ComboBox
                                 HorizontalAlignment="Stretch"
-                                FlowDirection="RightToLeft"
                                 IsDropDownOpen="{Binding DropOpen, Mode=TwoWay}"
                                 ItemsSource="{Binding JavaRuntimes}"
                                 SelectedItem="{Binding CurrentJavaRuntime, Mode=TwoWay}">

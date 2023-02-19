@@ -11,7 +11,7 @@ using Microsoft.UI.Xaml.Automation.Provider;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.Xaml.Interactivity;
-using Windows.Foundation;
+using Windows.Foundation.Collections;
 
 namespace Natsurainko.FluentLauncher.Behaviors
 {
@@ -35,13 +35,26 @@ namespace Natsurainko.FluentLauncher.Behaviors
         protected override void OnAttached()
         {
             AssociatedObject.Loaded += OnComboBoxLoaded;
+            AssociatedObject.Items.VectorChanged += Items_VectorChanged;
+        }
+
+        public void Items_VectorChanged(IObservableVector<object> sender, IVectorChangedEventArgs e)
+        {
+            SetComboBoxWidth(AssociatedObject);
+        }
+
+        private static void OnComboBoxLoaded(object sender, RoutedEventArgs e)
+        {
+            SetComboBoxWidth((ComboBox)sender);
         }
 
         private static void OnSetComboBoxWidthFromItemsPropertyChanged(
             DependencyObject dpo, 
             DependencyPropertyChangedEventArgs e)
         {
-            ComboBox comboBox = ((SetComboBoxWidthFromItemsBehavior)dpo).AssociatedObject;
+            SetComboBoxWidthFromItemsBehavior behavior = (SetComboBoxWidthFromItemsBehavior)dpo;
+            ComboBox comboBox = behavior.AssociatedObject;
+
             bool newValue = (bool)e.NewValue;
             bool oldValue = (bool)e.OldValue;
 
@@ -50,18 +63,15 @@ namespace Natsurainko.FluentLauncher.Behaviors
                 if (newValue == true)
                 {
                     comboBox.Loaded += OnComboBoxLoaded;
+                    comboBox.Items.VectorChanged += behavior.Items_VectorChanged;
+
                 }
                 else
                 {
                     comboBox.Loaded -= OnComboBoxLoaded;
+                    comboBox.Items.VectorChanged -= behavior.Items_VectorChanged;
                 }
             }
-        }
-
-        private static void OnComboBoxLoaded(object sender, RoutedEventArgs e)
-        {
-            ComboBox comboBox = (ComboBox) sender;
-            comboBox.DispatcherQueue.TryEnqueue(() => { SetComboBoxWidth(comboBox); });
         }
 
         /// <summary>

@@ -7,8 +7,8 @@ assignees: ''
 
 ---
 
-** Please note: An issue only reports one problem. If you have many probles, please create other issues **
-** Please note: if you are going to feedback some unimportant bugs, please post in the discussion **
+**Please note: An issue only reports one problem. If you have many probles, please create other issues**
+**Please note: if you are going to feedback some unimportant bugs, please post in the discussion**
 <!-- Please fill in the following form -->
 ## FluentLauncher Bug Report :
 FluentLauncher Version : 2.X.XX .

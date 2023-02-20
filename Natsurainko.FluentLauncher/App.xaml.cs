@@ -44,6 +44,8 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+        UnhandledException += App_UnhandledException;
+        AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
     }
 
     protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
@@ -54,10 +56,8 @@ public partial class App : Application
 
     public static MainWindow MainWindow { get; private set; }
 
-    #region 尝试错误收集，但实际没有任何效果
-    /*
-    UnhandledException += App_UnhandledException;
-    AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+    #region 全局错误收集
 
     private void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
     {
@@ -77,26 +77,32 @@ public partial class App : Application
 
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
-        App.MainWindow.DispatcherQueue?.TryEnqueue(async () =>
-        {
-            var stringBuilder = new StringBuilder()
-                .AppendLine(e.Exception.GetType().FullName)
-                .AppendLine(e.Exception.ToString());
+        e.Handled = true;
 
-            if (e.Exception.InnerException != null)
-            {
-                stringBuilder.AppendLine("InnerException:");
-                stringBuilder.AppendLine(e.Exception.InnerException.ToString());
-            }
+        var window = new Window();
+        window.Content = new Microsoft.UI.Xaml.Controls.TextBlock() { Text = "Hello" };
+        window.Activate();
 
-            var dialog = new MessageDialog(stringBuilder.ToString(), "程序遇到不可恢复的问题，请向开发者提供此窗口截图\r\n" +
-                "The program has encountered an unrecoverable problem, please provide the developer with a screenshot of this window");
+        //App.MainWindow.DispatcherQueue?.TryEnqueue(async () =>
+        //{
+        //    var stringBuilder = new StringBuilder()
+        //        .AppendLine(e.Exception.GetType().FullName)
+        //        .AppendLine(e.Exception.ToString());
 
-            dialog.Commands.Add(new UICommand("退出 Exit", (ui) => App.Current.Exit()));
-            await dialog.ShowAsync();
-        });
+        //    if (e.Exception.InnerException != null)
+        //    {
+        //        stringBuilder.AppendLine("InnerException:");
+        //        stringBuilder.AppendLine(e.Exception.InnerException.ToString());
+        //    }
+
+        //    var dialog = new MessageDialog(stringBuilder.ToString(), "程序遇到不可恢复的问题，请向开发者提供此窗口截图\r\n" +
+        //        "The program has encountered an unrecoverable problem, please provide the developer with a screenshot of this window");
+
+        //    dialog.Commands.Add(new UICommand("退出 Exit", (ui) => App.Current.Exit()));
+        //    await dialog.ShowAsync();
+        //});
     }
-    */
+
 
     #endregion
 }

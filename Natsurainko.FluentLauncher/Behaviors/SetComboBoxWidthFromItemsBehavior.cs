@@ -17,25 +17,57 @@ namespace Natsurainko.FluentLauncher.Behaviors;
 
 class SetComboBoxWidthFromItemsBehavior : Behavior<ComboBox>
 {
-    public static readonly DependencyProperty SetComboBoxWidthFromItemsProperty =
-    DependencyProperty.RegisterAttached
-    (
-        "SetComboBoxWidthFromItems",
-        typeof(bool),
-        typeof(SetComboBoxWidthFromItemsBehavior),
-        new PropertyMetadata(false, OnSetComboBoxWidthFromItemsPropertyChanged)
-    );
+    #region SetWidthFromItemsProperty
 
-    public bool SetComboBoxWidthFromItems 
+    public static readonly DependencyProperty SetWidthFromItemsProperty =
+        DependencyProperty.RegisterAttached
+        (
+            "SetWidthFromItems",
+            typeof(bool),
+            typeof(SetComboBoxWidthFromItemsBehavior),
+            new PropertyMetadata(false, OnSetWidthFromItemsPropertyChanged)
+        );
+
+    public bool SetWidthFromItems 
     { 
-        get => (bool)GetValue(SetComboBoxWidthFromItemsProperty); 
-        set => SetValue(SetComboBoxWidthFromItemsProperty, value);
+        get => (bool)GetValue(SetWidthFromItemsProperty); 
+        set => SetValue(SetWidthFromItemsProperty, value);
     }
-    
+
+    #endregion
+
+    private static void OnSetWidthFromItemsPropertyChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        SetComboBoxWidthFromItemsBehavior behavior = (SetComboBoxWidthFromItemsBehavior)d;
+        ComboBox comboBox = behavior.AssociatedObject;
+
+        bool newValue = (bool)e.NewValue;
+        bool oldValue = (bool)e.OldValue;
+
+        if (comboBox is not null && newValue != oldValue)
+        {
+            if (newValue == true)
+            {
+                comboBox.Loaded += behavior.OnComboBoxLoaded;
+                comboBox.Items.VectorChanged += behavior.Items_VectorChanged;
+            }
+            else
+            {
+                comboBox.Loaded -= behavior.OnComboBoxLoaded;
+                comboBox.Items.VectorChanged -= behavior.Items_VectorChanged;
+            }
+        }
+    }
+
     protected override void OnAttached()
     {
-        AssociatedObject.Loaded += OnComboBoxLoaded;
-        AssociatedObject.Items.VectorChanged += Items_VectorChanged;
+        if (SetWidthFromItems)
+        {
+            AssociatedObject.Loaded += OnComboBoxLoaded;
+            AssociatedObject.Items.VectorChanged += Items_VectorChanged;
+        }
     }
 
     public void Items_VectorChanged(IObservableVector<object> sender, IVectorChangedEventArgs e)
@@ -43,35 +75,9 @@ class SetComboBoxWidthFromItemsBehavior : Behavior<ComboBox>
         SetComboBoxWidth(AssociatedObject);
     }
 
-    private static void OnComboBoxLoaded(object sender, RoutedEventArgs e)
+    private void OnComboBoxLoaded(object sender, RoutedEventArgs e)
     {
-        SetComboBoxWidth((ComboBox)sender);
-    }
-
-    private static void OnSetComboBoxWidthFromItemsPropertyChanged(
-        DependencyObject dpo, 
-        DependencyPropertyChangedEventArgs e)
-    {
-        SetComboBoxWidthFromItemsBehavior behavior = (SetComboBoxWidthFromItemsBehavior)dpo;
-        ComboBox comboBox = behavior.AssociatedObject;
-
-        bool newValue = (bool)e.NewValue;
-        bool oldValue = (bool)e.OldValue;
-
-        if (comboBox != null && newValue != oldValue)
-        {
-            if (newValue == true)
-            {
-                comboBox.Loaded += OnComboBoxLoaded;
-                comboBox.Items.VectorChanged += behavior.Items_VectorChanged;
-
-            }
-            else
-            {
-                comboBox.Loaded -= OnComboBoxLoaded;
-                comboBox.Items.VectorChanged -= behavior.Items_VectorChanged;
-            }
-        }
+        SetComboBoxWidth(AssociatedObject);
     }
 
     /// <summary>
@@ -85,7 +91,7 @@ class SetComboBoxWidthFromItemsBehavior : Behavior<ComboBox>
         comboBox.ItemContainerGenerator.StartAt(new GeneratorPosition(0, 0), GeneratorDirection.Forward, true);
 
         double maxWidth = 0;
-        ComboBoxItem? item;
+        ComboBoxItem item;
         while ((item = comboBox.ItemContainerGenerator.GenerateNext(out _) as ComboBoxItem) != null)
         {
             item.Measure(new Windows.Foundation.Size(double.PositiveInfinity, double.PositiveInfinity));

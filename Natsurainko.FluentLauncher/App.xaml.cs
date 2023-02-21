@@ -10,6 +10,7 @@ using System.Threading;
 using Windows.Storage;
 using Windows.UI.Popups;
 using System.Windows.Input;
+using Natsurainko.FluentLauncher.Views.Dialogs;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -109,17 +110,7 @@ public partial class App : Application
         {
             App.MainWindow.DispatcherQueue?.TryEnqueue(async () =>
             {
-                var dialog = new ContentDialog
-                {
-                    XamlRoot = MainWindow.Content.XamlRoot,
-                    Title = "程序运行出现问题\nThe program has encountered a problem",
-                    Content = new ScrollViewer() 
-                    { 
-                        Content = new TextBlock { Text = errorMessage, IsTextSelectionEnabled = true },
-                        HorizontalScrollBarVisibility = ScrollBarVisibility.Auto
-                    },
-                    PrimaryButtonText = "关闭 Close"
-                };
+                var dialog = new ExceptionDialog(errorMessage) { XamlRoot = MainWindow.Content.XamlRoot };
                 await dialog.ShowAsync();
             });
         }

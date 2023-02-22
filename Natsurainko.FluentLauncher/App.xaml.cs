@@ -48,9 +48,12 @@ public partial class App : Application
     {
         InitializeComponent();
         
-        // Global exception handlers
-        UnhandledException += App_UnhandledException;
-        //AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+        // Global exception handler
+        UnhandledException += (_, e) => 
+        {
+            e.Handled = true;
+            ProcessException(e.Exception);
+        };
     }
 
     protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
@@ -61,25 +64,7 @@ public partial class App : Application
 
     public static MainWindow MainWindow { get; private set; }
 
-
     #region Global exception handlers
-
-    private static void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
-    {
-        // 这里不能设置e.Handled，MS Learn文档表示只能用于记录日志后退出，或许可以尝试专门在新的进程上开一个窗口提示？
-        // https://learn.microsoft.com/en-us/dotnet/api/system.appdomain?view=net-7.
-
-        if (!e.IsTerminating && e.ExceptionObject is Exception ex)
-        {
-            ProcessException(ex);
-        }
-    }
-
-    private static void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
-    {
-        e.Handled = true;
-        ProcessException(e.Exception);
-    }
 
     public static string GetErrorMessage(Exception e)
     {

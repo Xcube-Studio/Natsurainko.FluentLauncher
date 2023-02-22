@@ -1,13 +1,13 @@
 using Microsoft.UI.Xaml.Controls;
+using Natsurainko.FluentLauncher.ViewModels.Dialogs;
 
 namespace Natsurainko.FluentLauncher.Views.Dialogs;
 
 public sealed partial class ExceptionDialog : ContentDialog
 {
-    public string ErrorMessage { get; private set; }
     public ExceptionDialog(string errorMessage = "")
     {
         InitializeComponent();
-        ErrorMessage = errorMessage;
+        DataContext = new ExceptionDialogViewModel(errorMessage);
     }
 }

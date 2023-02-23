@@ -31,7 +31,7 @@ public sealed partial class MainContainer : Page
         InitializeComponent();
 
         InformationListBox = InformationList;
-        ContentFrame = contentFrame;throw new NotImplementedException();
+        ContentFrame = contentFrame;
     }
 
     private void UpdateAppTitleMargin(NavigationView sender)

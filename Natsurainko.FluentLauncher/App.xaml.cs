@@ -11,6 +11,8 @@ using Windows.Storage;
 using Windows.UI.Popups;
 using System.Windows.Input;
 using Natsurainko.FluentLauncher.Views.Dialogs;
+using System.Threading.Tasks;
+using Natsurainko.FluentLauncher.Views.Pages;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -58,8 +60,15 @@ public partial class App : Application
 
     protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
-        MainWindow = new MainWindow();
-        MainWindow.Activate();
+        try
+        {
+            MainWindow = new MainWindow();
+            MainWindow.Activate();
+        }
+        catch (Exception e)
+        {
+            ProcessException(e);
+        }
     }
 
     public static MainWindow MainWindow { get; private set; }
@@ -101,9 +110,8 @@ public partial class App : Application
         }
         else
         {
-            // Error in initializing MainWindow: display the exception in a deciated new window
-            var window = new Window();
-            window.Content = new TextBlock() { Text = errorMessage };
+            var window = new Window() { Title = "Fluent Launcher" };
+            window.Content = new ExceptionPage(errorMessage);
             window.Activate();
         }
     }

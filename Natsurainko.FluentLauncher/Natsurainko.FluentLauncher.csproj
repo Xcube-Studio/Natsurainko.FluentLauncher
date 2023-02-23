@@ -29,6 +29,7 @@
     <None Remove="Views\Pages\Activities\Navigation.xaml" />
     <None Remove="Views\Pages\Activities\News.xaml" />
     <None Remove="Views\Pages\Cores.xaml" />
+    <None Remove="Views\Pages\ExceptionPage.xaml" />
     <None Remove="Views\Pages\Guides\Account.xaml" />
     <None Remove="Views\Pages\Guides\Basic.xaml" />
     <None Remove="Views\Pages\Guides\GetStarted.xaml" />
@@ -69,6 +70,12 @@
     <ProjectReference Include="..\..\Natsurainko.FluentCore\Natsurainko.FluentCore.Extension.Windows\Natsurainko.FluentCore.Extension.Windows.csproj" />
     <ProjectReference Include="..\..\Natsurainko.FluentCore\Natsurainko.FluentCore\Natsurainko.FluentCore.csproj" />
     <ProjectReference Include="..\..\Natsurainko.Toolkits\Natsurainko.Toolkits\Natsurainko.Toolkits.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Pages\ExceptionPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>

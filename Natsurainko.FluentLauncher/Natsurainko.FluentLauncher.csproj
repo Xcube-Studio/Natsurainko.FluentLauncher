@@ -18,6 +18,7 @@
     <None Remove="Views\Dialogs\ChooseAccountTypeDialog.xaml" />
     <None Remove="Views\Dialogs\CoreOptionsDialog.xaml" />
     <None Remove="Views\Dialogs\CurseForgeModDialog.xaml" />
+    <None Remove="Views\Dialogs\ExceptionDialog.xaml" />
     <None Remove="Views\Dialogs\InstallCoreDialog.xaml" />
     <None Remove="Views\Dialogs\MicrosoftAccountDialog.xaml" />
     <None Remove="Views\Dialogs\OfflineAccountDialog.xaml" />
@@ -28,6 +29,7 @@
     <None Remove="Views\Pages\Activities\Navigation.xaml" />
     <None Remove="Views\Pages\Activities\News.xaml" />
     <None Remove="Views\Pages\Cores.xaml" />
+    <None Remove="Views\Pages\ExceptionPage.xaml" />
     <None Remove="Views\Pages\Guides\Account.xaml" />
     <None Remove="Views\Pages\Guides\Basic.xaml" />
     <None Remove="Views\Pages\Guides\GetStarted.xaml" />
@@ -71,6 +73,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\Pages\ExceptionPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Dialogs\ExceptionDialog.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="Views\Pages\Mods\CurseForgeModFile.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

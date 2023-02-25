@@ -67,6 +67,9 @@ public class GameCore : Natsurainko.FluentCore.Model.Launch.GameCore
             globalSetting.ServerSetting = CoreProfile.LaunchSetting.ServerSetting;
             globalSetting.GameWindowSetting = CoreProfile.LaunchSetting.GameWindowSetting;
             globalSetting.EnableIndependencyCore = CoreProfile.LaunchSetting.EnableIndependencyCore;
+
+            if ((CoreProfile.JvmSetting?.JvmParameters.Split(' ').Any()).GetValueOrDefault(false))
+                globalSetting.JvmSetting.JvmArguments = CoreProfile.JvmSetting?.JvmParameters.Split(' ').ToList();
         }
 
         if (globalSetting.EnableIndependencyCore)

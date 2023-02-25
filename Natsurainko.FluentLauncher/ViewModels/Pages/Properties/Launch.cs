@@ -6,6 +6,7 @@ using Natsurainko.FluentLauncher.Models;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection.PortableExecutable;
 using GameCore = Natsurainko.FluentLauncher.Components.FluentCore.GameCore;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Pages.Properties;
@@ -33,6 +34,8 @@ public partial class Launch : ObservableObject
         PathVisibility = File.Exists(CoreProfile.FilePath)
                 ? Visibility.Visible
                 : Visibility.Collapsed;
+
+        JvmParameters = CoreProfile.JvmSetting?.JvmParameters;
 
         isLoading = false;
     }
@@ -66,6 +69,9 @@ public partial class Launch : ObservableObject
     [ObservableProperty]
     private Visibility pathVisibility;
 
+    [ObservableProperty]
+    private string jvmParameters;
+
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
@@ -92,6 +98,10 @@ public partial class Launch : ObservableObject
             ServerSetting = !string.IsNullOrEmpty(serverAddress)
                 ? new ServerSetting(serverAddress)
                 : null
+        };
+        CoreProfile.JvmSetting = new Models.JvmSetting
+        {
+            JvmParameters = jvmParameters,
         };
     }
 

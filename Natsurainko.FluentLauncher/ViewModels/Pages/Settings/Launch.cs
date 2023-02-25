@@ -56,6 +56,12 @@ public partial class Launch
         if (folder != null)
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
+                if (GameFolders.Contains(folder.Path))
+                {
+                    MainContainer.ShowMessagesAsync("This folder already exists");
+                    return;
+                }
+
                 GameFolders.Add(folder.Path);
                 OnPropertyChanged(nameof(GameFolders));
 

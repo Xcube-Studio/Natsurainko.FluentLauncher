@@ -1,7 +1,9 @@
 ﻿using Natsurainko.FluentCore.Model.Launch;
 using Natsurainko.FluentCore.Model.Parser;
 using Natsurainko.FluentCore.Module.Parser;
+using Natsurainko.FluentCore.Service;
 using Natsurainko.FluentLauncher.Models;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -105,14 +107,22 @@ public class GameCoreParser : Natsurainko.FluentCore.Module.Parser.GameCoreParse
         var file = core.GetFileOfProfile();
 
         if (!file.Exists)
-            return new(file.FullName, core, null, false, null);
-        var jObject = JObject.Parse(File.ReadAllText(file.FullName));
+            return new CoreProfile
+            {
+                Id = core.Id,
+                LastLaunchTime = null,
+                EnableSpecialSetting = false,
+                MinecraftFolder = core.Root.FullName,
+                JvmSetting = new Models.JvmSetting
+                {
+                    JvmParameters = string.Join(" ", DefaultSettings.DefaultJvmArguments)
+                },
+                FilePath = file.FullName,
+            };
 
-        return new(
-            file.FullName,
-            core,
-            jObject["LastLaunchTime"]?.ToObject<DateTime?>(),
-            (bool)jObject["EnableSpecialSetting"],
-            jObject["LaunchSetting"]?.ToObject<LaunchSetting>());
+        var coreProfile = JsonConvert.DeserializeObject<CoreProfile>(File.ReadAllText(file.FullName));
+        coreProfile.FilePath = file.FullName;
+
+        return coreProfile;
     }
 }

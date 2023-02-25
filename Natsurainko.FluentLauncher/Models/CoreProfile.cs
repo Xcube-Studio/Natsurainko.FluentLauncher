@@ -10,17 +10,6 @@ namespace Natsurainko.FluentLauncher.Models;
 
 public partial class CoreProfile : ObservableObject
 {
-    public CoreProfile(string file, GameCore core, DateTime? dateTime, bool enable, LaunchSetting setting)
-    {
-        FilePath = file;
-        launchSetting = setting;
-        lastLaunchTime = dateTime;
-        enableSpecialSetting = enable;
-
-        minecraftFolder = core.Root.FullName;
-        id = core.Id;
-    }
-
     [JsonIgnore]
     public string FilePath { get; set; }
 
@@ -44,10 +33,20 @@ public partial class CoreProfile : ObservableObject
     [ObservableProperty]
     private LaunchSetting launchSetting;
 
+    [JsonIgnore]
+    [ObservableProperty]
+    private JvmSetting jvmSetting;
+
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
 
-        File.WriteAllText(FilePath, JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
+        if (!string.IsNullOrEmpty(FilePath))
+            File.WriteAllText(FilePath, JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
     }
+}
+
+public class JvmSetting
+{
+    public string JvmParameters { get; set; }
 }

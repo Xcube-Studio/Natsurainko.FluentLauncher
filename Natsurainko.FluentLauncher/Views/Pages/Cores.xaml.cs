@@ -69,6 +69,13 @@ public sealed partial class Cores : Page
                         CommandParameter = (others[i] as Button).CommandParameter
                     });
                 }
+                else
+                {
+                    var flyoutItem = menuFlyout.Items.First(x => x.Tag.Equals(text.Text)) as MenuFlyoutItem;
+
+                    flyoutItem.Command = (others[i] as Button).Command;
+                    flyoutItem.CommandParameter = (others[i] as Button).CommandParameter;
+                }
             }
         }
 

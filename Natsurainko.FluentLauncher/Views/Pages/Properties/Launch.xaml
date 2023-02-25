@@ -196,6 +196,44 @@
                     </StackPanel>
                 </Expander.Content>
             </Expander>
+            <Expander
+                Margin="0,15,0,0"
+                Padding="0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                IsEnabled="{Binding EnableSpecialSetting, Mode=OneWay}"
+                IsExpanded="{Binding EnableSpecialSetting, Mode=OneWay}">
+                <Expander.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Margin="2,0,0,0" Glyph="&#xec7a;" />
+                        <StackPanel Margin="17,12.5">
+                            <TextBlock Text="Jvm Settings" />
+                            <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="Java Virtual Machine Advanced Settings" />
+                        </StackPanel>
+                    </StackPanel>
+                </Expander.Header>
+                <Expander.Content>
+                    <StackPanel HorizontalAlignment="Stretch">
+                        <controls:ExpanderContentItem>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="15" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock VerticalAlignment="Center" Text="Virtual machine parameters:" />
+                                <TextBox
+                                    Grid.Column="2"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding JvmParameters, Mode=TwoWay}" />
+                            </Grid>
+                        </controls:ExpanderContentItem>
+
+                    </StackPanel>
+                </Expander.Content>
+            </Expander>
         </StackPanel>
     </ScrollViewer>
 </Page>

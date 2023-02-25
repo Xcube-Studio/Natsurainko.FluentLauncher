@@ -145,6 +145,8 @@ public partial class LaunchArrangement : ObservableObject
                     button: hyperlinkButton);
 
                 GlobalActivitiesCache.LaunchArrangements.Insert(0, arrangement);
+
+                MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Activities.Navigation), typeof(Views.Pages.Activities.Launch));
             });
 
             var coreLocator = new GameCoreLocator(App.Configuration.CurrentGameFolder);
@@ -186,7 +188,7 @@ public partial class LaunchArrangement : ObservableObject
                 var authlibPath = (await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/Libs/authlib-injector-1.2.1.jar"))).Path;
 #endif
                 await foreach (var args in ((YggdrasilAccount)arrangement.LaunchSetting.Account).GetAuthlibArgumentsAsync(authlibPath))
-                    arrangement.LaunchSetting.JvmSetting.AdvancedArguments.Add(args);
+                    arrangement.LaunchSetting.JvmSetting.JvmArguments.Add(args);
             }
 
             await Task.Run(() =>

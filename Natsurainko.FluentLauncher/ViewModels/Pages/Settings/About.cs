@@ -10,7 +10,7 @@ public partial class About : ObservableObject
 {
 #if MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
     [ObservableProperty]
-    private string version = "2.1.3.0";
+    private string version = "2.1.5.0";
 #else
     [ObservableProperty]
     private string version = string.Format("{0}.{1}.{2}.{3}",

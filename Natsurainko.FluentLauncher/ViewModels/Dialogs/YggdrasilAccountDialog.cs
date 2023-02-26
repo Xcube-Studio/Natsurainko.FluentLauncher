@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentCore.Model.Auth;
 using Natsurainko.FluentCore.Module.Authenticator;
+using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Views.Pages;
 using System;
@@ -79,10 +80,7 @@ public partial class YggdrasilAccountDialog : DialogViewModel
         }
         catch (Exception ex)
         {
-            MainContainer.ShowMessagesAsync(
-                "Failed to Add Yggdrasil Account",
-                ex.ToString(),
-                InfoBarSeverity.Error);
+            MessageService.ShowException(ex, "Failed to Add Yggdrasil Account");
         }
 
         base.OnConfirm(dialog);

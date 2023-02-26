@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentCore.Interface;
+using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.ViewModels.Dialogs;
@@ -85,5 +86,7 @@ public partial class Account
         CurrentAccount = account;
 
         OnPropertyChanged(nameof(Accounts));
+
+        MessageService.ShowSuccess($"Add {account.Type} Account Successfully", $"Welcome back, {account.Name}");
     });
 }

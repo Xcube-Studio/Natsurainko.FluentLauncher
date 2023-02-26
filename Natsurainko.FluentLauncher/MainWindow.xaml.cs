@@ -2,6 +2,7 @@ using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Components;
+using Natsurainko.FluentLauncher.Models;
 using System;
 using System.IO;
 using Windows.ApplicationModel;
@@ -12,6 +13,8 @@ namespace Natsurainko.FluentLauncher;
 
 public sealed partial class MainWindow : WindowEx
 {
+    public Frame ContentFrame => Frame;
+
     public MainWindow()
     {
 #if !MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
@@ -21,13 +24,15 @@ public sealed partial class MainWindow : WindowEx
 
         InitializeComponent();
 
+        MessageService.RegisterContainer(MessageList);
+
 #if MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
         AppWindow.SetIcon(Path.Combine(Directory.GetCurrentDirectory(), "Assets/AppIcon.png"));
 #else
         AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets/AppIcon.png"));
 #endif
 
-        AppWindow.Title = "Natsurainko.FluentLauncher";
+        AppWindow.Title = "Fluent Launcher";
         AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
         AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
         AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
@@ -49,4 +54,14 @@ public sealed partial class MainWindow : WindowEx
             Frame.Navigate(typeof(Views.Pages.MainContainer));
         else Frame.Navigate(typeof(Views.Pages.Guides.Navigation));
     }
+
+    private void InfoBar_CloseButtonClick(InfoBar sender, object args)
+    {
+        var messageData = sender.DataContext as MessageData;
+        messageData.Removed = true;
+
+        MessageList.Items.Remove(messageData);
+    }
+
+    private void InfoBar_Loaded(object sender, RoutedEventArgs e) => ((InfoBar)sender).Translation += new System.Numerics.Vector3(0, 0, 32);
 }

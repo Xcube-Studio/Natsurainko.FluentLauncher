@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentCore.Model.Auth;
 using Natsurainko.FluentCore.Module.Authenticator;
+using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Views.Dialogs;
 using Natsurainko.FluentLauncher.Views.Pages;
@@ -93,18 +94,11 @@ public partial class Account
                 OnPropertyChanged(nameof(Accounts));
             });
 
-            MainContainer.ShowMessagesAsync(
-                "Successfully refreshed Account",
-                $"Welcome back, {refreshedAccount.Name}",
-                severity: InfoBarSeverity.Success);
+            MessageService.ShowSuccess("Successfully refreshed Account", $"Welcome back, {refreshedAccount.Name}");
         }
         catch (Exception ex)
         {
-            MainContainer.ShowMessagesAsync(
-                "Failed to refresh account",
-                ex.ToString(),
-                severity: InfoBarSeverity.Error,
-                delay: 1000 * 15);
+            MessageService.ShowException(ex, "Failed to refresh account");
         }
     });
 
@@ -115,10 +109,7 @@ public partial class Account
 
         OnPropertyChanged(nameof(Accounts));
 
-        MainContainer.ShowMessagesAsync(
-            $"Add {account.Type} Account Successfully",
-            $"Welcome back, {account.Name}",
-            Microsoft.UI.Xaml.Controls.InfoBarSeverity.Success);
+        MessageService.ShowSuccess($"Add {account.Type} Account Successfully", $"Welcome back, {account.Name}");
     });
 }
 

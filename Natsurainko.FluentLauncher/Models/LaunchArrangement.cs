@@ -24,6 +24,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using WinUIEx;
+using static PInvoke.Kernel32;
 using GameCore = Natsurainko.FluentLauncher.Components.FluentCore.GameCore;
 using GameCoreLocator = Natsurainko.FluentLauncher.Components.FluentCore.GameCoreLocator;
 
@@ -85,7 +86,7 @@ public partial class LaunchArrangement : ObservableObject
         dataPackage.SetText(string.Join(' ', Arguments));
         Clipboard.SetContent(dataPackage);
 
-        MainContainer.ShowMessagesAsync("Copied Arguments", severity: Microsoft.UI.Xaml.Controls.InfoBarSeverity.Success);
+        MessageService.ShowSuccess("Copied Arguments");
     }
 
     [RelayCommand]
@@ -139,7 +140,7 @@ public partial class LaunchArrangement : ObservableObject
                 var hyperlinkButton = new HyperlinkButton { Content = "Go to Activities>Launch Tasks" };
                 hyperlinkButton.Click += (_, _) => MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Activities.Navigation), typeof(Views.Pages.Activities.Launch));
 
-                MainContainer.ShowMessagesAsync(
+                MessageService.Show(
                     $"Added Launch \"{core.Id}\" into Arrangements",
                     "Go to Activities>Launch Tasks for details",
                     button: hyperlinkButton);
@@ -255,11 +256,7 @@ public partial class LaunchArrangement : ObservableObject
                 else
                 {
                     arrangement.ReportState($"Launch Failed");
-                    MainContainer.ShowMessagesAsync(
-                        launchResponse.Exception.ToString(),
-                        $"Failed to Launch \"{core.Id}\"",
-                        severity: InfoBarSeverity.Error,
-                        delay: 1000 * 20);
+                    MessageService.ShowException(launchResponse.Exception, $"Failed to Launch \"{core.Id}\"");
 
                     App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
                     {
@@ -276,12 +273,8 @@ public partial class LaunchArrangement : ObservableObject
             if (!task.IsFaulted)
                 return;
 
+            MessageService.ShowException(task.Exception, $"Failed to Launch \"{core.Id}\"");
             arrangement.ReportState($"Launch Failed");
-            MainContainer.ShowMessagesAsync(
-                task.Exception.ToString(),
-                $"Failed to Launch \"{core.Id}\"",
-                severity: InfoBarSeverity.Error,
-                delay: 1000 * 20);
 
             App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
             {

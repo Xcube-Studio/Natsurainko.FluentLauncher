@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Natsurainko.FluentCore.Extension.Windows.Service;
+using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.Toolkits.Values;
@@ -74,6 +75,12 @@ public partial class Basic
         if (folder != null)
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
+                if (GameFolders.Contains(folder.Path))
+                {
+                    MessageService.Show("This folder already exists");
+                    return;
+                }
+
                 GameFolders.Add(folder.Path);
                 OnPropertyChanged(nameof(GameFolders));
 
@@ -111,5 +118,6 @@ public partial class Basic
         OnPropertyChanged(nameof(JavaRuntimes));
 
         DropOpen = true;
+        MessageService.Show("Added the search Java to the runtime list");
     }
 }

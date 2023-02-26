@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentCore.Interface;
+using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Views.Pages;
 using System;
@@ -42,7 +43,7 @@ public partial class ChooseAccountTypeDialog : DialogViewModel
     protected override void OnCancel(ContentDialog dialog)
     {
         base.OnCancel(dialog);
-        MainContainer.ShowMessagesAsync("Cancelled Add Account");
+        MessageService.Show("Cancelled Add Account");
     }
 
     private async void OnMicrosoft()

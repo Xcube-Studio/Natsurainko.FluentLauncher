@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentCore.Extension;
+using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Models;
@@ -295,13 +296,13 @@ public partial class Cores
 
                 hyperlinkButton.Click += (_, e) => _ = Launcher.LaunchFolderPathAsync(new FileInfo(file.Path).Directory.FullName);
 
-                MainContainer.ShowMessagesAsync(
+                MessageService.Show(
                     $"Succeffully Generate Launch Script for {core.Id}",
                     severity: InfoBarSeverity.Success,
                     button: hyperlinkButton);
             });
         }
-        else MainContainer.ShowMessagesAsync($"Cancelled Generate Launch Script for {core.Id}");
+        else MessageService.Show($"Cancelled Generate Launch Script for {core.Id}");
     });
 }
 

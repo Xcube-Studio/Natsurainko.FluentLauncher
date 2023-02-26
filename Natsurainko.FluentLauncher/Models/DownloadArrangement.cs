@@ -214,8 +214,7 @@ public partial class InstallArrangement : DownloadArrangement
                     };
                 }
 
-                MainContainer.ShowMessagesAsync($"Installed Core {CustomName} Successfully",
-                    severity: InfoBarSeverity.Success);
+                MessageService.ShowSuccess($"Installed Core {CustomName} Successfully");
                 GameCoreInstaller.ProgressChanged -= GameCoreInstaller_ProgressChanged;
 
                 ReportState("Installed Successfully");
@@ -224,10 +223,7 @@ public partial class InstallArrangement : DownloadArrangement
             {
                 ReportState("Failed");
 
-                MainContainer.ShowMessagesAsync($"Failed to Install Core {CustomName}",
-                    installerResponse.Exception.ToString(),
-                    delay: 1000 * 15,
-                    severity: InfoBarSeverity.Error);
+                MessageService.ShowException(installerResponse.Exception, $"Failed to Install Core {CustomName}");
             }
 
             Stopwatch.Stop();
@@ -245,7 +241,7 @@ public partial class InstallArrangement : DownloadArrangement
             var hyperlinkButton = new HyperlinkButton { Content = "Go to Activities>Download Tasks" };
             hyperlinkButton.Click += (_, _) => MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Activities.Navigation), typeof(Views.Pages.Activities.Download));
 
-            MainContainer.ShowMessagesAsync(
+            MessageService.Show(
                 $"Added Install \"{customName}\" into Arrangements",
                 "Go to Activities>Download Tasks for details",
                 button: hyperlinkButton);
@@ -265,7 +261,7 @@ public partial class InstallArrangement : DownloadArrangement
             var hyperlinkButton = new HyperlinkButton { Content = "Go to Activities>Download Tasks" };
             hyperlinkButton.Click += (_, _) => MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Activities.Navigation), typeof(Views.Pages.Activities.Download));
 
-            MainContainer.ShowMessagesAsync(
+            MessageService.Show(
                 $"Added Install \"{customName}\" into Arrangements",
                 "Go to Activities>Download Tasks for details",
                 button: hyperlinkButton);
@@ -322,19 +318,13 @@ public partial class ModDownloadArrangement : DownloadArrangement
 
             if (response.Success)
             {
-                MainContainer.ShowMessagesAsync($"Downloaded Mod {FileName} Successfully",
-                    severity: InfoBarSeverity.Success);
-
+                MessageService.ShowSuccess($"Downloaded Mod {FileName} Successfully");
                 ReportState("Downloaded Successfully");
             }
             else
             {
+                MessageService.ShowException(response.Exception, $"Failed to Download Mod {FileName}");
                 ReportState("Failed");
-
-                MainContainer.ShowMessagesAsync($"Failed to Download Mod {FileName}",
-                    response.Exception.ToString(),
-                    delay: 1000 * 15,
-                    severity: InfoBarSeverity.Error);
             }
 
             Stopwatch.Stop();
@@ -366,7 +356,7 @@ public partial class ModDownloadArrangement : DownloadArrangement
             var hyperlinkButton = new HyperlinkButton { Content = "Go to Activities>Download Tasks" };
             hyperlinkButton.Click += (_, _) => MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Activities.Navigation), typeof(Views.Pages.Activities.Download));
 
-            MainContainer.ShowMessagesAsync(
+            MessageService.Show(
                 $"Added Download Mod \"{fileName}\" into Arrangements",
                 "Go to Activities>Download Tasks for details",
                 button: hyperlinkButton);

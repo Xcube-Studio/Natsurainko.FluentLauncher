@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentCore.Module.Authenticator;
+using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Views.Pages;
 using System;
@@ -68,16 +69,13 @@ public partial class MicrosoftAccountDialog : DialogViewModel
     private void OnCancel()
     {
         ContentDialog.Hide();
-        MainContainer.ShowMessagesAsync("Cancelled Add Microsoft Account");
+        MessageService.Show("Cancelled Add Microsoft Account");
     }
 
     private void OnError(string error)
     {
         ContentDialog.Hide();
-        MainContainer.ShowMessagesAsync(
-            "Failed to Add Microsoft Account",
-            error,
-            InfoBarSeverity.Error);
+        MessageService.ShowError("Failed to Add Microsoft Account", error);
     }
 
     private async void OnCode(string code)
@@ -96,10 +94,7 @@ public partial class MicrosoftAccountDialog : DialogViewModel
         }
         catch (Exception ex)
         {
-            MainContainer.ShowMessagesAsync(
-                "Failed to Add Microsoft Account",
-                ex.ToString(),
-                InfoBarSeverity.Error);
+            MessageService.ShowException(ex, "Failed to Add Microsoft Account");
         }
 
         ContentDialog.Hide();

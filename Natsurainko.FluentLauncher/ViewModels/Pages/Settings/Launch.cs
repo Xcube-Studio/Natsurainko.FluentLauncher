@@ -58,7 +58,7 @@ public partial class Launch
             {
                 if (GameFolders.Contains(folder.Path))
                 {
-                    MainContainer.ShowMessagesAsync("This folder already exists");
+                    MessageService.Show("This folder already exists");
                     return;
                 }
 
@@ -94,7 +94,7 @@ public partial class Launch
 
         OnPropertyChanged(nameof(JavaRuntimes));
 
-        MainContainer.ShowMessagesAsync("Added the search Java to the runtime list");
+        MessageService.Show("Added the search Java to the runtime list");
     }
 
     [RelayCommand]

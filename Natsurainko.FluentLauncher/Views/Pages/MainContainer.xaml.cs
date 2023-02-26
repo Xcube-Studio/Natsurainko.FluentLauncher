@@ -15,8 +15,6 @@ namespace Natsurainko.FluentLauncher.Views.Pages;
 
 public sealed partial class MainContainer : Page
 {
-    private static ListBox InformationListBox { get; set; }
-
     public static XamlRoot _XamlRoot { get; private set; }
 
     public static Frame ContentFrame { get; private set; }
@@ -30,7 +28,6 @@ public sealed partial class MainContainer : Page
         */
         InitializeComponent();
 
-        InformationListBox = InformationList;
         ContentFrame = contentFrame;
     }
 
@@ -95,17 +92,6 @@ public sealed partial class MainContainer : Page
         }
     }
 
-    private void InfoBar_CloseButtonClick(InfoBar sender, object args)
-    {
-        var messageData = sender.DataContext as MessageData;
-        messageData.Removed = true;
-
-        InformationList.Items.Remove(messageData);
-    }
-
-    private void InfoBar_Loaded(object sender, RoutedEventArgs e)
-        => ((InfoBar)sender).Translation += new System.Numerics.Vector3(0, 0, 32);
-
     private void RefreshDragArea()
     {
         var scaleAdjustment = XamlRoot.RasterizationScale;
@@ -118,33 +104,6 @@ public sealed partial class MainContainer : Page
         var dragRect = new RectInt32(x, y, width, height);
         App.MainWindow.AppWindow.TitleBar.SetDragRectangles(new[] { dragRect });
     }
-
-    public static void ShowMessagesAsync(
-        string title,
-        string message = "",
-        InfoBarSeverity severity = InfoBarSeverity.Informational,
-        int delay = 5000,
-        ButtonBase button = null)
-    => App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
-    {
-        if (InformationListBox == null)
-            return;
-
-        var obj = new MessageData
-        {
-            Button = button,
-            Message = message,
-            Title = title,
-            Severity = severity,
-            Removed = false
-        };
-
-        InformationListBox.Items.Add(obj);
-        await Task.Delay(delay);
-
-        if (!obj.Removed)
-            InformationListBox.Items.Remove(obj);
-    });
 
     private void NavigationViewControl_Loaded(object sender, RoutedEventArgs e)
     {

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using Natsurainko.FluentCore.Model.Mod.CureseForge;
 using Natsurainko.FluentCore.Module.Mod;
+using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Views.Pages;
@@ -68,28 +69,6 @@ public partial class CurseForgeModFile : ObservableObject
                 Url = CurseForgeApi.GetModFileDownloadUrl(Resource.Data.Id, resourceFileInfo.FileId).GetAwaiter().GetResult()
             });
         }
-        else MainContainer.ShowMessagesAsync($"Cancelled Download Mod {resourceFileInfo.FileName}");
-
-        /*
-        var savePicker = new FileSavePicker();
-
-        savePicker.SuggestedStartLocation = PickerLocationId.Desktop;
-        savePicker.FileTypeChoices.Add("File", new List<string>() { Path.GetExtension(resourceFileInfo.FileName) });
-        savePicker.SuggestedFileName = resourceFileInfo.FileName;
-
-        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
-        WinRT.Interop.InitializeWithWindow.Initialize(savePicker, hwnd);
-
-        var file = await savePicker.PickSaveFileAsync();
-
-        if (file != null)
-        {
-            ModDownloadArrangement.StartNew(resourceFileInfo.FileName, Task.Run(() =>
-            {
-                
-            }));
-        }
-        else MainContainer.ShowMessagesAsync($"Cancelled Download Mod {resourceFileInfo.FileName}");
-        */
+        else MessageService.Show($"Cancelled Download Mod {resourceFileInfo.FileName}");
     }
 }

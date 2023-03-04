@@ -98,8 +98,6 @@ public partial class App : Application
     /// <param name="errorMessage"></param>
     public static void ShowErrorMessage(string errorMessage)
     {
-        errorMessage = errorMessage + errorMessage + errorMessage;
-
         if (App.MainWindow is not null)
         {
             App.MainWindow.DispatcherQueue?.TryEnqueue(async () =>

@@ -36,6 +36,8 @@ class SetComboBoxWidthFromItemsBehavior : Behavior<ComboBox>
 
     #endregion
 
+    ComboBox target;
+
     private static void OnSetWidthFromItemsPropertyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
@@ -63,6 +65,10 @@ class SetComboBoxWidthFromItemsBehavior : Behavior<ComboBox>
 
     protected override void OnAttached()
     {
+        // The associated object becomes null under some conditions.
+        // The reference to the true associated object is held privately when initialized.
+        target = AssociatedObject;
+
         if (SetWidthFromItems)
         {
             AssociatedObject.Loaded += OnComboBoxLoaded;
@@ -72,12 +78,12 @@ class SetComboBoxWidthFromItemsBehavior : Behavior<ComboBox>
 
     public void Items_VectorChanged(IObservableVector<object> sender, IVectorChangedEventArgs e)
     {
-        SetComboBoxWidth(AssociatedObject);
+        SetComboBoxWidth(target);
     }
 
     private void OnComboBoxLoaded(object sender, RoutedEventArgs e)
     {
-        SetComboBoxWidth(AssociatedObject);
+        SetComboBoxWidth(target);
     }
 
     /// <summary>

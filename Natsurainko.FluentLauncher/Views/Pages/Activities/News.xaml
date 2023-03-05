@@ -2,6 +2,7 @@
     x:Class="Natsurainko.FluentLauncher.Views.Pages.Activities.News"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:activities="using:Natsurainko.FluentLauncher.ViewModels.Pages.Activities"
     xmlns:controls="using:Natsurainko.FluentLauncher.UserControls"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,18 +10,16 @@
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Pages.Activities"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mvvm="using:Natsurainko.FluentLauncher.Components.Mvvm"
-    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Pages.Activities"
+    d:DataContext="{d:DesignInstance Type=activities:News}"
     Background="Transparent"
+    DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=Activities.News}"
     mc:Ignorable="d">
-    <Page.DataContext>
-        <vm:News />
-    </Page.DataContext>
 
     <Grid>
         <ListView
             Padding="30,7.5,30,22.5"
             Background="Transparent"
-            ItemsSource="{Binding NewsModels}">
+            ItemsSource="{Binding NewsContentDatas}">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -82,7 +81,7 @@
                                         <Grid>
                                             <Image Stretch="Uniform">
                                                 <Image.Source>
-                                                    <BitmapImage UriSource="{Binding NewsPageImage.Uri}" />
+                                                    <BitmapImage UriSource="{Binding ImageUrl}" />
                                                 </Image.Source>
                                             </Image>
                                         </Grid>
@@ -125,10 +124,10 @@
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Center"
                                             FontSize="12"
-                                            NavigateUri="{Binding ReadMoreLink}">
+                                            NavigateUri="{Binding ReadMoreUrl}">
                                             <TextBlock
                                                 FontWeight="SemiBold"
-                                                Text="{Binding ReadMoreLink}"
+                                                Text="{Binding ReadMoreUrl}"
                                                 TextTrimming="CharacterEllipsis" />
                                         </HyperlinkButton>
                                     </Grid>

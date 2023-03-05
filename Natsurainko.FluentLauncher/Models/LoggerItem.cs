@@ -2,7 +2,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentCore.Model.Launch;
-using Natsurainko.FluentLauncher.Components.Logger;
+using Natsurainko.FluentLauncher.Components;
 
 namespace Natsurainko.FluentLauncher.Models;
 
@@ -11,7 +11,7 @@ public partial class LoggerItem : ObservableObject
     public LoggerItem(GameProcessOutput gameProcessOutput)
     {
         var richTextBlock = new RichTextBlock();
-        LoggerLanguage.Formatter.FormatRichTextBlock(gameProcessOutput.FullData, new LoggerLanguage(), richTextBlock);
+        LoggerColorLightLanguage.Formatter.FormatRichTextBlock(gameProcessOutput.FullData, new LoggerColorLightLanguage(), richTextBlock);
         RichTextBlock = richTextBlock;
 
         ErrorVisibility = (gameProcessOutput.Level == GameProcessOutputLevel.Error || gameProcessOutput.Level == GameProcessOutputLevel.Fatal)

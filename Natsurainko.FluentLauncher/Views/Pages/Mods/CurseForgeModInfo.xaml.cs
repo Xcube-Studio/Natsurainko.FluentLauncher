@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Natsurainko.FluentLauncher.Services.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,6 +26,6 @@ public sealed partial class CurseForgeModInfo : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        this.DataContext = new ViewModels.Pages.Mods.CurseForgeModInfo(e.Parameter as ViewModels.Pages.Mods.CurseForge.Resource);
+        this.DataContext = new ViewModels.Pages.Mods.CurseForgeModInfo(e.Parameter as CurseForgeResourceData);
     }
 }

@@ -66,7 +66,6 @@ public sealed partial class MainContainer : Page
 
         App.MainWindow.SetTitleBar(AppTitleBar);
         contentFrame.Navigate(typeof(Home));
-        CurseForgeApi.InitApiKey("$2a$10$Awb53b9gSOIJJkdV3Zrgp.CyFP.dI13QKbWn/4UZI4G4ff18WneB6");
 
         RefreshDragArea();
     }

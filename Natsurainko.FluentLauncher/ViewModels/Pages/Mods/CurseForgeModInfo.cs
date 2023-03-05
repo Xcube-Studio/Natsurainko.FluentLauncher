@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media.Imaging;
+using Natsurainko.FluentLauncher.Services.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +10,18 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Pages.Mods;
 
-public partial class CurseForgeModInfo : ObservableObject
+internal partial class CurseForgeModInfo : ObservableObject
 {
-    public CurseForge.Resource Resource { get; set; }
+    public CurseForgeResourceData Resource { get; }
 
-    public CurseForgeModInfo(CurseForge.Resource resource) 
+    public CurseForgeModInfo(CurseForgeResourceData resource) 
     {
         Resource = resource;
-        Icon = resource.Data.Logo.Url;
+        Icon = resource.InnerData.Logo.Url;
 
-        Images = resource.Data.Screenshots.Select(x => x.Url);
-        Versions = resource.Data.LatestFilesIndexes.Select(x => x.SupportedVersion);
-        Categories = resource.Data.Categories.Select(x => x.Name);
+        Images = resource.InnerData.Screenshots.Select(x => x.Url);
+        Versions = resource.InnerData.LatestFilesIndexes.Select(x => x.SupportedVersion);
+        Categories = resource.InnerData.Categories.Select(x => x.Name);
         ImageShow = Images.Any() ? Visibility.Visible : Visibility.Collapsed;
     }
 

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Windows.ApplicationModel;
 
 namespace Natsurainko.FluentLauncher.Components.FluentCore;
@@ -81,7 +82,12 @@ public class GameCore : Natsurainko.FluentCore.Model.Launch.GameCore
 
     public string GetSuitableJava()
     {
-        var javaInformations = App.Configuration.JavaRuntimes.ToDictionary(x => x, x => JavaHelper.GetJavaRuntimeInfo(x));
+        var regex = new Regex(@"^([a-zA-Z]:\\)([-\u4e00-\u9fa5\w\s.()~!@#$%^&()\[\]{}+=]+\\?)*$");
+
+        var javaInformations = App.Configuration.JavaRuntimes
+            .Where(x => regex.IsMatch(x) && File.Exists(x))
+            .ToDictionary(x => x, x => JavaHelper.GetJavaRuntimeInfo(x));
+
         var sameMajorJava = javaInformations.Where(kvp => kvp.Value.Version.Major.Equals(JavaVersion));
 
         if (!javaInformations.Any())

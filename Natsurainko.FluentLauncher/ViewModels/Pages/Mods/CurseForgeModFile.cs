@@ -6,6 +6,7 @@ using Natsurainko.FluentCore.Module.Mod;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Services.Data;
 using Natsurainko.FluentLauncher.Views.Pages;
 using Natsurainko.Toolkits.Network.Downloader;
 using System;
@@ -20,15 +21,15 @@ using WinUIEx;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Pages.Mods;
 
-public partial class CurseForgeModFile : ObservableObject
+internal partial class CurseForgeModFile : ObservableObject
 {
-    public CurseForge.Resource Resource { get; set; }
+    public CurseForgeResourceData Resource { get; }
 
-    public CurseForgeModFile(CurseForge.Resource resource)
+    public CurseForgeModFile(CurseForgeResourceData resource)
     {
         Resource = resource;
 
-        fileInfos = resource.Data.LatestFilesIndexes;
+        fileInfos = resource.InnerData.LatestFilesIndexes;
     }
 
     [ObservableProperty]
@@ -66,7 +67,7 @@ public partial class CurseForgeModFile : ObservableObject
             {
                 Directory = new FileInfo(saveFileDialog.FileName).Directory,
                 FileName = resourceFileInfo.FileName,
-                Url = CurseForgeApi.GetModFileDownloadUrl(Resource.Data.Id, resourceFileInfo.FileId).GetAwaiter().GetResult()
+                Url = CurseForgeApi.GetModFileDownloadUrl(Resource.InnerData.Id, resourceFileInfo.FileId).GetAwaiter().GetResult()
             });
         }
         else MessageService.Show($"Cancelled Download Mod {resourceFileInfo.FileName}");

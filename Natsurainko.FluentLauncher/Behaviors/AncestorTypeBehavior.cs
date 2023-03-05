@@ -5,7 +5,7 @@ using Microsoft.Xaml.Interactivity;
 using System;
 using System.Reflection;
 
-namespace Natsurainko.FluentLauncher.Components.Mvvm;
+namespace Natsurainko.FluentLauncher.Behaviors;
 
 public class AncestorBindingBehavior : DependencyObject, IBehavior
 {

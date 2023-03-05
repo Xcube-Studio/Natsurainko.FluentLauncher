@@ -2,9 +2,9 @@
 using ColorCode.Styling;
 using System.Collections.Generic;
 
-namespace Natsurainko.FluentLauncher.Components.Logger;
+namespace Natsurainko.FluentLauncher.Components;
 
-public class LoggerLanguage : ILanguage
+internal class LoggerColorLightLanguage : ILanguage
 {
     public static RichTextBlockFormatter Formatter => new(Style);
 

@@ -13,6 +13,8 @@ using System.Windows.Input;
 using Natsurainko.FluentLauncher.Views.Dialogs;
 using System.Threading.Tasks;
 using Natsurainko.FluentLauncher.Views.Pages;
+using Microsoft.Extensions.DependencyInjection;
+using Natsurainko.FluentLauncher.Services;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -42,6 +44,8 @@ public partial class App
 
 public partial class App : Application
 {
+    public static IServiceProvider Services { get; } = ConfigureServices();
+
     public static Configuration Configuration { get; private set; } = Configuration.Load();
 
     public static string StoragePath => ApplicationData.Current.LocalFolder.Path;
@@ -69,6 +73,24 @@ public partial class App : Application
         {
             ProcessException(e);
         }
+    }
+
+    /// <summary>
+    /// Configures the services for the application.
+    /// </summary>
+    private static IServiceProvider ConfigureServices()
+    {
+        var services = new ServiceCollection();
+
+        // Services
+        services.AddSingleton<OfficialNewsService>();
+        services.AddSingleton<CurseForgeModService>();
+
+        //ViewModels
+        services.AddSingleton<ViewModels.Pages.Activities.News>();
+        services.AddSingleton<ViewModels.Pages.Mods.CurseForge>();
+
+        return services.BuildServiceProvider();
     }
 
     public static MainWindow MainWindow { get; private set; }

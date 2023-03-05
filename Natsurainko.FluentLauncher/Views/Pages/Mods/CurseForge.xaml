@@ -9,12 +9,9 @@
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Pages.Mods"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mvvm="using:Natsurainko.FluentLauncher.Components.Mvvm"
-    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Pages.Mods"
     Background="Transparent"
+    DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=Mods.CurseForge}"
     mc:Ignorable="d">
-    <Page.DataContext>
-        <vm:CurseForge />
-    </Page.DataContext>
 
     <Grid
         Margin="0,15"
@@ -53,7 +50,7 @@
                             <ListView
                                 Grid.Row="1"
                                 Padding="5"
-                                ItemsSource="{Binding CurseForgeCategories}"
+                                ItemsSource="{Binding Categories}"
                                 SelectedItem="{Binding SelectedCategory, Mode=TwoWay}">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
@@ -68,7 +65,7 @@
                                                 Width="32"
                                                 Height="32">
                                                 <Image.Source>
-                                                    <BitmapImage UriSource="{Binding Uri}" />
+                                                    <BitmapImage UriSource="{Binding IconUrl}" />
                                                 </Image.Source>
                                             </Image>
                                             <TextBlock
@@ -116,7 +113,7 @@
                                     </ComboBox>
                                     <ComboBox
                                         Grid.Column="2"
-                                        ItemsSource="{Binding CurseForgeVersions}"
+                                        ItemsSource="{Binding Versions}"
                                         PlaceholderText="version"
                                         SelectedItem="{Binding SelectedVersion, Mode=TwoWay}" />
                                 </Grid>

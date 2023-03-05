@@ -2,38 +2,38 @@
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Services;
+using Natsurainko.FluentLauncher.Services.Data;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Pages.Activities;
 
-public partial class News : ObservableObject
+internal partial class News : ObservableObject
 {
-    public News()
+    public News(OfficialNewsService service)
     {
-        Loading = Visibility.Visible;
-
         Task.Run(async () =>
         {
-            try
-            {
-                if (GlobalActivitiesCache.MojangNews == null)
-                    await GlobalActivitiesCache.BeginDownloadNews();
-            }
-            catch { }
+            var newsContentDatas = await service.GetOfficialNews();
 
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                NewsModels = GlobalActivitiesCache.MojangNews;
+                NewsContentDatas = newsContentDatas;
                 Loading = Visibility.Collapsed;
             });
+        }).ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+                ;
         });
     }
 
     [ObservableProperty]
-    public List<NewsData> newsModels;
+    private IReadOnlyList<NewsContentData> newsContentDatas;
 
     [ObservableProperty]
-    public Visibility loading;
+    private Visibility loading = Visibility.Visible;
 }

@@ -1,133 +1,59 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Media.Imaging;
-using Natsurainko.FluentCore.Model.Mod.CureseForge;
-using Natsurainko.FluentCore.Module.Mod;
-using Natsurainko.FluentLauncher.Views.Dialogs;
-using Natsurainko.FluentLauncher.Views.Pages;
-using Natsurainko.Toolkits.Network;
-using Natsurainko.Toolkits.Values;
+using Natsurainko.FluentLauncher.Services;
+using Natsurainko.FluentLauncher.Services.Data;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Pages.Mods;
 
-public partial class CurseForge : ObservableObject
+internal partial class CurseForge : ObservableObject
 {
-    public static IEnumerable<Category> Categories { get; private set; }
-
-    public static IEnumerable<string> Versions { get; private set; }
-
-    public static IEnumerable<Resource> FeatruedResources { get; private set; }
-
-    public CurseForge()
+    public CurseForge(CurseForgeModService curseForgeModService)
     {
-        Task.Run(async () =>
+        ModService = curseForgeModService;
+
+        var tasks = new Task[]
         {
-            if (Categories == null)
-                Categories = (await CurseForgeApi.GetCategoriesMain()).Select(x => new Category(x));
+            curseForgeModService.GetCurseForgeCategoriesAsync(),
+            curseForgeModService.GetVersionsAsync(),
+            curseForgeModService.GetFeaturedResourcesAsync()
+        };
 
-            App.MainWindow.DispatcherQueue.TryEnqueue(() => CurseForgeCategories = new(Categories));
-
-            if (Versions == null)
-                Versions = new string[] { "All" }.Union(await CurseForgeApi.GetMinecraftVersions());
+        Task.WhenAll(tasks).ContinueWith(task =>
+        {
+            var curseForgeCategories = (tasks[0] as Task<CurseForgeCategoryData[]>).Result;
+            var curseForgeResources = (tasks[2] as Task<CurseForgeResourceData[]>).Result;
+            var versions = (tasks[1] as Task<string[]>).Result;
 
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                CurseForgeVersions = new(Versions);
-                SelectedVersion = CurseForgeVersions[0];
+                Categories = curseForgeCategories;
+                Resources = curseForgeResources;
+                Versions = versions;
+                SelectedVersion = versions[0];
             });
-
-            if (FeatruedResources == null)
-                FeatruedResources = (await CurseForgeApi.GetFeaturedResources()).Select(x => new Resource(x));
-
-            App.MainWindow.DispatcherQueue.TryEnqueue(() => Resources = new(FeatruedResources));
+        }).ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+                ;
         });
     }
 
-    public partial class Category : ObservableObject
-    {
-        public Category(CurseForgeCategory category)
-        {
-            Name = category.Name;
-            Id = category.Id;
-            Uri = category.IconUrl;
-        }
-
-        [ObservableProperty]
-        private string name;
-
-        [ObservableProperty]
-        private int id;
-
-        [ObservableProperty]
-        private string uri;
-    }
-
-    public partial class Resource : ObservableObject
-    {
-        public Resource(CurseForgeResource resource)
-        {
-            Data = resource;
-            Name = resource.Name;
-            Id = resource.Id;
-            Description = resource.Summary;
-            DownloadCount = resource.DownloadCount.FormatUnit();
-            UpdateTime = resource.DateModified;
-            Authors = string.Join(", ", resource.Author.Select(x => x.Name));
-            Icon = resource.Logo?.Url;
-        }
-
-        public CurseForgeResource Data { get; private set; }
-
-        [ObservableProperty]
-        private string name;
-
-        [ObservableProperty]
-        private string description;
-
-        [ObservableProperty]
-        private string authors;
-
-        [ObservableProperty]
-        private DateTime updateTime;
-
-        [ObservableProperty]
-        private string downloadCount;
-
-        [ObservableProperty]
-        private int id;
-
-        [ObservableProperty]
-        private string icon;
-
-        [RelayCommand]
-        public async void Open()
-        {
-            var dialog = new CurseForgeModDialog();
-            dialog.DataContext = this;
-            dialog.XamlRoot = MainContainer._XamlRoot;
-
-            await dialog.ShowAsync();
-        }
-    }
+    private CurseForgeModService ModService { get; }
 
     [ObservableProperty]
-    private ObservableCollection<Resource> resources;
+    private IReadOnlyList<CurseForgeResourceData> resources;
 
     [ObservableProperty]
-    private ObservableCollection<Category> curseForgeCategories;
+    private IReadOnlyList<CurseForgeCategoryData> categories;
 
     [ObservableProperty]
-    private Category selectedCategory;
+    private IReadOnlyList<string> versions;
 
     [ObservableProperty]
-    private ObservableCollection<string> curseForgeVersions;
+    private CurseForgeCategoryData selectedCategory;
 
     [ObservableProperty]
     private string selectedVersion;
@@ -138,11 +64,11 @@ public partial class CurseForge : ObservableObject
     [RelayCommand]
     public Task Search(string name) => Task.Run(async () =>
     {
-        var resources = (await CurseForgeApi.SearchResources(
+        var resources = (await ModService.SearchResourcesAsync(
             name,
             gameVersion: selectedVersion.Equals("All") ? default : selectedVersion,
-            categoryId: enableCategory ? selectedCategory.Id : default)).Select(x => new Resource(x));
+            categoryId: enableCategory ? selectedCategory.Id : default));
 
-        App.MainWindow.DispatcherQueue.TryEnqueue(() => Resources = new ObservableCollection<Resource>(resources));
+        App.MainWindow.DispatcherQueue.TryEnqueue(() => Resources = resources);
     });
 }

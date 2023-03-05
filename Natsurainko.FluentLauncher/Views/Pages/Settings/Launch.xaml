@@ -36,7 +36,6 @@
                     </labs:SettingsExpander.Description>
 
                     <labs:SettingsExpander.Items>
-
                         <labs:SettingsCard>
                             <labs:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_Launch_Item_1" Text="Current .minecraft folder:" />
@@ -99,7 +98,6 @@
                                 </StackPanel>
                             </Button>
                         </labs:SettingsCard>
-
                     </labs:SettingsExpander.Items>
 
                 </labs:SettingsExpander>

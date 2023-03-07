@@ -11,6 +11,7 @@
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Pages.Settings"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Pages.Settings"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Helpers"
     Background="Transparent"
     mc:Ignorable="d">
     <Page.DataContext>
@@ -22,10 +23,7 @@
         <Border Margin="0,16">
             <StackPanel MaxWidth="1000" Spacing="4">
 
-                <labs:SettingsExpander>
-                    <labs:SettingsExpander.HeaderIcon>
-                        <FontIcon Glyph="&#xe8b7;" />
-                    </labs:SettingsExpander.HeaderIcon>
+                <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe8b7;}">
 
                     <labs:SettingsExpander.Header>
                         <TextBlock x:Uid="Settings_Launch_Header_1" Text=".minecraft Folder" />
@@ -102,7 +100,7 @@
 
                 </labs:SettingsExpander>
 
-                <labs:SettingsExpander>
+                <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe8f1;}">
                     <labs:SettingsExpander.Header>
                         <TextBlock x:Uid="Settings_Launch_Header_2" Text="Java Runtime" />
                     </labs:SettingsExpander.Header>
@@ -110,10 +108,6 @@
                     <labs:SettingsExpander.Description>
                         <TextBlock x:Uid="Settings_Launch_Subtitle_2" Text="Executable to launch the game" />
                     </labs:SettingsExpander.Description>
-
-                    <labs:SettingsExpander.HeaderIcon>
-                        <FontIcon Glyph="&#xe8f1;" />
-                    </labs:SettingsExpander.HeaderIcon>
 
                     <labs:SettingsExpander.Items>
                         <labs:SettingsCard>
@@ -226,7 +220,7 @@
                 </labs:SettingsExpander>
 
 
-                <labs:SettingsExpander>
+                <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe737;}">
                     <labs:SettingsExpander.Header>
                         <TextBlock x:Uid="Settings_Launch_Header_3" Text="Game Settings" />
                     </labs:SettingsExpander.Header>
@@ -234,10 +228,6 @@
                     <labs:SettingsExpander.Description>
                         <TextBlock x:Uid="Settings_Launch_Subtitle_3" Text="Game play settings" />
                     </labs:SettingsExpander.Description>
-
-                    <labs:SettingsExpander.HeaderIcon>
-                        <FontIcon Glyph="&#xe737;" />
-                    </labs:SettingsExpander.HeaderIcon>
 
                     <labs:SettingsExpander.Items>
                         <labs:SettingsCard>

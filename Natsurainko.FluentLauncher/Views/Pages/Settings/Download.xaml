@@ -19,7 +19,7 @@
         <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
         <Border Margin="0,32">
             <StackPanel MaxWidth="1000" Spacing="4">
-                <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe896;}">
+                <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe896;}" IsExpanded="True">
 
                     <labs:SettingsExpander.Header>
                         <TextBlock x:Uid="Settings_Download_Header" Text="Download" />

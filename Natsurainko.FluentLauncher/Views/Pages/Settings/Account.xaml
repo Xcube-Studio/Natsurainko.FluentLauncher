@@ -20,7 +20,7 @@
         <Border Margin="0,32">
             <StackPanel MaxWidth="1000" Spacing="4">
 
-                <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe77b;}">
+                <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe77b;}" IsExpanded="True">
 
                     <labs:SettingsExpander.Header>
                         <TextBlock x:Uid="Settings_Account_Header" Text="Accounts" />

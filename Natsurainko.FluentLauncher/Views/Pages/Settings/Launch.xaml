@@ -124,7 +124,6 @@
 
                             <ComboBox
                                 Height="60"
-                                CanBeScrollAnchor="False"
                                 ItemsSource="{Binding JavaRuntimes}"
                                 SelectedItem="{Binding CurrentJavaRuntime, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>

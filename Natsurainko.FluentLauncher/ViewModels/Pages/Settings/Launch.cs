@@ -66,12 +66,6 @@ public partial class Launch : SettingViewModel
     [ObservableProperty]
     private bool enableIndependencyCore;
 
-    [ObservableProperty]
-    private List<string> languages = LanguageResources.SupportedLanguages;
-
-    [ObservableProperty]
-    private string currentLanguage;
-
     #endregion
 
     public Launch() : base() { }
@@ -87,11 +81,6 @@ public partial class Launch : SettingViewModel
             RemoveJavaVisibility = string.IsNullOrEmpty(CurrentJavaRuntime)
                 ? Visibility.Collapsed
                 : Visibility.Visible;
-
-#if !MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
-        if (!loading && e.PropertyName == nameof(CurrentLanguage))
-            LanguageResources.ApplyLanguage(CurrentLanguage);
-#endif
     }
 
     [RelayCommand]

@@ -32,4 +32,10 @@
     <ProjectReference Include="..\..\Natsurainko.Toolkits\Natsurainko.Toolkits\Natsurainko.Toolkits.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="*.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+  </ItemGroup>
+
 </Project>

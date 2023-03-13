@@ -332,19 +332,6 @@
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
 
-                <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xf2b7;}">
-                    <labs:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_Launch_Header_4" Text="Language Settings" />
-                    </labs:SettingsCard.Header>
-
-                    <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}">
-                        <i:Interaction.Behaviors>
-                            <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
-                            <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
-                        </i:Interaction.Behaviors>
-                    </ComboBox>
-                </labs:SettingsCard>
-
             </StackPanel>
         </Border>
     </ScrollViewer>

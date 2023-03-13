@@ -41,6 +41,14 @@
                         <FontIcon Glyph="&#xe896;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+                <NavigationViewItem
+                    x:Uid="Navigation_Settings_Appearance"
+                    Content="Appearance Settings"
+                    Tag="Natsurainko.FluentLauncher.Views.Pages.Settings.Appearance">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE790;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem

@@ -34,11 +34,7 @@
                     </labs:SettingsExpander.Description>
 
                     <labs:SettingsExpander.Items>
-                        <labs:SettingsCard
-                            ActionIcon="{xh:FontIcon Glyph=&#xe8b7;}"
-                            Description="DescriptionDescriptionDescription"
-                            HeaderIcon="{xh:FontIcon Glyph=&#xe8b7;}"
-                            IsClickEnabled="True">
+                        <labs:SettingsCard Description="DescriptionDescriptionDescription">
                             <labs:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_Launch_Item_1" Text="Current .minecraft folder:" />
                             </labs:SettingsCard.Header>
@@ -221,7 +217,7 @@
                                 <TextBlock x:Uid="Settings_Launch_Item_9" Text="Automatically allocate JVM memory:" />
                             </labs:SettingsCard.Header>
 
-                            <ToggleSwitch Margin="-75,-25" IsOn="{Binding EnableAutoMemory, Mode=TwoWay}" />
+                            <ToggleSwitch IsOn="{Binding EnableAutoMemory, Mode=TwoWay}" />
                         </labs:SettingsCard>
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
@@ -281,7 +277,11 @@
                                 <TextBlock x:Uid="Settings_Launch_Item_13" Text="Server address:" />
                             </labs:SettingsCard.Header>
 
-                            <TextBox Width="400" Text="{Binding GameServerAddress, Mode=TwoWay}" />
+                            <TextBox Width="400" Text="{Binding GameServerAddress, Mode=TwoWay}">
+                                <i:Interaction.Behaviors>
+                                    <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
                         </labs:SettingsCard>
 
                         <labs:SettingsCard>
@@ -289,23 +289,24 @@
                                 <TextBlock x:Uid="Settings_Launch_Item_14" Text="Game window title:" />
                             </labs:SettingsCard.Header>
 
-                            <TextBox Width="400" Text="{Binding GameWindowTitle, Mode=TwoWay}" />
+                            <TextBox Width="400" Text="{Binding GameWindowTitle, Mode=TwoWay}">
+                                <i:Interaction.Behaviors>
+                                    <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
                         </labs:SettingsCard>
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
 
-                <labs:SettingsCard>
+                <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xf2b7;}">
                     <labs:SettingsCard.Header>
                         <TextBlock x:Uid="Settings_Launch_Header_4" Text="Language Settings" />
                     </labs:SettingsCard.Header>
 
-                    <labs:SettingsCard.HeaderIcon>
-                        <FontIcon Glyph="&#xf2b7;" />
-                    </labs:SettingsCard.HeaderIcon>
-
                     <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}">
                         <i:Interaction.Behaviors>
                             <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
+                            <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                         </i:Interaction.Behaviors>
                     </ComboBox>
                 </labs:SettingsCard>

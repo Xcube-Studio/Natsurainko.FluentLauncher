@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.Behaviors"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Pages.Settings"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Pages.Settings"
@@ -51,7 +52,11 @@
                                 Width="256"
                                 Maximum="256"
                                 Minimum="32"
-                                Value="{Binding MaxDownloadThreads, Mode=TwoWay}" />
+                                Value="{Binding MaxDownloadThreads, Mode=TwoWay}" >
+                                <i:Interaction.Behaviors>
+                                    <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
+                                </i:Interaction.Behaviors>
+                            </Slider>
                         </labs:SettingsCard>
 
                         <labs:SettingsCard>

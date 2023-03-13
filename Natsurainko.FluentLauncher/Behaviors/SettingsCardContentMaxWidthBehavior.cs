@@ -154,7 +154,7 @@ namespace Natsurainko.FluentLauncher.Behaviors
                 if (isWrapped)
                     totalWidth = g.ActualWidth - 150;
                 else
-                    totalWidth = g.ActualWidth - 180;
+                    totalWidth = g.ActualWidth - 190;
 
                 // Subtract header width
                 if (!isWrapped)

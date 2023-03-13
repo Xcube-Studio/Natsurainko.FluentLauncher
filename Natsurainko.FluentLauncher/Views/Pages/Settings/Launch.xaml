@@ -45,7 +45,7 @@
                                 SelectedItem="{Binding CurrentGameFolder, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
-                                    <behaviors:AutoMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
+                                    <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                                 </i:Interaction.Behaviors>
 
                                 <ComboBox.ItemTemplate>

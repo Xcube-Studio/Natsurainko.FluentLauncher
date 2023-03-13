@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Behaviors
 {
-    class AutoMaxWidthBehavior : Behavior<FrameworkElement>
+    class SettingsCardContentMaxWidthBehavior : Behavior<FrameworkElement>
     {
         #region AutoMaxWidthProperty
 
@@ -38,7 +38,7 @@ namespace Natsurainko.FluentLauncher.Behaviors
             (
                 nameof(AscendentTypeProperty),
                 typeof(Type),
-                typeof(AutoMaxWidthBehavior),
+                typeof(SettingsCardContentMaxWidthBehavior),
                 new PropertyMetadata(null)
             );
 
@@ -58,7 +58,7 @@ namespace Natsurainko.FluentLauncher.Behaviors
             DependencyObject d,
             DependencyPropertyChangedEventArgs e)
         {
-            AutoMaxWidthBehavior behavior = (AutoMaxWidthBehavior)d;
+            SettingsCardContentMaxWidthBehavior behavior = (SettingsCardContentMaxWidthBehavior)d;
 
             bool newValue = (bool)e.NewValue;
             bool oldValue = (bool)e.OldValue;

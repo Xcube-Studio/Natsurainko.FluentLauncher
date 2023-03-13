@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using CommunityToolkit.WinUI.UI;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Xaml.Interactivity;
 using System;
@@ -16,7 +17,7 @@ namespace Natsurainko.FluentLauncher.Behaviors
         public static readonly DependencyProperty AutoMaxWidthProperty =
             DependencyProperty.RegisterAttached
             (
-                "AutoMaxWidthProperty",
+                nameof(AutoMaxWidthProperty),
                 typeof(bool),
                 typeof(SetComboBoxWidthFromItemsBehavior),
                 new PropertyMetadata(null, OnAutoMaxWidthPropertyChanged)
@@ -30,7 +31,28 @@ namespace Natsurainko.FluentLauncher.Behaviors
 
         #endregion
 
+        #region AscendentTypeProperty
+
+        public static readonly DependencyProperty AscendentTypeProperty =
+            DependencyProperty.RegisterAttached
+            (
+                nameof(AscendentTypeProperty),
+                typeof(Type),
+                typeof(AutoMaxWidthBehavior),
+                new PropertyMetadata(null)
+            );
+
+        public Type AscendentType 
+        {
+            get => (Type)GetValue(AscendentTypeProperty);
+            set => SetValue(AscendentTypeProperty, value);
+        }
+
+        #endregion
+
         FrameworkElement container = null;
+
+        FrameworkElement target = null;
 
         private static void OnAutoMaxWidthPropertyChanged(
             DependencyObject d,
@@ -64,6 +86,8 @@ namespace Natsurainko.FluentLauncher.Behaviors
 
         protected override void OnAttached()
         {
+            target = AssociatedObject;
+
             if (AutoMaxWidth)
             {
                 AssociatedObject.Loaded += FrameworkElement_Loaded;
@@ -72,17 +96,20 @@ namespace Natsurainko.FluentLauncher.Behaviors
 
         private void FrameworkElement_Loaded(object sender, RoutedEventArgs e)
         {
-            container = AssociatedObject.Parent as FrameworkElement;
+            if (AscendentType is null)
+                container = target.Parent as FrameworkElement;
+            else
+                container = target.FindAscendant(AscendentType) as FrameworkElement;
 
             if (container is null) return;
 
             container.SizeChanged += Container_SizeChanged;
-            SetMaxWidth(container, AssociatedObject);
+            SetMaxWidth(container, target);
         }
 
         private void Container_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            SetMaxWidth(sender as FrameworkElement, AssociatedObject);
+            SetMaxWidth(sender as FrameworkElement, target);
         }
 
         /// <summary>
@@ -96,16 +123,54 @@ namespace Natsurainko.FluentLauncher.Behaviors
 
             if (container is Grid g)
             {
-                int column = (int)target.GetValue(Grid.ColumnProperty);
-                int columnSpan = (int)target.GetValue(Grid.ColumnSpanProperty);
-                var columns = g.ColumnDefinitions;
+                var ascs = target.FindAscendants();
+                var enumerator = ascs.GetEnumerator();
 
-                double totalWidth = 0;
-                for (int i = column; i < column + columnSpan; i++)
+                // Find the child of the Grid `g` which holds `target`
+                DependencyObject current = target;
+                DependencyObject targetContainer = null;
+                while (current != g && enumerator.MoveNext())
                 {
-                    totalWidth += columns[i].ActualWidth;
+                    targetContainer = current; // `targetContainer` is always the item before `current` in the enumerator
+                    current = enumerator.Current;
                 }
-                target.MaxWidth = totalWidth;
+
+                // Find if the SettingsCard is wrapped for small width
+                bool isWrapped = (int)targetContainer.GetValue(Grid.RowProperty) == 1;
+
+                // Find the appropriate column width
+                double totalWidth = g.ActualWidth;
+
+                // Subtract icon column width
+                var icon = g.FindDescendant("PART_HeaderIconPresenterHolder") as FrameworkElement;
+                var iconColumn = g.ColumnDefinitions[0];
+                var iconWidth = icon is null ? 0 : icon.ActualWidth;
+                totalWidth -= iconWidth > iconColumn.ActualWidth ? iconWidth : iconColumn.ActualWidth;
+
+                //var action = g.FindDescendant("PART_ActionIconPresenter") as FrameworkElement;
+                //totalWidth -= action is null ? 0 : action.ActualWidth;
+
+                // Subtract indentation (including action icon) width
+                if (isWrapped)
+                    totalWidth = g.ActualWidth - 103;
+                else
+                    totalWidth = g.ActualWidth - 180;
+
+                // Subtract header width
+                if (!isWrapped)
+                {
+                    var header = g.FindDescendant("PART_HeaderPresenter") as ContentPresenter;
+                    if (header is not null)
+                    {
+                        var content = header.FindDescendant<FrameworkElement>();
+                        if (content is not null)
+                            totalWidth -= content.ActualWidth;
+                        else
+                            totalWidth -= header.ActualWidth;
+                    }
+                }
+
+                target.MaxWidth = Math.Floor(totalWidth);
             }
             else
             {

@@ -34,15 +34,18 @@
                     </labs:SettingsExpander.Description>
 
                     <labs:SettingsExpander.Items>
-                        <labs:SettingsCard>
+                        <labs:SettingsCard Description="DescriptionDescriptionDescription">
                             <labs:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_Launch_Item_1" Text="Current .minecraft folder:" />
                             </labs:SettingsCard.Header>
 
-                            <ComboBox ItemsSource="{Binding GameFolders}" SelectedItem="{Binding CurrentGameFolder, Mode=TwoWay}">
+                            <ComboBox
+                                HorizontalAlignment="Stretch"
+                                ItemsSource="{Binding GameFolders}"
+                                SelectedItem="{Binding CurrentGameFolder, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
-                                    <!--  TODO: needs test for behaviors when container width is less than width required  -->
+                                    <behaviors:AutoMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                                 </i:Interaction.Behaviors>
 
                                 <ComboBox.ItemTemplate>

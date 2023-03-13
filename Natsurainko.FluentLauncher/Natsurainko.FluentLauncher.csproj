@@ -8,8 +8,8 @@
     <Platforms>x86;x64;ARM64</Platforms>
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
     <UseWinUI>true</UseWinUI>
-	<StartupObject>Natsurainko.FluentLauncher.App</StartupObject>
-	<ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
+    <StartupObject>Natsurainko.FluentLauncher.App</StartupObject>
+    <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

@@ -34,7 +34,11 @@
                     </labs:SettingsExpander.Description>
 
                     <labs:SettingsExpander.Items>
-                        <labs:SettingsCard Description="DescriptionDescriptionDescription">
+                        <labs:SettingsCard
+                            ActionIcon="{xh:FontIcon Glyph=&#xe8b7;}"
+                            Description="DescriptionDescriptionDescription"
+                            HeaderIcon="{xh:FontIcon Glyph=&#xe8b7;}"
+                            IsClickEnabled="True">
                             <labs:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_Launch_Item_1" Text="Current .minecraft folder:" />
                             </labs:SettingsCard.Header>

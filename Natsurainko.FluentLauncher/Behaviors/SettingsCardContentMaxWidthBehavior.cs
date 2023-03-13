@@ -152,7 +152,7 @@ namespace Natsurainko.FluentLauncher.Behaviors
 
                 // Subtract indentation (including action icon) width
                 if (isWrapped)
-                    totalWidth = g.ActualWidth - 103;
+                    totalWidth = g.ActualWidth - 150;
                 else
                     totalWidth = g.ActualWidth - 180;
 

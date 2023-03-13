@@ -27,6 +27,11 @@
         <Border Margin="0,32">
             <StackPanel MaxWidth="1000" Spacing="4">
 
+                <TextBlock
+                    Margin="1,0,0,4"
+                    Style="{StaticResource BodyStrongTextBlockStyle}"
+                    Text="Global launch settings" />
+
                 <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe8b7;}">
 
                     <labs:SettingsExpander.Header>
@@ -331,6 +336,21 @@
                         </labs:SettingsCard>
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
+
+                <TextBlock
+                    Margin="1,28,0,4"
+                    Style="{StaticResource BodyStrongTextBlockStyle}"
+                    Text="Game specific settings" />
+
+                <labs:SettingsCard
+                    ActionIconToolTip="Go to Cores page"
+                    Command="{Binding ActivateCoresPageCommand}"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xf259;}"
+                    IsClickEnabled="True">
+                    <labs:SettingsCard.Header>
+                        <TextBlock x:Uid="Settings_Launch_Header_5" Text="Edit game specific settings" />
+                    </labs:SettingsCard.Header>
+                </labs:SettingsCard>
 
             </StackPanel>
         </Border>

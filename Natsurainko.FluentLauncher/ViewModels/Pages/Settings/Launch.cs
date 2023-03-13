@@ -156,4 +156,10 @@ public partial class Launch : SettingViewModel
         OnPropertyChanged(nameof(JavaRuntimes));
     }
 
+    [RelayCommand]
+    void ActivateCoresPage()
+    {
+        MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Cores));
+    }
+
 }

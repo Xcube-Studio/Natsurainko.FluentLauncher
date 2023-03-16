@@ -44,7 +44,7 @@
                     </labs:SettingsExpander.Description>
 
                     <labs:SettingsExpander.Items>
-                        <labs:SettingsCard Description="DescriptionDescriptionDescription">
+                        <labs:SettingsCard>
                             <labs:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_Launch_Item_1" Text="Current .minecraft folder:" />
                             </labs:SettingsCard.Header>

@@ -20,6 +20,7 @@
             <StackPanel MaxWidth="1000" Spacing="4">
 
                 <TextBlock
+                    x:Uid="About_AboutFluentLauncher"
                     Margin="1,0,0,4"
                     Style="{StaticResource BodyStrongTextBlockStyle}"
                     Text="About Fluent Launcher" />
@@ -78,6 +79,7 @@
                 </labs:SettingsCard>
 
                 <TextBlock
+                    x:Uid="About_OtherInfo"
                     Margin="1,28,0,4"
                     Style="{StaticResource BodyStrongTextBlockStyle}"
                     Text="Other information" />
@@ -96,6 +98,7 @@
                 </labs:SettingsCard>
 
                 <TextBlock
+                    x:Uid="About_Credits"
                     Margin="1,28,0,4"
                     Style="{StaticResource BodyStrongTextBlockStyle}"
                     Text="Credits" />
@@ -206,6 +209,7 @@
                 </labs:SettingsExpander>
 
                 <TextBlock
+                    x:Uid="About_Copyright"
                     Margin="1,28,0,4"
                     Style="{StaticResource BodyStrongTextBlockStyle}"
                     Text="Copyright" />

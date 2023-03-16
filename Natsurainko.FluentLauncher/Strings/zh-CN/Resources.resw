@@ -117,8 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About_AboutFluentLauncher.Text" xml:space="preserve">
+    <value>关于 Fluent Launcher</value>
+  </data>
   <data name="About_Acknowledgments.Text" xml:space="preserve">
-    <value>鸣谢</value>
+    <value>特别鸣谢</value>
   </data>
   <data name="About_Acknowledgments_Content.Text" xml:space="preserve">
     <value>感谢所有为本应用提供的服务</value>
@@ -126,8 +129,17 @@
   <data name="About_CheckUpdate.Text" xml:space="preserve">
     <value>在 Microsoft Store 中检查和更新</value>
   </data>
+  <data name="About_Copyright.Text" xml:space="preserve">
+    <value>版权所有</value>
+  </data>
+  <data name="About_Credits.Text" xml:space="preserve">
+    <value>致谢</value>
+  </data>
   <data name="About_Developer_Tag.Text" xml:space="preserve">
     <value>本应用的开发者</value>
+  </data>
+  <data name="About_OtherInfo.Text" xml:space="preserve">
+    <value>其它信息</value>
   </data>
   <data name="About_ProvideDownloadSource.Text" xml:space="preserve">
     <value>提供下载源</value>
@@ -301,13 +313,16 @@
     <value>关于</value>
   </data>
   <data name="Navigation_Settings_Account.Content" xml:space="preserve">
-    <value>账户设置</value>
+    <value>账户</value>
+  </data>
+  <data name="Navigation_Settings_Appearance.Content" xml:space="preserve">
+    <value>外观</value>
   </data>
   <data name="Navigation_Settings_Download.Content" xml:space="preserve">
-    <value>下载设置</value>
+    <value>下载</value>
   </data>
   <data name="Navigation_Settings_Launch.Content" xml:space="preserve">
-    <value>全局启动设置</value>
+    <value>启动</value>
   </data>
   <data name="Properties_Information_Header.Text" xml:space="preserve">
     <value>属性</value>
@@ -396,6 +411,9 @@
   <data name="Settings_Launch_Header_4.Text" xml:space="preserve">
     <value>语言设置</value>
   </data>
+  <data name="Settings_Launch_Header_5.Text" xml:space="preserve">
+    <value>更改特定游戏核心设置</value>
+  </data>
   <data name="Settings_Launch_Item_1.Text" xml:space="preserve">
     <value>当前的 .minecraft 目录:</value>
   </data>
@@ -413,6 +431,12 @@
   </data>
   <data name="Settings_Launch_Item_14.Text" xml:space="preserve">
     <value>游戏窗口标题:</value>
+  </data>
+  <data name="Settings_Launch_Item_15.Text" xml:space="preserve">
+    <value>特定游戏设置</value>
+  </data>
+  <data name="Settings_Launch_Item_16.Text" xml:space="preserve">
+    <value>全局启动设置</value>
   </data>
   <data name="Settings_Launch_Item_2.Text" xml:space="preserve">
     <value>打开 .minecraft 目录:</value>

@@ -28,6 +28,7 @@
             <StackPanel MaxWidth="1000" Spacing="4">
 
                 <TextBlock
+                    x:Uid="Settings_Launch_Item_16"
                     Margin="1,0,0,4"
                     Style="{StaticResource BodyStrongTextBlockStyle}"
                     Text="Global launch settings" />
@@ -338,6 +339,7 @@
                 </labs:SettingsExpander>
 
                 <TextBlock
+                    x:Uid="Settings_Launch_Item_15"
                     Margin="1,28,0,4"
                     Style="{StaticResource BodyStrongTextBlockStyle}"
                     Text="Game specific settings" />

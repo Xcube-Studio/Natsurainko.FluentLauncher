@@ -50,7 +50,7 @@
                                 </i:Interaction.Behaviors>
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
-                                        <Grid Margin="0,2,0,0">
+                                        <Grid Margin="2,2,0,0">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="8" />

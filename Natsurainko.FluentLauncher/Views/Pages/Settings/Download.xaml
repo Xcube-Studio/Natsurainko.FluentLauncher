@@ -4,94 +4,73 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:Natsurainko.FluentLauncher.UserControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.Behaviors"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Pages.Settings"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Pages.Settings"
-    Background="Transparent"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Helpers"
     mc:Ignorable="d">
     <Page.DataContext>
         <vm:Download />
     </Page.DataContext>
 
-    <ScrollViewer>
-        <StackPanel Padding="30,20">
-            <Expander
-                Padding="0"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Stretch"
-                VerticalContentAlignment="Stretch"
-                IsExpanded="True">
-                <Expander.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <FontIcon Margin="2,0,0,0" Glyph="&#xe896;" />
-                        <StackPanel Margin="17,12.5">
-                            <TextBlock x:Uid="Settings_Download_Header" Text="Download" />
-                            <TextBlock
-                                x:Uid="Settings_Download_Subtitle"
-                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                Text="Configuration for download game resources" />
-                        </StackPanel>
-                    </StackPanel>
-                </Expander.Header>
-                <Expander.Content>
-                    <StackPanel HorizontalAlignment="Stretch">
-                        <controls:ExpanderContentItem>
-                            <Grid>
-                                <TextBlock
-                                    x:Uid="Settings_Download_Item_1"
-                                    VerticalAlignment="Center"
-                                    Text="Current download sources:" />
-                                <ComboBox
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    FlowDirection="RightToLeft"
-                                    SelectedItem="{Binding CurrentDownloadSource, Mode=TwoWay}">
-                                    <x:String>Mojang</x:String>
-                                    <x:String>Bmclapi</x:String>
-                                    <x:String>Mcbbs</x:String>
-                                </ComboBox>
-                            </Grid>
-                        </controls:ExpanderContentItem>
-                        <Border Style="{ThemeResource ExpanderSplitter}" />
-                        <controls:ExpanderContentItem>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="15" />
-                                    <ColumnDefinition Width="1*" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock
-                                    x:Uid="Settings_Download_Item_2"
-                                    VerticalAlignment="Center"
-                                    Text="Maximum number of download threads:" />
-                                <Slider
-                                    Grid.Column="2"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Center"
-                                    Maximum="256"
-                                    Minimum="32"
-                                    Value="{Binding MaxDownloadThreads, Mode=TwoWay}" />
-                            </Grid>
-                        </controls:ExpanderContentItem>
-                        <Border Style="{ThemeResource ExpanderSplitter}" />
-                        <controls:ExpanderContentItem>
-                            <Grid>
-                                <TextBlock
-                                    x:Uid="Settings_Download_Item_3"
-                                    VerticalAlignment="Center"
-                                    Text="Enable fragmented download of large files:" />
-                                <ToggleSwitch
-                                    Margin="-75,-25"
-                                    Padding="0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    IsEnabled="True"
-                                    IsOn="{Binding EnableFragmentDownload, Mode=TwoWay}" />
-                            </Grid>
-                        </controls:ExpanderContentItem>
-                    </StackPanel>
-                </Expander.Content>
-            </Expander>
-        </StackPanel>
+    <ScrollViewer Padding="32,0" VerticalScrollBarVisibility="Auto">
+        <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
+        <Border Margin="0,32">
+            <StackPanel MaxWidth="1000" Spacing="4">
+                <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe896;}" IsExpanded="True">
+
+                    <labs:SettingsExpander.Header>
+                        <TextBlock x:Uid="Settings_Download_Header" Text="Download" />
+                    </labs:SettingsExpander.Header>
+
+                    <labs:SettingsExpander.Description>
+                        <TextBlock x:Uid="Settings_Download_Subtitle" Text="Configuration for download game resources" />
+                    </labs:SettingsExpander.Description>
+
+                    <labs:SettingsExpander.Items>
+                        <labs:SettingsCard>
+                            <labs:SettingsCard.Header>
+                                <TextBlock x:Uid="Settings_Download_Item_1" Text="Current download sources:" />
+                            </labs:SettingsCard.Header>
+
+                            <ComboBox SelectedItem="{Binding CurrentDownloadSource, Mode=TwoWay}">
+                                <x:String>Mojang</x:String>
+                                <x:String>Bmclapi</x:String>
+                                <x:String>Mcbbs</x:String>
+                            </ComboBox>
+                        </labs:SettingsCard>
+
+                        <labs:SettingsCard>
+                            <labs:SettingsCard.Header>
+                                <TextBlock x:Uid="Settings_Download_Item_2" Text="Maximum number of download threads:" />
+                            </labs:SettingsCard.Header>
+
+                            <Slider
+                                Width="256"
+                                Maximum="256"
+                                Minimum="32"
+                                Value="{Binding MaxDownloadThreads, Mode=TwoWay}" >
+                                <i:Interaction.Behaviors>
+                                    <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
+                                </i:Interaction.Behaviors>
+                            </Slider>
+                        </labs:SettingsCard>
+
+                        <labs:SettingsCard>
+                            <labs:SettingsCard.Header>
+                                <TextBlock x:Uid="Settings_Download_Item_3" Text="Enable fragmented download of large files:" />
+                            </labs:SettingsCard.Header>
+
+                            <ToggleSwitch IsOn="{Binding EnableFragmentDownload, Mode=TwoWay}" />
+                        </labs:SettingsCard>
+
+                    </labs:SettingsExpander.Items>
+                </labs:SettingsExpander>
+
+            </StackPanel>
+        </Border>
     </ScrollViewer>
 </Page>

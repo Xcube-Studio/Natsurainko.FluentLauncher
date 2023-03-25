@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About_AboutFluentLauncher.Text" xml:space="preserve">
+    <value>About Fluent Launcher</value>
+  </data>
   <data name="About_Acknowledgments.Text" xml:space="preserve">
     <value>Acknowledgments</value>
   </data>
@@ -126,8 +129,17 @@
   <data name="About_CheckUpdate.Text" xml:space="preserve">
     <value>Check Updates in the Microsoft Store</value>
   </data>
+  <data name="About_Copyright.Text" xml:space="preserve">
+    <value>Copyright</value>
+  </data>
+  <data name="About_Credits.Text" xml:space="preserve">
+    <value>Credits</value>
+  </data>
   <data name="About_Developer_Tag.Text" xml:space="preserve">
     <value>the Developer of this Application</value>
+  </data>
+  <data name="About_OtherInfo.Text" xml:space="preserve">
+    <value>Other Information</value>
   </data>
   <data name="About_ProvideDownloadSource.Text" xml:space="preserve">
     <value>Provide Download Source</value>
@@ -304,13 +316,16 @@
     <value>About</value>
   </data>
   <data name="Navigation_Settings_Account.Content" xml:space="preserve">
-    <value>Account Settings</value>
+    <value>Account</value>
+  </data>
+  <data name="Navigation_Settings_Appearance.Content" xml:space="preserve">
+    <value>Appearance</value>
   </data>
   <data name="Navigation_Settings_Download.Content" xml:space="preserve">
-    <value>Download Settings</value>
+    <value>Download</value>
   </data>
   <data name="Navigation_Settings_Launch.Content" xml:space="preserve">
-    <value>Global Launch Settings</value>
+    <value>Launch</value>
   </data>
   <data name="Properties_Information_Header.Text" xml:space="preserve">
     <value>Property</value>
@@ -416,6 +431,12 @@
   </data>
   <data name="Settings_Launch_Item_14.Text" xml:space="preserve">
     <value>Game window title:</value>
+  </data>
+  <data name="Settings_Launch_Item_15.Text" xml:space="preserve">
+    <value>Game specific settings</value>
+  </data>
+  <data name="Settings_Launch_Item_16.Text" xml:space="preserve">
+    <value>Global launch settings</value>
   </data>
   <data name="Settings_Launch_Item_2.Text" xml:space="preserve">
     <value>Open the .minecraft folder:</value>

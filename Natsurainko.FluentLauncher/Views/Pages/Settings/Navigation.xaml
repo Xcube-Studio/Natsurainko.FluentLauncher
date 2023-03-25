@@ -18,7 +18,7 @@
             <NavigationView.MenuItems>
                 <NavigationViewItem
                     x:Uid="Navigation_Settings_Launch"
-                    Content="Global Launch Settings"
+                    Content="Launch"
                     IsSelected="True"
                     Tag="Natsurainko.FluentLauncher.Views.Pages.Settings.Launch">
                     <NavigationViewItem.Icon>
@@ -27,7 +27,7 @@
                 </NavigationViewItem>
                 <NavigationViewItem
                     x:Uid="Navigation_Settings_Account"
-                    Content="Account Settings"
+                    Content="Account"
                     Tag="Natsurainko.FluentLauncher.Views.Pages.Settings.Account">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe77b;" />
@@ -35,10 +35,18 @@
                 </NavigationViewItem>
                 <NavigationViewItem
                     x:Uid="Navigation_Settings_Download"
-                    Content="Download Settings"
+                    Content="Download"
                     Tag="Natsurainko.FluentLauncher.Views.Pages.Settings.Download">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe896;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem
+                    x:Uid="Navigation_Settings_Appearance"
+                    Content="Appearance"
+                    Tag="Natsurainko.FluentLauncher.Views.Pages.Settings.Appearance">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE790;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>

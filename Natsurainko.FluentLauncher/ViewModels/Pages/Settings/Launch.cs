@@ -19,6 +19,55 @@ namespace Natsurainko.FluentLauncher.ViewModels.Pages.Settings;
 
 public partial class Launch : SettingViewModel
 {
+    #region ObservableProperties
+
+    [ObservableProperty]
+    private Visibility removeFolderVisibility;
+
+    [ObservableProperty]
+    private Visibility removeJavaVisibility;
+
+    [ObservableProperty]
+    private ObservableCollection<string> gameFolders;
+
+    [ObservableProperty]
+    private string currentGameFolder;
+
+    [ObservableProperty]
+    private ObservableCollection<string> javaRuntimes;
+
+    [ObservableProperty]
+    private string currentJavaRuntime;
+
+    [ObservableProperty]
+    private int javaVirtualMachineMemory;
+
+    [ObservableProperty]
+    private bool enableAutoMemory;
+
+    [ObservableProperty]
+    private bool enableAutoJava;
+
+    [ObservableProperty]
+    private string gameWindowTitle;
+
+    [ObservableProperty]
+    private int gameWindowWidth;
+
+    [ObservableProperty]
+    private int gameWindowHeight;
+
+    [ObservableProperty]
+    private string gameServerAddress;
+
+    [ObservableProperty]
+    private bool enableFullScreen;
+
+    [ObservableProperty]
+    private bool enableIndependencyCore;
+
+    #endregion
+
     public Launch() : base() { }
 
     protected override void _OnPropertyChanged(PropertyChangedEventArgs e)
@@ -32,16 +81,8 @@ public partial class Launch : SettingViewModel
             RemoveJavaVisibility = string.IsNullOrEmpty(CurrentJavaRuntime)
                 ? Visibility.Collapsed
                 : Visibility.Visible;
-
-#if !MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
-        if (!loading && e.PropertyName == nameof(CurrentLanguage))
-            LanguageResources.ApplyLanguage(CurrentLanguage);
-#endif
     }
-}
 
-public partial class Launch
-{
     [RelayCommand]
     public Task BrowserFolder() => Task.Run(async () =>
     {
@@ -114,58 +155,11 @@ public partial class Launch
 
         OnPropertyChanged(nameof(JavaRuntimes));
     }
-}
 
-public partial class Launch
-{
-    [ObservableProperty]
-    private Visibility removeFolderVisibility;
+    [RelayCommand]
+    void ActivateCoresPage()
+    {
+        MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Cores));
+    }
 
-    [ObservableProperty]
-    private Visibility removeJavaVisibility;
-
-    [ObservableProperty]
-    private ObservableCollection<string> gameFolders;
-
-    [ObservableProperty]
-    private string currentGameFolder;
-
-    [ObservableProperty]
-    private ObservableCollection<string> javaRuntimes;
-
-    [ObservableProperty]
-    private string currentJavaRuntime;
-
-    [ObservableProperty]
-    private int javaVirtualMachineMemory;
-
-    [ObservableProperty]
-    private bool enableAutoMemory;
-
-    [ObservableProperty]
-    private bool enableAutoJava;
-
-    [ObservableProperty]
-    private string gameWindowTitle;
-
-    [ObservableProperty]
-    private int gameWindowWidth;
-
-    [ObservableProperty]
-    private int gameWindowHeight;
-
-    [ObservableProperty]
-    private string gameServerAddress;
-
-    [ObservableProperty]
-    private bool enableFullScreen;
-
-    [ObservableProperty]
-    private bool enableIndependencyCore;
-
-    [ObservableProperty]
-    private List<string> languages = LanguageResources.SupportedLanguages;
-
-    [ObservableProperty]
-    private string currentLanguage;
 }

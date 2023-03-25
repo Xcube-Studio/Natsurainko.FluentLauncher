@@ -346,6 +346,7 @@
                 HorizontalAlignment="Center"
                 FontSize="20"
                 FontWeight="SemiBold"
+                x:Uid="Settings_Microsoft_Account_Loading"
                 Text="Loading..." />
             <TextBlock
                 FontSize="16"

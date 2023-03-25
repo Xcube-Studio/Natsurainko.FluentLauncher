@@ -21,6 +21,7 @@
             VerticalAlignment="Center"
             FontSize="18"
             FontWeight="SemiBold"
+            x:Uid="Settings_Choose_Account_Type"
             Text="Choose Account Type" />
         <StackPanel
             Grid.Row="1"
@@ -28,6 +29,7 @@
             HorizontalAlignment="Stretch">
             <ComboBox
                 HorizontalAlignment="Stretch"
+                x:Uid="Settings_Account_Type"
                 PlaceholderText="Account Type"
                 SelectedItem="{Binding AccountType, Mode=TwoWay}">
                 <x:String>Microsoft</x:String>

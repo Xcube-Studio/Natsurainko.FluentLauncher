@@ -333,7 +333,10 @@
                         <FontIcon Glyph="&#xe946;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Content="Download Files" Tag="Natsurainko.FluentLauncher.Views.Pages.Mods.CurseForgeModFile">
+                <NavigationViewItem
+                    x:Uid="CF_Download_Files"
+                    Content="Download Files"
+                    Tag="Natsurainko.FluentLauncher.Views.Pages.Mods.CurseForgeModFile">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe896;" />
                     </NavigationViewItem.Icon>

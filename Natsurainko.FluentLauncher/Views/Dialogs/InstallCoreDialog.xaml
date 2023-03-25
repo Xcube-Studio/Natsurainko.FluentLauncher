@@ -322,6 +322,7 @@
             PaneDisplayMode="Top">
             <NavigationView.MenuItems>
                 <NavigationViewItem
+                    x:Uid="Mods_Install_New_Core"
                     Content="Install New Core"
                     IsSelected="True"
                     Tag="Natsurainko.FluentLauncher.Views.Pages.Installations.Core">
@@ -330,6 +331,7 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem
+                    x:Uid="Mods_Install_CF_Modpack"
                     Content="Install Curseforge Modpack"
                     IsEnabled="False"
                     Tag="Natsurainko.FluentLauncher.Views.Pages.Installations.Core">

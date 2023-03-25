@@ -53,6 +53,11 @@
     value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
@@ -145,8 +150,14 @@
   <data name="About_Statements_Content.Text" xml:space="preserve">
     <value>Авторские права на Minecraft принадлежат Mojang Studios. Мы не несем ответственности за любые нарушения авторских прав, связанные с использованием этого программного обеспечения.</value>
   </data>
+  <data name="CF_Download_Files.Content" xml:space="preserve">
+    <value>Файлы для скачивания</value>
+  </data>
   <data name="Cores_Install.Text" xml:space="preserve">
     <value>Установить новое ядро</value>
+  </data>
+  <data name="Cores_New_Name.Text" xml:space="preserve">
+    <value>Новое название</value>
   </data>
   <data name="Cores_Search.PlaceholderText" xml:space="preserve">
     <value>Поиск ядра...</value>
@@ -253,6 +264,15 @@
   <data name="Home_Launch.Text" xml:space="preserve">
     <value>Запустить игру</value>
   </data>
+  <data name="Home_NoAccount.Text" xml:space="preserve">
+    <value>Нет аккаунта</value>
+  </data>
+  <data name="Mods_Install_CF_Modpack.Content" xml:space="preserve">
+    <value>Установить модпак Curseforge</value>
+  </data>
+  <data name="Mods_Install_New_Core.Content" xml:space="preserve">
+    <value>Установить новое ядро</value>
+  </data>
   <data name="Navigation_Activities.Content" xml:space="preserve">
     <value>Активности</value>
   </data>
@@ -337,6 +357,15 @@
   <data name="Properties_Launch_Item.Text" xml:space="preserve">
     <value>Изоляция версии</value>
   </data>
+  <data name="Properties_Mod_Author.Text" xml:space="preserve">
+    <value>Автор:</value>
+  </data>
+  <data name="Properties_Mod_Description.Text" xml:space="preserve">
+    <value>Описание:</value>
+  </data>
+  <data name="Properties_Mod_Version.Text" xml:space="preserve">
+    <value>Версия:</value>
+  </data>
   <data name="Properties_Mod_Header.Text" xml:space="preserve">
     <value>Папка с модами</value>
   </data>
@@ -363,6 +392,18 @@
   </data>
   <data name="Settings_Account_Subtitle.Text" xml:space="preserve">
     <value>Аккаунт для входа в игру</value>
+  </data>
+  <data name="Settings_Choose_Account_Type.Text" xml:space="preserve">
+    <value>Выберите тип аккаунта</value>
+  </data>
+  <data name="Settings_Account_Type.Text" xml:space="preserve">
+    <value>Тип аккаунта</value>
+  </data>
+  <data name="Settings_Confirm_Role_Desc.Text" xml:space="preserve">
+    <value>Здесь несколько ролей, необходимо выбрать одну, чтобы продолжить</value>
+  </data>
+  <data name="Settings_Confirm_Role.Text" xml:space="preserve">
+    <value>Подтвердить роль</value>
   </data>
   <data name="Settings_Download_Header.Text" xml:space="preserve">
     <value>Скачивание</value>
@@ -442,6 +483,24 @@
   <data name="Settings_Launch_Subtitle_3.Text" xml:space="preserve">
     <value>Настройки игрового процесса</value>
   </data>
+  <data name="Settings_Microsoft_Account_Loading.Text" xml:space="preserve">
+    <value>Загрузка...</value>
+  </data>
+  <data name="Settings_Yggdrasil_Account.Text" xml:space="preserve">
+    <value>Аккаунт Yggdrasil</value>
+  </data>
+  <data name="Settings_Yggdrasil_Login.PlaceholderText" xml:space="preserve">
+    <value>Эл. почта</value>
+  </data>
+  <data name="Settings_Yggdrasil_Password.PlaceholderText" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="Settings_Yggdrasil_Url.PlaceholderText" xml:space="preserve">
+    <value>Ссылка сервера Yggdrasil</value>
+  </data>
+  <data name="Title_Offline_Account.Text" xml:space="preserve">
+    <value>Автономный аккаунт</value>
+  </data>
   <data name="_Buttons_Back.Text" xml:space="preserve">
     <value>Назад</value>
   </data>
@@ -489,5 +548,8 @@
   </data>
   <data name="_TeachingTips_Rename.Subtitle" xml:space="preserve">
     <value>Введите допустимое имя</value>
+  </data>
+  <data name="Settings_Launch_Header_5.Text" xml:space="preserve">
+    <value>Edit game specific settings</value>
   </data>
 </root>

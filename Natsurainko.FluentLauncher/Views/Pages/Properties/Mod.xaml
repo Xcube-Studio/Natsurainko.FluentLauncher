@@ -178,11 +178,11 @@
                                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                                     TextTrimming="CharacterEllipsis"
                                                     ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}">
-                                                    <Run Text="authors:" />
+                                                    <Run x:Uid="Properties_Mod_Author" Text="authors:" />
                                                     <Run Text="{Binding DisplayAuthors}" />
-                                                    <Run Text=" version:" />
+                                                    <Run x:Uid="Properties_Mod_Version" Text=" version:" />
                                                     <Run Text="{Binding Version}" />
-                                                    <Run Text=" description:" />
+                                                    <Run x:Uid="Properties_Mod_Description" Text=" description:" />
                                                     <Run Text="{Binding Description}" />
                                                 </TextBlock>
                                             </Grid>

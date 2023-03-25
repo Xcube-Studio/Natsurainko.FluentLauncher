@@ -566,7 +566,7 @@
             </TeachingTip.Title>
             <TeachingTip.Content>
                 <Grid Margin="0,7.5,0,0">
-                    <AutoSuggestBox PlaceholderText="New Name" Text="{Binding NewName, Mode=TwoWay}" />
+                    <AutoSuggestBox x:Uid="Cores_New_Name" PlaceholderText="New Name" Text="{Binding NewName, Mode=TwoWay}" />
                 </Grid>
             </TeachingTip.Content>
             <TeachingTip.ActionButtonContent>

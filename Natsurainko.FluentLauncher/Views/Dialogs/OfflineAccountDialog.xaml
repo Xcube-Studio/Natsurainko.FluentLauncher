@@ -23,6 +23,7 @@
             VerticalAlignment="Center"
             FontSize="18"
             FontWeight="SemiBold"
+            x:Uid="Title_Offline_Account"
             Text="Offline Account" />
         <StackPanel
             Grid.Row="1"

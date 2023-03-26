@@ -23,17 +23,19 @@
             VerticalAlignment="Center"
             FontSize="18"
             FontWeight="SemiBold"
+            x:Uid="Settings_Yggdrasil_Account"
             Text="Yggdrasil Account" />
         <StackPanel
             Grid.Row="1"
             Margin="0,20"
             HorizontalAlignment="Stretch">
-            <TextBox PlaceholderText="Yggdrasil Server Url:" Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox x:Uid="Settings_Yggdrasil_Url" PlaceholderText="Yggdrasil Server Url:" Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox
                 Margin="0,10"
+                x:Uid="Settings_Yggdrasil_Login"
                 PlaceholderText="Email:"
                 Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <PasswordBox Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Password:" />
+            <PasswordBox Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Uid="Settings_Yggdrasil_Password" PlaceholderText="Password:" />
             <ListView
                 MaxHeight="75"
                 Margin="0,10"
@@ -57,6 +59,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock
                     FontWeight="SemiBold"
+                    x:Uid="Settings_Confirm_Role_Desc"
                     Text="There are multiple roles here, you need to choose one to continue"
                     TextWrapping="WrapWholeWords" />
                 <Button
@@ -65,7 +68,7 @@
                     Command="{Binding ConfirmRoleCommand}"
                     Foreground="White"
                     Style="{ThemeResource AccentButtonStyle}">
-                    <TextBlock Text="Confirm Role" />
+                    <TextBlock x:Uid="Settings_Confirm_Role" Text="Confirm Role" />
                 </Button>
             </Grid>
         </StackPanel>

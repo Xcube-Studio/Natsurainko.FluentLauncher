@@ -542,6 +542,66 @@
           <source>Please enter a valid name</source>
           <target state="translated">Введите допустимое имя</target>
         </trans-unit>
+        <trans-unit id="Cores_New_Name.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>New Name</source>
+          <target state="translated">Новое название</target>
+        </trans-unit>
+        <trans-unit id="Properties_Mod_Author.Text" translate="yes" xml:space="preserve">
+          <source> authors:</source>
+          <target state="translated"> Автор:</target>
+        </trans-unit>
+        <trans-unit id="Properties_Mod_Description.Text" translate="yes" xml:space="preserve">
+          <source> description:</source>
+          <target state="translated"> Описание:</target>
+        </trans-unit>
+        <trans-unit id="Properties_Mod_Version.Text" translate="yes" xml:space="preserve">
+          <source> version:</source>
+          <target state="translated"> Версия:</target>
+        </trans-unit>
+        <trans-unit id="CF_Download_Files.Content" translate="yes" xml:space="preserve">
+          <source>Download Files</source>
+          <target state="new">Файлы для скачивания</target>
+        </trans-unit>
+        <trans-unit id="Mods_Install_New_Core.Content" translate="yes" xml:space="preserve">
+          <source>Install New Core</source>
+          <target state="translated">Установить новое ядро</target>
+        </trans-unit>
+        <trans-unit id="Settings_Account_Type.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Account Type</source>
+          <target state="translated">Тип аккаунта</target>
+        </trans-unit>
+        <trans-unit id="Settings_Choose_Account_Type.Text" translate="yes" xml:space="preserve">
+          <source>Choose Account Type</source>
+          <target state="translated">Выберите тип аккаунта</target>
+        </trans-unit>
+        <trans-unit id="Settings_Confirm_Role.Text" translate="yes" xml:space="preserve">
+          <source>Confirm Role</source>
+          <target state="translated">Подтвердить роль</target>
+        </trans-unit>
+        <trans-unit id="Settings_Confirm_Role_Desc.Text" translate="yes" xml:space="preserve">
+          <source>There are multiple roles here, you need to choose one to continue</source>
+          <target state="translated">Здесь несколько ролей, необходимо выбрать одну, чтобы продолжить</target>
+        </trans-unit>
+        <trans-unit id="Settings_Microsoft_Account_Loading.Text" translate="yes" xml:space="preserve">
+          <source>Loading...</source>
+          <target state="translated">Загрузка...</target>
+        </trans-unit>
+        <trans-unit id="Settings_Yggdrasil_Login.Placeholder.Text" translate="yes" xml:space="preserve">
+          <source>Email:</source>
+          <target state="translated">Эл. почта</target>
+        </trans-unit>
+        <trans-unit id="Settings_Yggdrasil_Password.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Password:</source>
+          <target state="translated">Пароль</target>
+        </trans-unit>
+        <trans-unit id="Settings_Yggdrasil_Url.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Yggdrasil Server Url:</source>
+          <target state="translated">Ссылка сервера Yggdrasil</target>
+        </trans-unit>
+        <trans-unit id="Title_Offline_Account.Text" translate="yes" xml:space="preserve">
+          <source>Offline Account</source>
+          <target state="translated">Автономный аккаунт</target>
+        </trans-unit>
       </group>
     </body>
   </file>

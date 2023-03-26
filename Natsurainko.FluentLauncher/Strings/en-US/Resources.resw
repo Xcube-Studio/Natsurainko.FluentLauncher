@@ -162,8 +162,14 @@
   <data name="About_Statements_Content.Text" xml:space="preserve">
     <value>Minecraft is copyrighted by Mojang Studios. We are not responsible for any copyright infringement arising from use of this software.</value>
   </data>
+  <data name="CF_Download_Files.Content" xml:space="preserve">
+    <value>Download Files</value>
+  </data>
   <data name="Cores_Install.Text" xml:space="preserve">
     <value>Install New Core</value>
+  </data>
+  <data name="Cores_New_Name.PlaceholderText" xml:space="preserve">
+    <value>New Name</value>
   </data>
   <data name="Cores_Search.PlaceholderText" xml:space="preserve">
     <value>Search Core...</value>
@@ -273,6 +279,9 @@
   <data name="Home_NoAccount.Text" xml:space="preserve">
     <value>No Account</value>
   </data>
+  <data name="Mods_Install_New_Core.Content" xml:space="preserve">
+    <value>Install New Core</value>
+  </data>
   <data name="Navigation_Activities.Content" xml:space="preserve">
     <value>Activities</value>
   </data>
@@ -360,8 +369,17 @@
   <data name="Properties_Launch_Item.Text" xml:space="preserve">
     <value>Core independent:</value>
   </data>
+  <data name="Properties_Mod_Author.Text" xml:space="preserve">
+    <value> authors:</value>
+  </data>
+  <data name="Properties_Mod_Description.Text" xml:space="preserve">
+    <value> description:</value>
+  </data>
   <data name="Properties_Mod_Header.Text" xml:space="preserve">
     <value>Mods Folder:</value>
+  </data>
+  <data name="Properties_Mod_Version.Text" xml:space="preserve">
+    <value> version:</value>
   </data>
   <data name="Settings_Account_Header.Text" xml:space="preserve">
     <value>Accounts</value>
@@ -386,6 +404,18 @@
   </data>
   <data name="Settings_Account_Subtitle.Text" xml:space="preserve">
     <value>Account after entering the game</value>
+  </data>
+  <data name="Settings_Account_Type.PlaceholderText" xml:space="preserve">
+    <value>Account Type</value>
+  </data>
+  <data name="Settings_Choose_Account_Type.Text" xml:space="preserve">
+    <value>Choose Account Type</value>
+  </data>
+  <data name="Settings_Confirm_Role.Text" xml:space="preserve">
+    <value>Confirm Role</value>
+  </data>
+  <data name="Settings_Confirm_Role_Desc.Text" xml:space="preserve">
+    <value>There are multiple roles here, you need to choose one to continue</value>
   </data>
   <data name="Settings_Download_Header.Text" xml:space="preserve">
     <value>Download</value>
@@ -470,6 +500,21 @@
   </data>
   <data name="Settings_Launch_Subtitle_3.Text" xml:space="preserve">
     <value>Game play settings</value>
+  </data>
+  <data name="Settings_Microsoft_Account_Loading.Text" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="Settings_Yggdrasil_Login.Placeholder.Text" xml:space="preserve">
+    <value>Email:</value>
+  </data>
+  <data name="Settings_Yggdrasil_Password.PlaceholderText" xml:space="preserve">
+    <value>Password:</value>
+  </data>
+  <data name="Settings_Yggdrasil_Url.PlaceholderText" xml:space="preserve">
+    <value>Yggdrasil Server Url:</value>
+  </data>
+  <data name="Title_Offline_Account.Text" xml:space="preserve">
+    <value>Offline Account</value>
   </data>
   <data name="_Buttons_Back.Text" xml:space="preserve">
     <value>Back</value>

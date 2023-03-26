@@ -542,6 +542,66 @@
           <source>Please enter a valid name</source>
           <target state="translated">请输入一个有效的名字</target>
         </trans-unit>
+        <trans-unit id="Cores_New_Name.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>New Name</source>
+          <target state="new">New Name</target>
+        </trans-unit>
+        <trans-unit id="Properties_Mod_Author.Text" translate="yes" xml:space="preserve">
+          <source> authors:</source>
+          <target state="new"> authors:</target>
+        </trans-unit>
+        <trans-unit id="Properties_Mod_Description.Text" translate="yes" xml:space="preserve">
+          <source> description:</source>
+          <target state="new"> description:</target>
+        </trans-unit>
+        <trans-unit id="Properties_Mod_Version.Text" translate="yes" xml:space="preserve">
+          <source> version:</source>
+          <target state="new"> version:</target>
+        </trans-unit>
+        <trans-unit id="CF_Download_Files.Content" translate="yes" xml:space="preserve">
+          <source>Download Files</source>
+          <target state="new">Download Files</target>
+        </trans-unit>
+        <trans-unit id="Mods_Install_New_Core.Content" translate="yes" xml:space="preserve">
+          <source>Install New Core</source>
+          <target state="new">Install New Core</target>
+        </trans-unit>
+        <trans-unit id="Settings_Account_Type.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Account Type</source>
+          <target state="new">Account Type</target>
+        </trans-unit>
+        <trans-unit id="Settings_Choose_Account_Type.Text" translate="yes" xml:space="preserve">
+          <source>Choose Account Type</source>
+          <target state="new">Choose Account Type</target>
+        </trans-unit>
+        <trans-unit id="Settings_Confirm_Role.Text" translate="yes" xml:space="preserve">
+          <source>Confirm Role</source>
+          <target state="new">Confirm Role</target>
+        </trans-unit>
+        <trans-unit id="Settings_Confirm_Role_Desc.Text" translate="yes" xml:space="preserve">
+          <source>There are multiple roles here, you need to choose one to continue</source>
+          <target state="new">There are multiple roles here, you need to choose one to continue</target>
+        </trans-unit>
+        <trans-unit id="Settings_Microsoft_Account_Loading.Text" translate="yes" xml:space="preserve">
+          <source>Loading...</source>
+          <target state="new">Loading...</target>
+        </trans-unit>
+        <trans-unit id="Settings_Yggdrasil_Login.Placeholder.Text" translate="yes" xml:space="preserve">
+          <source>Email:</source>
+          <target state="new">Email:</target>
+        </trans-unit>
+        <trans-unit id="Settings_Yggdrasil_Password.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Password:</source>
+          <target state="new">Password:</target>
+        </trans-unit>
+        <trans-unit id="Settings_Yggdrasil_Url.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Yggdrasil Server Url:</source>
+          <target state="new">Yggdrasil Server Url:</target>
+        </trans-unit>
+        <trans-unit id="Title_Offline_Account.Text" translate="yes" xml:space="preserve">
+          <source>Offline Account</source>
+          <target state="new">Offline Account</target>
+        </trans-unit>
       </group>
     </body>
   </file>

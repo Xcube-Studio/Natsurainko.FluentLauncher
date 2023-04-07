@@ -580,7 +580,7 @@
         </trans-unit>
         <trans-unit id="Settings_Confirm_Role_Desc.Text" translate="yes" xml:space="preserve">
           <source>There are multiple roles here, you need to choose one to continue</source>
-          <target state="needs-review-translation">启动器中有多个账户，您需要先选择一个。</target>
+          <target state="translated">启动器中有多个账户，您需要先选择一个。</target>
         </trans-unit>
         <trans-unit id="Settings_Microsoft_Account_Loading.Text" translate="yes" xml:space="preserve">
           <source>Loading...</source>

@@ -544,7 +544,7 @@
         </trans-unit>
         <trans-unit id="Cores_New_Name.PlaceholderText" translate="yes" xml:space="preserve">
           <source>New Name</source>
-          <target state="new">New Name</target>
+          <target state="translated">新名称</target>
         </trans-unit>
         <trans-unit id="Properties_Mod_Author.Text" translate="yes" xml:space="preserve">
           <source> authors:</source>
@@ -560,19 +560,19 @@
         </trans-unit>
         <trans-unit id="CF_Download_Files.Content" translate="yes" xml:space="preserve">
           <source>Download Files</source>
-          <target state="new">Download Files</target>
+          <target state="translated">下载文件</target>
         </trans-unit>
         <trans-unit id="Mods_Install_New_Core.Content" translate="yes" xml:space="preserve">
           <source>Install New Core</source>
-          <target state="new">Install New Core</target>
+          <target state="translated">安装新核心</target>
         </trans-unit>
         <trans-unit id="Settings_Account_Type.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Account Type</source>
-          <target state="new">Account Type</target>
+          <target state="translated">账户类型</target>
         </trans-unit>
         <trans-unit id="Settings_Choose_Account_Type.Text" translate="yes" xml:space="preserve">
           <source>Choose Account Type</source>
-          <target state="new">Choose Account Type</target>
+          <target state="translated">选择账户类型</target>
         </trans-unit>
         <trans-unit id="Settings_Confirm_Role.Text" translate="yes" xml:space="preserve">
           <source>Confirm Role</source>
@@ -584,23 +584,23 @@
         </trans-unit>
         <trans-unit id="Settings_Microsoft_Account_Loading.Text" translate="yes" xml:space="preserve">
           <source>Loading...</source>
-          <target state="new">Loading...</target>
+          <target state="translated">加载中……</target>
         </trans-unit>
         <trans-unit id="Settings_Yggdrasil_Login.Placeholder.Text" translate="yes" xml:space="preserve">
           <source>Email:</source>
-          <target state="new">Email:</target>
+          <target state="translated">电子邮件：</target>
         </trans-unit>
         <trans-unit id="Settings_Yggdrasil_Password.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Password:</source>
-          <target state="new">Password:</target>
+          <target state="translated">密码：</target>
         </trans-unit>
         <trans-unit id="Settings_Yggdrasil_Url.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Yggdrasil Server Url:</source>
-          <target state="new">Yggdrasil Server Url:</target>
+          <target state="translated">服务器的Yggdrasil地址：</target>
         </trans-unit>
         <trans-unit id="Title_Offline_Account.Text" translate="yes" xml:space="preserve">
           <source>Offline Account</source>
-          <target state="new">Offline Account</target>
+          <target state="translated">离线账户</target>
         </trans-unit>
       </group>
     </body>

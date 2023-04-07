@@ -140,11 +140,11 @@
         </trans-unit>
         <trans-unit id="Guide_Basic_Folder.Text" translate="yes" xml:space="preserve">
           <source>.minecraft Folder:</source>
-          <target state="translated">.minecraft 目录:</target>
+          <target state="translated">.minecraft 目录：</target>
         </trans-unit>
         <trans-unit id="Guide_Basic_Java.Text" translate="yes" xml:space="preserve">
           <source>Java Runtimes:</source>
-          <target state="translated">Java 运行时:</target>
+          <target state="translated">Java 运行时：</target>
         </trans-unit>
         <trans-unit id="Guide_Basic_Para_1.Text" translate="yes" xml:space="preserve">
           <source>You need at least a .minecraft directory to store your game cores</source>
@@ -212,7 +212,7 @@
         </trans-unit>
         <trans-unit id="Home_NoAccount.Text" translate="yes" xml:space="preserve">
           <source>No Account</source>
-          <target state="new"></target>
+          <target state="translated">无账户</target>
         </trans-unit>
         <trans-unit id="Navigation_Activities.Content" translate="yes" xml:space="preserve">
           <source>Activities</source>
@@ -292,27 +292,27 @@
         </trans-unit>
         <trans-unit id="Properties_Information_Item_1.Text" translate="yes" xml:space="preserve">
           <source>Path:</source>
-          <target state="translated">路径:</target>
+          <target state="translated">路径：</target>
         </trans-unit>
         <trans-unit id="Properties_Information_Item_2.Text" translate="yes" xml:space="preserve">
           <source>Last launch time:</source>
-          <target state="translated">最后一次启动时间:</target>
+          <target state="translated">最后一次启动时间：</target>
         </trans-unit>
         <trans-unit id="Properties_Information_Item_3.Text" translate="yes" xml:space="preserve">
           <source>Mod Loaders:</source>
-          <target state="translated">模组加载器:</target>
+          <target state="translated">模组加载器：</target>
         </trans-unit>
         <trans-unit id="Properties_Information_Item_4.Text" translate="yes" xml:space="preserve">
           <source>Occupied disk space size:</source>
-          <target state="translated">占用的磁盘空间:</target>
+          <target state="translated">占用的磁盘空间：</target>
         </trans-unit>
         <trans-unit id="Properties_Information_Item_5.Text" translate="yes" xml:space="preserve">
           <source>Number of dependent library files:</source>
-          <target state="translated">依赖的库文件数量:</target>
+          <target state="translated">依赖的库文件数量：</target>
         </trans-unit>
         <trans-unit id="Properties_Information_Item_6.Text" translate="yes" xml:space="preserve">
           <source>Number of dependent asset files:</source>
-          <target state="translated">依赖的资源文件数量:</target>
+          <target state="translated">依赖的资源文件数量：</target>
         </trans-unit>
         <trans-unit id="Properties_Information_Subtitle.Text" translate="yes" xml:space="preserve">
           <source>Basic properties of the core</source>
@@ -320,7 +320,7 @@
         </trans-unit>
         <trans-unit id="Properties_Launch_Header_1.Text" translate="yes" xml:space="preserve">
           <source>Profile saved to:</source>
-          <target state="translated">配置保存到:</target>
+          <target state="translated">配置保存到：</target>
         </trans-unit>
         <trans-unit id="Properties_Launch_Header_2.Text" translate="yes" xml:space="preserve">
           <source>Enable spcific game settings</source>
@@ -328,11 +328,11 @@
         </trans-unit>
         <trans-unit id="Properties_Launch_Item.Text" translate="yes" xml:space="preserve">
           <source>Core independent:</source>
-          <target state="translated">版本隔离:</target>
+          <target state="translated">版本隔离：</target>
         </trans-unit>
         <trans-unit id="Properties_Mod_Header.Text" translate="yes" xml:space="preserve">
           <source>Mods Folder:</source>
-          <target state="translated">模组文件夹:</target>
+          <target state="translated">模组文件夹：</target>
         </trans-unit>
         <trans-unit id="Settings_Account_Header.Text" translate="yes" xml:space="preserve">
           <source>Accounts</source>
@@ -340,27 +340,27 @@
         </trans-unit>
         <trans-unit id="Settings_Account_Item_1.Text" translate="yes" xml:space="preserve">
           <source>Current account:</source>
-          <target state="translated">当前的账户:</target>
+          <target state="translated">当前账户：</target>
         </trans-unit>
         <trans-unit id="Settings_Account_Item_2.Text" translate="yes" xml:space="preserve">
           <source>Details of the current account:</source>
-          <target state="translated">当前账户的详细信息:</target>
+          <target state="translated">当前账户的详细信息：</target>
         </trans-unit>
         <trans-unit id="Settings_Account_Item_3.Text" translate="yes" xml:space="preserve">
           <source>Add new account:</source>
-          <target state="translated">添加新的账户:</target>
+          <target state="translated">添加新账户：</target>
         </trans-unit>
         <trans-unit id="Settings_Account_Item_4.Text" translate="yes" xml:space="preserve">
           <source>Remove current account:</source>
-          <target state="translated">移除当前账户:</target>
+          <target state="translated">移除当前账户：</target>
         </trans-unit>
         <trans-unit id="Settings_Account_Item_5.Text" translate="yes" xml:space="preserve">
           <source>Launch the game with a Demo account:</source>
-          <target state="translated">以 Demo 账户启动游戏:</target>
+          <target state="translated">以试玩版启动游戏</target>
         </trans-unit>
         <trans-unit id="Settings_Account_Item_6.Text" translate="yes" xml:space="preserve">
           <source>Auto refresh account: (before launch)</source>
-          <target state="translated">自动刷新账户: (每次启动之前)</target>
+          <target state="translated">自动刷新账户：（每次启动之前）</target>
         </trans-unit>
         <trans-unit id="Settings_Account_Subtitle.Text" translate="yes" xml:space="preserve">
           <source>Account after entering the game</source>
@@ -372,15 +372,15 @@
         </trans-unit>
         <trans-unit id="Settings_Download_Item_1.Text" translate="yes" xml:space="preserve">
           <source>Current download sources:</source>
-          <target state="translated">当前的下载源:</target>
+          <target state="translated">当前下载源：</target>
         </trans-unit>
         <trans-unit id="Settings_Download_Item_2.Text" translate="yes" xml:space="preserve">
           <source>Maximum number of download threads:</source>
-          <target state="translated">最大下载线程数:</target>
+          <target state="translated">最大下载线程数：</target>
         </trans-unit>
         <trans-unit id="Settings_Download_Item_3.Text" translate="yes" xml:space="preserve">
           <source>Enable fragmented download of large files:</source>
-          <target state="translated">启用大文件分片下载:</target>
+          <target state="translated">启用大文件分片下载：</target>
         </trans-unit>
         <trans-unit id="Settings_Download_Subtitle.Text" translate="yes" xml:space="preserve">
           <source>Configuration for download game resources</source>
@@ -404,27 +404,27 @@
         </trans-unit>
         <trans-unit id="Settings_Launch_Item_1.Text" translate="yes" xml:space="preserve">
           <source>Current .minecraft folder:</source>
-          <target state="translated">当前的 .minecraft 目录:</target>
+          <target state="translated">当前的 .minecraft 目录：</target>
         </trans-unit>
         <trans-unit id="Settings_Launch_Item_10.Text" translate="yes" xml:space="preserve">
           <source>Global core independent:</source>
-          <target state="translated">全局版本隔离:</target>
+          <target state="translated">全局版本隔离：</target>
         </trans-unit>
         <trans-unit id="Settings_Launch_Item_11.Text" translate="yes" xml:space="preserve">
           <source>Full screen mode:</source>
-          <target state="translated">全屏模式:</target>
+          <target state="translated">全屏模式：</target>
         </trans-unit>
         <trans-unit id="Settings_Launch_Item_12.Text" translate="yes" xml:space="preserve">
           <source>Game window resolution:</source>
-          <target state="translated">游戏窗口分辨率:</target>
+          <target state="translated">游戏窗口分辨率：</target>
         </trans-unit>
         <trans-unit id="Settings_Launch_Item_13.Text" translate="yes" xml:space="preserve">
           <source>Server address:</source>
-          <target state="translated">服务器地址:</target>
+          <target state="translated">服务器地址：</target>
         </trans-unit>
         <trans-unit id="Settings_Launch_Item_14.Text" translate="yes" xml:space="preserve">
           <source>Game window title:</source>
-          <target state="translated">游戏窗口标题:</target>
+          <target state="translated">游戏窗口标题：</target>
         </trans-unit>
         <trans-unit id="Settings_Launch_Item_15.Text" translate="yes" xml:space="preserve">
           <source>Game specific settings</source>
@@ -436,35 +436,35 @@
         </trans-unit>
         <trans-unit id="Settings_Launch_Item_2.Text" translate="yes" xml:space="preserve">
           <source>Open the .minecraft folder:</source>
-          <target state="translated">打开 .minecraft 目录:</target>
+          <target state="translated">打开 .minecraft 目录：</target>
         </trans-unit>
         <trans-unit id="Settings_Launch_Item_3.Text" translate="yes" xml:space="preserve">
           <source>Remove the current .minecraft folder:</source>
-          <target state="translated">移除当前 .minecraft 目录:</target>
+          <target state="translated">移除当前 .minecraft 目录：</target>
         </trans-unit>
         <trans-unit id="Settings_Launch_Item_4.Text" translate="yes" xml:space="preserve">
           <source>Current Java runtime:</source>
-          <target state="translated">当前的 Java 运行时:</target>
+          <target state="translated">当前的 Java 运行时：</target>
         </trans-unit>
         <trans-unit id="Settings_Launch_Item_5.Text" translate="yes" xml:space="preserve">
           <source>Open the Java runtime:</source>
-          <target state="translated">打开 Java 运行时:</target>
+          <target state="translated">打开 Java 运行时：</target>
         </trans-unit>
         <trans-unit id="Settings_Launch_Item_6.Text" translate="yes" xml:space="preserve">
           <source>Automatically select the suitable Java:</source>
-          <target state="translated">自动选择合适的 Java 运行时:</target>
+          <target state="translated">自动选择合适的 Java 运行时：</target>
         </trans-unit>
         <trans-unit id="Settings_Launch_Item_7.Text" translate="yes" xml:space="preserve">
           <source>Remove the current Java runtime:</source>
-          <target state="translated">移除当前 Java 运行时:</target>
+          <target state="translated">移除当前 Java 运行时：</target>
         </trans-unit>
         <trans-unit id="Settings_Launch_Item_8.Text" translate="yes" xml:space="preserve">
           <source>JVM memory:</source>
-          <target state="translated">JVM 内存:</target>
+          <target state="translated">JVM 内存：</target>
         </trans-unit>
         <trans-unit id="Settings_Launch_Item_9.Text" translate="yes" xml:space="preserve">
           <source>Automatically allocate JVM memory:</source>
-          <target state="translated">自动分配 JVM 内存:</target>
+          <target state="translated">自动分配 JVM 内存：</target>
         </trans-unit>
         <trans-unit id="Settings_Launch_Subtitle_1.Text" translate="yes" xml:space="preserve">
           <source>Where to store the core of your game</source>
@@ -536,7 +536,7 @@
         </trans-unit>
         <trans-unit id="_TeachingTips_Delete.Subtitle" translate="yes" xml:space="preserve">
           <source>Are you sure you want to delete? Once deleted it cannot be restored</source>
-          <target state="translated">您确定你要删除吗? 删除后将无法恢复</target>
+          <target state="translated">您确定你要删除吗? 删除后将无法恢复。</target>
         </trans-unit>
         <trans-unit id="_TeachingTips_Rename.Subtitle" translate="yes" xml:space="preserve">
           <source>Please enter a valid name</source>
@@ -548,15 +548,15 @@
         </trans-unit>
         <trans-unit id="Properties_Mod_Author.Text" translate="yes" xml:space="preserve">
           <source> authors:</source>
-          <target state="new"> authors:</target>
+          <target state="translated">作者：</target>
         </trans-unit>
         <trans-unit id="Properties_Mod_Description.Text" translate="yes" xml:space="preserve">
           <source> description:</source>
-          <target state="new"> description:</target>
+          <target state="translated">简介：</target>
         </trans-unit>
         <trans-unit id="Properties_Mod_Version.Text" translate="yes" xml:space="preserve">
           <source> version:</source>
-          <target state="new"> version:</target>
+          <target state="translated">版本：</target>
         </trans-unit>
         <trans-unit id="CF_Download_Files.Content" translate="yes" xml:space="preserve">
           <source>Download Files</source>
@@ -576,11 +576,11 @@
         </trans-unit>
         <trans-unit id="Settings_Confirm_Role.Text" translate="yes" xml:space="preserve">
           <source>Confirm Role</source>
-          <target state="new">Confirm Role</target>
+          <target state="needs-review-translation">确认账户</target>
         </trans-unit>
         <trans-unit id="Settings_Confirm_Role_Desc.Text" translate="yes" xml:space="preserve">
           <source>There are multiple roles here, you need to choose one to continue</source>
-          <target state="new">There are multiple roles here, you need to choose one to continue</target>
+          <target state="needs-review-translation">启动器中有多个账户，您需要先选择一个。</target>
         </trans-unit>
         <trans-unit id="Settings_Microsoft_Account_Loading.Text" translate="yes" xml:space="preserve">
           <source>Loading...</source>

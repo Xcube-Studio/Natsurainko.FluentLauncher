@@ -586,10 +586,6 @@
           <source>Loading...</source>
           <target state="new">Loading...</target>
         </trans-unit>
-        <trans-unit id="Settings_Yggdrasil_Login.Placeholder.Text" translate="yes" xml:space="preserve">
-          <source>Email:</source>
-          <target state="new">Email:</target>
-        </trans-unit>
         <trans-unit id="Settings_Yggdrasil_Password.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Password:</source>
           <target state="new">Password:</target>
@@ -601,6 +597,10 @@
         <trans-unit id="Title_Offline_Account.Text" translate="yes" xml:space="preserve">
           <source>Offline Account</source>
           <target state="new">Offline Account</target>
+        </trans-unit>
+        <trans-unit id="Settings_Yggdrasil_Login.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Email:</source>
+          <target state="new">Email:</target>
         </trans-unit>
       </group>
     </body>

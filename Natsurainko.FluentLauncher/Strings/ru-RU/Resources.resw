@@ -423,9 +423,6 @@
   <data name="Settings_Microsoft_Account_Loading.Text" xml:space="preserve">
     <value>Загрузка...</value>
   </data>
-  <data name="Settings_Yggdrasil_Login.Placeholder.Text" xml:space="preserve">
-    <value>Эл. почта</value>
-  </data>
   <data name="Settings_Yggdrasil_Password.PlaceholderText" xml:space="preserve">
     <value>Пароль</value>
   </data>

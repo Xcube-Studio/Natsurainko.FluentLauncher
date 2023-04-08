@@ -504,7 +504,7 @@
   <data name="Settings_Microsoft_Account_Loading.Text" xml:space="preserve">
     <value>Loading...</value>
   </data>
-  <data name="Settings_Yggdrasil_Login.Placeholder.Text" xml:space="preserve">
+  <data name="Settings_Yggdrasil_Login.PlaceholderText" xml:space="preserve">
     <value>Email:</value>
   </data>
   <data name="Settings_Yggdrasil_Password.PlaceholderText" xml:space="preserve">

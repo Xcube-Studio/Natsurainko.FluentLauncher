@@ -447,7 +447,7 @@
   <data name="Settings_Microsoft_Account_Loading.Text" xml:space="preserve">
     <value>加载中……</value>
   </data>
-  <data name="Settings_Yggdrasil_Login.Placeholder.Text" xml:space="preserve">
+  <data name="Settings_Yggdrasil_Login.PlaceholderText" xml:space="preserve">
     <value>电子邮件：</value>
   </data>
   <data name="Settings_Yggdrasil_Password.PlaceholderText" xml:space="preserve">

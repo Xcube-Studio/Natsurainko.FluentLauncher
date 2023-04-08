@@ -586,7 +586,7 @@
           <source>Loading...</source>
           <target state="translated">加载中……</target>
         </trans-unit>
-        <trans-unit id="Settings_Yggdrasil_Login.Placeholder.Text" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_Yggdrasil_Login.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Email:</source>
           <target state="translated">电子邮件：</target>
         </trans-unit>

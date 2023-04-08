@@ -602,10 +602,6 @@
           <source>Offline Account</source>
           <target state="translated">离线账户</target>
         </trans-unit>
-        <trans-unit id="Settings_Yggdrasil_Login.PlaceholderText" translate="yes" xml:space="preserve">
-          <source>Email:</source>
-          <target state="new">Email:</target>
-        </trans-unit>
       </group>
     </body>
   </file>

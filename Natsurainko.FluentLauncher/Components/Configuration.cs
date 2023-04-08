@@ -90,6 +90,7 @@ public partial class Configuration : ObservableObject
             Accounts = new(),
             EnableDemoUser = false,
             AutoRefresh = true,
+            UseDeviceFlowAuth = false,
             CurrentDownloadSource = "Mcbbs",
             EnableFragmentDownload = true,
             MaxDownloadThreads = 128,
@@ -183,6 +184,10 @@ public partial class Configuration
     [ObservableProperty]
     [JsonIgnore]
     private bool autoRefresh;
+
+    [ObservableProperty]
+    [JsonIgnore]
+    private bool useDeviceFlowAuth;
 }
 
 public partial class Configuration

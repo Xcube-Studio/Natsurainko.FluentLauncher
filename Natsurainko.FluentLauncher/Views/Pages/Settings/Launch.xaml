@@ -24,7 +24,7 @@
 
     <ScrollViewer Padding="32,0" VerticalScrollBarVisibility="Auto">
         <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
-        <Border Margin="0,32">
+        <Border Margin="0,20">
             <StackPanel MaxWidth="1000" Spacing="4">
 
                 <TextBlock

@@ -129,4 +129,7 @@ public partial class Account
 
     [ObservableProperty]
     private bool autoRefresh;
+
+    [ObservableProperty]
+    private bool useDeviceFlowAuth;
 }

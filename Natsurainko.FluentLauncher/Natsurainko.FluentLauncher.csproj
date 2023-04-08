@@ -26,6 +26,7 @@
     <None Remove="MultilingualResources\Natsurainko.FluentLauncher.ru-RU.xlf" />
     <None Remove="MultilingualResources\Natsurainko.FluentLauncher.zh-Hans.xlf" />
     <None Remove="MultilingualResources\Natsurainko.FluentLauncher.zh-Hant.xlf" />
+    <None Remove="Views\Dialogs\MicrosoftAccountDialog1.xaml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ColorCode.WinUI" Version="2.0.14" />
@@ -35,15 +36,13 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.230118.102" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.755" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
+    <PackageReference Include="Natsurainko.FluentCore" Version="2.0.5" />
+    <PackageReference Include="Natsurainko.FluentCore.Extension.Windows" Version="2.0.5" />
+    <PackageReference Include="Natsurainko.Toolkits" Version="1.0.4" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
     <PackageReference Include="Tomlyn" Version="0.16.2" />
     <PackageReference Include="WinUIEx" Version="2.1.0" />
     <Manifest Include="$(ApplicationManifest)" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Natsurainko.FluentCore\Natsurainko.FluentCore.Extension.Windows\Natsurainko.FluentCore.Extension.Windows.csproj" />
-    <ProjectReference Include="..\..\Natsurainko.FluentCore\Natsurainko.FluentCore\Natsurainko.FluentCore.csproj" />
-    <ProjectReference Include="..\..\Natsurainko.Toolkits\Natsurainko.Toolkits\Natsurainko.Toolkits.csproj" />
   </ItemGroup>
   <ItemGroup>
     <XliffResource Include="MultilingualResources\Natsurainko.FluentLauncher.ru-RU.xlf" />
@@ -53,6 +52,11 @@
   <ItemGroup>
     <Page Update="*.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\Dialogs\MicrosoftAccountDialog1.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
 </Project>

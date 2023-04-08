@@ -18,12 +18,12 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock
+            x:Uid="Title_Offline_Account"
             Grid.Row="0"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             FontSize="18"
             FontWeight="SemiBold"
-            x:Uid="Title_Offline_Account"
             Text="Offline Account" />
         <StackPanel
             Grid.Row="1"

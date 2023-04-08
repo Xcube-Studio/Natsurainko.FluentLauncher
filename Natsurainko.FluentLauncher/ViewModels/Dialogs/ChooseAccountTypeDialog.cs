@@ -2,9 +2,12 @@
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentLauncher.Components;
+using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Views.Pages;
 using System;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
 
@@ -48,21 +51,65 @@ public partial class ChooseAccountTypeDialog : DialogViewModel
 
     private async void OnMicrosoft()
     {
-        var microsoftAccountDialog = new Views.Dialogs.MicrosoftAccountDialog
+        if (App.Configuration.UseDeviceFlowAuth)
         {
-            XamlRoot = MainContainer._XamlRoot,
-        };
+            var microsoftAccountDialog = new Views.Dialogs.MicrosoftAccountDialog1
+            {
+                XamlRoot = MainContainer._XamlRoot,
+            };
 
-        var viewmodel = new MicrosoftAccountDialog()
+            var viewmodel = new MicrosoftAccountDialog1()
+            {
+                SetAccountAction = SetAccountAction,
+                ContentDialog = microsoftAccountDialog
+            };
+
+            microsoftAccountDialog.DataContext = viewmodel;
+            microsoftAccountDialog.Loaded += (_, e) =>
+            {
+                var deviceFlowAuthResult = MicrosoftAuthenticatorExtension.DeviceFlowAuthAsync("0844e754-1d2e-4861-8e2b-18059609badb", res => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                {
+                    viewmodel.DeviceCode = res.UserCode;
+                    viewmodel.LoadingDeviceCode = false;
+
+                    var dataPackage = new DataPackage();
+                    dataPackage.SetText(res.UserCode);
+                    Clipboard.SetContent(dataPackage);
+
+                    _ = Launcher.LaunchUriAsync(new("https://login.live.com/oauth20_remoteconnect.srf"));
+                }), out var cancellationTokenSource);
+                viewmodel.CancellationTokenSource = cancellationTokenSource;
+
+                App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
+                {
+                    var authResult = await deviceFlowAuthResult;
+
+                    if (authResult.Success)
+                        viewmodel.DeviceFlowAuthResult = authResult;
+                });
+
+            };
+
+            await microsoftAccountDialog.ShowAsync();
+        }
+        else
         {
-            SetAccountAction = SetAccountAction,
-            ContentDialog = microsoftAccountDialog
-        };
+            var microsoftAccountDialog = new Views.Dialogs.MicrosoftAccountDialog
+            {
+                XamlRoot = MainContainer._XamlRoot,
+            };
 
-        microsoftAccountDialog.DataContext = viewmodel;
-        microsoftAccountDialog.Loaded += (_, e) => { viewmodel.Source = new("https://login.live.com/oauth20_authorize.srf?client_id=00000000402b5328&response_type=code&scope=XboxLive.signin%20offline_access&redirect_uri=https://login.live.com/oauth20_desktop.srf&prompt=login"); };
+            var viewmodel = new MicrosoftAccountDialog()
+            {
+                SetAccountAction = SetAccountAction,
+                ContentDialog = microsoftAccountDialog
+            };
 
-        await microsoftAccountDialog.ShowAsync();
+            microsoftAccountDialog.DataContext = viewmodel;
+            microsoftAccountDialog.Loaded += (_, e) => { viewmodel.Source = new("https://login.live.com/oauth20_authorize.srf?client_id=0844e754-1d2e-4861-8e2b-18059609badb&response_type=code&scope=XboxLive.signin%20offline_access&redirect_uri=https://login.live.com/oauth20_desktop.srf&prompt=login"); };
+            
+            await microsoftAccountDialog.ShowAsync();
+        }
     }
 
     private async void OnYggdrasil()

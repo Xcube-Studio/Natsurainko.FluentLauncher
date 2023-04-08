@@ -19,7 +19,7 @@
 
     <ScrollViewer Padding="32,0" VerticalScrollBarVisibility="Auto">
         <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
-        <Border Margin="0,32">
+        <Border Margin="0,20">
             <StackPanel MaxWidth="1000" Spacing="4">
 
                 <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe77b;}" IsExpanded="True">
@@ -77,8 +77,10 @@
                                                 Grid.Row="1"
                                                 Grid.Column="2"
                                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                                Text="{Binding Type}"
-                                                TextTrimming="CharacterEllipsis" />
+                                                TextTrimming="CharacterEllipsis">
+                                                <Run Text="{Binding Type}" />
+                                                <Run Text="{Binding YggdrasilServerUrl}" />
+                                            </TextBlock>
                                         </Grid>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
@@ -187,6 +189,14 @@
 
                         </labs:SettingsCard>
 
+                        <labs:SettingsCard>
+                            <labs:SettingsCard.Header>
+                                <TextBlock Text="Use Device Flow Authenticator: (Not built-in browser)" />
+                            </labs:SettingsCard.Header>
+
+                            <ToggleSwitch IsEnabled="True" IsOn="{Binding UseDeviceFlowAuth, Mode=TwoWay}" />
+
+                        </labs:SettingsCard>
                     </labs:SettingsExpander.Items>
 
                 </labs:SettingsExpander>

@@ -87,7 +87,7 @@ public partial class MicrosoftAccountDialog : DialogViewModel
 
         try
         {
-            var authenticator = new MicrosoftAuthenticator(code);
+            var authenticator = new MicrosoftAuthenticator(code, "0844e754-1d2e-4861-8e2b-18059609badb", "https://login.live.com/oauth20_desktop.srf");
             authenticator.ProgressChanged += (_, e) => ContentDialog.DispatcherQueue.TryEnqueue(() => Description = e.Item2);
 
             SetAccountAction(await authenticator.AuthenticateAsync());

@@ -8,17 +8,12 @@ namespace Natsurainko.FluentLauncher.ViewModels.Pages.Settings;
 
 public partial class About : ObservableObject
 {
-#if MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
-    [ObservableProperty]
-    private string version = "2.1.5.0";
-#else
     [ObservableProperty]
     private string version = string.Format("{0}.{1}.{2}.{3}",
             Package.Current.Id.Version.Major,
             Package.Current.Id.Version.Minor,
             Package.Current.Id.Version.Build,
             Package.Current.Id.Version.Revision);
-#endif
 
 #if DEBUG
     [ObservableProperty]
@@ -41,5 +36,5 @@ public partial class About
 
     [RelayCommand]
     public async void OpenAuthor()
-        => await Launcher.LaunchUriAsync(new Uri("https://github.com/natsurainko"));
+        => await Launcher.LaunchUriAsync(new Uri("https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/graphs/contributors"));
 }

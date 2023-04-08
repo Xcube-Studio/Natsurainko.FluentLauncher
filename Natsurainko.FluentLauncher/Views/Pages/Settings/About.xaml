@@ -16,7 +16,7 @@
 
     <ScrollViewer Padding="32,0" VerticalScrollBarVisibility="Auto">
         <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
-        <Border Margin="0,32">
+        <Border Margin="0,20">
             <StackPanel MaxWidth="1000" Spacing="4">
 
                 <TextBlock
@@ -52,7 +52,10 @@
                     HeaderIcon="{xh:FontIcon Glyph=&#xe70f;}"
                     IsClickEnabled="True">
                     <labs:SettingsCard.Header>
-                        <TextBlock FontWeight="SemiBold" Text="natsurainko" />
+                        <TextBlock
+                            x:Uid="About_Developer_Tag"
+                            FontWeight="SemiBold"
+                            Text="The Developer of this Application" />
                     </labs:SettingsCard.Header>
 
                     <labs:SettingsCard.Description>
@@ -61,6 +64,100 @@
                             FontWeight="SemiBold"
                             Text="The Developer of this Application" />
                     </labs:SettingsCard.Description>
+                    <GridView Margin="-10,0,0,-15">
+                        <GridView.ItemContainerStyle>
+                            <Style TargetType="GridViewItem">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+                                <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+                                <Setter Property="Background" Value="{ThemeResource GridViewItemBackground}" />
+                                <Setter Property="Foreground" Value="{ThemeResource GridViewItemForeground}" />
+                                <Setter Property="TabNavigation" Value="Local" />
+                                <Setter Property="IsHoldingEnabled" Value="True" />
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                                <Setter Property="Margin" Value="0,0,4,4" />
+                                <Setter Property="MinWidth" Value="{ThemeResource GridViewItemMinWidth}" />
+                                <Setter Property="MinHeight" Value="30" />
+                                <Setter Property="AllowDrop" Value="True" />
+                                <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}" />
+                                <Setter Property="FocusVisualMargin" Value="-3" />
+                                <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource GridViewItemFocusVisualPrimaryBrush}" />
+                                <Setter Property="FocusVisualPrimaryThickness" Value="2" />
+                                <Setter Property="FocusVisualSecondaryBrush" Value="{ThemeResource GridViewItemFocusVisualSecondaryBrush}" />
+                                <Setter Property="FocusVisualSecondaryThickness" Value="1" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="GridViewItem">
+                                            <ListViewItemPresenter
+                                                x:Name="Root"
+                                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                CheckBoxBorderBrush="{ThemeResource GridViewItemCheckBoxBorderBrush}"
+                                                CheckBoxBrush="{ThemeResource GridViewItemCheckBoxBrush}"
+                                                CheckBoxCornerRadius="{ThemeResource GridViewItemCheckBoxCornerRadius}"
+                                                CheckBoxDisabledBorderBrush="{ThemeResource GridViewItemCheckBoxDisabledBorderBrush}"
+                                                CheckBoxDisabledBrush="{ThemeResource GridViewItemCheckBoxDisabledBrush}"
+                                                CheckBoxPointerOverBorderBrush="{ThemeResource GridViewItemCheckBoxPointerOverBorderBrush}"
+                                                CheckBoxPointerOverBrush="{ThemeResource GridViewItemCheckBoxPointerOverBrush}"
+                                                CheckBoxPressedBorderBrush="{ThemeResource GridViewItemCheckBoxPressedBorderBrush}"
+                                                CheckBoxPressedBrush="{ThemeResource GridViewItemCheckBoxPressedBrush}"
+                                                CheckBoxSelectedBrush="{ThemeResource GridViewItemCheckBoxSelectedBrush}"
+                                                CheckBoxSelectedDisabledBrush="{ThemeResource GridViewItemCheckBoxSelectedDisabledBrush}"
+                                                CheckBoxSelectedPointerOverBrush="{ThemeResource GridViewItemCheckBoxSelectedPointerOverBrush}"
+                                                CheckBoxSelectedPressedBrush="{ThemeResource GridViewItemCheckBoxSelectedPressedBrush}"
+                                                CheckBrush="{ThemeResource GridViewItemCheckBrush}"
+                                                CheckDisabledBrush="{ThemeResource GridViewItemCheckDisabledBrush}"
+                                                CheckMode="{ThemeResource GridViewItemCheckMode}"
+                                                CheckPressedBrush="{ThemeResource GridViewItemCheckPressedBrush}"
+                                                ContentMargin="{TemplateBinding Padding}"
+                                                ContentTransitions="{TemplateBinding ContentTransitions}"
+                                                Control.IsTemplateFocusTarget="True"
+                                                CornerRadius="{ThemeResource GridViewItemCornerRadius}"
+                                                DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                                DragBackground="{ThemeResource GridViewItemDragBackground}"
+                                                DragForeground="{ThemeResource GridViewItemDragForeground}"
+                                                DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                                FocusBorderBrush="{ThemeResource GridViewItemFocusBorderBrush}"
+                                                FocusVisualMargin="{TemplateBinding FocusVisualMargin}"
+                                                FocusVisualPrimaryBrush="{TemplateBinding FocusVisualPrimaryBrush}"
+                                                FocusVisualPrimaryThickness="{TemplateBinding FocusVisualPrimaryThickness}"
+                                                FocusVisualSecondaryBrush="{TemplateBinding FocusVisualSecondaryBrush}"
+                                                FocusVisualSecondaryThickness="{TemplateBinding FocusVisualSecondaryThickness}"
+                                                PlaceholderBackground="{ThemeResource GridViewItemPlaceholderBackground}"
+                                                PointerOverBackground="{ThemeResource GridViewItemBackgroundPointerOver}"
+                                                PointerOverBorderBrush="{ThemeResource GridViewItemPointerOverBorderBrush}"
+                                                PointerOverForeground="{ThemeResource GridViewItemForegroundPointerOver}"
+                                                PressedBackground="{ThemeResource GridViewItemBackgroundPressed}"
+                                                ReorderHintOffset="{ThemeResource GridViewItemReorderHintThemeOffset}"
+                                                SelectedBackground="{ThemeResource GridViewItemBackgroundSelected}"
+                                                SelectedBorderBrush="{ThemeResource GridViewItemSelectedBorderBrush}"
+                                                SelectedBorderThickness="{ThemeResource GridViewItemSelectedBorderThickness}"
+                                                SelectedDisabledBackground="{ThemeResource GridViewItemBackgroundSelectedDisabled}"
+                                                SelectedDisabledBorderBrush="{ThemeResource GridViewItemSelectedDisabledBorderBrush}"
+                                                SelectedForeground="{ThemeResource GridViewItemForegroundSelected}"
+                                                SelectedInnerBorderBrush="{ThemeResource GridViewItemSelectedInnerBorderBrush}"
+                                                SelectedPointerOverBackground="{ThemeResource GridViewItemBackgroundSelectedPointerOver}"
+                                                SelectedPointerOverBorderBrush="{ThemeResource GridViewItemSelectedPointerOverBorderBrush}"
+                                                SelectedPressedBackground="{ThemeResource GridViewItemBackgroundSelectedPressed}"
+                                                SelectedPressedBorderBrush="{ThemeResource GridViewItemSelectedPressedBorderBrush}"
+                                                SelectionCheckMarkVisualEnabled="{ThemeResource GridViewItemSelectionCheckMarkVisualEnabled}" />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GridView.ItemContainerStyle>
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Margin="10,0"
+                                    Style="{ThemeResource BaseTextBlockStyle}"
+                                    Text="{Binding}" />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                        <x:String>Natsurainko</x:String>
+                        <x:String>gaviny82</x:String>
+                    </GridView>
                 </labs:SettingsCard>
 
                 <labs:SettingsCard
@@ -180,13 +277,13 @@
                             </HyperlinkButton>
                         </labs:SettingsCard>
 
-                        <labs:SettingsCard Description="1.0.3" Header="Natsurainko.FluentCore">
+                        <labs:SettingsCard Description="2.0.5" Header="Natsurainko.FluentCore">
                             <HyperlinkButton NavigateUri="https://github.com/Xcube-Studio/Natsurainko.FluentCore" ToolTipService.ToolTip="https://github.com/Xcube-Studio/Natsurainko.FluentCore">
                                 <TextBlock Text="Github" />
                             </HyperlinkButton>
                         </labs:SettingsCard>
 
-                        <labs:SettingsCard Description="1.0.3" Header="Natsurainko.Toolkits">
+                        <labs:SettingsCard Description="2.0.5" Header="Natsurainko.Toolkits">
                             <HyperlinkButton NavigateUri="https://github.com/natsurainko/Natsurainko.Toolkits" ToolTipService.ToolTip="https://github.com/natsurainko/Natsurainko.Toolkits">
                                 <TextBlock Text="Github" />
                             </HyperlinkButton>

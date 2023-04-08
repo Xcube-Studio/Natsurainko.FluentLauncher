@@ -78,16 +78,14 @@
 ### 源代码部署
 + **此项面向开发人员**
 + **首先确保你的电脑上以及安装好了 Visual Studio 2022**
-+ **并且以及安装好了 .net 6 SDK、Windows 11 SDK、WindowsAppSDK 等开发所需要的环境**
++ **并且以及安装好了 .NET 6 SDK、Windows 11 SDK、WindowsAppSDK 等开发所需要的环境**
 
 + 从源代码仓库部署
-1. 下载该项目
-2. 下载 [Natsurainko.FluentCore](https://github.com/Xcube-Studio/Natsurainko.FluentCore) 以及 [Natsurainko.Toolkits](https://github.com/natsurainko/Natsurainko.Toolkits) 并添加项目引用到该项目
-3. 在 解决方案资源管理器中 右键 "Natsurainko.FluentLauncher (Package)" 项目 将其设置为启动项目
-4. 使用 Release x64 配置运行项目
+  1. 克隆本项目、[Natsurainko.FluentCore](https://github.com/Xcube-Studio/Natsurainko.FluentCore)、[Natsurainko.Toolkits](https://github.com/natsurainko/Natsurainko.Toolkits) 到同一文件夹中。 
+  2. 使用 Release x64 配置运行项目 
 
 + 直接向作者要一份已经合并好的项目源代码文件
-> 这样子能够避免引用项目文件版本对不上的问题, 但作者在线时间较少
+  > 这样子能够避免引用项目文件版本对不上的问题, 但作者在线时间较少
 
 ### 贡献者
 
@@ -97,11 +95,11 @@
 
 贡献使开源社区成为一个学习、激励和创造的绝佳场所。你所作的任何贡献都是**非常感谢**的。
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. 点击右上角`Fork`，再点击下方`Create fork`创建一份本仓库的分支
+2. 创建你的内容分支：`git checkout -b feature/[your-feature]`
+3. 提交你的更改：`git commit -m '[描述你的更改]'`
+4. 将更改推送至远程分支：`git push origin feature/[your-feature]`
+5. 创建拉取请求
 
 ### 版本控制
 
@@ -115,7 +113,7 @@
 > natsurainko a-275@qq.com  
 > qq group:1138713376
 
- *您也可以在贡献者名单中参看所有参与该项目的开发者。*
+*您也可以在贡献者名单中参看所有参与该项目的开发者。*
 
 ### 版权说明
 

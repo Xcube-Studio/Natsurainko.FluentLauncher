@@ -76,6 +76,7 @@
                                             <TextBlock
                                                 Grid.Row="1"
                                                 Grid.Column="2"
+                                                MaxWidth="240"
                                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                                 TextTrimming="CharacterEllipsis">
                                                 <Run Text="{Binding Type}" />

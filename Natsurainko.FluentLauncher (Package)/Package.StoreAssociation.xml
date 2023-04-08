@@ -364,6 +364,12 @@
     <MainPackageIdentityName>26553XcubeStudio.Natsurianko.FluentLauncher</MainPackageIdentityName>
     <ReservedNames>
       <ReservedName>Natsurianko.FluentLauncher</ReservedName>
+      <ReservedName>Fluent Minecraft Launcher</ReservedName>
+      <ReservedName>Fluent Launcher(Minecraft)</ReservedName>
+      <ReservedName>Fluent Launcher for Minecraft</ReservedName>
+      <ReservedName>Minecraft Fluent Launcher</ReservedName>
+      <ReservedName>Fluent Launcher (Minecraft)</ReservedName>
+      <ReservedName>FluentLauncher</ReservedName>
     </ReservedNames>
   </ProductReservedInfo>
   <AccountPackageIdentityNames>

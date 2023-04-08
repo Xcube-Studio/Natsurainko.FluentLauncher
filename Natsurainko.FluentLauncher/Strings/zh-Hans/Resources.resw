@@ -112,10 +112,10 @@
     <value>上一步</value>
   </data>
   <data name="Guide_Basic_Folder.Text" xml:space="preserve">
-    <value>.minecraft 目录:</value>
+    <value>.minecraft 目录：</value>
   </data>
   <data name="Guide_Basic_Java.Text" xml:space="preserve">
-    <value>Java 运行时:</value>
+    <value>Java 运行时：</value>
   </data>
   <data name="Guide_Basic_Para_1.Text" xml:space="preserve">
     <value>您至少需要一个 .minecraft 目录来存储您的游戏核心</value>
@@ -164,6 +164,9 @@
   </data>
   <data name="Home_Launch.Text" xml:space="preserve">
     <value>启动 Minecraft</value>
+  </data>
+  <data name="Home_NoAccount.Text" xml:space="preserve">
+    <value>无账户</value>
   </data>
   <data name="Navigation_Activities.Content" xml:space="preserve">
     <value>活动</value>
@@ -223,58 +226,58 @@
     <value>属性</value>
   </data>
   <data name="Properties_Information_Item_1.Text" xml:space="preserve">
-    <value>路径:</value>
+    <value>路径：</value>
   </data>
   <data name="Properties_Information_Item_2.Text" xml:space="preserve">
-    <value>最后一次启动时间:</value>
+    <value>最后一次启动时间：</value>
   </data>
   <data name="Properties_Information_Item_3.Text" xml:space="preserve">
-    <value>模组加载器:</value>
+    <value>模组加载器：</value>
   </data>
   <data name="Properties_Information_Item_4.Text" xml:space="preserve">
-    <value>占用的磁盘空间:</value>
+    <value>占用的磁盘空间：</value>
   </data>
   <data name="Properties_Information_Item_5.Text" xml:space="preserve">
-    <value>依赖的库文件数量:</value>
+    <value>依赖的库文件数量：</value>
   </data>
   <data name="Properties_Information_Item_6.Text" xml:space="preserve">
-    <value>依赖的资源文件数量:</value>
+    <value>依赖的资源文件数量：</value>
   </data>
   <data name="Properties_Information_Subtitle.Text" xml:space="preserve">
     <value>核心基本属性</value>
   </data>
   <data name="Properties_Launch_Header_1.Text" xml:space="preserve">
-    <value>配置保存到:</value>
+    <value>配置保存到：</value>
   </data>
   <data name="Properties_Launch_Header_2.Text" xml:space="preserve">
     <value>启用特定游戏设置</value>
   </data>
   <data name="Properties_Launch_Item.Text" xml:space="preserve">
-    <value>版本隔离:</value>
+    <value>版本隔离：</value>
   </data>
   <data name="Properties_Mod_Header.Text" xml:space="preserve">
-    <value>模组文件夹:</value>
+    <value>模组文件夹：</value>
   </data>
   <data name="Settings_Account_Header.Text" xml:space="preserve">
     <value>账户</value>
   </data>
   <data name="Settings_Account_Item_1.Text" xml:space="preserve">
-    <value>当前的账户:</value>
+    <value>当前账户：</value>
   </data>
   <data name="Settings_Account_Item_2.Text" xml:space="preserve">
-    <value>当前账户的详细信息:</value>
+    <value>当前账户的详细信息：</value>
   </data>
   <data name="Settings_Account_Item_3.Text" xml:space="preserve">
-    <value>添加新的账户:</value>
+    <value>添加新账户：</value>
   </data>
   <data name="Settings_Account_Item_4.Text" xml:space="preserve">
-    <value>移除当前账户:</value>
+    <value>移除当前账户：</value>
   </data>
   <data name="Settings_Account_Item_5.Text" xml:space="preserve">
-    <value>以 Demo 账户启动游戏:</value>
+    <value>以试玩版启动游戏</value>
   </data>
   <data name="Settings_Account_Item_6.Text" xml:space="preserve">
-    <value>自动刷新账户: (每次启动之前)</value>
+    <value>自动刷新账户：（每次启动之前）</value>
   </data>
   <data name="Settings_Account_Subtitle.Text" xml:space="preserve">
     <value>游戏进入后的账户</value>
@@ -283,13 +286,13 @@
     <value>下载</value>
   </data>
   <data name="Settings_Download_Item_1.Text" xml:space="preserve">
-    <value>当前的下载源:</value>
+    <value>当前下载源：</value>
   </data>
   <data name="Settings_Download_Item_2.Text" xml:space="preserve">
-    <value>最大下载线程数:</value>
+    <value>最大下载线程数：</value>
   </data>
   <data name="Settings_Download_Item_3.Text" xml:space="preserve">
-    <value>启用大文件分片下载:</value>
+    <value>启用大文件分片下载：</value>
   </data>
   <data name="Settings_Download_Subtitle.Text" xml:space="preserve">
     <value>启动游戏时下载游戏资源的配置</value>
@@ -307,22 +310,22 @@
     <value>语言设置</value>
   </data>
   <data name="Settings_Launch_Item_1.Text" xml:space="preserve">
-    <value>当前的 .minecraft 目录:</value>
+    <value>当前的 .minecraft 目录：</value>
   </data>
   <data name="Settings_Launch_Item_10.Text" xml:space="preserve">
-    <value>全局版本隔离:</value>
+    <value>全局版本隔离：</value>
   </data>
   <data name="Settings_Launch_Item_11.Text" xml:space="preserve">
-    <value>全屏模式:</value>
+    <value>全屏模式：</value>
   </data>
   <data name="Settings_Launch_Item_12.Text" xml:space="preserve">
-    <value>游戏窗口分辨率:</value>
+    <value>游戏窗口分辨率：</value>
   </data>
   <data name="Settings_Launch_Item_13.Text" xml:space="preserve">
-    <value>服务器地址:</value>
+    <value>服务器地址：</value>
   </data>
   <data name="Settings_Launch_Item_14.Text" xml:space="preserve">
-    <value>游戏窗口标题:</value>
+    <value>游戏窗口标题：</value>
   </data>
   <data name="Settings_Launch_Item_15.Text" xml:space="preserve">
     <value>特定游戏设置</value>
@@ -331,28 +334,28 @@
     <value>全局启动设置</value>
   </data>
   <data name="Settings_Launch_Item_2.Text" xml:space="preserve">
-    <value>打开 .minecraft 目录:</value>
+    <value>打开 .minecraft 目录：</value>
   </data>
   <data name="Settings_Launch_Item_3.Text" xml:space="preserve">
-    <value>移除当前 .minecraft 目录:</value>
+    <value>移除当前 .minecraft 目录：</value>
   </data>
   <data name="Settings_Launch_Item_4.Text" xml:space="preserve">
-    <value>当前的 Java 运行时:</value>
+    <value>当前的 Java 运行时：</value>
   </data>
   <data name="Settings_Launch_Item_5.Text" xml:space="preserve">
-    <value>打开 Java 运行时:</value>
+    <value>打开 Java 运行时：</value>
   </data>
   <data name="Settings_Launch_Item_6.Text" xml:space="preserve">
-    <value>自动选择合适的 Java 运行时:</value>
+    <value>自动选择合适的 Java 运行时：</value>
   </data>
   <data name="Settings_Launch_Item_7.Text" xml:space="preserve">
-    <value>移除当前 Java 运行时:</value>
+    <value>移除当前 Java 运行时：</value>
   </data>
   <data name="Settings_Launch_Item_8.Text" xml:space="preserve">
-    <value>JVM 内存:</value>
+    <value>JVM 内存：</value>
   </data>
   <data name="Settings_Launch_Item_9.Text" xml:space="preserve">
-    <value>自动分配 JVM 内存:</value>
+    <value>自动分配 JVM 内存：</value>
   </data>
   <data name="Settings_Launch_Subtitle_1.Text" xml:space="preserve">
     <value>储存你游戏核心的地方</value>
@@ -406,9 +409,54 @@
     <value>登录</value>
   </data>
   <data name="_TeachingTips_Delete.Subtitle" xml:space="preserve">
-    <value>您确定你要删除吗? 删除后将无法恢复</value>
+    <value>您确定你要删除吗? 删除后将无法恢复。</value>
   </data>
   <data name="_TeachingTips_Rename.Subtitle" xml:space="preserve">
     <value>请输入一个有效的名字</value>
+  </data>
+  <data name="Cores_New_Name.PlaceholderText" xml:space="preserve">
+    <value>新名称</value>
+  </data>
+  <data name="Properties_Mod_Author.Text" xml:space="preserve">
+    <value>作者：</value>
+  </data>
+  <data name="Properties_Mod_Description.Text" xml:space="preserve">
+    <value>简介：</value>
+  </data>
+  <data name="Properties_Mod_Version.Text" xml:space="preserve">
+    <value>版本：</value>
+  </data>
+  <data name="CF_Download_Files.Content" xml:space="preserve">
+    <value>下载文件</value>
+  </data>
+  <data name="Mods_Install_New_Core.Content" xml:space="preserve">
+    <value>安装新核心</value>
+  </data>
+  <data name="Settings_Account_Type.PlaceholderText" xml:space="preserve">
+    <value>账户类型</value>
+  </data>
+  <data name="Settings_Choose_Account_Type.Text" xml:space="preserve">
+    <value>选择账户类型</value>
+  </data>
+  <data name="Settings_Confirm_Role.Text" xml:space="preserve">
+    <value>确认账户</value>
+  </data>
+  <data name="Settings_Confirm_Role_Desc.Text" xml:space="preserve">
+    <value>启动器中有多个账户，您需要先选择一个。</value>
+  </data>
+  <data name="Settings_Microsoft_Account_Loading.Text" xml:space="preserve">
+    <value>加载中……</value>
+  </data>
+  <data name="Settings_Yggdrasil_Login.Placeholder.Text" xml:space="preserve">
+    <value>电子邮件：</value>
+  </data>
+  <data name="Settings_Yggdrasil_Password.PlaceholderText" xml:space="preserve">
+    <value>密码：</value>
+  </data>
+  <data name="Settings_Yggdrasil_Url.PlaceholderText" xml:space="preserve">
+    <value>服务器的Yggdrasil地址：</value>
+  </data>
+  <data name="Title_Offline_Account.Text" xml:space="preserve">
+    <value>离线账户</value>
   </data>
 </root>

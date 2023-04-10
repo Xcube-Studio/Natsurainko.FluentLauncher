@@ -10,7 +10,7 @@
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Pages.Settings"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Pages.Settings"
-    xmlns:xh="using:Natsurainko.FluentLauncher.Helpers"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     mc:Ignorable="d">
     <Page.DataContext>
         <vm:Download />

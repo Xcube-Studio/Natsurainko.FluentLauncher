@@ -5,7 +5,6 @@
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
     xmlns:controls="using:Natsurainko.FluentLauncher.UserControls"
-    xmlns:converters="using:Natsurainko.FluentLauncher.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
@@ -18,9 +17,6 @@
     <Page.DataContext>
         <vm:Launch />
     </Page.DataContext>
-    <Page.Resources>
-        <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
-    </Page.Resources>
 
     <ScrollViewer Padding="32,0" VerticalScrollBarVisibility="Auto">
         <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->

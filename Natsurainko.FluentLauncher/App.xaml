@@ -2,7 +2,7 @@
     x:Class="Natsurainko.FluentLauncher.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="using:Natsurainko.FluentLauncher.Converters"
+    xmlns:converters="using:Natsurainko.FluentLauncher.Utils.Xaml.Converters"
     xmlns:local="using:Natsurainko.FluentLauncher"
     xmlns:mvvm="using:Natsurainko.FluentLauncher.Components.Mvvm">
     <Application.Resources>
@@ -40,6 +40,7 @@
             <converters:GameCoreTagConverter x:Key="GameCoreTagConverter" />
             <converters:TeachingTipTitleConverter x:Key="TeachingTipTitleConverter" />
             <converters:PathToFiguresConverter x:Key="PathToFiguresConverter" />
+            <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

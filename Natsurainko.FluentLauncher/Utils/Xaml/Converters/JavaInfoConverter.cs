@@ -2,7 +2,7 @@
 using Natsurainko.FluentCore.Extension.Windows.Service;
 using System;
 
-namespace Natsurainko.FluentLauncher.Converters;
+namespace Natsurainko.FluentLauncher.Utils.Xaml.Converters;
 
 public class JavaInfoConverter : IValueConverter
 {

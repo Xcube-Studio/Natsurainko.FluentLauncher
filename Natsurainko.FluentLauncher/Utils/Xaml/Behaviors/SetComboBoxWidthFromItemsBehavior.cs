@@ -13,7 +13,7 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.Xaml.Interactivity;
 using Windows.Foundation.Collections;
 
-namespace Natsurainko.FluentLauncher.Behaviors;
+namespace Natsurainko.FluentLauncher.Utils.Xaml.Behaviors;
 
 class SetComboBoxWidthFromItemsBehavior : Behavior<ComboBox>
 {
@@ -28,9 +28,9 @@ class SetComboBoxWidthFromItemsBehavior : Behavior<ComboBox>
             new PropertyMetadata(false, OnSetWidthFromItemsPropertyChanged)
         );
 
-    public bool SetWidthFromItems 
-    { 
-        get => (bool)GetValue(SetWidthFromItemsProperty); 
+    public bool SetWidthFromItems
+    {
+        get => (bool)GetValue(SetWidthFromItemsProperty);
         set => SetValue(SetWidthFromItemsProperty, value);
     }
 

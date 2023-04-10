@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Natsurainko.FluentLauncher.Behaviors
+namespace Natsurainko.FluentLauncher.Utils.Xaml.Behaviors
 {
     class SettingsCardContentMaxWidthBehavior : Behavior<FrameworkElement>
     {
@@ -42,7 +42,7 @@ namespace Natsurainko.FluentLauncher.Behaviors
                 new PropertyMetadata(null)
             );
 
-        public Type AscendentType 
+        public Type AscendentType
         {
             get => (Type)GetValue(AscendentTypeProperty);
             set => SetValue(AscendentTypeProperty, value);

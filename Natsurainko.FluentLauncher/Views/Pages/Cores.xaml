@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
-    xmlns:behaviors="using:Natsurainko.FluentLauncher.Behaviors"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
@@ -566,7 +566,10 @@
             </TeachingTip.Title>
             <TeachingTip.Content>
                 <Grid Margin="0,7.5,0,0">
-                    <AutoSuggestBox x:Uid="Cores_New_Name" PlaceholderText="New Name" Text="{Binding NewName, Mode=TwoWay}" />
+                    <AutoSuggestBox
+                        x:Uid="Cores_New_Name"
+                        PlaceholderText="New Name"
+                        Text="{Binding NewName, Mode=TwoWay}" />
                 </Grid>
             </TeachingTip.Content>
             <TeachingTip.ActionButtonContent>

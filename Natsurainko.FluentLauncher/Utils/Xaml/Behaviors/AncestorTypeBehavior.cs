@@ -5,7 +5,7 @@ using Microsoft.Xaml.Interactivity;
 using System;
 using System.Reflection;
 
-namespace Natsurainko.FluentLauncher.Behaviors;
+namespace Natsurainko.FluentLauncher.Utils.Xaml.Behaviors;
 
 public class AncestorBindingBehavior : DependencyObject, IBehavior
 {
@@ -19,25 +19,25 @@ public class AncestorBindingBehavior : DependencyObject, IBehavior
 
     public void Attach(DependencyObject associatedObject)
     {
-        this.AssociatedObject = associatedObject;
+        AssociatedObject = associatedObject;
 
-        if (this.Binding == null || string.IsNullOrWhiteSpace(this.TargetPropertyName) || string.IsNullOrWhiteSpace(this.AncestorType))
+        if (Binding == null || string.IsNullOrWhiteSpace(TargetPropertyName) || string.IsNullOrWhiteSpace(AncestorType))
             return;
 
-        ((FrameworkElement)this.AssociatedObject).Loaded += this.AncestorBindingBehavior_Loaded;
+        ((FrameworkElement)AssociatedObject).Loaded += AncestorBindingBehavior_Loaded;
     }
 
     private void AncestorBindingBehavior_Loaded(object sender, RoutedEventArgs e)
     {
-        ((FrameworkElement)this.AssociatedObject).Loaded -= this.AncestorBindingBehavior_Loaded;
+        ((FrameworkElement)AssociatedObject).Loaded -= AncestorBindingBehavior_Loaded;
 
-        var source = FindAncestorType(this.AssociatedObject, this.AncestorType);
-        var targetProperty = GetDependencyProperty(this.AssociatedObject.GetType(), this.TargetPropertyName);
+        var source = FindAncestorType(AssociatedObject, AncestorType);
+        var targetProperty = GetDependencyProperty(AssociatedObject.GetType(), TargetPropertyName);
 
         if (source == null || targetProperty == null) { return; }
-        this.Binding.Source = source;
+        Binding.Source = source;
 
-        ((FrameworkElement)this.AssociatedObject).SetBinding(targetProperty, this.Binding);
+        ((FrameworkElement)AssociatedObject).SetBinding(targetProperty, Binding);
     }
 
     public void Detach()

@@ -1,9 +1,10 @@
 {
   "profiles": {
-    "Natsurainko.FluentLauncher": {
-      "commandName": "Project",
-      "nativeDebugging": false,
-      "hotReloadEnabled": false
+    "Natsurainko.FluentLauncher (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Natsurainko.FluentLauncher (Unpackaged)": {
+      "commandName": "Project"
     }
   }
 }

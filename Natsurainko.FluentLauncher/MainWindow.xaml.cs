@@ -36,7 +36,7 @@ public sealed partial class MainWindow : WindowEx
         AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
         AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
         AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-
+        
         (MinWidth, MinHeight) = (516, 328);
         (Width, Height) = (App.Configuration.AppWindowWidth, App.Configuration.AppWindowHeight);
 

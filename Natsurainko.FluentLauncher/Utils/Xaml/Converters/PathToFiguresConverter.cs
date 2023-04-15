@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Shapes;
 using System;
 
-namespace Natsurainko.FluentLauncher.Converters;
+namespace Natsurainko.FluentLauncher.Utils.Xaml.Converters;
 
 public class PathToFiguresConverter : IValueConverter
 {

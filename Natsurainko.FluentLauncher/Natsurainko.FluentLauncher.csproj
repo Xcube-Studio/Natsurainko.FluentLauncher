@@ -11,7 +11,15 @@
     <UseWinUI>true</UseWinUI>
     <StartupObject>Natsurainko.FluentLauncher.App</StartupObject>
     <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
+    <EnableMsixTooling>true</EnableMsixTooling>
   </PropertyGroup>
+
+  <!-- Enable package and publish in context menu -->
+  <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+      <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
+  </PropertyGroup>
+
+  <!-- Multilingual App Toolkit -->
   <PropertyGroup Label="MultilingualAppToolkit">
     <MultilingualAppToolkitVersion>4.0</MultilingualAppToolkitVersion>
     <MultilingualFallbackLanguage>en-US</MultilingualFallbackLanguage>
@@ -23,11 +31,12 @@
     <Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
   </Target>
   <ItemGroup>
-    <None Remove="MultilingualResources\Natsurainko.FluentLauncher.ru-RU.xlf" />
-    <None Remove="MultilingualResources\Natsurainko.FluentLauncher.zh-Hans.xlf" />
-    <None Remove="MultilingualResources\Natsurainko.FluentLauncher.zh-Hant.xlf" />
-    <None Remove="Views\Dialogs\MicrosoftAccountDialog1.xaml" />
+    <XliffResource Include="MultilingualResources\Natsurainko.FluentLauncher.ru-RU.xlf" />
+    <XliffResource Include="MultilingualResources\Natsurainko.FluentLauncher.zh-Hans.xlf" />
+    <XliffResource Include="MultilingualResources\Natsurainko.FluentLauncher.zh-Hant.xlf" />
   </ItemGroup>
+
+  <!-- NuGet Packages -->
   <ItemGroup>
     <PackageReference Include="ColorCode.WinUI" Version="2.0.14" />
     <PackageReference Include="CommunityToolkit.Labs.WinUI.SettingsControls" Version="0.0.17" />
@@ -44,19 +53,12 @@
     <PackageReference Include="WinUIEx" Version="2.1.0" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
-  <ItemGroup>
-    <XliffResource Include="MultilingualResources\Natsurainko.FluentLauncher.ru-RU.xlf" />
-    <XliffResource Include="MultilingualResources\Natsurainko.FluentLauncher.zh-Hans.xlf" />
-    <XliffResource Include="MultilingualResources\Natsurainko.FluentLauncher.zh-Hant.xlf" />
-  </ItemGroup>
+
   <ItemGroup>
     <Page Update="*.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\Dialogs\MicrosoftAccountDialog1.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+
 </Project>

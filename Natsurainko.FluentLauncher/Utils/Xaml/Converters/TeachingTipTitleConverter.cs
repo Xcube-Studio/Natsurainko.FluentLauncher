@@ -2,7 +2,7 @@
 using Natsurainko.FluentLauncher.Components.FluentCore;
 using System;
 
-namespace Natsurainko.FluentLauncher.Converters;
+namespace Natsurainko.FluentLauncher.Utils.Xaml.Converters;
 
 public class TeachingTipTitleConverter : IValueConverter
 {

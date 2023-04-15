@@ -14,7 +14,7 @@
   <Properties>
     <DisplayName>Natsurianko.FluentLauncher</DisplayName>
     <PublisherDisplayName>Xcube Studio</PublisherDisplayName>
-    <Logo>Assets\StoreLogo.png</Logo>
+    <Logo>Assets\PackageIcons\StoreLogo.png</Logo>
   </Properties>
 
   <Dependencies>
@@ -37,10 +37,10 @@
         DisplayName="Fluent Launcher"
         Description="Natsurainko.FluentLauncher"
         BackgroundColor="transparent"
-        Square150x150Logo="Assets\Square150x150Logo.png"
-        Square44x44Logo="Assets\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"  Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png" ShortName="Fluent Launcher"/>
-        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        Square150x150Logo="Assets\PackageIcons\Square150x150Logo.png"
+        Square44x44Logo="Assets\PackageIcons\Square44x44Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Assets\PackageIcons\Wide310x150Logo.png"  Square71x71Logo="Assets\PackageIcons\SmallTile.png" Square310x310Logo="Assets\PackageIcons\LargeTile.png" ShortName="Fluent Launcher"/>
+        <uap:SplashScreen Image="Assets\PackageIcons\SplashScreen.png" />
       </uap:VisualElements>
     </Application>
   </Applications>

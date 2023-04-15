@@ -4,7 +4,7 @@ using Natsurainko.FluentLauncher.Components.FluentCore;
 using System;
 using System.Collections.Generic;
 
-namespace Natsurainko.FluentLauncher.Converters;
+namespace Natsurainko.FluentLauncher.Utils.Xaml.Converters;
 
 public class InvertBoolConverter : IValueConverter
 {

@@ -1,6 +1,6 @@
 using Microsoft.UI.Xaml.Markup;
 
-namespace Natsurainko.FluentLauncher.Helpers;
+namespace Natsurainko.FluentLauncher.Utils.Xaml;
 
 [MarkupExtensionReturnType(ReturnType = typeof(Microsoft.UI.Xaml.Controls.FontIcon))]
 public class FontIcon : MarkupExtension

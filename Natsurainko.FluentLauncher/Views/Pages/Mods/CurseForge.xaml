@@ -2,13 +2,13 @@
     x:Class="Natsurainko.FluentLauncher.Views.Pages.Mods.CurseForge"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Pages.Mods"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:mvvm="using:Natsurainko.FluentLauncher.Components.Mvvm"
     Background="Transparent"
     DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=Mods.CurseForge}"
     mc:Ignorable="d">
@@ -133,7 +133,7 @@
                                     PlaceholderText="Mod Name">
                                     <i:Interaction.Behaviors>
                                         <core:EventTriggerBehavior EventName="QuerySubmitted">
-                                            <mvvm:ModifiedInvokeCommandAction Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=AutoSuggestBox, Path=Text}" />
+                                            <actions:ModifiedInvokeCommandAction Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=AutoSuggestBox, Path=Text}" />
                                         </core:EventTriggerBehavior>
                                     </i:Interaction.Behaviors>
                                     <AutoSuggestBox.QueryIcon>

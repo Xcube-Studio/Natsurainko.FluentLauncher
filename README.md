@@ -1,7 +1,5 @@
 # Natsurainko.FluentLauncher
 
-基于 WinUI3 的 Minecraft:Java Edition 启动器
-
 <!-- PROJECT SHIELDS -->
 
 [![Contributors][contributors-shield]][contributors-url]
@@ -15,23 +13,27 @@
 
 <p align="center">
   <a href="https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/">
-    <img src="Natsurainko.FluentLauncher/Assets/AppIcon.png" alt="Logo" width="80" height="80">
+    <img src="docs/images/AppIcon.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Natsurainko.FluentLauncher</h3>
   <p align="center">
-    一个专为 Windows 11 设计的 Minecraft 启动器
+    基于 WinUI 3 的 Minecraft: Java Edition 启动器
     <br />
-    <a href="https://github.com/Xcube-Studio/Natsurainko.FluentLauncher"><strong>探索本项目的文档 »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/releases">查看发行版</a>
-    ·
-    <a href="https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/issues">报告Bug</a>
-    ·
-    <a href="https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/issues">提出新特性</a>
+    <p align="center">
+      简体中文 |
+      <a href="https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/docs/README_EN.md">English</a>
+    </p>
+    <p align="center">
+      <a href="https://github.com/Xcube-Studio/Natsurainko.FluentLauncher">开发文档</a>
+      ·
+      <a href="https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/releases">查看发行版</a>
+      ·
+      <a href="https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/issues">报告Bug</a>
+      ·
+      <a href="https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/issues">提出新特性</a>
+    </p>
   </p>
-
 </p>
 
 
@@ -55,7 +57,7 @@
 3. 开始食用
 
 <a href="https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/">
-  <img src="Images/Main.png" alt="main">
+  <img src="docs/images/Main.png" alt="main">
 </a>
 
 ###### 运行前的配置要求

@@ -34,3 +34,4 @@ bld/
 .vs/
 AppPackages
 *.cache
+.editorconfig

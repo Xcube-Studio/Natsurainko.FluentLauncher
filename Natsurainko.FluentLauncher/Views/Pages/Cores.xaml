@@ -2,14 +2,14 @@
     x:Class="Natsurainko.FluentLauncher.Views.Pages.Cores"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
-    xmlns:behaviors="using:Natsurainko.FluentLauncher.Behaviors"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:mvvm="using:Natsurainko.FluentLauncher.Components.Mvvm"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Pages"
     Name="Page"
     Background="Transparent"
@@ -259,7 +259,7 @@
             SelectedItem="{Binding CurrentGameCore, Mode=TwoWay}">
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="Loaded">
-                    <mvvm:ModifiedInvokeCommandAction Command="{Binding LoadedCommand}" />
+                    <actions:ModifiedInvokeCommandAction Command="{Binding LoadedCommand}" />
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
             <ListView.ItemContainerStyle>
@@ -566,7 +566,10 @@
             </TeachingTip.Title>
             <TeachingTip.Content>
                 <Grid Margin="0,7.5,0,0">
-                    <AutoSuggestBox x:Uid="Cores_New_Name" PlaceholderText="New Name" Text="{Binding NewName, Mode=TwoWay}" />
+                    <AutoSuggestBox
+                        x:Uid="Cores_New_Name"
+                        PlaceholderText="New Name"
+                        Text="{Binding NewName, Mode=TwoWay}" />
                 </Grid>
             </TeachingTip.Content>
             <TeachingTip.ActionButtonContent>

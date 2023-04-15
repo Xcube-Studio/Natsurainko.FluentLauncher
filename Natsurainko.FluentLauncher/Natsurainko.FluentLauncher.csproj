@@ -5,13 +5,23 @@
     <TargetFramework>net7.0-windows10.0.19041.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <RootNamespace>Natsurainko.FluentLauncher</RootNamespace>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x86;x64;ARM64</Platforms>
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
     <UseWinUI>true</UseWinUI>
     <StartupObject>Natsurainko.FluentLauncher.App</StartupObject>
+
+    <!-- Packaging -->
+    <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
     <EnableMsixTooling>true</EnableMsixTooling>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxPackageDir>.\AppPackages\</AppxPackageDir>
+    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <AppxBundle>Never</AppxBundle>
+    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+
   </PropertyGroup>
 
   <!-- Enable package and publish in context menu -->
@@ -25,13 +35,6 @@
     <MultilingualFallbackLanguage>en-US</MultilingualFallbackLanguage>
     <TranslationReport Condition="'$(Configuration)' == 'Release'">true</TranslationReport>
     <SuppressPseudoWarning Condition="'$(Configuration)' == 'Debug'">true</SuppressPseudoWarning>
-    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
-    <AppxPackageDir>D:\Git\Natsurainko.FluentLauncher\Natsurainko.FluentLauncher\AppPackages\</AppxPackageDir>
-    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
-    <GenerateTestArtifacts>True</GenerateTestArtifacts>
-    <AppxBundle>Never</AppxBundle>
-    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.PriResources.targets" Label="MultilingualAppToolkit" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\v$(MultilingualAppToolkitVersion)\Microsoft.Multilingual.PriResources.targets')" />
   <Target Name="MATPrerequisite" BeforeTargets="PrepareForBuild" Condition="!Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.PriResources.targets')" Label="MultilingualAppToolkit">
@@ -66,6 +69,14 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="AppPackages\**" />
+    <EmbeddedResource Remove="AppPackages\**" />
+    <None Remove="AppPackages\**" />
+    <Page Remove="AppPackages\**" />
+    <PRIResource Remove="AppPackages\**" />
   </ItemGroup>
 
 </Project>

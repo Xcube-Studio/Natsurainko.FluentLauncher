@@ -28,8 +28,10 @@
         <StackPanel
             Grid.Row="1"
             Margin="0,20"
-            HorizontalAlignment="Stretch">
+            HorizontalAlignment="Stretch"
+            Spacing="10">
             <TextBox PlaceholderText="Name:" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox PlaceholderText="Uuid (optional):" Text="{Binding Uuid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
         <StackPanel
             Grid.Row="2"

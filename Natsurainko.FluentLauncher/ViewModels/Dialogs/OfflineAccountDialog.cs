@@ -15,12 +15,27 @@ public partial class OfflineAccountDialog : DialogViewModel
     [NotifyCanExecuteChangedFor(nameof(ConfirmCommand))]
     private string name;
 
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(ConfirmCommand))]
+    private string uuid;
+
     protected override bool EnableConfirmButton()
-        => !string.IsNullOrEmpty(Name);
+    {
+        if (string.IsNullOrEmpty(Name))
+            return false;
+
+        if (!string.IsNullOrEmpty(Uuid))
+            return Guid.TryParse(Uuid, out var _);
+
+        return true;
+    }
 
     protected override void OnConfirm(ContentDialog dialog)
     {
-        var authenticator = new OfflineAuthenticator(Name);
+        var authenticator = string.IsNullOrEmpty(Uuid)
+            ? new OfflineAuthenticator(Name)
+            : new OfflineAuthenticator(Name, Guid.Parse(Uuid));
+
         SetAccountAction(authenticator.Authenticate());
 
         base.OnConfirm(dialog);

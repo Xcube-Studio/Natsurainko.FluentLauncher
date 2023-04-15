@@ -77,6 +77,7 @@
                                                 Grid.Row="1"
                                                 Grid.Column="2"
                                                 MaxWidth="240"
+                                                HorizontalAlignment="Left"
                                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                                 TextTrimming="CharacterEllipsis">
                                                 <Run Text="{Binding Type}" />
@@ -126,6 +127,12 @@
                                                     <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">Uuid:</Run>
                                                     <Run Text="{Binding CurrentAccount.Uuid}" />
                                                 </Paragraph>
+                                                <!--
+                                                <Paragraph>
+                                                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">Yggdrasil Server:</Run>
+                                                    <Run Text="{Binding CurrentAccount.YggdrasilServerUrl}" />
+                                                </Paragraph>
+                                                -->
                                             </RichTextBlock>
                                         </Flyout>
                                     </Button.Flyout>

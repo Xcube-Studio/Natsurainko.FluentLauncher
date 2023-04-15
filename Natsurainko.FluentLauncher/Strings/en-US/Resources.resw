@@ -336,6 +336,12 @@
   <data name="Navigation_Settings_Launch.Content" xml:space="preserve">
     <value>Launch</value>
   </data>
+  <data name="OfflineAccountDialog_Name.PlaceholderText" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="OfflineAccountDialog_UUID.PlaceholderText" xml:space="preserve">
+    <value>UUID (Optional)</value>
+  </data>
   <data name="Properties_Information_Header.Text" xml:space="preserve">
     <value>Property</value>
   </data>
@@ -467,6 +473,12 @@
   </data>
   <data name="Settings_Launch_Item_16.Text" xml:space="preserve">
     <value>Global launch settings</value>
+  </data>
+  <data name="Settings_Launch_Item_17.ActionIconToolTip" xml:space="preserve">
+    <value>Go to Cores page</value>
+  </data>
+  <data name="Settings_Launch_Item_17.Header" xml:space="preserve">
+    <value>Edit game specific settings</value>
   </data>
   <data name="Settings_Launch_Item_2.Text" xml:space="preserve">
     <value>Open the .minecraft folder:</value>

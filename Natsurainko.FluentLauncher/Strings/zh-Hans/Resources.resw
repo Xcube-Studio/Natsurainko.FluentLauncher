@@ -459,4 +459,16 @@
   <data name="Title_Offline_Account.Text" xml:space="preserve">
     <value>离线账户</value>
   </data>
+  <data name="Settings_Launch_Item_17.Header" xml:space="preserve">
+    <value>更改特定游戏核心的设置</value>
+  </data>
+  <data name="Settings_Launch_Item_17.ActionIconToolTip" xml:space="preserve">
+    <value>转到核心页面</value>
+  </data>
+  <data name="OfflineAccountDialog_Name.PlaceholderText" xml:space="preserve">
+    <value>名字</value>
+  </data>
+  <data name="OfflineAccountDialog_UUID.PlaceholderText" xml:space="preserve">
+    <value>UUID（可选）</value>
+  </data>
 </root>

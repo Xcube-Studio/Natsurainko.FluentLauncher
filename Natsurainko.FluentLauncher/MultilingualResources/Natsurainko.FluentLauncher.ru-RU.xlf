@@ -602,6 +602,22 @@
           <source>Email:</source>
           <target state="translated">Эл. почта</target>
         </trans-unit>
+        <trans-unit id="Settings_Launch_Item_17.Header" translate="yes" xml:space="preserve">
+          <source>Edit game specific settings</source>
+          <target state="new">Edit game specific settings</target>
+        </trans-unit>
+        <trans-unit id="Settings_Launch_Item_17.ActionIconToolTip" translate="yes" xml:space="preserve">
+          <source>Go to Cores page</source>
+          <target state="new">Go to Cores page</target>
+        </trans-unit>
+        <trans-unit id="OfflineAccountDialog_Name.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Name</source>
+          <target state="new">Name</target>
+        </trans-unit>
+        <trans-unit id="OfflineAccountDialog_UUID.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>UUID (Optional)</source>
+          <target state="new">UUID (Optional)</target>
+        </trans-unit>
       </group>
     </body>
   </file>

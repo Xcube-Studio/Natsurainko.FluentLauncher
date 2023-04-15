@@ -340,14 +340,12 @@
                     Text="Game specific settings" />
 
                 <labs:SettingsCard
+                    x:Uid="Settings_Launch_Item_17"
                     ActionIconToolTip="Go to Cores page"
                     Command="{Binding ActivateCoresPageCommand}"
+                    Header="Edit game specific settings"
                     HeaderIcon="{xh:FontIcon Glyph=&#xf259;}"
-                    IsClickEnabled="True">
-                    <labs:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_Launch_Header_5" Text="Edit game specific settings" />
-                    </labs:SettingsCard.Header>
-                </labs:SettingsCard>
+                    IsClickEnabled="True" />
 
             </StackPanel>
         </Border>

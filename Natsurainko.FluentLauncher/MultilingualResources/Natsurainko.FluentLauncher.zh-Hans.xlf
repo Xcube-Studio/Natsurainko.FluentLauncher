@@ -602,6 +602,22 @@
           <source>Offline Account</source>
           <target state="translated">离线账户</target>
         </trans-unit>
+        <trans-unit id="Settings_Launch_Item_17.Header" translate="yes" xml:space="preserve">
+          <source>Edit game specific settings</source>
+          <target state="translated">更改特定游戏核心的设置</target>
+        </trans-unit>
+        <trans-unit id="Settings_Launch_Item_17.ActionIconToolTip" translate="yes" xml:space="preserve">
+          <source>Go to Cores page</source>
+          <target state="translated">转到核心页面</target>
+        </trans-unit>
+        <trans-unit id="OfflineAccountDialog_Name.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Name</source>
+          <target state="translated">名字</target>
+        </trans-unit>
+        <trans-unit id="OfflineAccountDialog_UUID.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>UUID (Optional)</source>
+          <target state="translated">UUID（可选）</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -4,9 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:Natsurainko.FluentLauncher.UserControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Pages.Activities"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Pages.Activities"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     Background="Transparent"
     mc:Ignorable="d">
     <Page.DataContext>
@@ -45,178 +47,158 @@
             </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Expander
+                    <labs:SettingsExpander
                         Padding="0"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Stretch"
                         VerticalContentAlignment="Stretch"
+                        HeaderIcon="{xh:FontIcon Glyph=&#xE737;}"
                         IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
-                        <Expander.Header>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="1*" />
-                                </Grid.ColumnDefinitions>
-                                <FontIcon
-                                    Grid.Column="0"
-                                    Margin="2,0,0,0"
-                                    Glyph="&#xE737;" />
-                                <Grid Grid.Column="1" Margin="17,12.5">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" TextTrimming="CharacterEllipsis">
-                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="Launch Arrangement" />
-                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
-                                        <Run FontWeight="SemiBold" Text="{Binding GameCore.Id}" />
-                                    </TextBlock>
-                                    <TextBlock
-                                        Grid.Row="1"
-                                        FontSize="13"
-                                        TextTrimming="CharacterEllipsis">
-                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="State" />
-                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
-                                        <Run FontWeight="SemiBold" Text="{Binding State}" />
-                                    </TextBlock>
-                                </Grid>
-                            </Grid>
-                        </Expander.Header>
-                        <Expander.Content>
-                            <StackPanel HorizontalAlignment="Stretch">
-                                <controls:ExpanderContentItem Visibility="{Binding GameLogger}">
-                                    <Grid>
-                                        <TextBlock VerticalAlignment="Center" Text="Game running log:" />
-                                        <Button
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Center"
-                                            Command="{Binding LoggerCommand}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <FontIcon FontSize="16" Glyph="&#xf000;" />
-                                                <TextBlock Margin="5,0,0,0" Text="Open in new window" />
-                                            </StackPanel>
-                                        </Button>
-                                    </Grid>
-                                </controls:ExpanderContentItem>
-                                <Border Style="{ThemeResource ExpanderSplitter}" Visibility="{Binding GameRunning}" />
-                                <controls:ExpanderContentItem>
-                                    <Grid>
-                                        <TextBlock VerticalAlignment="Center" Text="Game launch config:" />
-                                        <Button HorizontalAlignment="Right" VerticalAlignment="Center">
-                                            <StackPanel Orientation="Horizontal">
-                                                <FontIcon FontSize="16" Glyph="&#xE18F;" />
-                                                <TextBlock Margin="5,0,0,0" Text="Launch Config" />
-                                            </StackPanel>
-                                            <Button.Flyout>
-                                                <Flyout Placement="BottomEdgeAlignedRight">
-                                                    <Grid>
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="Auto" />
-                                                            <RowDefinition Height="15" />
-                                                            <RowDefinition Height="Auto" />
-                                                            <RowDefinition Height="15" />
-                                                            <RowDefinition Height="Auto" />
-                                                        </Grid.RowDefinitions>
-                                                        <RichTextBlock MaxWidth="350" TextTrimming="CharacterEllipsis">
-                                                            <Paragraph>
-                                                                <Run FontWeight="SemiBold" Text="{Binding GameCore.Id}" />
-                                                                <Run>,</Run>
-                                                                <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding GameCore.Source}" />
-                                                            </Paragraph>
-                                                            <Paragraph>
-                                                                <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">.minecraft folder:</Run>
-                                                                <Run Text="{Binding GameCore.Root.FullName}" />
-                                                            </Paragraph>
-                                                            <Paragraph>
-                                                                <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">Java Runtime:</Run>
-                                                                <Run Text="{Binding LaunchSetting.JvmSetting.Javaw.FullName, Converter={ThemeResource JavaInfoConverter}}" />
-                                                                <Run>,</Run>
-                                                                <Run Text="{Binding LaunchSetting.JvmSetting.Javaw.FullName}" />
-                                                            </Paragraph>
-                                                            <Paragraph>
-                                                                <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">JVM Memory:</Run>
-                                                                <Run Text="{Binding LaunchSetting.JvmSetting.MinMemory}" />
-                                                                <Run Text="MB" />
-                                                            </Paragraph>
-                                                        </RichTextBlock>
-                                                        <RichTextBlock
-                                                            Grid.Row="2"
-                                                            MaxWidth="350"
-                                                            MaxHeight="200"
-                                                            TextTrimming="CharacterEllipsis">
-                                                            <Paragraph>
-                                                                <Run FontWeight="SemiBold" Text="Launch Arguments:" />
-                                                                <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding Arguments}" />
-                                                            </Paragraph>
-                                                        </RichTextBlock>
-                                                        <Button
-                                                            Grid.Row="4"
-                                                            HorizontalAlignment="Right"
-                                                            Command="{Binding CopyCommand}">
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <FontIcon FontSize="16" Glyph="&#xe8c8;" />
-                                                                <TextBlock Margin="5,0,0,0" Text="Copy" />
-                                                            </StackPanel>
-                                                        </Button>
-                                                    </Grid>
-                                                </Flyout>
-                                            </Button.Flyout>
-                                        </Button>
-                                    </Grid>
-                                </controls:ExpanderContentItem>
-                                <Border Style="{ThemeResource ExpanderSplitter}" Visibility="{Binding GameRunning}" />
-                                <controls:ExpanderContentItem Visibility="{Binding GameRunning}">
-                                    <Grid>
-                                        <TextBlock VerticalAlignment="Center" Text="Force exit the game:" />
-                                        <Button
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Center"
-                                            Background="{ThemeResource DeleteButtonBackground}"
-                                            BorderBrush="{ThemeResource DeleteButtonBorder}"
-                                            Command="{Binding KillCommand}"
-                                            Style="{ThemeResource ButtonRevealStyle}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <FontIcon
-                                                    FontSize="16"
-                                                    Foreground="White"
-                                                    Glyph="&#xe71a;" />
-                                                <TextBlock
-                                                    Margin="5,0,0,0"
-                                                    Foreground="White"
-                                                    Text="Kill Process" />
-                                            </StackPanel>
-                                        </Button>
-                                    </Grid>
-                                </controls:ExpanderContentItem>
-                                <Border Style="{ThemeResource ExpanderSplitter}" Visibility="{Binding GameRunning}" />
-                                <controls:ExpanderContentItem Visibility="{Binding GameRunning}">
-                                    <Grid>
-                                        <TextBlock VerticalAlignment="Center" Text="Game running elapsed time:" />
+                        <labs:SettingsExpander.Header>
+                            <TextBlock TextTrimming="CharacterEllipsis">
+                                <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="Launch Arrangement" />
+                                <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
+                                <Run FontWeight="SemiBold" Text="{Binding GameCore.Id}" />
+                            </TextBlock>
+                        </labs:SettingsExpander.Header>
+
+                        <labs:SettingsExpander.Description>
+                            <TextBlock FontSize="13" TextTrimming="CharacterEllipsis">
+                                <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="State" />
+                                <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
+                                <Run FontWeight="SemiBold" Text="{Binding State}" />
+                            </TextBlock>
+                        </labs:SettingsExpander.Description>
+
+                        <labs:SettingsExpander.Items>
+
+                            <labs:SettingsCard Visibility="{Binding GameLogger}">
+                                <labs:SettingsCard.Header>
+                                    <TextBlock Text="Game running log:" />
+                                </labs:SettingsCard.Header>
+
+                                <Button Command="{Binding LoggerCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <FontIcon FontSize="16" Glyph="&#xf000;" />
+                                        <TextBlock Margin="5,0,0,0" Text="Open in new window" />
+                                    </StackPanel>
+                                </Button>
+                            </labs:SettingsCard>
+
+                            <labs:SettingsCard>
+                                <labs:SettingsCard.Header>
+                                    <TextBlock Text="Game launch config:" />
+                                </labs:SettingsCard.Header>
+
+                                <Button>
+                                    <StackPanel Orientation="Horizontal">
+                                        <FontIcon FontSize="16" Glyph="&#xE18F;" />
+                                        <TextBlock Margin="5,0,0,0" Text="Launch Config" />
+                                    </StackPanel>
+                                    <Button.Flyout>
+                                        <Flyout Placement="BottomEdgeAlignedRight">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="15" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="15" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <RichTextBlock MaxWidth="350" TextTrimming="CharacterEllipsis">
+                                                    <Paragraph>
+                                                        <Run FontWeight="SemiBold" Text="{Binding GameCore.Id}" />
+                                                        <Run>,</Run>
+                                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding GameCore.Source}" />
+                                                    </Paragraph>
+                                                    <Paragraph>
+                                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">.minecraft folder:</Run>
+                                                        <Run Text="{Binding GameCore.Root.FullName}" />
+                                                    </Paragraph>
+                                                    <Paragraph>
+                                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">Java Runtime:</Run>
+                                                        <Run Text="{Binding LaunchSetting.JvmSetting.Javaw.FullName, Converter={ThemeResource JavaInfoConverter}}" />
+                                                        <Run>,</Run>
+                                                        <Run Text="{Binding LaunchSetting.JvmSetting.Javaw.FullName}" />
+                                                    </Paragraph>
+                                                    <Paragraph>
+                                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">JVM Memory:</Run>
+                                                        <Run Text="{Binding LaunchSetting.JvmSetting.MinMemory}" />
+                                                        <Run Text="MB" />
+                                                    </Paragraph>
+                                                </RichTextBlock>
+                                                <RichTextBlock
+                                                    Grid.Row="2"
+                                                    MaxWidth="350"
+                                                    MaxHeight="200"
+                                                    TextTrimming="CharacterEllipsis">
+                                                    <Paragraph>
+                                                        <Run FontWeight="SemiBold" Text="Launch Arguments:" />
+                                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding Arguments}" />
+                                                    </Paragraph>
+                                                </RichTextBlock>
+                                                <Button
+                                                    Grid.Row="4"
+                                                    HorizontalAlignment="Right"
+                                                    Command="{Binding CopyCommand}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <FontIcon FontSize="16" Glyph="&#xe8c8;" />
+                                                        <TextBlock Margin="5,0,0,0" Text="Copy" />
+                                                    </StackPanel>
+                                                </Button>
+                                            </Grid>
+                                        </Flyout>
+                                    </Button.Flyout>
+                                </Button>
+                            </labs:SettingsCard>
+
+                            <labs:SettingsCard Visibility="{Binding GameRunning}">
+                                <labs:SettingsCard.Header>
+                                    <TextBlock Text="Force exit the game:" />
+                                </labs:SettingsCard.Header>
+
+                                <Button
+                                    Background="{ThemeResource DeleteButtonBackground}"
+                                    BorderBrush="{ThemeResource DeleteButtonBorder}"
+                                    Command="{Binding KillCommand}"
+                                    Style="{ThemeResource ButtonRevealStyle}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <FontIcon
+                                            FontSize="16"
+                                            Foreground="White"
+                                            Glyph="&#xe71a;" />
                                         <TextBlock
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Center"
-                                            Text="{Binding ElapsedTime}" />
-                                    </Grid>
-                                </controls:ExpanderContentItem>
-                                <Border Style="{ThemeResource ExpanderSplitter}" Visibility="{Binding GameExied}" />
-                                <controls:ExpanderContentItem Visibility="{Binding GameExied}">
-                                    <Grid>
-                                        <TextBlock VerticalAlignment="Center" Text="Game exit information:" />
-                                        <TextBlock
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Center"
-                                            FontWeight="SemiBold">
-                                            <Run Text="{Binding ExitDescription}" />
-                                            <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="(" />
-                                            <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="Exit Code:" />
-                                            <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding ExitCode}" />
-                                            <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text=")" />
-                                        </TextBlock>
-                                    </Grid>
-                                </controls:ExpanderContentItem>
-                            </StackPanel>
-                        </Expander.Content>
-                    </Expander>
+                                            Margin="5,0,0,0"
+                                            Foreground="White"
+                                            Text="Kill Process" />
+                                    </StackPanel>
+                                </Button>
+                            </labs:SettingsCard>
+
+                            <labs:SettingsCard Visibility="{Binding GameRunning}">
+                                <labs:SettingsCard.Header>
+                                    <TextBlock Text="Game running elapsed time:" />
+                                </labs:SettingsCard.Header>
+
+                                <TextBlock Text="{Binding ElapsedTime}" />
+                            </labs:SettingsCard>
+
+                            <labs:SettingsCard Visibility="{Binding GameExied}">
+                                <labs:SettingsCard.Header>
+                                    <TextBlock Text="Game exit information:" />
+                                </labs:SettingsCard.Header>
+
+                                <TextBlock FontWeight="SemiBold">
+                                    <Run Text="{Binding ExitDescription}" />
+                                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="(" />
+                                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="Exit Code:" />
+                                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding ExitCode}" />
+                                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text=")" />
+                                </TextBlock>
+                            </labs:SettingsCard>
+
+                        </labs:SettingsExpander.Items>
+                    </labs:SettingsExpander>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

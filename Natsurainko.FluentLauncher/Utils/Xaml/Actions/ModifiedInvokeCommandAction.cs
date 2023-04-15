@@ -7,10 +7,10 @@ using Microsoft.Xaml.Interactivity;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 
-namespace Natsurainko.FluentLauncher.Components.Mvvm;
+namespace Natsurainko.FluentLauncher.Utils.Xaml.Actions;
 
 /// <summary>
-/// Executes a specified <see cref="global::System.Windows.Input.ICommand"/> when invoked. 
+/// Executes a specified <see cref="ICommand"/> when invoked. 
 /// </summary>
 public sealed class ModifiedInvokeCommandAction : DependencyObject, IAction
 {
@@ -71,16 +71,16 @@ public sealed class ModifiedInvokeCommandAction : DependencyObject, IAction
     {
         get
         {
-            return (ICommand)this.GetValue(ModifiedInvokeCommandAction.CommandProperty);
+            return (ICommand)GetValue(CommandProperty);
         }
         set
         {
-            this.SetValue(ModifiedInvokeCommandAction.CommandProperty, value);
+            SetValue(CommandProperty, value);
         }
     }
 
     /// <summary>
-    /// Gets or sets the parameter that is passed to <see cref="global::System.Windows.Input.ICommand.Execute(object)"/>.
+    /// Gets or sets the parameter that is passed to <see cref="ICommand.Execute(object)"/>.
     /// If this is not set, the parameter from the <seealso cref="Execute(object, object)"/> method will be used.
     /// This is an optional dependency property.
     /// </summary>
@@ -88,11 +88,11 @@ public sealed class ModifiedInvokeCommandAction : DependencyObject, IAction
     {
         get
         {
-            return this.GetValue(ModifiedInvokeCommandAction.CommandParameterProperty);
+            return GetValue(CommandParameterProperty);
         }
         set
         {
-            this.SetValue(ModifiedInvokeCommandAction.CommandParameterProperty, value);
+            SetValue(CommandParameterProperty, value);
         }
     }
 
@@ -104,11 +104,11 @@ public sealed class ModifiedInvokeCommandAction : DependencyObject, IAction
     {
         get
         {
-            return (IValueConverter)this.GetValue(ModifiedInvokeCommandAction.InputConverterProperty);
+            return (IValueConverter)GetValue(InputConverterProperty);
         }
         set
         {
-            this.SetValue(ModifiedInvokeCommandAction.InputConverterProperty, value);
+            SetValue(InputConverterProperty, value);
         }
     }
 
@@ -121,11 +121,11 @@ public sealed class ModifiedInvokeCommandAction : DependencyObject, IAction
     {
         get
         {
-            return this.GetValue(ModifiedInvokeCommandAction.InputConverterParameterProperty);
+            return GetValue(InputConverterParameterProperty);
         }
         set
         {
-            this.SetValue(ModifiedInvokeCommandAction.InputConverterParameterProperty, value);
+            SetValue(InputConverterParameterProperty, value);
         }
     }
 
@@ -138,51 +138,51 @@ public sealed class ModifiedInvokeCommandAction : DependencyObject, IAction
     {
         get
         {
-            return (string)this.GetValue(ModifiedInvokeCommandAction.InputConverterLanguageProperty);
+            return (string)GetValue(InputConverterLanguageProperty);
         }
         set
         {
-            this.SetValue(ModifiedInvokeCommandAction.InputConverterLanguageProperty, value);
+            SetValue(InputConverterLanguageProperty, value);
         }
     }
 
     /// <summary>
     /// Executes the action.
     /// </summary>
-    /// <param name="sender">The <see cref="global::System.Object"/> that is passed to the action by the behavior. Generally this is <seealso cref="Microsoft.Xaml.Interactivity.IBehavior.AssociatedObject"/> or a target object.</param>
+    /// <param name="sender">The <see cref="System.Object"/> that is passed to the action by the behavior. Generally this is <seealso cref="IBehavior.AssociatedObject"/> or a target object.</param>
     /// <param name="parameter">The value of this parameter is determined by the caller.</param>
     /// <returns>True if the command is successfully executed; else false.</returns>
     public object Execute(object sender, object parameter)
     {
-        if (this.Command == null)
+        if (Command == null)
         {
             return false;
         }
 
         object resolvedParameter;
-        if (this.ReadLocalValue(ModifiedInvokeCommandAction.CommandParameterProperty) != DependencyProperty.UnsetValue)
+        if (ReadLocalValue(CommandParameterProperty) != DependencyProperty.UnsetValue)
         {
-            resolvedParameter = this.CommandParameter;
+            resolvedParameter = CommandParameter;
         }
-        else if (this.InputConverter != null)
+        else if (InputConverter != null)
         {
-            resolvedParameter = this.InputConverter.Convert(
+            resolvedParameter = InputConverter.Convert(
                 (sender, parameter),
                 typeof(object),
-                this.InputConverterParameter,
-                this.InputConverterLanguage);
+                InputConverterParameter,
+                InputConverterLanguage);
         }
         else
         {
             resolvedParameter = (sender, parameter);
         }
 
-        if (!this.Command.CanExecute(resolvedParameter))
+        if (!Command.CanExecute(resolvedParameter))
         {
             return false;
         }
 
-        this.Command.Execute(resolvedParameter);
+        Command.Execute(resolvedParameter);
         return true;
     }
 }

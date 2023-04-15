@@ -2,12 +2,12 @@
     x:Class="Natsurainko.FluentLauncher.Views.Dialogs.MicrosoftAccountDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:mvvm="using:Natsurainko.FluentLauncher.Components.Mvvm"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Dialogs"
     x:Name="Dialog"
     d:DataContext="{d:DesignInstance Type=vm:MicrosoftAccountDialog}"
@@ -329,7 +329,7 @@
             Visibility="{Binding WebViewVisibility}">
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="NavigationCompleted">
-                    <mvvm:ModifiedInvokeCommandAction Command="{Binding ExecuteScriptCommand}" />
+                    <actions:ModifiedInvokeCommandAction Command="{Binding ExecuteScriptCommand}" />
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
         </WebView2>
@@ -342,11 +342,11 @@
                 Height="64"
                 IsActive="True" />
             <TextBlock
+                x:Uid="Settings_Microsoft_Account_Loading"
                 Margin="0,10,0,0"
                 HorizontalAlignment="Center"
                 FontSize="20"
                 FontWeight="SemiBold"
-                x:Uid="Settings_Microsoft_Account_Loading"
                 Text="Loading..." />
             <TextBlock
                 FontSize="16"

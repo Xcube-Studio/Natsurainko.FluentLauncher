@@ -7,13 +7,13 @@ body:
   - type: markdown
     attributes:
       value: |
-        **Only one bug should be reported in this issue. If you have multiple issues, please file another bug report and reference the related issues.**
+        **You should report only one bug in this issue. If you have multiple issues, please file another bug report and reference the related issues.**
         **If you are unsure whether the behavior you have seen is expected, or have any questions, please go to discussions and ask for help.**
 
   - type: textarea
     attributes:
       label: Describe the bug
-      description: Please enter a short, clear description of the bug.
+      description: Please provide detailed description of the bug.
     validations:
       required: true
       
@@ -32,9 +32,9 @@ body:
   - type: textarea
     attributes:
       label: Environment
-      description: Please describe your system environment if applicable.
+      description: Please describe your system environment.
       placeholder: |
-        Windows version: 
+        Windows Build number: 
         Fluent Launcher version: 
 
   - type: textarea

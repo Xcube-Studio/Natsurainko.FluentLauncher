@@ -1,0 +1,43 @@
+name: 问题报告 | zh-CN
+description: 报告 Fluent Launcher 的问题
+title: "[Bug] "
+labels: ["bug"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **您在一个 Issue 中仅应该报告一个问题。如果您有其它问题，请提交新的问题报告，并引用相关的问题。**
+        **如果您不确定程序的表现是否正常，或者您在使用过程中遇到了其它问题，请前往讨论区（Discussions）寻求帮助**
+
+  - type: textarea
+    attributes:
+      label: 描述遇到的问题
+      description: 请提供对问题的详细描述。
+    validations:
+      required: true
+      
+  - type: textarea
+    attributes:
+      label: 复现问题的步骤
+      description: 请描述复现该问题的具体步骤。
+    validations:
+      required: true
+      
+  - type: textarea
+    attributes:
+      label: 期望的表现
+      description: 请描述您期望的表现。
+      
+  - type: textarea
+    attributes:
+      label: 环境
+      description: 请描述您的系统环境
+      placeholder: |
+        Windows Build 版本号： 
+        Fluent Launcher 版本号：
+
+  - type: textarea
+    attributes:
+      label: 附件
+      description: 请上传截图、日志或其它相关文件。

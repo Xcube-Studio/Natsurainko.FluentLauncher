@@ -1,0 +1,28 @@
+name: 功能请求 | zh-CN
+description: 为 Fluent Launcher 提议新功能
+title: "[Feature] "
+labels: ["feature"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **您在一个 Issue 中仅应该提出一个新功能。如果您希望添加多个新功能，请提交新的功能请求。**
+        **如果您希望讨论其它想法，请在讨论区（Discussions）中的Ideas分类发帖**
+
+  - type: textarea
+    attributes:
+      label: 为什么您需要该功能？
+      description: 请描述为什么您希望添加该功能。
+    validations:
+      required: true
+      
+  - type: textarea
+    attributes:
+      label: 提议实现方式
+      description: 请描述您建议的该功能的实现方式。
+
+  - type: textarea
+    attributes:
+      label: 附件
+      description: 请上传图片、链接和其它相关资源。

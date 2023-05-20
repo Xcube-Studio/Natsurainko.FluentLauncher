@@ -1,13 +1,11 @@
-blank_issues_enabled: false
+blank_issues_enabled: true
 contact_links:
   - name: Question
     url: https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/discussions/new?category=q-a
     about: Ask a question
-
   - name: Discussion
-    url: https://github.com/microsoft/WindowsAppSDK/discussions/new?category=general
+    url: https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/discussions/new/choose
     about: Start a discussion
-
   - name: Vote on features
-    url: https://portal.productboard.com/winappsdk/1-windows-app-sdk
+    url: https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/discussions/categories/ideas
     about: Vote on features suggested by the community

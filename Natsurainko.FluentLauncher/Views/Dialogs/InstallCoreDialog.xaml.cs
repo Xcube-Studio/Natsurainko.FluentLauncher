@@ -2,11 +2,14 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Views.Pages.Installations;
 using System;
+using System.Collections.Generic;
 
 namespace Natsurainko.FluentLauncher.Views.Dialogs;
 
 public sealed partial class InstallCoreDialog : ContentDialog
 {
+    public IEnumerable<string> InstalledCoreNames { get; set; }
+
     public InstallCoreDialog()
     {
         this.InitializeComponent();

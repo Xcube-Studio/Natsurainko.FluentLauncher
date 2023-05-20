@@ -6,6 +6,7 @@ using Natsurainko.FluentCore.Model.Install;
 using Natsurainko.FluentCore.Model.Install.Vanilla;
 using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Views.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,7 +29,7 @@ public partial class Core : ObservableObject
 
     private static readonly Regex NameRegex = new("^[^/\\\\:\\*\\?\\<\\>\\|\"]{1,255}$");
 
-    private IEnumerable<string> CoreNames;
+    private IEnumerable<string> CoreNames => (ContentDialog as InstallCoreDialog).InstalledCoreNames;
 
     public ContentDialog ContentDialog { get; set; }
 
@@ -79,8 +80,7 @@ public partial class Core : ObservableObject
     {
         Task.Run(async () =>
         {
-            if (CoreManifest == null)
-                CoreManifest = await MinecraftVanlliaInstaller.GetCoreManifestAsync();
+            CoreManifest ??= await MinecraftVanlliaInstaller.GetCoreManifestAsync();
 
             var filtered = GetFilteredCores();
 
@@ -89,8 +89,6 @@ public partial class Core : ObservableObject
                 Cores = filtered;
                 SelectedCoreManifestItem = filtered[0];
             });
-
-            CoreNames = new GameCoreLocator(App.Configuration.CurrentGameFolder).GetGameCores().Select(x => x.Id);
         });
     }
 
@@ -109,11 +107,7 @@ public partial class Core : ObservableObject
             };
 
             foreach (var loaderType in loaderTypes)
-            {
-                var modloader = new ModLoader(loaderType, SelectedCoreManifestItem?.Id);
-
-                App.MainWindow.DispatcherQueue.TryEnqueue(() => Loaders.Add(modloader));
-            }
+                App.MainWindow.DispatcherQueue.TryEnqueue(() => Loaders.Add(new ModLoader(loaderType, SelectedCoreManifestItem?.Id)));
         });
     }
 
@@ -127,9 +121,9 @@ public partial class Core : ObservableObject
     public void Install()
     {
         if (SelectedModLoader?.SelectedBuild != null)
-            InstallArrangement.StartNew(SelectedModLoader.SelectedBuild, CoreName, enableCoreIndependent);
+            InstallArrangement.StartNew(SelectedModLoader.SelectedBuild, CoreName, EnableCoreIndependent);
         else if (SelectedCoreManifestItem != null)
-            InstallArrangement.StartNew(SelectedCoreManifestItem, CoreName, enableCoreIndependent);
+            InstallArrangement.StartNew(SelectedCoreManifestItem, CoreName, EnableCoreIndependent);
 
         ContentDialog.Hide();
     }

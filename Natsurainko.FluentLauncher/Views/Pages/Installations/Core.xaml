@@ -235,7 +235,7 @@
                                 Grid.Column="2"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
-                                Text="{Binding CoreName}" />
+                                Text="{Binding CoreName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
                         <Border Style="{ThemeResource ExpanderSplitter}" />
                         <Grid Height="55.2">

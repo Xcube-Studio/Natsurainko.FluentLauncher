@@ -216,7 +216,8 @@ public partial class Cores
         {
             var installCoreDialog = new InstallCoreDialog
             {
-                XamlRoot = MainContainer._XamlRoot
+                XamlRoot = MainContainer._XamlRoot,
+                InstalledCoreNames = GameCores.Select(x => x.Id).ToArray()
             };
             await installCoreDialog.ShowAsync();
         });

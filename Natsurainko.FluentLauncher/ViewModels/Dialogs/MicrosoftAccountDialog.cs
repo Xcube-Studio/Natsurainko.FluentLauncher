@@ -7,6 +7,7 @@ using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentCore.Module.Authenticator;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.Mvvm;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views.Pages;
 using System;
 using System.ComponentModel;
@@ -21,7 +22,7 @@ public partial class MicrosoftAccountDialog : DialogViewModel
     public ContentDialog ContentDialog { get; set; }
 
     [ObservableProperty]
-    private Uri source;
+    private Uri source = new("https://login.live.com/oauth20_authorize.srf?client_id=0844e754-1d2e-4861-8e2b-18059609badb&response_type=code&scope=XboxLive.signin%20offline_access&redirect_uri=https://login.live.com/oauth20_desktop.srf&prompt=login");
 
     [ObservableProperty]
     private Visibility webViewVisibility = Visibility.Visible;

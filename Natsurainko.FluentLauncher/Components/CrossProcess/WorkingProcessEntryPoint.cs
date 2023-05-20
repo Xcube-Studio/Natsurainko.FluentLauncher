@@ -1,6 +1,7 @@
 ﻿using Natsurainko.FluentCore.Module.Downloader;
 using Natsurainko.FluentCore.Module.Launcher;
 using Natsurainko.FluentCore.Service;
+using Natsurainko.FluentLauncher.Utils;
 using Newtonsoft.Json;
 using System;
 using System.CommandLine;

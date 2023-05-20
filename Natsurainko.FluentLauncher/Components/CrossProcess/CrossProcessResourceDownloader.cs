@@ -1,4 +1,5 @@
 ﻿using Natsurainko.FluentCore.Interface;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.Toolkits.Network.Downloader;
 using Natsurainko.Toolkits.Text;
 using Newtonsoft.Json;

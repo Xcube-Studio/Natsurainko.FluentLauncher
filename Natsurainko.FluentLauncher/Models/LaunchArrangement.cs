@@ -12,6 +12,7 @@ using Natsurainko.FluentCore.Module.Authenticator;
 using Natsurainko.FluentCore.Wrapper;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.CrossProcess;
+using Natsurainko.FluentLauncher.Utils.Xaml;
 using Natsurainko.FluentLauncher.Views.Pages;
 using Natsurainko.Toolkits.Network.Downloader;
 using System;

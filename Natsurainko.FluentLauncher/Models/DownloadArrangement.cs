@@ -14,7 +14,7 @@ using Natsurainko.FluentCore.Model.Mod.CureseForge;
 using Natsurainko.FluentCore.Module.Mod;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.FluentCore;
-using Natsurainko.FluentLauncher.Components.Mvvm;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views.Pages;
 using Natsurainko.Toolkits.Network.Downloader;
 using System;

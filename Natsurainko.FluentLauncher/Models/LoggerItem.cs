@@ -2,7 +2,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentCore.Model.Launch;
-using Natsurainko.FluentLauncher.Components;
+using Natsurainko.FluentLauncher.Utils;
 
 namespace Natsurainko.FluentLauncher.Models;
 

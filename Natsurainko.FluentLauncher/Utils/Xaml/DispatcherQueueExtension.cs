@@ -1,12 +1,12 @@
 ﻿using Microsoft.UI.Dispatching;
 using System.Threading.Tasks;
 
-namespace Natsurainko.FluentLauncher.Components;
+namespace Natsurainko.FluentLauncher.Utils.Xaml;
 
 public static class DispatcherQueueExtension
 {
     public static void SynchronousTryEnqueue(this DispatcherQueue dispatcher, DispatcherQueueHandler callback)
-        => SynchronousTryEnqueue(dispatcher, DispatcherQueuePriority.Normal, callback);
+        => dispatcher.SynchronousTryEnqueue(DispatcherQueuePriority.Normal, callback);
 
     public static void SynchronousTryEnqueue(this DispatcherQueue dispatcher, DispatcherQueuePriority priority, DispatcherQueueHandler callback)
     {

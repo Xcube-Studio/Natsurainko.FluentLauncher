@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 
-namespace Natsurainko.FluentLauncher.Components;
+namespace Natsurainko.FluentLauncher.Utils;
 
 public class FileInfoJsonConverter : JsonConverter
 {

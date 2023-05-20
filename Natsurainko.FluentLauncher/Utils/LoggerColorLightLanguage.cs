@@ -2,7 +2,7 @@
 using ColorCode.Styling;
 using System.Collections.Generic;
 
-namespace Natsurainko.FluentLauncher.Components;
+namespace Natsurainko.FluentLauncher.Utils;
 
 internal class LoggerColorLightLanguage : ILanguage
 {

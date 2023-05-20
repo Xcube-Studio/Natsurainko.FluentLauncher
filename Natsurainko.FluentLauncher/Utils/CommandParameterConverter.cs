@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Natsurainko.FluentLauncher.Components.Mvvm;
+namespace Natsurainko.FluentLauncher.Utils;
 
 public static class CommandParameterConverter
 {

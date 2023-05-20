@@ -18,7 +18,7 @@ public partial class Account : SettingViewModel
 {
     public Account() : base()
     {
-        OnPropertyChanged("CanNext");
+        OnPropertyChanged(nameof(CanNext));
     }
 
     [ObservableProperty]
@@ -60,7 +60,6 @@ public partial class Account
             };
 
             microsoftAccountDialog.DataContext = viewmodel;
-            microsoftAccountDialog.Loaded += (_, e) => { viewmodel.Source = new("https://login.live.com/oauth20_authorize.srf?client_id=00000000402b5328&response_type=code&scope=XboxLive.signin%20offline_access&redirect_uri=https://login.live.com/oauth20_desktop.srf&prompt=login"); };
 
             await microsoftAccountDialog.ShowAsync();
         });

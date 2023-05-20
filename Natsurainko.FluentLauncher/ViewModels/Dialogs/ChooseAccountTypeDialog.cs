@@ -106,7 +106,6 @@ public partial class ChooseAccountTypeDialog : DialogViewModel
             };
 
             microsoftAccountDialog.DataContext = viewmodel;
-            microsoftAccountDialog.Loaded += (_, e) => { viewmodel.Source = new("https://login.live.com/oauth20_authorize.srf?client_id=0844e754-1d2e-4861-8e2b-18059609badb&response_type=code&scope=XboxLive.signin%20offline_access&redirect_uri=https://login.live.com/oauth20_desktop.srf&prompt=login"); };
             
             await microsoftAccountDialog.ShowAsync();
         }

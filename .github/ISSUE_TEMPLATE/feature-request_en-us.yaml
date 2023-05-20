@@ -1,0 +1,28 @@
+name: Feature request
+description: Suggest a feature for Fluent Launcher
+title: "[Feature] "
+labels: ["feature"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Only one feature should be submitted in this issue. If you would like to suggest more features, please file another feature request.**
+        **If you want to discuss some general ideas with other people, you can post a discussion in the ideas section.**
+
+  - type: textarea
+    attributes:
+      label: Why do you need this feature?
+      description: Please describe why you would like to implement this feature.
+    validations:
+      required: true
+      
+  - type: textarea
+    attributes:
+      label: Suggest an implementation
+      description: Please suggest a solution to implement this feature.
+
+  - type: textarea
+    attributes:
+      label: Attachment
+      description: Please upload images, links and any related resources.

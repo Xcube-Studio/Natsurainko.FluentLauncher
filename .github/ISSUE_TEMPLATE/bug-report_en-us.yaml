@@ -1,9 +1,15 @@
-name: Bug Report
-description: File a bug report
+name: Bug report
+description: Report a bug in Fluent Launcher
 title: "[Bug] "
 labels: ["bug"]
 
 body:
+  - type: markdown
+    attributes:
+      value: |
+        **Only one bug should be reported in this issue. If you have multiple issues, please file another bug report and reference the related issues.**
+        **If you are unsure whether the behavior you have seen is expected, or have any questions, please go to discussions and ask for help.**
+
   - type: textarea
     attributes:
       label: Describe the bug

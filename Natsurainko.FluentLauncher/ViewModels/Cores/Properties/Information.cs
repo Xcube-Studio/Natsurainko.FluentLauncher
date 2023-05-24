@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages.Properties;
+namespace Natsurainko.FluentLauncher.ViewModels.Cores.Properties;
 
 public partial class Information : ObservableObject
 {

@@ -1,6 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.Views.Pages.Properties;
+using Natsurainko.FluentLauncher.Views.Cores.Properties;
 using System;
 
 namespace Natsurainko.FluentLauncher.Views.Dialogs;

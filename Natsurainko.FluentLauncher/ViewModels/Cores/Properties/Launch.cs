@@ -9,7 +9,7 @@ using System.IO;
 using System.Reflection.PortableExecutable;
 using GameCore = Natsurainko.FluentLauncher.Components.FluentCore.GameCore;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages.Properties;
+namespace Natsurainko.FluentLauncher.ViewModels.Cores.Properties;
 
 public partial class Launch : ObservableObject
 {

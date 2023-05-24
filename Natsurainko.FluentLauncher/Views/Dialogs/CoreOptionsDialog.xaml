@@ -321,7 +321,7 @@
             ItemInvoked="NavigationView_ItemInvoked"
             PaneDisplayMode="Top">
             <NavigationView.MenuItems>
-                <NavigationViewItem IsSelected="True" Tag="Natsurainko.FluentLauncher.Views.Pages.Properties.Information">
+                <NavigationViewItem IsSelected="True" Tag="Natsurainko.FluentLauncher.Views.Cores.Properties.Information">
                     <NavigationViewItem.Content>
                         <TextBlock>
                             <Run Text="{Binding Id}" />
@@ -336,7 +336,7 @@
                 <NavigationViewItem
                     x:Uid="Navigation_Options_Launch"
                     Content="Launch Settings"
-                    Tag="Natsurainko.FluentLauncher.Views.Pages.Properties.Launch">
+                    Tag="Natsurainko.FluentLauncher.Views.Cores.Properties.Launch">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe945;" />
                     </NavigationViewItem.Icon>
@@ -344,7 +344,7 @@
                 <NavigationViewItem
                     x:Uid="Navigation_Options_Mods"
                     Content="Mods"
-                    Tag="Natsurainko.FluentLauncher.Views.Pages.Properties.Mod">
+                    Tag="Natsurainko.FluentLauncher.Views.Cores.Properties.Mod">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe8f1;" />
                     </NavigationViewItem.Icon>
@@ -353,7 +353,7 @@
                     x:Uid="Navigation_Options_Saves"
                     Content="Saves"
                     IsEnabled="False"
-                    Tag="Natsurainko.FluentLauncher.Views.Pages.Properties.Save">
+                    Tag="Natsurainko.FluentLauncher.Views.Cores.Properties.Save">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe81e;" />
                     </NavigationViewItem.Icon>

@@ -2,7 +2,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Components.FluentCore;
 
-namespace Natsurainko.FluentLauncher.Views.Pages.Properties;
+namespace Natsurainko.FluentLauncher.Views.Cores.Properties;
 
 public sealed partial class Launch : Page
 {
@@ -14,6 +14,6 @@ public sealed partial class Launch : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        this.DataContext = new ViewModels.Pages.Properties.Launch(e.Parameter as GameCore);
+        this.DataContext = new ViewModels.Cores.Properties.Launch(e.Parameter as GameCore);
     }
 }

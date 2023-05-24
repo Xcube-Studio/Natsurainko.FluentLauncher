@@ -71,12 +71,4 @@
     </Page>
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="AppPackages\**" />
-    <EmbeddedResource Remove="AppPackages\**" />
-    <None Remove="AppPackages\**" />
-    <Page Remove="AppPackages\**" />
-    <PRIResource Remove="AppPackages\**" />
-  </ItemGroup>
-
 </Project>

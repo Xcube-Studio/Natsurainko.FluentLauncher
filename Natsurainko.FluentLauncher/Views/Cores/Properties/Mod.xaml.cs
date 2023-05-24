@@ -4,7 +4,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Components.FluentCore;
 
-namespace Natsurainko.FluentLauncher.Views.Pages.Properties;
+namespace Natsurainko.FluentLauncher.Views.Cores.Properties;
 
 public sealed partial class Mod : Page
 {
@@ -16,7 +16,7 @@ public sealed partial class Mod : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        this.DataContext = new ViewModels.Pages.Properties.Mod(e.Parameter as GameCore);
+        this.DataContext = new ViewModels.Cores.Properties.Mod(e.Parameter as GameCore);
     }
 
     private void Border_PointerEntered(object sender, PointerRoutedEventArgs e)

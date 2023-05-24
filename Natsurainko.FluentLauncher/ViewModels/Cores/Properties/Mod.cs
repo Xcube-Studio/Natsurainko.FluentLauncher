@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages.Properties;
+namespace Natsurainko.FluentLauncher.ViewModels.Cores.Properties;
 
 public partial class Mod : ObservableObject
 {

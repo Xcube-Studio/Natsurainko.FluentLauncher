@@ -1,14 +1,14 @@
 <Page
-    x:Class="Natsurainko.FluentLauncher.Views.Pages.Properties.Mod"
+    x:Class="Natsurainko.FluentLauncher.Views.Cores.Properties.Mod"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Pages.Properties"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Cores.Properties"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:properties="using:Natsurainko.FluentLauncher.ViewModels.Pages.Properties"
+    xmlns:properties="using:Natsurainko.FluentLauncher.ViewModels.Cores.Properties"
     d:DataContext="{d:DesignInstance Type=properties:Mod}"
     mc:Ignorable="d">
 

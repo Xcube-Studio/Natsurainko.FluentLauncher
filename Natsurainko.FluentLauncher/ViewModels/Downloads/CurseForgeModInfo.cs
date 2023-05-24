@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages.Mods;
+namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 
 internal partial class CurseForgeModInfo : ObservableObject
 {

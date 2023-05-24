@@ -1,7 +1,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-namespace Natsurainko.FluentLauncher.Views.Pages.Mods;
+namespace Natsurainko.FluentLauncher.Views.Downloads;
 
 public sealed partial class CurseForge : Page
 {

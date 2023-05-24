@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Natsurainko.FluentLauncher.ViewModels.Activities;
-using Natsurainko.FluentLauncher.ViewModels.Pages.Mods;
+using Natsurainko.FluentLauncher.ViewModels.Downloads;
 
 namespace Natsurainko.FluentLauncher.Components.Mvvm;
 

@@ -1,12 +1,12 @@
 <Page
-    x:Class="Natsurainko.FluentLauncher.Views.Pages.Mods.CurseForgeModInfo"
+    x:Class="Natsurainko.FluentLauncher.Views.Downloads.CurseForgeModInfo"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:Natsurainko.FluentLauncher.UserControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Pages.Mods"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:mods="using:Natsurainko.FluentLauncher.ViewModels.Pages.Mods"
+    xmlns:mods="using:Natsurainko.FluentLauncher.ViewModels.Downloads"
     d:DataContext="{d:DesignInstance Type=mods:CurseForgeModInfo}"
     mc:Ignorable="d">
 

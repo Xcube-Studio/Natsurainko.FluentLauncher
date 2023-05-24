@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 using Windows.Storage.Pickers;
 using WinUIEx;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages.Mods;
+namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 
 internal partial class CurseForgeModFile : ObservableObject
 {

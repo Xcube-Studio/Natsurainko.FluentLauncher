@@ -80,7 +80,7 @@
                 <NavigationViewItem
                     x:Uid="Navigation_Mods"
                     Content="Mods"
-                    Tag="Natsurainko.FluentLauncher.Views.Pages.Mods.CurseForge">
+                    Tag="Natsurainko.FluentLauncher.Views.Downloads.CurseForge">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe8f1;" />
                     </NavigationViewItem.Icon>

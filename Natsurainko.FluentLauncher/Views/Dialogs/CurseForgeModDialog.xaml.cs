@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using Natsurainko.FluentLauncher.Views.Pages.Mods;
+using Natsurainko.FluentLauncher.Views.Downloads;
 using System;
 using System.Collections.Generic;
 using System.IO;

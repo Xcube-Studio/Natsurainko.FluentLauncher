@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages.Mods;
+namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 
 internal partial class CurseForge : ObservableObject
 {

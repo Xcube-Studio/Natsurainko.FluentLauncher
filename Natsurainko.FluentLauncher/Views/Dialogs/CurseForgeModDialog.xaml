@@ -321,7 +321,7 @@
             ItemInvoked="NavigationView_ItemInvoked"
             PaneDisplayMode="Top">
             <NavigationView.MenuItems>
-                <NavigationViewItem IsSelected="True" Tag="Natsurainko.FluentLauncher.Views.Pages.Mods.CurseForgeModInfo">
+                <NavigationViewItem IsSelected="True" Tag="Natsurainko.FluentLauncher.Views.Downloads.CurseForgeModInfo">
                     <NavigationViewItem.Content>
                         <TextBlock>
                             <Run Text="{Binding Name}" />
@@ -336,7 +336,7 @@
                 <NavigationViewItem
                     x:Uid="CF_Download_Files"
                     Content="Download Files"
-                    Tag="Natsurainko.FluentLauncher.Views.Pages.Mods.CurseForgeModFile">
+                    Tag="Natsurainko.FluentLauncher.Views.Downloads.CurseForgeModFile">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe896;" />
                     </NavigationViewItem.Icon>

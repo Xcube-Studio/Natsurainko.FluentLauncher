@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -14,11 +15,11 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
-namespace Natsurainko.FluentLauncher.Views.Pages.Mods;
+namespace Natsurainko.FluentLauncher.Views.Downloads;
 
-public sealed partial class CurseForgeModInfo : Page
+public sealed partial class CurseForgeModFile : Page
 {
-    public CurseForgeModInfo()
+    public CurseForgeModFile()
     {
         this.InitializeComponent();
     }
@@ -26,6 +27,7 @@ public sealed partial class CurseForgeModInfo : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        this.DataContext = new ViewModels.Pages.Mods.CurseForgeModInfo(e.Parameter as CurseForgeResourceData);
+
+        this.DataContext = new ViewModels.Downloads.CurseForgeModFile(e.Parameter as CurseForgeResourceData);
     }
 }

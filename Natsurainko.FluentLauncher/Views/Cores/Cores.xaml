@@ -8,9 +8,9 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Pages"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Cores"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Pages"
+    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Cores"
     Name="Page"
     Background="Transparent"
     mc:Ignorable="d">

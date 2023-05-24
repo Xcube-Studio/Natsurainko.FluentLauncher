@@ -19,7 +19,7 @@ public partial class GetStarted : ObservableObject
     [RelayCommand]
     public void Start()
     {
-        App.MainWindow.ContentFrame.Navigate(typeof(Views.Pages.MainContainer));
+        App.MainWindow.ContentFrame.Navigate(typeof(Views.MainContainer));
         App.Configuration.FinishGuide = true;
     }
 }

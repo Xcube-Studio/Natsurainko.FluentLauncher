@@ -54,7 +54,7 @@ public partial class ChooseAccountTypeDialog : DialogViewModel
         {
             var microsoftAccountDialog = new Views.Dialogs.MicrosoftAccountDialog1
             {
-                XamlRoot = MainContainer._XamlRoot,
+                XamlRoot = Views.MainContainer._XamlRoot,
             };
 
             var viewmodel = new MicrosoftAccountDialog1()
@@ -95,7 +95,7 @@ public partial class ChooseAccountTypeDialog : DialogViewModel
         {
             var microsoftAccountDialog = new Views.Dialogs.MicrosoftAccountDialog
             {
-                XamlRoot = MainContainer._XamlRoot,
+                XamlRoot = Views.MainContainer._XamlRoot,
             };
 
             var viewmodel = new MicrosoftAccountDialog()
@@ -114,7 +114,7 @@ public partial class ChooseAccountTypeDialog : DialogViewModel
     {
         var yggdrasilAccountDialog = new Views.Dialogs.YggdrasilAccountDialog
         {
-            XamlRoot = MainContainer._XamlRoot,
+            XamlRoot = Views.MainContainer._XamlRoot,
             DataContext = new YggdrasilAccountDialog { SetAccountAction = SetAccountAction }
         };
         await yggdrasilAccountDialog.ShowAsync();
@@ -124,7 +124,7 @@ public partial class ChooseAccountTypeDialog : DialogViewModel
     {
         var offlineAccountDialog = new Views.Dialogs.OfflineAccountDialog
         {
-            XamlRoot = MainContainer._XamlRoot,
+            XamlRoot = Views.MainContainer._XamlRoot,
             DataContext = new OfflineAccountDialog { SetAccountAction = SetAccountAction }
         };
         await offlineAccountDialog.ShowAsync();

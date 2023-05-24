@@ -59,7 +59,7 @@ public sealed partial class MainContainer : Page
         _XamlRoot = XamlRoot;
 
         App.MainWindow.SetTitleBar(AppTitleBar);
-        contentFrame.Navigate(typeof(Home));
+        contentFrame.Navigate(typeof(Home.Home));
 
         RefreshDragArea();
     }

@@ -51,7 +51,7 @@ public sealed partial class MainWindow : WindowEx
            };
 
         if (App.Configuration.FinishGuide)
-            Frame.Navigate(typeof(Views.Pages.MainContainer));
+            Frame.Navigate(typeof(Views.MainContainer));
         else Frame.Navigate(typeof(Views.OOBE.Navigation));
     }
 

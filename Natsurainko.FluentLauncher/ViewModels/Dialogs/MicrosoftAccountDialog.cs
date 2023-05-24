@@ -8,7 +8,6 @@ using Natsurainko.FluentCore.Module.Authenticator;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.Views.Pages;
 using System;
 using System.ComponentModel;
 using System.Web;

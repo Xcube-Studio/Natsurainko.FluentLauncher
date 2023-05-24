@@ -6,7 +6,6 @@ using Natsurainko.FluentLauncher.Models;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection.PortableExecutable;
 using GameCore = Natsurainko.FluentLauncher.Components.FluentCore.GameCore;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores.Properties;

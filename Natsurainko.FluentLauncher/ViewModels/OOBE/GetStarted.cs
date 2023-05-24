@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Models;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;

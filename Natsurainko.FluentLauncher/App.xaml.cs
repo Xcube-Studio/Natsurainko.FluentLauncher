@@ -1,5 +1,4 @@
 ﻿using Microsoft.UI.Dispatching;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.CrossProcess;
@@ -8,11 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using Windows.Storage;
-using Windows.UI.Popups;
-using System.Windows.Input;
 using Natsurainko.FluentLauncher.Views.Dialogs;
-using System.Threading.Tasks;
-using Natsurainko.FluentLauncher.Views.Pages;
 using Microsoft.Extensions.DependencyInjection;
 using Natsurainko.FluentLauncher.Services;
 using Natsurainko.FluentLauncher.Views;

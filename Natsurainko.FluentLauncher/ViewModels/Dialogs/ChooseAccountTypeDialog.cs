@@ -4,7 +4,6 @@ using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Components.Mvvm;
-using Natsurainko.FluentLauncher.Views.Pages;
 using System;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.System;

@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
 using System.IO;
-using GameCore = Natsurainko.FluentLauncher.Components.FluentCore.GameCore;
 
 namespace Natsurainko.FluentLauncher.Models;
 

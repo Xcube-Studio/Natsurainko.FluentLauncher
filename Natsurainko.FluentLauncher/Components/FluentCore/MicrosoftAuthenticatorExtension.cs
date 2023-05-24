@@ -3,12 +3,8 @@ using Natsurainko.Toolkits.Network;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Natsurainko.FluentCore.Module.Authenticator;
 using System.Threading;
 
 namespace Natsurainko.FluentLauncher.Components.FluentCore;

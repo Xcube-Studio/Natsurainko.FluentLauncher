@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Models;
-using Natsurainko.FluentLauncher.Views.Pages;
 using System.Collections.Generic;
 using System.Linq;
 

@@ -7,17 +7,9 @@ using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Data;
-using Natsurainko.FluentLauncher.Views.Pages;
 using Natsurainko.Toolkits.Network.Downloader;
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Storage.Pickers;
-using WinUIEx;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 

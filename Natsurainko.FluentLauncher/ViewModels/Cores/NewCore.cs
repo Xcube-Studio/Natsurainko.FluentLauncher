@@ -4,7 +4,6 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentCore.Model.Install;
 using Natsurainko.FluentCore.Model.Install.Vanilla;
-using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Views.Dialogs;
 using System;

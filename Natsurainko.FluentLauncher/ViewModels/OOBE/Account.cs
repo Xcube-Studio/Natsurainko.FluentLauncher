@@ -12,7 +12,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages.Guides;
+namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
 public partial class Account : SettingViewModel
 {
@@ -39,7 +39,7 @@ public partial class Account : SettingViewModel
             WeakReferenceMessenger.Default.Send(new GuideNavigationMessage()
             {
                 CanNext = canNext,
-                NextPage = typeof(Views.Pages.Guides.GetStarted)
+                NextPage = typeof(Views.OOBE.GetStarted)
             });
     }
 }

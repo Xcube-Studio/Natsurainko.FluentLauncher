@@ -52,7 +52,7 @@ public sealed partial class MainWindow : WindowEx
 
         if (App.Configuration.FinishGuide)
             Frame.Navigate(typeof(Views.Pages.MainContainer));
-        else Frame.Navigate(typeof(Views.Pages.Guides.Navigation));
+        else Frame.Navigate(typeof(Views.OOBE.Navigation));
     }
 
     private void InfoBar_CloseButtonClick(InfoBar sender, object args)

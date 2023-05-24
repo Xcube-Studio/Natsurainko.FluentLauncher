@@ -1,11 +1,11 @@
 <Page
-    x:Class="Natsurainko.FluentLauncher.Views.Pages.Guides.Navigation"
+    x:Class="Natsurainko.FluentLauncher.Views.OOBE.Navigation"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Pages.Guides"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.OOBE"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Pages.Guides"
+    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
     mc:Ignorable="d">
     <Page.DataContext>
         <vm:Navigation />
@@ -44,7 +44,7 @@
             IsSettingsVisible="False"
             PaneDisplayMode="Top">
             <NavigationView.MenuItems>
-                <NavigationViewItem IsSelected="True" Tag="Natsurainko.FluentLauncher.Views.Pages.Guides.Language">
+                <NavigationViewItem IsSelected="True" Tag="Natsurainko.FluentLauncher.Views.OOBE.Language">
                     <NavigationViewItem.Content>
                         <TextBlock
                             x:Uid="Guide_Navigation_Language"
@@ -55,7 +55,7 @@
                         <FontIcon Glyph="&#xf2b7;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Tag="Natsurainko.FluentLauncher.Views.Pages.Guides.Basic">
+                <NavigationViewItem Tag="Natsurainko.FluentLauncher.Views.OOBE.Basic">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe713;" />
                     </NavigationViewItem.Icon>
@@ -66,7 +66,7 @@
                             Text="Basic Settings" />
                     </NavigationViewItem.Content>
                 </NavigationViewItem>
-                <NavigationViewItem Tag="Natsurainko.FluentLauncher.Views.Pages.Guides.Account">
+                <NavigationViewItem Tag="Natsurainko.FluentLauncher.Views.OOBE.Account">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe77b;" />
                     </NavigationViewItem.Icon>
@@ -79,7 +79,7 @@
                 </NavigationViewItem>
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
-                <NavigationViewItem Tag="Natsurainko.FluentLauncher.Views.Pages.Guides.GetStarted">
+                <NavigationViewItem Tag="Natsurainko.FluentLauncher.Views.OOBE.GetStarted">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE736;" />
                     </NavigationViewItem.Icon>

@@ -14,7 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage.Pickers;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages.Guides;
+namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
 public partial class Basic : SettingViewModel
 {
@@ -54,7 +54,7 @@ public partial class Basic : SettingViewModel
             WeakReferenceMessenger.Default.Send(new GuideNavigationMessage()
             {
                 CanNext = canNext,
-                NextPage = typeof(Views.Pages.Guides.Account)
+                NextPage = typeof(Views.OOBE.Account)
             });
     }
 }

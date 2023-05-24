@@ -1,6 +1,6 @@
 using Microsoft.UI.Xaml.Controls;
 
-namespace Natsurainko.FluentLauncher.Views.Pages.Guides;
+namespace Natsurainko.FluentLauncher.Views.OOBE;
 
 public sealed partial class Account : Page
 {

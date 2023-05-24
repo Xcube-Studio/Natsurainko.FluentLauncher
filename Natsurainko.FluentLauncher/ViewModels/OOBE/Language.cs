@@ -6,7 +6,7 @@ using Natsurainko.FluentLauncher.Models;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages.Guides;
+namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
 public partial class Language : SettingViewModel
 {
@@ -40,7 +40,7 @@ public partial class Language : SettingViewModel
             WeakReferenceMessenger.Default.Send(new GuideNavigationMessage()
             {
                 CanNext = canNext,
-                NextPage = typeof(Views.Pages.Guides.Basic)
+                NextPage = typeof(Views.OOBE.Basic)
             });
     }
 }

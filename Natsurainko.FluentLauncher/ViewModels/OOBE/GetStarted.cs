@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Models;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages.Guides;
+namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
 public partial class GetStarted : ObservableObject
 {

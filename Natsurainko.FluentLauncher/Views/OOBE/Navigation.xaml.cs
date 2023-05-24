@@ -4,7 +4,7 @@ using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Linq;
 
-namespace Natsurainko.FluentLauncher.Views.Pages.Guides;
+namespace Natsurainko.FluentLauncher.Views.OOBE;
 
 public sealed partial class Navigation : Page
 {
@@ -14,7 +14,7 @@ public sealed partial class Navigation : Page
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
-        => contentFrame.Navigate(typeof(Views.Pages.Guides.Language), null, new DrillInNavigationTransitionInfo());
+        => contentFrame.Navigate(typeof(Views.OOBE.Language), null, new DrillInNavigationTransitionInfo());
 
     private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
     {

@@ -6,7 +6,7 @@ using Microsoft.UI.Xaml.Media.Animation;
 using Natsurainko.FluentLauncher.Models;
 using System;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages.Guides;
+namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
 public partial class Navigation : ObservableObject
 {

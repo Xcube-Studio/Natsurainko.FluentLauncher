@@ -3,9 +3,9 @@ using Microsoft.UI.Xaml.Navigation;
 
 namespace Natsurainko.FluentLauncher.Views.Cores;
 
-public sealed partial class Core : Page
+public sealed partial class NewCore : Page
 {
-    public Core()
+    public NewCore()
     {
         this.InitializeComponent();
     }

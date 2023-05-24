@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Linq;
 
-namespace Natsurainko.FluentLauncher.Views.Pages;
+namespace Natsurainko.FluentLauncher.Views.Cores;
 
 public sealed partial class Cores : Page
 {

@@ -41,9 +41,16 @@ jobs:
         $certificatePath = Join-Path -Path $env:Project_Directory -ChildPath Natsurainko.FluentLauncher_TemporaryKey.pfx
         [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
 
+    - name: DEBUG_CertificatePath
+      run: |
+        ls $env:Project_Directory
+        echo $certificatePath
+
     # Create the app package by building and packaging the Windows Application Packaging project
     - name: Create the app package
-      run: msbuild $env:Solution_Name /p:Platform=$env:Platform /p:AppxBundlePlatforms="$env:Appx_Bundle_Platforms" /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=Natsurainko.FluentLauncher_TemporaryKey.pfx /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
+      run: |
+        $certificatePath = Join-Path -Path $env:Project_Directory -ChildPath Natsurainko.FluentLauncher_TemporaryKey.pfx
+        msbuild $env:Solution_Name /p:Platform=$env:Platform /p:AppxBundlePlatforms="$env:Appx_Bundle_Platforms" /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=$certificatePath /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
       env:
         Appx_Bundle: Never
         Platform: x64

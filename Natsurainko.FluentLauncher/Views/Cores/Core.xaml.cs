@@ -1,7 +1,7 @@
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
-namespace Natsurainko.FluentLauncher.Views.Pages.Installations;
+namespace Natsurainko.FluentLauncher.Views.Cores;
 
 public sealed partial class Core : Page
 {
@@ -13,6 +13,6 @@ public sealed partial class Core : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        this.DataContext = new ViewModels.Pages.Installations.Core() { ContentDialog = e.Parameter as ContentDialog };
+        this.DataContext = new ViewModels.Cores.Core() { ContentDialog = e.Parameter as ContentDialog };
     }
 }

@@ -325,7 +325,7 @@
                     x:Uid="Mods_Install_New_Core"
                     Content="Install New Core"
                     IsSelected="True"
-                    Tag="Natsurainko.FluentLauncher.Views.Pages.Installations.Core">
+                    Tag="Natsurainko.FluentLauncher.Views.Cores.Core">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xf158;" />
                     </NavigationViewItem.Icon>
@@ -334,7 +334,7 @@
                     x:Uid="Mods_Install_CF_Modpack"
                     Content="Install Curseforge Modpack"
                     IsEnabled="False"
-                    Tag="Natsurainko.FluentLauncher.Views.Pages.Installations.Core">
+                    Tag="Natsurainko.FluentLauncher.Views.Cores.Core">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe7b8;" />
                     </NavigationViewItem.Icon>

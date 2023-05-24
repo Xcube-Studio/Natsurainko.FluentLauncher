@@ -16,7 +16,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MinecraftVanlliaInstaller = Natsurainko.FluentCore.Module.Installer.MinecraftVanlliaInstaller;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages.Installations;
+namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
 public partial class Core : ObservableObject
 {

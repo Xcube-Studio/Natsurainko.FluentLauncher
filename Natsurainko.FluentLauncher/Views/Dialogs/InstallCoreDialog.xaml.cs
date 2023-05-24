@@ -1,6 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.Views.Pages.Installations;
+using Natsurainko.FluentLauncher.Views.Cores;
 using System;
 using System.Collections.Generic;
 

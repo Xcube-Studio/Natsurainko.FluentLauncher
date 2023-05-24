@@ -15,7 +15,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages.Settings;
+namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
 public partial class Account : SettingViewModel
 {

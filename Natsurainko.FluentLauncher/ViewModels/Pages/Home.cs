@@ -56,7 +56,7 @@ public partial class Home : ObservableObject
     public Task Launch() => Task.Run(() => LaunchArrangement.StartNew(CurrentGameCore));
 
     [RelayCommand]
-    public void Account() => MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Settings.Navigation), typeof(Views.Pages.Settings.Account));
+    public void Account() => MainContainer.ContentFrame.Navigate(typeof(Views.Settings.Navigation), typeof(Views.Settings.Account));
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {

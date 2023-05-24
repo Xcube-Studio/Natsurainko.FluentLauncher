@@ -1,12 +1,12 @@
 <Page
-    x:Class="Natsurainko.FluentLauncher.Views.Pages.Settings.About"
+    x:Class="Natsurainko.FluentLauncher.Views.Settings.About"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Pages.Settings"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Settings"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Pages.Settings"
+    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Settings"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     Background="Transparent"
     mc:Ignorable="d">

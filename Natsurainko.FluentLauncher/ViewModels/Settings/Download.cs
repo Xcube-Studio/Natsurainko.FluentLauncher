@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages.Settings;
+namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
 public partial class Download : SettingViewModel
 {

@@ -1,6 +1,6 @@
 using Microsoft.UI.Xaml.Controls;
 
-namespace Natsurainko.FluentLauncher.Views.Pages.Settings;
+namespace Natsurainko.FluentLauncher.Views.Settings;
 
 public sealed partial class About : Page
 {

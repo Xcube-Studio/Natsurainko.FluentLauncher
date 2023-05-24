@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Linq;
 
-namespace Natsurainko.FluentLauncher.Views.Pages.Settings;
+namespace Natsurainko.FluentLauncher.Views.Settings;
 
 public sealed partial class Navigation : Page
 {

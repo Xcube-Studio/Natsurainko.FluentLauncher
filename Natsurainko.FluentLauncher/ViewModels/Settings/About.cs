@@ -4,7 +4,7 @@ using System;
 using Windows.ApplicationModel;
 using Windows.System;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages.Settings;
+namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
 public partial class About : ObservableObject
 {

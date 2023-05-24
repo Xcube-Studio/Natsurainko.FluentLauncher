@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages.Settings
+namespace Natsurainko.FluentLauncher.ViewModels.Settings
 {
     public partial class Appearance : SettingViewModel
     {

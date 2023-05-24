@@ -1,0 +1,56 @@
+name: Build
+
+on: workflow_dispatch
+
+jobs:
+
+  build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        configuration: [Release]
+    env:
+      Solution_Name: Natsurainko.FluentLauncher
+      Project_Directory: Natsurainko.FluentLauncher
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.3
+
+    # Restore the application to populate the obj folder with RuntimeIdentifiers
+    - name: Restore the application
+      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
+      env:
+        Configuration: ${{ matrix.configuration }}
+
+    # Decode the base 64 encoded pfx and save the Signing_Certificate
+    - name: Decode the pfx
+      run: |
+        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.PFX_BASE64_ENCODED }}")
+        $certificatePath = Join-Path -Path $env:Project_Directory -ChildPath Natsurainko.FluentLauncher_TemporaryKey.pfx
+        [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
+
+    # Create the app package by building and packaging the Windows Application Packaging project
+    - name: Create the app package
+      run: msbuild $env:Solution_Name /p:AppxBundlePlatforms="$env:Appx_Bundle_Platforms" /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=WindowsAppSDKGallery_TemporaryKey.pfx /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
+      env:
+        Appx_Bundle: Never
+        Appx_Bundle_Platforms: x64
+        Appx_Package_Build_Mode: SideloadOnly
+        Appx_Package_Dir: Packages\
+        Configuration: ${{ matrix.configuration }}
+
+    # Upload the MSIX package as an artifact
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: MSIX Package
+        path: Natsurainko.FluentLauncher/Packages/**/Natsurainko.FluentLauncher*.msix

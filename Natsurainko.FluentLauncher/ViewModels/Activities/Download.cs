@@ -5,7 +5,7 @@ using Natsurainko.FluentLauncher.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages.Activities;
+namespace Natsurainko.FluentLauncher.ViewModels.Activities;
 
 public partial class Download : ObservableObject
 {

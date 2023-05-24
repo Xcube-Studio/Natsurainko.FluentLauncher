@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages.Activities;
+namespace Natsurainko.FluentLauncher.ViewModels.Activities;
 
 internal partial class News : ObservableObject
 {

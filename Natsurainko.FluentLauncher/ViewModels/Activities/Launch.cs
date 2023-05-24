@@ -7,7 +7,7 @@ using Natsurainko.FluentLauncher.Views.Pages;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages.Activities;
+namespace Natsurainko.FluentLauncher.ViewModels.Activities;
 
 public partial class Launch : ObservableObject
 {

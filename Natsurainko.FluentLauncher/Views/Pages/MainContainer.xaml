@@ -72,7 +72,7 @@
                 <NavigationViewItem
                     x:Uid="Navigation_Activities"
                     Content="Activities"
-                    Tag="Natsurainko.FluentLauncher.Views.Pages.Activities.Navigation">
+                    Tag="Natsurainko.FluentLauncher.Views.Activities.Navigation">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE945;" />
                     </NavigationViewItem.Icon>

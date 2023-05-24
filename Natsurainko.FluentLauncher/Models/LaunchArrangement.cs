@@ -139,7 +139,7 @@ public partial class LaunchArrangement : ObservableObject
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
                 var hyperlinkButton = new HyperlinkButton { Content = "Go to Activities>Launch Tasks" };
-                hyperlinkButton.Click += (_, _) => MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Activities.Navigation), typeof(Views.Pages.Activities.Launch));
+                hyperlinkButton.Click += (_, _) => MainContainer.ContentFrame.Navigate(typeof(Views.Activities.Navigation), typeof(Views.Activities.Launch));
 
                 MessageService.Show(
                     $"Added Launch \"{core.Id}\" into Arrangements",
@@ -148,7 +148,7 @@ public partial class LaunchArrangement : ObservableObject
 
                 GlobalActivitiesCache.LaunchArrangements.Insert(0, arrangement);
 
-                MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Activities.Navigation), typeof(Views.Pages.Activities.Launch));
+                MainContainer.ContentFrame.Navigate(typeof(Views.Activities.Navigation), typeof(Views.Activities.Launch));
             });
 
             var coreLocator = new GameCoreLocator(App.Configuration.CurrentGameFolder);

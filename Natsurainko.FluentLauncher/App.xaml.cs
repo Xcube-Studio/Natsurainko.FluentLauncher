@@ -15,6 +15,9 @@ using System.Threading.Tasks;
 using Natsurainko.FluentLauncher.Views.Pages;
 using Microsoft.Extensions.DependencyInjection;
 using Natsurainko.FluentLauncher.Services;
+using AppSettingsManagement;
+using AppSettingsManagement.Windows;
+using Natsurainko.FluentLauncher.Services.Settings;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -64,6 +67,8 @@ public partial class App : Application
 
     protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
+        var appsettings = ApplicationData.Current.LocalSettings;
+
         try
         {
             MainWindow = new MainWindow();
@@ -85,6 +90,10 @@ public partial class App : Application
         // Services
         services.AddSingleton<OfficialNewsService>();
         services.AddSingleton<CurseForgeModService>();
+
+        // Settings service
+        services.AddSingleton<SettingsService>();
+        services.AddSingleton<ISettingsStorage, WinRTSettingsStorage>();
 
         //ViewModels
         services.AddSingleton<ViewModels.Pages.Activities.News>();

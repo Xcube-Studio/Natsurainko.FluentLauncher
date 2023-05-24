@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Natsurainko.FluentLauncher.Views.Pages;
 using Microsoft.Extensions.DependencyInjection;
 using Natsurainko.FluentLauncher.Services;
+using Natsurainko.FluentLauncher.Views;
 
 namespace Natsurainko.FluentLauncher;
 

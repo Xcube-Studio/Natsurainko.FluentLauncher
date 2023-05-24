@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Graphics;
 
-namespace Natsurainko.FluentLauncher.Views.Pages;
+namespace Natsurainko.FluentLauncher.Views;
 
 public sealed partial class MainContainer : Page
 {

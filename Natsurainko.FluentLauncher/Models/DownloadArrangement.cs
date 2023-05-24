@@ -239,7 +239,7 @@ public partial class InstallArrangement : DownloadArrangement
         App.MainWindow.DispatcherQueue.TryEnqueue(() =>
         {
             var hyperlinkButton = new HyperlinkButton { Content = "Go to Activities>Download Tasks" };
-            hyperlinkButton.Click += (_, _) => MainContainer.ContentFrame.Navigate(typeof(Views.Activities.Navigation), typeof(Views.Activities.Download));
+            hyperlinkButton.Click += (_, _) => Views.MainContainer.ContentFrame.Navigate(typeof(Views.Activities.Navigation), typeof(Views.Activities.Download));
 
             MessageService.Show(
                 $"Added Install \"{customName}\" into Arrangements",
@@ -259,7 +259,7 @@ public partial class InstallArrangement : DownloadArrangement
         App.MainWindow.DispatcherQueue.TryEnqueue(() =>
         {
             var hyperlinkButton = new HyperlinkButton { Content = "Go to Activities>Download Tasks" };
-            hyperlinkButton.Click += (_, _) => MainContainer.ContentFrame.Navigate(typeof(Views.Activities.Navigation), typeof(Views.Activities.Download));
+            hyperlinkButton.Click += (_, _) => Views.MainContainer.ContentFrame.Navigate(typeof(Views.Activities.Navigation), typeof(Views.Activities.Download));
 
             MessageService.Show(
                 $"Added Install \"{customName}\" into Arrangements",
@@ -354,7 +354,7 @@ public partial class ModDownloadArrangement : DownloadArrangement
         App.MainWindow.DispatcherQueue.TryEnqueue(() =>
         {
             var hyperlinkButton = new HyperlinkButton { Content = "Go to Activities>Download Tasks" };
-            hyperlinkButton.Click += (_, _) => MainContainer.ContentFrame.Navigate(typeof(Views.Activities.Navigation), typeof(Views.Activities.Download));
+            hyperlinkButton.Click += (_, _) => Views.MainContainer.ContentFrame.Navigate(typeof(Views.Activities.Navigation), typeof(Views.Activities.Download));
 
             MessageService.Show(
                 $"Added Download Mod \"{fileName}\" into Arrangements",

@@ -4,13 +4,12 @@ using Microsoft.UI.Xaml;
 using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Models;
-using Natsurainko.FluentLauncher.Views.Pages;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages;
+namespace Natsurainko.FluentLauncher.ViewModels.Home;
 
 public partial class Home : ObservableObject
 {
@@ -56,7 +55,7 @@ public partial class Home : ObservableObject
     public Task Launch() => Task.Run(() => LaunchArrangement.StartNew(CurrentGameCore));
 
     [RelayCommand]
-    public void Account() => MainContainer.ContentFrame.Navigate(typeof(Views.Settings.Navigation), typeof(Views.Settings.Account));
+    public void Account() => Views.MainContainer.ContentFrame.Navigate(typeof(Views.Settings.Navigation), typeof(Views.Settings.Account));
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {

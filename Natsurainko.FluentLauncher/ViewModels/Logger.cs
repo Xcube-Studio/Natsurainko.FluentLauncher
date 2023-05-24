@@ -10,7 +10,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.Pages;
 
 public partial class Logger : ObservableObject
 {
-    public Logger(List<GameProcessOutput> processOutputs, LaunchResponse launchResponse, Views.Pages.Logger view)
+    public Logger(List<GameProcessOutput> processOutputs, LaunchResponse launchResponse, Views.Logger view)
     {
         View = view;
 
@@ -52,7 +52,7 @@ public partial class Logger : ObservableObject
 
     public ObservableCollection<GameProcessOutput> LoggerItems;
 
-    public Views.Pages.Logger View { get; set; }
+    public Views.Logger View { get; set; }
 
     public string Title { get; set; }
 

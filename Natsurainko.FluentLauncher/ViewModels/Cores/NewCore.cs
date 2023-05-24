@@ -18,9 +18,9 @@ using MinecraftVanlliaInstaller = Natsurainko.FluentCore.Module.Installer.Minecr
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
-public partial class Core : ObservableObject
+public partial class NewCore : ObservableObject
 {
-    public Core()
+    public NewCore()
     {
         LoadCores();
     }

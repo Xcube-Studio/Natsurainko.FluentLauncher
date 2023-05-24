@@ -8,7 +8,6 @@ using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views.Dialogs;
-using Natsurainko.FluentLauncher.Views.Pages;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,7 +20,7 @@ using Windows.Storage.Pickers;
 using Windows.System;
 using GameCoreLocator = Natsurainko.FluentLauncher.Components.FluentCore.GameCoreLocator;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Pages;
+namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
 public partial class Cores : ObservableObject
 {

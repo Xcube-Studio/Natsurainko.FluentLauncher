@@ -1,6 +1,6 @@
 using Microsoft.UI.Xaml.Controls;
 
-namespace Natsurainko.FluentLauncher.Views.Pages;
+namespace Natsurainko.FluentLauncher.Views;
 
 public sealed partial class Logger : Page
 {

@@ -9,6 +9,7 @@ using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views.Cores;
 using Natsurainko.FluentLauncher.Views.Cores.InstallNewCore;
+using Natsurainko.FluentLauncher.Views.Cores.Properties;
 using Natsurainko.FluentLauncher.Views.Dialogs;
 using System;
 using System.Collections.Generic;
@@ -201,7 +202,7 @@ public partial class CoresViewModel
     {
         App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
         {
-            var coreOptionsDialog = new CoreOptionsDialog
+            var coreOptionsDialog = new CorePropertiesDialog
             {
                 XamlRoot = Views.ShellPage._XamlRoot,
                 DataContext = core

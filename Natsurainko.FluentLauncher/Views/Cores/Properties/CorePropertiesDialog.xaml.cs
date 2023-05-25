@@ -3,11 +3,11 @@ using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Views.Cores.Properties;
 using System;
 
-namespace Natsurainko.FluentLauncher.Views.Dialogs;
+namespace Natsurainko.FluentLauncher.Views.Cores.Properties;
 
-public sealed partial class CoreOptionsDialog : ContentDialog
+public sealed partial class CorePropertiesDialog : ContentDialog
 {
-    public CoreOptionsDialog()
+    public CorePropertiesDialog()
     {
         this.InitializeComponent();
     }
@@ -18,5 +18,5 @@ public sealed partial class CoreOptionsDialog : ContentDialog
         => contentFrame.Navigate(Type.GetType(((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()), this.DataContext);
 
     private void Dialog_Loaded(object sender, RoutedEventArgs e)
-        => contentFrame.Navigate(typeof(Information), this.DataContext);
+        => contentFrame.Navigate(typeof(InformationPage), this.DataContext);
 }

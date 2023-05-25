@@ -1,5 +1,5 @@
 <ContentDialog
-    x:Class="Natsurainko.FluentLauncher.Views.Dialogs.CoreOptionsDialog"
+    x:Class="Natsurainko.FluentLauncher.Views.Cores.Properties.CorePropertiesDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -321,7 +321,7 @@
             ItemInvoked="NavigationView_ItemInvoked"
             PaneDisplayMode="Top">
             <NavigationView.MenuItems>
-                <NavigationViewItem IsSelected="True" Tag="Natsurainko.FluentLauncher.Views.Cores.Properties.Information">
+                <NavigationViewItem IsSelected="True" Tag="Natsurainko.FluentLauncher.Views.Cores.Properties.InformationPage">
                     <NavigationViewItem.Content>
                         <TextBlock>
                             <Run Text="{Binding Id}" />
@@ -336,7 +336,7 @@
                 <NavigationViewItem
                     x:Uid="Navigation_Options_Launch"
                     Content="Launch Settings"
-                    Tag="Natsurainko.FluentLauncher.Views.Cores.Properties.Launch">
+                    Tag="Natsurainko.FluentLauncher.Views.Cores.Properties.LaunchPage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe945;" />
                     </NavigationViewItem.Icon>
@@ -344,7 +344,7 @@
                 <NavigationViewItem
                     x:Uid="Navigation_Options_Mods"
                     Content="Mods"
-                    Tag="Natsurainko.FluentLauncher.Views.Cores.Properties.Mod">
+                    Tag="Natsurainko.FluentLauncher.Views.Cores.Properties.ModPage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe8f1;" />
                     </NavigationViewItem.Icon>
@@ -353,7 +353,7 @@
                     x:Uid="Navigation_Options_Saves"
                     Content="Saves"
                     IsEnabled="False"
-                    Tag="Natsurainko.FluentLauncher.Views.Cores.Properties.Save">
+                    Tag="Natsurainko.FluentLauncher.Views.Cores.Properties.SavePage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe81e;" />
                     </NavigationViewItem.Icon>

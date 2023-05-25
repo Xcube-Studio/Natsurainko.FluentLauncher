@@ -4,9 +4,9 @@ using Natsurainko.FluentLauncher.Components.FluentCore;
 
 namespace Natsurainko.FluentLauncher.Views.Cores.Properties;
 
-public sealed partial class Information : Page
+public sealed partial class InformationPage : Page
 {
-    public Information()
+    public InformationPage()
     {
         this.InitializeComponent();
     }

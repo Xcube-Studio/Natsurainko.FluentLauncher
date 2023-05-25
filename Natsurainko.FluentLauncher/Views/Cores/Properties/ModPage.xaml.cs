@@ -6,9 +6,9 @@ using Natsurainko.FluentLauncher.Components.FluentCore;
 
 namespace Natsurainko.FluentLauncher.Views.Cores.Properties;
 
-public sealed partial class Mod : Page
+public sealed partial class ModPage : Page
 {
-    public Mod()
+    public ModPage()
     {
         this.InitializeComponent();
     }

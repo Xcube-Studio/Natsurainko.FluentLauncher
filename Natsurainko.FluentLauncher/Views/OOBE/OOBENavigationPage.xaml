@@ -9,7 +9,7 @@
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     mc:Ignorable="d">
     <Page.DataContext>
-        <vm:Navigation />
+        <vm:OOBENavigationViewModel />
     </Page.DataContext>
 
     <Grid>

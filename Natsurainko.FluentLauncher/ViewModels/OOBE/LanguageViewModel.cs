@@ -8,9 +8,9 @@ using System.ComponentModel;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
-public partial class Language : SettingViewModel
+public partial class LanguageViewModel : SettingViewModel
 {
-    public Language() : base()
+    public LanguageViewModel() : base()
     {
         CanNext = true;
 

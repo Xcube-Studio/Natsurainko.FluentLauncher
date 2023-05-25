@@ -16,9 +16,9 @@ using Windows.Storage.Pickers;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
-public partial class Basic : SettingViewModel
+public partial class BasicViewModel : SettingViewModel
 {
-    public Basic() : base()
+    public BasicViewModel() : base()
     {
         OnPropertyChanged("CanNext");
     }
@@ -59,7 +59,7 @@ public partial class Basic : SettingViewModel
     }
 }
 
-public partial class Basic
+public partial class BasicViewModel
 {
     [RelayCommand]
     public Task BrowserFolder() => Task.Run(async () =>

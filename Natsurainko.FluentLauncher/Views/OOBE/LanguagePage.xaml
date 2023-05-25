@@ -9,7 +9,7 @@
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
     mc:Ignorable="d">
     <Page.DataContext>
-        <vm:Language />
+        <vm:LanguageViewModel />
     </Page.DataContext>
 
     <Grid Padding="75,0">

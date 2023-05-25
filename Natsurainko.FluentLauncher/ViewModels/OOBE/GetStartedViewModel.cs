@@ -5,9 +5,9 @@ using Natsurainko.FluentLauncher.Models;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
-public partial class GetStarted : ObservableObject
+public partial class GetStartedViewModel : ObservableObject
 {
-    public GetStarted()
+    public GetStartedViewModel()
     {
         WeakReferenceMessenger.Default.Send(new GuideNavigationMessage()
         {

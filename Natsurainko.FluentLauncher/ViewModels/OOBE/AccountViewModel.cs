@@ -14,9 +14,9 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
-public partial class Account : SettingViewModel
+public partial class AccountViewModel : SettingViewModel
 {
-    public Account() : base()
+    public AccountViewModel() : base()
     {
         OnPropertyChanged(nameof(CanNext));
     }
@@ -44,7 +44,7 @@ public partial class Account : SettingViewModel
     }
 }
 
-public partial class Account
+public partial class AccountViewModel
 {
     [RelayCommand]
     public Task Login(Button parameter) => Task.Run(() =>

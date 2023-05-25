@@ -8,14 +8,14 @@ using System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
-public partial class Navigation : ObservableObject
+public partial class OOBENavigationViewModel : ObservableObject
 {
     [ObservableProperty]
     private bool canNext;
 
     private Type NextPage;
 
-    public Navigation()
+    public OOBENavigationViewModel()
     {
         WeakReferenceMessenger.Default.Register<GuideNavigationMessage>(this, (r, m) =>
         {

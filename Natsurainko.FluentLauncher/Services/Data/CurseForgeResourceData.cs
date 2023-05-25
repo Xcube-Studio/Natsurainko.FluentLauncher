@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Natsurainko.FluentCore.Model.Mod.CureseForge;
 using Natsurainko.FluentLauncher.Views.Dialogs;
+using Natsurainko.FluentLauncher.Views.Downloads;
 using System;
 
 namespace Natsurainko.FluentLauncher.Services.Data;

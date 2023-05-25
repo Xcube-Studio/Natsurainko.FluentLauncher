@@ -1,5 +1,5 @@
 <Page
-    x:Class="Natsurainko.FluentLauncher.Views.Downloads.CurseForgeModInfo"
+    x:Class="Natsurainko.FluentLauncher.Views.Downloads.CurseForgeModInfoPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:Natsurainko.FluentLauncher.UserControls"

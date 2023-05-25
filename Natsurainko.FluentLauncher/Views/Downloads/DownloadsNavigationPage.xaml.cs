@@ -5,9 +5,11 @@ using System.Linq;
 
 namespace Natsurainko.FluentLauncher.Views.Downloads;
 
-public sealed partial class Navigation : Page
+// TODO: Use NavigationView and add pages for installing new games, mods, and modpacks.
+
+public sealed partial class DownloadsNavigationPage : Page
 {
-    public Navigation()
+    public DownloadsNavigationPage()
     {
         this.InitializeComponent();
     }

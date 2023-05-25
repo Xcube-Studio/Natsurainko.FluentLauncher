@@ -1,9 +1,9 @@
 <ContentDialog
-    x:Class="Natsurainko.FluentLauncher.Views.Dialogs.CurseForgeModDialog"
+    x:Class="Natsurainko.FluentLauncher.Views.Downloads.CurseForgeModDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Dialogs"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="Dialog"
     Loaded="Dialog_Loaded"
@@ -321,7 +321,7 @@
             ItemInvoked="NavigationView_ItemInvoked"
             PaneDisplayMode="Top">
             <NavigationView.MenuItems>
-                <NavigationViewItem IsSelected="True" Tag="Natsurainko.FluentLauncher.Views.Downloads.CurseForgeModInfo">
+                <NavigationViewItem IsSelected="True" Tag="Natsurainko.FluentLauncher.Views.Downloads.CurseForgeModInfoPage">
                     <NavigationViewItem.Content>
                         <TextBlock>
                             <Run Text="{Binding Name}" />
@@ -336,7 +336,7 @@
                 <NavigationViewItem
                     x:Uid="CF_Download_Files"
                     Content="Download Files"
-                    Tag="Natsurainko.FluentLauncher.Views.Downloads.CurseForgeModFile">
+                    Tag="Natsurainko.FluentLauncher.Views.Downloads.CurseForgeModFilePage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe896;" />
                     </NavigationViewItem.Icon>

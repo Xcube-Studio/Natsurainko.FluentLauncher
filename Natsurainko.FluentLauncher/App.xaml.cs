@@ -84,7 +84,7 @@ public partial class App : Application
 
         //ViewModels
         services.AddSingleton<ViewModels.Activities.News>();
-        services.AddSingleton<ViewModels.Downloads.CurseForge>();
+        services.AddSingleton<ViewModels.Downloads.CurseForgeViewModel>();
 
         return services.BuildServiceProvider();
     }

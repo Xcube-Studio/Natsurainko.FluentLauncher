@@ -1,5 +1,5 @@
 <Page
-    x:Class="Natsurainko.FluentLauncher.Views.Downloads.CurseForgeModFile"
+    x:Class="Natsurainko.FluentLauncher.Views.Downloads.CurseForgeModFilePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
@@ -8,7 +8,7 @@
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mods="using:Natsurainko.FluentLauncher.ViewModels.Downloads"
-    d:DataContext="{d:DesignInstance Type=mods:CurseForgeModFile}"
+    d:DataContext="{d:DesignInstance Type=mods:CurseForgeModFileViewModel}"
     mc:Ignorable="d">
 
     <ListView

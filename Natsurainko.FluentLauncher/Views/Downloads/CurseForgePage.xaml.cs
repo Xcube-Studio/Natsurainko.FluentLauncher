@@ -3,9 +3,9 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace Natsurainko.FluentLauncher.Views.Downloads;
 
-public sealed partial class CurseForge : Page
+public sealed partial class CurseForgePage : Page
 {
-    public CurseForge()
+    public CurseForgePage()
     {
         this.InitializeComponent();
     }

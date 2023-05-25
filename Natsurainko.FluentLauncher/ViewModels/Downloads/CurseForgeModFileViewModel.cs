@@ -13,11 +13,11 @@ using System.IO;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 
-internal partial class CurseForgeModFile : ObservableObject
+internal partial class CurseForgeModFileViewModel : ObservableObject
 {
     public CurseForgeResourceData Resource { get; }
 
-    public CurseForgeModFile(CurseForgeResourceData resource)
+    public CurseForgeModFileViewModel(CurseForgeResourceData resource)
     {
         Resource = resource;
 

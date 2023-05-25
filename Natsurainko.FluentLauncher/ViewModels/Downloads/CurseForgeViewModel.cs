@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 
-internal partial class CurseForge : ObservableObject
+internal partial class CurseForgeViewModel : ObservableObject
 {
-    public CurseForge(CurseForgeModService curseForgeModService)
+    public CurseForgeViewModel(CurseForgeModService curseForgeModService)
     {
         ModService = curseForgeModService;
 

@@ -4,9 +4,9 @@ using Natsurainko.FluentLauncher.Services.Data;
 
 namespace Natsurainko.FluentLauncher.Views.Downloads;
 
-public sealed partial class CurseForgeModInfo : Page
+public sealed partial class CurseForgeModInfoPage : Page
 {
-    public CurseForgeModInfo()
+    public CurseForgeModInfoPage()
     {
         this.InitializeComponent();
     }
@@ -14,6 +14,6 @@ public sealed partial class CurseForgeModInfo : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        this.DataContext = new ViewModels.Downloads.CurseForgeModInfo(e.Parameter as CurseForgeResourceData);
+        this.DataContext = new ViewModels.Downloads.CurseForgeModInfoViewModel(e.Parameter as CurseForgeResourceData);
     }
 }

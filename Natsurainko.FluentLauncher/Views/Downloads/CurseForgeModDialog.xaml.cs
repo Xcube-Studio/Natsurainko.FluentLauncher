@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Views.Downloads;
 using System;
 
-namespace Natsurainko.FluentLauncher.Views.Dialogs;
+namespace Natsurainko.FluentLauncher.Views.Downloads;
 
 public sealed partial class CurseForgeModDialog : ContentDialog
 {
@@ -18,5 +18,5 @@ public sealed partial class CurseForgeModDialog : ContentDialog
         => contentFrame.Navigate(Type.GetType(((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()), this.DataContext);
 
     private void Dialog_Loaded(object sender, RoutedEventArgs e)
-        => contentFrame.Navigate(typeof(CurseForgeModInfo), this.DataContext);
+        => contentFrame.Navigate(typeof(CurseForgeModInfoPage), this.DataContext);
 }

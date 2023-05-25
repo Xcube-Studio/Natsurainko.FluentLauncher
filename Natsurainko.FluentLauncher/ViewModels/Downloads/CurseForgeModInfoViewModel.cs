@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 
-internal partial class CurseForgeModInfo : ObservableObject
+internal partial class CurseForgeModInfoViewModel : ObservableObject
 {
     public CurseForgeResourceData Resource { get; }
 
-    public CurseForgeModInfo(CurseForgeResourceData resource) 
+    public CurseForgeModInfoViewModel(CurseForgeResourceData resource) 
     {
         Resource = resource;
         Icon = resource.InnerData.Logo.Url;

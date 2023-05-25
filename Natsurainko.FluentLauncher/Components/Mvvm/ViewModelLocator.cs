@@ -17,6 +17,6 @@ internal class ViewModelLocator
 
     public class ModsLayer
     {
-        public CurseForge CurseForge => App.Services.GetService<CurseForge>();
+        public CurseForgeViewModel CurseForge => App.Services.GetService<CurseForgeViewModel>();
     }
 }

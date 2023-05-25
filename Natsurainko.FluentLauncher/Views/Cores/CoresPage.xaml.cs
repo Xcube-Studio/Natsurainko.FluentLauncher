@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace Natsurainko.FluentLauncher.Views.Cores;
 
-public sealed partial class Cores : Page
+public sealed partial class CoresPage : Page
 {
-    public Cores()
+    public CoresPage()
     {
         InitializeComponent();
     }

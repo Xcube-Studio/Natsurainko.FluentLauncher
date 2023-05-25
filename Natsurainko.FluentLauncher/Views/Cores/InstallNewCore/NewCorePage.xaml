@@ -1,5 +1,5 @@
 <Page
-    x:Class="Natsurainko.FluentLauncher.Views.Cores.NewCore"
+    x:Class="Natsurainko.FluentLauncher.Views.Cores.InstallNewCore.NewCorePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"

@@ -7,6 +7,8 @@ using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Views.Cores;
+using Natsurainko.FluentLauncher.Views.Cores.InstallNewCore;
 using Natsurainko.FluentLauncher.Views.Dialogs;
 using System;
 using System.Collections.Generic;
@@ -22,11 +24,11 @@ using GameCoreLocator = Natsurainko.FluentLauncher.Components.FluentCore.GameCor
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
-public partial class Cores : ObservableObject
+public partial class CoresViewModel : ObservableObject
 {
     private static readonly Regex NameRegex = new("^[^/\\\\:\\*\\?\\<\\>\\|\"]{1,255}$");
 
-    public Cores()
+    public CoresViewModel()
     {
         filter = App.Configuration.CoresFilter;
         sortBy = App.Configuration.CoresSortBy;
@@ -142,7 +144,7 @@ public partial class Cores : ObservableObject
     private bool seletedChangeable = true;
 }
 
-public partial class Cores
+public partial class CoresViewModel
 {
     [RelayCommand]
     private void GoToPage()
@@ -306,7 +308,7 @@ public partial class Cores
     });
 }
 
-public partial class Cores
+public partial class CoresViewModel
 {
     [ObservableProperty]
     private ObservableCollection<GameCore> gameCores = new();

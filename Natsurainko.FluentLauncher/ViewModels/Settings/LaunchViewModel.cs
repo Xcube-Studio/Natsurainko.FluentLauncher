@@ -157,7 +157,7 @@ public partial class LaunchViewModel : SettingViewModel
     [RelayCommand]
     void ActivateCoresPage()
     {
-        Views.ShellPage.ContentFrame.Navigate(typeof(Views.Cores.Cores));
+        Views.ShellPage.ContentFrame.Navigate(typeof(Views.Cores.CoresPage));
     }
 
 }

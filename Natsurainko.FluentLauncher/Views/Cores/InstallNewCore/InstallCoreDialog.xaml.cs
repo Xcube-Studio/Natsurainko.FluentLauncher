@@ -4,7 +4,7 @@ using Natsurainko.FluentLauncher.Views.Cores;
 using System;
 using System.Collections.Generic;
 
-namespace Natsurainko.FluentLauncher.Views.Dialogs;
+namespace Natsurainko.FluentLauncher.Views.Cores.InstallNewCore;
 
 public sealed partial class InstallCoreDialog : ContentDialog
 {
@@ -21,5 +21,5 @@ public sealed partial class InstallCoreDialog : ContentDialog
         => contentFrame.Navigate(Type.GetType(((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()), this);
 
     private void Dialog_Loaded(object sender, RoutedEventArgs e)
-        => contentFrame.Navigate(typeof(NewCore), this);
+        => contentFrame.Navigate(typeof(NewCorePage), this);
 }

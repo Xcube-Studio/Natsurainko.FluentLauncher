@@ -64,7 +64,7 @@
                     x:Uid="Navigation_Cores"
                     Content="Cores"
                     Icon="{xh:FontIcon Glyph=&#xf158;}"
-                    Tag="Natsurainko.FluentLauncher.Views.Cores.Cores" />
+                    Tag="Natsurainko.FluentLauncher.Views.Cores.CoresPage" />
                 <NavigationViewItem
                     x:Uid="Navigation_Activities"
                     Content="Activities"

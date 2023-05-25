@@ -5,6 +5,8 @@ using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentCore.Model.Install;
 using Natsurainko.FluentCore.Model.Install.Vanilla;
 using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Views.Cores;
+using Natsurainko.FluentLauncher.Views.Cores.InstallNewCore;
 using Natsurainko.FluentLauncher.Views.Dialogs;
 using System;
 using System.Collections.Generic;
@@ -17,9 +19,9 @@ using MinecraftVanlliaInstaller = Natsurainko.FluentCore.Module.Installer.Minecr
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
-public partial class NewCore : ObservableObject
+public partial class NewCoreViewModel : ObservableObject
 {
-    public NewCore()
+    public NewCoreViewModel()
     {
         LoadCores();
     }

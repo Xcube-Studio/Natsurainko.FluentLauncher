@@ -1,9 +1,9 @@
 <ContentDialog
-    x:Class="Natsurainko.FluentLauncher.Views.Dialogs.InstallCoreDialog"
+    x:Class="Natsurainko.FluentLauncher.Views.Cores.InstallNewCore.InstallCoreDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Dialogs"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Cores.InstallNewCore"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="Dialog"
     Loaded="Dialog_Loaded"
@@ -325,7 +325,7 @@
                     x:Uid="Mods_Install_New_Core"
                     Content="Install New Core"
                     IsSelected="True"
-                    Tag="Natsurainko.FluentLauncher.Views.Cores.Core">
+                    Tag="Natsurainko.FluentLauncher.Views.Cores.InstallNewCore.NewCorePage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xf158;" />
                     </NavigationViewItem.Icon>
@@ -334,7 +334,7 @@
                     x:Uid="Mods_Install_CF_Modpack"
                     Content="Install Curseforge Modpack"
                     IsEnabled="False"
-                    Tag="Natsurainko.FluentLauncher.Views.Cores.Core">
+                    Tag="Natsurainko.FluentLauncher.Views.Cores.InstallNewCore.NewCorePage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe7b8;" />
                     </NavigationViewItem.Icon>

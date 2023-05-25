@@ -1,5 +1,5 @@
 <Page
-    x:Class="Natsurainko.FluentLauncher.Views.Cores.Cores"
+    x:Class="Natsurainko.FluentLauncher.Views.Cores.CoresPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
@@ -103,7 +103,7 @@
     </Page.Resources>
 
     <Page.DataContext>
-        <vm:Cores x:Name="ViewModel" />
+        <vm:CoresViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
     <Grid Margin="0,15,0,0">

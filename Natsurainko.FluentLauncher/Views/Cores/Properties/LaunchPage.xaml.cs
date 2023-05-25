@@ -14,6 +14,6 @@ public sealed partial class LaunchPage : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        this.DataContext = new ViewModels.Cores.Properties.Launch(e.Parameter as GameCore);
+        this.DataContext = new ViewModels.Cores.Properties.LaunchViewModel(e.Parameter as GameCore);
     }
 }

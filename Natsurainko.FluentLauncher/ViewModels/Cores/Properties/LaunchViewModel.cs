@@ -10,11 +10,11 @@ using GameCore = Natsurainko.FluentLauncher.Components.FluentCore.GameCore;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores.Properties;
 
-public partial class Launch : ObservableObject
+public partial class LaunchViewModel : ObservableObject
 {
     private bool isLoading = true;
 
-    public Launch(GameCore core)
+    public LaunchViewModel(GameCore core)
     {
         CoreProfile = core.CoreProfile;
 

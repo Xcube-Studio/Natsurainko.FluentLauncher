@@ -14,6 +14,6 @@ public sealed partial class InformationPage : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        this.DataContext = new ViewModels.Cores.Properties.Information(e.Parameter as GameCore);
+        this.DataContext = new ViewModels.Cores.Properties.InformationViewModel(e.Parameter as GameCore);
     }
 }

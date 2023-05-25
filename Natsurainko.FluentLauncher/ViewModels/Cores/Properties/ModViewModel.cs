@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores.Properties;
 
-public partial class Mod : ObservableObject
+public partial class ModViewModel : ObservableObject
 {
-    public Mod(GameCore core)
+    public ModViewModel(GameCore core)
     {
         Core = core;
         Load();

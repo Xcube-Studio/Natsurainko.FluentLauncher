@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Natsurainko.FluentLauncher.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     ActualThemeChanged="Page_ActualThemeChanged"
     Loaded="Page_Loaded"
     SizeChanged="Page_SizeChanged"
@@ -51,41 +52,31 @@
             Loaded="NavigationViewControl_Loaded"
             PaneClosing="NavigationViewControl_PaneClosing"
             PaneOpening="NavigationViewControl_PaneOpening">
+
             <NavigationView.MenuItems>
                 <NavigationViewItem
                     x:Uid="Navigation_Home"
                     Content="Home"
+                    Icon="{xh:FontIcon Glyph=&#xE80F;}"
                     IsSelected="True"
-                    Tag="Natsurainko.FluentLauncher.Views.Pages.Home">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE80F;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
+                    Tag="Natsurainko.FluentLauncher.Views.Home.Home" />
                 <NavigationViewItem
                     x:Uid="Navigation_Cores"
                     Content="Cores"
-                    Tag="Natsurainko.FluentLauncher.Views.Pages.Cores">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xf158;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
+                    Icon="{xh:FontIcon Glyph=&#xf158;}"
+                    Tag="Natsurainko.FluentLauncher.Views.Cores.Cores" />
                 <NavigationViewItem
                     x:Uid="Navigation_Activities"
                     Content="Activities"
-                    Tag="Natsurainko.FluentLauncher.Views.Activities.Navigation">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE945;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
+                    Icon="{xh:FontIcon Glyph=&#xE945;}"
+                    Tag="Natsurainko.FluentLauncher.Views.Activities.Navigation" />
                 <NavigationViewItem
                     x:Uid="Navigation_Mods"
                     Content="Mods"
-                    Tag="Natsurainko.FluentLauncher.Views.Downloads.CurseForge">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xe8f1;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
+                    Icon="{xh:FontIcon Glyph=&#xe8f1;}"
+                    Tag="Natsurainko.FluentLauncher.Views.Downloads.CurseForge" />
             </NavigationView.MenuItems>
+
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem
                     x:Uid="Navigation_Settings"
@@ -101,6 +92,7 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.FooterMenuItems>
+
             <Frame
                 x:Name="contentFrame"
                 Margin="0,32,0,0"

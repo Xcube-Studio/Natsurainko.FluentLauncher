@@ -5,7 +5,7 @@ using Natsurainko.FluentCore.Module.Authenticator;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using System;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
+namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
 public partial class OfflineAccountDialog : DialogViewModel
 {

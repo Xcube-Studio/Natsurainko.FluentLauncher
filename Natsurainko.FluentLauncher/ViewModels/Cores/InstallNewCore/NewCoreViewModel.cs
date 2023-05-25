@@ -7,7 +7,7 @@ using Natsurainko.FluentCore.Model.Install.Vanilla;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Views.Cores;
 using Natsurainko.FluentLauncher.Views.Cores.InstallNewCore;
-using Natsurainko.FluentLauncher.Views.Dialogs;
+using Natsurainko.FluentLauncher.Views.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

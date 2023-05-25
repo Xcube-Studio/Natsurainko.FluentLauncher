@@ -8,7 +8,7 @@ using System;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.System;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
+namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
 public partial class ChooseAccountTypeDialog : DialogViewModel
 {
@@ -52,7 +52,7 @@ public partial class ChooseAccountTypeDialog : DialogViewModel
     {
         if (App.Configuration.UseDeviceFlowAuth)
         {
-            var microsoftAccountDialog = new Views.Dialogs.MicrosoftAccountDialog1
+            var microsoftAccountDialog = new Views.Common.MicrosoftAccountDialog1
             {
                 XamlRoot = Views.ShellPage._XamlRoot,
             };
@@ -93,7 +93,7 @@ public partial class ChooseAccountTypeDialog : DialogViewModel
         }
         else
         {
-            var microsoftAccountDialog = new Views.Dialogs.MicrosoftAccountDialog
+            var microsoftAccountDialog = new Views.Common.MicrosoftAccountDialog
             {
                 XamlRoot = Views.ShellPage._XamlRoot,
             };
@@ -112,7 +112,7 @@ public partial class ChooseAccountTypeDialog : DialogViewModel
 
     private async void OnYggdrasil()
     {
-        var yggdrasilAccountDialog = new Views.Dialogs.YggdrasilAccountDialog
+        var yggdrasilAccountDialog = new Views.Common.YggdrasilAccountDialog
         {
             XamlRoot = Views.ShellPage._XamlRoot,
             DataContext = new YggdrasilAccountDialog { SetAccountAction = SetAccountAction }
@@ -122,7 +122,7 @@ public partial class ChooseAccountTypeDialog : DialogViewModel
 
     private async void OnOffline()
     {
-        var offlineAccountDialog = new Views.Dialogs.OfflineAccountDialog
+        var offlineAccountDialog = new Views.Common.OfflineAccountDialog
         {
             XamlRoot = Views.ShellPage._XamlRoot,
             DataContext = new OfflineAccountDialog { SetAccountAction = SetAccountAction }

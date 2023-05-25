@@ -6,7 +6,7 @@ using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Models;
-using Natsurainko.FluentLauncher.ViewModels.Dialogs;
+using Natsurainko.FluentLauncher.ViewModels.Common;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -51,7 +51,7 @@ public partial class AccountViewModel
     {
         App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
         {
-            var microsoftAccountDialog = new Views.Dialogs.MicrosoftAccountDialog { XamlRoot = parameter.XamlRoot, };
+            var microsoftAccountDialog = new Views.Common.MicrosoftAccountDialog { XamlRoot = parameter.XamlRoot, };
 
             var viewmodel = new MicrosoftAccountDialog()
             {
@@ -70,7 +70,7 @@ public partial class AccountViewModel
     {
         App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
         {
-            var offlineAccountDialog = new Views.Dialogs.OfflineAccountDialog
+            var offlineAccountDialog = new Views.Common.OfflineAccountDialog
             {
                 XamlRoot = parameter.XamlRoot,
                 DataContext = new OfflineAccountDialog { SetAccountAction = SetAccount }

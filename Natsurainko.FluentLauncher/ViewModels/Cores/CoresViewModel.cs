@@ -10,7 +10,7 @@ using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views.Cores;
 using Natsurainko.FluentLauncher.Views.Cores.InstallNewCore;
 using Natsurainko.FluentLauncher.Views.Cores.Properties;
-using Natsurainko.FluentLauncher.Views.Dialogs;
+using Natsurainko.FluentLauncher.Views.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

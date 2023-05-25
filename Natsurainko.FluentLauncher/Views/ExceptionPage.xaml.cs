@@ -1,5 +1,5 @@
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.ViewModels.Dialogs;
+using Natsurainko.FluentLauncher.ViewModels.Common;
 
 namespace Natsurainko.FluentLauncher.Views
 {

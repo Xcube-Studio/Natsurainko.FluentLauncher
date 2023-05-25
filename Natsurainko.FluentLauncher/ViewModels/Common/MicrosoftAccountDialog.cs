@@ -12,7 +12,7 @@ using System;
 using System.ComponentModel;
 using System.Web;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
+namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
 public partial class MicrosoftAccountDialog : DialogViewModel
 {

@@ -5,7 +5,7 @@ using System;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.System;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
+namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
 public partial class ExceptionDialogViewModel : DialogViewModel
 {

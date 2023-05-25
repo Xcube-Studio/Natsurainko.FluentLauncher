@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using Windows.Storage;
-using Natsurainko.FluentLauncher.Views.Dialogs;
+using Natsurainko.FluentLauncher.Views.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Natsurainko.FluentLauncher.Services;
 using Natsurainko.FluentLauncher.Views;

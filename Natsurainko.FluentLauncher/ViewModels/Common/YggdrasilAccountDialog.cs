@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
+namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
 public partial class YggdrasilAccountDialog : DialogViewModel
 {

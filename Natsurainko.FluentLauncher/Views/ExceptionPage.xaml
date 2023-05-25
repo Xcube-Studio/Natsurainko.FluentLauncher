@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Natsurainko.FluentLauncher.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Dialogs"
+    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Common"
     d:DataContext="{d:DesignInstance Type=vm:ExceptionDialogViewModel}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">

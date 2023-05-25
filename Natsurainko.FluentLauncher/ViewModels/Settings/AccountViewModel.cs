@@ -6,7 +6,7 @@ using Natsurainko.FluentCore.Model.Auth;
 using Natsurainko.FluentCore.Module.Authenticator;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.Mvvm;
-using Natsurainko.FluentLauncher.Views.Dialogs;
+using Natsurainko.FluentLauncher.Views.Common;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -47,7 +47,7 @@ public partial class AccountViewModel
             var chooseAccountTypeDialog = new ChooseAccountTypeDialog
             {
                 XamlRoot = Views.ShellPage._XamlRoot,
-                DataContext = new Dialogs.ChooseAccountTypeDialog { SetAccountAction = SetAccount }
+                DataContext = new Common.ChooseAccountTypeDialog { SetAccountAction = SetAccount }
             };
             await chooseAccountTypeDialog.ShowAsync();
         });

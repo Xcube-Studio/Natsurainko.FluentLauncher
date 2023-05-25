@@ -5,15 +5,15 @@ using System.Linq;
 
 namespace Natsurainko.FluentLauncher.Views.Activities;
 
-public sealed partial class Navigation : Page
+public sealed partial class ActivitiesNavigationPage : Page
 {
-    public Navigation()
+    public ActivitiesNavigationPage()
     {
         InitializeComponent();
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
-        => contentFrame.Navigate(e.Parameter as Type ?? typeof(Launch));
+        => contentFrame.Navigate(e.Parameter as Type ?? typeof(LaunchPage));
 
     private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         => contentFrame.Navigate(Type.GetType(((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()));

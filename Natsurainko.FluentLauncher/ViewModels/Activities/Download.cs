@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Activities;
 
-public partial class Download : ObservableObject
+public partial class DownloadViewModel : ObservableObject
 {
     [ObservableProperty]
     private List<DownloadArrangement> downloadArrangements = GlobalActivitiesCache.DownloadArrangements;

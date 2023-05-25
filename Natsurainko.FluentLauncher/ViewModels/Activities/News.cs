@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Activities;
 
-internal partial class News : ObservableObject
+internal partial class NewsViewModel : ObservableObject
 {
-    public News(OfficialNewsService service)
+    public NewsViewModel(OfficialNewsService service)
     {
         Task.Run(async () =>
         {

@@ -12,7 +12,7 @@ internal class ViewModelLocator
 
     public class ActivitiesLayer
     {
-        public News News => App.Services.GetService<News>();
+        public NewsViewModel News => App.Services.GetService<NewsViewModel>();
     }
 
     public class ModsLayer

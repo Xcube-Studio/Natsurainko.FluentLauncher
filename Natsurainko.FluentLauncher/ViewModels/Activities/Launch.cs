@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Activities;
 
-public partial class Launch : ObservableObject
+public partial class LaunchViewModel : ObservableObject
 {
     [ObservableProperty]
     private List<LaunchArrangement> launchArrangements = GlobalActivitiesCache.LaunchArrangements;

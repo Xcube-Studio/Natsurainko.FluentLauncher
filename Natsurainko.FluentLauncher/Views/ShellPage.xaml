@@ -69,7 +69,7 @@
                     x:Uid="Navigation_Activities"
                     Content="Activities"
                     Icon="{xh:FontIcon Glyph=&#xE945;}"
-                    Tag="Natsurainko.FluentLauncher.Views.Activities.Navigation" />
+                    Tag="Natsurainko.FluentLauncher.Views.Activities.ActivitiesNavigationPage" />
                 <NavigationViewItem
                     x:Uid="Navigation_Mods"
                     Content="Mods"

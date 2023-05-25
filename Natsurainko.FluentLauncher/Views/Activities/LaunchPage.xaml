@@ -1,5 +1,5 @@
 <Page
-    x:Class="Natsurainko.FluentLauncher.Views.Activities.Launch"
+    x:Class="Natsurainko.FluentLauncher.Views.Activities.LaunchPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:Natsurainko.FluentLauncher.UserControls"
@@ -12,7 +12,7 @@
     Background="Transparent"
     mc:Ignorable="d">
     <Page.DataContext>
-        <vm:Launch />
+        <vm:LaunchViewModel />
     </Page.DataContext>
 
     <Grid>

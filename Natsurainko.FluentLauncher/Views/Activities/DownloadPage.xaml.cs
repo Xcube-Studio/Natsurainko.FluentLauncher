@@ -2,9 +2,9 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace Natsurainko.FluentLauncher.Views.Activities;
 
-public sealed partial class News : Page
+public sealed partial class DownloadPage : Page
 {
-    public News()
+    public DownloadPage()
     {
         InitializeComponent();
     }

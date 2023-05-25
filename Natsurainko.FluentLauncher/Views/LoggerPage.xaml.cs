@@ -2,9 +2,9 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace Natsurainko.FluentLauncher.Views;
 
-public sealed partial class Logger : Page
+public sealed partial class LoggerPage : Page
 {
-    public Logger()
+    public LoggerPage()
     {
         this.InitializeComponent();
     }

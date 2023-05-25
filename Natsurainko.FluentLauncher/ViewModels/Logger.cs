@@ -8,9 +8,9 @@ using System.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Pages;
 
-public partial class Logger : ObservableObject
+public partial class LoggerViewModel : ObservableObject
 {
-    public Logger(List<GameProcessOutput> processOutputs, LaunchResponse launchResponse, Views.Logger view)
+    public LoggerViewModel(List<GameProcessOutput> processOutputs, LaunchResponse launchResponse, Views.LoggerPage view)
     {
         View = view;
 
@@ -52,7 +52,7 @@ public partial class Logger : ObservableObject
 
     public ObservableCollection<GameProcessOutput> LoggerItems;
 
-    public Views.Logger View { get; set; }
+    public Views.LoggerPage View { get; set; }
 
     public string Title { get; set; }
 

@@ -114,8 +114,8 @@ public partial class LaunchArrangement : ObservableObject
         (window.MinWidth, window.MinHeight) = (516, 328);
         (window.Width, window.Height) = (873, 612);
 
-        var view = new Views.Logger();
-        var viewModel = new ViewModels.Pages.Logger(ProcessOutputs, LaunchResponse, view);
+        var view = new Views.LoggerPage();
+        var viewModel = new ViewModels.Pages.LoggerViewModel(ProcessOutputs, LaunchResponse, view);
         viewModel.Title = window.Title;
         view.DataContext = viewModel;
 

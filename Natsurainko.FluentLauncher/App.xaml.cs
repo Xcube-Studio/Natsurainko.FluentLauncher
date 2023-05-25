@@ -67,7 +67,9 @@ public partial class App : Application
 
     protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
+        // For testing
         var appsettings = ApplicationData.Current.LocalSettings;
+        var settingsService = Services.GetService<SettingsService>();
 
         try
         {

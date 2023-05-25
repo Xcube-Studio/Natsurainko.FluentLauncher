@@ -19,5 +19,5 @@ public partial class Launch : ObservableObject
         : Visibility.Visible;
 
     [RelayCommand]
-    public void Home() => Views.ShellPage.ContentFrame.Navigate(typeof(Views.Home.Home));
+    public void Home() => Views.ShellPage.ContentFrame.Navigate(typeof(Views.Home.HomePage));
 }

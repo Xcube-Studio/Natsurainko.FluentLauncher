@@ -59,7 +59,7 @@
                     Content="Home"
                     Icon="{xh:FontIcon Glyph=&#xE80F;}"
                     IsSelected="True"
-                    Tag="Natsurainko.FluentLauncher.Views.Home.Home" />
+                    Tag="Natsurainko.FluentLauncher.Views.Home.HomePage" />
                 <NavigationViewItem
                     x:Uid="Navigation_Cores"
                     Content="Cores"

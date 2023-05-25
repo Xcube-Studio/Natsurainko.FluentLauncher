@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Home;
 
-public partial class Home : ObservableObject
+public partial class HomeViewModel : ObservableObject
 {
-    public Home()
+    public HomeViewModel()
     {
         Accounts = new(App.Configuration.Accounts);
         CurrentAccount = App.Configuration.CurrentAccount;

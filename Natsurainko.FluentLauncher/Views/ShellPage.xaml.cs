@@ -59,7 +59,7 @@ public sealed partial class ShellPage : Page
         _XamlRoot = XamlRoot;
 
         App.MainWindow.SetTitleBar(AppTitleBar);
-        contentFrame.Navigate(typeof(Home.Home));
+        contentFrame.Navigate(typeof(Home.HomePage));
 
         RefreshDragArea();
     }

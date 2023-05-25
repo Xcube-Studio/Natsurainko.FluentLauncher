@@ -7,13 +7,13 @@ using Windows.Graphics;
 
 namespace Natsurainko.FluentLauncher.Views;
 
-public sealed partial class MainContainer : Page
+public sealed partial class ShellPage : Page
 {
     public static XamlRoot _XamlRoot { get; private set; }
 
     public static Frame ContentFrame { get; private set; }
 
-    public MainContainer()
+    public ShellPage()
     {
         /*
         this.Resources.Add("NavigationViewContentBackground", new SolidColorBrush(Colors.Transparent));

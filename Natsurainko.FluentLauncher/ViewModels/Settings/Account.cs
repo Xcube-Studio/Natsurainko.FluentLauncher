@@ -46,7 +46,7 @@ public partial class Account
         {
             var chooseAccountTypeDialog = new ChooseAccountTypeDialog
             {
-                XamlRoot = Views.MainContainer._XamlRoot,
+                XamlRoot = Views.ShellPage._XamlRoot,
                 DataContext = new Dialogs.ChooseAccountTypeDialog { SetAccountAction = SetAccount }
             };
             await chooseAccountTypeDialog.ShowAsync();

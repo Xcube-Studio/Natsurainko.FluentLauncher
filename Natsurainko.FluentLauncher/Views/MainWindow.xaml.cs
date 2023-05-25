@@ -9,7 +9,7 @@ using Windows.ApplicationModel;
 using Windows.Globalization;
 using WinUIEx;
 
-namespace Natsurainko.FluentLauncher;
+namespace Natsurainko.FluentLauncher.Views;
 
 public sealed partial class MainWindow : WindowEx
 {
@@ -51,7 +51,7 @@ public sealed partial class MainWindow : WindowEx
            };
 
         if (App.Configuration.FinishGuide)
-            Frame.Navigate(typeof(Views.MainContainer));
+            Frame.Navigate(typeof(Views.ShellPage));
         else Frame.Navigate(typeof(Views.OOBE.Navigation));
     }
 

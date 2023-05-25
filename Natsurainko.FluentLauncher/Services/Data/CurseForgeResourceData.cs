@@ -40,7 +40,7 @@ internal partial class CurseForgeResourceData
     {
         var dialog = new CurseForgeModDialog();
         dialog.DataContext = this;
-        dialog.XamlRoot = Views.MainContainer._XamlRoot;
+        dialog.XamlRoot = Views.ShellPage._XamlRoot;
 
         await dialog.ShowAsync();
     }

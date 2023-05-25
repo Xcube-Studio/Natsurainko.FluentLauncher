@@ -150,7 +150,7 @@ public partial class Cores
         if (TipTitle.Equals("No Game Cores"))
             OpenInstall();
         else if (TipTitle.Equals("No Game Folders"))
-            Views.MainContainer.ContentFrame.Navigate(typeof(Views.Settings.Navigation));
+            Views.ShellPage.ContentFrame.Navigate(typeof(Views.Settings.Navigation));
     }
 
     [RelayCommand]
@@ -201,7 +201,7 @@ public partial class Cores
         {
             var coreOptionsDialog = new CoreOptionsDialog
             {
-                XamlRoot = Views.MainContainer._XamlRoot,
+                XamlRoot = Views.ShellPage._XamlRoot,
                 DataContext = core
             };
             await coreOptionsDialog.ShowAsync();
@@ -215,7 +215,7 @@ public partial class Cores
         {
             var installCoreDialog = new InstallCoreDialog
             {
-                XamlRoot = Views.MainContainer._XamlRoot,
+                XamlRoot = Views.ShellPage._XamlRoot,
                 InstalledCoreNames = GameCores.Select(x => x.Id).ToArray()
             };
             await installCoreDialog.ShowAsync();

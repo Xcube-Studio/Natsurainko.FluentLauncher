@@ -15,7 +15,7 @@ using Windows.Storage.Pickers;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-public partial class Launch : SettingViewModel
+public partial class LaunchViewModel : SettingViewModel
 {
     #region ObservableProperties
 
@@ -66,7 +66,7 @@ public partial class Launch : SettingViewModel
 
     #endregion
 
-    public Launch() : base() { }
+    public LaunchViewModel() : base() { }
 
     protected override void _OnPropertyChanged(PropertyChangedEventArgs e)
     {

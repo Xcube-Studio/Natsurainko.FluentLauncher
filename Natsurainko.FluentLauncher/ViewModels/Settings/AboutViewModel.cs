@@ -6,7 +6,7 @@ using Windows.System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-public partial class About : ObservableObject
+public partial class AboutViewModel : ObservableObject
 {
     [ObservableProperty]
     private string version = string.Format("{0}.{1}.{2}.{3}",
@@ -24,7 +24,7 @@ public partial class About : ObservableObject
 #endif
 }
 
-public partial class About
+public partial class AboutViewModel
 {
     [RelayCommand]
     public async void CheckUpdate()

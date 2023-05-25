@@ -13,7 +13,7 @@
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     mc:Ignorable="d">
     <Page.DataContext>
-        <vm:Download />
+        <vm:DownloadViewMoel />
     </Page.DataContext>
 
     <ScrollViewer Padding="32,0" VerticalScrollBarVisibility="Auto">

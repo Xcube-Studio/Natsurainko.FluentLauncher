@@ -15,9 +15,9 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-public partial class Account : SettingViewModel
+public partial class AccountViewModel : SettingViewModel
 {
-    public Account() : base() { }
+    public AccountViewModel() : base() { }
 
     protected override void _OnPropertyChanged(PropertyChangedEventArgs e)
     {
@@ -28,7 +28,7 @@ public partial class Account : SettingViewModel
     }
 }
 
-public partial class Account
+public partial class AccountViewModel
 {
     [RelayCommand]
     public void Remove()
@@ -111,7 +111,7 @@ public partial class Account
     });
 }
 
-public partial class Account
+public partial class AccountViewModel
 {
     [ObservableProperty]
     private Visibility removeVisibility;

@@ -11,7 +11,7 @@
     Background="Transparent"
     mc:Ignorable="d">
     <Page.DataContext>
-        <vm:About />
+        <vm:AboutViewModel />
     </Page.DataContext>
 
     <ScrollViewer Padding="32,0" VerticalScrollBarVisibility="Auto">

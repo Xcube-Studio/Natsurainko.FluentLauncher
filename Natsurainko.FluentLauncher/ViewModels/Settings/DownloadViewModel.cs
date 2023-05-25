@@ -3,12 +3,12 @@ using Natsurainko.FluentLauncher.Components.Mvvm;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-public partial class Download : SettingViewModel
+public partial class DownloadViewMoel : SettingViewModel
 {
-    public Download() : base() { }
+    public DownloadViewMoel() : base() { }
 }
 
-public partial class Download
+public partial class DownloadViewMoel
 {
     [ObservableProperty]
     private string currentDownloadSource;

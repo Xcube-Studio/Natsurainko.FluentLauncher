@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings
 {
-    public partial class Appearance : SettingViewModel
+    public partial class AppearanceViewModel : SettingViewModel
     {
         #region Observable Properties
 

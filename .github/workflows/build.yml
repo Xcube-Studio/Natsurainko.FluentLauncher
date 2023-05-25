@@ -8,10 +8,11 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        configuration: [Release]
+        architecture: [x64, arm64]
     env:
       Solution_Name: Natsurainko.FluentLauncher
       Project_Directory: Natsurainko.FluentLauncher
+      Configuration: Release
 
     steps:
     - name: Checkout code
@@ -53,11 +54,10 @@ jobs:
         msbuild $env:Solution_Name /p:Platform=$env:Platform /p:AppxBundlePlatforms="$env:Appx_Bundle_Platforms" /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=$certificatePath /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
       env:
         Appx_Bundle: Never
-        Platform: x64
-        Appx_Bundle_Platforms: x64
+        Platform: ${{ matrix.architecture }}
+        Appx_Bundle_Platforms: ${{ matrix.architecture }}
         Appx_Package_Build_Mode: SideloadOnly
         Appx_Package_Dir: Packages\
-        Configuration: ${{ matrix.configuration }}
 
     # Upload the MSIX package as an artifact
     - name: Upload build artifacts

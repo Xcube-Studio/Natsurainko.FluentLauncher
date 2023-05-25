@@ -40,7 +40,7 @@ public partial class Language : SettingViewModel
             WeakReferenceMessenger.Default.Send(new GuideNavigationMessage()
             {
                 CanNext = canNext,
-                NextPage = typeof(Views.OOBE.Basic)
+                NextPage = typeof(Views.OOBE.BasicPage)
             });
     }
 }

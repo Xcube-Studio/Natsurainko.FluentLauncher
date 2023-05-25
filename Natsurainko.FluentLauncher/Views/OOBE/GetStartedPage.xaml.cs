@@ -2,9 +2,9 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace Natsurainko.FluentLauncher.Views.OOBE;
 
-public sealed partial class GetStarted : Page
+public sealed partial class GetStartedPage : Page
 {
-    public GetStarted()
+    public GetStartedPage()
     {
         this.InitializeComponent();
     }

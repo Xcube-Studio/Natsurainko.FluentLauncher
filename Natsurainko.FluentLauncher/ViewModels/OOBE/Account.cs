@@ -39,7 +39,7 @@ public partial class Account : SettingViewModel
             WeakReferenceMessenger.Default.Send(new GuideNavigationMessage()
             {
                 CanNext = canNext,
-                NextPage = typeof(Views.OOBE.GetStarted)
+                NextPage = typeof(Views.OOBE.GetStartedPage)
             });
     }
 }

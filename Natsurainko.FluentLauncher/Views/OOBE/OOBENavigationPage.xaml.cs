@@ -6,15 +6,15 @@ using System.Linq;
 
 namespace Natsurainko.FluentLauncher.Views.OOBE;
 
-public sealed partial class Navigation : Page
+public sealed partial class OOBENavigationPage : Page
 {
-    public Navigation()
+    public OOBENavigationPage()
     {
         this.InitializeComponent();
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
-        => contentFrame.Navigate(typeof(Views.OOBE.Language), null, new DrillInNavigationTransitionInfo());
+        => contentFrame.Navigate(typeof(Views.OOBE.LanguagePage), null, new DrillInNavigationTransitionInfo());
 
     private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
     {

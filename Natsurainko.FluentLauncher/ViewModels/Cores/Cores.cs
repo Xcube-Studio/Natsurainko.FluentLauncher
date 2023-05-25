@@ -150,7 +150,7 @@ public partial class Cores
         if (TipTitle.Equals("No Game Cores"))
             OpenInstall();
         else if (TipTitle.Equals("No Game Folders"))
-            Views.ShellPage.ContentFrame.Navigate(typeof(Views.Settings.Navigation));
+            Views.ShellPage.ContentFrame.Navigate(typeof(Views.Settings.NavigationPage));
     }
 
     [RelayCommand]

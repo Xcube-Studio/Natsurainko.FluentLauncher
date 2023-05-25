@@ -2,9 +2,9 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace Natsurainko.FluentLauncher.Views.Settings;
 
-public sealed partial class Account : Page
+public sealed partial class AppearancePage : Page
 {
-    public Account()
+    public AppearancePage()
     {
         InitializeComponent();
     }

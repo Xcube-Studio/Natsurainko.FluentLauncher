@@ -81,7 +81,7 @@
                 <NavigationViewItem
                     x:Uid="Navigation_Settings"
                     Content="Settings"
-                    Tag="Natsurainko.FluentLauncher.Views.Settings.Navigation">
+                    Tag="Natsurainko.FluentLauncher.Views.Settings.NavigationPage">
                     <NavigationViewItem.Icon>
                         <AnimatedIcon>
                             <AnimatedIcon.FallbackIconSource>

@@ -13,7 +13,9 @@ jobs:
       Solution_Name: Natsurainko.FluentLauncher
       Project_Directory: Natsurainko.FluentLauncher
       Configuration: Release
-    name: Build ${{ matrix.architecture }}
+      Packages_DirectoryName: AppPackages
+      Packages_Directory: Natsurainko.FluentLauncher\AppPackages
+    name: Build (${{ matrix.architecture }})
 
     steps:
     - name: Checkout code
@@ -34,33 +36,64 @@ jobs:
     - name: Restore the application
       run: msbuild $env:Solution_Name /t:Restore /p:Configuration=Release
 
-    # Decode the base 64 encoded pfx and save the Signing_Certificate
-    - name: Decode the pfx
-      run: |
-        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.PFX_BASE64_ENCODED }}")
-        $certificatePath = Join-Path -Path $env:Project_Directory -ChildPath Natsurainko.FluentLauncher_TemporaryKey.pfx
-        [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
-
-    - name: DEBUG_CertificatePath
-      run: |
-        ls $env:Project_Directory
-        echo $certificatePath
-
     # Create the app package by building and packaging the Windows Application Packaging project
-    - name: Create the app package
+    - name: Create app package
       run: |
-        $certificatePath = Join-Path -Path $env:Project_Directory -ChildPath Natsurainko.FluentLauncher_TemporaryKey.pfx
-        msbuild $env:Solution_Name /p:Platform=$env:Platform /p:AppxBundlePlatforms="$env:Appx_Bundle_Platforms" /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=$certificatePath /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
+        msbuild $env:Solution_Name /p:Platform=$env:Platform /p:AppxBundlePlatforms="$env:Appx_Bundle_Platforms" /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
       env:
         Appx_Bundle: Never
         Platform: ${{ matrix.architecture }}
         Appx_Bundle_Platforms: ${{ matrix.architecture }}
         Appx_Package_Build_Mode: SideloadOnly
-        Appx_Package_Dir: Packages\
+        Appx_Package_Dir: ${{ env.Packages_DirectoryName }}\ # DO NOT REMOVE THE TRAILING SLASH
+    
+    - name: Create .msixupload
+      id: create_msixupload
+      run: |
+        $msixFile = Get-Item -Path "${{ env.Packages_Directory }}\*\*.msix"
+        $packageName = [System.IO.Path]::GetFileNameWithoutExtension($msixFile.FullName)
+        echo "::set-output name=packageName::$packageName"
 
-    # Upload the MSIX package as an artifact
-    - name: Upload build artifacts
+        $sourcePath = "${{ env.Packages_Directory }}\*\*.msix*"
+        Compress-Archive -Path $sourcePath -DestinationPath "$packageName.zip"
+        mv "$packageName.zip" "$packageName.msixupload"
+
+    - name: Upload .msixupload to artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: MSIX Package
-        path: Natsurainko.FluentLauncher/Packages/*/Natsurainko.FluentLauncher*.msix*
+        name: .msixupload
+        path: ${{ steps.create_msixupload.outputs.packageName }}.msixupload
+
+    - name: Upload .msix to artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: .msix
+        path: ${{ env.Packages_Directory }}\*\${{ steps.create_msixupload.outputs.packageName }}.msix
+
+        
+  release:
+    name: Release
+    needs: build
+    runs-on: windows-latest
+    env:
+      SigningKey_Path: SigningKey.pfx
+
+    steps:
+    - name: Download Artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: .msix
+        path: ./artifacts
+
+    # Decode the base 64 encoded pfx and save the Signing_Certificate
+    - name: Decode the pfx
+      run: |
+        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.PFX_BASE64_ENCODED }}")
+        [IO.File]::WriteAllBytes("${{ env.SigningKey_Path }}", $pfx_cert_byte)
+
+    # Upload the MSIX package as an artifact
+    # - name: Upload build artifacts
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: MSIX Package
+    #     path: ${{ env.Packages_Directory }}/*/Natsurainko.FluentLauncher*.msix*

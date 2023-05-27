@@ -64,7 +64,9 @@ public partial class AccountViewModel
             {
                 var account = (MicrosoftAccount)CurrentAccount;
                 authenticator = new MicrosoftAuthenticator(
-                    account.RefreshToken,
+                    account.RefreshToken, 
+                    "0844e754-1d2e-4861-8e2b-18059609badb", 
+                    "https://login.live.com/oauth20_desktop.srf",
                     AuthenticatorMethod.Refresh);
             }
             else if (CurrentAccount.Type.Equals(AccountType.Yggdrasil))

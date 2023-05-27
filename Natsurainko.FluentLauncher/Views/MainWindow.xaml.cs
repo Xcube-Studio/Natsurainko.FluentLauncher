@@ -46,8 +46,8 @@ public sealed partial class MainWindow : WindowEx
            : new DesktopAcrylicBackdrop();
 
         if (App.Configuration.FinishGuide)
-            Frame.Navigate(typeof(Views.ShellPage));
-        else Frame.Navigate(typeof(Views.OOBE.OOBENavigationPage));
+            Frame.Navigate(typeof(ShellPage));
+        else Frame.Navigate(typeof(OOBE.OOBENavigationPage));
     }
 
     private void InfoBar_CloseButtonClick(InfoBar sender, object args)

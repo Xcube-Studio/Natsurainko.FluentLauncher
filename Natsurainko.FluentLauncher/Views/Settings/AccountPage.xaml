@@ -89,7 +89,7 @@
                             </ComboBox>
                         </labs:SettingsCard>
 
-                        <labs:SettingsCard>
+                        <labs:SettingsCard Visibility="{Binding RemoveVisibility}">
                             <labs:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_Account_Item_2" Text="Details of the current account:" />
                             </labs:SettingsCard.Header>
@@ -156,7 +156,7 @@
                             </Button>
                         </labs:SettingsCard>
 
-                        <labs:SettingsCard>
+                        <labs:SettingsCard Visibility="{Binding RemoveVisibility}">
                             <labs:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_Account_Item_4" Text="Remove current account:" />
                             </labs:SettingsCard.Header>

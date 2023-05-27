@@ -253,7 +253,7 @@
                             </HyperlinkButton>
                         </labs:SettingsCard>
 
-                        <labs:SettingsCard Description="8.1.0" Header="CommunityToolkit.Mvvm">
+                        <labs:SettingsCard Description="8.2.0" Header="CommunityToolkit.Mvvm">
                             <HyperlinkButton NavigateUri="https://github.com/CommunityToolkit/dotnet" ToolTipService.ToolTip="https://github.com/CommunityToolkit/dotnet">
                                 <TextBlock Text="Github" />
                             </HyperlinkButton>
@@ -277,13 +277,13 @@
                             </HyperlinkButton>
                         </labs:SettingsCard>
 
-                        <labs:SettingsCard Description="2.0.5" Header="Natsurainko.FluentCore">
+                        <labs:SettingsCard Description="2.0.6" Header="Natsurainko.FluentCore">
                             <HyperlinkButton NavigateUri="https://github.com/Xcube-Studio/Natsurainko.FluentCore" ToolTipService.ToolTip="https://github.com/Xcube-Studio/Natsurainko.FluentCore">
                                 <TextBlock Text="Github" />
                             </HyperlinkButton>
                         </labs:SettingsCard>
 
-                        <labs:SettingsCard Description="2.0.5" Header="Natsurainko.Toolkits">
+                        <labs:SettingsCard Description="1.0.4" Header="Natsurainko.Toolkits">
                             <HyperlinkButton NavigateUri="https://github.com/natsurainko/Natsurainko.Toolkits" ToolTipService.ToolTip="https://github.com/natsurainko/Natsurainko.Toolkits">
                                 <TextBlock Text="Github" />
                             </HyperlinkButton>
@@ -295,7 +295,7 @@
                             </HyperlinkButton>
                         </labs:SettingsCard>
 
-                        <labs:SettingsCard Description="2.1.0" Header="WinUIEx">
+                        <labs:SettingsCard Description="2.2.0" Header="WinUIEx">
                             <HyperlinkButton NavigateUri="https://dotmorten.github.io/WinUIEx/" ToolTipService.ToolTip="https://dotmorten.github.io/WinUIEx/">
                                 <TextBlock Text="Github" />
                             </HyperlinkButton>

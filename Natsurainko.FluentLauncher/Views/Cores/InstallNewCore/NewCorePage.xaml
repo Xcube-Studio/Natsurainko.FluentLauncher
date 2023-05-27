@@ -1,0 +1,283 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Cores.InstallNewCore.NewCorePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Cores"
+    d:DataContext="{d:DesignInstance Type=vm:NewCore}"
+    mc:Ignorable="d">
+
+    <Grid Padding="0,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Button
+            Height="55.2"
+            Margin="20,0"
+            Padding="20,0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid DataContext="{Binding SelectedCoreManifestItem}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        Width="32"
+                        Height="32"
+                        Margin="2,2,0,0"
+                        VerticalAlignment="Center"
+                        CornerRadius="4">
+                        <Border.Background>
+                            <ImageBrush ImageSource="{Binding Converter={ThemeResource IconConverter}}" />
+                        </Border.Background>
+                    </Border>
+                    <Grid Grid.Column="2" VerticalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            FontWeight="SemiBold"
+                            Text="{Binding Id}"
+                            TextTrimming="CharacterEllipsis"
+                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                            TextTrimming="CharacterEllipsis">
+                            <Run Text="{Binding Converter={ThemeResource GameCoreTagConverter}}" />
+                            <Run Text="{Binding Time}" />
+                        </TextBlock>
+                    </Grid>
+                </Grid>
+                <StackPanel
+                    Grid.Column="2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <ComboBox Width="110" SelectedItem="{Binding Filter, Mode=TwoWay}">
+                        <x:String>Release</x:String>
+                        <x:String>Snapshot</x:String>
+                        <x:String>Old</x:String>
+                    </ComboBox>
+                    <ComboBox
+                        Width="150"
+                        Margin="10,0,0,0"
+                        ItemsSource="{Binding Cores}"
+                        SelectedItem="{Binding SelectedCoreManifestItem, Mode=TwoWay}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Id}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+            </Grid>
+        </Button>
+        <ScrollViewer
+            Grid.Row="1"
+            Margin="20,7.5"
+            HorizontalAlignment="Stretch">
+            <StackPanel>
+                <Expander
+                    Margin="0,7.5"
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    IsExpanded="True">
+                    <Expander.Header>
+                        <Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon Margin="2,0,0,0" Glyph="&#xe8f1;" />
+                                <StackPanel Margin="17,12.5" VerticalAlignment="Center">
+                                    <TextBlock Text="Enable Mod Loader" />
+                                    <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Visibility="{Binding BuildVisibility}">
+                                        <Run Text="{Binding SelectedModLoader.Type}" />
+                                        <Run Text="{Binding SelectedModLoader.SelectedBuild.BuildVersion}" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                            <TextBlock
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Text="Optional" />
+                        </Grid>
+                    </Expander.Header>
+                    <Expander.Content>
+                        <ListView ItemsSource="{Binding Loaders}" SelectedItem="{Binding SelectedModLoader, Mode=TwoWay}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid x:Name="Grid" Height="55">
+                                        <i:Interaction.Behaviors>
+                                            <behaviors:AncestorBindingBehavior
+                                                AncestorType="ListViewItem"
+                                                Binding="{Binding}"
+                                                TargetPropertyName="Tag" />
+                                            <core:EventTriggerBehavior EventName="Loaded">
+                                                <actions:ModifiedInvokeCommandAction Command="{Binding LoadedCommand}" CommandParameter="{Binding ElementName=Grid, Path=Tag}" />
+                                            </core:EventTriggerBehavior>
+                                        </i:Interaction.Behaviors>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="1*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border
+                                            Width="32"
+                                            Height="32"
+                                            CornerRadius="4">
+                                            <Border.Background>
+                                                <ImageBrush ImageSource="{Binding Type, Converter={ThemeResource IconConverter}}" />
+                                            </Border.Background>
+                                        </Border>
+                                        <Grid Grid.Column="1">
+                                            <StackPanel Margin="15,0,0,0" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Type}" />
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        FontSize="12"
+                                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                        Visibility="{Binding SupportedVisibility}">
+                                                        <Run Text="{Binding SelectedBuild.BuildVersion}" />
+                                                        <Run Text="-" />
+                                                        <Run Text="{Binding McVersion}" />
+                                                    </TextBlock>
+                                                    <TextBlock
+                                                        FontSize="12"
+                                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                        Text="This version does not support this loader"
+                                                        Visibility="{Binding UnsupportedVisibility}" />
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <TextBlock
+                                                Margin="10,0"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center"
+                                                FontWeight="SemiBold"
+                                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                Text="{Binding Data.ReleaseTime}" />
+                                            <StackPanel
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center"
+                                                Orientation="Horizontal">
+                                                <Button
+                                                    Padding="7.5,4"
+                                                    Content="Remove"
+                                                    Style="{ThemeResource AccentButtonStyle}"
+                                                    Visibility="{Binding ComboBoxVisibility}">
+                                                    <i:Interaction.Behaviors>
+                                                        <behaviors:AncestorBindingBehavior
+                                                            AncestorType="ListView"
+                                                            Binding="{Binding DataContext.RemoveLoaderCommand}"
+                                                            TargetPropertyName="Command" />
+                                                    </i:Interaction.Behaviors>
+                                                </Button>
+                                                <ComboBox
+                                                    Margin="10,0,0,0"
+                                                    ItemsSource="{Binding Builds}"
+                                                    SelectedItem="{Binding SelectedBuild, Mode=TwoWay}"
+                                                    Visibility="{Binding ComboBoxVisibility}">
+                                                    <ComboBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding BuildVersion}" />
+                                                        </DataTemplate>
+                                                    </ComboBox.ItemTemplate>
+                                                </ComboBox>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Expander.Content>
+                </Expander>
+                <Border
+                    Grid.Row="2"
+                    Margin="0,7.5"
+                    Padding="20,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    Background="{ThemeResource CardBackgroundFillColorDefault}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4">
+                    <StackPanel>
+                        <Grid Height="55.2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="15" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                <FontIcon Glyph="&#xe8ac;" />
+                                <TextBlock Margin="17,0" Text="Core Name:" />
+                            </StackPanel>
+                            <TextBox
+                                Name="NameBox"
+                                Grid.Column="2"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Text="{Binding CoreName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </Grid>
+                        <Border Style="{ThemeResource ExpanderSplitter}" />
+                        <Grid Height="55.2">
+                            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                <FontIcon Glyph="&#xe115;" />
+                                <TextBlock Margin="17,0" Text="Enable core independence" />
+                            </StackPanel>
+                            <ToggleSwitch
+                                Margin="-75,-25"
+                                Padding="0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                IsOn="{Binding EnableCoreIndependent, Mode=TwoWay}" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <Border
+                    Grid.Row="2"
+                    Height="55.2"
+                    Margin="0,7.5"
+                    Padding="20,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    Background="{ThemeResource CardBackgroundFillColorDefault}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4">
+                    <Grid>
+                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                            <FontIcon Glyph="&#xe896;" />
+                            <TextBlock Margin="17,0" Text="Add to download task" />
+                        </StackPanel>
+                        <Button
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Command="{Binding InstallCommand}"
+                            Style="{ThemeResource AccentButtonStyle}">
+                            <TextBlock x:Uid="_Buttons_Install" Text="Install" />
+                        </Button>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

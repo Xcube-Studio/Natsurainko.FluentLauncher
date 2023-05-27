@@ -1,10 +1,8 @@
-﻿using Natsurainko.FluentCore.Model.Launch;
-using Natsurainko.FluentCore.Model.Parser;
+﻿using Natsurainko.FluentCore.Model.Parser;
 using Natsurainko.FluentCore.Module.Parser;
 using Natsurainko.FluentCore.Service;
 using Natsurainko.FluentLauncher.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;

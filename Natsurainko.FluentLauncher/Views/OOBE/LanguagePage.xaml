@@ -1,0 +1,57 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.OOBE.LanguagePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:guides="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.OOBE"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
+    mc:Ignorable="d">
+    <Page.DataContext>
+        <vm:LanguageViewModel />
+    </Page.DataContext>
+
+    <Grid Padding="75,0">
+        <ComboBox
+            Width="275"
+            VerticalAlignment="Center"
+            ItemsSource="{Binding Languages}"
+            SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}">
+            <ComboBox.Header>
+                <TextBlock
+                    x:Uid="Guide_Welcome"
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="Welcome" />
+            </ComboBox.Header>
+        </ComboBox>
+
+        <StackPanel
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <Border
+                Width="75"
+                Height="75"
+                BorderBrush="{ThemeResource IconBorder}"
+                BorderThickness="2"
+                CornerRadius="8">
+                <Border.Background>
+                    <ImageBrush ImageSource="ms-appx:/Assets/AppIcon.png" />
+                </Border.Background>
+            </Border>
+            <StackPanel Margin="15,0,0,0">
+                <TextBlock
+                    FontSize="24"
+                    FontWeight="Bold"
+                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                    Text="Natsurainko" />
+                <TextBlock
+                    FontSize="36"
+                    FontWeight="Bold"
+                    Text="Fluent Launcher" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

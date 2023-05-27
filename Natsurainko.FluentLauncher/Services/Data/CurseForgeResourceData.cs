@@ -1,13 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using Natsurainko.FluentCore.Model.Mod.CureseForge;
-using Natsurainko.FluentLauncher.Views.Dialogs;
-using Natsurainko.FluentLauncher.Views.Pages;
+using Natsurainko.FluentLauncher.Views.Common;
+using Natsurainko.FluentLauncher.Views.Downloads;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Services.Data;
 
@@ -46,7 +41,7 @@ internal partial class CurseForgeResourceData
     {
         var dialog = new CurseForgeModDialog();
         dialog.DataContext = this;
-        dialog.XamlRoot = MainContainer._XamlRoot;
+        dialog.XamlRoot = Views.ShellPage._XamlRoot;
 
         await dialog.ShowAsync();
     }

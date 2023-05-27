@@ -1,8 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Natsurainko.FluentCore.Model.Install.Vanilla;
-using Natsurainko.FluentLauncher.Components.FluentCore;
 using System;
-using System.Collections.Generic;
 
 namespace Natsurainko.FluentLauncher.Utils.Xaml.Converters;
 

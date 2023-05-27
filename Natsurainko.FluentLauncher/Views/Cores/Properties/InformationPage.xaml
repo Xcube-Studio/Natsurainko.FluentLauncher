@@ -1,0 +1,302 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Cores.Properties.InformationPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Natsurainko.FluentLauncher.UserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Cores.Properties"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:properties="using:Natsurainko.FluentLauncher.ViewModels.Cores.Properties"
+    d:DataContext="{d:DesignInstance Type=properties:Information}"
+    mc:Ignorable="d">
+
+    <ScrollViewer>
+        <StackPanel MinHeight="350" Margin="20">
+            <Button
+                Height="55.2"
+                Padding="20,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                DataContext="{Binding Core}">
+                <Grid x:Name="DataGrid" Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        Width="32"
+                        Height="32"
+                        Margin="2,2,0,0"
+                        VerticalAlignment="Center"
+                        CornerRadius="4">
+                        <Border.Background>
+                            <ImageBrush ImageSource="{Binding Converter={ThemeResource IconConverter}}" />
+                        </Border.Background>
+                    </Border>
+                    <Grid Grid.Column="2" VerticalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            FontWeight="SemiBold"
+                            Text="{Binding Id}"
+                            TextTrimming="CharacterEllipsis"
+                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                            Text="{Binding Converter={ThemeResource GameCoreTagConverter}}"
+                            TextTrimming="CharacterEllipsis"
+                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                    </Grid>
+                </Grid>
+            </Button>
+            <Expander
+                Margin="0,15,0,0"
+                Padding="0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                IsExpanded="True">
+                <Expander.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Margin="2,0,0,0" Glyph="&#xe946;" />
+                        <StackPanel Margin="17,12.5">
+                            <TextBlock x:Uid="Properties_Information_Header" Text="Property" />
+                            <TextBlock
+                                x:Uid="Properties_Information_Subtitle"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Text="Basic properties of the core" />
+                        </StackPanel>
+                    </StackPanel>
+                </Expander.Header>
+                <Expander.Content>
+                    <StackPanel HorizontalAlignment="Stretch">
+                        <controls:ExpanderContentItem Height="42">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="15" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    x:Uid="Properties_Information_Item_1"
+                                    VerticalAlignment="Center"
+                                    Text="Path:" />
+                                <TextBlock
+                                    Grid.Column="2"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    FlowDirection="RightToLeft"
+                                    FontWeight="SemiBold"
+                                    Text="{Binding Core.Root.FullName}" />
+                            </Grid>
+                        </controls:ExpanderContentItem>
+                        <Border Style="{ThemeResource ExpanderSplitter}" Visibility="{Binding TimeVisibility}" />
+                        <controls:ExpanderContentItem Height="42" Visibility="{Binding TimeVisibility}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="15" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    x:Uid="Properties_Information_Item_2"
+                                    VerticalAlignment="Center"
+                                    Text="Last launch time:" />
+                                <TextBlock
+                                    Grid.Column="2"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    FlowDirection="RightToLeft"
+                                    FontWeight="SemiBold"
+                                    Text="{Binding LastLaunchTime}" />
+                            </Grid>
+                        </controls:ExpanderContentItem>
+                        <Border Style="{ThemeResource ExpanderSplitter}" Visibility="{Binding LoaderVisibility}" />
+                        <controls:ExpanderContentItem Height="42" Visibility="{Binding LoaderVisibility}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="15" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    x:Uid="Properties_Information_Item_3"
+                                    VerticalAlignment="Center"
+                                    Text="Mod Loaders:" />
+                                <GridView
+                                    Grid.Column="2"
+                                    Height="30"
+                                    Margin="-10,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    FlowDirection="RightToLeft"
+                                    FontWeight="SemiBold"
+                                    ItemsSource="{Binding ModLoaders}">
+                                    <GridView.ItemContainerStyle>
+                                        <Style TargetType="GridViewItem">
+                                            <Setter Property="VerticalAlignment" Value="Center" />
+                                            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+                                            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+                                            <Setter Property="Background" Value="{ThemeResource GridViewItemBackground}" />
+                                            <Setter Property="Foreground" Value="{ThemeResource GridViewItemForeground}" />
+                                            <Setter Property="TabNavigation" Value="Local" />
+                                            <Setter Property="IsHoldingEnabled" Value="True" />
+                                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                            <Setter Property="VerticalContentAlignment" Value="Center" />
+                                            <Setter Property="Margin" Value="0,0,4,4" />
+                                            <Setter Property="MinWidth" Value="{ThemeResource GridViewItemMinWidth}" />
+                                            <Setter Property="MinHeight" Value="30" />
+                                            <Setter Property="AllowDrop" Value="True" />
+                                            <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}" />
+                                            <Setter Property="FocusVisualMargin" Value="-3" />
+                                            <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource GridViewItemFocusVisualPrimaryBrush}" />
+                                            <Setter Property="FocusVisualPrimaryThickness" Value="2" />
+                                            <Setter Property="FocusVisualSecondaryBrush" Value="{ThemeResource GridViewItemFocusVisualSecondaryBrush}" />
+                                            <Setter Property="FocusVisualSecondaryThickness" Value="1" />
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="GridViewItem">
+                                                        <ListViewItemPresenter
+                                                            x:Name="Root"
+                                                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                            CheckBoxBorderBrush="{ThemeResource GridViewItemCheckBoxBorderBrush}"
+                                                            CheckBoxBrush="{ThemeResource GridViewItemCheckBoxBrush}"
+                                                            CheckBoxCornerRadius="{ThemeResource GridViewItemCheckBoxCornerRadius}"
+                                                            CheckBoxDisabledBorderBrush="{ThemeResource GridViewItemCheckBoxDisabledBorderBrush}"
+                                                            CheckBoxDisabledBrush="{ThemeResource GridViewItemCheckBoxDisabledBrush}"
+                                                            CheckBoxPointerOverBorderBrush="{ThemeResource GridViewItemCheckBoxPointerOverBorderBrush}"
+                                                            CheckBoxPointerOverBrush="{ThemeResource GridViewItemCheckBoxPointerOverBrush}"
+                                                            CheckBoxPressedBorderBrush="{ThemeResource GridViewItemCheckBoxPressedBorderBrush}"
+                                                            CheckBoxPressedBrush="{ThemeResource GridViewItemCheckBoxPressedBrush}"
+                                                            CheckBoxSelectedBrush="{ThemeResource GridViewItemCheckBoxSelectedBrush}"
+                                                            CheckBoxSelectedDisabledBrush="{ThemeResource GridViewItemCheckBoxSelectedDisabledBrush}"
+                                                            CheckBoxSelectedPointerOverBrush="{ThemeResource GridViewItemCheckBoxSelectedPointerOverBrush}"
+                                                            CheckBoxSelectedPressedBrush="{ThemeResource GridViewItemCheckBoxSelectedPressedBrush}"
+                                                            CheckBrush="{ThemeResource GridViewItemCheckBrush}"
+                                                            CheckDisabledBrush="{ThemeResource GridViewItemCheckDisabledBrush}"
+                                                            CheckMode="{ThemeResource GridViewItemCheckMode}"
+                                                            CheckPressedBrush="{ThemeResource GridViewItemCheckPressedBrush}"
+                                                            ContentMargin="{TemplateBinding Padding}"
+                                                            ContentTransitions="{TemplateBinding ContentTransitions}"
+                                                            Control.IsTemplateFocusTarget="True"
+                                                            CornerRadius="{ThemeResource GridViewItemCornerRadius}"
+                                                            DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                                            DragBackground="{ThemeResource GridViewItemDragBackground}"
+                                                            DragForeground="{ThemeResource GridViewItemDragForeground}"
+                                                            DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                                            FocusBorderBrush="{ThemeResource GridViewItemFocusBorderBrush}"
+                                                            FocusVisualMargin="{TemplateBinding FocusVisualMargin}"
+                                                            FocusVisualPrimaryBrush="{TemplateBinding FocusVisualPrimaryBrush}"
+                                                            FocusVisualPrimaryThickness="{TemplateBinding FocusVisualPrimaryThickness}"
+                                                            FocusVisualSecondaryBrush="{TemplateBinding FocusVisualSecondaryBrush}"
+                                                            FocusVisualSecondaryThickness="{TemplateBinding FocusVisualSecondaryThickness}"
+                                                            PlaceholderBackground="{ThemeResource GridViewItemPlaceholderBackground}"
+                                                            PointerOverBackground="{ThemeResource GridViewItemBackgroundPointerOver}"
+                                                            PointerOverBorderBrush="{ThemeResource GridViewItemPointerOverBorderBrush}"
+                                                            PointerOverForeground="{ThemeResource GridViewItemForegroundPointerOver}"
+                                                            PressedBackground="{ThemeResource GridViewItemBackgroundPressed}"
+                                                            ReorderHintOffset="{ThemeResource GridViewItemReorderHintThemeOffset}"
+                                                            SelectedBackground="{ThemeResource GridViewItemBackgroundSelected}"
+                                                            SelectedBorderBrush="{ThemeResource GridViewItemSelectedBorderBrush}"
+                                                            SelectedBorderThickness="{ThemeResource GridViewItemSelectedBorderThickness}"
+                                                            SelectedDisabledBackground="{ThemeResource GridViewItemBackgroundSelectedDisabled}"
+                                                            SelectedDisabledBorderBrush="{ThemeResource GridViewItemSelectedDisabledBorderBrush}"
+                                                            SelectedForeground="{ThemeResource GridViewItemForegroundSelected}"
+                                                            SelectedInnerBorderBrush="{ThemeResource GridViewItemSelectedInnerBorderBrush}"
+                                                            SelectedPointerOverBackground="{ThemeResource GridViewItemBackgroundSelectedPointerOver}"
+                                                            SelectedPointerOverBorderBrush="{ThemeResource GridViewItemSelectedPointerOverBorderBrush}"
+                                                            SelectedPressedBackground="{ThemeResource GridViewItemBackgroundSelectedPressed}"
+                                                            SelectedPressedBorderBrush="{ThemeResource GridViewItemSelectedPressedBorderBrush}"
+                                                            SelectionCheckMarkVisualEnabled="{ThemeResource GridViewItemSelectionCheckMarkVisualEnabled}" />
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </GridView.ItemContainerStyle>
+                                    <GridView.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Margin="10,0">
+                                                <Run Text="{Binding LoaderType}" />
+                                                <Run Text="{Binding Version}" />
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </GridView.ItemTemplate>
+                                </GridView>
+                            </Grid>
+                        </controls:ExpanderContentItem>
+                        <Border Style="{ThemeResource ExpanderSplitter}" />
+                        <controls:ExpanderContentItem Height="42">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="15" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    x:Uid="Properties_Information_Item_4"
+                                    VerticalAlignment="Center"
+                                    Text="Occupied disk space size:" />
+                                <TextBlock
+                                    Grid.Column="2"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    FlowDirection="RightToLeft"
+                                    FontWeight="SemiBold"
+                                    Text="{Binding Size}" />
+                            </Grid>
+                        </controls:ExpanderContentItem>
+                        <Border Style="{ThemeResource ExpanderSplitter}" />
+                        <controls:ExpanderContentItem Height="42">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="15" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    x:Uid="Properties_Information_Item_5"
+                                    VerticalAlignment="Center"
+                                    Text="Number of dependent library files:" />
+                                <TextBlock
+                                    Grid.Column="2"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    FlowDirection="RightToLeft"
+                                    FontWeight="SemiBold"
+                                    Text="{Binding Libraries}" />
+                            </Grid>
+                        </controls:ExpanderContentItem>
+                        <Border Style="{ThemeResource ExpanderSplitter}" />
+                        <controls:ExpanderContentItem Height="42">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="15" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    x:Uid="Properties_Information_Item_6"
+                                    VerticalAlignment="Center"
+                                    Text="Number of dependent asset files:" />
+                                <TextBlock
+                                    Grid.Column="2"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    FlowDirection="RightToLeft"
+                                    FontWeight="SemiBold"
+                                    Text="{Binding Assets}" />
+                            </Grid>
+                        </controls:ExpanderContentItem>
+                    </StackPanel>
+                </Expander.Content>
+            </Expander>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Natsurainko.FluentLauncher.ViewModels.Pages.Activities;
-using Natsurainko.FluentLauncher.ViewModels.Pages.Mods;
+using Natsurainko.FluentLauncher.ViewModels.Activities;
+using Natsurainko.FluentLauncher.ViewModels.Downloads;
 
 namespace Natsurainko.FluentLauncher.Components.Mvvm;
 
@@ -12,11 +12,11 @@ internal class ViewModelLocator
 
     public class ActivitiesLayer
     {
-        public News News => App.Services.GetService<News>();
+        public NewsViewModel News => App.Services.GetService<NewsViewModel>();
     }
 
     public class ModsLayer
     {
-        public CurseForge CurseForge => App.Services.GetService<CurseForge>();
+        public CurseForgeViewModel CurseForge => App.Services.GetService<CurseForgeViewModel>();
     }
 }

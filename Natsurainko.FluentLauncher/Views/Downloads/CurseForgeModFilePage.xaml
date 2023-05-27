@@ -1,0 +1,111 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Downloads.CurseForgeModFilePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mods="using:Natsurainko.FluentLauncher.ViewModels.Downloads"
+    d:DataContext="{d:DesignInstance Type=mods:CurseForgeModFileViewModel}"
+    mc:Ignorable="d">
+
+    <ListView
+        MinWidth="470"
+        MinHeight="350"
+        Margin="20,12.5,20,20"
+        ItemsSource="{Binding FileInfos}">
+        <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Margin" Value="0,7.5" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListViewItem">
+                            <Grid>
+                                <Border
+                                    Height="{TemplateBinding Height}"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="5">
+                                    <ContentPresenter
+                                        Height="{TemplateBinding Height}"
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ListView.ItemContainerStyle>
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <Border
+                    MaxHeight="55.2"
+                    VerticalAlignment="Stretch"
+                    Background="{ThemeResource ButtonBackground}"
+                    BorderBrush="{ThemeResource ButtonBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4">
+                    <Grid Margin="20,7.5" Background="Transparent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="12.5" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <FontIcon
+                            Margin="2,2,0,0"
+                            FontSize="20"
+                            Glyph="&#xe8f1;" />
+                        <Grid Grid.Column="2" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0" Background="Transparent">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock
+                                    FontWeight="SemiBold"
+                                    Text="{Binding FileName}"
+                                    TextTrimming="CharacterEllipsis"
+                                    ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                                <Grid Grid.Row="1">
+                                    <TextBlock
+                                        MaxWidth="375"
+                                        HorizontalAlignment="Left"
+                                        FontWeight="SemiBold"
+                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                        TextTrimming="CharacterEllipsis"
+                                        ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}">
+                                        <Run Text="{Binding SupportedVersion}" />
+                                        <Run Text="{Binding ModLoaderType}" />
+                                    </TextBlock>
+                                </Grid>
+                            </Grid>
+                            <Grid Grid.Column="1">
+                                <Button CommandParameter="{Binding}" Style="{ThemeResource AlternateCloseButtonStyle}">
+                                    <i:Interaction.Behaviors>
+                                        <behaviors:AncestorBindingBehavior
+                                            AncestorType="ListView"
+                                            Binding="{Binding DataContext.DownloadCommand}"
+                                            TargetPropertyName="Command" />
+                                    </i:Interaction.Behaviors>
+                                    <FontIcon FontSize="16" Glyph="&#xe896;" />
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</Page>

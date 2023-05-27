@@ -1,0 +1,269 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Downloads.CurseForgePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
+    xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="Transparent"
+    DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=Mods.CurseForge}"
+    mc:Ignorable="d">
+
+    <Grid
+        Margin="0,15"
+        Padding="25,0"
+        SizeChanged="Grid_SizeChanged">
+        <SplitView
+            x:Name="SplitView"
+            DisplayMode="Inline"
+            IsPaneOpen="{Binding ElementName=ToggleButton, Path=IsChecked, Mode=TwoWay}"
+            PaneBackground="Transparent">
+            <SplitView.Pane>
+                <Grid x:Name="SplitViewGrid">
+                    <Border
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Background="{ThemeResource CardBackgroundFillColorDefault}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                        <Grid Background="{ThemeResource CardBackgroundFillColorDefault}" CornerRadius="4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="1*" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Margin="20,10,0,0">
+                                <CheckBox
+                                    Content="Enable Category"
+                                    FontWeight="SemiBold"
+                                    IsChecked="{Binding EnableCategory, Mode=TwoWay}" />
+                                <TextBlock
+                                    Margin="0,10,0,0"
+                                    FontWeight="SemiBold"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Text="Categories:" />
+                            </StackPanel>
+                            <ListView
+                                Grid.Row="1"
+                                Padding="5"
+                                ItemsSource="{Binding Categories}"
+                                SelectedItem="{Binding SelectedCategory, Mode=TwoWay}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="10" />
+                                                <ColumnDefinition Width="1*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Image
+                                                Grid.Column="0"
+                                                Width="32"
+                                                Height="32">
+                                                <Image.Source>
+                                                    <BitmapImage UriSource="{Binding IconUrl}" />
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock
+                                                Grid.Column="2"
+                                                VerticalAlignment="Center"
+                                                FontWeight="SemiBold"
+                                                Text="{Binding Name}"
+                                                TextTrimming="CharacterEllipsis" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <Border
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        Background="{ThemeResource CardBackgroundFillColorDefault}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                        <StackPanel Padding="10">
+                            <Grid>
+                                <Grid
+                                    Grid.Column="0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+                                    <ComboBox Grid.Column="0" SelectedIndex="0">
+                                        <x:String>Mods</x:String>
+                                        <x:String>Modpacks</x:String>
+                                    </ComboBox>
+                                    <ComboBox
+                                        Grid.Column="2"
+                                        ItemsSource="{Binding Versions}"
+                                        PlaceholderText="version"
+                                        SelectedItem="{Binding SelectedVersion, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
+                            <Grid Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <ToggleButton x:Name="ToggleButton" Content="Open Categories Pane" />
+                                <AppBarSeparator Grid.Column="1" Margin="10,0" />
+                                <AutoSuggestBox
+                                    x:Name="AutoSuggestBox"
+                                    Grid.Column="2"
+                                    VerticalAlignment="Center"
+                                    PlaceholderText="Mod Name">
+                                    <i:Interaction.Behaviors>
+                                        <core:EventTriggerBehavior EventName="QuerySubmitted">
+                                            <actions:ModifiedInvokeCommandAction Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=AutoSuggestBox, Path=Text}" />
+                                        </core:EventTriggerBehavior>
+                                    </i:Interaction.Behaviors>
+                                    <AutoSuggestBox.QueryIcon>
+                                        <AnimatedIcon Width="16" Height="16">
+                                            <AnimatedIcon.Source>
+                                                <animatedvisuals:AnimatedFindVisualSource />
+                                            </AnimatedIcon.Source>
+                                            <AnimatedIcon.FallbackIconSource>
+                                                <SymbolIconSource Symbol="Find" />
+                                            </AnimatedIcon.FallbackIconSource>
+                                        </AnimatedIcon>
+                                    </AutoSuggestBox.QueryIcon>
+                                </AutoSuggestBox>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <ListView Grid.Row="2" ItemsSource="{Binding Resources}">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Margin" Value="0,7.5" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListViewItem">
+                                            <Grid>
+                                                <Border
+                                                    Height="{TemplateBinding Height}"
+                                                    Background="{TemplateBinding Background}"
+                                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                                    CornerRadius="5">
+                                                    <ContentPresenter
+                                                        Height="{TemplateBinding Height}"
+                                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                                </Border>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Button
+                                    Padding="0"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    Background="{ThemeResource CardBackgroundFillColorDefault}"
+                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                    BorderThickness="1"
+                                    Command="{Binding OpenCommand}"
+                                    CornerRadius="4">
+                                    <Grid Padding="15,10" HorizontalAlignment="Stretch">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="20" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border
+                                            Width="50"
+                                            Height="50"
+                                            HorizontalAlignment="Left"
+                                            CornerRadius="4">
+                                            <Border.Background>
+                                                <ImageBrush>
+                                                    <ImageBrush.ImageSource>
+                                                        <BitmapImage UriSource="{Binding Icon}" />
+                                                    </ImageBrush.ImageSource>
+                                                </ImageBrush>
+                                            </Border.Background>
+                                        </Border>
+                                        <StackPanel
+                                            Grid.Column="1"
+                                            Margin="12.5,0,0,0"
+                                            VerticalAlignment="Center">
+                                            <TextBlock
+                                                FontSize="16"
+                                                FontWeight="SemiBold"
+                                                Text="{Binding Name}" />
+                                            <TextBlock
+                                                FontWeight="SemiBold"
+                                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                Text="{Binding Description}"
+                                                TextTrimming="CharacterEllipsis" />
+                                            <ContentControl FontWeight="SemiBold" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
+                                                <StackPanel Margin="0,3,0,0" Orientation="Horizontal">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <FontIcon FontSize="12" Glyph="&#xe77b;" />
+                                                        <TextBlock
+                                                            Margin="2.5,0,0,0"
+                                                            FontSize="12"
+                                                            Text="{Binding Authors}" />
+                                                    </StackPanel>
+                                                    <StackPanel Margin="15,0" Orientation="Horizontal">
+                                                        <FontIcon FontSize="12" Glyph="&#xe787;" />
+                                                        <TextBlock
+                                                            Margin="2.5,0,0,0"
+                                                            FontSize="12"
+                                                            Text="{Binding UpdateTime}" />
+                                                    </StackPanel>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <FontIcon FontSize="12" Glyph="&#xe896;" />
+                                                        <TextBlock
+                                                            Margin="2.5,0,0,0"
+                                                            FontSize="12"
+                                                            Text="{Binding DownloadCount}" />
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </ContentControl>
+                                        </StackPanel>
+                                        <StackPanel
+                                            Grid.Column="3"
+                                            Margin="0,0,10,0"
+                                            VerticalAlignment="Center">
+                                            <FontIcon FontSize="14" Glyph="&#xe76c;" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Button>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </SplitView.Content>
+        </SplitView>
+    </Grid>
+</Page>

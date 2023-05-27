@@ -35,3 +35,4 @@ bld/
 AppPackages
 *.cache
 .editorconfig
+*.pfx

@@ -81,19 +81,20 @@ jobs:
     runs-on: windows-latest
     env:
       SigningKey_Path: SigningKey.pfx
+      Artifacts_Path: .artifacts
 
     steps:
     - name: Download .msix from artifacts
       uses: actions/download-artifact@v3
       with:
         name: .msix
-        path: .artifacts
+        path: ${{ env.Artifacts_Path }}
 
     - name: Get package name
       id: get_package_name
       run: |
         # Get the name of the .msix file
-        $file = Get-Item -Path ".artifacts\*.msix"
+        $file = Get-Item -Path "${{ env.Artifacts_Path }}\*.msix"
         if ($file -is [array]) {
           $file = $file[0]
         }
@@ -112,7 +113,7 @@ jobs:
         }
 
         # Create the .msixbundle using makeappx.exe
-        & $makeappx.FullName bundle /d ".\artifacts" /p "${{ steps.get_package_name.outputs.bundleFileName }}"
+        & $makeappx.FullName bundle /d "${{ env.Artifacts_Path }}" /p "${{ steps.get_package_name.outputs.bundleFileName }}"
 
     - name: Upload .msixbundle to artifacts
       uses: actions/upload-artifact@v2

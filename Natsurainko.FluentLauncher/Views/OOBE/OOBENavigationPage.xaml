@@ -1,0 +1,102 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.OOBE.OOBENavigationPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.OOBE"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
+    mc:Ignorable="d">
+    <Page.DataContext>
+        <vm:OOBENavigationViewModel />
+    </Page.DataContext>
+
+    <Grid>
+        <StackPanel
+            Margin="35"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Orientation="Horizontal">
+            <Button
+                Width="85"
+                Command="{Binding BackCommand}"
+                CommandParameter="{Binding ElementName=contentFrame}"
+                FontWeight="SemiBold"
+                IsEnabled="{Binding ElementName=contentFrame, Path=CanGoBack}">
+                <TextBlock x:Uid="_Buttons_Back" Text="Back" />
+            </Button>
+            <Button
+                Width="85"
+                Margin="15,0,0,0"
+                Command="{Binding NextCommand}"
+                CommandParameter="{Binding ElementName=contentFrame}"
+                FontWeight="SemiBold"
+                Foreground="White"
+                IsEnabled="{Binding CanNext}"
+                Style="{ThemeResource AccentButtonStyle}">
+                <TextBlock x:Uid="_Buttons_Next" Text="Next" />
+            </Button>
+        </StackPanel>
+        <NavigationView
+            x:Name="NavigationView"
+            Margin="0,50,0,100"
+            IsBackButtonVisible="Collapsed"
+            IsSettingsVisible="False"
+            PaneDisplayMode="Top">
+            <NavigationView.MenuItems>
+                <NavigationViewItem
+                    Icon="{xh:FontIcon Glyph=&#xf2b7;}"
+                    IsSelected="True"
+                    Tag="Natsurainko.FluentLauncher.Views.OOBE.LanguagePage">
+                    <NavigationViewItem.Content>
+                        <TextBlock
+                            x:Uid="Guide_Navigation_Language"
+                            FontWeight="SemiBold"
+                            Text="Language" />
+                    </NavigationViewItem.Content>
+                </NavigationViewItem>
+                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xe713;}" Tag="Natsurainko.FluentLauncher.Views.OOBE.BasicPage">
+                    <NavigationViewItem.Content>
+                        <TextBlock
+                            x:Uid="Guide_Navigation_Basic"
+                            FontWeight="SemiBold"
+                            Text="Basic Settings" />
+                    </NavigationViewItem.Content>
+                </NavigationViewItem>
+                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xe77b;}" Tag="Natsurainko.FluentLauncher.Views.OOBE.AccountPage">
+                    <NavigationViewItem.Content>
+                        <TextBlock
+                            x:Uid="Guide_Navigation_Account"
+                            FontWeight="SemiBold"
+                            Text="Account" />
+                    </NavigationViewItem.Content>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xE736;}" Tag="Natsurainko.FluentLauncher.Views.OOBE.GetStartedPage">
+                    <NavigationViewItem.Content>
+                        <TextBlock
+                            x:Uid="Guide_Navigation_GetStarted"
+                            FontWeight="SemiBold"
+                            Text="Get Started" />
+                    </NavigationViewItem.Content>
+                </NavigationViewItem>
+            </NavigationView.FooterMenuItems>
+            <Frame x:Name="contentFrame" Navigated="ContentFrame_Navigated">
+                <Frame.ContentTransitions>
+                    <TransitionCollection>
+                        <NavigationThemeTransition />
+                    </TransitionCollection>
+                </Frame.ContentTransitions>
+            </Frame>
+        </NavigationView>
+
+        <Grid
+            Height="48"
+            Margin="0,50,0,0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top"
+            Background="Transparent" />
+    </Grid>
+</Page>

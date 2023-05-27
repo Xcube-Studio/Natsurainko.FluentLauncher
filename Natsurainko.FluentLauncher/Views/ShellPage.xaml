@@ -1,0 +1,103 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.ShellPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
+    ActualThemeChanged="Page_ActualThemeChanged"
+    Loaded="Page_Loaded"
+    SizeChanged="Page_SizeChanged"
+    mc:Ignorable="d">
+
+    <Grid>
+        <Border
+            x:Name="AppTitleBar"
+            Height="{Binding CompactPaneLength, ElementName=NavigationViewControl}"
+            VerticalAlignment="Top"
+            x:FieldModifier="public"
+            Background="Transparent"
+            Canvas.ZIndex="1"
+            IsHitTestVisible="True">
+            <StackPanel
+                x:Name="AppTitle"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <Border VerticalAlignment="Center" CornerRadius="2.5">
+                    <Image
+                        Width="16"
+                        Height="16"
+                        Source="/Assets/AppIcon.png" />
+                </Border>
+                <TextBlock
+                    Margin="15,0,0,0"
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    FontWeight="SemiBold"
+                    Opacity="0.8"
+                    Text="Fluent Launcher" />
+            </StackPanel>
+        </Border>
+
+        <NavigationView
+            x:Name="NavigationViewControl"
+            BackRequested="NavigationViewControl_BackRequested"
+            Canvas.ZIndex="0"
+            DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
+            IsBackEnabled="{Binding CanGoBack, ElementName=contentFrame}"
+            IsSettingsVisible="False"
+            ItemInvoked="NavigationViewControl_ItemInvoked"
+            Loaded="NavigationViewControl_Loaded"
+            PaneClosing="NavigationViewControl_PaneClosing"
+            PaneOpening="NavigationViewControl_PaneOpening">
+
+            <NavigationView.MenuItems>
+                <NavigationViewItem
+                    x:Uid="Navigation_Home"
+                    Content="Home"
+                    Icon="{xh:FontIcon Glyph=&#xE80F;}"
+                    IsSelected="True"
+                    Tag="Natsurainko.FluentLauncher.Views.Home.HomePage" />
+                <NavigationViewItem
+                    x:Uid="Navigation_Cores"
+                    Content="Cores"
+                    Icon="{xh:FontIcon Glyph=&#xf158;}"
+                    Tag="Natsurainko.FluentLauncher.Views.Cores.CoresPage" />
+                <NavigationViewItem
+                    x:Uid="Navigation_Activities"
+                    Content="Activities"
+                    Icon="{xh:FontIcon Glyph=&#xE945;}"
+                    Tag="Natsurainko.FluentLauncher.Views.Activities.ActivitiesNavigationPage" />
+                <NavigationViewItem
+                    x:Uid="Navigation_Mods"
+                    Content="Mods"
+                    Icon="{xh:FontIcon Glyph=&#xe8f1;}"
+                    Tag="Natsurainko.FluentLauncher.Views.Downloads.CurseForgePage" />
+            </NavigationView.MenuItems>
+
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem
+                    x:Uid="Navigation_Settings"
+                    Content="Settings"
+                    Tag="Natsurainko.FluentLauncher.Views.Settings.NavigationPage">
+                    <NavigationViewItem.Icon>
+                        <AnimatedIcon>
+                            <AnimatedIcon.FallbackIconSource>
+                                <SymbolIconSource Symbol="Setting" />
+                            </AnimatedIcon.FallbackIconSource>
+                            <animatedvisuals:AnimatedSettingsVisualSource />
+                        </AnimatedIcon>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.FooterMenuItems>
+
+            <Frame
+                x:Name="contentFrame"
+                Margin="0,32,0,0"
+                Background="Transparent"
+                Navigated="ContentFrame_Navigated" />
+        </NavigationView>
+    </Grid>
+</Page>

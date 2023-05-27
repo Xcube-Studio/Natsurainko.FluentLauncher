@@ -1,5 +1,4 @@
 ﻿using Microsoft.UI.Dispatching;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.CrossProcess;
@@ -8,16 +7,13 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using Windows.Storage;
-using Windows.UI.Popups;
-using System.Windows.Input;
-using Natsurainko.FluentLauncher.Views.Dialogs;
-using System.Threading.Tasks;
-using Natsurainko.FluentLauncher.Views.Pages;
+using Natsurainko.FluentLauncher.Views.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Natsurainko.FluentLauncher.Services;
 using AppSettingsManagement;
 using AppSettingsManagement.Windows;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Views;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -98,8 +94,8 @@ public partial class App : Application
         services.AddSingleton<ISettingsStorage, WinRTSettingsStorage>();
 
         //ViewModels
-        services.AddSingleton<ViewModels.Pages.Activities.News>();
-        services.AddSingleton<ViewModels.Pages.Mods.CurseForge>();
+        services.AddSingleton<ViewModels.Activities.NewsViewModel>();
+        services.AddSingleton<ViewModels.Downloads.CurseForgeViewModel>();
 
         return services.BuildServiceProvider();
     }

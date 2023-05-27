@@ -1,0 +1,123 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.LoggerPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pages="using:Natsurainko.FluentLauncher.ViewModels.Pages"
+    d:DataContext="{d:DesignInstance Type=pages:LoggerViewModel}"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <x:Double x:Key="ListViewItemMinHeight">0</x:Double>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Border
+            Grid.RowSpan="2"
+            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+            Opacity="0.75" />
+        <Grid Grid.Row="0">
+            <StackPanel
+                Margin="15,0,0,0"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <Border VerticalAlignment="Center" CornerRadius="2.5">
+                    <Image
+                        Width="16"
+                        Height="16"
+                        Source="/Assets/AppIcon.png" />
+                </Border>
+                <TextBlock
+                    Margin="15,0,0,0"
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    FontWeight="SemiBold"
+                    Opacity="0.8"
+                    Text="{Binding Title}" />
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <TextBlock
+                    Margin="10,0"
+                    VerticalAlignment="Center"
+                    FontWeight="SemiBold"
+                    Text="Enable Logger Level:" />
+                <StackPanel
+                    Margin="10,5"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <ToggleButton
+                        Padding="10,2"
+                        Content="INFO"
+                        FontWeight="SemiBold"
+                        IsChecked="{Binding Info, Mode=TwoWay}" />
+                    <ToggleButton
+                        Margin="5,0"
+                        Padding="10,2"
+                        Content="WARN"
+                        FontWeight="SemiBold"
+                        IsChecked="{Binding Warn, Mode=TwoWay}" />
+                    <ToggleButton
+                        Padding="10,2"
+                        Content="ERROR"
+                        FontWeight="SemiBold"
+                        IsChecked="{Binding Error, Mode=TwoWay}" />
+                    <ToggleButton
+                        Margin="5,0"
+                        Padding="10,2"
+                        Content="FATAL"
+                        FontWeight="SemiBold"
+                        IsChecked="{Binding Fatal, Mode=TwoWay}" />
+                    <ToggleButton
+                        Padding="10,2"
+                        Content="DEBUG"
+                        FontWeight="SemiBold"
+                        IsChecked="{Binding Debug, Mode=TwoWay}" />
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="2">
+                <StackPanel Margin="10,5" HorizontalAlignment="Right">
+                    <CheckBox
+                        Content="Auto Scroll to the End"
+                        FontWeight="SemiBold"
+                        IsChecked="{Binding EnableAutoScroll, Mode=TwoWay}" />
+                </StackPanel>
+            </Grid>
+            <ListView
+                x:Name="ListView"
+                Grid.Row="1"
+                x:FieldModifier="public"
+                ItemsSource="{Binding FilterLoggerItems}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Rectangle
+                                Width="4"
+                                Margin="-8"
+                                HorizontalAlignment="Right"
+                                Fill="Red"
+                                Opacity="0.5"
+                                Visibility="{Binding ErrorVisibility}" />
+                            <ContentControl
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Content="{Binding RichTextBlock}"
+                                FontWeight="SemiBold" />
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</Page>

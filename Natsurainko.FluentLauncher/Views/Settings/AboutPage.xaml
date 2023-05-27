@@ -1,0 +1,323 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Settings.AboutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Settings"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Settings"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
+    Background="Transparent"
+    mc:Ignorable="d">
+    <Page.DataContext>
+        <vm:AboutViewModel />
+    </Page.DataContext>
+
+    <ScrollViewer Padding="32,0" VerticalScrollBarVisibility="Auto">
+        <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
+        <Border Margin="0,20">
+            <StackPanel MaxWidth="1000" Spacing="4">
+
+                <TextBlock
+                    x:Uid="About_AboutFluentLauncher"
+                    Margin="1,0,0,4"
+                    Style="{StaticResource BodyStrongTextBlockStyle}"
+                    Text="About Fluent Launcher" />
+
+                <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xecaa;}">
+                    <labs:SettingsCard.Header>
+                        <TextBlock FontWeight="SemiBold" Text="Fluent Launcher" />
+                    </labs:SettingsCard.Header>
+
+                    <labs:SettingsCard.Description>
+                        <TextBlock FontWeight="SemiBold" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
+                            <Run Text="{Binding Edition}" />
+                            <Run Text="{Binding Version}" />
+                        </TextBlock>
+                    </labs:SettingsCard.Description>
+
+                    <Button Command="{Binding CheckUpdateCommand}">
+                        <TextBlock
+                            x:Uid="About_CheckUpdate"
+                            Text="Check Updates in the Microsoft Store"
+                            TextTrimming="CharacterEllipsis" />
+                    </Button>
+                </labs:SettingsCard>
+
+                <labs:SettingsCard
+                    ActionIcon="{xh:FontIcon Glyph=&#xE8A7;}"
+                    ActionIconToolTip="Open GitHub profile"
+                    Command="{Binding OpenAuthorCommand}"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xe70f;}"
+                    IsClickEnabled="True">
+                    <labs:SettingsCard.Header>
+                        <TextBlock
+                            x:Uid="About_Developer_Tag"
+                            FontWeight="SemiBold"
+                            Text="The Developer of this Application" />
+                    </labs:SettingsCard.Header>
+
+                    <labs:SettingsCard.Description>
+                        <TextBlock
+                            x:Uid="About_Developer_Tag"
+                            FontWeight="SemiBold"
+                            Text="The Developer of this Application" />
+                    </labs:SettingsCard.Description>
+                    <GridView Margin="-10,0,0,-15">
+                        <GridView.ItemContainerStyle>
+                            <Style TargetType="GridViewItem">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+                                <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+                                <Setter Property="Background" Value="{ThemeResource GridViewItemBackground}" />
+                                <Setter Property="Foreground" Value="{ThemeResource GridViewItemForeground}" />
+                                <Setter Property="TabNavigation" Value="Local" />
+                                <Setter Property="IsHoldingEnabled" Value="True" />
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                                <Setter Property="Margin" Value="0,0,4,4" />
+                                <Setter Property="MinWidth" Value="{ThemeResource GridViewItemMinWidth}" />
+                                <Setter Property="MinHeight" Value="30" />
+                                <Setter Property="AllowDrop" Value="True" />
+                                <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}" />
+                                <Setter Property="FocusVisualMargin" Value="-3" />
+                                <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource GridViewItemFocusVisualPrimaryBrush}" />
+                                <Setter Property="FocusVisualPrimaryThickness" Value="2" />
+                                <Setter Property="FocusVisualSecondaryBrush" Value="{ThemeResource GridViewItemFocusVisualSecondaryBrush}" />
+                                <Setter Property="FocusVisualSecondaryThickness" Value="1" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="GridViewItem">
+                                            <ListViewItemPresenter
+                                                x:Name="Root"
+                                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                CheckBoxBorderBrush="{ThemeResource GridViewItemCheckBoxBorderBrush}"
+                                                CheckBoxBrush="{ThemeResource GridViewItemCheckBoxBrush}"
+                                                CheckBoxCornerRadius="{ThemeResource GridViewItemCheckBoxCornerRadius}"
+                                                CheckBoxDisabledBorderBrush="{ThemeResource GridViewItemCheckBoxDisabledBorderBrush}"
+                                                CheckBoxDisabledBrush="{ThemeResource GridViewItemCheckBoxDisabledBrush}"
+                                                CheckBoxPointerOverBorderBrush="{ThemeResource GridViewItemCheckBoxPointerOverBorderBrush}"
+                                                CheckBoxPointerOverBrush="{ThemeResource GridViewItemCheckBoxPointerOverBrush}"
+                                                CheckBoxPressedBorderBrush="{ThemeResource GridViewItemCheckBoxPressedBorderBrush}"
+                                                CheckBoxPressedBrush="{ThemeResource GridViewItemCheckBoxPressedBrush}"
+                                                CheckBoxSelectedBrush="{ThemeResource GridViewItemCheckBoxSelectedBrush}"
+                                                CheckBoxSelectedDisabledBrush="{ThemeResource GridViewItemCheckBoxSelectedDisabledBrush}"
+                                                CheckBoxSelectedPointerOverBrush="{ThemeResource GridViewItemCheckBoxSelectedPointerOverBrush}"
+                                                CheckBoxSelectedPressedBrush="{ThemeResource GridViewItemCheckBoxSelectedPressedBrush}"
+                                                CheckBrush="{ThemeResource GridViewItemCheckBrush}"
+                                                CheckDisabledBrush="{ThemeResource GridViewItemCheckDisabledBrush}"
+                                                CheckMode="{ThemeResource GridViewItemCheckMode}"
+                                                CheckPressedBrush="{ThemeResource GridViewItemCheckPressedBrush}"
+                                                ContentMargin="{TemplateBinding Padding}"
+                                                ContentTransitions="{TemplateBinding ContentTransitions}"
+                                                Control.IsTemplateFocusTarget="True"
+                                                CornerRadius="{ThemeResource GridViewItemCornerRadius}"
+                                                DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                                DragBackground="{ThemeResource GridViewItemDragBackground}"
+                                                DragForeground="{ThemeResource GridViewItemDragForeground}"
+                                                DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                                FocusBorderBrush="{ThemeResource GridViewItemFocusBorderBrush}"
+                                                FocusVisualMargin="{TemplateBinding FocusVisualMargin}"
+                                                FocusVisualPrimaryBrush="{TemplateBinding FocusVisualPrimaryBrush}"
+                                                FocusVisualPrimaryThickness="{TemplateBinding FocusVisualPrimaryThickness}"
+                                                FocusVisualSecondaryBrush="{TemplateBinding FocusVisualSecondaryBrush}"
+                                                FocusVisualSecondaryThickness="{TemplateBinding FocusVisualSecondaryThickness}"
+                                                PlaceholderBackground="{ThemeResource GridViewItemPlaceholderBackground}"
+                                                PointerOverBackground="{ThemeResource GridViewItemBackgroundPointerOver}"
+                                                PointerOverBorderBrush="{ThemeResource GridViewItemPointerOverBorderBrush}"
+                                                PointerOverForeground="{ThemeResource GridViewItemForegroundPointerOver}"
+                                                PressedBackground="{ThemeResource GridViewItemBackgroundPressed}"
+                                                ReorderHintOffset="{ThemeResource GridViewItemReorderHintThemeOffset}"
+                                                SelectedBackground="{ThemeResource GridViewItemBackgroundSelected}"
+                                                SelectedBorderBrush="{ThemeResource GridViewItemSelectedBorderBrush}"
+                                                SelectedBorderThickness="{ThemeResource GridViewItemSelectedBorderThickness}"
+                                                SelectedDisabledBackground="{ThemeResource GridViewItemBackgroundSelectedDisabled}"
+                                                SelectedDisabledBorderBrush="{ThemeResource GridViewItemSelectedDisabledBorderBrush}"
+                                                SelectedForeground="{ThemeResource GridViewItemForegroundSelected}"
+                                                SelectedInnerBorderBrush="{ThemeResource GridViewItemSelectedInnerBorderBrush}"
+                                                SelectedPointerOverBackground="{ThemeResource GridViewItemBackgroundSelectedPointerOver}"
+                                                SelectedPointerOverBorderBrush="{ThemeResource GridViewItemSelectedPointerOverBorderBrush}"
+                                                SelectedPressedBackground="{ThemeResource GridViewItemBackgroundSelectedPressed}"
+                                                SelectedPressedBorderBrush="{ThemeResource GridViewItemSelectedPressedBorderBrush}"
+                                                SelectionCheckMarkVisualEnabled="{ThemeResource GridViewItemSelectionCheckMarkVisualEnabled}" />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GridView.ItemContainerStyle>
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Margin="10,0"
+                                    Style="{ThemeResource BaseTextBlockStyle}"
+                                    Text="{Binding}" />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                        <x:String>Natsurainko</x:String>
+                        <x:String>gaviny82</x:String>
+                    </GridView>
+                </labs:SettingsCard>
+
+                <labs:SettingsCard
+                    ActionIcon="{xh:FontIcon Glyph=&#xE8A7;}"
+                    ActionIconToolTip="Open GitHub profile"
+                    Command="{Binding OpenGitCommand}"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xe7c1;}"
+                    IsClickEnabled="True">
+                    <labs:SettingsCard.Header>
+                        <TextBlock x:Uid="About_Sources" Text="Sources" />
+                    </labs:SettingsCard.Header>
+
+                    <labs:SettingsCard.Description>
+                        <TextBlock x:Uid="About_Sources_Content" Text="Navigate to the GitHub repository" />
+                    </labs:SettingsCard.Description>
+                </labs:SettingsCard>
+
+                <TextBlock
+                    x:Uid="About_OtherInfo"
+                    Margin="1,28,0,4"
+                    Style="{StaticResource BodyStrongTextBlockStyle}"
+                    Text="Other information" />
+
+                <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xea1f;}">
+                    <labs:SettingsCard.Header>
+                        <TextBlock x:Uid="About_Statements" Text="Statements" />
+                    </labs:SettingsCard.Header>
+
+                    <labs:SettingsCard.Description>
+                        <TextBlock
+                            x:Uid="About_Statements_Content"
+                            Text="Minecraft is copyrighted by Mojang Studios. We are not responsible for any copyright infringement arising from use of this software."
+                            TextWrapping="WrapWholeWords" />
+                    </labs:SettingsCard.Description>
+                </labs:SettingsCard>
+
+                <TextBlock
+                    x:Uid="About_Credits"
+                    Margin="1,28,0,4"
+                    Style="{StaticResource BodyStrongTextBlockStyle}"
+                    Text="Credits" />
+
+                <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe8b5;}">
+
+                    <labs:SettingsExpander.Header>
+                        <TextBlock x:Uid="About_Acknowledgments" Text="Acknowledgments" />
+                    </labs:SettingsExpander.Header>
+
+                    <labs:SettingsExpander.Description>
+                        <TextBlock x:Uid="About_Acknowledgments_Content" Text="Thanks for all the services provided to this app" />
+                    </labs:SettingsExpander.Description>
+
+                    <labs:SettingsExpander.Items>
+
+                        <labs:SettingsCard Header="BMCLAPI">
+                            <labs:SettingsCard.Description>
+                                <TextBlock x:Uid="About_ProvideDownloadSource" Text="Provide Download Source" />
+                            </labs:SettingsCard.Description>
+
+                            <HyperlinkButton NavigateUri="https://bmclapidoc.bangbang93.com/" ToolTipService.ToolTip="https://bmclapidoc.bangbang93.com/">
+                                <TextBlock Text="bangbang93.com" />
+                            </HyperlinkButton>
+                        </labs:SettingsCard>
+
+                        <labs:SettingsCard Header="MCBBS">
+                            <labs:SettingsCard.Description>
+                                <TextBlock x:Uid="About_ProvideDownloadSource" Text="Provide Download Source" />
+                            </labs:SettingsCard.Description>
+
+                            <HyperlinkButton NavigateUri="https://download.mcbbs.net" ToolTipService.ToolTip="https://download.mcbbs.net">
+                                <TextBlock Text="mcbbs.net" />
+                            </HyperlinkButton>
+                        </labs:SettingsCard>
+
+                    </labs:SettingsExpander.Items>
+                </labs:SettingsExpander>
+
+                <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe8f1;}">
+
+                    <labs:SettingsExpander.Header>
+                        <TextBlock x:Uid="About_References" Text="References" />
+                    </labs:SettingsExpander.Header>
+
+                    <labs:SettingsExpander.Description>
+                        <TextBlock x:Uid="About_References_Content" Text="Libraries used for this application development" />
+                    </labs:SettingsExpander.Description>
+
+                    <labs:SettingsExpander.Items>
+
+                        <labs:SettingsCard Description="2.0.14" Header="ColorCode.WinUI">
+                            <HyperlinkButton NavigateUri="https://github.com/CommunityToolkit/ColorCode-Universal" ToolTipService.ToolTip="https://github.com/CommunityToolkit/ColorCode-Universal">
+                                <TextBlock Text="Github" />
+                            </HyperlinkButton>
+                        </labs:SettingsCard>
+
+                        <labs:SettingsCard Description="8.1.0" Header="CommunityToolkit.Mvvm">
+                            <HyperlinkButton NavigateUri="https://github.com/CommunityToolkit/dotnet" ToolTipService.ToolTip="https://github.com/CommunityToolkit/dotnet">
+                                <TextBlock Text="Github" />
+                            </HyperlinkButton>
+                        </labs:SettingsCard>
+
+                        <labs:SettingsCard Description="0.0.17" Header="CommunityToolkit.Labs.WinUI.SettingsControls">
+                            <HyperlinkButton NavigateUri="https://github.com/CommunityToolkit/Labs-Windows" ToolTipService.ToolTip="https://github.com/CommunityToolkit/Labs-Windows">
+                                <TextBlock Text="Github" />
+                            </HyperlinkButton>
+                        </labs:SettingsCard>
+
+                        <labs:SettingsCard Description="2.0.9" Header="Microsoft.Xaml.Behaviors.WinUI.Managed">
+                            <HyperlinkButton NavigateUri="https://github.com/Microsoft/XamlBehaviors" ToolTipService.ToolTip="https://github.com/Microsoft/XamlBehaviors">
+                                <TextBlock Text="Github" />
+                            </HyperlinkButton>
+                        </labs:SettingsCard>
+
+                        <labs:SettingsCard Description="13.0.1" Header="Newtonsoft.Json">
+                            <HyperlinkButton NavigateUri="https://www.newtonsoft.com/json" ToolTipService.ToolTip="https://www.newtonsoft.com/json">
+                                <TextBlock Text="Newtonsoft" />
+                            </HyperlinkButton>
+                        </labs:SettingsCard>
+
+                        <labs:SettingsCard Description="2.0.5" Header="Natsurainko.FluentCore">
+                            <HyperlinkButton NavigateUri="https://github.com/Xcube-Studio/Natsurainko.FluentCore" ToolTipService.ToolTip="https://github.com/Xcube-Studio/Natsurainko.FluentCore">
+                                <TextBlock Text="Github" />
+                            </HyperlinkButton>
+                        </labs:SettingsCard>
+
+                        <labs:SettingsCard Description="2.0.5" Header="Natsurainko.Toolkits">
+                            <HyperlinkButton NavigateUri="https://github.com/natsurainko/Natsurainko.Toolkits" ToolTipService.ToolTip="https://github.com/natsurainko/Natsurainko.Toolkits">
+                                <TextBlock Text="Github" />
+                            </HyperlinkButton>
+                        </labs:SettingsCard>
+
+                        <labs:SettingsCard Description="0.16.2" Header="Tomlyn">
+                            <HyperlinkButton NavigateUri="https://github.com/xoofx/Tomlyn" ToolTipService.ToolTip="https://github.com/xoofx/Tomlyn">
+                                <TextBlock Text="Github" />
+                            </HyperlinkButton>
+                        </labs:SettingsCard>
+
+                        <labs:SettingsCard Description="2.1.0" Header="WinUIEx">
+                            <HyperlinkButton NavigateUri="https://dotmorten.github.io/WinUIEx/" ToolTipService.ToolTip="https://dotmorten.github.io/WinUIEx/">
+                                <TextBlock Text="Github" />
+                            </HyperlinkButton>
+                        </labs:SettingsCard>
+
+                    </labs:SettingsExpander.Items>
+
+                </labs:SettingsExpander>
+
+                <TextBlock
+                    x:Uid="About_Copyright"
+                    Margin="1,28,0,4"
+                    Style="{StaticResource BodyStrongTextBlockStyle}"
+                    Text="Copyright" />
+
+                <TextBlock
+                    Margin="1,0,0,4"
+                    IsTextSelectionEnabled="True"
+                    Text="{x:Bind COPYRIGHT}"
+                    TextWrapping="WrapWholeWords" />
+
+            </StackPanel>
+        </Border>
+    </ScrollViewer>
+</Page>

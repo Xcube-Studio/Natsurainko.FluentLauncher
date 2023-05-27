@@ -10,19 +10,15 @@ using Natsurainko.FluentCore.Model.Install.Forge;
 using Natsurainko.FluentCore.Model.Install.OptiFine;
 using Natsurainko.FluentCore.Model.Install.Quilt;
 using Natsurainko.FluentCore.Model.Install.Vanilla;
-using Natsurainko.FluentCore.Model.Mod.CureseForge;
-using Natsurainko.FluentCore.Module.Mod;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.Views.Pages;
 using Natsurainko.Toolkits.Network.Downloader;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.AccessControl;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -239,7 +235,7 @@ public partial class InstallArrangement : DownloadArrangement
         App.MainWindow.DispatcherQueue.TryEnqueue(() =>
         {
             var hyperlinkButton = new HyperlinkButton { Content = "Go to Activities>Download Tasks" };
-            hyperlinkButton.Click += (_, _) => MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Activities.Navigation), typeof(Views.Pages.Activities.Download));
+            hyperlinkButton.Click += (_, _) => Views.ShellPage.ContentFrame.Navigate(typeof(Views.Activities.ActivitiesNavigationPage), typeof(Views.Activities.DownloadPage));
 
             MessageService.Show(
                 $"Added Install \"{customName}\" into Arrangements",
@@ -259,7 +255,7 @@ public partial class InstallArrangement : DownloadArrangement
         App.MainWindow.DispatcherQueue.TryEnqueue(() =>
         {
             var hyperlinkButton = new HyperlinkButton { Content = "Go to Activities>Download Tasks" };
-            hyperlinkButton.Click += (_, _) => MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Activities.Navigation), typeof(Views.Pages.Activities.Download));
+            hyperlinkButton.Click += (_, _) => Views.ShellPage.ContentFrame.Navigate(typeof(Views.Activities.ActivitiesNavigationPage), typeof(Views.Activities.DownloadPage));
 
             MessageService.Show(
                 $"Added Install \"{customName}\" into Arrangements",
@@ -354,7 +350,7 @@ public partial class ModDownloadArrangement : DownloadArrangement
         App.MainWindow.DispatcherQueue.TryEnqueue(() =>
         {
             var hyperlinkButton = new HyperlinkButton { Content = "Go to Activities>Download Tasks" };
-            hyperlinkButton.Click += (_, _) => MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Activities.Navigation), typeof(Views.Pages.Activities.Download));
+            hyperlinkButton.Click += (_, _) => Views.ShellPage.ContentFrame.Navigate(typeof(Views.Activities.ActivitiesNavigationPage), typeof(Views.Activities.DownloadPage));
 
             MessageService.Show(
                 $"Added Download Mod \"{fileName}\" into Arrangements",

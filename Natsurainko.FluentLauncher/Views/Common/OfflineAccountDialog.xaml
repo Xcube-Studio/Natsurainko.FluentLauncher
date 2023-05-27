@@ -1,0 +1,59 @@
+<ContentDialog
+    x:Class="Natsurainko.FluentLauncher.Views.Common.OfflineAccountDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialogs="using:Natsurainko.FluentLauncher.ViewModels.Common"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Common"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="Dialog"
+    d:DataContext="{d:DesignInstance Type=dialogs:OfflineAccountDialog}"
+    Style="{ThemeResource DefaultContentDialogStyle}"
+    mc:Ignorable="d">
+
+    <Grid Width="450">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock
+            x:Uid="Title_Offline_Account"
+            Grid.Row="0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontSize="18"
+            FontWeight="SemiBold"
+            Text="Offline Account" />
+        <StackPanel
+            Grid.Row="1"
+            Margin="0,20"
+            HorizontalAlignment="Stretch"
+            Spacing="10">
+            <TextBox x:Uid="OfflineAccountDialog_Name" PlaceholderText="Name" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox x:Uid="OfflineAccountDialog_UUID" PlaceholderText="UUID (Optional)" Text="{Binding Uuid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+        <StackPanel
+            Grid.Row="2"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                Width="75"
+                Background="{ThemeResource SystemAccentColor}"
+                Command="{Binding ConfirmCommand}"
+                CommandParameter="{Binding ElementName=Dialog}"
+                Foreground="White"
+                Style="{ThemeResource AccentButtonStyle}">
+                <TextBlock x:Uid="_Buttons_Confirm" Text="Confirm" />
+            </Button>
+            <Button
+                Width="75"
+                Margin="15,0,0,0"
+                Command="{Binding CancelCommand}"
+                CommandParameter="{Binding ElementName=Dialog}">
+                <TextBlock x:Uid="_Buttons_Cancel" Text="Cancel" />
+            </Button>
+        </StackPanel>
+    </Grid>
+</ContentDialog>

@@ -13,11 +13,9 @@ using Natsurainko.FluentCore.Wrapper;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.CrossProcess;
 using Natsurainko.FluentLauncher.Utils.Xaml;
-using Natsurainko.FluentLauncher.Views.Pages;
 using Natsurainko.Toolkits.Network.Downloader;
 using System;
 using System.Collections.Generic;
-using System.CommandLine;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +23,6 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using WinUIEx;
-using static PInvoke.Kernel32;
 using GameCore = Natsurainko.FluentLauncher.Components.FluentCore.GameCore;
 using GameCoreLocator = Natsurainko.FluentLauncher.Components.FluentCore.GameCoreLocator;
 
@@ -117,8 +114,8 @@ public partial class LaunchArrangement : ObservableObject
         (window.MinWidth, window.MinHeight) = (516, 328);
         (window.Width, window.Height) = (873, 612);
 
-        var view = new Logger();
-        var viewModel = new ViewModels.Pages.Logger(ProcessOutputs, LaunchResponse, view);
+        var view = new Views.LoggerPage();
+        var viewModel = new ViewModels.Pages.LoggerViewModel(ProcessOutputs, LaunchResponse, view);
         viewModel.Title = window.Title;
         view.DataContext = viewModel;
 
@@ -139,7 +136,7 @@ public partial class LaunchArrangement : ObservableObject
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
                 var hyperlinkButton = new HyperlinkButton { Content = "Go to Activities>Launch Tasks" };
-                hyperlinkButton.Click += (_, _) => MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Activities.Navigation), typeof(Views.Pages.Activities.Launch));
+                hyperlinkButton.Click += (_, _) => Views.ShellPage.ContentFrame.Navigate(typeof(Views.Activities.ActivitiesNavigationPage), typeof(Views.Activities.LaunchPage));
 
                 MessageService.Show(
                     $"Added Launch \"{core.Id}\" into Arrangements",
@@ -148,7 +145,7 @@ public partial class LaunchArrangement : ObservableObject
 
                 GlobalActivitiesCache.LaunchArrangements.Insert(0, arrangement);
 
-                MainContainer.ContentFrame.Navigate(typeof(Views.Pages.Activities.Navigation), typeof(Views.Pages.Activities.Launch));
+                Views.ShellPage.ContentFrame.Navigate(typeof(Views.Activities.ActivitiesNavigationPage), typeof(Views.Activities.LaunchPage));
             });
 
             var coreLocator = new GameCoreLocator(App.Configuration.CurrentGameFolder);

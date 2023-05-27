@@ -1,15 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Media.Imaging;
-using Natsurainko.Toolkits.Network;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.ComponentModel;
-using System.IO;
-using System.Threading.Tasks;
-
-namespace Natsurainko.FluentLauncher.Services.Data;
+﻿namespace Natsurainko.FluentLauncher.Services.Data;
 
 internal class NewsContentData
 {

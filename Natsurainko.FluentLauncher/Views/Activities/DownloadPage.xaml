@@ -1,0 +1,250 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Activities.DownloadPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
+    xmlns:controls="using:Natsurainko.FluentLauncher.UserControls"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Activities"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Activities"
+    mc:Ignorable="d">
+    <Page.DataContext>
+        <vm:DownloadViewModel />
+    </Page.DataContext>
+
+    <Grid>
+        <ListView Padding="30,7.5,30,22.5" ItemsSource="{Binding DownloadArrangements}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="Margin" Value="0,7.5" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListViewItem">
+                                <Grid>
+                                    <Border
+                                        Height="{TemplateBinding Height}"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="5">
+                                        <ContentPresenter
+                                            Height="{TemplateBinding Height}"
+                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                    </Border>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Expander
+                        Padding="0"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon
+                                    Grid.Column="0"
+                                    Margin="2,0,0,0"
+                                    Glyph="&#xe896;" />
+                                <Grid Grid.Column="1" Margin="17,12.5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" TextTrimming="CharacterEllipsis">
+                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding TaskName}" />
+                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
+                                        <Run FontWeight="SemiBold" Text="{Binding Title}" />
+                                    </TextBlock>
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        FontSize="13"
+                                        TextTrimming="CharacterEllipsis">
+                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="State" />
+                                        <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
+                                        <Run FontWeight="SemiBold" Text="{Binding State}" />
+                                    </TextBlock>
+                                </Grid>
+                            </Grid>
+                        </Expander.Header>
+                        <Expander.Content>
+                            <ContentPresenter
+                                x:Name="ContentPresenter"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch">
+                                <i:Interaction.Behaviors>
+                                    <core:EventTriggerBehavior EventName="Loaded">
+                                        <actions:ModifiedInvokeCommandAction Command="{Binding LoadedCommand}" />
+                                    </core:EventTriggerBehavior>
+                                </i:Interaction.Behaviors>
+                                <ContentPresenter.Resources>
+                                    <DataTemplate x:Key="InstallControlTemplate">
+                                        <Grid>
+                                            <StackPanel HorizontalAlignment="Stretch">
+                                                <controls:ExpanderContentItem
+                                                    Height="Auto"
+                                                    Margin="0,20,0,0"
+                                                    Visibility="{Binding GridViewVisibility}">
+                                                    <StackPanel>
+                                                        <TextBlock
+                                                            VerticalAlignment="Center"
+                                                            FontWeight="SemiBold"
+                                                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                            Text="Step Progress:" />
+                                                        <GridView
+                                                            Margin="0,5,0,0"
+                                                            HorizontalAlignment="Stretch"
+                                                            HorizontalContentAlignment="Stretch"
+                                                            ItemsSource="{Binding InstallerStepProgresses}">
+                                                            <GridView.ItemsPanel>
+                                                                <ItemsPanelTemplate>
+                                                                    <ItemsWrapGrid
+                                                                        x:Name="MaxItemsWrapGrid"
+                                                                        HorizontalAlignment="Stretch"
+                                                                        MaximumRowsOrColumns="1"
+                                                                        Orientation="Horizontal" />
+                                                                </ItemsPanelTemplate>
+                                                            </GridView.ItemsPanel>
+                                                            <GridView.ItemContainerStyle>
+                                                                <Style BasedOn="{StaticResource DefaultGridViewItemStyle}" TargetType="GridViewItem">
+                                                                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                                                </Style>
+                                                            </GridView.ItemContainerStyle>
+                                                            <GridView.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <Grid Padding="20,0">
+                                                                        <i:Interaction.Behaviors>
+                                                                            <behaviors:AncestorBindingBehavior
+                                                                                AncestorType="GridView"
+                                                                                Binding="{Binding Path=ActualWidth}"
+                                                                                TargetPropertyName="Width" />
+                                                                        </i:Interaction.Behaviors>
+                                                                        <StackPanel VerticalAlignment="Center">
+                                                                            <Grid>
+                                                                                <TextBlock
+                                                                                    HorizontalAlignment="Left"
+                                                                                    FontWeight="SemiBold"
+                                                                                    Text="{Binding StepProgress.StepName}" />
+                                                                                <TextBlock
+                                                                                    HorizontalAlignment="Right"
+                                                                                    FontWeight="SemiBold"
+                                                                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
+                                                                                    <Run Text="{Binding StepProgress.CompletedTask}" />
+                                                                                    <Run Text="/" />
+                                                                                    <Run Text="{Binding StepProgress.TotleTask}" />
+                                                                                </TextBlock>
+                                                                            </Grid>
+                                                                            <ProgressBar
+                                                                                Margin="0,5,0,0"
+                                                                                IsIndeterminate="{Binding StepProgress.IsIndeterminate}"
+                                                                                Maximum="1"
+                                                                                Value="{Binding StepProgress.Progress}" />
+                                                                        </StackPanel>
+                                                                    </Grid>
+                                                                </DataTemplate>
+                                                            </GridView.ItemTemplate>
+                                                        </GridView>
+                                                    </StackPanel>
+                                                </controls:ExpanderContentItem>
+                                                <Border Style="{ThemeResource ExpanderSplitter}" Visibility="{Binding GridViewVisibility}" />
+                                                <controls:ExpanderContentItem>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="15" />
+                                                            <ColumnDefinition Width="1*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock VerticalAlignment="Center" Text="Total Progress:" />
+                                                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                                            <Grid>
+                                                                <TextBlock
+                                                                    HorizontalAlignment="Left"
+                                                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                                    Text="{Binding Percentage}" />
+                                                                <TextBlock
+                                                                    HorizontalAlignment="Right"
+                                                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                                    Text="{Binding TimeSpan}" />
+                                                            </Grid>
+                                                            <ProgressBar
+                                                                Margin="0,5,0,0"
+                                                                Maximum="1"
+                                                                Value="{Binding TotalProgress}" />
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </controls:ExpanderContentItem>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                    <DataTemplate x:Key="DownloadControlTemplate">
+                                        <Grid>
+                                            <StackPanel HorizontalAlignment="Stretch">
+                                                <controls:ExpanderContentItem>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="15" />
+                                                            <ColumnDefinition Width="1*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock VerticalAlignment="Center" Text="Total Progress:" />
+                                                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                                            <Grid>
+                                                                <TextBlock
+                                                                    HorizontalAlignment="Left"
+                                                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                                    Text="{Binding Percentage}" />
+                                                                <TextBlock
+                                                                    HorizontalAlignment="Right"
+                                                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                                    Text="{Binding TimeSpan}" />
+                                                            </Grid>
+                                                            <ProgressBar
+                                                                Margin="0,5,0,0"
+                                                                Maximum="1"
+                                                                Value="{Binding TotalProgress}" />
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </controls:ExpanderContentItem>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ContentPresenter.Resources>
+                            </ContentPresenter>
+                        </Expander.Content>
+                    </Expander>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <StackPanel
+            Margin="0,0,0,100"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Visibility="{Binding TipVisibility}">
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="26"
+                FontWeight="SemiBold"
+                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                Text="No Download Arrangements" />
+        </StackPanel>
+    </Grid>
+</Page>

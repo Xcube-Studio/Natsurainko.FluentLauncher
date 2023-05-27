@@ -1,0 +1,56 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Activities.ActivitiesNavigationPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Activities"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="Transparent"
+    mc:Ignorable="d">
+
+    <Grid Margin="0,5,0,0">
+        <NavigationView
+            x:Name="NavigationView"
+            IsBackButtonVisible="Collapsed"
+            IsSettingsVisible="False"
+            ItemInvoked="NavigationView_ItemInvoked"
+            PaneDisplayMode="Top">
+            <NavigationView.MenuItems>
+                <NavigationViewItem
+                    x:Uid="Navigation_Activities_Launch"
+                    Content="Launch Task"
+                    IsSelected="True"
+                    Tag="Natsurainko.FluentLauncher.Views.Activities.LaunchPage">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xe945;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem
+                    x:Uid="Navigation_Activities_Download"
+                    Content="Download Task"
+                    Tag="Natsurainko.FluentLauncher.Views.Activities.DownloadPage">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xe896;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem
+                    x:Uid="Navigation_Activities_News"
+                    Content="News"
+                    Tag="Natsurainko.FluentLauncher.Views.Activities.NewsPage">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xed0c;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem
+                    x:Uid="Navigation_Activities_Application"
+                    Content="Application"
+                    Tag="Natsurainko.FluentLauncher.Views.Activities.ApplicationPage">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xe12a;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+            <Frame x:Name="contentFrame" Navigated="ContentFrame_Navigated" />
+        </NavigationView>
+    </Grid>
+</Page>

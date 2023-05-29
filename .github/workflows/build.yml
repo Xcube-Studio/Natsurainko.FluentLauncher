@@ -47,32 +47,63 @@ jobs:
         Appx_Package_Build_Mode: SideloadOnly
         Appx_Package_Dir: ${{ env.Packages_DirectoryName }}\ # DO NOT REMOVE THE TRAILING SLASH
     
-    - name: Create .msixupload
-      id: create_msixupload
+    - name: Prepare for bundling
+      id: preparation
       run: |
+
+        # Get package name
         $msixFile = Get-Item -Path "${{ env.Packages_Directory }}\*\*.msix"
         $packageName = [System.IO.Path]::GetFileNameWithoutExtension($msixFile.FullName)
         echo "::set-output name=packageName::$packageName"
 
-        $sourcePath = "${{ env.Packages_Directory }}\*\*.msix*"
-        Compress-Archive -Path $sourcePath -DestinationPath "$packageName.zip"
-        mv "$packageName.zip" "$packageName.msixupload"
+        # Get package directory
+        $directory = $msixFile.DirectoryName
+        echo "::set-output name=packageDirectory::$directory"
+
+        # Rename .msixsym to .appxsym to pass Partner Center validation
+        # Move .appx to root directory for making .msixupload
+        mv "$directory\$packageName.msixsym" ".\$packageName.appxsym"
+
+        # Move .msix for upload to artifacts
+        mv ${{ env.Packages_Directory }}\*\*.msix "$packageName.msix"
+
+        ls # For debugging
+
+    - name: Upload .msix to artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: .msix
+        path: ${{ steps.preparation.outputs.packageName }}.msix
+
+    - name: Create .msixupload
+      id: create_msixupload
+      env:
+        PackageName: ${{ steps.preparation.outputs.packageName }}
+        PackageDirectory: ${{ steps.preparation.outputs.packageDirectory }}
+        TmpDirectory: .\tmp
+      run: |
+        
+        # Get makeappx.exe
+        $makeappx = Get-Item -Path "C:\Program Files (x86)\Windows Kits\10\bin\*\x64\makeappx.exe"
+        if ($makeappx -is [array]) {
+          $makeappx = $makeappx[0]
+        }
+
+        # Convert .msix to .msixbundle
+        mv "$env:PackageName.msix" "$env:TmpDirectory\$env:PackageName.msix"
+        & $makeappx.FullName bundle /d "$env:TmpDirectory" /p "$env:PackageName.msixbundle"
+
+        # Create .msixupload
+        $msixPath = $env:PackageName + '.msix'
+        $appxsymPath = $env:PackageName + '.appxsym'
+        Compress-Archive -Path $msixPath, $appxsymPath -DestinationPath "$env:PackageName.zip"
+        mv "$env:PackageName.zip" "$env:PackageName.msixupload"
 
     - name: Upload .msixupload to artifacts
       uses: actions/upload-artifact@v2
       with:
         name: .msixupload
         path: ${{ steps.create_msixupload.outputs.packageName }}.msixupload
-
-    # Move to current directory to provide a clean layout in artifacts
-    - name: Move .msix
-      run: mv ${{ env.Packages_Directory }}\*\${{ steps.create_msixupload.outputs.packageName }}.msix ".\${{ steps.create_msixupload.outputs.packageName }}.msix"
-
-    - name: Upload .msix to artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: .msix
-        path: ${{ steps.create_msixupload.outputs.packageName }}.msix
 
         
   release:

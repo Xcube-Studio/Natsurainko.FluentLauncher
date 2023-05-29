@@ -29,12 +29,26 @@ jobs:
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1.3
 
-    - name: Configure NuGet Source
-      run: dotnet nuget add source "https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json"
+    - name: Get NuGet Dependencies
+      run: .\.github\write-nuget-cache-file.ps1
 
+    - name: Cache NuGet packages
+      id: cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~\.nuget\packages
+          ~\AppData\Roaming\NuGet\NuGet.Config
+        key: ${{ runner.os }}-nuget-${{ hashFiles('.package-references.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+      
     # Restore the application to populate the obj folder with RuntimeIdentifiers
-    - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=Release
+    - name: Restore NuGet packages
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: |
+        dotnet nuget add source "https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json"
+        msbuild $env:Solution_Name /t:Restore /p:Configuration=Release
 
     # Create the app package by building and packaging the Windows Application Packaging project
     - name: Create app package
@@ -67,8 +81,6 @@ jobs:
         # Move .msix for upload to artifacts
         mv ${{ env.Packages_Directory }}\*\*.msix "$packageName.msix"
 
-        ls # For debugging
-
     - name: Upload .msix to artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -90,11 +102,14 @@ jobs:
         }
 
         # Convert .msix to .msixbundle
+        mkdir "$env:TmpDirectory"
         mv "$env:PackageName.msix" "$env:TmpDirectory\$env:PackageName.msix"
         & $makeappx.FullName bundle /d "$env:TmpDirectory" /p "$env:PackageName.msixbundle"
 
+        ls
+
         # Create .msixupload
-        $msixPath = $env:PackageName + '.msix'
+        $msixPath = $env:PackageName + '.msixbundle'
         $appxsymPath = $env:PackageName + '.appxsym'
         Compress-Archive -Path $msixPath, $appxsymPath -DestinationPath "$env:PackageName.zip"
         mv "$env:PackageName.zip" "$env:PackageName.msixupload"

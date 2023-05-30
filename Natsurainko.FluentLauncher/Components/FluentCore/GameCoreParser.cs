@@ -111,7 +111,7 @@ public class GameCoreParser : Natsurainko.FluentCore.Module.Parser.GameCoreParse
                 LastLaunchTime = null,
                 EnableSpecialSetting = false,
                 MinecraftFolder = core.Root.FullName,
-                JvmSetting = new Models.JvmSetting
+                JvmSetting = new JvmSetting
                 {
                     JvmParameters = string.Join(" ", DefaultSettings.DefaultJvmArguments)
                 },

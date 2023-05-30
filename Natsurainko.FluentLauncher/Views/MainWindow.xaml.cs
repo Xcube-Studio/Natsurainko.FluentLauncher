@@ -1,6 +1,7 @@
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Models;
 using System;
@@ -40,19 +41,13 @@ public sealed partial class MainWindow : WindowEx
         (MinWidth, MinHeight) = (516, 328);
         (Width, Height) = (App.Configuration.AppWindowWidth, App.Configuration.AppWindowHeight);
 
-        Backdrop = Environment.OSVersion.Version.Build >= 22000
-           ? new MicaSystemBackdrop() { Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt }
-           : new AcrylicSystemBackdrop()
-           {
-               DarkTintOpacity = 0.75,
-               DarkLuminosityOpacity = 0.75,
-               DarkTintColor = Colors.Black,
-               DarkFallbackColor = Colors.Black
-           };
+        SystemBackdrop = Environment.OSVersion.Version.Build >= 22000
+           ? new MicaBackdrop() { Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt }
+           : new DesktopAcrylicBackdrop();
 
         if (App.Configuration.FinishGuide)
-            Frame.Navigate(typeof(Views.ShellPage));
-        else Frame.Navigate(typeof(Views.OOBE.OOBENavigationPage));
+            Frame.Navigate(typeof(ShellPage));
+        else Frame.Navigate(typeof(OOBE.OOBENavigationPage));
     }
 
     private void InfoBar_CloseButtonClick(InfoBar sender, object args)

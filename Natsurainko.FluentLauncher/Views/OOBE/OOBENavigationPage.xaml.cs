@@ -14,7 +14,7 @@ public sealed partial class OOBENavigationPage : Page
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
-        => contentFrame.Navigate(typeof(Views.OOBE.LanguagePage), null, new DrillInNavigationTransitionInfo());
+        => contentFrame.Navigate(typeof(LanguagePage), null, new DrillInNavigationTransitionInfo());
 
     private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
     {

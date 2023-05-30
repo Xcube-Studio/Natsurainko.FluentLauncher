@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using Natsurainko.FluentCore.Event;
 using Natsurainko.FluentCore.Extension;
 using Natsurainko.FluentCore.Extension.Windows.Extension;
@@ -103,13 +104,9 @@ public partial class LaunchArrangement : ObservableObject
         window.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
         window.AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
         window.AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-        window.Backdrop = Environment.OSVersion.Version.Build >= 22000
-           ? new MicaSystemBackdrop() { Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt }
-           : new AcrylicSystemBackdrop()
-           {
-               DarkTintColor = Colors.Black,
-               DarkFallbackColor = Colors.Black
-           };
+        window.SystemBackdrop = Environment.OSVersion.Version.Build >= 22000
+           ? new MicaBackdrop() { Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt }
+           : new DesktopAcrylicBackdrop();
 
         (window.MinWidth, window.MinHeight) = (516, 328);
         (window.Width, window.Height) = (873, 612);

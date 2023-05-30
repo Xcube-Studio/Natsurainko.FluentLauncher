@@ -15,6 +15,7 @@ jobs:
       Configuration: Release
       Packages_DirectoryName: AppPackages
       Packages_Directory: Natsurainko.FluentLauncher\AppPackages
+      SigningKey_Path: SigningKey.pfx
     name: Build (${{ matrix.architecture }})
 
     steps:
@@ -29,12 +30,28 @@ jobs:
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1.3
 
-    - name: Configure NuGet Source
+    - name: Get NuGet Dependencies
+      run: .\.github\write-nuget-cache-file.ps1
+
+    - name: Cache NuGet packages
+      id: cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~\.nuget\packages
+          ~\AppData\Roaming\NuGet\NuGet.Config
+        key: ${{ runner.os }}-nuget-${{ hashFiles('.package-references.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+    
+    - name: Add nuget source
+      if: steps.cache.outputs.cache-hit != 'true'
       run: dotnet nuget add source "https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json"
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
-    - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=Release
+    - name: Restore NuGet packages
+      # must run
+      run: dotnet restore # msbuild $env:Solution_Name /t:Restore /p:Configuration=Release
 
     # Create the app package by building and packaging the Windows Application Packaging project
     - name: Create app package
@@ -47,32 +64,77 @@ jobs:
         Appx_Package_Build_Mode: SideloadOnly
         Appx_Package_Dir: ${{ env.Packages_DirectoryName }}\ # DO NOT REMOVE THE TRAILING SLASH
     
-    - name: Create .msixupload
-      id: create_msixupload
+    - name: Prepare for bundling
+      id: preparation
       run: |
+
+        # Get package name
         $msixFile = Get-Item -Path "${{ env.Packages_Directory }}\*\*.msix"
         $packageName = [System.IO.Path]::GetFileNameWithoutExtension($msixFile.FullName)
         echo "::set-output name=packageName::$packageName"
 
-        $sourcePath = "${{ env.Packages_Directory }}\*\*.msix*"
-        Compress-Archive -Path $sourcePath -DestinationPath "$packageName.zip"
-        mv "$packageName.zip" "$packageName.msixupload"
+        # Get package directory
+        $directory = $msixFile.DirectoryName
+        echo "::set-output name=packageDirectory::$directory"
 
-    - name: Upload .msixupload to artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: .msixupload
-        path: ${{ steps.create_msixupload.outputs.packageName }}.msixupload
+        # Rename .msixsym to .appxsym to pass Partner Center validation
+        # Move .appx to root directory for making .msixupload
+        mv "$directory\$packageName.msixsym" ".\$packageName.appxsym"
 
-    # Move to current directory to provide a clean layout in artifacts
-    - name: Move .msix
-      run: mv ${{ env.Packages_Directory }}\*\${{ steps.create_msixupload.outputs.packageName }}.msix ".\${{ steps.create_msixupload.outputs.packageName }}.msix"
+        # Move .msix for upload to artifacts
+        mv ${{ env.Packages_Directory }}\*\*.msix "$packageName.msix"
+
+    # Decode the base 64 encoded pfx and sign the package
+    - name: Sign .msix
+      run: |
+        # Get signtool.exe
+        $signtool = Get-Item -Path "C:\Program Files (x86)\Windows Kits\10\bin\*\x64\signtool.exe"
+        if ($signtool -is [array]) {
+          $signtool = $signtool[0]
+        }
+
+        # Sign .msix
+        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.PFX_BASE64_ENCODED }}")
+        [IO.File]::WriteAllBytes("${{ env.SigningKey_Path }}", $pfx_cert_byte)
+        & $signtool sign /f "${{ env.SigningKey_Path }}" /fd SHA256 /td SHA256 "${{ steps.preparation.outputs.packageName }}.msix"
+        rm "${{ env.SigningKey_Path }}"
 
     - name: Upload .msix to artifacts
       uses: actions/upload-artifact@v2
       with:
         name: .msix
-        path: ${{ steps.create_msixupload.outputs.packageName }}.msix
+        path: ${{ steps.preparation.outputs.packageName }}.msix
+
+    - name: Create .msixupload
+      id: create_msixupload
+      env:
+        PackageName: ${{ steps.preparation.outputs.packageName }}
+        PackageDirectory: ${{ steps.preparation.outputs.packageDirectory }}
+        TmpDirectory: .\tmp
+      run: |
+        
+        # Get makeappx.exe
+        $makeappx = Get-Item -Path "C:\Program Files (x86)\Windows Kits\10\bin\*\x64\makeappx.exe"
+        if ($makeappx -is [array]) {
+          $makeappx = $makeappx[0]
+        }
+
+        # Convert .msix to .msixbundle
+        mkdir "$env:TmpDirectory"
+        mv "$env:PackageName.msix" "$env:TmpDirectory\$env:PackageName.msix"
+        & $makeappx.FullName bundle /d "$env:TmpDirectory" /p "$env:PackageName.msixbundle"
+
+        # Create .msixupload
+        $msixbundlePath = $env:PackageName + '.msixbundle'
+        $appxsymPath = $env:PackageName + '.appxsym'
+        Compress-Archive -Path $msixbundlePath, $appxsymPath -DestinationPath "$env:PackageName.zip"
+        mv "$env:PackageName.zip" "$env:PackageName.msixupload"
+
+    - name: Upload .msixupload to artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: .msixupload
+        path: ${{ steps.preparation.outputs.packageName }}.msixupload
 
         
   release:
@@ -115,21 +177,23 @@ jobs:
         # Create the .msixbundle using makeappx.exe
         & $makeappx.FullName bundle /d "${{ env.Artifacts_Path }}" /p "${{ steps.get_package_name.outputs.bundleFileName }}"
 
+    # Decode the base 64 encoded pfx and sign the package
+    - name: Sign .msixbundle
+      run: |
+        # Get signtool.exe
+        $signtool = Get-Item -Path "C:\Program Files (x86)\Windows Kits\10\bin\*\x64\signtool.exe"
+        if ($signtool -is [array]) {
+          $signtool = $signtool[0]
+        }
+
+        # Sign .msixbundle
+        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.PFX_BASE64_ENCODED }}")
+        [IO.File]::WriteAllBytes("${{ env.SigningKey_Path }}", $pfx_cert_byte)
+        & $signtool sign /f "${{ env.SigningKey_Path }}" /fd SHA256 /td SHA256 "${{ steps.get_package_name.outputs.bundleFileName }}"
+        rm "${{ env.SigningKey_Path }}"
+
     - name: Upload .msixbundle to artifacts
       uses: actions/upload-artifact@v2
       with:
         name: .msixbundle
         path: ${{ steps.get_package_name.outputs.bundleFileName }}
-
-    # Decode the base 64 encoded pfx and save the Signing_Certificate
-    # - name: Decode pfx
-    #   run: |
-    #     $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.PFX_BASE64_ENCODED }}")
-    #     [IO.File]::WriteAllBytes("${{ env.SigningKey_Path }}", $pfx_cert_byte)
-
-    # Upload the MSIX package as an artifact
-    # - name: Upload build artifacts
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: MSIX Package
-    #     path: ${{ env.Packages_Directory }}/*/Natsurainko.FluentLauncher*.msix*

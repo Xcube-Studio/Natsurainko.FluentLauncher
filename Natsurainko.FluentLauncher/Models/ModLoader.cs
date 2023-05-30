@@ -85,14 +85,14 @@ public partial class ModLoader : ObservableObject
         {
             Mode = BindingMode.TwoWay,
             Source = this,
-            Path = new Microsoft.UI.Xaml.PropertyPath(nameof(IsSelected))
+            Path = new PropertyPath(nameof(IsSelected))
         });
 
         BindingOperations.SetBinding(Item, ListViewItem.IsEnabledProperty, new Binding()
         {
             Mode = BindingMode.TwoWay,
             Source = this,
-            Path = new Microsoft.UI.Xaml.PropertyPath(nameof(IsEnable))
+            Path = new PropertyPath(nameof(IsEnable))
         });
     }
 

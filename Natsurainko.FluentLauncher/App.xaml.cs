@@ -14,6 +14,7 @@ using AppSettingsManagement;
 using AppSettingsManagement.Windows;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Views;
+using System.Text.Json;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -66,6 +67,10 @@ public partial class App : Application
         // For testing
         var appsettings = ApplicationData.Current.LocalSettings;
         var settingsService = Services.GetService<SettingsService>();
+
+        //double height = settingsService.AppWindowHeight;
+        //double width = settingsService.AppWindowWidth;
+        //bool a = settingsService.AutoRefresh;
 
         try
         {

@@ -29,7 +29,7 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
     public ObservableCollection<IAccount> Accounts { get; private set; }
 
     [ObservableProperty]
-    //TODO: Add CurrentAccount to SettingsService [BindToSetting(Path = nameof(SettingsService.))]
+    [BindToSetting(Path = nameof(SettingsService.CurrentAccount))]
     private IAccount currentAccount;
 
     [ObservableProperty]

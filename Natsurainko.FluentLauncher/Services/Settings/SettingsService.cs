@@ -83,6 +83,10 @@ partial class SettingsService : SettingsContainer
             };
             Accounts.Add(account);
         }
-        
+        Accounts.CollectionChanged += (sender, e) =>
+        {
+            appsettings.Values["Accounts"] = JsonSerializer.Serialize(Accounts.ToArray());
+        };
+
     }
 }

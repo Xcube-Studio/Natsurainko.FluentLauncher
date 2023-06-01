@@ -102,6 +102,8 @@ public partial class App : Application
         services.AddSingleton<ViewModels.Activities.NewsViewModel>();
         services.AddSingleton<ViewModels.Downloads.CurseForgeViewModel>();
 
+        services.AddTransient<ViewModels.Settings.AppearanceViewModel>();
+
         return services.BuildServiceProvider();
     }
 

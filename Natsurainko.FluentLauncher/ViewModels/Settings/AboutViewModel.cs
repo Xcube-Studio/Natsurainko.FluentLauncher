@@ -6,7 +6,7 @@ using Windows.System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-public partial class AboutViewModel : ObservableObject
+partial class AboutViewModel : ObservableObject
 {
     [ObservableProperty]
     private string version = string.Format("{0}.{1}.{2}.{3}",
@@ -22,10 +22,7 @@ public partial class AboutViewModel : ObservableObject
     [ObservableProperty]
     private string edition = "Release Edition";
 #endif
-}
 
-public partial class AboutViewModel
-{
     [RelayCommand]
     public async void CheckUpdate()
         => await Launcher.LaunchUriAsync(new Uri("ms-windows-store://pdp/?productid=9P4NQQXQ942P"));

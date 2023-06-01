@@ -36,9 +36,11 @@ class AccountToJsonConverter : IDataTypeConverter
         return account;
     }
 
-    public object ConvertFrom(object target)
+    public object ConvertFrom(object target) => target switch
     {
-        // null is serialized to "null"
-        return JsonSerializer.Serialize(target);
-    }
+        OfflineAccount => JsonSerializer.Serialize((OfflineAccount)target),
+        MicrosoftAccount => JsonSerializer.Serialize((MicrosoftAccount)target),
+        YggdrasilAccount => JsonSerializer.Serialize((YggdrasilAccount)target),
+        _ => "null"
+    };
 }

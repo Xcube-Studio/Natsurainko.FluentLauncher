@@ -85,7 +85,18 @@ partial class SettingsService : SettingsContainer
         }
         Accounts.CollectionChanged += (sender, e) =>
         {
-            appsettings.Values["Accounts"] = JsonSerializer.Serialize(Accounts.ToArray());
+            var jsonArray = new JsonArray();
+            foreach (var item in Accounts)
+            {
+                if (item is OfflineAccount)
+                    jsonArray.Add((OfflineAccount)item);
+                else if (item is MicrosoftAccount)
+                    jsonArray.Add((MicrosoftAccount)item);
+                else if ((item is YggdrasilAccount))
+                    jsonArray.Add((YggdrasilAccount)item);
+            }
+
+            appsettings.Values["Accounts"] = jsonArray.ToJsonString();
         };
 
     }

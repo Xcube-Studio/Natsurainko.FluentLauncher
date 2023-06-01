@@ -15,7 +15,7 @@ partial class AppearanceViewModel : SettingsViewModelBase, ISettingsViewModel
     private readonly SettingsService _settingsService;
 
     [ObservableProperty]
-    [BindToSetting(Path = "CurrentLanguage")]
+    [BindToSetting(Path = nameof(SettingsService.CurrentLanguage))]
     string currentLanguage;
 
     public List<string> SupportedLanguages => LanguageResources.SupportedLanguages;

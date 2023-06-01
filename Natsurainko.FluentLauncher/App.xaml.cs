@@ -103,6 +103,7 @@ public partial class App : Application
         services.AddSingleton<ViewModels.Downloads.CurseForgeViewModel>();
 
         services.AddTransient<ViewModels.Settings.AppearanceViewModel>();
+        services.AddTransient<ViewModels.Settings.DownloadViewModel>();
 
         return services.BuildServiceProvider();
     }

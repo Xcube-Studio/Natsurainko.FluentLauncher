@@ -29,6 +29,7 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
     public ObservableCollection<IAccount> Accounts { get; private set; }
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsRemoveVisible))]
     [BindToSetting(Path = nameof(SettingsService.CurrentAccount))]
     private IAccount currentAccount;
 
@@ -46,8 +47,7 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
 
     #endregion
 
-    [ObservableProperty]
-    private Visibility removeVisibility;
+    public bool IsRemoveVisible => CurrentAccount is not null;
 
 
     public AccountViewModel(SettingsService settingsService)
@@ -56,15 +56,6 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
         (this as ISettingsViewModel).InitializeSettings();
     }
 
-    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-    {
-        base.OnPropertyChanged(e);
-
-        if (e.PropertyName != nameof(RemoveVisibility))
-            RemoveVisibility = CurrentAccount == null
-                ? Visibility.Collapsed
-                : Visibility.Visible;
-    }
 
     [RelayCommand]
     public void Remove()

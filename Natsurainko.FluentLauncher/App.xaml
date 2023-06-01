@@ -41,6 +41,7 @@
             <converters:TeachingTipTitleConverter x:Key="TeachingTipTitleConverter" />
             <converters:PathToFiguresConverter x:Key="PathToFiguresConverter" />
             <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

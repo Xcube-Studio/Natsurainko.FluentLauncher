@@ -13,9 +13,6 @@
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     Background="Transparent"
     mc:Ignorable="d">
-    <Page.DataContext>
-        <vm:AccountViewModel />
-    </Page.DataContext>
 
     <ScrollViewer Padding="32,0" VerticalScrollBarVisibility="Auto">
         <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->

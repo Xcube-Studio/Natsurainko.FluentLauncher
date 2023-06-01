@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using AppSettingsManagement.Mvvm;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentCore.Interface;
@@ -6,6 +7,8 @@ using Natsurainko.FluentCore.Model.Auth;
 using Natsurainko.FluentCore.Module.Authenticator;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.Mvvm;
+using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.Common;
 using System;
 using System.Collections.ObjectModel;
@@ -15,21 +18,54 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-public partial class AccountViewModel : SettingViewModel
+partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
 {
-    public AccountViewModel() : base() { }
+    #region Settings
 
-    protected override void _OnPropertyChanged(PropertyChangedEventArgs e)
+    [SettingsProvider]
+    private readonly SettingsService _settingsService;
+
+    [BindToSetting(Path = nameof(SettingsService.Accounts))]
+    public ObservableCollection<IAccount> Accounts { get; private set; }
+
+    [ObservableProperty]
+    //TODO: Add CurrentAccount to SettingsService [BindToSetting(Path = nameof(SettingsService.))]
+    private IAccount currentAccount;
+
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.EnableDemoUser))]
+    private bool enableDemoUser;
+
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.AutoRefresh))]
+    private bool autoRefresh;
+
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.UseDeviceFlowAuth))]
+    private bool useDeviceFlowAuth;
+
+    #endregion
+
+    [ObservableProperty]
+    private Visibility removeVisibility;
+
+
+    public AccountViewModel(SettingsService settingsService)
     {
+        _settingsService = settingsService;
+        (this as ISettingsViewModel).InitializeSettings();
+    }
+
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+
         if (e.PropertyName != nameof(RemoveVisibility))
             RemoveVisibility = CurrentAccount == null
                 ? Visibility.Collapsed
                 : Visibility.Visible;
     }
-}
 
-public partial class AccountViewModel
-{
     [RelayCommand]
     public void Remove()
     {
@@ -44,7 +80,7 @@ public partial class AccountViewModel
     {
         App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
         {
-            var chooseAccountTypeDialog = new ChooseAccountTypeDialog
+            var chooseAccountTypeDialog = new Views.Common.ChooseAccountTypeDialog
             {
                 XamlRoot = Views.ShellPage._XamlRoot,
                 DataContext = new Common.ChooseAccountTypeDialog { SetAccountAction = SetAccount }
@@ -111,25 +147,5 @@ public partial class AccountViewModel
 
         MessageService.ShowSuccess($"Add {account.Type} Account Successfully", $"Welcome back, {account.Name}");
     });
-}
 
-public partial class AccountViewModel
-{
-    [ObservableProperty]
-    private Visibility removeVisibility;
-
-    [ObservableProperty]
-    private ObservableCollection<IAccount> accounts;
-
-    [ObservableProperty]
-    private IAccount currentAccount;
-
-    [ObservableProperty]
-    private bool enableDemoUser;
-
-    [ObservableProperty]
-    private bool autoRefresh;
-
-    [ObservableProperty]
-    private bool useDeviceFlowAuth;
 }

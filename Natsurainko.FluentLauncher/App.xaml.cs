@@ -104,6 +104,7 @@ public partial class App : Application
 
         services.AddTransient<ViewModels.Settings.AppearanceViewModel>();
         services.AddTransient<ViewModels.Settings.DownloadViewModel>();
+        services.AddTransient<ViewModels.Settings.AccountViewModel>();
 
         return services.BuildServiceProvider();
     }

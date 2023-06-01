@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
+    xmlns:converters="using:Natsurainko.FluentLauncher.Utils.Xaml.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
@@ -11,11 +12,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Settings"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
+    d:DataContext="{d:DesignInstance Type=vm:LaunchViewModel}"
     Background="Transparent"
     mc:Ignorable="d">
-    <Page.DataContext>
-        <vm:LaunchViewModel />
-    </Page.DataContext>
+    <Page.Resources>
+        <converters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" Inverted="True" />
+    </Page.Resources>
 
     <ScrollViewer Padding="32,0" VerticalScrollBarVisibility="Auto">
         <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
@@ -39,7 +41,7 @@
                     </labs:SettingsExpander.Description>
 
                     <labs:SettingsExpander.Items>
-                        <labs:SettingsCard>
+                        <labs:SettingsCard Visibility="{Binding IsGameFoldersEmpty, Converter={StaticResource InvertBoolConverter}}">
                             <labs:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_Launch_Item_1" Text="Current .minecraft folder:" />
                             </labs:SettingsCard.Header>
@@ -78,7 +80,7 @@
 
                         </labs:SettingsCard>
 
-                        <labs:SettingsCard>
+                        <labs:SettingsCard Visibility="{Binding IsGameFoldersEmpty, Converter={StaticResource InvertBoolConverter}}">
                             <labs:SettingsCard.Header>
                                 <TextBlock
                                     x:Uid="Settings_Launch_Item_3"
@@ -118,7 +120,7 @@
                     </labs:SettingsExpander.Description>
 
                     <labs:SettingsExpander.Items>
-                        <labs:SettingsCard>
+                        <labs:SettingsCard Visibility="{Binding IsJavaRuntimesEmpty, Converter={StaticResource InvertBoolConverter}}">
                             <labs:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_Launch_Item_4" Text="Current Java runtime:" />
                             </labs:SettingsCard.Header>
@@ -202,7 +204,7 @@
                             </StackPanel>
                         </labs:SettingsCard>
 
-                        <labs:SettingsCard>
+                        <labs:SettingsCard Visibility="{Binding IsJavaRuntimesEmpty, Converter={StaticResource InvertBoolConverter}}">
                             <labs:SettingsCard.Header>
 
                                 <TextBlock x:Uid="Settings_Launch_Item_7" Text="Remove the current Java runtime:" />

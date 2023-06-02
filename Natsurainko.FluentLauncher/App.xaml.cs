@@ -107,6 +107,11 @@ public partial class App : Application
         services.AddTransient<ViewModels.Settings.AccountViewModel>();
         services.AddTransient<ViewModels.Settings.LaunchViewModel>();
 
+        services.AddTransient<ViewModels.OOBE.LanguageViewModel>();
+        services.AddTransient<ViewModels.OOBE.BasicViewModel>();
+        services.AddTransient<ViewModels.OOBE.AccountViewModel>();
+        services.AddTransient<ViewModels.OOBE.GetStartedViewModel>();
+
         return services.BuildServiceProvider();
     }
 

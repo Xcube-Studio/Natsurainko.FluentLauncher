@@ -49,6 +49,7 @@ partial class BasicViewModel : SettingsViewModelBase, ISettingsViewModel
     public BasicViewModel(SettingsService settingsService)
     {
         _settingsService = settingsService;
+        (this as ISettingsViewModel).InitializeSettings();
         OnPropertyChanged("CanNext");
     }
 

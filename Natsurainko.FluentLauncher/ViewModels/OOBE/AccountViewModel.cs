@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using AppSettingsManagement.Mvvm;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
@@ -6,6 +7,7 @@ using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using System;
 using System.Collections.ObjectModel;
@@ -14,38 +16,34 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
-public partial class AccountViewModel : SettingViewModel
+partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
 {
-    public AccountViewModel() : base()
-    {
-        OnPropertyChanged(nameof(CanNext));
-    }
+    [SettingsProvider]
+    private readonly SettingsService _settingsService;
+
+    [BindToSetting(Path = nameof(SettingsService.Accounts))]
+    public ObservableCollection<IAccount> Accounts;
 
     [ObservableProperty]
-    private bool canNext;
-
-    [ObservableProperty]
-    private ObservableCollection<IAccount> accounts;
-
-    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.CurrentAccount))]
     private IAccount currentAccount;
 
-    protected override void _OnPropertyChanged(PropertyChangedEventArgs e)
+
+    public AccountViewModel(SettingsService settingsService)
     {
-        if (e.PropertyName != nameof(CanNext))
-            CanNext = CurrentAccount != null;
-
-        if (e.PropertyName == nameof(CanNext))
-            WeakReferenceMessenger.Default.Send(new GuideNavigationMessage()
-            {
-                CanNext = canNext,
-                NextPage = typeof(Views.OOBE.GetStartedPage)
-            });
+        _settingsService = settingsService;
+        (this as ISettingsViewModel).InitializeSettings();
     }
-}
 
-public partial class AccountViewModel
-{
+    partial void OnCurrentAccountChanged(IAccount oldValue, IAccount newValue)
+    {
+        WeakReferenceMessenger.Default.Send(new GuideNavigationMessage()
+        {
+            CanNext = newValue is null,
+            NextPage = typeof(Views.OOBE.GetStartedPage)
+        });
+    }
+
     [RelayCommand]
     public Task Login(Button parameter) => Task.Run(() =>
     {

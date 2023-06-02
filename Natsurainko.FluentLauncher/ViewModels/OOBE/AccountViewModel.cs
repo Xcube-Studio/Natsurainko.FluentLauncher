@@ -22,7 +22,7 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
     private readonly SettingsService _settingsService;
 
     [BindToSetting(Path = nameof(SettingsService.Accounts))]
-    public ObservableCollection<IAccount> Accounts;
+    public ObservableCollection<IAccount> Accounts { get; private set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.CurrentAccount))]
@@ -40,7 +40,7 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
     {
         WeakReferenceMessenger.Default.Send(new GuideNavigationMessage()
         {
-            CanNext = value is null,
+            CanNext = value is not null,
             NextPage = typeof(Views.OOBE.GetStartedPage)
         });
     }

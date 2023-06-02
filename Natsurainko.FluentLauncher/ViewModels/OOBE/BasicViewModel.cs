@@ -27,14 +27,14 @@ partial class BasicViewModel : SettingsViewModelBase, ISettingsViewModel
     private readonly SettingsService _settingsService;
 
     [BindToSetting(Path = nameof(SettingsService.GameFolders))]
-    public ObservableCollection<string> GameFolders;
+    public ObservableCollection<string> GameFolders { get; private set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.CurrentGameFolder))]
     private string currentGameFolder;
 
     [BindToSetting(Path = nameof(SettingsService.JavaRuntimes))]
-    public ObservableCollection<string> JavaRuntimes;
+    public ObservableCollection<string> JavaRuntimes { get; private set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.CurrentJavaRuntime))]
@@ -50,7 +50,6 @@ partial class BasicViewModel : SettingsViewModelBase, ISettingsViewModel
     {
         _settingsService = settingsService;
         (this as ISettingsViewModel).InitializeSettings();
-        OnPropertyChanged("CanNext");
     }
 
     partial void OnCurrentGameFolderChanged(string oldValue, string newValue)

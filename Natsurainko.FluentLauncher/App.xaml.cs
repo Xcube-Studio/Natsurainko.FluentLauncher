@@ -45,10 +45,10 @@ public partial class App
 public partial class App : Application
 {
     public static IServiceProvider Services { get; } = ConfigureServices();
+    public static T GetService<T>() => Services.GetService<T>();
+    public static MainWindow MainWindow { get; private set; }
 
     public static Configuration Configuration { get; private set; } = Configuration.Load();
-
-    public static string StoragePath => ApplicationData.Current.LocalFolder.Path;
 
     public App()
     {
@@ -64,14 +64,6 @@ public partial class App : Application
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
-        // For testing
-        var appsettings = ApplicationData.Current.LocalSettings;
-        var settingsService = Services.GetService<SettingsService>();
-
-        //double height = settingsService.AppWindowHeight;
-        //double width = settingsService.AppWindowWidth;
-        //bool a = settingsService.AutoRefresh;
-
         try
         {
             MainWindow = new MainWindow();
@@ -114,8 +106,6 @@ public partial class App : Application
 
         return services.BuildServiceProvider();
     }
-
-    public static MainWindow MainWindow { get; private set; }
 
     #region Global exception handlers
 

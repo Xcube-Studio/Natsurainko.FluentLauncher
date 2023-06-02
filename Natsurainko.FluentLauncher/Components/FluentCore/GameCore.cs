@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Windows.Storage;
 
 namespace Natsurainko.FluentLauncher.Components.FluentCore;
 
@@ -24,7 +25,7 @@ public class GameCore : Natsurainko.FluentCore.Model.Launch.GameCore
 #if MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
         var profilesFolder = new DirectoryInfo(Path.Combine(Directory.GetCurrentDirectory(), "Natsurainko.FluentLauncher", "CoreProfiles"));
 #else
-        var profilesFolder = new DirectoryInfo(Path.Combine(App.StoragePath, "CoreProfiles"));
+        var profilesFolder = new DirectoryInfo(Path.Combine(ApplicationData.Current.LocalFolder.Path, "CoreProfiles"));
 #endif
 
         if (!profilesFolder.Exists)

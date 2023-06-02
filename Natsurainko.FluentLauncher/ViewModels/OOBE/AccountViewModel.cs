@@ -33,13 +33,14 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
     {
         _settingsService = settingsService;
         (this as ISettingsViewModel).InitializeSettings();
+        OnCurrentAccountChanged(CurrentAccount);
     }
 
-    partial void OnCurrentAccountChanged(IAccount oldValue, IAccount newValue)
+    partial void OnCurrentAccountChanged(IAccount value)
     {
         WeakReferenceMessenger.Default.Send(new GuideNavigationMessage()
         {
-            CanNext = newValue is null,
+            CanNext = value is null,
             NextPage = typeof(Views.OOBE.GetStartedPage)
         });
     }

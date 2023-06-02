@@ -6,10 +6,8 @@
     xmlns:local="using:Natsurainko.FluentLauncher.Views.OOBE"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
+    d:DataContext="{d:DesignInstance vm:BasicViewModel}"
     mc:Ignorable="d">
-    <Page.DataContext>
-        <vm:BasicViewModel />
-    </Page.DataContext>
 
     <Grid Padding="75,0">
         <Grid.ColumnDefinitions>
@@ -104,7 +102,7 @@
                             </Grid.ColumnDefinitions>
                             <ComboBox
                                 HorizontalAlignment="Stretch"
-                                IsDropDownOpen="{Binding DropOpen, Mode=TwoWay}"
+                                IsDropDownOpen="{Binding DropDownOpen, Mode=TwoWay}"
                                 ItemsSource="{Binding JavaRuntimes}"
                                 SelectedItem="{Binding CurrentJavaRuntime, Mode=TwoWay}">
                                 <ComboBox.ItemTemplate>

@@ -12,6 +12,7 @@ using Natsurainko.FluentCore.Model.Install.Quilt;
 using Natsurainko.FluentCore.Model.Install.Vanilla;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.FluentCore;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.Toolkits.Network.Downloader;
 using System;
@@ -63,7 +64,14 @@ public partial class DownloadArrangement : ObservableObject
 
 public partial class InstallArrangement : DownloadArrangement
 {
-    public InstallArrangement(CoreManifestItem coreManifestItem, string customName, bool enableCoreIndependent)
+    private SettingsService _settings;
+
+    public InstallArrangement(SettingsService settings)
+    {
+        _settings = settings;
+    }
+
+    public InstallArrangement(CoreManifestItem coreManifestItem, string customName, bool enableCoreIndependent, SettingsService settings) : this(settings)
     {
         TaskName = "Install Arrangement";
         Title = CustomName = customName;
@@ -71,7 +79,7 @@ public partial class InstallArrangement : DownloadArrangement
         CoreManifestItem = coreManifestItem;
         EnableCoreIndependent = enableCoreIndependent;
 
-        var gameCoreLocator = new GameCoreLocator(App.Configuration.CurrentGameFolder);
+        var gameCoreLocator = new GameCoreLocator(_settings.CurrentGameFolder);
         GameCoreInstaller = new MinecraftVanlliaInstaller(gameCoreLocator, coreManifestItem, customName);
 
         installerStepProgresses.CollectionChanged += InstallerStepProgresses_CollectionChanged;
@@ -79,7 +87,7 @@ public partial class InstallArrangement : DownloadArrangement
         ReportState("Not Started");
     }
 
-    public InstallArrangement(IModLoaderInstallBuild installBuild, string customName, bool enableCoreIndependent)
+    public InstallArrangement(IModLoaderInstallBuild installBuild, string customName, bool enableCoreIndependent, SettingsService settings) : this(settings)
     {
         TaskName = "Install Arrangement";
         Title = CustomName = customName;
@@ -87,14 +95,14 @@ public partial class InstallArrangement : DownloadArrangement
         InstallBuild = installBuild;
         EnableCoreIndependent = enableCoreIndependent;
 
-        var gameCoreLocator = new GameCoreLocator(App.Configuration.CurrentGameFolder);
+        var gameCoreLocator = new GameCoreLocator(_settings.CurrentGameFolder);
 
         GameCoreInstaller = installBuild.ModLoaderType switch
         {
             ModLoaderType.Forge => new MinecraftForgeInstaller(
                 gameCoreLocator,
                 (ForgeInstallBuild)installBuild,
-                App.Configuration.CurrentJavaRuntime,
+                _settings.CurrentJavaRuntime,
                 customId: customName),
             ModLoaderType.Fabric => new MinecraftFabricInstaller(
                 gameCoreLocator,
@@ -103,7 +111,7 @@ public partial class InstallArrangement : DownloadArrangement
             ModLoaderType.OptiFine => new MinecraftOptiFineInstaller(
                 gameCoreLocator,
                 (OptiFineInstallBuild)installBuild,
-                App.Configuration.CurrentJavaRuntime,
+                _settings.CurrentJavaRuntime,
                 customId: customName),
             ModLoaderType.Quilt => new MinecraftQuiltInstaller(
                 gameCoreLocator,
@@ -230,7 +238,7 @@ public partial class InstallArrangement : DownloadArrangement
 
     public static void StartNew(CoreManifestItem coreManifestItem, string customName, bool enableCoreIndependent) => Task.Run(() =>
     {
-        var installArrangement = new InstallArrangement(coreManifestItem, customName, enableCoreIndependent);
+        var installArrangement = new InstallArrangement(coreManifestItem, customName, enableCoreIndependent, App.GetService<SettingsService>());
 
         App.MainWindow.DispatcherQueue.TryEnqueue(() =>
         {
@@ -250,7 +258,7 @@ public partial class InstallArrangement : DownloadArrangement
 
     public static void StartNew(IModLoaderInstallBuild modLoaderInstallBuild, string customName, bool enableCoreIndependent) => Task.Run(() =>
     {
-        var installArrangement = new InstallArrangement(modLoaderInstallBuild, customName, enableCoreIndependent);
+        var installArrangement = new InstallArrangement(modLoaderInstallBuild, customName, enableCoreIndependent, App.GetService<SettingsService>());
 
         App.MainWindow.DispatcherQueue.TryEnqueue(() =>
         {
@@ -301,7 +309,7 @@ public partial class ModDownloadArrangement : DownloadArrangement
             var downloadRequest = GetDownloadRequest();
 
             using IDownloader<SimpleDownloaderResponse, SimpleDownloaderProgressChangedEventArgs> downloader
-                = App.Configuration.EnableFragmentDownload.GetValueOrDefault(true) && downloadRequest.FileSize.GetValueOrDefault(0L) >= 1572864L
+                = _settings.EnableFragmentDownload.GetValueOrDefault(true) && downloadRequest.FileSize.GetValueOrDefault(0L) >= 1572864L
                 ? new FragmentDownloader(downloadRequest)
                 : new SimpleDownloader(downloadRequest);
 

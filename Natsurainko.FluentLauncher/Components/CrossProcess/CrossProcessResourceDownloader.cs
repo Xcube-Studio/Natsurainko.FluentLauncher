@@ -1,4 +1,5 @@
 ﻿using Natsurainko.FluentCore.Interface;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.Toolkits.Network.Downloader;
 using Natsurainko.Toolkits.Text;
@@ -19,9 +20,14 @@ public class CrossProcessResourceDownloader : IResourceDownloader
 
     public event EventHandler<ParallelDownloaderProgressChangedEventArgs> DownloadProgressChanged;
 
-    public CrossProcessResourceDownloader() { }
+    private int _maxDownloadThreads;
 
-    public CrossProcessResourceDownloader(IGameCore core)
+    public CrossProcessResourceDownloader(SettingsService settings) 
+    {
+        _maxDownloadThreads = settings.MaxDownloadThreads;
+    }
+
+    public CrossProcessResourceDownloader(IGameCore core, SettingsService settings) : this(settings)
     {
         GameCore = core;
     }
@@ -40,7 +46,7 @@ public class CrossProcessResourceDownloader : IResourceDownloader
             Arguments = $"downloader " +
                 $"--folder {GameCore.Root.FullName.ToPath()} " +
                 $"--core {GameCore.Id} " +
-                $"--thread-number {App.Configuration.MaxDownloadThreads}"
+                $"--thread-number {_maxDownloadThreads}"
         };
 
         var outputs = new List<string>();

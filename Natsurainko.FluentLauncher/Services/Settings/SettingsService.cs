@@ -14,7 +14,7 @@ using Windows.Storage;
 
 namespace Natsurainko.FluentLauncher.Services.Settings;
 
-partial class SettingsService : SettingsContainer
+public partial class SettingsService : SettingsContainer
 {
     //[SettingsCollection(typeof(string), "GameFolders")]
     public ObservableCollection<string> GameFolders = new();

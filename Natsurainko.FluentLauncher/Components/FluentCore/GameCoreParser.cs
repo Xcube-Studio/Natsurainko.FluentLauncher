@@ -2,6 +2,7 @@
 using Natsurainko.FluentCore.Module.Parser;
 using Natsurainko.FluentCore.Service;
 using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ public class GameCoreParser : Natsurainko.FluentCore.Module.Parser.GameCoreParse
         {
             try
             {
-                var core = new GameCore
+                var core = new GameCore(App.GetService<SettingsService>())
                 {
                     Id = entity.Id,
                     Type = entity.Type,

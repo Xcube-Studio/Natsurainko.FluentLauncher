@@ -7,6 +7,7 @@ using Natsurainko.FluentCore.Model.Install.Quilt;
 using Natsurainko.FluentCore.Model.Install.Vanilla;
 using Natsurainko.FluentCore.Model.Parser;
 using Natsurainko.FluentLauncher.Components.CrossProcess;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.Toolkits.Network;
 using Natsurainko.Toolkits.Network.Downloader;
 using Natsurainko.Toolkits.Text;
@@ -68,7 +69,7 @@ public class MinecraftVanlliaInstaller : Natsurainko.FluentCore.Module.Installer
         {
             OnProgressChanged("Download Resources", 0);
 
-            var resourceDownloader = new CrossProcessResourceDownloader(gameCore);
+            var resourceDownloader = new CrossProcessResourceDownloader(gameCore, App.GetService<SettingsService>());
 
             resourceDownloader.DownloadProgressChanged += (sender, e)
                 => OnProgressChanged($"Download Resources", e.Progress, e.TotleTasks, e.CompletedTasks);

@@ -309,7 +309,7 @@ public partial class ModDownloadArrangement : DownloadArrangement
             var downloadRequest = GetDownloadRequest();
 
             using IDownloader<SimpleDownloaderResponse, SimpleDownloaderProgressChangedEventArgs> downloader
-                = _settings.EnableFragmentDownload.GetValueOrDefault(true) && downloadRequest.FileSize.GetValueOrDefault(0L) >= 1572864L
+                = App.GetService<SettingsService>().EnableFragmentDownload && downloadRequest.FileSize.GetValueOrDefault(0L) >= 1572864L
                 ? new FragmentDownloader(downloadRequest)
                 : new SimpleDownloader(downloadRequest);
 

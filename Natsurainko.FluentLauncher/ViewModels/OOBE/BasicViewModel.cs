@@ -97,7 +97,7 @@ partial class BasicViewModel : SettingsViewModelBase, ISettingsViewModel
                 }
 
                 GameFolders.Add(folder.Path);
-                OnPropertyChanged(nameof(GameFolders));
+                //OnPropertyChanged(nameof(GameFolders));
 
                 CurrentGameFolder = folder.Path;
             });

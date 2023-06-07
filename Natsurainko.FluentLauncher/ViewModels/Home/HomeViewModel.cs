@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml;
 using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Services.Settings;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -13,19 +14,22 @@ namespace Natsurainko.FluentLauncher.ViewModels.Home;
 
 public partial class HomeViewModel : ObservableObject
 {
-    public HomeViewModel()
-    {
-        Accounts = new(App.Configuration.Accounts);
-        CurrentAccount = App.Configuration.CurrentAccount;
+    private readonly SettingsService _settings;
 
-        if (!string.IsNullOrEmpty(App.Configuration.CurrentGameFolder))
+    public HomeViewModel(SettingsService settings)
+    {
+        _settings = settings;
+        Accounts = new(_settings.Accounts);
+        CurrentAccount = _settings.CurrentAccount;
+
+        if (!string.IsNullOrEmpty(_settings.CurrentGameFolder))
             Task.Run(() =>
             {
-                var cores = new GameCoreLocator(App.Configuration.CurrentGameFolder).GetGameCores();
+                var cores = new GameCoreLocator(_settings.CurrentGameFolder).GetGameCores();
                 App.MainWindow.DispatcherQueue.TryEnqueue(() =>
                 {
                     GameCores = new(cores);
-                    CurrentGameCore = GameCores.Where(x => x.Id == App.Configuration.CurrentGameCore).FirstOrDefault(cores.FirstOrDefault());
+                    CurrentGameCore = GameCores.Where(x => x.Id == _settings.CurrentGameCore).FirstOrDefault(cores.FirstOrDefault());
                 });
             });
     }
@@ -62,10 +66,10 @@ public partial class HomeViewModel : ObservableObject
         base.OnPropertyChanged(e);
 
         if (e.PropertyName == nameof(CurrentAccount))
-            App.Configuration.CurrentAccount = CurrentAccount;
+            _settings.CurrentAccount = CurrentAccount;
 
         if (e.PropertyName == nameof(CurrentGameCore))
-            App.Configuration.CurrentGameCore = CurrentGameCore?.Id;
+            _settings.CurrentGameCore = CurrentGameCore?.Id;
 
         if (e.PropertyName != nameof(LaunchButtonTag))
             LaunchButtonTag = CurrentGameCore == null

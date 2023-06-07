@@ -12,6 +12,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Cores"
     Name="Page"
+    d:DataContext="{d:DesignInstance vm:CoresViewModel}"
     Background="Transparent"
     mc:Ignorable="d">
     <Page.Resources>
@@ -102,9 +103,6 @@
         </Style>
     </Page.Resources>
 
-    <Page.DataContext>
-        <vm:CoresViewModel x:Name="ViewModel" />
-    </Page.DataContext>
 
     <Grid Margin="0,15,0,0">
         <Grid.RowDefinitions>

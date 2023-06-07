@@ -7,6 +7,7 @@ using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Data;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.Toolkits.Network.Downloader;
 using System.Collections.Generic;
 using System.IO;
@@ -15,10 +16,13 @@ namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 
 internal partial class CurseForgeModFileViewModel : ObservableObject
 {
+    private readonly SettingsService _settings;
+
     public CurseForgeResourceData Resource { get; }
 
-    public CurseForgeModFileViewModel(CurseForgeResourceData resource)
+    public CurseForgeModFileViewModel(CurseForgeResourceData resource, SettingsService settings)
     {
+        _settings = settings;
         Resource = resource;
 
         fileInfos = resource.InnerData.LatestFilesIndexes;
@@ -35,16 +39,16 @@ internal partial class CurseForgeModFileViewModel : ObservableObject
 
         var folders = new List<string>();
 
-        if (!string.IsNullOrEmpty(App.Configuration.CurrentGameFolder))
-            if (!string.IsNullOrEmpty(App.Configuration.CurrentGameCore))
-                if (new GameCoreLocator(App.Configuration.CurrentGameFolder).GetGameCore(App.Configuration.CurrentGameCore) is GameCore core)
+        if (!string.IsNullOrEmpty(_settings.CurrentGameFolder))
+            if (!string.IsNullOrEmpty(_settings.CurrentGameCore))
+                if (new GameCoreLocator(_settings.CurrentGameFolder).GetGameCore(_settings.CurrentGameCore) is GameCore core)
                 {
                     folders.Add(Path.Combine(core.GetLaunchSetting().WorkingFolder.FullName, "mods"));
                     folders.Add(core.GetLaunchSetting().WorkingFolder.FullName);
                 }
 
-        folders.Add(Path.Combine(App.Configuration.CurrentGameFolder, "mods"));
-        folders.Add(App.Configuration.CurrentGameFolder);
+        folders.Add(Path.Combine(_settings.CurrentGameFolder, "mods"));
+        folders.Add(_settings.CurrentGameFolder);
 
         foreach (var folder in folders)
             if (Directory.Exists(folder))

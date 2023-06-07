@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Natsurainko.FluentLauncher.ViewModels.Cores;
 using System;
 using System.Linq;
 
@@ -10,6 +11,7 @@ public sealed partial class CoresPage : Page
     public CoresPage()
     {
         InitializeComponent();
+        DataContext = App.GetService<CoresViewModel>();
     }
 
     private void Border_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)

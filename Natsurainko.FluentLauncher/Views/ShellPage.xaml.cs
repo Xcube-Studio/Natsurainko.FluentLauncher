@@ -1,6 +1,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using Natsurainko.FluentLauncher.Services.Settings;
 using System;
 using System.Linq;
 using Windows.Graphics;
@@ -10,8 +11,9 @@ namespace Natsurainko.FluentLauncher.Views;
 public sealed partial class ShellPage : Page
 {
     public static XamlRoot _XamlRoot { get; private set; }
-
     public static Frame ContentFrame { get; private set; }
+
+    private readonly SettingsService _settings = App.GetService<SettingsService>();
 
     public ShellPage()
     {
@@ -68,8 +70,8 @@ public sealed partial class ShellPage : Page
     {
         RefreshDragArea();
 
-        App.Configuration.AppWindowWidth = App.MainWindow.Width;
-        App.Configuration.AppWindowHeight = App.MainWindow.Height;
+        _settings.AppWindowWidth = App.MainWindow.Width;
+        _settings.AppWindowHeight = App.MainWindow.Height;
     }
 
     private void ContentFrame_Navigated(object sender, NavigationEventArgs e)

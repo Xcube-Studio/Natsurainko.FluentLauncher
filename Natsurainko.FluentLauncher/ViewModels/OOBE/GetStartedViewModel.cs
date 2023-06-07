@@ -2,13 +2,17 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Services.Settings;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
 public partial class GetStartedViewModel : ObservableObject
 {
-    public GetStartedViewModel()
+    private readonly SettingsService _settings;
+
+    public GetStartedViewModel(SettingsService settings)
     {
+        _settings = settings;
         WeakReferenceMessenger.Default.Send(new GuideNavigationMessage()
         {
             CanNext = false,
@@ -20,6 +24,6 @@ public partial class GetStartedViewModel : ObservableObject
     public void Start()
     {
         App.MainWindow.ContentFrame.Navigate(typeof(Views.ShellPage));
-        App.Configuration.FinishGuide = true;
+        _settings.FinishGuide = true;
     }
 }

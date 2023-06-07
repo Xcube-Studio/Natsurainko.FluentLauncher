@@ -48,6 +48,8 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(typeof(double), "AppWindowHeight", Default = 500, Converter = typeof(JsonStringConverter<double>))]
     [SettingItem(typeof(double), "AppWindowWidth", Default = 950, Converter = typeof(JsonStringConverter<double>))]
     [SettingItem(typeof(bool), "FinishGuide", Default = false, Converter = typeof(JsonStringConverter<bool>))]
+    [SettingItem(typeof(string), "CoresSortBy", Default = "Name", Converter = typeof(JsonStringConverter<string>))]
+    [SettingItem(typeof(string), "CoresFilter", Default = "All", Converter = typeof(JsonStringConverter<string>))]
     public SettingsService(ISettingsStorage storage) : base(storage)
     {
         var appsettings = ApplicationData.Current.LocalSettings;

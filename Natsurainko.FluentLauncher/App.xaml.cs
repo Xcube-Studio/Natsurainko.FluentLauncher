@@ -48,7 +48,7 @@ public partial class App : Application
     public static T GetService<T>() => Services.GetService<T>();
     public static MainWindow MainWindow { get; private set; }
 
-    public static Configuration Configuration { get; private set; } = Configuration.Load();
+    //public static Configuration Configuration { get; private set; } = Configuration.Load();
 
     public App()
     {
@@ -103,6 +103,9 @@ public partial class App : Application
         services.AddTransient<ViewModels.OOBE.BasicViewModel>();
         services.AddTransient<ViewModels.OOBE.AccountViewModel>();
         services.AddTransient<ViewModels.OOBE.GetStartedViewModel>();
+
+        services.AddTransient<ViewModels.Cores.CoresViewModel>();
+        services.AddTransient<ViewModels.Home.HomeViewModel>();
 
         return services.BuildServiceProvider();
     }

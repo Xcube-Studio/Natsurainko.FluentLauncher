@@ -4,6 +4,7 @@ using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Components.Mvvm;
+using Natsurainko.FluentLauncher.Services.Settings;
 using System;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.System;
@@ -50,7 +51,7 @@ public partial class ChooseAccountTypeDialog : DialogViewModel
 
     private async void OnMicrosoft()
     {
-        if (App.Configuration.UseDeviceFlowAuth)
+        if (App.GetService<SettingsService>().UseDeviceFlowAuth)
         {
             var microsoftAccountDialog = new Views.Common.MicrosoftAccountDialog1
             {

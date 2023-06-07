@@ -55,36 +55,37 @@ public partial class SettingsService : SettingsContainer
         var appsettings = ApplicationData.Current.LocalSettings;
 
         // Init GameFolders
-        string[] gameFolders = JsonSerializer.Deserialize<string[]>(appsettings.Values["GameFolders"] as string);
-        Array.ForEach(gameFolders, GameFolders.Add);
+        string[] gameFolders = JsonSerializer.Deserialize<string[]>(appsettings.Values["GameFolders"] as string ?? "null");
+        Array.ForEach(gameFolders ?? Array.Empty<string>(), GameFolders.Add);
         GameFolders.CollectionChanged += (sender, e) =>
         {
             appsettings.Values["GameFolders"] = JsonSerializer.Serialize(GameFolders.ToArray());
         };
 
         // Init JavaRuntimes
-        string[] javaRuntimes = JsonSerializer.Deserialize<string[]>(appsettings.Values["JavaRuntimes"] as string);
-        Array.ForEach(javaRuntimes, JavaRuntimes.Add);
+        string[] javaRuntimes = JsonSerializer.Deserialize<string[]>(appsettings.Values["JavaRuntimes"] as string ?? "null");
+        Array.ForEach(javaRuntimes ?? Array.Empty<string>(), JavaRuntimes.Add);
         JavaRuntimes.CollectionChanged += (sender, e) =>
         {
             appsettings.Values["JavaRuntimes"] = JsonSerializer.Serialize(JavaRuntimes.ToArray());
         };
 
         // Init Accounts
-        string accountsJson = appsettings.Values["Accounts"] as string;
+        string accountsJson = appsettings.Values["Accounts"] as string ?? "null";
         var jsonNode = JsonNode.Parse(accountsJson);
-        foreach (var item in jsonNode.AsArray())
-        {
-            var accountType = (AccountType)item["Type"].GetValue<int>();
-            IAccount account = accountType switch
+        if (jsonNode is not null)
+            foreach (var item in jsonNode.AsArray())
             {
-                AccountType.Offline => item.Deserialize<OfflineAccount>(),
-                AccountType.Microsoft => item.Deserialize<MicrosoftAccount>(),
-                AccountType.Yggdrasil => item.Deserialize<YggdrasilAccount>(),
-                _ => null
-            };
-            Accounts.Add(account);
-        }
+                var accountType = (AccountType)item["Type"].GetValue<int>();
+                IAccount account = accountType switch
+                {
+                    AccountType.Offline => item.Deserialize<OfflineAccount>(),
+                    AccountType.Microsoft => item.Deserialize<MicrosoftAccount>(),
+                    AccountType.Yggdrasil => item.Deserialize<YggdrasilAccount>(),
+                    _ => null
+                };
+                Accounts.Add(account);
+            }
         Accounts.CollectionChanged += (sender, e) =>
         {
             var jsonArray = new JsonArray();

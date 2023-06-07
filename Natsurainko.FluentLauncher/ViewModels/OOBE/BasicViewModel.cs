@@ -1,10 +1,13 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using AppSettingsManagement.Mvvm;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Natsurainko.FluentCore.Extension.Windows.Service;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.Toolkits.Values;
 using System;
 using System.Collections.ObjectModel;
@@ -16,51 +19,63 @@ using Windows.Storage.Pickers;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
-public partial class BasicViewModel : SettingViewModel
+partial class BasicViewModel : SettingsViewModelBase, ISettingsViewModel
 {
-    public BasicViewModel() : base()
-    {
-        OnPropertyChanged("CanNext");
-    }
+    #region Settings
+
+    [SettingsProvider]
+    private readonly SettingsService _settingsService;
+
+    [BindToSetting(Path = nameof(SettingsService.GameFolders))]
+    public ObservableCollection<string> GameFolders { get; private set; }
 
     [ObservableProperty]
-    private bool canNext;
-
-    [ObservableProperty]
-    private ObservableCollection<string> gameFolders;
-
-    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.CurrentGameFolder))]
     private string currentGameFolder;
 
-    [ObservableProperty]
-    private ObservableCollection<string> javaRuntimes;
+    [BindToSetting(Path = nameof(SettingsService.JavaRuntimes))]
+    public ObservableCollection<string> JavaRuntimes { get; private set; }
 
     [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.CurrentJavaRuntime))]
     private string currentJavaRuntime;
 
+    #endregion
+
     [ObservableProperty]
-    private bool dropOpen;
+    private bool dropDownOpen;
 
-    protected override void _OnPropertyChanged(PropertyChangedEventArgs e)
+
+    public BasicViewModel(SettingsService settingsService)
     {
-        if (e.PropertyName != nameof(CanNext))
-            CanNext =
-                !string.IsNullOrEmpty(CurrentGameFolder) &&
-                !string.IsNullOrEmpty(CurrentJavaRuntime) &&
-                Directory.Exists(CurrentGameFolder) &&
-                File.Exists(CurrentJavaRuntime);
-
-        if (e.PropertyName == nameof(CanNext))
-            WeakReferenceMessenger.Default.Send(new GuideNavigationMessage()
-            {
-                CanNext = canNext,
-                NextPage = typeof(Views.OOBE.AccountPage)
-            });
+        _settingsService = settingsService;
+        (this as ISettingsViewModel).InitializeSettings();
     }
-}
 
-public partial class BasicViewModel
-{
+    partial void OnCurrentGameFolderChanged(string oldValue, string newValue)
+        => UpdateNavigationStatus();
+
+    partial void OnCurrentJavaRuntimeChanged(string oldValue, string newValue)
+        => UpdateNavigationStatus();
+
+    /// <summary>
+    /// Validate CurrentGameFolder and CurrentJavaRuntime to determine if navigation to the next step is allowed.
+    /// </summary>
+    void UpdateNavigationStatus()
+    {
+        bool canContinue =
+            !string.IsNullOrEmpty(CurrentGameFolder) &&
+            !string.IsNullOrEmpty(CurrentJavaRuntime) &&
+            Directory.Exists(CurrentGameFolder) &&
+            File.Exists(CurrentJavaRuntime);
+
+        WeakReferenceMessenger.Default.Send(new GuideNavigationMessage()
+        {
+            CanNext = canContinue,
+            NextPage = typeof(Views.OOBE.AccountPage)
+        });
+    }
+
     [RelayCommand]
     public Task BrowserFolder() => Task.Run(async () =>
     {
@@ -117,7 +132,7 @@ public partial class BasicViewModel
 
         OnPropertyChanged(nameof(JavaRuntimes));
 
-        DropOpen = true;
+        DropDownOpen = true;
         MessageService.Show("Added the search Java to the runtime list");
     }
 }

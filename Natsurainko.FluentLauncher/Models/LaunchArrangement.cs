@@ -13,6 +13,7 @@ using Natsurainko.FluentCore.Module.Authenticator;
 using Natsurainko.FluentCore.Wrapper;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.CrossProcess;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils.Xaml;
 using Natsurainko.Toolkits.Network.Downloader;
 using System;
@@ -31,10 +32,12 @@ namespace Natsurainko.FluentLauncher.Models;
 
 public partial class LaunchArrangement : ObservableObject
 {
+    private static SettingsService _settings = App.GetService<SettingsService>();
+
     public LaunchArrangement(GameCore core)
     {
-        this.LaunchSetting = core.GetLaunchSetting();
-        this.GameCore = core;
+        LaunchSetting = core.GetLaunchSetting();
+        GameCore = core;
     }
 
     [ObservableProperty]
@@ -145,16 +148,16 @@ public partial class LaunchArrangement : ObservableObject
                 Views.ShellPage.ContentFrame.Navigate(typeof(Views.Activities.ActivitiesNavigationPage), typeof(Views.Activities.LaunchPage));
             });
 
-            var coreLocator = new GameCoreLocator(App.Configuration.CurrentGameFolder);
+            var coreLocator = new GameCoreLocator(_settings.CurrentGameFolder);
             var launcher = new MinecraftLauncher(arrangement.LaunchSetting, coreLocator);
-            var resourceDownloader = new CrossProcessResourceDownloader();
+            var resourceDownloader = new CrossProcessResourceDownloader(App.GetService<SettingsService>());
 
             resourceDownloader.DownloadProgressChanged += (object sender, ParallelDownloaderProgressChangedEventArgs e)
                 => arrangement.ReportState($"Downloading Assets {e.CompletedTasks}/{e.TotleTasks}");
 
             launcher.ResourceDownloader = resourceDownloader;
 
-            if (App.Configuration.AutoRefresh)
+            if (_settings.AutoRefresh)
             {
                 if (arrangement.LaunchSetting.Account.Type.Equals(AccountType.Microsoft))
                 {
@@ -229,12 +232,10 @@ public partial class LaunchArrangement : ObservableObject
 
                     if (launcher.Authenticator != null)
                     {
-                        App.Configuration.Accounts.Remove(App.Configuration.CurrentAccount);
+                        _settings.Accounts.Remove(_settings.CurrentAccount);
 
-                        App.Configuration.Accounts.Add(arrangement.LaunchSetting.Account);
-                        App.Configuration.CurrentAccount = arrangement.LaunchSetting.Account;
-
-                        App.Configuration.ReportPropertyChanged(new(nameof(App.Configuration.Accounts)));
+                        _settings.Accounts.Add(arrangement.LaunchSetting.Account);
+                        _settings.CurrentAccount = arrangement.LaunchSetting.Account;
                     }
 
                     if (!string.IsNullOrEmpty(arrangement.LaunchSetting.GameWindowSetting.WindowTitle))

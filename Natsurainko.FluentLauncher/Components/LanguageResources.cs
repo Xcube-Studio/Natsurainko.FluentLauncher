@@ -1,4 +1,5 @@
 ﻿using Microsoft.Windows.AppLifecycle;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.Toolkits.Text;
 using System.Collections.Generic;
 using Windows.Globalization;
@@ -40,7 +41,7 @@ public static class LanguageResources
     public static void ApplyLanguage(string language)
     {
         ApplicationLanguages.PrimaryLanguageOverride = language.Split(',')[0];
-        App.Configuration.CurrentLanguage = language;
+        App.GetService<SettingsService>().CurrentLanguage = language;
 
         AppInstance.Restart(string.Empty);
     }

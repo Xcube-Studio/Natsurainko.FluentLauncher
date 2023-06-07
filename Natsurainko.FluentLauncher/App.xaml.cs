@@ -10,7 +10,11 @@ using Windows.Storage;
 using Natsurainko.FluentLauncher.Views.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Natsurainko.FluentLauncher.Services;
+using AppSettingsManagement;
+using AppSettingsManagement.Windows;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Views;
+using System.Text.Json;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -41,10 +45,10 @@ public partial class App
 public partial class App : Application
 {
     public static IServiceProvider Services { get; } = ConfigureServices();
+    public static T GetService<T>() => Services.GetService<T>();
+    public static MainWindow MainWindow { get; private set; }
 
-    public static Configuration Configuration { get; private set; } = Configuration.Load();
-
-    public static string StoragePath => ApplicationData.Current.LocalFolder.Path;
+    //public static Configuration Configuration { get; private set; } = Configuration.Load();
 
     public App()
     {
@@ -82,14 +86,29 @@ public partial class App : Application
         services.AddSingleton<OfficialNewsService>();
         services.AddSingleton<CurseForgeModService>();
 
+        // Settings service
+        services.AddSingleton<SettingsService>();
+        services.AddSingleton<ISettingsStorage, WinRTSettingsStorage>();
+
         //ViewModels
         services.AddSingleton<ViewModels.Activities.NewsViewModel>();
         services.AddSingleton<ViewModels.Downloads.CurseForgeViewModel>();
 
+        services.AddTransient<ViewModels.Settings.AppearanceViewModel>();
+        services.AddTransient<ViewModels.Settings.DownloadViewModel>();
+        services.AddTransient<ViewModels.Settings.AccountViewModel>();
+        services.AddTransient<ViewModels.Settings.LaunchViewModel>();
+
+        services.AddTransient<ViewModels.OOBE.LanguageViewModel>();
+        services.AddTransient<ViewModels.OOBE.BasicViewModel>();
+        services.AddTransient<ViewModels.OOBE.AccountViewModel>();
+        services.AddTransient<ViewModels.OOBE.GetStartedViewModel>();
+
+        services.AddTransient<ViewModels.Cores.CoresViewModel>();
+        services.AddTransient<ViewModels.Home.HomeViewModel>();
+
         return services.BuildServiceProvider();
     }
-
-    public static MainWindow MainWindow { get; private set; }
 
     #region Global exception handlers
 

@@ -22,20 +22,86 @@ using System.Threading.Tasks;
 using Windows.Storage.Pickers;
 using Windows.System;
 using GameCoreLocator = Natsurainko.FluentLauncher.Components.FluentCore.GameCoreLocator;
+using Natsurainko.FluentLauncher.Services.Settings;
+using AppSettingsManagement.Mvvm;
+using Natsurainko.FluentLauncher.ViewModels.Common;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
-public partial class CoresViewModel : ObservableObject
+internal partial class CoresViewModel : SettingsViewModelBase, ISettingsViewModel
 {
     private static readonly Regex NameRegex = new("^[^/\\\\:\\*\\?\\<\\>\\|\"]{1,255}$");
 
-    public CoresViewModel()
-    {
-        filter = App.Configuration.CoresFilter;
-        sortBy = App.Configuration.CoresSortBy;
+    #region Settings
 
-        GameFolders = new(App.Configuration.GameFolders);
-        CurrentGameFolder = App.Configuration.CurrentGameFolder;
+    [SettingsProvider]
+    private readonly SettingsService _settingsService;
+
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.CoresFilter))]
+    private string filter;
+
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.CoresSortBy))]
+    private string sortBy;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(OpenFolderCommand))]
+    [NotifyCanExecuteChangedFor(nameof(OpenInstallCommand))]
+    [BindToSetting(Path = nameof(SettingsService.CurrentGameFolder))]
+    private string currentGameFolder;
+
+    [BindToSetting(Path = nameof(SettingsService.GameFolders))]
+    public ObservableCollection<string> GameFolders { get; private set; } = new();
+
+    #endregion
+
+    #region ObservableProperty
+
+    public ObservableCollection<GameCore> GameCores { get; } = new();
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(LaunchCommand))]
+    [NotifyCanExecuteChangedFor(nameof(OpenDeleteCommand))]
+    [NotifyCanExecuteChangedFor(nameof(OpenRenameCommand))]
+    [NotifyCanExecuteChangedFor(nameof(GenerateScriptCommand))]
+    private GameCore currentGameCore;
+
+    [ObservableProperty]
+    private string tipTitle;
+
+    [ObservableProperty]
+    private string tipSubTitle;
+
+    [ObservableProperty]
+    private string search;
+
+    [ObservableProperty]
+    private Visibility tipVisibility = Visibility.Collapsed;
+
+    [ObservableProperty]
+    private bool renameIsOpen;
+
+    [ObservableProperty]
+    private bool deleteIsOpen;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(RenameCommand))]
+    private string newName;
+
+    [ObservableProperty]
+    private GameCore toRename;
+
+    [ObservableProperty]
+    private GameCore toDelete;
+
+    #endregion
+
+    public CoresViewModel(SettingsService settingsService)
+    {
+        _settingsService = settingsService;
+
+        (this as ISettingsViewModel).InitializeSettings();
     }
 
     private ListView ListView;
@@ -54,14 +120,18 @@ public partial class CoresViewModel : ObservableObject
                 return;
 
             seletedChangeable = false;
-            var cores = FilterAndSortGameCores(new GameCoreLocator(App.Configuration.CurrentGameFolder).GetGameCores());
+            var cores = FilterAndSortGameCores(new GameCoreLocator(_settingsService.CurrentGameFolder).GetGameCores());
 
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                GameCores = new(cores);
+                GameCores.Clear();
+                foreach (var item in cores)
+                {
+                    GameCores.Add(item);
+                }
 
                 seletedChangeable = true;
-                var current = GameCores.Where(x => x.Id == App.Configuration.CurrentGameCore).FirstOrDefault(cores.FirstOrDefault());
+                var current = GameCores.Where(x => x.Id == _settingsService.CurrentGameCore).FirstOrDefault(cores.FirstOrDefault());
 
                 if (current == CurrentGameCore)
                     OnPropertyChanged(nameof(CurrentGameCore));
@@ -86,26 +156,26 @@ public partial class CoresViewModel : ObservableObject
         base.OnPropertyChanged(e);
 
         if (e.PropertyName == nameof(CurrentGameCore) && seletedChangeable)
-            App.Configuration.CurrentGameCore = CurrentGameCore?.Id;
+            _settingsService.CurrentGameCore = CurrentGameCore?.Id;
 
         if (e.PropertyName == nameof(CurrentGameFolder)
             || e.PropertyName == nameof(Filter)
             || e.PropertyName == nameof(SortBy)
             || e.PropertyName == nameof(Search))
         {
-            App.Configuration.CurrentGameFolder = CurrentGameFolder;
+            _settingsService.CurrentGameFolder = CurrentGameFolder;
             RefreshCores();
         }
 
         if (e.PropertyName == nameof(Filter))
-            App.Configuration.CoresFilter = Filter;
+            _settingsService.CoresFilter = Filter;
 
         if (e.PropertyName == nameof(SortBy))
-            App.Configuration.CoresSortBy = SortBy;
+            _settingsService.CoresSortBy = SortBy;
 
         if (e.PropertyName == nameof(GameFolders))
         {
-            if (string.IsNullOrEmpty(App.Configuration.CurrentGameFolder))
+            if (string.IsNullOrEmpty(_settingsService.CurrentGameFolder))
             {
                 TipVisibility = Visibility.Visible;
                 TipTitle = "No Game Folders";
@@ -143,10 +213,7 @@ public partial class CoresViewModel : ObservableObject
     }
 
     private bool seletedChangeable = true;
-}
 
-public partial class CoresViewModel
-{
     [RelayCommand]
     private void GoToPage()
     {
@@ -259,7 +326,7 @@ public partial class CoresViewModel
         }
 
         if (ToRename.Equals(CurrentGameCore))
-            App.Configuration.CurrentGameCore = NewName;
+            _settingsService.CurrentGameCore = NewName;
 
         RefreshCores();
 
@@ -307,59 +374,4 @@ public partial class CoresViewModel
         }
         else MessageService.Show($"Cancelled Generate Launch Script for {core.Id}");
     });
-}
-
-public partial class CoresViewModel
-{
-    [ObservableProperty]
-    private ObservableCollection<GameCore> gameCores = new();
-
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(LaunchCommand))]
-    [NotifyCanExecuteChangedFor(nameof(OpenDeleteCommand))]
-    [NotifyCanExecuteChangedFor(nameof(OpenRenameCommand))]
-    [NotifyCanExecuteChangedFor(nameof(GenerateScriptCommand))]
-    private GameCore currentGameCore;
-
-    [ObservableProperty]
-    private ObservableCollection<string> gameFolders;
-
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(OpenFolderCommand))]
-    [NotifyCanExecuteChangedFor(nameof(OpenInstallCommand))]
-    private string currentGameFolder;
-
-    [ObservableProperty]
-    private string tipTitle;
-
-    [ObservableProperty]
-    private string tipSubTitle;
-
-    [ObservableProperty]
-    private string filter;
-
-    [ObservableProperty]
-    private string sortBy;
-
-    [ObservableProperty]
-    private string search;
-
-    [ObservableProperty]
-    private Visibility tipVisibility = Visibility.Collapsed;
-
-    [ObservableProperty]
-    private bool renameIsOpen;
-
-    [ObservableProperty]
-    private bool deleteIsOpen;
-
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(RenameCommand))]
-    private string newName;
-
-    [ObservableProperty]
-    private GameCore toRename;
-
-    [ObservableProperty]
-    private GameCore toDelete;
 }

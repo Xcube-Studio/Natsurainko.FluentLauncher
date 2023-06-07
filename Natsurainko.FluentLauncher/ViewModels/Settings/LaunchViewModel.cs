@@ -1,10 +1,13 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using AppSettingsManagement.Mvvm;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.Win32;
 using Natsurainko.FluentCore.Extension.Windows.Service;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.Mvvm;
+using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.Toolkits.Values;
 using System;
 using System.Collections.ObjectModel;
@@ -15,71 +18,79 @@ using Windows.Storage.Pickers;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-public partial class LaunchViewModel : SettingViewModel
+partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
 {
-    #region ObservableProperties
+    // TODO: Disable game window size settings when full screen mode is on
+
+    [SettingsProvider]
+    private readonly SettingsService _settingsService;
+
+    #region Settings
+
+    // TODO: [BindToSetting(Path = nameof(SettingsService.GameFolders))]
+    public ObservableCollection<string> GameFolders => _settingsService.GameFolders;
 
     [ObservableProperty]
-    private Visibility removeFolderVisibility;
-
-    [ObservableProperty]
-    private Visibility removeJavaVisibility;
-
-    [ObservableProperty]
-    private ObservableCollection<string> gameFolders;
-
-    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsGameFoldersEmpty))]
+    [BindToSetting(Path = nameof(SettingsService.CurrentGameFolder))]
     private string currentGameFolder;
 
-    [ObservableProperty]
-    private ObservableCollection<string> javaRuntimes;
+    // TODO: [BindToSetting(Path = nameof(SettingsService.JavaRuntimes))]
+    public ObservableCollection<string> JavaRuntimes => _settingsService.JavaRuntimes;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsJavaRuntimesEmpty))]
+    [BindToSetting(Path = nameof(SettingsService.CurrentJavaRuntime))]
     private string currentJavaRuntime;
 
     [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.JavaVirtualMachineMemory))]
     private int javaVirtualMachineMemory;
 
     [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.EnableAutoMemory))]
     private bool enableAutoMemory;
 
     [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.EnableAutoJava))]
     private bool enableAutoJava;
 
     [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.GameWindowTitle))]
     private string gameWindowTitle;
 
     [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.GameWindowWidth))]
     private int gameWindowWidth;
 
     [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.GameWindowHeight))]
     private int gameWindowHeight;
 
     [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.GameServerAddress))]
     private string gameServerAddress;
 
     [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.EnableFullScreen))]
     private bool enableFullScreen;
 
     [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.EnableIndependencyCore))]
     private bool enableIndependencyCore;
 
     #endregion
 
-    public LaunchViewModel() : base() { }
+    public bool IsGameFoldersEmpty => GameFolders.Count == 0;
 
-    protected override void _OnPropertyChanged(PropertyChangedEventArgs e)
+    public bool IsJavaRuntimesEmpty => JavaRuntimes.Count == 0;
+
+    public LaunchViewModel(SettingsService settingsService)
     {
-        if (e.PropertyName != nameof(RemoveJavaVisibility))
-            RemoveFolderVisibility = string.IsNullOrEmpty(CurrentGameFolder)
-                ? Visibility.Collapsed
-                : Visibility.Visible;
-
-        if (e.PropertyName != nameof(RemoveJavaVisibility))
-            RemoveJavaVisibility = string.IsNullOrEmpty(CurrentJavaRuntime)
-                ? Visibility.Collapsed
-                : Visibility.Visible;
+        _settingsService = settingsService;
+        (this as ISettingsViewModel).InitializeSettings();
     }
+
 
     [RelayCommand]
     public Task BrowserFolder() => Task.Run(async () =>
@@ -102,10 +113,11 @@ public partial class LaunchViewModel : SettingViewModel
                 }
 
                 GameFolders.Add(folder.Path);
-                OnPropertyChanged(nameof(GameFolders));
-
                 CurrentGameFolder = folder.Path;
+
+                OnPropertyChanged(nameof(IsGameFoldersEmpty));
             });
+
     });
 
     [RelayCommand]
@@ -119,9 +131,9 @@ public partial class LaunchViewModel : SettingViewModel
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
                 JavaRuntimes.Add(openFileDialog.FileName);
-                OnPropertyChanged(nameof(JavaRuntimes));
-
                 CurrentJavaRuntime = openFileDialog.FileName;
+
+                OnPropertyChanged(nameof(IsJavaRuntimesEmpty));
             });
     }
 
@@ -142,7 +154,7 @@ public partial class LaunchViewModel : SettingViewModel
         GameFolders.Remove(CurrentGameFolder);
         CurrentGameFolder = GameFolders.Any() ? GameFolders[0] : null;
 
-        OnPropertyChanged(nameof(GameFolders));
+        OnPropertyChanged(nameof(IsGameFoldersEmpty));
     }
 
     [RelayCommand]
@@ -151,7 +163,7 @@ public partial class LaunchViewModel : SettingViewModel
         JavaRuntimes.Remove(CurrentJavaRuntime);
         CurrentJavaRuntime = JavaRuntimes.Any() ? JavaRuntimes[0] : null;
 
-        OnPropertyChanged(nameof(JavaRuntimes));
+        OnPropertyChanged(nameof(IsJavaRuntimesEmpty));
     }
 
     [RelayCommand]

@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Services.Settings;
 using System;
 using System.IO;
 using Windows.ApplicationModel;
@@ -16,11 +17,13 @@ public sealed partial class MainWindow : WindowEx
 {
     public Frame ContentFrame => Frame;
 
+    private readonly SettingsService _settings = App.GetService<SettingsService>();
+
     public MainWindow()
     {
 #if !MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
         if (string.IsNullOrEmpty(ApplicationLanguages.PrimaryLanguageOverride))
-            LanguageResources.ApplyLanguage(App.Configuration.CurrentLanguage);
+            LanguageResources.ApplyLanguage(_settings.CurrentLanguage);
 #endif
 
         InitializeComponent();
@@ -39,13 +42,13 @@ public sealed partial class MainWindow : WindowEx
         AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
         
         (MinWidth, MinHeight) = (516, 328);
-        (Width, Height) = (App.Configuration.AppWindowWidth, App.Configuration.AppWindowHeight);
+        (Width, Height) = (_settings.AppWindowWidth, _settings.AppWindowHeight);
 
         SystemBackdrop = Environment.OSVersion.Version.Build >= 22000
            ? new MicaBackdrop() { Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt }
            : new DesktopAcrylicBackdrop();
 
-        if (App.Configuration.FinishGuide)
+        if (_settings.FinishGuide)
             Frame.Navigate(typeof(ShellPage));
         else Frame.Navigate(typeof(OOBE.OOBENavigationPage));
     }

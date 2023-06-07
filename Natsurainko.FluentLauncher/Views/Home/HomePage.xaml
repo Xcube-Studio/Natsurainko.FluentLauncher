@@ -5,11 +5,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Home"
+    d:DataContext="{d:DesignInstance vm:HomeViewModel}"
     Background="Transparent"
     mc:Ignorable="d">
-    <Page.DataContext>
-        <vm:HomeViewModel />
-    </Page.DataContext>
 
     <Grid>
         <Grid.RowDefinitions>

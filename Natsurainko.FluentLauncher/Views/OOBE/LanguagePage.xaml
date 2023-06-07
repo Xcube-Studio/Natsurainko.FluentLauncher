@@ -7,10 +7,8 @@
     xmlns:local="using:Natsurainko.FluentLauncher.Views.OOBE"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
+    d:DataContext="{d:DesignInstance vm:LanguageViewModel}"
     mc:Ignorable="d">
-    <Page.DataContext>
-        <vm:LanguageViewModel />
-    </Page.DataContext>
 
     <Grid Padding="75,0">
         <ComboBox

@@ -12,9 +12,6 @@
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Settings"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     mc:Ignorable="d">
-    <Page.DataContext>
-        <vm:AppearanceViewModel />
-    </Page.DataContext>
 
     <ScrollViewer Padding="32,0" VerticalScrollBarVisibility="Auto">
         <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
@@ -26,7 +23,7 @@
                         <TextBlock x:Uid="Settings_Launch_Header_4" Text="Language Settings" />
                     </labs:SettingsCard.Header>
 
-                    <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}">
+                    <ComboBox ItemsSource="{Binding SupportedLanguages}" SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}">
                         <i:Interaction.Behaviors>
                             <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
                             <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />

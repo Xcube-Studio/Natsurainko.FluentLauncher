@@ -3,6 +3,7 @@ using Natsurainko.FluentCore.Extension.Windows.Service;
 using Natsurainko.FluentCore.Model.Launch;
 using Natsurainko.FluentCore.Module.Launcher;
 using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.Toolkits.Text;
 using Natsurainko.Toolkits.Values;
 using System.Collections.Generic;
@@ -10,11 +11,19 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Windows.Storage;
 
 namespace Natsurainko.FluentLauncher.Components.FluentCore;
 
 public class GameCore : Natsurainko.FluentCore.Model.Launch.GameCore
 {
+    private SettingsService _settings;
+
+    public GameCore(SettingsService settings)
+    {
+        _settings = settings;
+    }
+
     public CoreProfile CoreProfile { get; set; }
 
     public FileInfo GetFileOfProfile()
@@ -24,7 +33,7 @@ public class GameCore : Natsurainko.FluentCore.Model.Launch.GameCore
 #if MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
         var profilesFolder = new DirectoryInfo(Path.Combine(Directory.GetCurrentDirectory(), "Natsurainko.FluentLauncher", "CoreProfiles"));
 #else
-        var profilesFolder = new DirectoryInfo(Path.Combine(App.StoragePath, "CoreProfiles"));
+        var profilesFolder = new DirectoryInfo(Path.Combine(ApplicationData.Current.LocalFolder.Path, "CoreProfiles"));
 #endif
 
         if (!profilesFolder.Exists)
@@ -37,30 +46,30 @@ public class GameCore : Natsurainko.FluentCore.Model.Launch.GameCore
     {
         var globalSetting = new LaunchSetting
         {
-            Account = App.Configuration.CurrentAccount,
-            IsDemoUser = App.Configuration.EnableDemoUser,
-            EnableIndependencyCore = App.Configuration.EnableIndependencyCore,
+            Account = _settings.CurrentAccount,
+            IsDemoUser = _settings.EnableDemoUser,
+            EnableIndependencyCore = _settings.EnableIndependencyCore,
             GameWindowSetting = new()
             {
-                Height = App.Configuration.GameWindowHeight,
-                Width = App.Configuration.GameWindowWidth,
-                IsFullscreen = App.Configuration.EnableFullScreen,
-                WindowTitle = App.Configuration.GameWindowTitle
+                Height = _settings.GameWindowHeight,
+                Width = _settings.GameWindowWidth,
+                IsFullscreen = _settings.EnableFullScreen,
+                WindowTitle = _settings.GameWindowTitle
             }
         };
 
-        if (!string.IsNullOrEmpty(App.Configuration.GameServerAddress))
-            globalSetting.ServerSetting = new ServerSetting(App.Configuration.GameServerAddress);
+        if (!string.IsNullOrEmpty(_settings.GameServerAddress))
+            globalSetting.ServerSetting = new ServerSetting(_settings.GameServerAddress);
 
-        if (App.Configuration.JavaRuntimes.Any())
-            if (App.Configuration.EnableAutoJava)
+        if (_settings.JavaRuntimes.Any())
+            if (_settings.EnableAutoJava)
                 globalSetting.JvmSetting = new(GetSuitableJava());
-            else globalSetting.JvmSetting = new(App.Configuration.CurrentJavaRuntime);
+            else globalSetting.JvmSetting = new(_settings.CurrentJavaRuntime);
         else globalSetting.JvmSetting = new();
 
-        if (App.Configuration.EnableAutoMemory)
+        if (_settings.EnableAutoMemory)
             globalSetting.JvmSetting.AutoSetMemory();
-        else globalSetting.JvmSetting.MaxMemory = globalSetting.JvmSetting.MinMemory = App.Configuration.JavaVirtualMachineMemory;
+        else globalSetting.JvmSetting.MaxMemory = globalSetting.JvmSetting.MinMemory = _settings.JavaVirtualMachineMemory;
 
         if (CoreProfile.EnableSpecialSetting)
         {
@@ -83,7 +92,7 @@ public class GameCore : Natsurainko.FluentCore.Model.Launch.GameCore
     {
         var regex = new Regex(@"^([a-zA-Z]:\\)([-\u4e00-\u9fa5\w\s.()~!@#$%^&()\[\]{}+=]+\\?)*$");
 
-        var javaInformations = App.Configuration.JavaRuntimes
+        var javaInformations = _settings.JavaRuntimes
             .Where(x => regex.IsMatch(x) && File.Exists(x))
             .ToDictionary(x => x, x => JavaHelper.GetJavaRuntimeInfo(x));
 

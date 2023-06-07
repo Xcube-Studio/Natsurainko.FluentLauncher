@@ -11,11 +11,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Settings"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
+    d:DataContext="{d:DesignInstance Type=vm:AccountViewModel}"
     Background="Transparent"
     mc:Ignorable="d">
-    <Page.DataContext>
-        <vm:AccountViewModel />
-    </Page.DataContext>
 
     <ScrollViewer Padding="32,0" VerticalScrollBarVisibility="Auto">
         <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
@@ -34,7 +32,7 @@
 
                     <labs:SettingsExpander.Items>
 
-                        <labs:SettingsCard>
+                        <labs:SettingsCard Visibility="{Binding IsRemoveVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                             <labs:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_Account_Item_1" Text="Current account:" />
                             </labs:SettingsCard.Header>
@@ -89,7 +87,7 @@
                             </ComboBox>
                         </labs:SettingsCard>
 
-                        <labs:SettingsCard Visibility="{Binding RemoveVisibility}">
+                        <labs:SettingsCard Visibility="{Binding IsRemoveVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                             <labs:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_Account_Item_2" Text="Details of the current account:" />
                             </labs:SettingsCard.Header>
@@ -156,7 +154,7 @@
                             </Button>
                         </labs:SettingsCard>
 
-                        <labs:SettingsCard Visibility="{Binding RemoveVisibility}">
+                        <labs:SettingsCard Visibility="{Binding IsRemoveVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                             <labs:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_Account_Item_4" Text="Remove current account:" />
                             </labs:SettingsCard.Header>

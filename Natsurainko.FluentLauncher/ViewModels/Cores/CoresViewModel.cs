@@ -25,6 +25,7 @@ using GameCoreLocator = Natsurainko.FluentLauncher.Components.FluentCore.GameCor
 using Natsurainko.FluentLauncher.Services.Settings;
 using AppSettingsManagement.Mvvm;
 using Natsurainko.FluentLauncher.ViewModels.Common;
+using System.Collections.Specialized;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
@@ -52,7 +53,7 @@ internal partial class CoresViewModel : SettingsViewModelBase, ISettingsViewMode
     private string currentGameFolder;
 
     [BindToSetting(Path = nameof(SettingsService.GameFolders))]
-    public ObservableCollection<string> GameFolders { get; private set; } = new();
+    public ObservableCollection<string> GameFolders { get; private set; } = null!;
 
     #endregion
 
@@ -102,6 +103,22 @@ internal partial class CoresViewModel : SettingsViewModelBase, ISettingsViewMode
         _settingsService = settingsService;
 
         (this as ISettingsViewModel).InitializeSettings();
+        RefreshCores();
+        PropertyChanged += CoresViewModel_PropertyChanged;
+        GameFolders.CollectionChanged += GameFolders_CollectionChanged;
+    }
+
+    private void GameFolders_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (string.IsNullOrEmpty(_settingsService.CurrentGameFolder))
+        {
+            TipVisibility = Visibility.Visible;
+            TipTitle = "No Game Folders";
+            TipSubTitle = "Go to Settings>Global Launch Settings to add";
+
+            return;
+        }
+        else TipVisibility = Visibility.Collapsed;
     }
 
     private ListView ListView;
@@ -151,39 +168,16 @@ internal partial class CoresViewModel : SettingsViewModelBase, ISettingsViewMode
         });
     }
 
-    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    private void CoresViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        base.OnPropertyChanged(e);
-
         if (e.PropertyName == nameof(CurrentGameCore) && seletedChangeable)
             _settingsService.CurrentGameCore = CurrentGameCore?.Id;
 
-        if (e.PropertyName == nameof(CurrentGameFolder)
-            || e.PropertyName == nameof(Filter)
-            || e.PropertyName == nameof(SortBy)
-            || e.PropertyName == nameof(Search))
+        if (e.PropertyName == nameof(Filter) ||
+            e.PropertyName == nameof(SortBy) ||
+            e.PropertyName == nameof(Search))
         {
-            _settingsService.CurrentGameFolder = CurrentGameFolder;
             RefreshCores();
-        }
-
-        if (e.PropertyName == nameof(Filter))
-            _settingsService.CoresFilter = Filter;
-
-        if (e.PropertyName == nameof(SortBy))
-            _settingsService.CoresSortBy = SortBy;
-
-        if (e.PropertyName == nameof(GameFolders))
-        {
-            if (string.IsNullOrEmpty(_settingsService.CurrentGameFolder))
-            {
-                TipVisibility = Visibility.Visible;
-                TipTitle = "No Game Folders";
-                TipSubTitle = "Go to Settings>Global Launch Settings to add";
-
-                return;
-            }
-            else TipVisibility = Visibility.Collapsed;
         }
     }
 

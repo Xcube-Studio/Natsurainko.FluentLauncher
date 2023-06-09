@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using AppSettingsManagement.Mvvm;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentCore.Interface;
@@ -12,15 +13,26 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Home;
 
-public partial class HomeViewModel : ObservableObject
+public partial class HomeViewModel : ObservableObject, ISettingsViewModel
 {
+    #region Settings
+
+    [SettingsProvider]
     private readonly SettingsService _settings;
+
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.CurrentAccount))]
+    private IAccount currentAccount;
+
+    [BindToSetting(Path = nameof(SettingsService.Accounts))]
+    public ObservableCollection<IAccount> Accounts { get; private set; } = null!;
+
+    #endregion
 
     public HomeViewModel(SettingsService settings)
     {
         _settings = settings;
         Accounts = new(_settings.Accounts);
-        CurrentAccount = _settings.CurrentAccount;
 
         if (!string.IsNullOrEmpty(_settings.CurrentGameFolder))
             Task.Run(() =>
@@ -28,20 +40,20 @@ public partial class HomeViewModel : ObservableObject
                 var cores = new GameCoreLocator(_settings.CurrentGameFolder).GetGameCores();
                 App.MainWindow.DispatcherQueue.TryEnqueue(() =>
                 {
-                    GameCores = new(cores);
+                    GameCores.Clear();
+                    foreach (var item in cores)
+                    {
+                        GameCores.Add(item);
+                    }
                     CurrentGameCore = GameCores.Where(x => x.Id == _settings.CurrentGameCore).FirstOrDefault(cores.FirstOrDefault());
                 });
             });
+
+        (this as ISettingsViewModel).InitializeSettings();
+        PropertyChanged += HomeViewModel_PropertyChanged;
     }
 
-    [ObservableProperty]
-    private ObservableCollection<GameCore> gameCores;
-
-    [ObservableProperty]
-    private IAccount currentAccount;
-
-    [ObservableProperty]
-    private ObservableCollection<IAccount> accounts;
+    public ObservableCollection<GameCore> GameCores { get; } = new();
 
     [ObservableProperty]
     private GameCore currentGameCore;
@@ -61,13 +73,8 @@ public partial class HomeViewModel : ObservableObject
     [RelayCommand]
     public void Account() => Views.ShellPage.ContentFrame.Navigate(typeof(Views.Settings.NavigationPage), typeof(Views.Settings.AccountPage));
 
-    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    private void HomeViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        base.OnPropertyChanged(e);
-
-        if (e.PropertyName == nameof(CurrentAccount))
-            _settings.CurrentAccount = CurrentAccount;
-
         if (e.PropertyName == nameof(CurrentGameCore))
             _settings.CurrentGameCore = CurrentGameCore?.Id;
 

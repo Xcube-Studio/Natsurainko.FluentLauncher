@@ -232,10 +232,13 @@ public partial class LaunchArrangement : ObservableObject
 
                     if (launcher.Authenticator != null)
                     {
-                        _settings.Accounts.Remove(_settings.CurrentAccount);
+                        App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                        {
+                            _settings.Accounts.Remove(_settings.CurrentAccount);
 
-                        _settings.Accounts.Add(arrangement.LaunchSetting.Account);
-                        _settings.CurrentAccount = arrangement.LaunchSetting.Account;
+                            _settings.Accounts.Add(arrangement.LaunchSetting.Account);
+                            _settings.CurrentAccount = arrangement.LaunchSetting.Account;
+                        });
                     }
 
                     if (!string.IsNullOrEmpty(arrangement.LaunchSetting.GameWindowSetting.WindowTitle))

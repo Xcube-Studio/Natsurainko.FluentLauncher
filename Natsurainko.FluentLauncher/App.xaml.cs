@@ -15,6 +15,7 @@ using AppSettingsManagement.Windows;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Views;
 using System.Text.Json;
+using Natsurainko.FluentLauncher.Services.Accounts;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -85,6 +86,7 @@ public partial class App : Application
         // Services
         services.AddSingleton<OfficialNewsService>();
         services.AddSingleton<CurseForgeModService>();
+        services.AddSingleton<AccountService>();
 
         // Settings service
         services.AddSingleton<SettingsService>();

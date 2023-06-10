@@ -25,10 +25,11 @@ public partial class SettingsService : SettingsContainer
     //[SettingsCollection(typeof(IAccount), "Accounts")]
     public ObservableCollection<IAccount> Accounts = new();
 
+    [SettingItem(typeof(IAccount), "CurrentAccount", Converter = typeof(AccountToJsonConverter))]
+
     [SettingItem(typeof(string), "CurrentGameCore", Default = "", Converter = typeof(JsonStringConverter<string>))]
     [SettingItem(typeof(string), "CurrentGameFolder", Default = "", Converter = typeof(JsonStringConverter<string>))]
     [SettingItem(typeof(string), "CurrentJavaRuntime", Default = "", Converter = typeof(JsonStringConverter<string>))]
-    [SettingItem(typeof(IAccount), "CurrentAccount", Converter = typeof(AccountToJsonConverter))]
     [SettingItem(typeof(int), "JavaVirtualMachineMemory", Default = 1024, Converter = typeof(JsonStringConverter<int>))]
     [SettingItem(typeof(bool), "EnableAutoMemory", Default = true, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(bool), "EnableAutoJava", Default = true, Converter = typeof(JsonStringConverter<bool>))]

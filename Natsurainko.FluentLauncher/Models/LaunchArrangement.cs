@@ -163,7 +163,9 @@ public partial class LaunchArrangement : ObservableObject
                 {
                     var account = (MicrosoftAccount)arrangement.LaunchSetting.Account;
                     launcher.Authenticator = new MicrosoftAuthenticator(
-                        account.RefreshToken,
+                         account.RefreshToken,
+                        "0844e754-1d2e-4861-8e2b-18059609badb", 
+                        "https://login.live.com/oauth20_desktop.srf",
                         AuthenticatorMethod.Refresh);
                 }
                 else if (arrangement.LaunchSetting.Account.Type.Equals(AccountType.Yggdrasil))

@@ -14,7 +14,10 @@ namespace Natsurainko.FluentLauncher.Services.Accounts;
 
 class AccountService
 {
+    #region Accounts
+
     public ReadOnlyObservableCollection<IAccount> Accounts { get; }
+
     private readonly ObservableCollection<IAccount> _accounts = new();
 
     public event NotifyCollectionChangedEventHandler AccountsChanged
@@ -23,9 +26,18 @@ class AccountService
         remove => _accounts.CollectionChanged -= value;
     }
 
+    #endregion
+
+    #region ActiveAccount
+
+    /// <summary>
+    /// The active account of Fluent Launcher. The Accounts collection always contains this account. This is null if no account is available.
+    /// </summary>
     public IAccount ActiveAccount { get; private set; }
 
     public event PropertyChangedEventHandler ActiveAccountChanged;
+
+    #endregion
 
 
     public AccountService()
@@ -40,10 +52,15 @@ class AccountService
     /// <exception cref="ArgumentException">Thrown when the account provided is not managed by the AccountService</exception>
     public void Activate(IAccount account)
     {
-        if (_accounts.Contains(account))
+        if (_accounts.Contains(account) && ActiveAccount != account)
+        {
             ActiveAccount = account;
+            ActiveAccountChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActiveAccount)));
+        }
         else
+        {
             throw new ArgumentException($"{account} is not an account managed by AccountService", nameof(account));
+        }
     }
 
     /// <summary>
@@ -53,7 +70,24 @@ class AccountService
     /// <returns>Returns true if successful</returns>
     public bool Remove(IAccount account)
     {
-        return _accounts.Remove(account);
+        bool result = _accounts.Remove(account);
+
+        // If the account removed is the active account, activate the first account available.
+        // If no more account is available, set to null.
+        if (ActiveAccount == account)
+        {
+            if (_accounts.Count != 0)
+            {
+                Activate(_accounts[0]);
+            }
+            else
+            {
+                ActiveAccount = null;
+                ActiveAccountChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActiveAccount)));
+            }
+        }
+
+        return result;
     }
 
     /// <summary>

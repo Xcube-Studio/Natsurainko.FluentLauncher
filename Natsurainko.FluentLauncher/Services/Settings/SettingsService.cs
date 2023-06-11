@@ -77,21 +77,21 @@ public partial class SettingsService : SettingsContainer
         };
 
         // Init Accounts
-        string accountsJson = appsettings.Values["Accounts"] as string ?? "null";
-        var jsonNode = JsonNode.Parse(accountsJson);
-        if (jsonNode is not null)
-            foreach (var item in jsonNode.AsArray())
-            {
-                var accountType = (AccountType)item["Type"].GetValue<int>();
-                IAccount account = accountType switch
-                {
-                    AccountType.Offline => item.Deserialize<OfflineAccount>(),
-                    AccountType.Microsoft => item.Deserialize<MicrosoftAccount>(),
-                    AccountType.Yggdrasil => item.Deserialize<YggdrasilAccount>(),
-                    _ => null
-                };
-                Accounts.Add(account);
-            }
+        //string accountsJson = appsettings.Values["Accounts"] as string ?? "null";
+        //var jsonNode = JsonNode.Parse(accountsJson);
+        //if (jsonNode is not null)
+        //    foreach (var item in jsonNode.AsArray())
+        //    {
+        //        var accountType = (AccountType)item["Type"].GetValue<int>();
+        //        IAccount account = accountType switch
+        //        {
+        //            AccountType.Offline => item.Deserialize<OfflineAccount>(),
+        //            AccountType.Microsoft => item.Deserialize<MicrosoftAccount>(),
+        //            AccountType.Yggdrasil => item.Deserialize<YggdrasilAccount>(),
+        //            _ => null
+        //        };
+        //        Accounts.Add(account);
+        //    }
         Accounts.CollectionChanged += (sender, e) =>
         {
             var jsonArray = new JsonArray();
@@ -143,7 +143,7 @@ public partial class SettingsService : SettingsContainer
             Directory.CreateDirectory(accountSettingsDir);
 
         string accountSettingsPath = Path.Combine(accountSettingsDir, "accounts.json");
-        File.WriteAllText(accountSettingsPath, jsonNode.ToString(), Encoding.UTF8);
+        File.WriteAllText(accountSettingsPath, jsonNode.ToString());
 
         //appsettings.Values.Remove("Accounts"); // TODO: Uncomment this after testing
 

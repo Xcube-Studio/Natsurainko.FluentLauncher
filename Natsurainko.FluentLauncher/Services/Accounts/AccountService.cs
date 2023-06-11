@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using Natsurainko.FluentCore.Model.Auth;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using Natsurainko.FluentLauncher.Services.Storage;
+using System.IO;
+using System.Text.Json.Nodes;
 
 namespace Natsurainko.FluentLauncher.Services.Accounts;
 
@@ -39,10 +42,13 @@ class AccountService
 
     #endregion
 
+    private readonly LocalStorageService _storageService;
 
-    public AccountService()
+    public AccountService(LocalStorageService storageService)
     {
+        _storageService = storageService;
         LoadData();
+
         _accounts.CollectionChanged += (_, e) => SaveData(); // Save the account list when the collection is changed
         Accounts = new ReadOnlyObservableCollection<IAccount>(_accounts);
     }
@@ -108,7 +114,31 @@ class AccountService
     /// </summary>
     private void LoadData()
     {
+        // Read settings/accounts.json from local storage service
+        string accountJsonPath = Path.Combine("settings", "accounts.json");
+        accountJsonPath = _storageService.GetFile(accountJsonPath).FullName;
+        string accountsJson = File.ReadAllText(accountJsonPath);
 
+        // Parse accounts.json
+        if (JsonNode.Parse(accountsJson) is not JsonNode jsonNode)
+            return;
+
+        foreach (var item in jsonNode.AsArray())
+        {
+            var accountType = (AccountType)(item?["Type"].GetValue<int>());
+            IAccount account = accountType switch
+            {
+                AccountType.Offline => item.Deserialize<OfflineAccount>(),
+                AccountType.Microsoft => item.Deserialize<MicrosoftAccount>(),
+                AccountType.Yggdrasil => item.Deserialize<YggdrasilAccount>(),
+                _ => null
+            };
+
+            if (account is null)
+                continue;
+
+            _accounts.Add(account); // At this point, CollectionChanged handler has not been registered.
+        }
     }
 
     /// <summary>

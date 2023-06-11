@@ -2,6 +2,7 @@
 using AppSettingsManagement.Converters;
 using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentCore.Model.Auth;
+using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Utils;
 using System;
 using System.Collections.Generic;
@@ -136,13 +137,13 @@ public partial class SettingsService : SettingsContainer
         string accountsJson = appsettings.Values["Accounts"] as string ?? "null";
         JsonNode jsonNode = JsonNode.Parse(accountsJson) ?? new JsonArray();
 
-        string localDataPath = ApplicationData.Current.LocalFolder.Path; // This takes a long time when stepping over in debugging, but looks ok without a breakpoint.
+        string localDataPath = LocalStorageService.LocalFolderPath;
         string accountSettingsDir = Path.Combine(localDataPath, "settings");
         if (!Directory.Exists(accountSettingsDir))
             Directory.CreateDirectory(accountSettingsDir);
 
         string accountSettingsPath = Path.Combine(accountSettingsDir, "accounts.json");
-        File.WriteAllText(accountSettingsPath, jsonNode.ToString());
+        File.WriteAllText(accountSettingsPath, jsonNode.ToString(), Encoding.UTF8);
 
         //appsettings.Values.Remove("Accounts"); // TODO: Uncomment this after testing
 

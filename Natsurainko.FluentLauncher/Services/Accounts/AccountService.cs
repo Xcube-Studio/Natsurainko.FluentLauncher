@@ -42,6 +42,8 @@ class AccountService
 
     public AccountService()
     {
+        LoadData();
+        _accounts.CollectionChanged += (_, e) => SaveData(); // Save the account list when the collection is changed
         Accounts = new ReadOnlyObservableCollection<IAccount>(_accounts);
     }
 
@@ -99,5 +101,22 @@ class AccountService
     public bool AddAccount(AccountType accountType, object param)
     {
         throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// Loads the account list to Accounts from a JSON file
+    /// </summary>
+    private void LoadData()
+    {
+
+    }
+
+    /// <summary>
+    /// Save the account list to a JSON file
+    /// Called automatically when Accounts is changed
+    /// </summary>
+    private void SaveData()
+    {
+
     }
 }

@@ -42,6 +42,8 @@ class AccountService
 
     #endregion
 
+    public readonly string AccountsJsonPath = Path.Combine("settings", "accounts.json");
+
     private readonly LocalStorageService _storageService;
 
     public AccountService(LocalStorageService storageService)
@@ -115,8 +117,7 @@ class AccountService
     private void LoadData()
     {
         // Read settings/accounts.json from local storage service
-        string accountJsonPath = Path.Combine("settings", "accounts.json");
-        accountJsonPath = _storageService.GetFile(accountJsonPath).FullName;
+        string accountJsonPath = _storageService.GetFile(AccountsJsonPath).FullName;
         string accountsJson = File.ReadAllText(accountJsonPath);
 
         // Parse accounts.json
@@ -147,6 +148,21 @@ class AccountService
     /// </summary>
     private void SaveData()
     {
+        var jsonArray = new JsonArray();
+        foreach (var item in Accounts)
+        {
+            // Use derived types to store all properties
+            if (item is OfflineAccount offlineAccount)
+                jsonArray.Add(offlineAccount);
+            else if (item is MicrosoftAccount microsoftAccount)
+                jsonArray.Add(microsoftAccount);
+            else if ((item is YggdrasilAccount yggdrasilAccount))
+                jsonArray.Add(yggdrasilAccount);
+        }
 
+        // Save to file
+        string json = jsonArray.ToJsonString();
+        string path = _storageService.GetFile(AccountsJsonPath).FullName;
+        File.WriteAllText(path, json);
     }
 }

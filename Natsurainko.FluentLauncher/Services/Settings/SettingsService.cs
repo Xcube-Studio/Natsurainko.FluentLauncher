@@ -92,21 +92,22 @@ public partial class SettingsService : SettingsContainer
         //        };
         //        Accounts.Add(account);
         //    }
-        Accounts.CollectionChanged += (sender, e) =>
-        {
-            var jsonArray = new JsonArray();
-            foreach (var item in Accounts)
-            {
-                if (item is OfflineAccount)
-                    jsonArray.Add((OfflineAccount)item);
-                else if (item is MicrosoftAccount)
-                    jsonArray.Add((MicrosoftAccount)item);
-                else if ((item is YggdrasilAccount))
-                    jsonArray.Add((YggdrasilAccount)item);
-            }
+        //Accounts.CollectionChanged += (sender, e) =>
+        //{
+        //    var jsonArray = new JsonArray();
+        //    foreach (var item in Accounts)
+        //    {
+        //        // Use derived types to store all properties
+        //        if (item is OfflineAccount offlineAccount)
+        //            jsonArray.Add(offlineAccount);
+        //        else if (item is MicrosoftAccount microsoftAccount)
+        //            jsonArray.Add(microsoftAccount);
+        //        else if ((item is YggdrasilAccount yggdrasilAccount))
+        //            jsonArray.Add(yggdrasilAccount);
+        //    }
 
-            appsettings.Values["Accounts"] = jsonArray.ToJsonString();
-        };
+        //    appsettings.Values["Accounts"] = jsonArray.ToJsonString();
+        //};
 
         // Migrate settings data structures from old versions
         Migrate();

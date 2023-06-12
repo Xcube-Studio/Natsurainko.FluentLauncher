@@ -12,6 +12,7 @@ using System.ComponentModel;
 using Natsurainko.FluentLauncher.Services.Storage;
 using System.IO;
 using System.Text.Json.Nodes;
+using Natsurainko.FluentLauncher.Services.Settings;
 
 namespace Natsurainko.FluentLauncher.Services.Accounts;
 
@@ -45,10 +46,12 @@ class AccountService
     public readonly string AccountsJsonPath = Path.Combine("settings", "accounts.json");
 
     private readonly LocalStorageService _storageService;
+    private readonly SettingsService _settingsService;
 
-    public AccountService(LocalStorageService storageService)
+    public AccountService(LocalStorageService storageService, SettingsService settingsService)
     {
         _storageService = storageService;
+        _settingsService = settingsService;
         LoadData();
 
         _accounts.CollectionChanged += (_, e) => SaveData(); // Save the account list when the collection is changed
@@ -65,6 +68,7 @@ class AccountService
         if (_accounts.Contains(account) && ActiveAccount != account)
         {
             ActiveAccount = account;
+            _settingsService.ActiveAccountUuid = account.Uuid;
             ActiveAccountChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActiveAccount)));
         }
         else
@@ -93,6 +97,7 @@ class AccountService
             else
             {
                 ActiveAccount = null;
+                _settingsService.ActiveAccountUuid = null;
                 ActiveAccountChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActiveAccount)));
             }
         }

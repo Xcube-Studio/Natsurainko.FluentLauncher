@@ -15,6 +15,10 @@ using AppSettingsManagement.Windows;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Views;
 using System.Text.Json;
+using Natsurainko.FluentLauncher.Services.Accounts;
+using Natsurainko.FluentLauncher.Services.Storage;
+using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -64,6 +68,7 @@ public partial class App : Application
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
+        App.GetService<MessengerService>().SubscribeEvents();
         try
         {
             MainWindow = new MainWindow();
@@ -85,6 +90,9 @@ public partial class App : Application
         // Services
         services.AddSingleton<OfficialNewsService>();
         services.AddSingleton<CurseForgeModService>();
+        services.AddSingleton<AccountService>();
+        services.AddSingleton<LocalStorageService>();
+        services.AddSingleton<MessengerService>();
 
         // Settings service
         services.AddSingleton<SettingsService>();

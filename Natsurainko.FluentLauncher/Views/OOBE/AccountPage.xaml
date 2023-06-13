@@ -57,7 +57,7 @@
                             <ComboBox
                                 HorizontalAlignment="Stretch"
                                 ItemsSource="{Binding Accounts}"
-                                SelectedItem="{Binding CurrentAccount, Mode=TwoWay}">
+                                SelectedItem="{Binding ActiveAccount, Mode=TwoWay}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock TextTrimming="CharacterEllipsis">

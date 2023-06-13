@@ -3,6 +3,7 @@ using Natsurainko.FluentCore.Extension.Windows.Service;
 using Natsurainko.FluentCore.Model.Launch;
 using Natsurainko.FluentCore.Module.Launcher;
 using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.Toolkits.Text;
 using Natsurainko.Toolkits.Values;
@@ -15,13 +16,15 @@ using Windows.Storage;
 
 namespace Natsurainko.FluentLauncher.Components.FluentCore;
 
-public class GameCore : Natsurainko.FluentCore.Model.Launch.GameCore
+class GameCore : Natsurainko.FluentCore.Model.Launch.GameCore
 {
-    private SettingsService _settings;
+    private readonly SettingsService _settings;
+    private readonly AccountService _accountService;
 
-    public GameCore(SettingsService settings)
+    public GameCore(SettingsService settings, AccountService accountService)
     {
         _settings = settings;
+        _accountService = accountService;
     }
 
     public CoreProfile CoreProfile { get; set; }
@@ -46,7 +49,7 @@ public class GameCore : Natsurainko.FluentCore.Model.Launch.GameCore
     {
         var globalSetting = new LaunchSetting
         {
-            Account = _settings.CurrentAccount,
+            Account = _accountService.ActiveAccount,
             IsDemoUser = _settings.EnableDemoUser,
             EnableIndependencyCore = _settings.EnableIndependencyCore,
             GameWindowSetting = new()

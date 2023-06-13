@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores.Properties;
 
-public partial class InformationViewModel : ObservableObject
+partial class InformationViewModel : ObservableObject
 {
     public InformationViewModel(GameCore core)
     {
@@ -33,7 +33,7 @@ public partial class InformationViewModel : ObservableObject
     }
 }
 
-public partial class InformationViewModel
+partial class InformationViewModel
 {
     [ObservableProperty]
     private GameCore core;

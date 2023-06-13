@@ -2,6 +2,7 @@
 using Natsurainko.FluentCore.Module.Parser;
 using Natsurainko.FluentCore.Service;
 using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Newtonsoft.Json;
 using System;
@@ -11,7 +12,7 @@ using System.Linq;
 
 namespace Natsurainko.FluentLauncher.Components.FluentCore;
 
-public class GameCoreParser : Natsurainko.FluentCore.Module.Parser.GameCoreParser
+class GameCoreParser : Natsurainko.FluentCore.Module.Parser.GameCoreParser
 {
     public GameCoreParser(DirectoryInfo root, IEnumerable<VersionJsonEntity> jsonEntities)
         : base(root, jsonEntities) { }
@@ -24,7 +25,7 @@ public class GameCoreParser : Natsurainko.FluentCore.Module.Parser.GameCoreParse
         {
             try
             {
-                var core = new GameCore(App.GetService<SettingsService>())
+                var core = new GameCore(App.GetService<SettingsService>(), App.GetService<AccountService>())
                 {
                     Id = entity.Id,
                     Type = entity.Type,

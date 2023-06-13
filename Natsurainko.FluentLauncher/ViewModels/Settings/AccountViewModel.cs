@@ -47,9 +47,9 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsRemoveVisible))]
-    private IAccount currentAccount;
+    private IAccount activeAccount;
 
-    public bool IsRemoveVisible => CurrentAccount is not null;
+    public bool IsRemoveVisible => ActiveAccount is not null;
 
     private readonly AccountService _accountService;
 
@@ -59,17 +59,17 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
         _settingsService = settingsService;
         _accountService = accountService;
         Accounts = accountService.Accounts;
-        CurrentAccount = accountService.ActiveAccount;
+        ActiveAccount = accountService.ActiveAccount;
         
         WeakReferenceMessenger.Default.Register<ActiveAccountChangedMessage>(this, (r, m) =>
         {
             AccountViewModel vm = r as AccountViewModel;
-            vm.CurrentAccount = m.Value;
+            vm.ActiveAccount = m.Value;
         });
         (this as ISettingsViewModel).InitializeSettings();
     }
 
-    partial void OnCurrentAccountChanged(IAccount value)
+    partial void OnActiveAccountChanged(IAccount value)
     {
         if (value is not null)
             _accountService.Activate(value);
@@ -79,7 +79,7 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
     [RelayCommand]
     public void Remove()
     {
-        _accountService.Remove(CurrentAccount);
+        _accountService.Remove(ActiveAccount);
     }
 
     [RelayCommand]
@@ -103,37 +103,37 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
         {
             IAuthenticator authenticator = default;
             IAccount refreshedAccount = default;
-            if (CurrentAccount.Type.Equals(AccountType.Microsoft))
+            if (ActiveAccount.Type.Equals(AccountType.Microsoft))
             {
-                var account = (MicrosoftAccount)CurrentAccount;
+                var account = (MicrosoftAccount)ActiveAccount;
                 authenticator = new MicrosoftAuthenticator(
                     account.RefreshToken, 
                     "0844e754-1d2e-4861-8e2b-18059609badb", 
                     "https://login.live.com/oauth20_desktop.srf",
                     AuthenticatorMethod.Refresh);
             }
-            else if (CurrentAccount.Type.Equals(AccountType.Yggdrasil))
+            else if (ActiveAccount.Type.Equals(AccountType.Yggdrasil))
             {
-                var account = (YggdrasilAccount)CurrentAccount;
+                var account = (YggdrasilAccount)ActiveAccount;
                 authenticator = new YggdrasilAuthenticator(
                     AuthenticatorMethod.Refresh,
                     account.AccessToken,
                     account.ClientToken,
                     yggdrasilServerUrl: account.YggdrasilServerUrl);
             }
-            else if (CurrentAccount.Type.Equals(AccountType.Offline))
-                authenticator = new OfflineAuthenticator(CurrentAccount.Name, CurrentAccount.Uuid);
+            else if (ActiveAccount.Type.Equals(AccountType.Offline))
+                authenticator = new OfflineAuthenticator(ActiveAccount.Name, ActiveAccount.Uuid);
 
             refreshedAccount = await authenticator.AuthenticateAsync();
 
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                _accountService.Remove(CurrentAccount);
+                _accountService.Remove(ActiveAccount);
 
 #pragma warning disable CS0612 // Type or member is obsolete
                 _accountService.AddAccount(refreshedAccount);
 #pragma warning restore CS0612 // Type or member is obsolete
-                CurrentAccount = refreshedAccount;
+                ActiveAccount = refreshedAccount;
             });
 
             MessageService.ShowSuccess("Successfully refreshed Account", $"Welcome back, {refreshedAccount.Name}");
@@ -149,7 +149,7 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
 #pragma warning disable CS0612 // Type or member is obsolete
         _accountService.AddAccount(account);
 #pragma warning restore CS0612 // Type or member is obsolete
-        CurrentAccount = account;
+        ActiveAccount = account;
 
         MessageService.ShowSuccess($"Add {account.Type} Account Successfully", $"Welcome back, {account.Name}");
     });

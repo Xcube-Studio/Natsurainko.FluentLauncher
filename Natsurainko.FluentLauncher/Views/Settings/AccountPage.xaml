@@ -41,7 +41,7 @@
                                 Height="60"
                                 MinWidth="180"
                                 ItemsSource="{Binding Accounts}"
-                                SelectedItem="{Binding CurrentAccount, Mode=TwoWay}">
+                                SelectedItem="{Binding ActiveAccount, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
                                     <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
@@ -117,18 +117,18 @@
                                         <Flyout Placement="BottomEdgeAlignedRight">
                                             <RichTextBlock TextTrimming="CharacterEllipsis">
                                                 <Paragraph>
-                                                    <Run FontWeight="SemiBold" Text="{Binding CurrentAccount.Name}" />
+                                                    <Run FontWeight="SemiBold" Text="{Binding ActiveAccount.Name}" />
                                                     <Run>,</Run>
-                                                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding CurrentAccount.Type}" />
+                                                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding ActiveAccount.Type}" />
                                                 </Paragraph>
                                                 <Paragraph>
                                                     <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">Uuid:</Run>
-                                                    <Run Text="{Binding CurrentAccount.Uuid}" />
+                                                    <Run Text="{Binding ActiveAccount.Uuid}" />
                                                 </Paragraph>
                                                 <!--
                                                 <Paragraph>
                                                     <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">Yggdrasil Server:</Run>
-                                                    <Run Text="{Binding CurrentAccount.YggdrasilServerUrl}" />
+                                                    <Run Text="{Binding ActiveAccount.YggdrasilServerUrl}" />
                                                 </Paragraph>
                                                 -->
                                             </RichTextBlock>

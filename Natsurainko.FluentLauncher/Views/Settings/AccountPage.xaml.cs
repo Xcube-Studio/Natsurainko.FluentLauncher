@@ -8,7 +8,7 @@ namespace Natsurainko.FluentLauncher.Views.Settings;
 public sealed partial class AccountPage : Page
 {
     public bool RemoveBool = false;
-    public Visibility RemoveVisible => (DataContext as AccountViewModel).CurrentAccount is null ? Visibility.Collapsed : Visibility.Visible;
+    public Visibility RemoveVisible => (DataContext as AccountViewModel).ActiveAccount is null ? Visibility.Collapsed : Visibility.Visible;
 
     public AccountPage()
     {

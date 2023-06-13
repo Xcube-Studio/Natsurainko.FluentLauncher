@@ -23,7 +23,7 @@ partial class HomeViewModel : ObservableObject
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(AccountTag))]
     [NotifyPropertyChangedFor(nameof(NoAccountTag))]
-    private IAccount currentAccount;
+    private IAccount activeAccount;
 
 
     private readonly SettingsService _settings;
@@ -36,12 +36,12 @@ partial class HomeViewModel : ObservableObject
         _accountService = accountService;
 
         Accounts = accountService.Accounts;
-        CurrentAccount = accountService.ActiveAccount;
+        ActiveAccount = accountService.ActiveAccount;
 
         WeakReferenceMessenger.Default.Register<ActiveAccountChangedMessage>(this, (r, m) =>
         {
             HomeViewModel vm = r as HomeViewModel;
-            vm.CurrentAccount = m.Value;
+            vm.ActiveAccount = m.Value;
         });
 
         if (!string.IsNullOrEmpty(_settings.CurrentGameFolder))
@@ -70,9 +70,9 @@ partial class HomeViewModel : ObservableObject
     [ObservableProperty]
     private string launchButtonTag;
 
-    public Visibility NoAccountTag => CurrentAccount is null ? Visibility.Visible : Visibility.Collapsed;
+    public Visibility NoAccountTag => ActiveAccount is null ? Visibility.Visible : Visibility.Collapsed;
 
-    public Visibility AccountTag => CurrentAccount is null ? Visibility.Collapsed : Visibility.Visible;
+    public Visibility AccountTag => ActiveAccount is null ? Visibility.Collapsed : Visibility.Visible;
 
     [RelayCommand]
     public Task Launch() => Task.Run(() => LaunchArrangement.StartNew(CurrentGameCore));
@@ -82,8 +82,8 @@ partial class HomeViewModel : ObservableObject
 
     private void HomeViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(CurrentAccount))
-            _accountService.Activate(CurrentAccount);
+        if (e.PropertyName == nameof(ActiveAccount))
+            _accountService.Activate(ActiveAccount);
 
         if (e.PropertyName == nameof(CurrentGameCore))
             _settings.CurrentGameCore = CurrentGameCore?.Id;

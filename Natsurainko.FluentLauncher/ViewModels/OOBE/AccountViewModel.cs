@@ -25,7 +25,7 @@ partial class AccountViewModel : ObservableRecipient, IRecipient<ActiveAccountCh
     public ReadOnlyObservableCollection<IAccount> Accounts { get; init; }
 
     [ObservableProperty]
-    private IAccount currentAccount;
+    private IAccount activeAccount;
 
     private readonly AccountService _accountService;
 
@@ -33,11 +33,11 @@ partial class AccountViewModel : ObservableRecipient, IRecipient<ActiveAccountCh
     {
         _accountService = accountService;
         Accounts = accountService.Accounts;
-        CurrentAccount = accountService.ActiveAccount;
+        ActiveAccount = accountService.ActiveAccount;
 
         WeakReferenceMessenger.Default.Send(new GuideNavigationMessage()
         {
-            CanNext = CurrentAccount is not null,
+            CanNext = ActiveAccount is not null,
             NextPage = typeof(Views.OOBE.GetStartedPage)
         });
         IsActive = true;
@@ -48,11 +48,11 @@ partial class AccountViewModel : ObservableRecipient, IRecipient<ActiveAccountCh
     public void Receive(ActiveAccountChangedMessage message)
     {
         processingActiveAccountChangedMessage = true;
-        CurrentAccount = message.Value;
+        ActiveAccount = message.Value;
         processingActiveAccountChangedMessage = false;
     }
 
-    partial void OnCurrentAccountChanged(IAccount value)
+    partial void OnActiveAccountChanged(IAccount value)
     {
         WeakReferenceMessenger.Default.Send(new GuideNavigationMessage()
         {

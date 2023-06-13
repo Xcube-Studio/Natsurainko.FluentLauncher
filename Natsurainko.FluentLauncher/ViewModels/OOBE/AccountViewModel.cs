@@ -12,6 +12,7 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.ViewModels.Home;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -19,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
-partial class AccountViewModel : ObservableObject
+partial class AccountViewModel : ObservableRecipient, IRecipient<ActiveAccountChangedMessage>
 {
     public ReadOnlyObservableCollection<IAccount> Accounts { get; init; }
 
@@ -34,12 +35,21 @@ partial class AccountViewModel : ObservableObject
         Accounts = accountService.Accounts;
         CurrentAccount = accountService.ActiveAccount;
 
-        WeakReferenceMessenger.Default.Register<ActiveAccountChangedMessage>(this, (r, m) =>
+        WeakReferenceMessenger.Default.Send(new GuideNavigationMessage()
         {
-            AccountViewModel vm = r as AccountViewModel;
-            vm.CurrentAccount = m.Value;
+            CanNext = CurrentAccount is not null,
+            NextPage = typeof(Views.OOBE.GetStartedPage)
         });
-        OnCurrentAccountChanged(CurrentAccount);
+        IsActive = true;
+    }
+
+    bool processingActiveAccountChangedMessage = false;
+
+    public void Receive(ActiveAccountChangedMessage message)
+    {
+        processingActiveAccountChangedMessage = true;
+        CurrentAccount = message.Value;
+        processingActiveAccountChangedMessage = false;
     }
 
     partial void OnCurrentAccountChanged(IAccount value)
@@ -49,7 +59,9 @@ partial class AccountViewModel : ObservableObject
             CanNext = value is not null,
             NextPage = typeof(Views.OOBE.GetStartedPage)
         });
-        _accountService.Activate(value);
+
+        if (!processingActiveAccountChangedMessage)
+            _accountService.Activate(value);
     }
 
     [RelayCommand]
@@ -90,10 +102,7 @@ partial class AccountViewModel : ObservableObject
 #pragma warning disable CS0612 // Type or member is obsolete
         _accountService.AddAccount(account);
 #pragma warning restore CS0612 // Type or member is obsolete
-
-        CurrentAccount = account;
-
-        OnPropertyChanged(nameof(Accounts));
+        _accountService.Activate(account);
 
         MessageService.ShowSuccess($"Add {account.Type} Account Successfully", $"Welcome back, {account.Name}");
     });

@@ -68,6 +68,7 @@ public partial class App : Application
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
+        App.GetService<MessengerService>().SubscribeEvents();
         try
         {
             MainWindow = new MainWindow();

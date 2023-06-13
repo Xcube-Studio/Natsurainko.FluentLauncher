@@ -19,11 +19,9 @@ class MessengerService
     public MessengerService(AccountService accountService)
     {
         _accountService = accountService;
-
-        SubscribeEvents();
     }
 
-    private void SubscribeEvents()
+    public void SubscribeEvents()
     {
         _accountService.ActiveAccountChanged += AccountService_ActiveAccountChanged;
     }

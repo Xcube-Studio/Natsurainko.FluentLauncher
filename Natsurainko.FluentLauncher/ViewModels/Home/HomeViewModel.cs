@@ -1,11 +1,14 @@
 ﻿using AppSettingsManagement.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentLauncher.Components.FluentCore;
 using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -13,26 +16,33 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Home;
 
-public partial class HomeViewModel : ObservableObject, ISettingsViewModel
+partial class HomeViewModel : ObservableObject
 {
-    #region Settings
-
-    [SettingsProvider]
-    private readonly SettingsService _settings;
+    public ReadOnlyObservableCollection<IAccount> Accounts { get; init; }
 
     [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.CurrentAccount))]
+    [NotifyPropertyChangedFor(nameof(AccountTag))]
+    [NotifyPropertyChangedFor(nameof(NoAccountTag))]
     private IAccount currentAccount;
 
-    [BindToSetting(Path = nameof(SettingsService.Accounts))]
-    public ObservableCollection<IAccount> Accounts { get; private set; } = null!;
 
-    #endregion
+    private readonly SettingsService _settings;
+    private readonly AccountService _accountService;
 
-    public HomeViewModel(SettingsService settings)
+
+    public HomeViewModel(AccountService accountService, SettingsService settings)
     {
         _settings = settings;
-        Accounts = new(_settings.Accounts);
+        _accountService = accountService;
+
+        Accounts = accountService.Accounts;
+        CurrentAccount = accountService.ActiveAccount;
+
+        WeakReferenceMessenger.Default.Register<ActiveAccountChangedMessage>(this, (r, m) =>
+        {
+            HomeViewModel vm = r as HomeViewModel;
+            vm.CurrentAccount = m.Value;
+        });
 
         if (!string.IsNullOrEmpty(_settings.CurrentGameFolder))
             Task.Run(() =>
@@ -49,7 +59,6 @@ public partial class HomeViewModel : ObservableObject, ISettingsViewModel
                 });
             });
 
-        (this as ISettingsViewModel).InitializeSettings();
         PropertyChanged += HomeViewModel_PropertyChanged;
     }
 
@@ -61,11 +70,9 @@ public partial class HomeViewModel : ObservableObject, ISettingsViewModel
     [ObservableProperty]
     private string launchButtonTag;
 
-    [ObservableProperty]
-    private Visibility noAccountTag;
+    public Visibility NoAccountTag => CurrentAccount is null ? Visibility.Visible : Visibility.Collapsed;
 
-    [ObservableProperty]
-    private Visibility accountTag;
+    public Visibility AccountTag => CurrentAccount is null ? Visibility.Collapsed : Visibility.Visible;
 
     [RelayCommand]
     public Task Launch() => Task.Run(() => LaunchArrangement.StartNew(CurrentGameCore));
@@ -75,6 +82,9 @@ public partial class HomeViewModel : ObservableObject, ISettingsViewModel
 
     private void HomeViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
+        if (e.PropertyName == nameof(CurrentAccount))
+            _accountService.Activate(CurrentAccount);
+
         if (e.PropertyName == nameof(CurrentGameCore))
             _settings.CurrentGameCore = CurrentGameCore?.Id;
 
@@ -82,15 +92,5 @@ public partial class HomeViewModel : ObservableObject, ISettingsViewModel
             LaunchButtonTag = CurrentGameCore == null
                 ? "Core Not Selected"
                 : CurrentGameCore.Id;
-
-        if (e.PropertyName != nameof(NoAccountTag))
-            NoAccountTag = CurrentAccount == null
-                ? Visibility.Visible
-                : Visibility.Collapsed;
-
-        if (e.PropertyName != nameof(AccountTag))
-            AccountTag = CurrentAccount == null
-                ? Visibility.Collapsed
-                : Visibility.Visible;
     }
 }

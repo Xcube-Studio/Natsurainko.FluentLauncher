@@ -52,7 +52,16 @@ class AccountService
     {
         _storageService = storageService;
         _settingsService = settingsService;
-        LoadData();
+
+        LoadAccountsList();
+        if (_settingsService.ActiveAccountUuid is Guid uuid)
+        {
+            IAccount activeAccount = _accounts.Where(x => x.Uuid == uuid).FirstOrDefault();
+            if (activeAccount is not null)
+                ActiveAccount = activeAccount;
+            else
+                _settingsService.ActiveAccountUuid = null; // TODO: Prompt the user that there is an error
+        }
 
         _accounts.CollectionChanged += (_, e) => SaveData(); // Save the account list when the collection is changed
         Accounts = new ReadOnlyObservableCollection<IAccount>(_accounts);
@@ -119,7 +128,7 @@ class AccountService
     /// <summary>
     /// Loads the account list to Accounts from a JSON file
     /// </summary>
-    private void LoadData()
+    private void LoadAccountsList()
     {
         // Read settings/accounts.json from local storage service
         string accountJsonPath = _storageService.GetFile(AccountsJsonPath).FullName;

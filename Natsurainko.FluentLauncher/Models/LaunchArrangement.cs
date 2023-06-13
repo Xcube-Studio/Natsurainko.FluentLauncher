@@ -13,6 +13,7 @@ using Natsurainko.FluentCore.Module.Authenticator;
 using Natsurainko.FluentCore.Wrapper;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.CrossProcess;
+using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils.Xaml;
 using Natsurainko.Toolkits.Network.Downloader;
@@ -30,9 +31,10 @@ using GameCoreLocator = Natsurainko.FluentLauncher.Components.FluentCore.GameCor
 
 namespace Natsurainko.FluentLauncher.Models;
 
-public partial class LaunchArrangement : ObservableObject
+internal partial class LaunchArrangement : ObservableObject
 {
     private static SettingsService _settings = App.GetService<SettingsService>();
+    private static AccountService _accountService = App.GetService<AccountService>();
 
     public LaunchArrangement(GameCore core)
     {
@@ -234,10 +236,12 @@ public partial class LaunchArrangement : ObservableObject
                     {
                         App.MainWindow.DispatcherQueue.TryEnqueue(() =>
                         {
-                            _settings.Accounts.Remove(_settings.CurrentAccount);
+                            _accountService.Remove(_accountService.ActiveAccount);
 
-                            _settings.Accounts.Add(arrangement.LaunchSetting.Account);
-                            _settings.CurrentAccount = arrangement.LaunchSetting.Account;
+#pragma warning disable CS0612 // Type or member is obsolete
+                            _accountService.AddAccount(arrangement.LaunchSetting.Account);
+#pragma warning restore CS0612 // Type or member is obsolete
+                            _accountService.Activate(arrangement.LaunchSetting.Account);
                         });
                     }
 

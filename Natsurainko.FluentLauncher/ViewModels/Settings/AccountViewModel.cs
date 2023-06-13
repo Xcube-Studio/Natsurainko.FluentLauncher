@@ -1,13 +1,16 @@
 ﻿using AppSettingsManagement.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentCore.Model.Auth;
 using Natsurainko.FluentCore.Module.Authenticator;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.Mvvm;
+using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.Common;
 using System;
@@ -25,14 +28,6 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
     [SettingsProvider]
     private readonly SettingsService _settingsService;
 
-    [BindToSetting(Path = nameof(SettingsService.Accounts))]
-    public ObservableCollection<IAccount> Accounts { get; private set; }
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsRemoveVisible))]
-    [BindToSetting(Path = nameof(SettingsService.CurrentAccount))]
-    private IAccount currentAccount;
-
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.EnableDemoUser))]
     private bool enableDemoUser;
@@ -47,12 +42,29 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
 
     #endregion
 
+
+    public ReadOnlyObservableCollection<IAccount> Accounts { get; init; }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsRemoveVisible))]
+    private IAccount currentAccount;
+
     public bool IsRemoveVisible => CurrentAccount is not null;
 
+    private readonly AccountService _accountService;
 
-    public AccountViewModel(SettingsService settingsService)
+
+    public AccountViewModel(SettingsService settingsService, AccountService accountService)
     {
         _settingsService = settingsService;
+        _accountService = accountService;
+        Accounts = accountService.Accounts;
+        
+        WeakReferenceMessenger.Default.Register<ActiveAccountChangedMessage>(this, (r, m) =>
+        {
+            AccountViewModel vm = r as AccountViewModel;
+            vm.CurrentAccount = m.Value;
+        });
         (this as ISettingsViewModel).InitializeSettings();
     }
 
@@ -60,10 +72,7 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
     [RelayCommand]
     public void Remove()
     {
-        Accounts.Remove(CurrentAccount);
-        CurrentAccount = Accounts.Any() ? Accounts[0] : null;
-
-        OnPropertyChanged(nameof(Accounts));
+        _accountService.Remove(CurrentAccount);
     }
 
     [RelayCommand]
@@ -112,13 +121,12 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
 
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                Accounts.Remove(CurrentAccount);
-                CurrentAccount = null;
+                _accountService.Remove(CurrentAccount);
 
-                Accounts.Add(refreshedAccount);
+#pragma warning disable CS0612 // Type or member is obsolete
+                _accountService.AddAccount(refreshedAccount);
+#pragma warning restore CS0612 // Type or member is obsolete
                 CurrentAccount = refreshedAccount;
-
-                OnPropertyChanged(nameof(Accounts));
             });
 
             MessageService.ShowSuccess("Successfully refreshed Account", $"Welcome back, {refreshedAccount.Name}");
@@ -131,10 +139,10 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
 
     private void SetAccount(IAccount account) => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
     {
-        Accounts.Add(account);
+#pragma warning disable CS0612 // Type or member is obsolete
+        _accountService.AddAccount(account);
+#pragma warning restore CS0612 // Type or member is obsolete
         CurrentAccount = account;
-
-        OnPropertyChanged(nameof(Accounts));
 
         MessageService.ShowSuccess($"Add {account.Type} Account Successfully", $"Welcome back, {account.Name}");
     });

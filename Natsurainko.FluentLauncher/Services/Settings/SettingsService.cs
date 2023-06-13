@@ -26,9 +26,9 @@ public partial class SettingsService : SettingsContainer
     public ObservableCollection<string> JavaRuntimes = new();
 
     //[SettingsCollection(typeof(IAccount), "Accounts")]
-    public ObservableCollection<IAccount> Accounts = new(); // TODO: Remove this
+    //public ObservableCollection<IAccount> Accounts = new(); // TODO: Remove this
 
-    [SettingItem(typeof(IAccount), "CurrentAccount", Converter = typeof(AccountToJsonConverter))] // TODO: Remove this
+    //[SettingItem(typeof(IAccount), "CurrentAccount", Converter = typeof(AccountToJsonConverter))] // TODO: Remove this
     [SettingItem(typeof(Guid), "ActiveAccountUuid")]
 
     [SettingItem(typeof(string), "CurrentGameCore", Default = "", Converter = typeof(JsonStringConverter<string>))]

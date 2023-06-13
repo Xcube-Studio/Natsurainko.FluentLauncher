@@ -7,8 +7,11 @@ using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.ViewModels.Common;
+using Natsurainko.FluentLauncher.ViewModels.Home;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -16,23 +19,26 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
-partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
+partial class AccountViewModel : ObservableObject
 {
-    [SettingsProvider]
-    private readonly SettingsService _settingsService;
-
-    [BindToSetting(Path = nameof(SettingsService.Accounts))]
-    public ObservableCollection<IAccount> Accounts { get; private set; }
+    public ReadOnlyObservableCollection<IAccount> Accounts { get; init; }
 
     [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.CurrentAccount))]
     private IAccount currentAccount;
 
+    private readonly AccountService _accountService;
 
-    public AccountViewModel(SettingsService settingsService)
+    public AccountViewModel(AccountService accountService)
     {
-        _settingsService = settingsService;
-        (this as ISettingsViewModel).InitializeSettings();
+        _accountService = accountService;
+        Accounts = accountService.Accounts;
+        CurrentAccount = accountService.ActiveAccount;
+
+        WeakReferenceMessenger.Default.Register<ActiveAccountChangedMessage>(this, (r, m) =>
+        {
+            AccountViewModel vm = r as AccountViewModel;
+            vm.CurrentAccount = m.Value;
+        });
         OnCurrentAccountChanged(CurrentAccount);
     }
 
@@ -43,6 +49,7 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
             CanNext = value is not null,
             NextPage = typeof(Views.OOBE.GetStartedPage)
         });
+        _accountService.Activate(value);
     }
 
     [RelayCommand]
@@ -80,7 +87,10 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
 
     private void SetAccount(IAccount account) => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
     {
-        Accounts.Add(account);
+#pragma warning disable CS0612 // Type or member is obsolete
+        _accountService.AddAccount(account);
+#pragma warning restore CS0612 // Type or member is obsolete
+
         CurrentAccount = account;
 
         OnPropertyChanged(nameof(Accounts));

@@ -114,6 +114,12 @@ class AccountService
         return result;
     }
 
+    [Obsolete]
+    public void AddAccount(IAccount account)
+    {
+        _accounts.Add(account);
+    }
+
     /// <summary>
     /// Add an account to the AccountService by authentication
     /// </summary>

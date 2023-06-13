@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Natsurainko.FluentLauncher.Components;
 
-public static class GlobalActivitiesCache
+static class GlobalActivitiesCache
 {
     public static List<LaunchArrangement> LaunchArrangements { get; private set; } = new List<LaunchArrangement>();
 

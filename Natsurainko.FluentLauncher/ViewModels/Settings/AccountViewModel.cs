@@ -59,6 +59,7 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
         _settingsService = settingsService;
         _accountService = accountService;
         Accounts = accountService.Accounts;
+        CurrentAccount = accountService.ActiveAccount;
         
         WeakReferenceMessenger.Default.Register<ActiveAccountChangedMessage>(this, (r, m) =>
         {
@@ -66,6 +67,12 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
             vm.CurrentAccount = m.Value;
         });
         (this as ISettingsViewModel).InitializeSettings();
+    }
+
+    partial void OnCurrentAccountChanged(IAccount value)
+    {
+        if (value is not null)
+            _accountService.Activate(value);
     }
 
 

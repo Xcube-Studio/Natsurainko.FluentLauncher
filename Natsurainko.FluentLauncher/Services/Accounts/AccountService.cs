@@ -74,15 +74,14 @@ class AccountService
     /// <exception cref="ArgumentException">Thrown when the account provided is not managed by the AccountService</exception>
     public void Activate(IAccount account)
     {
-        if (_accounts.Contains(account) && ActiveAccount != account)
+        if (!_accounts.Contains(account))
+            throw new ArgumentException($"{account} is not an account managed by AccountService", nameof(account));
+
+        if (ActiveAccount != account)
         {
             ActiveAccount = account;
             _settingsService.ActiveAccountUuid = account.Uuid;
             ActiveAccountChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActiveAccount)));
-        }
-        else
-        {
-            throw new ArgumentException($"{account} is not an account managed by AccountService", nameof(account));
         }
     }
 

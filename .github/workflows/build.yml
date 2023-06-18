@@ -73,6 +73,10 @@ jobs:
         $packageName = [System.IO.Path]::GetFileNameWithoutExtension($msixFile.FullName)
         echo "::set-output name=packageName::$packageName"
 
+        # Get version number
+        $version = $packageName -replace '^(.*?Natsurainko\.FluentLauncher)_(\d+\.\d+\.\d+\.\d+)(_x64|_arm64)$', '$2'
+        echo "::set-output name=version::$version"
+
         # Get package directory
         $directory = $msixFile.DirectoryName
         echo "::set-output name=packageDirectory::$directory"
@@ -110,6 +114,7 @@ jobs:
       env:
         PackageName: ${{ steps.preparation.outputs.packageName }}
         PackageDirectory: ${{ steps.preparation.outputs.packageDirectory }}
+        Version: ${{ steps.preparation.outputs.version }}
         TmpDirectory: .\tmp
       run: |
         
@@ -122,7 +127,7 @@ jobs:
         # Convert .msix to .msixbundle
         mkdir "$env:TmpDirectory"
         mv "$env:PackageName.msix" "$env:TmpDirectory\$env:PackageName.msix"
-        & $makeappx.FullName bundle /d "$env:TmpDirectory" /p "$env:PackageName.msixbundle"
+        & $makeappx.FullName bundle /d "$env:TmpDirectory" /p "$env:PackageName.msixbundle" /bv $env:Version
 
         # Create .msixupload
         $msixbundlePath = $env:PackageName + '.msixbundle'
@@ -152,8 +157,8 @@ jobs:
         name: .msix
         path: ${{ env.Artifacts_Path }}
 
-    - name: Get package name
-      id: get_package_name
+    - name: Get Package Information
+      id: get_package_info
       run: |
         # Get the name of the .msix file
         $file = Get-Item -Path "${{ env.Artifacts_Path }}\*.msix"
@@ -164,7 +169,9 @@ jobs:
         # Extract the package name with version number
         $fileName = [System.IO.Path]::GetFileNameWithoutExtension($file.FullName)
         $bundleFileName = $fileName -replace '^(.*?Natsurainko\.FluentLauncher)_(\d+\.\d+\.\d+\.\d+)(_x64|_arm64)$', '$1_$2.msixbundle'
+        $version = $fileName -replace '^(.*?Natsurainko\.FluentLauncher)_(\d+\.\d+\.\d+\.\d+)(_x64|_arm64)$', '$2'
         echo "::set-output name=bundleFileName::$bundleFileName"
+        echo "::set-output name=version::$version"
 
     - name: Create .msixbundle
       run: |
@@ -175,7 +182,7 @@ jobs:
         }
 
         # Create the .msixbundle using makeappx.exe
-        & $makeappx.FullName bundle /d "${{ env.Artifacts_Path }}" /p "${{ steps.get_package_name.outputs.bundleFileName }}"
+        & $makeappx.FullName bundle /d "${{ env.Artifacts_Path }}" /p "${{ steps.get_package_info.outputs.bundleFileName }}"
 
     # Decode the base 64 encoded pfx and sign the package
     - name: Sign .msixbundle
@@ -189,11 +196,11 @@ jobs:
         # Sign .msixbundle
         $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.PFX_BASE64_ENCODED }}")
         [IO.File]::WriteAllBytes("${{ env.SigningKey_Path }}", $pfx_cert_byte)
-        & $signtool sign /f "${{ env.SigningKey_Path }}" /fd SHA256 /td SHA256 "${{ steps.get_package_name.outputs.bundleFileName }}"
+        & $signtool sign /f "${{ env.SigningKey_Path }}" /fd SHA256 /td SHA256 "${{ steps.get_package_info.outputs.bundleFileName }}" /bv "${{ steps.get_package_info.outputs.version }}"
         rm "${{ env.SigningKey_Path }}"
 
     - name: Upload .msixbundle to artifacts
       uses: actions/upload-artifact@v2
       with:
         name: .msixbundle
-        path: ${{ steps.get_package_name.outputs.bundleFileName }}
+        path: ${{ steps.get_package_info.outputs.bundleFileName }}

@@ -182,7 +182,7 @@ jobs:
         }
 
         # Create the .msixbundle using makeappx.exe
-        & $makeappx.FullName bundle /d "${{ env.Artifacts_Path }}" /p "${{ steps.get_package_info.outputs.bundleFileName }}"
+        & $makeappx.FullName bundle /d "${{ env.Artifacts_Path }}" /p "${{ steps.get_package_info.outputs.bundleFileName }}" /bv "${{ steps.get_package_info.outputs.version }}"
 
     # Decode the base 64 encoded pfx and sign the package
     - name: Sign .msixbundle
@@ -196,7 +196,7 @@ jobs:
         # Sign .msixbundle
         $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.PFX_BASE64_ENCODED }}")
         [IO.File]::WriteAllBytes("${{ env.SigningKey_Path }}", $pfx_cert_byte)
-        & $signtool sign /f "${{ env.SigningKey_Path }}" /fd SHA256 /td SHA256 "${{ steps.get_package_info.outputs.bundleFileName }}" /bv "${{ steps.get_package_info.outputs.version }}"
+        & $signtool sign /f "${{ env.SigningKey_Path }}" /fd SHA256 /td SHA256 "${{ steps.get_package_info.outputs.bundleFileName }}"
         rm "${{ env.SigningKey_Path }}"
 
     - name: Upload .msixbundle to artifacts

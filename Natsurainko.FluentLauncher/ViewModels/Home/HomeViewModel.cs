@@ -82,7 +82,7 @@ partial class HomeViewModel : ObservableObject
 
     private void HomeViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(ActiveAccount))
+        if (e.PropertyName == nameof(ActiveAccount) && ActiveAccount is not null)
             _accountService.Activate(ActiveAccount);
 
         if (e.PropertyName == nameof(CurrentGameCore))

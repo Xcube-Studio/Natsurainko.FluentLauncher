@@ -127,6 +127,8 @@ Copyright (c) 2022-2023 Xcube Studio
 - [Best_README_template 模板](https://github.com/shaojintian/Best_README_template)
 - [bmclapi 下载源](https://bmclapidoc.bangbang93.com/)
 - [mcbbs 下载源](https://download.mcbbs.net)
+- [Cloudflare CDN](https://www.cloudflare.com)
+
 
 <!-- links -->
 [your-project-path]:Xcube-Studio/Natsurainko.FluentLauncher

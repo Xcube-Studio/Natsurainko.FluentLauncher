@@ -41,6 +41,9 @@
     <Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
   </Target>
   <ItemGroup>
+    <None Remove="Views\Common\SwitchAccountDialog.xaml" />
+  </ItemGroup>
+  <ItemGroup>
     <XliffResource Include="MultilingualResources\Natsurainko.FluentLauncher.ru-RU.xlf" />
     <XliffResource Include="MultilingualResources\Natsurainko.FluentLauncher.zh-Hans.xlf" />
     <XliffResource Include="MultilingualResources\Natsurainko.FluentLauncher.zh-Hant.xlf" />
@@ -74,6 +77,12 @@
 
   <ItemGroup>
     <Folder Include="Views\Cores\InstallNewCore\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Common\SwitchAccountDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
 </Project>

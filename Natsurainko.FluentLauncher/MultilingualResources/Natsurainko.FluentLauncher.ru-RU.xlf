@@ -360,7 +360,7 @@
         </trans-unit>
         <trans-unit id="Settings_Account_Item_6.Text" translate="yes" xml:space="preserve">
           <source>Auto refresh account: (before launch)</source>
-          <target state="translated">Обновлять аккаунт автоматически (перед запуском)</target>
+          <target state="translated">Обновлять аккаунт автоматически</target>
         </trans-unit>
         <trans-unit id="Settings_Account_Subtitle.Text" translate="yes" xml:space="preserve">
           <source>Account after entering the game</source>

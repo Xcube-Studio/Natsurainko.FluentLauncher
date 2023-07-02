@@ -20,193 +20,111 @@
         <Border Margin="0,20">
             <StackPanel MaxWidth="1000" Spacing="4">
 
-                <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe77b;}" IsExpanded="True">
+                <TextBlock
+                    x:Uid="Settings_Account_Header"
+                    Margin="1,0,0,4"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Text="Accounts" />
 
+                <labs:SettingsExpander>
                     <labs:SettingsExpander.Header>
-                        <TextBlock x:Uid="Settings_Account_Header" Text="Accounts" />
-                    </labs:SettingsExpander.Header>
-
-                    <labs:SettingsExpander.Description>
-                        <TextBlock x:Uid="Settings_Account_Subtitle" Text="Account after entering the game" />
-                    </labs:SettingsExpander.Description>
-
-                    <labs:SettingsExpander.Items>
-
-                        <labs:SettingsCard Visibility="{Binding IsRemoveVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <labs:SettingsCard.Header>
-                                <TextBlock x:Uid="Settings_Account_Item_1" Text="Current account:" />
-                            </labs:SettingsCard.Header>
-
-                            <ComboBox
-                                Height="60"
-                                MinWidth="180"
-                                ItemsSource="{Binding Accounts}"
-                                SelectedItem="{Binding ActiveAccount, Mode=TwoWay}">
-                                <i:Interaction.Behaviors>
-                                    <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
-                                    <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
-                                </i:Interaction.Behaviors>
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid Margin="2,2,0,0">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="8" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                            </Grid.RowDefinitions>
-
-                                            <Image
-                                                Grid.RowSpan="2"
-                                                Grid.Column="0"
-                                                Width="32"
-                                                Height="32"
-                                                Source="/Assets/Icons/steve.png" />
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="2"
-                                                FontWeight="SemiBold"
-                                                Text="{Binding Name}"
-                                                TextTrimming="CharacterEllipsis" />
-                                            <TextBlock
-                                                Grid.Row="1"
-                                                Grid.Column="2"
-                                                MaxWidth="240"
-                                                HorizontalAlignment="Left"
-                                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                                TextTrimming="CharacterEllipsis">
-                                                <Run Text="{Binding Type}" />
-                                                <Run Text="{Binding YggdrasilServerUrl}" />
-                                            </TextBlock>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                        </labs:SettingsCard>
-
-                        <labs:SettingsCard Visibility="{Binding IsRemoveVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <labs:SettingsCard.Header>
-                                <TextBlock x:Uid="Settings_Account_Item_2" Text="Details of the current account:" />
-                            </labs:SettingsCard.Header>
-
-                            <StackPanel Orientation="Horizontal">
-                                <Button Command="{Binding RefreshCommand}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <FontIcon FontSize="16" Glyph="&#xe72c;" />
-                                        <TextBlock
-                                            x:Uid="_Buttons_Refresh"
-                                            Margin="5,0,0,0"
-                                            Text="Refresh" />
-                                    </StackPanel>
-                                </Button>
-                                <Button
-                                    Margin="15,0,0,0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center">
-                                    <StackPanel Orientation="Horizontal">
-                                        <FontIcon FontSize="16" Glyph="&#xE1A6;" />
-                                        <TextBlock
-                                            x:Uid="_Buttons_Check"
-                                            Margin="5,0,0,0"
-                                            Text="Check" />
-                                    </StackPanel>
-                                    <Button.Flyout>
-                                        <Flyout Placement="BottomEdgeAlignedRight">
-                                            <RichTextBlock TextTrimming="CharacterEllipsis">
-                                                <Paragraph>
-                                                    <Run FontWeight="SemiBold" Text="{Binding ActiveAccount.Name}" />
-                                                    <Run>,</Run>
-                                                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding ActiveAccount.Type}" />
-                                                </Paragraph>
-                                                <Paragraph>
-                                                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">Uuid:</Run>
-                                                    <Run Text="{Binding ActiveAccount.Uuid}" />
-                                                </Paragraph>
-                                                <!--
-                                                <Paragraph>
-                                                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">Yggdrasil Server:</Run>
-                                                    <Run Text="{Binding ActiveAccount.YggdrasilServerUrl}" />
-                                                </Paragraph>
-                                                -->
-                                            </RichTextBlock>
-                                        </Flyout>
-                                    </Button.Flyout>
-                                </Button>
+                        <Grid Margin="10,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="15" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Border
+                                Width="36"
+                                Height="36"
+                                Background="Wheat"
+                                CornerRadius="4" />
+                            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding ActiveAccount.Name}" />
+                                <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Style="{ThemeResource CaptionTextBlockStyle}">
+                                    <Run Text="{Binding ActiveAccount.Type}" />
+                                    <Run Text="Account" />
+                                </TextBlock>
                             </StackPanel>
-                        </labs:SettingsCard>
-
+                        </Grid>
+                    </labs:SettingsExpander.Header>
+                    <labs:SettingsExpander.Items>
                         <labs:SettingsCard>
                             <labs:SettingsCard.Header>
-                                <TextBlock x:Uid="Settings_Account_Item_3" Text="Add new account:" />
+                                <TextBlock>
+                                    <Run Text="Uuid:" />
+                                    <Run Text="{Binding ActiveAccount.Uuid}" />
+                                </TextBlock>
                             </labs:SettingsCard.Header>
-
-                            <Button Command="{Binding LoginCommand}">
-                                <StackPanel Orientation="Horizontal">
-                                    <FontIcon FontSize="16" Glyph="&#xe8fa;" />
-                                    <TextBlock
-                                        x:Uid="_Buttons_SignIn"
-                                        Margin="5,0,0,0"
-                                        Text="Sign in" />
-                                </StackPanel>
-                            </Button>
                         </labs:SettingsCard>
-
-                        <labs:SettingsCard Visibility="{Binding IsRemoveVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <labs:SettingsCard.Header>
-                                <TextBlock x:Uid="Settings_Account_Item_4" Text="Remove current account:" />
-                            </labs:SettingsCard.Header>
-
-                            <Button
-                                Background="{ThemeResource DeleteButtonBackground}"
-                                BorderBrush="{ThemeResource DeleteButtonBorder}"
-                                Command="{Binding RemoveCommand}"
-                                Style="{ThemeResource ButtonRevealStyle}">
-                                <StackPanel Orientation="Horizontal">
-                                    <FontIcon
-                                        FontSize="16"
-                                        Foreground="White"
-                                        Glyph="&#xe74d;" />
-                                    <TextBlock
-                                        x:Uid="_Buttons_Remove"
-                                        Margin="5,0,0,0"
-                                        Foreground="White"
-                                        Text="Remove" />
-                                </StackPanel>
-                            </Button>
-                        </labs:SettingsCard>
-
                         <labs:SettingsCard>
                             <labs:SettingsCard.Header>
-                                <TextBlock x:Uid="Settings_Account_Item_5" Text="Launch the game with a Demo account:" />
+                                <TextBlock>
+                                    <Run Text="Last Refresh Time:" />
+                                    <Run Text="{Binding ActiveAccount.DateTime}" />
+                                </TextBlock>
                             </labs:SettingsCard.Header>
-
-                            <ToggleSwitch IsEnabled="True" IsOn="{Binding EnableDemoUser, Mode=TwoWay}" />
-                        </labs:SettingsCard>
-
-                        <labs:SettingsCard>
-                            <labs:SettingsCard.Header>
-                                <TextBlock x:Uid="Settings_Account_Item_6" Text="Auto refresh account: (before launch)" />
-                            </labs:SettingsCard.Header>
-
-                            <ToggleSwitch IsEnabled="True" IsOn="{Binding AutoRefresh, Mode=TwoWay}" />
-
-                        </labs:SettingsCard>
-
-                        <labs:SettingsCard>
-                            <labs:SettingsCard.Header>
-                                <TextBlock Text="Use Device Flow Authenticator: (Not built-in browser)" />
-                            </labs:SettingsCard.Header>
-
-                            <ToggleSwitch IsEnabled="True" IsOn="{Binding UseDeviceFlowAuth, Mode=TwoWay}" />
-
                         </labs:SettingsCard>
                     </labs:SettingsExpander.Items>
-
+                    <StackPanel
+                        Margin="10,0,0,0"
+                        Orientation="Horizontal"
+                        Spacing="10">
+                        <Button Command="{Binding RefreshCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon FontSize="16" Glyph="&#xe72c;" />
+                                <TextBlock
+                                    x:Uid="_Buttons_Refresh"
+                                    Margin="5,0,0,0"
+                                    Text="Refresh" />
+                            </StackPanel>
+                        </Button>
+                        <Button Command="{Binding SwitchCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon FontSize="16" Glyph="&#xE748;" />
+                                <TextBlock Margin="5,0,0,0" Text="Switch Account" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
                 </labs:SettingsExpander>
+                <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xe8fa;}">
+                    <labs:SettingsCard.Header>
+                        <TextBlock x:Uid="Settings_Account_Item_3" Text="Add new account:" />
+                    </labs:SettingsCard.Header>
+                    <Button Command="{Binding LoginCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon FontSize="16" Glyph="&#xe8fa;" />
+                            <TextBlock
+                                x:Uid="_Buttons_SignIn"
+                                Margin="5,0,0,0"
+                                Text="Sign in" />
+                        </StackPanel>
+                    </Button>
+                </labs:SettingsCard>
 
+                <TextBlock
+                    Margin="1,20,0,4"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Text="Account Settings" />
+
+                <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xEC7A;}">
+                    <labs:SettingsCard.Header>
+                        <TextBlock x:Uid="Settings_Account_Item_5" Text="Launch the game with a Demo account:" />
+                    </labs:SettingsCard.Header>
+                    <ToggleSwitch IsOn="{Binding EnableDemoUser, Mode=TwoWay}" />
+                </labs:SettingsCard>
+
+                <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE72C;}">
+                    <labs:SettingsCard.Header>
+                        <TextBlock x:Uid="Settings_Account_Item_6" Text="Auto refresh account:" />
+                    </labs:SettingsCard.Header>
+                    <labs:SettingsCard.Description>
+                        <TextBlock FontSize="14" Text="Automatically refresh Token before each launch" />
+                    </labs:SettingsCard.Description>
+                    <ToggleSwitch IsOn="{Binding AutoRefresh, Mode=TwoWay}" />
+                </labs:SettingsCard>
             </StackPanel>
         </Border>
     </ScrollViewer>

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentCore.Model.Auth;
@@ -46,7 +47,7 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
     public ReadOnlyObservableCollection<IAccount> Accounts { get; init; }
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsRemoveVisible))]
+    [NotifyPropertyChangedFor(nameof(IsRemoveVisible))] // Will Delete this Attribute
     private IAccount activeAccount;
 
     public bool IsRemoveVisible => ActiveAccount is not null;
@@ -75,6 +76,7 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
             _accountService.Activate(value);
     }
 
+    #region WILL DELETE
 
     [RelayCommand]
     public void Remove()
@@ -95,6 +97,8 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
             await chooseAccountTypeDialog.ShowAsync();
         });
     });
+
+    #endregion
 
     [RelayCommand]
     public Task Refresh() => Task.Run(async () =>
@@ -142,6 +146,20 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
         {
             MessageService.ShowException(ex, "Failed to refresh account");
         }
+    });
+
+    [RelayCommand]
+    public Task Switch() => Task.Run(() =>
+    {
+        App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
+        {
+            var switchAccountDialog = new SwitchAccountDialog
+            {
+                XamlRoot = Views.ShellPage._XamlRoot,
+                DataContext = App.Services.GetService<SwitchAccountDialogViewModel>()
+            };
+            await switchAccountDialog.ShowAsync();
+        });
     });
 
     private void SetAccount(IAccount account) => App.MainWindow.DispatcherQueue.TryEnqueue(() =>

@@ -262,7 +262,7 @@
     <value>Запускать игру с демо-аккаунта</value>
   </data>
   <data name="Settings_Account_Item_6.Text" xml:space="preserve">
-    <value>Обновлять аккаунт автоматически (перед запуском)</value>
+    <value>Обновлять аккаунт автоматически</value>
   </data>
   <data name="Settings_Account_Subtitle.Text" xml:space="preserve">
     <value>Аккаунт для входа в игру</value>

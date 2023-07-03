@@ -2,11 +2,17 @@
     x:Class="Natsurainko.FluentLauncher.Views.AuthenticationWizard.ChooseAccountTypePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
+    xmlns:authenticationwizard="using:Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard"
+    xmlns:converters="using:Natsurainko.FluentLauncher.Utils.Xaml.Converters"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.AuthenticationWizard"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=authenticationwizard:ChooseAccountTypeViewModel}"
     Background="Transparent"
-    Tag="Choose Account Type (1/5)"
+    Tag="Choose Account Type (1/3)"
     mc:Ignorable="d">
 
     <Grid>
@@ -16,7 +22,19 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <StackPanel Spacing="10">
-            <RadioButton VerticalContentAlignment="Center">
+            <RadioButton>
+                <RadioButton.IsChecked>
+                    <Binding Mode="OneWay" Path="SelectedAccountType">
+                        <Binding.Converter>
+                            <converters:AccountTypeToIsCheckedConverter Type="Microsoft" />
+                        </Binding.Converter>
+                    </Binding>
+                </RadioButton.IsChecked>
+                <i:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="Checked">
+                        <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}" CommandParameter="Microsoft" />
+                    </core:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
                 <StackPanel>
                     <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Microsoft Account" />
                     <TextBlock
@@ -26,6 +44,18 @@
                 </StackPanel>
             </RadioButton>
             <RadioButton>
+                <RadioButton.IsChecked>
+                    <Binding Mode="OneWay" Path="SelectedAccountType">
+                        <Binding.Converter>
+                            <converters:AccountTypeToIsCheckedConverter Type="Yggdrasil" />
+                        </Binding.Converter>
+                    </Binding>
+                </RadioButton.IsChecked>
+                <i:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="Checked">
+                        <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}" CommandParameter="Yggdrasil" />
+                    </core:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
                 <StackPanel>
                     <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Yggdrasil Account" />
                     <TextBlock
@@ -35,6 +65,18 @@
                 </StackPanel>
             </RadioButton>
             <RadioButton>
+                <RadioButton.IsChecked>
+                    <Binding Mode="OneWay" Path="SelectedAccountType">
+                        <Binding.Converter>
+                            <converters:AccountTypeToIsCheckedConverter Type="Offline" />
+                        </Binding.Converter>
+                    </Binding>
+                </RadioButton.IsChecked>
+                <i:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="Checked">
+                        <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}" CommandParameter="Offline" />
+                    </core:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
                 <StackPanel>
                     <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Offline Account" />
                     <TextBlock

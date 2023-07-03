@@ -14,15 +14,12 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
-namespace Natsurainko.FluentLauncher.Views.Common
-{
-    public sealed partial class AuthenticationWizardDialog : ContentDialog
-    {
-        public AuthenticationWizardDialog()
-        {
-            this.InitializeComponent();
+namespace Natsurainko.FluentLauncher.Views.Common;
 
-            contentFrame.Navigate(typeof(ChooseAccountTypePage));
-        }
+public sealed partial class AuthenticationWizardDialog : ContentDialog
+{
+    public AuthenticationWizardDialog()
+    {
+        this.InitializeComponent();
     }
 }

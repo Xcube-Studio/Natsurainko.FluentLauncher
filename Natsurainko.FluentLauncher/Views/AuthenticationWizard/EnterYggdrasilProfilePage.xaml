@@ -6,7 +6,7 @@
     xmlns:local="using:Natsurainko.FluentLauncher.Views.AuthenticationWizard"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Background="Transparent"
-    Tag="Enter Yggdrasil Account Profile (3/4)"
+    Tag="Enter Yggdrasil Account Profile (2/3)"
     mc:Ignorable="d">
 
     <StackPanel Spacing="10">

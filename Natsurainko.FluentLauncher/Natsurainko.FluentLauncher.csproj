@@ -41,6 +41,13 @@
     <Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
   </Target>
   <ItemGroup>
+    <None Remove="Views\AuthenticationWizard\BrowserMicrosoftAuthPage.xaml" />
+    <None Remove="Views\AuthenticationWizard\ChooseAccountTypePage.xaml" />
+    <None Remove="Views\AuthenticationWizard\ChooseMicrosoftAuthMethodPage.xaml" />
+    <None Remove="Views\AuthenticationWizard\DeviceFlowMicrosoftAuthPage.xaml" />
+    <None Remove="Views\AuthenticationWizard\EnterOfflineProfilePage.xaml" />
+    <None Remove="Views\AuthenticationWizard\EnterYggdrasilProfilePage.xaml" />
+    <None Remove="Views\Common\AuthenticationWizardDialog.xaml" />
     <None Remove="Views\Common\CopyrightLicenseDialog.xaml" />
     <None Remove="Views\Common\SwitchAccountDialog.xaml" />
   </ItemGroup>
@@ -78,6 +85,48 @@
 
   <ItemGroup>
     <Folder Include="Views\Cores\InstallNewCore\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AuthenticationWizard\BrowserMicrosoftAuthPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AuthenticationWizard\DeviceFlowMicrosoftAuthPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AuthenticationWizard\EnterYggdrasilProfilePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AuthenticationWizard\EnterOfflineProfilePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AuthenticationWizard\ChooseMicrosoftAuthMethodPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AuthenticationWizard\ChooseAccountTypePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Common\AuthenticationWizardDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>

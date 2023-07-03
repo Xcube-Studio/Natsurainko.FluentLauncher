@@ -30,8 +30,14 @@
             Margin="0,20"
             HorizontalAlignment="Stretch"
             Spacing="10">
-            <TextBox x:Uid="OfflineAccountDialog_Name" PlaceholderText="Name" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBox x:Uid="OfflineAccountDialog_UUID" PlaceholderText="UUID (Optional)" Text="{Binding Uuid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox
+                x:Uid="OfflineAccountDialog_Name"
+                PlaceholderText="Name"
+                Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox
+                x:Uid="OfflineAccountDialog_UUID"
+                PlaceholderText="UUID (Optional)"
+                Text="{Binding Uuid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
         <StackPanel
             Grid.Row="2"

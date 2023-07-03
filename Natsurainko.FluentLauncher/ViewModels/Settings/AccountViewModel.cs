@@ -83,7 +83,7 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
     {
         _accountService.Remove(ActiveAccount);
     }
-
+    /*
     [RelayCommand]
     public Task Login() => Task.Run(() =>
     {
@@ -96,9 +96,18 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
             };
             await chooseAccountTypeDialog.ShowAsync();
         });
-    });
+    });*/
 
     #endregion
+
+    [RelayCommand]
+    public async void Login()
+    {
+        await new AuthenticationWizardDialog
+        {
+            XamlRoot = Views.ShellPage._XamlRoot
+        }.ShowAsync();
+    }
 
     [RelayCommand]
     public Task Refresh() => Task.Run(async () =>

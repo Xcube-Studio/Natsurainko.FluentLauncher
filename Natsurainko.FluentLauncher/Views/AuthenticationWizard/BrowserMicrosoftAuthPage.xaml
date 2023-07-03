@@ -1,0 +1,23 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.AuthenticationWizard.BrowserMicrosoftAuthPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.AuthenticationWizard"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Tag="Built-in Browser Microsoft Authenticate (3/4)"
+    mc:Ignorable="d">
+
+    <StackPanel Spacing="10">
+        <ScrollViewer
+            Height="300"
+            CornerRadius="4"
+            VerticalScrollBarVisibility="Visible">
+            <WebView2
+                Height="500"
+                HorizontalAlignment="Stretch"
+                Source="https://login.live.com/oauth20_authorize.srf?client_id=0844e754-1d2e-4861-8e2b-18059609badb&amp;response_type=code&amp;scope=XboxLive.signin%20offline_access&amp;redirect_uri=https://login.live.com/oauth20_desktop.srf&amp;prompt=login" />
+        </ScrollViewer>
+    </StackPanel>
+</Page>

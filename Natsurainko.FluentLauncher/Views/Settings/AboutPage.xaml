@@ -69,7 +69,7 @@
                             Text="The Developer of this Application" />
                     </labs:SettingsCard.Header>
 
-                    <GridView Margin="-10,0,0,-15">
+                    <GridView Margin="0,0,0,-15">
                         <GridView.ItemContainerStyle>
                             <Style TargetType="GridViewItem">
                                 <Setter Property="VerticalAlignment" Value="Center" />
@@ -207,7 +207,7 @@
                     <labs:SettingsCard.Header>
                         <TextBlock Text="Copyright &amp; License Information" />
                     </labs:SettingsCard.Header>
-                    <Button>
+                    <Button Command="{Binding DisplayCopyrightLicenseCommand}">
                         <TextBlock Text="Display Details" TextTrimming="CharacterEllipsis" />
                     </Button>
                 </labs:SettingsCard>
@@ -335,20 +335,6 @@
                     </labs:SettingsExpander.Items>
 
                 </labs:SettingsExpander>
-
-                <TextBlock
-                    x:Uid="About_Copyright"
-                    Margin="1,20,0,4"
-                    FontSize="16"
-                    FontWeight="Bold"
-                    Text="Copyright" />
-
-                <TextBlock
-                    Margin="1,0,0,4"
-                    IsTextSelectionEnabled="True"
-                    Text="{x:Bind COPYRIGHT}"
-                    TextWrapping="WrapWholeWords" />
-
             </StackPanel>
         </Border>
     </ScrollViewer>

@@ -41,6 +41,7 @@
     <Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
   </Target>
   <ItemGroup>
+    <None Remove="Views\Common\CopyrightLicenseDialog.xaml" />
     <None Remove="Views\Common\SwitchAccountDialog.xaml" />
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +78,12 @@
 
   <ItemGroup>
     <Folder Include="Views\Cores\InstallNewCore\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Common\CopyrightLicenseDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>

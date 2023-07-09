@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.UI.Xaml;
+using Microsoft.WindowsAppSDK.Runtime.Packages;
 using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentCore.Model.Auth;
 using Natsurainko.FluentCore.Module.Authenticator;
@@ -9,64 +11,51 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
-
 internal partial class ConfirmProfileViewModel : WizardViewModelBase
 {
-    private readonly IAuthenticator _authenticator;
+    public override bool CanPrevious => Loading == Visibility.Collapsed;
+
+    public override bool CanNext => Loading == Visibility.Collapsed && SelectedAccount != null;
+
+    private readonly Func<IEnumerable<IAccount>> _authenticateAction;
 
     public ObservableCollection<IAccount> Accounts { get; init; }
 
     [ObservableProperty]
-    private string title;  
+    [NotifyPropertyChangedFor(nameof(CanNext))]
+    private Visibility loading = Visibility.Collapsed;
 
-    public ConfirmProfileViewModel(IAuthenticator authenticator)
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanNext))]
+    private IAccount selectedAccount;
+
+    public ConfirmProfileViewModel(Func<IEnumerable<IAccount>> authenticateAction)
     {
         XamlPageType = typeof(ConfirmProfilePage);
-        _authenticator = authenticator;
+        _authenticateAction = authenticateAction;
+
         Accounts = new();
 
-        Title = authenticator is MicrosoftAuthenticator ? "Confirm Minecraft Profile (4/4)" : "Confirm Minecraft Profile (3/3)";
-
-        Task.Run(async () =>
+        Task.Run(() =>
         {
-            var accountsList = new List<IAccount>();
-
-            if (authenticator is YggdrasilAuthenticator yggdrasilAuthenticator)
+            App.MainWindow.DispatcherQueue.TryEnqueue(() => Loading = Visibility.Visible);
+            var accountsList = new List<IAccount>(_authenticateAction());
+            App.MainWindow.DispatcherQueue.TryEnqueue(() => 
             {
-                var account = await yggdrasilAuthenticator.AuthenticateAsync(profiles => Task.Run(() =>
-                {
-                    accountsList.AddRange(profiles.Select(x => (IAccount)new YggdrasilAccount
-                    {
-                        Name = x.Name,
-                        Uuid = Guid.Parse(x.Id)
-                    }));
-
-                    return profiles.First();
-                }));
-
-                accountsList.ForEach(x =>
-                {
-                    x.AccessToken = account.AccessToken;
-                    x.ClientToken = account.ClientToken;
-                });
-            }
-            else
+                Loading = Visibility.Collapsed;
+                accountsList.ForEach(account => Accounts.Add(account));
+            });
+        }).ContinueWith(task =>
+        {
+            if (task.IsFaulted)
             {
-                try
-                {
-                    accountsList.Add(await authenticator.AuthenticateAsync());
-                }
-                catch
-                {
-                    throw;
-                }
-            }
 
-            App.MainWindow.DispatcherQueue.TryEnqueue(() => accountsList.ForEach(x => Accounts.Add(x)));
+            }
         });
     }
 }

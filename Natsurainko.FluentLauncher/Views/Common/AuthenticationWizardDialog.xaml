@@ -9,6 +9,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Common"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="Dialog"
     d:DataContext="{d:DesignInstance Type=common:AuthenticationWizardDialogViewModel}"
     Style="{ThemeResource DefaultContentDialogStyle}"
     mc:Ignorable="d">
@@ -366,18 +367,17 @@
             Height="Auto"
             Padding="24,0,24,20"
             Background="Transparent">
-            <Frame x:Name="contentFrame">
+            <i:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="Loaded">
+                    <actions:ModifiedInvokeCommandAction Command="{Binding LoadEventCommand}" />
+                </core:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+            <Frame x:Name="contentFrame" DataContext="{Binding CurrentFrameDataContext}">
                 <Frame.ContentTransitions>
                     <TransitionCollection>
                         <RepositionThemeTransition />
                     </TransitionCollection>
                 </Frame.ContentTransitions>
-
-                <i:Interaction.Behaviors>
-                    <core:EventTriggerBehavior EventName="Loaded">
-                        <actions:ModifiedInvokeCommandAction Command="{Binding LoadEventCommand}" />
-                    </core:EventTriggerBehavior>
-                </i:Interaction.Behaviors>
             </Frame>
         </Grid>
         <Grid

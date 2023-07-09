@@ -48,6 +48,7 @@ partial class SwitchAccountDialogViewModel : SettingsViewModelBase, ISettingsVie
     public void Remove() 
     {
         _accountService.Remove(ActiveAccount);
+        ActiveAccount = _accountService.ActiveAccount;
     }
 
     private bool EnableRemoveAccount() => Accounts.Count >= 2;

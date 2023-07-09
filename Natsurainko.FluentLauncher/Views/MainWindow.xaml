@@ -64,5 +64,14 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+        <ScrollViewer
+            Margin="0,50,10,50"
+            Padding="-25"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Background="Transparent">
+            <StackPanel x:Name="NotifyStackPanel" Margin="25" />
+        </ScrollViewer>
     </Grid>
 </winuiex:WindowEx>

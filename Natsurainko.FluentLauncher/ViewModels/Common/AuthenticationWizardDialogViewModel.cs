@@ -3,6 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Animation;
+using Natsurainko.FluentLauncher.Services.Accounts;
+using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 using System;
@@ -22,21 +24,26 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
 
     private readonly Stack<WizardViewModelBase> _viewModelStack = new();
 
+    private readonly AccountService _accountService;
+
+    private readonly NotificationService _notificationService;
+
     private Frame _contentFrame;
+
+    private ContentDialog _dialog;
 
     public AuthenticationWizardDialogViewModel()
     {
-
+        _accountService = App.GetService<AccountService>();
+        _notificationService = App.GetService<NotificationService>();
     }
 
     [RelayCommand]
     public void LoadEvent(object args)
     {
-        _contentFrame = args.As<Frame, object>().sender;
-        _contentFrame.SetBinding(Frame.DataContextProperty, new Binding() {
-            Source = this,
-            Path = new Microsoft.UI.Xaml.PropertyPath("CurrentFrameDataContext")
-        });
+        var grid = args.As<Grid, object>().sender;
+        _contentFrame = grid.FindName("contentFrame") as Frame;
+        _dialog = grid.FindName("Dialog") as ContentDialog;
 
         CurrentFrameDataContext = new ChooseAccountTypeViewModel();
 
@@ -52,6 +59,14 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
     [RelayCommand]
     public void Next()
     {
+        if (CurrentFrameDataContext.GetType().Equals(typeof(ConfirmProfileViewModel)))
+        {
+            Finish();
+            return;
+        }
+
+        _contentFrame.Content = null;
+
         _viewModelStack.Push(CurrentFrameDataContext);
         CurrentFrameDataContext = CurrentFrameDataContext.GetNextViewModel();
 
@@ -67,6 +82,8 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
     [RelayCommand]
     public void Previous()
     {
+        _contentFrame.Content = null;
+
         CurrentFrameDataContext = _viewModelStack.Pop();
 
         _contentFrame.Navigate(
@@ -78,5 +95,21 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
+    }
+
+    private void Finish()
+    {
+        var vm = CurrentFrameDataContext as ConfirmProfileViewModel;
+        var account = vm.SelectedAccount;
+
+        _accountService.AddAccount(account);
+        _accountService.Activate(account);
+
+        _dialog.Hide();
+
+        _notificationService.NotifyWithSpecialContent(
+            $"Add {account.Type} Account Successfully",
+            "AuthenticationSuccessfulNotifyTemplate",
+            account);
     }
 }

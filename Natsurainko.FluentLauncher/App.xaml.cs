@@ -93,6 +93,8 @@ public partial class App : Application
         services.AddSingleton<AccountService>();
         services.AddSingleton<LocalStorageService>();
         services.AddSingleton<MessengerService>();
+        services.AddSingleton<AuthenticationService>();
+        services.AddSingleton<NotificationService>();
 
         // Settings service
         services.AddSingleton<SettingsService>();

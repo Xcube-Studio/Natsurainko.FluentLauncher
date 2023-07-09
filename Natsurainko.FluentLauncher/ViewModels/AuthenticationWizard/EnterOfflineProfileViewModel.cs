@@ -1,6 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.DependencyInjection;
+using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentCore.Module.Authenticator;
 using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
 using System;
@@ -35,17 +38,15 @@ internal partial class EnterOfflineProfileViewModel : WizardViewModelBase
     [NotifyPropertyChangedFor(nameof(CanNext))]
     private string uuid;
 
+    private AuthenticationService _authenticationService;
+
     public EnterOfflineProfileViewModel()
     {
         XamlPageType = typeof(EnterOfflineProfilePage);
+
+        _authenticationService = App.GetService<AuthenticationService>();
     }
 
-    public override WizardViewModelBase GetNextViewModel() 
-    {
-        var authenticator = string.IsNullOrEmpty(Uuid)
-            ? new OfflineAuthenticator(Name)
-            : new OfflineAuthenticator(Name, Guid.Parse(Uuid));
-
-        return new ConfirmProfileViewModel(authenticator);
-    }
+    public override WizardViewModelBase GetNextViewModel()
+        => new ConfirmProfileViewModel(() => new IAccount[] { _authenticationService.AuthenticateOffline(Name, Uuid) });
 }

@@ -51,6 +51,7 @@
     <None Remove="Views\Common\AuthenticationWizardDialog.xaml" />
     <None Remove="Views\Common\CopyrightLicenseDialog.xaml" />
     <None Remove="Views\Common\SwitchAccountDialog.xaml" />
+    <None Remove="Views\NotifyStyleDictionary.xaml" />
   </ItemGroup>
   <ItemGroup>
     <XliffResource Include="MultilingualResources\Natsurainko.FluentLauncher.ru-RU.xlf" />
@@ -86,6 +87,13 @@
 
   <ItemGroup>
     <Folder Include="Views\Cores\InstallNewCore\" />
+    <Folder Include="Dictionaries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\NotifyStyleDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>

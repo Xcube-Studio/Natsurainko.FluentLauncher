@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Media;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI;
 using System;
 using System.IO;
 using Windows.ApplicationModel;
@@ -19,6 +20,8 @@ public sealed partial class MainWindow : WindowEx
 
     private readonly SettingsService _settings = App.GetService<SettingsService>();
 
+    private readonly NotificationService _notificationService = App.GetService<NotificationService>();
+
     public MainWindow()
     {
 #if !MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
@@ -29,6 +32,7 @@ public sealed partial class MainWindow : WindowEx
         InitializeComponent();
 
         MessageService.RegisterContainer(MessageList);
+        _notificationService.InitContainer(NotifyStackPanel, BackgroundGrid);
 
 #if MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
         AppWindow.SetIcon(Path.Combine(Directory.GetCurrentDirectory(), "Assets/AppIcon.png"));

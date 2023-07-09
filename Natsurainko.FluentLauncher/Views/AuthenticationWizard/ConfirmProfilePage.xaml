@@ -8,51 +8,54 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=authenticationwizard:ConfirmProfileViewModel}"
     Background="Transparent"
-    Tag="{Binding Title}"
+    Tag="Confirm Minecraft Profile (3/3)"
     mc:Ignorable="d">
 
-    <ListView ItemsSource="{Binding Accounts}">
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <Grid Margin="0,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="8" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+    <Grid>
+        <ListView ItemsSource="{Binding Accounts}" SelectedItem="{Binding SelectedAccount, Mode=TwoWay}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="8" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
 
-                    <Image
-                        Grid.RowSpan="2"
-                        Grid.Column="0"
-                        Width="32"
-                        Height="32"
-                        Source="/Assets/Icons/steve.png" />
-                    <TextBlock
-                        Grid.Row="0"
-                        Grid.Column="2"
-                        FontWeight="SemiBold"
-                        Text="{Binding Name}"
-                        TextTrimming="CharacterEllipsis" />
-                    <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="2"
-                        HorizontalAlignment="Left"
-                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                        Style="{ThemeResource CaptionTextBlockStyle}"
-                        TextTrimming="CharacterEllipsis"
-                        TextWrapping="WrapWholeWords">
-                        <Run Text="{Binding Type}" />
-                        <Run Text="Account" />
-                        <Run Text="{Binding YggdrasilServerUrl}" />
-                    </TextBlock>
+                        <Image
+                            Grid.RowSpan="2"
+                            Grid.Column="0"
+                            Width="32"
+                            Height="32"
+                            Source="/Assets/Icons/steve.png" />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            FontWeight="SemiBold"
+                            Text="{Binding Name}"
+                            TextTrimming="CharacterEllipsis" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            HorizontalAlignment="Left"
+                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                            Style="{ThemeResource CaptionTextBlockStyle}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="WrapWholeWords">
+                            <Run Text="{Binding Type}" />
+                            <Run Text="Account" />
+                            <Run Text="{Binding YggdrasilServerUrl}" />
+                        </TextBlock>
 
-                </Grid>
-            </DataTemplate>
+                    </Grid>
+                </DataTemplate>
 
-        </ListView.ItemTemplate>
-    </ListView>
+            </ListView.ItemTemplate>
+        </ListView>
+        <ProgressRing Visibility="{Binding Loading}" />
+    </Grid>
 </Page>

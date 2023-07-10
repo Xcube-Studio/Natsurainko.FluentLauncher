@@ -18,6 +18,8 @@ using System.Threading.Tasks;
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 internal partial class ConfirmProfileViewModel : WizardViewModelBase
 {
+    public override bool CanCancel => Loading == Visibility.Collapsed;
+
     public override bool CanPrevious => Loading == Visibility.Collapsed;
 
     public override bool CanNext => Loading == Visibility.Collapsed && SelectedAccount != null;
@@ -29,6 +31,15 @@ internal partial class ConfirmProfileViewModel : WizardViewModelBase
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
     private Visibility loading = Visibility.Collapsed;
+
+    [ObservableProperty]
+    private bool faulted;
+
+    [ObservableProperty]
+    private string faultedMessage;
+
+    [ObservableProperty]
+    private string loadingProgressText;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
@@ -54,7 +65,19 @@ internal partial class ConfirmProfileViewModel : WizardViewModelBase
         {
             if (task.IsFaulted)
             {
+                App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                {
+                    Loading = Visibility.Collapsed;
+                    Faulted = true;
 
+                    var builder = new StringBuilder();
+                    builder.AppendLine("Failed to fetch account list");
+                    builder.AppendLine(task.Exception.InnerException.Message);
+                    builder.AppendLine(task.Exception.InnerException.HelpLink);
+                    builder.AppendLine(task.Exception.InnerException.StackTrace);
+
+                    FaultedMessage = builder.ToString();
+                });
             }
         });
     }

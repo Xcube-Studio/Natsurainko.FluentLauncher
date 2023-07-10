@@ -17,6 +17,9 @@ internal partial class NotifyPresenterViewModel : ObservableObject
     private string notifyTitile;
 
     [ObservableProperty]
+    private string icon;
+
+    [ObservableProperty]
     private ContentPresenter notifyContent;
 
     public Storyboard RetractAnimation { get; set; }

@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:authenticationwizard="using:Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard"
+    xmlns:converters="using:Natsurainko.FluentLauncher.Utils.Xaml.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.AuthenticationWizard"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -13,6 +14,13 @@
 
     <Grid>
         <ListView ItemsSource="{Binding Accounts}" SelectedItem="{Binding SelectedAccount, Mode=TwoWay}">
+            <ListView.Visibility>
+                <Binding Path="Faulted">
+                    <Binding.Converter>
+                        <converters:BoolToVisibilityConverter Inverted="True" />
+                    </Binding.Converter>
+                </Binding>
+            </ListView.Visibility>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="0,10">
@@ -50,12 +58,46 @@
                             <Run Text="Account" />
                             <Run Text="{Binding YggdrasilServerUrl}" />
                         </TextBlock>
-
                     </Grid>
                 </DataTemplate>
 
             </ListView.ItemTemplate>
         </ListView>
-        <ProgressRing Visibility="{Binding Loading}" />
+        <StackPanel
+            HorizontalAlignment="Center"
+            Orientation="Horizontal"
+            Spacing="15"
+            Visibility="{Binding Loading}">
+            <ProgressRing Width="16" Height="16" />
+            <TextBlock
+                VerticalAlignment="Center"
+                Style="{ThemeResource BaseTextBlockStyle}"
+                Text="{Binding LoadingProgressText}" />
+        </StackPanel>
+        <Grid>
+            <Grid.Visibility>
+                <Binding Path="Faulted">
+                    <Binding.Converter>
+                        <converters:BoolToVisibilityConverter />
+                    </Binding.Converter>
+                </Binding>
+            </Grid.Visibility>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <FontIcon
+                Margin="0,10,0,0"
+                VerticalAlignment="Top"
+                Glyph="&#xE711;" />
+            <TextBlock
+                Grid.Column="2"
+                VerticalAlignment="Center"
+                Style="{ThemeResource BaseTextBlockStyle}"
+                Text="{Binding FaultedMessage}"
+                TextWrapping="WrapWholeWords" />
+        </Grid>
+
     </Grid>
 </Page>

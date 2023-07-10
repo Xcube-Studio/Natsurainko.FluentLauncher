@@ -7,6 +7,7 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
+using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,11 +26,9 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
     private readonly Stack<WizardViewModelBase> _viewModelStack = new();
 
     private readonly AccountService _accountService;
-
     private readonly NotificationService _notificationService;
 
     private Frame _contentFrame;
-
     private ContentDialog _dialog;
 
     public AuthenticationWizardDialogViewModel()
@@ -92,6 +91,12 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
             new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
     }
 
+    /// <summary>
+    /// Cancel Button Command
+    /// </summary>
+    [RelayCommand]
+    public void Cancel() => _dialog.Hide();
+
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
@@ -108,8 +113,8 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
         _dialog.Hide();
 
         _notificationService.NotifyWithSpecialContent(
-            $"Add {account.Type} Account Successfully",
+            $"Added Successfully",
             "AuthenticationSuccessfulNotifyTemplate",
-            account);
+            account, "\uE73E");
     }
 }

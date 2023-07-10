@@ -18,9 +18,9 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="5" />
                     <RowDefinition Height="1*" />
-                    <RowDefinition Height="20" />
+                    <RowDefinition Height="15" />
                 </Grid.RowDefinitions>
-                <Grid Margin="20,20,20,0">
+                <Grid Margin="15,15,15,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="15" />
@@ -30,9 +30,9 @@
                         VerticalAlignment="Top"
                         Orientation="Horizontal"
                         Spacing="10">
-                        <FontIcon Glyph="&#xE7E7;" />
+                        <FontIcon Glyph="{Binding Icon}" />
                         <TextBlock
-                            FontSize="18"
+                            FontSize="16"
                             FontWeight="SemiBold"
                             Text="{Binding NotifyTitile}" />
                     </StackPanel>
@@ -96,5 +96,4 @@
             </ListViewItem>
         </StackPanel>
     </DataTemplate>
-
 </ResourceDictionary>

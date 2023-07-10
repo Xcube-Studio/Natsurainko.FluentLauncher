@@ -10,6 +10,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 

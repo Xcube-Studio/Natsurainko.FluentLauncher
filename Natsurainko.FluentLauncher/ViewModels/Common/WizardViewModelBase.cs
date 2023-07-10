@@ -13,6 +13,8 @@ internal partial class WizardViewModelBase : ObservableObject
 
     public virtual bool CanPrevious => true;
 
+    public virtual bool CanCancel => true;
+
     public Type XamlPageType { get; init; }
 
     public virtual WizardViewModelBase GetNextViewModel()

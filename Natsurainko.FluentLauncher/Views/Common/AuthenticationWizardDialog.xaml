@@ -359,6 +359,18 @@
     </ContentDialog.Title>
 
     <Grid>
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.ThemeDictionaries>
+                    <ResourceDictionary x:Key="Light">
+                        <StaticResource x:Key="ContentDialogBorderBrush" ResourceKey="ContentDialogDimmingThemeBrush" />
+                    </ResourceDictionary>
+                    <ResourceDictionary x:Key="Dark">
+                        <StaticResource x:Key="ContentDialogBorderBrush" ResourceKey="ContentDialogSeparatorBorderBrush" />
+                    </ResourceDictionary>
+                </ResourceDictionary.ThemeDictionaries>
+            </ResourceDictionary>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
             <RowDefinition Height="Auto" />
@@ -380,44 +392,52 @@
                 </Frame.ContentTransitions>
             </Frame>
         </Grid>
-        <Grid
-            x:Name="CommandSpace"
+        <Rectangle
+            Grid.Row="1"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Fill="{ThemeResource ContentDialogSmokeFill}" />
+        <Border
             Grid.Row="1"
             Padding="24"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Bottom"
-            Background="{ThemeResource ContentDialogSmokeFill}"
-            XYFocusKeyboardNavigation="Enabled">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="{ThemeResource ContentDialogButtonSpacing}" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="75" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Button
-                Grid.Column="2"
-                HorizontalAlignment="Stretch"
-                Command="{Binding NextCommand}"
-                Content="Next"
-                ElementSoundMode="FocusOnly"
-                IsEnabled="{Binding CurrentFrameDataContext.CanNext}"
-                IsTabStop="False"
-                Style="{ThemeResource AccentButtonStyle}" />
-            <Button
-                HorizontalAlignment="Stretch"
-                Command="{Binding PreviousCommand}"
-                Content="Back"
-                ElementSoundMode="FocusOnly"
-                IsEnabled="{Binding CurrentFrameDataContext.CanPrevious}"
-                IsTabStop="False" />
-            <Button
-                Grid.Column="4"
-                HorizontalAlignment="Stretch"
-                Content="Cancel"
-                ElementSoundMode="FocusOnly"
-                IsTabStop="False" />
-        </Grid>
-
+            Background="{ThemeResource ContentDialogBackground}"
+            BorderBrush="{ThemeResource ContentDialogBorderBrush}"
+            BorderThickness="0,1,0,0">
+            <Grid x:Name="CommandSpace" XYFocusKeyboardNavigation="Enabled">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="{ThemeResource ContentDialogButtonSpacing}" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="75" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button
+                    Grid.Column="2"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding NextCommand}"
+                    Content="Next"
+                    ElementSoundMode="FocusOnly"
+                    IsEnabled="{Binding CurrentFrameDataContext.CanNext}"
+                    IsTabStop="False"
+                    Style="{ThemeResource AccentButtonStyle}" />
+                <Button
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding PreviousCommand}"
+                    Content="Back"
+                    ElementSoundMode="FocusOnly"
+                    IsEnabled="{Binding CurrentFrameDataContext.CanPrevious}"
+                    IsTabStop="False" />
+                <Button
+                    Grid.Column="4"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding CancelCommand}"
+                    Content="Cancel"
+                    ElementSoundMode="FocusOnly"
+                    IsEnabled="{Binding CurrentFrameDataContext.CanCancel}"
+                    IsTabStop="False" />
+            </Grid>
+        </Border>
     </Grid>
 </ContentDialog>

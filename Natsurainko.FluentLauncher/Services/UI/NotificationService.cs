@@ -28,15 +28,15 @@ internal class NotificationService
         _themeShadow.Receivers.Add(shadowReceiver);
     }
 
-    public void NotifyWithSpecialContent(string title, string contentTemplateKey, object contentDataContext, int delay = 5000)
+    public void NotifyWithSpecialContent(string title, string contentTemplateKey, object contentDataContext, string icon = "\uE7E7", int delay = 5000)
     {
         _itemsContainer.Children.Add(CreateNotifyPresenter(
-            title, contentTemplateKey, contentDataContext, delay));
+            title, contentTemplateKey, contentDataContext, icon, delay));
     }
-
-    private ContentPresenter CreateNotifyPresenter(string title, string contentTemplateKey, object contentDataContext, int delay = 5000)
+    
+    private ContentPresenter CreateNotifyPresenter(string title, string contentTemplateKey, object contentDataContext, string icon = "\uE7E7", int delay = 5000)
     {
-        var translateTransform = new TranslateTransform();
+        var translateTransform = new TranslateTransform() { X = 500 };
         var popupAnimation = CreatePopupAnimation(translateTransform);
 
         var contentPresenter = new ContentPresenter
@@ -51,23 +51,22 @@ internal class NotificationService
 
         async void ContentPresenter_Loaded(object sender, RoutedEventArgs e)
         {
-            translateTransform.X = contentPresenter.ActualWidth * 2;
             popupAnimation.Begin();
 
-            var retractAnimation = CreateRetractAnimation(translateTransform, contentPresenter.ActualWidth * 2);
             var notifyPresenterViewModel = new NotifyPresenterViewModel
             {
+                Icon = icon,
                 NotifyTitile = title,
                 NotifyContent = CreateNotifyContent(contentTemplateKey, contentDataContext),
-                RetractAnimation = retractAnimation,
-                Remove = () => _itemsContainer.Children.Remove(contentPresenter)
+                Remove = () => _itemsContainer.Children.Remove(contentPresenter),
+                RetractAnimation = CreateRetractAnimation(translateTransform)
             };
-
             contentPresenter.DataContext = notifyPresenterViewModel;
-            contentPresenter.Loaded -= ContentPresenter_Loaded;
 
             await Task.Delay(delay);
-            notifyPresenterViewModel.Close();
+            await notifyPresenterViewModel.Close();
+
+            contentPresenter.Loaded -= ContentPresenter_Loaded;
         }
         contentPresenter.Loaded += ContentPresenter_Loaded; 
 
@@ -105,11 +104,11 @@ internal class NotificationService
         return storyboard;
     }
 
-    private Storyboard CreateRetractAnimation(TranslateTransform transform, double actualWidth)
+    private Storyboard CreateRetractAnimation(TranslateTransform transform)
     {
         var storyboard = new Storyboard();
         var doubleAnimation = new DoubleAnimation();
-        doubleAnimation.To = actualWidth;
+        doubleAnimation.To = 500;
         doubleAnimation.EasingFunction = new CircleEase();
 
         storyboard.Children.Add(doubleAnimation);

@@ -65,10 +65,10 @@ partial class AccountViewModel : ObservableRecipient, IRecipient<ActiveAccountCh
     }
 
     [RelayCommand]
-    public Task Login(Button parameter) => Task.Run(async () =>
+    public async void Login(Button parameter) 
     {
-        await new AuthenticationWizardDialog { XamlRoot = Views.ShellPage._XamlRoot }.ShowAsync();
-    });
+        await new AuthenticationWizardDialog { XamlRoot = parameter.XamlRoot }.ShowAsync();
+    }
 
     private void SetAccount(IAccount account) => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
     {

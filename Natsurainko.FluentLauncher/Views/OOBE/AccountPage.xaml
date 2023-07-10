@@ -92,12 +92,6 @@
                                 Text="Minecraft Official Website"
                                 TextTrimming="CharacterEllipsis" />
                         </HyperlinkButton>
-                        <HyperlinkButton Command="{Binding OfflineLoginCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
-                            <TextBlock
-                                x:Uid="Guide_Account_Offline"
-                                Text="Don't have a Microsoft account?"
-                                TextTrimming="CharacterEllipsis" />
-                        </HyperlinkButton>
                     </Grid>
                 </StackPanel>
             </Border>

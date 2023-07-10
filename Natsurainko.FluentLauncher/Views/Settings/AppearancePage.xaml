@@ -198,5 +198,28 @@
                 </labs:SettingsCard>
             </StackPanel>
         </Border>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="WindowState">
+                <VisualState x:Name="WideState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="650" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="myColorPicker.Orientation" Value="Horizontal" />
+                        <Setter Target="ColorPickerStackPanel.Margin" Value="0,-20,0,0" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="NarrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="myColorPicker.Orientation" Value="Vertical" />
+                        <Setter Target="ColorPickerStackPanel.Margin" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </ScrollViewer>
 </Page>

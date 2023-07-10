@@ -38,10 +38,7 @@
                     </labs:SettingsCard.Header>
 
                     <labs:SettingsCard.Description>
-                        <TextBlock
-                            FontSize="14"
-                            FontWeight="SemiBold"
-                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
+                        <TextBlock FontSize="14" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
                             <Run Text="{Binding Edition}" />
                             <Run Text="{Binding Version}" />
                         </TextBlock>

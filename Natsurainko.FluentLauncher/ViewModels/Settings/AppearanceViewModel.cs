@@ -15,10 +15,21 @@ partial class AppearanceViewModel : SettingsViewModelBase, ISettingsViewModel
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.CurrentLanguage))]
-    string currentLanguage;
+    private string currentLanguage;
+
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.NavigationViewDisplayMode))]
+    private int navigationViewDisplayMode;
+
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.DisplayTheme))]
+    private int displayTheme;
+
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.UseNewHomePage))]
+    private bool useNewHomePage;
 
     public List<string> SupportedLanguages => LanguageResources.SupportedLanguages;
-
 
     public AppearanceViewModel(SettingsService settingsService)
     {

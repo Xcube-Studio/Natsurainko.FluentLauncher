@@ -11,12 +11,19 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Settings"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
+    d:DataContext="{d:DesignInstance Type=vm:AppearanceViewModel}"
     mc:Ignorable="d">
 
     <ScrollViewer Padding="32,0" VerticalScrollBarVisibility="Auto">
         <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
         <Border Margin="0,20">
             <StackPanel MaxWidth="1000" Spacing="4">
+
+                <TextBlock
+                    Margin="1,0,0,4"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Text="Language" />
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xf2b7;}">
                     <labs:SettingsCard.Header>
@@ -31,6 +38,164 @@
                     </ComboBox>
                 </labs:SettingsCard>
 
+                <TextBlock
+                    Margin="1,20,0,4"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Text="Appearance settings" />
+
+                <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xe706;}">
+                    <labs:SettingsCard.Header>
+                        <TextBlock Text="Display Theme" />
+                    </labs:SettingsCard.Header>
+
+                    <labs:SettingsCard.Description>
+                        <TextBlock FontSize="14" Text="Dark and light color themes, effective after restarting the app" />
+                    </labs:SettingsCard.Description>
+
+                    <ComboBox SelectedIndex="{Binding DisplayTheme, Mode=TwoWay}">
+                        <i:Interaction.Behaviors>
+                            <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
+                            <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
+                        </i:Interaction.Behaviors>
+                        <x:String>System</x:String>
+                        <x:String>Light</x:String>
+                        <x:String>Dark</x:String>
+                    </ComboBox>
+                </labs:SettingsCard>
+
+                <labs:SettingsExpander x:Name="PreferenceExpander">
+                    <labs:SettingsExpander.Header>
+                        <TextBlock Text="Background" />
+                    </labs:SettingsExpander.Header>
+
+                    <labs:SettingsExpander.Description>
+                        <TextBlock FontSize="14" Text="Application background settings." />
+                    </labs:SettingsExpander.Description>
+
+                    <labs:SettingsExpander.HeaderIcon>
+                        <FontIcon Glyph="&#xE91B;" />
+                    </labs:SettingsExpander.HeaderIcon>
+                    <ComboBox SelectedIndex="0">
+                        <x:String>Mica</x:String>
+                        <x:String>Acrylic</x:String>
+                        <x:String>Solid</x:String>
+                        <x:String>Image</x:String>
+                    </ComboBox>
+
+                    <labs:SettingsExpander.Items>
+                        <labs:SettingsCard Header="TintLuminosityOpacity" Tag="Acrylic">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <NumberBox
+                                    Maximum="1"
+                                    Minimum="0"
+                                    SmallChange="0.1"
+                                    SpinButtonPlacementMode="Inline" />
+                            </StackPanel>
+                        </labs:SettingsCard>
+                        <labs:SettingsCard Header="TintOpacity" Tag="Acrylic">
+                            <NumberBox
+                                Maximum="1"
+                                Minimum="0"
+                                SmallChange="0.1"
+                                SpinButtonPlacementMode="Inline" />
+                        </labs:SettingsCard>
+                        <labs:SettingsCard Tag="Acrylic">
+                            <CheckBox Content="Use the default style resource (SystemControlAcrylicWindowBrush)" />
+                        </labs:SettingsCard>
+                        <labs:SettingsCard
+                            HorizontalContentAlignment="Left"
+                            Header="Application background color"
+                            Tag="Solid">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <GridView Margin="0,0,0,-15" SelectedIndex="1">
+                                    <GridViewItem>
+                                        <Border
+                                            Width="64"
+                                            Height="48"
+                                            Background="{ThemeResource SystemAccentColor}"
+                                            CornerRadius="4"
+                                            ToolTipService.ToolTip="SystemAccentColor" />
+                                    </GridViewItem>
+                                    <GridViewItem>
+                                        <Border
+                                            Width="64"
+                                            Height="48"
+                                            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                                            CornerRadius="4"
+                                            ToolTipService.ToolTip="ApplicationPageBackgroundThemeBrush" />
+                                    </GridViewItem>
+                                    <GridViewItem>
+                                        <Border
+                                            Width="64"
+                                            Height="48"
+                                            Background="#003D92"
+                                            CornerRadius="4"
+                                            ToolTipService.ToolTip="Customize" />
+                                    </GridViewItem>
+                                </GridView>
+                                <Button Content="Color Selector" Style="{ThemeResource AccentButtonStyle}">
+                                    <Button.Flyout>
+                                        <Flyout Placement="Full">
+                                            <Flyout.FlyoutPresenterStyle>
+                                                <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
+                                                    <Setter Property="MaxHeight" Value="Infinity" />
+                                                    <Setter Property="MaxWidth" Value="Infinity" />
+                                                </Style>
+                                            </Flyout.FlyoutPresenterStyle>
+                                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <ColorPicker x:Name="myColorPicker" Orientation="Horizontal" />
+                                                <StackPanel
+                                                    x:Name="ColorPickerStackPanel"
+                                                    Margin="0,-20,0,0"
+                                                    HorizontalAlignment="Right"
+                                                    Orientation="Horizontal"
+                                                    Spacing="10">
+                                                    <Button Content="Confirm" Style="{ThemeResource AccentButtonStyle}" />
+                                                    <Button Content="Cancel" />
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Flyout>
+                                    </Button.Flyout>
+                                </Button>
+                            </StackPanel>
+                        </labs:SettingsCard>
+                        <labs:SettingsCard
+                            HorizontalContentAlignment="Left"
+                            Header="Image Path"
+                            Tag="Solid">
+                            <TextBox Width="400" />
+                        </labs:SettingsCard>
+                        <labs:SettingsCard Header="No additional options" Tag="Mica" />
+                    </labs:SettingsExpander.Items>
+                </labs:SettingsExpander>
+
+                <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE700;}">
+                    <labs:SettingsCard.Header>
+                        <TextBlock Text="NavigationView Display Mode" />
+                    </labs:SettingsCard.Header>
+
+                    <labs:SettingsCard.Description>
+                        <TextBlock FontSize="14" Text="NavigationView layout" />
+                    </labs:SettingsCard.Description>
+
+                    <ComboBox SelectedIndex="{Binding NavigationViewDisplayMode, Mode=TwoWay}">
+                        <i:Interaction.Behaviors>
+                            <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
+                            <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
+                        </i:Interaction.Behaviors>
+                        <x:String>Normal</x:String>
+                        <x:String>Minimum</x:String>
+                    </ComboBox>
+                </labs:SettingsCard>
+
+                <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE80F;}">
+                    <labs:SettingsCard.Header>
+                        <TextBlock Text="Use new homepage" />
+                    </labs:SettingsCard.Header>
+
+                    <ToggleSwitch IsOn="{Binding UseNewHomePage, Mode=TwoWay}" />
+                </labs:SettingsCard>
             </StackPanel>
         </Border>
     </ScrollViewer>

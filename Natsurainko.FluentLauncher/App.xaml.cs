@@ -64,11 +64,14 @@ public partial class App : Application
             e.Handled = true;
             ProcessException(e.Exception);
         };
+
+        App.GetService<AppearanceService>().ApplyDisplayTheme();
     }
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
         App.GetService<MessengerService>().SubscribeEvents();
+
         try
         {
             MainWindow = new MainWindow();
@@ -95,6 +98,7 @@ public partial class App : Application
         services.AddSingleton<MessengerService>();
         services.AddSingleton<AuthenticationService>();
         services.AddSingleton<NotificationService>();
+        services.AddSingleton<AppearanceService>();
 
         // Settings service
         services.AddSingleton<SettingsService>();

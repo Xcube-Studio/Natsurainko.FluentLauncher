@@ -272,7 +272,6 @@
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
 
-
                 <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe737;}">
                     <labs:SettingsExpander.Header>
                         <TextBlock x:Uid="Settings_Launch_Header_3" Text="Game Settings" />

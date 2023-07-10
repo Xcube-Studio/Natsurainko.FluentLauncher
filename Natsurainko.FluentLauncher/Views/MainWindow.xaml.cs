@@ -19,7 +19,6 @@ public sealed partial class MainWindow : WindowEx
     public Frame ContentFrame => Frame;
 
     private readonly SettingsService _settings = App.GetService<SettingsService>();
-
     private readonly NotificationService _notificationService = App.GetService<NotificationService>();
 
     public MainWindow()
@@ -44,7 +43,9 @@ public sealed partial class MainWindow : WindowEx
         AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
         AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
         AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-        
+        AppWindow.TitleBar.ButtonForegroundColor = App.Current.RequestedTheme == ApplicationTheme.Light 
+            ? Colors.Black : Colors.White;
+
         (MinWidth, MinHeight) = (516, 328);
         (Width, Height) = (_settings.AppWindowWidth, _settings.AppWindowHeight);
 

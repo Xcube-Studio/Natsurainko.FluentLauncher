@@ -1,7 +1,6 @@
 ﻿using AppSettingsManagement.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Natsurainko.FluentLauncher.Components;
-using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using System.Collections.Generic;

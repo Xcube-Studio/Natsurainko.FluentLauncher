@@ -8,7 +8,6 @@ using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentCore.Model.Auth;
 using Natsurainko.FluentCore.Module.Authenticator;
 using Natsurainko.FluentLauncher.Components;
-using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
@@ -37,23 +36,14 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
     [BindToSetting(Path = nameof(SettingsService.AutoRefresh))]
     private bool autoRefresh;
 
-    [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.UseDeviceFlowAuth))]
-    private bool useDeviceFlowAuth;
-
     #endregion
-
 
     public ReadOnlyObservableCollection<IAccount> Accounts { get; init; }
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsRemoveVisible))] // Will Delete this Attribute
     private IAccount activeAccount;
 
-    public bool IsRemoveVisible => ActiveAccount is not null;
-
     private readonly AccountService _accountService;
-
 
     public AccountViewModel(SettingsService settingsService, AccountService accountService)
     {
@@ -76,37 +66,10 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
             _accountService.Activate(value);
     }
 
-    #region WILL DELETE
-
-    [RelayCommand]
-    public void Remove()
-    {
-        _accountService.Remove(ActiveAccount);
-    }
-    /*
-    [RelayCommand]
-    public Task Login() => Task.Run(() =>
-    {
-        App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
-        {
-            var chooseAccountTypeDialog = new Views.Common.ChooseAccountTypeDialog
-            {
-                XamlRoot = Views.ShellPage._XamlRoot,
-                DataContext = new Common.ChooseAccountTypeDialog { SetAccountAction = SetAccount }
-            };
-            await chooseAccountTypeDialog.ShowAsync();
-        });
-    });*/
-
-    #endregion
-
     [RelayCommand]
     public async void Login()
     {
-        await new AuthenticationWizardDialog
-        {
-            XamlRoot = Views.ShellPage._XamlRoot
-        }.ShowAsync();
+        await new AuthenticationWizardDialog { XamlRoot = Views.ShellPage._XamlRoot }.ShowAsync();
     }
 
     [RelayCommand]

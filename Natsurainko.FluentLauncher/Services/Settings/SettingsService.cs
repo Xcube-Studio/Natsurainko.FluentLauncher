@@ -45,7 +45,6 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(typeof(string), "GameWindowTitle", Default = "", Converter = typeof(JsonStringConverter<string>))]
     [SettingItem(typeof(bool), "EnableDemoUser", Default = false, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(bool), "AutoRefresh", Default = true, Converter = typeof(JsonStringConverter<bool>))]
-    [SettingItem(typeof(bool), "UseDeviceFlowAuth", Default = false, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(string), "CurrentDownloadSource", Default = "Mcbbs", Converter = typeof(JsonStringConverter<string>))]
     [SettingItem(typeof(bool), "EnableFragmentDownload", Default = true, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(int), "MaxDownloadThreads", Default = 128, Converter = typeof(JsonStringConverter<int>))]

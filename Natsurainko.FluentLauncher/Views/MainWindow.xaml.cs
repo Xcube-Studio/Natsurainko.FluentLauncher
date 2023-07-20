@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Media;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI;
 using System;
 using System.IO;
 using Windows.ApplicationModel;
@@ -18,6 +19,7 @@ public sealed partial class MainWindow : WindowEx
     public Frame ContentFrame => Frame;
 
     private readonly SettingsService _settings = App.GetService<SettingsService>();
+    private readonly NotificationService _notificationService = App.GetService<NotificationService>();
 
     public MainWindow()
     {
@@ -29,6 +31,7 @@ public sealed partial class MainWindow : WindowEx
         InitializeComponent();
 
         MessageService.RegisterContainer(MessageList);
+        _notificationService.InitContainer(NotifyStackPanel, BackgroundGrid);
 
 #if MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
         AppWindow.SetIcon(Path.Combine(Directory.GetCurrentDirectory(), "Assets/AppIcon.png"));
@@ -40,7 +43,9 @@ public sealed partial class MainWindow : WindowEx
         AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
         AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
         AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-        
+        AppWindow.TitleBar.ButtonForegroundColor = App.Current.RequestedTheme == ApplicationTheme.Light 
+            ? Colors.Black : Colors.White;
+
         (MinWidth, MinHeight) = (516, 328);
         (Width, Height) = (_settings.AppWindowWidth, _settings.AppWindowHeight);
 

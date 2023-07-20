@@ -1,0 +1,52 @@
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.DependencyInjection;
+using Natsurainko.FluentCore.Interface;
+using Natsurainko.FluentCore.Module.Authenticator;
+using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Services.Accounts;
+using Natsurainko.FluentLauncher.ViewModels.Common;
+using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
+
+internal partial class EnterOfflineProfileViewModel : WizardViewModelBase
+{
+    public override bool CanNext
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(Name))
+                return false;
+
+            if (!string.IsNullOrEmpty(Uuid))
+                return Guid.TryParse(Uuid, out var _);
+
+            return true;
+        }
+    }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanNext))]
+    private string name;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanNext))]
+    private string uuid;
+
+    private AuthenticationService _authenticationService;
+
+    public EnterOfflineProfileViewModel()
+    {
+        XamlPageType = typeof(EnterOfflineProfilePage);
+
+        _authenticationService = App.GetService<AuthenticationService>();
+    }
+
+    public override WizardViewModelBase GetNextViewModel()
+        => new ConfirmProfileViewModel(() => new IAccount[] { _authenticationService.AuthenticateOffline(Name, Uuid) });
+}

@@ -41,6 +41,20 @@
     <Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
   </Target>
   <ItemGroup>
+    <None Remove="Views\AuthenticationWizard\BrowserMicrosoftAuthPage.xaml" />
+    <None Remove="Views\AuthenticationWizard\ChooseAccountTypePage.xaml" />
+    <None Remove="Views\AuthenticationWizard\ChooseMicrosoftAuthMethodPage.xaml" />
+    <None Remove="Views\AuthenticationWizard\ConfirmProfilePage.xaml" />
+    <None Remove="Views\AuthenticationWizard\DeviceFlowMicrosoftAuthPage.xaml" />
+    <None Remove="Views\AuthenticationWizard\EnterOfflineProfilePage.xaml" />
+    <None Remove="Views\AuthenticationWizard\EnterYggdrasilProfilePage.xaml" />
+    <None Remove="Views\Common\AuthenticationWizardDialog.xaml" />
+    <None Remove="Views\Common\CopyrightLicenseDialog.xaml" />
+    <None Remove="Views\Common\SwitchAccountDialog.xaml" />
+    <None Remove="Views\Home\NewHomePage.xaml" />
+    <None Remove="Views\NotifyStyleDictionary.xaml" />
+  </ItemGroup>
+  <ItemGroup>
     <XliffResource Include="MultilingualResources\Natsurainko.FluentLauncher.ru-RU.xlf" />
     <XliffResource Include="MultilingualResources\Natsurainko.FluentLauncher.zh-Hans.xlf" />
     <XliffResource Include="MultilingualResources\Natsurainko.FluentLauncher.zh-Hant.xlf" />
@@ -74,6 +88,79 @@
 
   <ItemGroup>
     <Folder Include="Views\Cores\InstallNewCore\" />
+    <Folder Include="Dictionaries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Home\NewHomePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\NotifyStyleDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AuthenticationWizard\ConfirmProfilePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AuthenticationWizard\BrowserMicrosoftAuthPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AuthenticationWizard\DeviceFlowMicrosoftAuthPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AuthenticationWizard\EnterYggdrasilProfilePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AuthenticationWizard\EnterOfflineProfilePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AuthenticationWizard\ChooseMicrosoftAuthMethodPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AuthenticationWizard\ChooseAccountTypePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Common\AuthenticationWizardDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Common\CopyrightLicenseDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Common\SwitchAccountDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
 </Project>

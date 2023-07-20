@@ -2,12 +2,12 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentCore.Model.Auth;
 using Natsurainko.FluentCore.Module.Authenticator;
 using Natsurainko.FluentLauncher.Components;
-using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
@@ -36,23 +36,14 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
     [BindToSetting(Path = nameof(SettingsService.AutoRefresh))]
     private bool autoRefresh;
 
-    [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.UseDeviceFlowAuth))]
-    private bool useDeviceFlowAuth;
-
     #endregion
-
 
     public ReadOnlyObservableCollection<IAccount> Accounts { get; init; }
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsRemoveVisible))]
     private IAccount activeAccount;
 
-    public bool IsRemoveVisible => ActiveAccount is not null;
-
     private readonly AccountService _accountService;
-
 
     public AccountViewModel(SettingsService settingsService, AccountService accountService)
     {
@@ -75,26 +66,11 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
             _accountService.Activate(value);
     }
 
-
     [RelayCommand]
-    public void Remove()
+    public async void Login()
     {
-        _accountService.Remove(ActiveAccount);
+        await new AuthenticationWizardDialog { XamlRoot = Views.ShellPage._XamlRoot }.ShowAsync();
     }
-
-    [RelayCommand]
-    public Task Login() => Task.Run(() =>
-    {
-        App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
-        {
-            var chooseAccountTypeDialog = new Views.Common.ChooseAccountTypeDialog
-            {
-                XamlRoot = Views.ShellPage._XamlRoot,
-                DataContext = new Common.ChooseAccountTypeDialog { SetAccountAction = SetAccount }
-            };
-            await chooseAccountTypeDialog.ShowAsync();
-        });
-    });
 
     [RelayCommand]
     public Task Refresh() => Task.Run(async () =>
@@ -142,6 +118,20 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
         {
             MessageService.ShowException(ex, "Failed to refresh account");
         }
+    });
+
+    [RelayCommand]
+    public Task Switch() => Task.Run(() =>
+    {
+        App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
+        {
+            var switchAccountDialog = new SwitchAccountDialog
+            {
+                XamlRoot = Views.ShellPage._XamlRoot,
+                DataContext = App.Services.GetService<SwitchAccountDialogViewModel>()
+            };
+            await switchAccountDialog.ShowAsync();
+        });
     });
 
     private void SetAccount(IAccount account) => App.MainWindow.DispatcherQueue.TryEnqueue(() =>

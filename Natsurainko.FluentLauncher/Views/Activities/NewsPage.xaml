@@ -9,10 +9,8 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Activities"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:mvvm="using:Natsurainko.FluentLauncher.Components.Mvvm"
-    d:DataContext="{d:DesignInstance Type=activities:News}"
+    d:DataContext="{d:DesignInstance Type=activities:NewsViewModel}"
     Background="Transparent"
-    DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=Activities.News}"
     mc:Ignorable="d">
 
     <Grid>

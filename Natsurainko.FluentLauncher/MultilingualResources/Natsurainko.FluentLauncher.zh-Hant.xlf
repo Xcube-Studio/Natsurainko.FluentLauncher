@@ -360,7 +360,8 @@
         </trans-unit>
         <trans-unit id="Settings_Account_Item_6.Text" translate="yes" xml:space="preserve">
           <source>Auto refresh account: (before launch)</source>
-          <target state="translated">自動刷新賬戶: (每次啟動前)</target>
+          <target state="needs-review-translation">自動刷新賬戶: </target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Settings_Account_Subtitle.Text" translate="yes" xml:space="preserve">
           <source>Account after entering the game</source>

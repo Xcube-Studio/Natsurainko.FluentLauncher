@@ -5,13 +5,13 @@ using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentLauncher.Components;
-using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.ViewModels.Home;
+using Natsurainko.FluentLauncher.Views.Common;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
@@ -65,37 +65,10 @@ partial class AccountViewModel : ObservableRecipient, IRecipient<ActiveAccountCh
     }
 
     [RelayCommand]
-    public Task Login(Button parameter) => Task.Run(() =>
+    public async void Login(Button parameter) 
     {
-        App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
-        {
-            var microsoftAccountDialog = new Views.Common.MicrosoftAccountDialog { XamlRoot = parameter.XamlRoot, };
-
-            var viewmodel = new MicrosoftAccountDialog()
-            {
-                SetAccountAction = SetAccount,
-                ContentDialog = microsoftAccountDialog
-            };
-
-            microsoftAccountDialog.DataContext = viewmodel;
-
-            await microsoftAccountDialog.ShowAsync();
-        });
-    });
-
-    [RelayCommand]
-    public Task OfflineLogin(HyperlinkButton parameter) => Task.Run(() =>
-    {
-        App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
-        {
-            var offlineAccountDialog = new Views.Common.OfflineAccountDialog
-            {
-                XamlRoot = parameter.XamlRoot,
-                DataContext = new OfflineAccountDialog { SetAccountAction = SetAccount }
-            };
-            await offlineAccountDialog.ShowAsync();
-        });
-    });
+        await new AuthenticationWizardDialog { XamlRoot = parameter.XamlRoot }.ShowAsync();
+    }
 
     private void SetAccount(IAccount account) => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
     {

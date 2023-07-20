@@ -45,7 +45,6 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(typeof(string), "GameWindowTitle", Default = "", Converter = typeof(JsonStringConverter<string>))]
     [SettingItem(typeof(bool), "EnableDemoUser", Default = false, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(bool), "AutoRefresh", Default = true, Converter = typeof(JsonStringConverter<bool>))]
-    [SettingItem(typeof(bool), "UseDeviceFlowAuth", Default = false, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(string), "CurrentDownloadSource", Default = "Mcbbs", Converter = typeof(JsonStringConverter<string>))]
     [SettingItem(typeof(bool), "EnableFragmentDownload", Default = true, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(int), "MaxDownloadThreads", Default = 128, Converter = typeof(JsonStringConverter<int>))]
@@ -56,6 +55,11 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(typeof(string), "CoresSortBy", Default = "Name", Converter = typeof(JsonStringConverter<string>))]
     [SettingItem(typeof(string), "CoresFilter", Default = "All", Converter = typeof(JsonStringConverter<string>))]
     [SettingItem(typeof(uint), "SettingsVersion", Default = 0u)]
+
+    [SettingItem(typeof(int), "NavigationViewDisplayMode", Default = 0, Converter = typeof(JsonStringConverter<int>))]
+    [SettingItem(typeof(int), "DisplayTheme", Default = 0, Converter = typeof(JsonStringConverter<int>))]
+    [SettingItem(typeof(bool), "UseNewHomePage", Default = false, Converter = typeof(JsonStringConverter<bool>))]
+
     public SettingsService(ISettingsStorage storage) : base(storage)
     {
         var appsettings = ApplicationData.Current.LocalSettings;

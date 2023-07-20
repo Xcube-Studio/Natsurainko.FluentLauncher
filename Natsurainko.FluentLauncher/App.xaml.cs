@@ -64,11 +64,14 @@ public partial class App : Application
             e.Handled = true;
             ProcessException(e.Exception);
         };
+
+        App.GetService<AppearanceService>().ApplyDisplayTheme();
     }
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
         App.GetService<MessengerService>().SubscribeEvents();
+
         try
         {
             MainWindow = new MainWindow();
@@ -93,6 +96,9 @@ public partial class App : Application
         services.AddSingleton<AccountService>();
         services.AddSingleton<LocalStorageService>();
         services.AddSingleton<MessengerService>();
+        services.AddSingleton<AuthenticationService>();
+        services.AddSingleton<NotificationService>();
+        services.AddSingleton<AppearanceService>();
 
         // Settings service
         services.AddSingleton<SettingsService>();
@@ -101,6 +107,8 @@ public partial class App : Application
         //ViewModels
         services.AddSingleton<ViewModels.Activities.NewsViewModel>();
         services.AddSingleton<ViewModels.Downloads.CurseForgeViewModel>();
+
+        services.AddTransient<ViewModels.Common.SwitchAccountDialogViewModel>();
 
         services.AddTransient<ViewModels.Settings.AppearanceViewModel>();
         services.AddTransient<ViewModels.Settings.DownloadViewModel>();

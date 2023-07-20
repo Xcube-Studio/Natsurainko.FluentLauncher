@@ -15,6 +15,4 @@ public sealed partial class AccountPage : Page
         InitializeComponent();
         DataContext = App.Services.GetService<AccountViewModel>();
     }
-
-    public Visibility a() => Visibility.Visible;
 }

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Services.UI;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,5 +20,5 @@ partial class LaunchViewModel : ObservableObject
         : Visibility.Visible;
 
     [RelayCommand]
-    public void Home() => Views.ShellPage.ContentFrame.Navigate(typeof(Views.Home.HomePage));
+    public void Home() => Views.ShellPage.ContentFrame.Navigate(App.GetService<AppearanceService>().HomePageType);
 }

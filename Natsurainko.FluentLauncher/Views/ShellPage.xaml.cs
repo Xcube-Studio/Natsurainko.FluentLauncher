@@ -2,6 +2,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI;
 using System;
 using System.Linq;
 using Windows.Graphics;
@@ -14,6 +15,7 @@ public sealed partial class ShellPage : Page
     public static Frame ContentFrame { get; private set; }
 
     private readonly SettingsService _settings = App.GetService<SettingsService>();
+    private readonly AppearanceService _appearanceService = App.GetService<AppearanceService>();
 
     public ShellPage()
     {
@@ -25,6 +27,8 @@ public sealed partial class ShellPage : Page
         InitializeComponent();
 
         ContentFrame = contentFrame;
+
+        _appearanceService.RegisterNavigationView(NavigationViewControl);
     }
 
     private void UpdateAppTitleMargin(NavigationView sender)
@@ -43,7 +47,16 @@ public sealed partial class ShellPage : Page
         => UpdateAppTitleMargin(sender);
 
     private void NavigationViewControl_ItemInvoked(NavigationView _, NavigationViewItemInvokedEventArgs args)
-        => contentFrame.Navigate(Type.GetType(((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()));
+    {
+        if (((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()
+            .Equals("Natsurainko.FluentLauncher.Views.Home.HomePage"))
+        {
+            contentFrame.Navigate(App.GetService<AppearanceService>().HomePageType);
+            return;
+        }
+
+        contentFrame.Navigate(Type.GetType(((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()));
+    }
 
     private void NavigationViewControl_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
         => contentFrame.GoBack();
@@ -61,7 +74,7 @@ public sealed partial class ShellPage : Page
         _XamlRoot = XamlRoot;
 
         App.MainWindow.SetTitleBar(AppTitleBar);
-        contentFrame.Navigate(typeof(Home.HomePage));
+        contentFrame.Navigate(_appearanceService.HomePageType);
 
         RefreshDragArea();
     }

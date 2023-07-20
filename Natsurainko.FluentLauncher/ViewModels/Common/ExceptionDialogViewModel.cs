@@ -1,13 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Natsurainko.FluentLauncher.Components.Mvvm;
 using System;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
-public partial class ExceptionDialogViewModel : DialogViewModel
+public partial class ExceptionDialogViewModel : ObservableObject
 {
     [ObservableProperty]
     string errorMessage;
@@ -22,7 +21,7 @@ public partial class ExceptionDialogViewModel : DialogViewModel
     {
         // Copy error message
         var package = new DataPackage();
-        package.SetText(errorMessage);
+        package.SetText(ErrorMessage);
         Clipboard.SetContent(package);
 
         // Launch GitHub

@@ -277,7 +277,7 @@
     <value>以试玩版启动游戏</value>
   </data>
   <data name="Settings_Account_Item_6.Text" xml:space="preserve">
-    <value>自动刷新账户：（每次启动之前）</value>
+    <value>自动刷新账户：</value>
   </data>
   <data name="Settings_Account_Subtitle.Text" xml:space="preserve">
     <value>游戏进入后的账户</value>

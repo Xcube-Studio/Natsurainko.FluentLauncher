@@ -5,7 +5,6 @@ using Microsoft.UI.Xaml;
 using Microsoft.Win32;
 using Natsurainko.FluentCore.Extension.Windows.Service;
 using Natsurainko.FluentLauncher.Components;
-using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.Toolkits.Values;

@@ -253,7 +253,7 @@
     <value>以 Demo 賬戶啟動遊戲:</value>
   </data>
   <data name="Settings_Account_Item_6.Text" xml:space="preserve">
-    <value>自動刷新賬戶: (每次啟動前)</value>
+    <value>自動刷新賬戶: </value>
   </data>
   <data name="Settings_Account_Subtitle.Text" xml:space="preserve">
     <value>遊戲進入後的賬戶</value>

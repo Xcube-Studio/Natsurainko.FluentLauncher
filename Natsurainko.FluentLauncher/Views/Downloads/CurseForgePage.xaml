@@ -6,11 +6,12 @@
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:downloads="using:Natsurainko.FluentLauncher.ViewModels.Downloads"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=downloads:CurseForgeViewModel}"
     Background="Transparent"
-    DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=Mods.CurseForge}"
     mc:Ignorable="d">
 
     <Grid

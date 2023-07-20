@@ -252,8 +252,8 @@
             Grid.Row="1"
             Margin="0,10,0,0"
             Padding="25,0"
-            ItemsSource="{Binding GameCores}"
-            SelectedItem="{Binding CurrentGameCore, Mode=TwoWay}">
+            ItemsSource="{Binding GameInfos}"
+            SelectedItem="{Binding ActiveGameInfo, Mode=TwoWay}">
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="Loaded">
                     <actions:ModifiedInvokeCommandAction Command="{Binding LoadedCommand}" />
@@ -388,7 +388,7 @@
                                     </Grid.RowDefinitions>
                                     <TextBlock
                                         FontWeight="SemiBold"
-                                        Text="{Binding Id}"
+                                        Text="{Binding AbsoluteId}"
                                         TextTrimming="CharacterEllipsis"
                                         ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
                                     <TextBlock

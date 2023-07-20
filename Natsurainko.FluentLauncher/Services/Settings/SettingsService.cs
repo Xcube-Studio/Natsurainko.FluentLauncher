@@ -1,40 +1,35 @@
 ﻿using AppSettingsManagement;
 using AppSettingsManagement.Converters;
-using Natsurainko.FluentCore.Interface;
-using Natsurainko.FluentCore.Model.Auth;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Utils;
+using Nrk.FluentCore.Classes.Datas.Launch;
+using Nrk.FluentCore.Interfaces.ServiceInterfaces;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Threading.Tasks;
 using Windows.Storage;
 
 namespace Natsurainko.FluentLauncher.Services.Settings;
 
-public partial class SettingsService : SettingsContainer
+public partial class SettingsService : SettingsContainer, IFluentCoreSettingsService
 {
-    //[SettingsCollection(typeof(string), "GameFolders")]
-    public ObservableCollection<string> GameFolders = new();
+    #region New IFluentCoreSettingsService Property
 
-    //[SettingsCollection(typeof(string), "JavaRuntimes")]
-    public ObservableCollection<string> JavaRuntimes = new();
+    public ObservableCollection<string> MinecraftFolders { get; private set; } = new ();
+    public ObservableCollection<string> Javas { get; private set; } = new();
 
-    //[SettingsCollection(typeof(IAccount), "Accounts")]
-    //public ObservableCollection<IAccount> Accounts = new(); // TODO: Remove this
+    [SettingItem(typeof(string), "ActiveMinecraftFolder", Default = "", Converter = typeof(JsonStringConverter<string>))]
+    [SettingItem(typeof(GameInfo), "ActiveGameInfo", Converter = typeof(JsonStringConverter<GameInfo>))]
+    [SettingItem(typeof(string), "ActiveJava", Default = "", Converter = typeof(JsonStringConverter<string>))]
+    [SettingItem(typeof(int), "JavaMemory", Default = 1024, Converter = typeof(JsonStringConverter<int>))]
 
-    //[SettingItem(typeof(IAccount), "CurrentAccount", Converter = typeof(AccountToJsonConverter))] // TODO: Remove this
+    #endregion
+
     [SettingItem(typeof(Guid), "ActiveAccountUuid")]
 
-    [SettingItem(typeof(string), "CurrentGameCore", Default = "", Converter = typeof(JsonStringConverter<string>))]
-    [SettingItem(typeof(string), "CurrentGameFolder", Default = "", Converter = typeof(JsonStringConverter<string>))]
-    [SettingItem(typeof(string), "CurrentJavaRuntime", Default = "", Converter = typeof(JsonStringConverter<string>))]
-    [SettingItem(typeof(int), "JavaVirtualMachineMemory", Default = 1024, Converter = typeof(JsonStringConverter<int>))]
     [SettingItem(typeof(bool), "EnableAutoMemory", Default = true, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(bool), "EnableAutoJava", Default = true, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(bool), "EnableFullScreen", Default = false, Converter = typeof(JsonStringConverter<bool>))]
@@ -48,6 +43,7 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(typeof(string), "CurrentDownloadSource", Default = "Mcbbs", Converter = typeof(JsonStringConverter<string>))]
     [SettingItem(typeof(bool), "EnableFragmentDownload", Default = true, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(int), "MaxDownloadThreads", Default = 128, Converter = typeof(JsonStringConverter<int>))]
+
     [SettingItem(typeof(string), "CurrentLanguage", Default = "en-US, English", Converter = typeof(JsonStringConverter<string>))] // TODO: remove default value; set to system language if null
     [SettingItem(typeof(double), "AppWindowHeight", Default = 500, Converter = typeof(JsonStringConverter<double>))]
     [SettingItem(typeof(double), "AppWindowWidth", Default = 950, Converter = typeof(JsonStringConverter<double>))]
@@ -64,54 +60,21 @@ public partial class SettingsService : SettingsContainer
     {
         var appsettings = ApplicationData.Current.LocalSettings;
 
-        // Init GameFolders
-        string[] gameFolders = JsonSerializer.Deserialize<string[]>(appsettings.Values["GameFolders"] as string ?? "null");
-        Array.ForEach(gameFolders ?? Array.Empty<string>(), GameFolders.Add);
-        GameFolders.CollectionChanged += (sender, e) =>
+        // Init MinecraftFolders
+        string[] minecraftFolders = JsonSerializer.Deserialize<string[]>(appsettings.Values["MinecraftFolders"] as string ?? "null");
+        Array.ForEach(minecraftFolders ?? Array.Empty<string>(), MinecraftFolders.Add);
+        MinecraftFolders.CollectionChanged += (sender, e) =>
         {
-            appsettings.Values["GameFolders"] = JsonSerializer.Serialize(GameFolders.ToArray());
+            appsettings.Values["MinecraftFolders"] = JsonSerializer.Serialize(MinecraftFolders.ToArray());
         };
 
-        // Init JavaRuntimes
-        string[] javaRuntimes = JsonSerializer.Deserialize<string[]>(appsettings.Values["JavaRuntimes"] as string ?? "null");
-        Array.ForEach(javaRuntimes ?? Array.Empty<string>(), JavaRuntimes.Add);
-        JavaRuntimes.CollectionChanged += (sender, e) =>
+        // Init Javas
+        string[] javaRuntimes = JsonSerializer.Deserialize<string[]>(appsettings.Values["Javas"] as string ?? "null");
+        Array.ForEach(javaRuntimes ?? Array.Empty<string>(), Javas.Add);
+        Javas.CollectionChanged += (sender, e) =>
         {
-            appsettings.Values["JavaRuntimes"] = JsonSerializer.Serialize(JavaRuntimes.ToArray());
+            appsettings.Values["Javas"] = JsonSerializer.Serialize(Javas.ToArray());
         };
-
-        // Init Accounts
-        //string accountsJson = appsettings.Values["Accounts"] as string ?? "null";
-        //var jsonNode = JsonNode.Parse(accountsJson);
-        //if (jsonNode is not null)
-        //    foreach (var item in jsonNode.AsArray())
-        //    {
-        //        var accountType = (AccountType)item["Type"].GetValue<int>();
-        //        IAccount account = accountType switch
-        //        {
-        //            AccountType.Offline => item.Deserialize<OfflineAccount>(),
-        //            AccountType.Microsoft => item.Deserialize<MicrosoftAccount>(),
-        //            AccountType.Yggdrasil => item.Deserialize<YggdrasilAccount>(),
-        //            _ => null
-        //        };
-        //        Accounts.Add(account);
-        //    }
-        //Accounts.CollectionChanged += (sender, e) =>
-        //{
-        //    var jsonArray = new JsonArray();
-        //    foreach (var item in Accounts)
-        //    {
-        //        // Use derived types to store all properties
-        //        if (item is OfflineAccount offlineAccount)
-        //            jsonArray.Add(offlineAccount);
-        //        else if (item is MicrosoftAccount microsoftAccount)
-        //            jsonArray.Add(microsoftAccount);
-        //        else if ((item is YggdrasilAccount yggdrasilAccount))
-        //            jsonArray.Add(yggdrasilAccount);
-        //    }
-
-        //    appsettings.Values["Accounts"] = jsonArray.ToJsonString();
-        //};
 
         // Migrate settings data structures from old versions
         Migrate();

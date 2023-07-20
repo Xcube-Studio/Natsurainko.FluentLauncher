@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Natsurainko.FluentCore.Model.Install;
 using Natsurainko.Toolkits.IO;
 using Newtonsoft.Json.Linq;
+using Nrk.FluentCore.Classes.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

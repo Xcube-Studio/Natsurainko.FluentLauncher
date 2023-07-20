@@ -1,11 +1,11 @@
-﻿using Natsurainko.FluentCore.Module.Mod;
-using Natsurainko.FluentLauncher.Services.Data;
+﻿using Natsurainko.FluentLauncher.Services.Data;
+using Natsurainko.Toolkits.Values;
 using System.Linq;
 using System.Threading.Tasks;
-using Natsurainko.Toolkits.Values;
 
 namespace Natsurainko.FluentLauncher.Services;
 
+/*
 internal class CurseForgeModService
 {
     public CurseForgeModService() => CurseForgeApi.InitApiKey("$2a$10$Awb53b9gSOIJJkdV3Zrgp.CyFP.dI13QKbWn/4UZI4G4ff18WneB6");
@@ -54,3 +54,4 @@ internal class CurseForgeModService
             .ToArray();
     }
 }
+*/

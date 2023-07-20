@@ -1,31 +1,23 @@
-﻿using AppSettingsManagement.Mvvm;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Accounts;
-using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
-using Natsurainko.FluentLauncher.ViewModels.Common;
-using Natsurainko.FluentLauncher.ViewModels.Home;
 using Natsurainko.FluentLauncher.Views.Common;
-using Newtonsoft.Json.Linq;
-using System;
+using Nrk.FluentCore.Classes.Datas.Authenticate;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
 partial class AccountViewModel : ObservableRecipient, IRecipient<ActiveAccountChangedMessage>
 {
-    public ReadOnlyObservableCollection<IAccount> Accounts { get; init; }
+    public ReadOnlyObservableCollection<Account> Accounts { get; init; }
 
     [ObservableProperty]
-    private IAccount activeAccount;
+    private Account activeAccount;
 
     private readonly AccountService _accountService;
 
@@ -52,7 +44,7 @@ partial class AccountViewModel : ObservableRecipient, IRecipient<ActiveAccountCh
         processingActiveAccountChangedMessage = false;
     }
 
-    partial void OnActiveAccountChanged(IAccount value)
+    partial void OnActiveAccountChanged(Account value)
     {
         WeakReferenceMessenger.Default.Send(new GuideNavigationMessage()
         {
@@ -65,12 +57,9 @@ partial class AccountViewModel : ObservableRecipient, IRecipient<ActiveAccountCh
     }
 
     [RelayCommand]
-    public async void Login(Button parameter) 
-    {
-        await new AuthenticationWizardDialog { XamlRoot = parameter.XamlRoot }.ShowAsync();
-    }
+    public void Login(Button parameter) => _ = new AuthenticationWizardDialog { XamlRoot = parameter.XamlRoot }.ShowAsync();
 
-    private void SetAccount(IAccount account) => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+    private void SetAccount(Account account) => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
     {
 #pragma warning disable CS0612 // Type or member is obsolete
         _accountService.AddAccount(account);

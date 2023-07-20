@@ -51,15 +51,15 @@
                     </labs:SettingsExpander.Description>
 
                     <labs:SettingsExpander.Items>
-                        <labs:SettingsCard Visibility="{Binding IsGameFoldersEmpty, Converter={StaticResource InvertBoolConverter}}">
+                        <labs:SettingsCard Visibility="{Binding IsMinecraftFoldersEmpty, Converter={StaticResource InvertBoolConverter}}">
                             <labs:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_Launch_Item_1" Text="Current .minecraft folder:" />
                             </labs:SettingsCard.Header>
 
                             <ComboBox
                                 HorizontalAlignment="Stretch"
-                                ItemsSource="{Binding GameFolders}"
-                                SelectedItem="{Binding CurrentGameFolder, Mode=TwoWay}">
+                                ItemsSource="{Binding MinecraftFolders}"
+                                SelectedItem="{Binding ActiveMinecraftFolder, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
                                     <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
@@ -90,7 +90,7 @@
 
                         </labs:SettingsCard>
 
-                        <labs:SettingsCard Visibility="{Binding IsGameFoldersEmpty, Converter={StaticResource InvertBoolConverter}}">
+                        <labs:SettingsCard Visibility="{Binding IsMinecraftFoldersEmpty, Converter={StaticResource InvertBoolConverter}}">
                             <labs:SettingsCard.Header>
                                 <TextBlock
                                     x:Uid="Settings_Launch_Item_3"
@@ -133,15 +133,15 @@
                     </labs:SettingsExpander.Description>
 
                     <labs:SettingsExpander.Items>
-                        <labs:SettingsCard Visibility="{Binding IsJavaRuntimesEmpty, Converter={StaticResource InvertBoolConverter}}">
+                        <labs:SettingsCard Visibility="{Binding IsJavasEmpty, Converter={StaticResource InvertBoolConverter}}">
                             <labs:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_Launch_Item_4" Text="Current Java runtime:" />
                             </labs:SettingsCard.Header>
 
                             <ComboBox
                                 Height="60"
-                                ItemsSource="{Binding JavaRuntimes}"
-                                SelectedItem="{Binding CurrentJavaRuntime, Mode=TwoWay}">
+                                ItemsSource="{Binding Javas}"
+                                SelectedItem="{Binding ActiveJava, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
                                     <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
@@ -217,7 +217,7 @@
                             </StackPanel>
                         </labs:SettingsCard>
 
-                        <labs:SettingsCard Visibility="{Binding IsJavaRuntimesEmpty, Converter={StaticResource InvertBoolConverter}}">
+                        <labs:SettingsCard Visibility="{Binding IsJavasEmpty, Converter={StaticResource InvertBoolConverter}}">
                             <labs:SettingsCard.Header>
 
                                 <TextBlock x:Uid="Settings_Launch_Item_7" Text="Remove the current Java runtime:" />
@@ -259,7 +259,7 @@
                                 Width="100"
                                 IsEnabled="{Binding ElementName=AutoJVMMemory, Path=IsOn, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
                                 Minimum="0"
-                                Value="{Binding JavaVirtualMachineMemory, Mode=TwoWay}" />
+                                Value="{Binding JavaMemory, Mode=TwoWay}" />
                         </labs:SettingsCard>
 
                         <labs:SettingsCard>

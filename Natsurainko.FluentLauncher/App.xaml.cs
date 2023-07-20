@@ -1,27 +1,21 @@
-﻿using Microsoft.UI.Dispatching;
-using Microsoft.UI.Xaml;
-using Natsurainko.FluentLauncher.Components;
-using Natsurainko.FluentLauncher.Components.CrossProcess;
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using Windows.Storage;
-using Natsurainko.FluentLauncher.Views.Common;
-using Microsoft.Extensions.DependencyInjection;
-using Natsurainko.FluentLauncher.Services;
-using AppSettingsManagement;
+﻿using AppSettingsManagement;
 using AppSettingsManagement.Windows;
-using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.Views;
-using System.Text.Json;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.UI.Xaml;
+using Natsurainko.FluentLauncher.Services;
 using Natsurainko.FluentLauncher.Services.Accounts;
+using Natsurainko.FluentLauncher.Services.Launch;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Natsurainko.FluentLauncher.Views;
+using Natsurainko.FluentLauncher.Views.Common;
+using System;
+using System.Text;
 
 namespace Natsurainko.FluentLauncher;
-
+/*
 public partial class App
 {
     [DllImport("Microsoft.UI.Xaml.dll")]
@@ -44,7 +38,7 @@ public partial class App
 
         return 0;
     }
-}
+}*/
 
 public partial class App : Application
 {
@@ -90,23 +84,34 @@ public partial class App : Application
     {
         var services = new ServiceCollection();
 
+        // Settings service
+        services.AddSingleton<SettingsService>();
+        services.AddSingleton<ISettingsStorage, WinRTSettingsStorage>();
+
+        // FluentCore Services
+        services.AddSingleton<GameService>();
+        services.AddSingleton<LaunchService>();
+        services.AddSingleton<AccountService>();
+
         // Services
         services.AddSingleton<OfficialNewsService>();
-        services.AddSingleton<CurseForgeModService>();
-        services.AddSingleton<AccountService>();
+        //services.AddSingleton<CurseForgeModService>();
         services.AddSingleton<LocalStorageService>();
         services.AddSingleton<MessengerService>();
         services.AddSingleton<AuthenticationService>();
         services.AddSingleton<NotificationService>();
         services.AddSingleton<AppearanceService>();
 
-        // Settings service
-        services.AddSingleton<SettingsService>();
-        services.AddSingleton<ISettingsStorage, WinRTSettingsStorage>();
 
         //ViewModels
+
+        /// Activities
         services.AddSingleton<ViewModels.Activities.NewsViewModel>();
-        services.AddSingleton<ViewModels.Downloads.CurseForgeViewModel>();
+        services.AddTransient<ViewModels.Activities.LaunchViewModel>();
+        services.AddTransient<ViewModels.Activities.DownloadViewModel>();
+
+
+        //services.AddSingleton<ViewModels.Downloads.CurseForgeViewModel>();
 
         services.AddTransient<ViewModels.Common.SwitchAccountDialogViewModel>();
 
@@ -120,7 +125,7 @@ public partial class App : Application
         services.AddTransient<ViewModels.OOBE.AccountViewModel>();
         services.AddTransient<ViewModels.OOBE.GetStartedViewModel>();
 
-        services.AddTransient<ViewModels.Cores.CoresViewModel>();
+        services.AddSingleton<ViewModels.Cores.CoresViewModel>();
         services.AddTransient<ViewModels.Home.HomeViewModel>();
 
         return services.BuildServiceProvider();

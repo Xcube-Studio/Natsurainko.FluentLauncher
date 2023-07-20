@@ -1,11 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using Natsurainko.FluentCore.Model.Mod.CureseForge;
-using Natsurainko.FluentLauncher.Views.Common;
 using Natsurainko.FluentLauncher.Views.Downloads;
 using System;
 
 namespace Natsurainko.FluentLauncher.Services.Data;
 
+/*
 internal partial class CurseForgeResourceData
 {
     public CurseForgeResource InnerData { get; }
@@ -46,3 +45,4 @@ internal partial class CurseForgeResourceData
         await dialog.ShowAsync();
     }
 }
+*/

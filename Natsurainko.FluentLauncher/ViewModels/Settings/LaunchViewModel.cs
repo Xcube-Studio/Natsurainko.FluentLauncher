@@ -1,16 +1,15 @@
 ﻿using AppSettingsManagement.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.UI.Xaml;
 using Microsoft.Win32;
-using Natsurainko.FluentCore.Extension.Windows.Service;
 using Natsurainko.FluentLauncher.Components;
+using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.Toolkits.Values;
+using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage.Pickers;
@@ -23,28 +22,28 @@ partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
 
     [SettingsProvider]
     private readonly SettingsService _settingsService;
+    private readonly GameService _gameService;
 
     #region Settings
 
-    // TODO: [BindToSetting(Path = nameof(SettingsService.GameFolders))]
-    public ObservableCollection<string> GameFolders => _settingsService.GameFolders;
+    public ObservableCollection<string> MinecraftFolders => _settingsService.MinecraftFolders;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsGameFoldersEmpty))]
-    [BindToSetting(Path = nameof(SettingsService.CurrentGameFolder))]
-    private string currentGameFolder;
+    [NotifyPropertyChangedFor(nameof(IsMinecraftFoldersEmpty))]
+    [BindToSetting(Path = nameof(SettingsService.ActiveMinecraftFolder))]
+    private string activeMinecraftFolder;
 
-    // TODO: [BindToSetting(Path = nameof(SettingsService.JavaRuntimes))]
-    public ObservableCollection<string> JavaRuntimes => _settingsService.JavaRuntimes;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsJavaRuntimesEmpty))]
-    [BindToSetting(Path = nameof(SettingsService.CurrentJavaRuntime))]
-    private string currentJavaRuntime;
+    // TODO: [BindToSetting(Path = nameof(SettingsService.Javas))]
+    public ObservableCollection<string> Javas => _settingsService.Javas;
 
     [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.JavaVirtualMachineMemory))]
-    private int javaVirtualMachineMemory;
+    [NotifyPropertyChangedFor(nameof(IsJavasEmpty))]
+    [BindToSetting(Path = nameof(SettingsService.ActiveJava))]
+    private string activeJava;
+
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.JavaMemory))]
+    private int javaMemory;
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.EnableAutoMemory))]
@@ -80,16 +79,17 @@ partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
 
     #endregion
 
-    public bool IsGameFoldersEmpty => GameFolders.Count == 0;
+    public bool IsMinecraftFoldersEmpty => MinecraftFolders.Count == 0;
 
-    public bool IsJavaRuntimesEmpty => JavaRuntimes.Count == 0;
+    public bool IsJavasEmpty => Javas.Count == 0;
 
-    public LaunchViewModel(SettingsService settingsService)
+    public LaunchViewModel(SettingsService settingsService, GameService gameService)
     {
         _settingsService = settingsService;
+        _gameService = gameService;
+
         (this as ISettingsViewModel).InitializeSettings();
     }
-
 
     [RelayCommand]
     public Task BrowserFolder() => Task.Run(async () =>
@@ -105,16 +105,16 @@ partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
         if (folder != null)
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                if (GameFolders.Contains(folder.Path))
+                if (MinecraftFolders.Contains(folder.Path))
                 {
                     MessageService.Show("This folder already exists");
                     return;
                 }
 
-                GameFolders.Add(folder.Path);
-                CurrentGameFolder = folder.Path;
+                MinecraftFolders.Add(folder.Path);
+                _gameService.ActivateMinecraftFolder(folder.Path);
 
-                OnPropertyChanged(nameof(IsGameFoldersEmpty));
+                OnPropertyChanged(nameof(IsMinecraftFoldersEmpty));
             });
 
     });
@@ -129,20 +129,20 @@ partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
         if (openFileDialog.ShowDialog().GetValueOrDefault(false))
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                JavaRuntimes.Add(openFileDialog.FileName);
-                CurrentJavaRuntime = openFileDialog.FileName;
+                Javas.Add(openFileDialog.FileName);
+                ActiveJava = openFileDialog.FileName;
 
-                OnPropertyChanged(nameof(IsJavaRuntimesEmpty));
+                OnPropertyChanged(nameof(IsJavasEmpty));
             });
     }
 
     [RelayCommand]
     public void SearchJava()
     {
-        JavaRuntimes.AddNotRepeating(JavaHelper.SearchJavaRuntime());
-        CurrentJavaRuntime = JavaRuntimes.Any() ? JavaRuntimes[0] : null;
+        Javas.AddNotRepeating(JavaUtils.SearchJava());
+        ActiveJava = Javas.Any() ? Javas[0] : null;
 
-        OnPropertyChanged(nameof(JavaRuntimes));
+        OnPropertyChanged(nameof(Javas));
 
         MessageService.Show("Added the search Java to the runtime list");
     }
@@ -150,25 +150,21 @@ partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
     [RelayCommand]
     public void RemoveFolder()
     {
-        GameFolders.Remove(CurrentGameFolder);
-        CurrentGameFolder = GameFolders.Any() ? GameFolders[0] : null;
+        MinecraftFolders.Remove(ActiveMinecraftFolder);
+        ActiveMinecraftFolder = MinecraftFolders.Any() ? MinecraftFolders[0] : null;
 
-        OnPropertyChanged(nameof(IsGameFoldersEmpty));
+        OnPropertyChanged(nameof(IsMinecraftFoldersEmpty));
     }
 
     [RelayCommand]
     public void RemoveJava()
     {
-        JavaRuntimes.Remove(CurrentJavaRuntime);
-        CurrentJavaRuntime = JavaRuntimes.Any() ? JavaRuntimes[0] : null;
+        Javas.Remove(ActiveJava);
+        ActiveJava = Javas.Any() ? Javas[0] : null;
 
-        OnPropertyChanged(nameof(IsJavaRuntimesEmpty));
+        OnPropertyChanged(nameof(IsJavasEmpty));
     }
 
     [RelayCommand]
-    void ActivateCoresPage()
-    {
-        Views.ShellPage.ContentFrame.Navigate(typeof(Views.Cores.CoresPage));
-    }
-
+    public void ActivateCoresPage() => Views.ShellPage.ContentFrame.Navigate(typeof(Views.Cores.CoresPage));
 }

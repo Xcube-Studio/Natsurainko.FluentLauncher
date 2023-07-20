@@ -56,8 +56,8 @@
                             </Grid.ColumnDefinitions>
                             <ComboBox
                                 HorizontalAlignment="Stretch"
-                                ItemsSource="{Binding GameFolders}"
-                                SelectedItem="{Binding CurrentGameFolder, Mode=TwoWay}">
+                                ItemsSource="{Binding MinecraftFolders}"
+                                SelectedItem="{Binding ActiveMinecraftFolder, Mode=TwoWay}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate x:DataType="x:String">
                                         <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
@@ -103,8 +103,8 @@
                             <ComboBox
                                 HorizontalAlignment="Stretch"
                                 IsDropDownOpen="{Binding DropDownOpen, Mode=TwoWay}"
-                                ItemsSource="{Binding JavaRuntimes}"
-                                SelectedItem="{Binding CurrentJavaRuntime, Mode=TwoWay}">
+                                ItemsSource="{Binding Javas}"
+                                SelectedItem="{Binding ActiveJava, Mode=TwoWay}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock TextTrimming="CharacterEllipsis">

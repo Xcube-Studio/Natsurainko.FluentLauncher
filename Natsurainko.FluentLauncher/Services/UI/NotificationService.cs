@@ -1,14 +1,8 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Animation;
-using Natsurainko.FluentCore.Model.Auth;
 using Natsurainko.FluentLauncher.ViewModels.Notification;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Services.UI;

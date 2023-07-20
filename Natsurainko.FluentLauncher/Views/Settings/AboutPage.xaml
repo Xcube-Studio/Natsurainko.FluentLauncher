@@ -62,7 +62,6 @@
                         <TextBlock
                             x:Uid="About_Developer_Tag"
                             FontSize="16"
-                            FontWeight="Bold"
                             Text="The Developer of this Application" />
                     </labs:SettingsCard.Header>
 

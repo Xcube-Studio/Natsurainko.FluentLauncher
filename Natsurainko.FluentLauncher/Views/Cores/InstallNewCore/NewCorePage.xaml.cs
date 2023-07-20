@@ -13,6 +13,8 @@ public sealed partial class NewCorePage : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        this.DataContext = new ViewModels.Cores.InstallNewCore.NewCoreViewModel() { ContentDialog = e.Parameter as ContentDialog };
+
+        // TODO:
+        //this.DataContext = new ViewModels.Cores.InstallNewCore.NewCoreViewModel() { ContentDialog = e.Parameter as ContentDialog };
     }
 }

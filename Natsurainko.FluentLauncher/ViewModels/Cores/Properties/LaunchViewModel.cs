@@ -1,12 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
-using Natsurainko.FluentCore.Model.Launch;
-using Natsurainko.FluentLauncher.Models;
+using Nrk.FluentCore.Classes.Datas.Launch;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using GameCore = Natsurainko.FluentLauncher.Components.FluentCore.GameCore;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores.Properties;
 
@@ -14,8 +12,9 @@ partial class LaunchViewModel : ObservableObject
 {
     private bool isLoading = true;
 
-    public LaunchViewModel(GameCore core)
+    public LaunchViewModel(GameInfo core)
     {
+        /*
         CoreProfile = core.CoreProfile;
 
         EnableSpecialSetting = CoreProfile.EnableSpecialSetting;
@@ -36,10 +35,10 @@ partial class LaunchViewModel : ObservableObject
 
         JvmParameters = CoreProfile.JvmSetting?.JvmParameters;
 
-        isLoading = false;
+        isLoading = false;*/
     }
 
-    public CoreProfile CoreProfile;
+    //public CoreProfile CoreProfile;
 
     [ObservableProperty]
     private bool enableSpecialSetting;
@@ -70,7 +69,7 @@ partial class LaunchViewModel : ObservableObject
 
     [ObservableProperty]
     private string jvmParameters;
-
+    /*
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
@@ -103,7 +102,7 @@ partial class LaunchViewModel : ObservableObject
             JvmParameters = jvmParameters,
         };
     }
-
+    */
     [RelayCommand]
     public void OpenFolder()
     {

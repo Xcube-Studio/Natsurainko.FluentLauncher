@@ -1,6 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Natsurainko.FluentCore.Model.Install.Vanilla;
-using Natsurainko.FluentLauncher.Components.FluentCore;
+using Nrk.FluentCore.Classes.Datas.Launch;
 using System;
 using System.Collections.Generic;
 
@@ -10,11 +9,11 @@ public class GameCoreTagConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is GameCore core)
+        if (value is GameInfo game)
         {
             var strings = new List<string>
             {
-                core.Type switch
+                game.Type switch
                 {
                     "release" => "Release",
                     "snapshot" => "Snapshot",
@@ -24,14 +23,15 @@ public class GameCoreTagConverter : IValueConverter
                 }
             };
 
-            if (!string.IsNullOrEmpty(core.InheritsFrom))
+            if (game.IsInheritedFrom)
                 strings.Add("Inherited From");
 
-            strings.Add(core.Source);
+            strings.Add(game.AbsoluteVersion);
 
             return string.Join(" ", strings);
         }
 
+        /*
         if (value is CoreManifestItem coreManifestItem)
             return coreManifestItem.Type switch
             {
@@ -40,7 +40,7 @@ public class GameCoreTagConverter : IValueConverter
                 "old_beta" => "Old Beta",
                 "old_alpha" => "Old Alpha",
                 _ => "Unknown"
-            };
+            };*/
 
         return null;
     }

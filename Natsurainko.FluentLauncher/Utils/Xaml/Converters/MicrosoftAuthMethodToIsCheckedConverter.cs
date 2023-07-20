@@ -1,11 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Natsurainko.FluentCore.Model.Auth;
 using Natsurainko.FluentLauncher.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Utils.Xaml.Converters;
 

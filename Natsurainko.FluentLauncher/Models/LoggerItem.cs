@@ -1,20 +1,21 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentCore.Model.Launch;
 using Natsurainko.FluentLauncher.Utils;
+using Nrk.FluentCore.Classes.Datas.Launch;
+using Nrk.FluentCore.Classes.Enums;
 
 namespace Natsurainko.FluentLauncher.Models;
 
 public partial class LoggerItem : ObservableObject
 {
-    public LoggerItem(GameProcessOutput gameProcessOutput)
+    public LoggerItem(GameLoggerOutput output)
     {
         var richTextBlock = new RichTextBlock();
-        LoggerColorLightLanguage.Formatter.FormatRichTextBlock(gameProcessOutput.FullData, new LoggerColorLightLanguage(), richTextBlock);
+        LoggerColorLightLanguage.Formatter.FormatRichTextBlock(output.FullData, new LoggerColorLightLanguage(), richTextBlock);
         RichTextBlock = richTextBlock;
 
-        ErrorVisibility = (gameProcessOutput.Level == GameProcessOutputLevel.Error || gameProcessOutput.Level == GameProcessOutputLevel.Fatal)
+        ErrorVisibility = (output.Level == GameLoggerOutputLevel.Error || output.Level == GameLoggerOutputLevel.Fatal)
             ? Visibility.Visible
             : Visibility.Collapsed;
     }

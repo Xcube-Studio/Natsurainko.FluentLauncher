@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
     xmlns:controls="using:Natsurainko.FluentLauncher.UserControls"
+    xmlns:converters="using:Natsurainko.FluentLauncher.Utils.Xaml.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
@@ -64,10 +65,26 @@
                             </labs:SettingsCard.Header>
                         </labs:SettingsCard>
                         <labs:SettingsCard>
+                            <labs:SettingsCard.Visibility>
+                                <Binding Path="ActiveAccount">
+                                    <Binding.Converter>
+                                        <converters:AccountInfoConverter NeedProperty="LastRefreshVisibility" />
+                                    </Binding.Converter>
+                                </Binding>
+                            </labs:SettingsCard.Visibility>
+
                             <labs:SettingsCard.Header>
                                 <TextBlock>
                                     <Run Text="Last Refresh Time:" />
-                                    <Run Text="{Binding ActiveAccount.DateTime}" />
+                                    <Run>
+                                        <Run.Text>
+                                            <Binding Path="ActiveAccount">
+                                                <Binding.Converter>
+                                                    <converters:AccountInfoConverter NeedProperty="LastRefreshTime" />
+                                                </Binding.Converter>
+                                            </Binding>
+                                        </Run.Text>
+                                    </Run>
                                 </TextBlock>
                             </labs:SettingsCard.Header>
                         </labs:SettingsCard>

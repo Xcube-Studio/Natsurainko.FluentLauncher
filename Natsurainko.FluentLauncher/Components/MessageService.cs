@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
-using Natsurainko.FluentCore.Exceptions;
 using Natsurainko.FluentLauncher.Models;
+using Nrk.FluentCore.Classes.Exceptions;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,14 +45,14 @@ public static class MessageService
 
     public static void ShowException(Exception exception, string title, int delay = 15000)
     {
-        if (exception is MicrosoftAuthenticationException microsoftAuthenticationException)
+        if (exception is MicrosoftAuthenticateException microsoftAuthenticateException)
         {
             var builder = new StringBuilder();
             builder.AppendLine(title);
-            builder.AppendLine(microsoftAuthenticationException.Message);
-            builder.AppendLine(microsoftAuthenticationException.HelpLink);
+            builder.AppendLine(microsoftAuthenticateException.Message);
+            builder.AppendLine(microsoftAuthenticateException.HelpLink);
 
-            Show(builder.ToString(), microsoftAuthenticationException.StackTrace, InfoBarSeverity.Error, delay);
+            Show(builder.ToString(), microsoftAuthenticateException.StackTrace, InfoBarSeverity.Error, delay);
             return;
         }
 

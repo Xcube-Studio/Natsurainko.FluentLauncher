@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores.Properties;
 
+/*
 partial class ModViewModel : ObservableObject
 {
     public ModViewModel(GameCore core)
@@ -116,3 +117,4 @@ partial class ModViewModel : ObservableObject
         DeleteIsOpen = true;
     }
 }
+*/

@@ -114,7 +114,7 @@
                             Grid.Column="2"
                             HorizontalTextAlignment="Right"
                             Style="{ThemeResource TitleLargeTextBlockStyle}"
-                            Text="{Binding CurrentGameCore.Id}"
+                            Text="{Binding ActiveGameInfo.AbsoluteId}"
                             TextTrimming="CharacterEllipsis" />
                     </Grid>
                     <Button.Flyout>
@@ -125,7 +125,7 @@
                                         Height="32"
                                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                                         PlaceholderText="搜索核心..." />
-                                    <ListView ItemsSource="{Binding GameCores}" SelectedItem="{Binding CurrentGameCore, Mode=TwoWay}">
+                                    <ListView ItemsSource="{Binding GameInfos}" SelectedItem="{Binding ActiveGameInfo, Mode=TwoWay}">
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
                                                 <Grid
@@ -149,7 +149,7 @@
                                                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                                         <TextBlock
                                                             Style="{ThemeResource BaseTextBlockStyle}"
-                                                            Text="{Binding Id}"
+                                                            Text="{Binding AbsoluteId}"
                                                             TextTrimming="CharacterEllipsis"
                                                             TextWrapping="NoWrap"
                                                             ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />

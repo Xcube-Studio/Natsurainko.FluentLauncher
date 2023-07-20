@@ -1,21 +1,17 @@
 ﻿using AppSettingsManagement.Converters;
-using Natsurainko.FluentCore.Interface;
-using Natsurainko.FluentCore.Model.Auth;
+using Nrk.FluentCore.Classes.Datas.Authenticate;
+using Nrk.FluentCore.Classes.Enums;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Services.Settings;
 
 class AccountToJsonConverter : IDataTypeConverter
 {
-    public Type SourceType => typeof(string); // Can
+    public Type SourceType => typeof(string);
 
-    public Type TargetType => typeof(IAccount); // Can be null
+    public Type TargetType => typeof(Account);
 
     public object Convert(object source)
     {
@@ -25,7 +21,7 @@ class AccountToJsonConverter : IDataTypeConverter
         var jsonNode = JsonNode.Parse(json);
         var accountType = (AccountType)jsonNode["Type"].GetValue<int>();
 
-        IAccount account = accountType switch
+        Account account = accountType switch
         {
             AccountType.Offline => jsonNode.Deserialize<OfflineAccount>(),
             AccountType.Microsoft => jsonNode.Deserialize<MicrosoftAccount>(),

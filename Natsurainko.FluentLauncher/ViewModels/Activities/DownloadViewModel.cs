@@ -9,11 +9,13 @@ namespace Natsurainko.FluentLauncher.ViewModels.Activities;
 
 public partial class DownloadViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private List<DownloadArrangement> downloadArrangements = GlobalActivitiesCache.DownloadArrangements;
+    // TODO: DownloadService
+    //[ObservableProperty]
+    //private List<DownloadArrangement> downloadArrangements = GlobalActivitiesCache.DownloadArrangements;
 
+    /*
     [ObservableProperty]
     private Visibility tipVisibility = GlobalActivitiesCache.DownloadArrangements.Any()
         ? Visibility.Collapsed
-        : Visibility.Visible;
+        : Visibility.Visible;*/
 }

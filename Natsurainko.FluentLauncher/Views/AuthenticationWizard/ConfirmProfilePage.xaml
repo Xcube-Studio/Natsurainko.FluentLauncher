@@ -56,7 +56,15 @@
                             TextWrapping="WrapWholeWords">
                             <Run Text="{Binding Type}" />
                             <Run Text="Account" />
-                            <Run Text="{Binding YggdrasilServerUrl}" />
+                            <Run>
+                                <Run.Text>
+                                    <Binding>
+                                        <Binding.Converter>
+                                            <converters:AccountInfoConverter NeedProperty="YggdrasilServerUrl" />
+                                        </Binding.Converter>
+                                    </Binding>
+                                </Run.Text>
+                            </Run>
                         </TextBlock>
                     </Grid>
                 </DataTemplate>

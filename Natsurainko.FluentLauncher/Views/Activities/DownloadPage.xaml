@@ -12,9 +12,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Activities"
     mc:Ignorable="d">
-    <Page.DataContext>
-        <vm:DownloadViewModel />
-    </Page.DataContext>
 
     <Grid>
         <ListView Padding="30,7.5,30,22.5" ItemsSource="{Binding DownloadArrangements}">

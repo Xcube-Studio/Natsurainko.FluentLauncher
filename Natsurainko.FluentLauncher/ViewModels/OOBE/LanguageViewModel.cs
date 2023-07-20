@@ -2,11 +2,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Natsurainko.FluentLauncher.Components;
-using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 

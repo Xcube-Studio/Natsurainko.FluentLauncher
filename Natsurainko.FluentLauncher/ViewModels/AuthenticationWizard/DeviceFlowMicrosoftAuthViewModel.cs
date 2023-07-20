@@ -1,15 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Natsurainko.FluentCore.Interface;
-using Natsurainko.FluentCore.Model.Auth;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Utils.Xaml;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Nrk.FluentCore.Classes.Datas.Authenticate;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
@@ -23,7 +18,7 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
-    private DeviceFlowAuthResult deviceFlowAuthResult;
+    private DeviceFlowResponse deviceFlowAuthResult;
 
     [ObservableProperty]
     private string deviceCode;
@@ -36,7 +31,7 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
     private readonly AuthenticationService _authenticationService;
 
     internal CancellationTokenSource CancellationTokenSource;
-    internal Task<DeviceFlowAuthResult> DeviceFlowProcess;
+    internal Task<DeviceFlowResponse> DeviceFlowProcess;
 
     public DeviceFlowMicrosoftAuthViewModel()
     {
@@ -73,7 +68,7 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
     {
         ConfirmProfileViewModel confirmProfileViewModel = default;
 
-        confirmProfileViewModel = new ConfirmProfileViewModel(() => new IAccount[]
+        confirmProfileViewModel = new ConfirmProfileViewModel(() => new Account[]
         {
             _authenticationService.AuthenticateMicrosoft(DeviceFlowAuthResult,
                 progress => App.MainWindow.DispatcherQueue.TryEnqueue(() => confirmProfileViewModel.LoadingProgressText = progress))
@@ -100,7 +95,7 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
 
         DeviceFlowProcess.ContinueWith(task =>
         {
-            if (task.IsFaulted || (CancellationTokenSource.IsCancellationRequested && !task.Result.Success))
+            if (task.IsFaulted || !task.Result.Success || (CancellationTokenSource.IsCancellationRequested && !task.Result.Success))
             {
                 App.MainWindow.DispatcherQueue.SynchronousTryEnqueue(() =>
                 {

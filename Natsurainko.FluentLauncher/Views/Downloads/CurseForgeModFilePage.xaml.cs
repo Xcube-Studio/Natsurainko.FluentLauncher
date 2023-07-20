@@ -16,6 +16,6 @@ public sealed partial class CurseForgeModFilePage : Page
     {
         base.OnNavigatedTo(e);
 
-        DataContext = new ViewModels.Downloads.CurseForgeModFileViewModel(e.Parameter as CurseForgeResourceData, App.GetService<SettingsService>());
+        //DataContext = new ViewModels.Downloads.CurseForgeModFileViewModel(e.Parameter as CurseForgeResourceData, App.GetService<SettingsService>());
     }
 }

@@ -16,7 +16,7 @@ public sealed partial class ModPage : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        this.DataContext = new ViewModels.Cores.Properties.ModViewModel(e.Parameter as GameCore);
+        //this.DataContext = new ViewModels.Cores.Properties.ModViewModel(e.Parameter as GameCore);
     }
 
     private void Border_PointerEntered(object sender, PointerRoutedEventArgs e)

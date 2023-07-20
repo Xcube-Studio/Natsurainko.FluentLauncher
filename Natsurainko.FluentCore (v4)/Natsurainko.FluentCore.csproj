@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>Natsurainko.FluentCore</AssemblyName>
+    <RootNamespace>Nrk.FluentCore</RootNamespace>
+	<LangVersion>11.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Classes\Datas\Manage\" />
+    <Folder Include="Components\Download\" />
+    <Folder Include="Components\Manage\" />
+    <Folder Include="DefaultComponets\Manage\" />
+  </ItemGroup>
+
+</Project>

@@ -7,7 +7,6 @@
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Home"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=home:HomeViewModel}"
-    Background="Transparent"
     mc:Ignorable="d">
 
     <Grid>

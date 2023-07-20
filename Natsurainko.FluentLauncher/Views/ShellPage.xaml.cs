@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
@@ -19,11 +20,10 @@ public sealed partial class ShellPage : Page
 
     public ShellPage()
     {
-        /*
-        this.Resources.Add("NavigationViewContentBackground", new SolidColorBrush(Colors.Transparent));
-        this.Resources.Add("NavigationViewPaneContentGridMargin", new Thickness(-1, 0, -1, 0));
-        this.Resources.Add("NavigationViewContentGridCornerRadius", new CornerRadius(0));
-        */
+        //this.Resources.Add("NavigationViewContentBackground", new SolidColorBrush(Colors.Transparent));
+        //this.Resources.Add("NavigationViewPaneContentGridMargin", new Thickness(-1, 0, -1, 0));
+        //this.Resources.Add("NavigationViewContentGridCornerRadius", new CornerRadius(0));
+        
         InitializeComponent();
 
         ContentFrame = contentFrame;

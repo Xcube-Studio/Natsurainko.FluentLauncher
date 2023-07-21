@@ -274,6 +274,7 @@ jobs:
           package-path: "${{ github.workspace }}/${{env.Artifacts_Path}}/"
           delete-pending: true
           delete-packages: true
+          skip-polling: false
           packages-keep: 6
       
       - name: Download .msixbundle from artifacts

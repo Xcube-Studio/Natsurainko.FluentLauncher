@@ -256,7 +256,7 @@ jobs:
            path: ${{ env.Artifacts_Path }}
      
       - name: Create Pre-Release
-        uses: ncipollo/release-action@latest
+        uses: ncipollo/release-action@v1.12.0
         with:  
           artifacts: "${{ env.Artifacts_Path }} \\*.msixbundle"
           prerelease: true
@@ -306,7 +306,7 @@ jobs:
            path: ${{ env.Artifacts_Path }}
      
       - name: Create Release
-        uses: ncipollo/release-action@latest
+        uses: ncipollo/release-action@v1.12.0
         with:  
           artifacts: "${{ env.Artifacts_Path }} \\*.msixbundle"
        

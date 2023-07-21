@@ -213,7 +213,7 @@ jobs:
   Pre-Publish:
     runs-on: ubuntu-latest
     name: Pre-Publish
-    needs: build
+    needs: [build,release]
     if: ${{ contains(github.ref,'refs/tags/beta')&&!failure() }}
     env:
       Artifacts_Path: .artifacts
@@ -235,6 +235,7 @@ jobs:
           package-path: "${{ github.workspace }}/${{env.Artifacts_Path}}/"
           delete-pending: true
           delete-packages: true
+          skip-polling: true
           packages-keep: 6
       
       - name: Download .msixbundle from artifacts
@@ -252,7 +253,7 @@ jobs:
   Publish:
     runs-on: ubuntu-latest
     name: Publish
-    needs: build
+    needs: [build,release]
     if: ${{ contains(github.ref ,'refs/tags/v')&&!failure()  }}
     env:
       Artifacts_Path: .artifacts

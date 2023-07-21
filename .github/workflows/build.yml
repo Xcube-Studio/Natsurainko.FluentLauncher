@@ -222,7 +222,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: .msixupload
-          path: "${{ github.workspace }}\\${{env.Artifacts_Path}}"
+          path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
       
       - name: Pre-Publish MSStore
         uses: trympet/microsoft-store-flight-action@v1
@@ -232,7 +232,7 @@ jobs:
           client-secret: ${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}
           app-id: ${{ secrets.PARTNER_CENTER_APP_ID }}
           flight-id: ${{ secrets.PARTNER_CENTER_BETA_APP_ID }}
-          package-path: "${{ github.workspace }}\\${{env.Artifacts_Path}}\\*.msixupload"
+          package-path: "${{ github.workspace }}/${{env.Artifacts_Path}}/*.msixupload"
           delete-pending: true
           delete-packages: true
           packages-keep: 6
@@ -241,12 +241,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
            name: .msixbundle
-           path: "${{ github.workspace }}\\${{env.Artifacts_Path}}"
+           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
      
       - name: Create Pre-Release
         uses: ncipollo/release-action@v1.12.0
         with:  
-          artifacts: "${{ github.workspace }}\\${{env.Artifacts_Path}}\\*.msixbundle"
+          artifacts: "${{ github.workspace }}/${{env.Artifacts_Path}}/*.msixbundle"
           prerelease: true
           
   Publish:
@@ -261,7 +261,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: .msixupload
-          path: "${{ github.workspace }}\\${{env.Artifacts_Path}}"
+          path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
       
       - name: Publish MSStore
         uses: isaacrlevin/windows-store-action@v1
@@ -270,7 +270,7 @@ jobs:
           client-id: ${{ secrets.PARTNER_CENTER_CLIENT_ID }}
           client-secret: ${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}
           app-id: ${{ secrets.PARTNER_CENTER_APP_ID }}
-          package-path: "${{ github.workspace }}\\${{env.Artifacts_Path}}\\*.msixupload"
+          package-path: "${{ github.workspace }}/${{env.Artifacts_Path}}/*.msixupload"
           delete-pending: true
           delete-packages: true
           packages-keep: 6
@@ -279,11 +279,11 @@ jobs:
         uses: actions/download-artifact@v3
         with:
            name: .msixbundle
-           path: "${{ github.workspace }}\\${{env.Artifacts_Path}}"
+           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
      
       - name: Create Release
         uses: ncipollo/release-action@v1.12.0
         with:  
-          artifacts: "${{ github.workspace }}\\${{env.Artifacts_Path}} \\*.msixbundle"
+          artifacts: "${{ github.workspace }}/${{env.Artifacts_Path}} /*.msixbundle"
        
       

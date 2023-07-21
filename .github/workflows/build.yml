@@ -1,6 +1,11 @@
 name: Build
 
-on: workflow_dispatch
+on: 
+    workflow_dispatch:
+    push:
+      tags:
+        - v*
+        - beta*
 
 jobs:
 
@@ -204,3 +209,105 @@ jobs:
       with:
         name: .msixbundle
         path: ${{ steps.get_package_info.outputs.bundleFileName }}
+        
+  Pre-Publish:
+    runs-on: windows-latest
+    name: Pre-Publish
+    needs: build
+    if: ${{ contains(github.ref,'refs/tags/beta')&&!failure() }}
+    env:
+      Artifacts_Path: .artifacts
+    steps:
+      - name: Download .msixupload from artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: .msixupload
+          path: ${{ env.Artifacts_Path }}
+      
+      - name: Get x64 .msixupload
+        id: get_msixupload_info
+        run: |
+          # Get the name of the .msix file
+          $file = Get-Item -Path "${{ env.Artifacts_Path }}\*.msixupload"
+          if ($file -is [array]) {
+            $file = $file[0]
+          }
+          $fileName = [System.IO.Path]::GetFileNameWithoutExtension($file.FullName)
+          $version = $fileName -replace '^(.*?Natsurainko\.FluentLauncher)_(\d+\.\d+\.\d+\.\d+)(_x64|_arm64)$', '$2'
+          echo "::set-output name=msixuploadFileName::$FileName"
+          
+      - name: Pre-Publish MSStore
+        uses: trympet/microsoft-store-flight-action@v1
+        with:
+          tenant-id: ${{ secrets.PARTNER_CENTER_TENANT_ID }}
+          client-id: ${{ secrets.PARTNER_CENTER_CLIENT_ID }}
+          client-secret: ${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}
+          app-id: ${{ secrets.PARTNER_CENTER_APP_ID }}
+          flight-id: ${{ secrets.PARTNER_CENTER_BETA_APP_ID }}
+          package-path: "${{env.Artifacts_Path}}\\${{steps.get_msixupload_info.msixuploadFileName}}"
+          delete-pending: true
+          delete-packages: true
+          packages-keep: 6
+      
+      - name: Download .msixbundle from artifacts
+        uses: actions/download-artifact@v3
+        with:
+           name: .msixbundle
+           path: ${{ env.Artifacts_Path }}
+     
+      - name: Create Pre-Release
+        uses: ncipollo/release-action@latest
+        with:  
+          artifacts: "${{ env.Artifacts_Path }} \\*.msixbundle"
+          prerelease: true
+          
+  Publish:
+    runs-on: windows-latest
+    name: Publish
+    needs: build
+    if: ${{ contains(github.ref ,'refs/tags/v')&&!failure()  }}
+    env:
+      Artifacts_Path: .artifacts
+    steps:
+      - name: Download .msixupload from artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: .msixupload
+          path: ${{ env.Artifacts_Path }}
+      
+      - name: Get x64 .msixupload
+        id: get_msixupload_info
+        run: |
+          # Get the name of the .msix file
+          $file = Get-Item -Path "${{ env.Artifacts_Path }}\*.msixupload"
+          if ($file -is [array]) {
+            $file = $file[0]
+          }
+          $fileName = [System.IO.Path]::GetFileNameWithoutExtension($file.FullName)
+          $version = $fileName -replace '^(.*?Natsurainko\.FluentLauncher)_(\d+\.\d+\.\d+\.\d+)(_x64|_arm64)$', '$2'
+          echo "::set-output name=msixuploadFileName::$FileName"
+          
+      - name: Publish MSStore
+        uses: isaacrlevin/windows-store-action@v1
+        with:
+          tenant-id: ${{ secrets.PARTNER_CENTER_TENANT_ID }}
+          client-id: ${{ secrets.PARTNER_CENTER_CLIENT_ID }}
+          client-secret: ${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}
+          app-id: ${{ secrets.PARTNER_CENTER_APP_ID }}
+          package-path: "${{env.Artifacts_Path}}\\${{steps.get_msixupload_info.msixuploadFileName}}"
+          delete-pending: true
+          delete-packages: true
+          packages-keep: 6
+      
+      - name: Download .msixbundle from artifacts
+        uses: actions/download-artifact@v3
+        with:
+           name: .msixbundle
+           path: ${{ env.Artifacts_Path }}
+     
+      - name: Create Release
+        uses: ncipollo/release-action@latest
+        with:  
+          artifacts: "${{ env.Artifacts_Path }} \\*.msixbundle"
+       
+      

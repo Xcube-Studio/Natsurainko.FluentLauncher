@@ -232,7 +232,7 @@ jobs:
           client-secret: ${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}
           app-id: ${{ secrets.PARTNER_CENTER_APP_ID }}
           flight-id: ${{ secrets.PARTNER_CENTER_BETA_APP_ID }}
-          package-path: "${{ github.workspace }}/${{env.Artifacts_Path}}/*.msixupload"
+          package-path: "${{ github.workspace }}/${{env.Artifacts_Path}}/"
           delete-pending: true
           delete-packages: true
           packages-keep: 6

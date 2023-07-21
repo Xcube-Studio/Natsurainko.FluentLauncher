@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nrk.FluentCore.Components.Download;
@@ -29,5 +30,7 @@ public abstract class BaseResourcesDownloader : IResourcesDownloader
 
     public abstract void SetLibraryElements(IEnumerable<LibraryElement> libraryElements);
 
-    public abstract void Download();
+    public abstract void Download(CancellationTokenSource tokenSource = default);
+
+    protected virtual void OnSingleFileDownloaded() => SingleFileDownloaded?.Invoke(this, EventArgs.Empty);
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 
-namespace Natsurainko.FluentLauncher.Models;
+namespace Natsurainko.FluentLauncher.Classes.Data.UI;
 
 public class MessageData
 {

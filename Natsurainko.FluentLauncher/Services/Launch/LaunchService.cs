@@ -1,5 +1,6 @@
 ﻿using Natsurainko.FluentLauncher.Components.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
+using Natsurainko.FluentLauncher.Services.Download;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Classes.Datas.Launch;
@@ -14,6 +15,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
@@ -23,6 +25,7 @@ internal class LaunchService : DefaultLaunchService
     private readonly AuthenticationService _authenticationService;
     private readonly new SettingsService _settingsService;
     private readonly ObservableCollection<LaunchProcess> _launchProcesses = new();
+    private readonly DownloadService _downloadService;
 
     public ReadOnlyObservableCollection<LaunchProcess> LaunchProcesses { get; init; }
 
@@ -30,11 +33,13 @@ internal class LaunchService : DefaultLaunchService
         SettingsService settingsService, 
         GameService gameService, 
         AccountService accountService,
-        AuthenticationService authenticationService)
+        AuthenticationService authenticationService,
+        DownloadService downloadService)
         : base(settingsService, gameService, accountService) 
     {
         _authenticationService = authenticationService;
         _settingsService = settingsService;
+        _downloadService = downloadService;
 
         LaunchProcesses = new(_launchProcesses);
     }
@@ -71,13 +76,28 @@ internal class LaunchService : DefaultLaunchService
             {
                 if (_settingsService.AutoRefresh) _authenticationService.RefreshCurrentAccount();
             })
-            .SetCompleteResourcesAction(() =>
+            .SetCompleteResourcesAction(launchProcess =>
             {
                 UnzipUtils.BatchUnzip(
                     Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId, "natives"),
                     enabledNativesLibraries.Select(x => x.AbsolutePath));
 
-                // TODO: 补全 Libraries 和 Assets
+                var resoucresDownloader = _downloadService.CreateResoucresDownloader(gameInfo, enabledLibraries.Union(enabledNativesLibraries));
+                resoucresDownloader.SingleFileDownloaded += (_, _) => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                {
+                    Interlocked.Increment(launchProcess.StepItems[2].FinishedTaskNumber);
+                    launchProcess.UpdateLaunchProgress();
+                });
+                resoucresDownloader.DownloadElementsPosted += (_, count) => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                {
+                    launchProcess.StepItems[2].TaskNumber = count;
+                    launchProcess.UpdateLaunchProgress();
+                });
+
+                resoucresDownloader.Download();
+
+                if (resoucresDownloader.ErrorDownload.Count > 0)
+                    throw new Exception("resoucresDownloader.ErrorDownload.Count > 0");
             })
             .SetBuildArgumentsFunc(() =>
             {

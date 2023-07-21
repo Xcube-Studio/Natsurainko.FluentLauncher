@@ -3,7 +3,7 @@ using Natsurainko.Toolkits.Values;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Natsurainko.FluentLauncher.Services;
+namespace Natsurainko.FluentLauncher.Services.Download;
 
 /*
 internal class CurseForgeModService

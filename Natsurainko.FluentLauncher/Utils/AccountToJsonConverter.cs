@@ -5,7 +5,7 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-namespace Natsurainko.FluentLauncher.Services.Settings;
+namespace Natsurainko.FluentLauncher.Utils;
 
 class AccountToJsonConverter : IDataTypeConverter
 {

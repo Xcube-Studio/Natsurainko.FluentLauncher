@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Natsurainko.FluentLauncher.Classes.Data.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Utils.Xaml;
-using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.Classes.Enums;
 using Nrk.FluentCore.Components.Launch;
@@ -19,7 +19,6 @@ internal partial class LaunchProcess : BaseLaunchProcess
 
     private readonly LaunchService _launchService;
     internal string _suitableJava;
-    internal string _gameDirectory;
 
     public override LaunchState State 
     { 
@@ -134,6 +133,8 @@ internal partial class LaunchProcess : BaseLaunchProcess
     private string processStartTime;
     [ObservableProperty]
     private string processExitTime;
+    [ObservableProperty]
+    private double progress;
 
     private void LaunchProcess_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
@@ -164,6 +165,16 @@ internal partial class LaunchProcess : BaseLaunchProcess
             ProcessExitTime = $"[{McProcess.ExitTime:HH:mm:ss}]";
 
         lastState = state;
+
+        UpdateLaunchProgress();
+    }
+
+    internal void UpdateLaunchProgress()
+    {
+        int total = StepItems.Select(x => x.TaskNumber).Sum();
+        int finished = StepItems.Select(x => x.FinishedTaskNumber).Sum();
+
+        Progress = (double)total / finished;
     }
 
     #endregion

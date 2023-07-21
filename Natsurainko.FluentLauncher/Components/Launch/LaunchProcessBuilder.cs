@@ -33,6 +33,9 @@ internal class LaunchProcessBuilder : BaseLaunchProcessBuilder<LaunchProcess, La
         return this;
     }
 
+    public LaunchProcessBuilder SetCompleteResourcesAction(Action<LaunchProcess> completeResourcesAction)
+        => SetCompleteResourcesAction(() => completeResourcesAction(_launchProcess));
+
     public override LaunchProcessBuilder SetInspectAction(Func<bool> inspectAction)
     {
         _launchProcess.InspectAction = inspectAction;

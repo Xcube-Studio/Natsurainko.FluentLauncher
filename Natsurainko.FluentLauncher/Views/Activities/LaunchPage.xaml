@@ -18,7 +18,10 @@
     </Page.Resources>
 
     <Grid>
-        <ListView Padding="30,7.5,30,22.5" ItemsSource="{Binding LaunchProcesses}">
+        <ListView
+            Padding="30,7.5,30,22.5"
+            Background="Transparent"
+            ItemsSource="{Binding LaunchProcesses}">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -117,7 +120,7 @@
                                     </Binding>
                                 </labs:SettingsCard.Visibility>
                                 <labs:SettingsCard.Header>
-                                    <ListBox Background="White" ItemsSource="{Binding StepItems}">
+                                    <ListBox Background="Transparent" ItemsSource="{Binding StepItems}">
                                         <ListBox.ItemContainerStyle>
                                             <Style TargetType="ListBoxItem">
                                                 <Style.Setters>

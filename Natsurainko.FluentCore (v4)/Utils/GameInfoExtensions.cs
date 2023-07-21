@@ -1,4 +1,5 @@
 ﻿using Nrk.FluentCore.Classes.Data.Launch;
+using Nrk.FluentCore.Classes.Datas.Download;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.Classes.Datas.Parse;
 using Nrk.FluentCore.Classes.Enums;
@@ -13,6 +14,22 @@ namespace Nrk.FluentCore.Utils;
 
 public static class GameInfoExtensions
 {
+    public static LibraryElement GetJarElement(this GameInfo gameInfo)
+    {
+        var jsonClient = JsonNode.Parse(File.ReadAllText(gameInfo.IsInheritedFrom ? gameInfo.InheritsFrom.VersionJsonPath : gameInfo.VersionJsonPath))
+            ?["downloads"]?["client"];
+
+        if (jsonClient != null)
+            return new LibraryElement
+            {
+                AbsolutePath = gameInfo.IsInheritedFrom ? gameInfo.InheritsFrom.JarPath : gameInfo.JarPath,
+                Checksum = jsonClient["sha1"].GetValue<string>(),
+                Url = jsonClient["url"].GetValue<string>()
+            };
+
+        return null;
+    }
+
     public static string GetSuitableJavaVersion(this GameInfo gameInfo)
     {
         if (gameInfo.IsInheritedFrom)

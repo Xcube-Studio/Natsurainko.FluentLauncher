@@ -1,4 +1,5 @@
-﻿using Nrk.FluentCore.Classes.Datas.Launch;
+﻿using Nrk.FluentCore.Classes.Datas.Download;
+using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.Classes.Datas.Parse;
 using Nrk.FluentCore.DefaultComponets.Download;
 using Nrk.FluentCore.DefaultComponets.Parse;
@@ -26,24 +27,28 @@ public class DefaultDownloadService
         _settingsService = settingsService;
     }
 
-    public DefaultResoucresDownloader CreateResoucresDownloader(GameInfo gameInfo, 
+    public virtual DefaultResoucresDownloader CreateResoucresDownloader(GameInfo gameInfo, 
         IEnumerable<LibraryElement> libraryElements = default,
-        IEnumerable<AssetElement> assetElements = default)
+        IEnumerable<AssetElement> assetElements = default,
+        DownloadMirrorSource downloadMirrorSource = default)
     {
+        List<LibraryElement> libraries = libraryElements.ToList();
+
         if (libraryElements == null)
         {
             var libraryParser = new DefaultLibraryParser(gameInfo);
             libraryParser.EnumerateLibraries(out var enabledLibraries, out var enabledNativesLibraries);
 
-            libraryElements = enabledLibraries.Union(enabledNativesLibraries);
+            libraries = enabledLibraries.Union(enabledNativesLibraries).ToList();
         }
 
         if (assetElements == null)
         {
             var assetParser = new DefaultAssetParser(gameInfo);
             var assetElement = assetParser.GetAssetIndexJson();
+            if (downloadMirrorSource != null) assetElement.Url.ReplaceFromDictionary(downloadMirrorSource.AssetsReplaceUrl);
 
-            if (!File.Exists(assetElement.AbsolutePath) && )
+            if (!assetElement.VerifyFile())
             {
                 var assetIndexDownloadTask = HttpUtils.DownloadElementAsync(assetElement);
                 assetIndexDownloadTask.Wait();
@@ -52,9 +57,20 @@ public class DefaultDownloadService
                     throw new System.Exception("依赖材质索引文件获取失败");
             }
 
-
+            assetElements = assetParser.EnumerateAssets();
         }
 
-        if (gameInfo.IsVanilla)
+        var jar = gameInfo.GetJarElement();
+        if (jar != null && !jar.VerifyFile())
+            libraries.Add(jar);
+
+        var defaultResoucresDownloader = new DefaultResoucresDownloader(gameInfo);
+
+        defaultResoucresDownloader.SetLibraryElements(libraries);
+        defaultResoucresDownloader.SetAssetsElements(assetElements);
+
+        if (downloadMirrorSource != null) defaultResoucresDownloader.SetDownloadMirror(downloadMirrorSource);
+
+        return defaultResoucresDownloader;
     }
 }

@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Nrk.FluentCore.Classes.Enums;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Common;
+namespace Natsurainko.FluentLauncher.Classes.Data.UI;
 
 internal partial class LaunchExpanderStepItem : ObservableObject
 {

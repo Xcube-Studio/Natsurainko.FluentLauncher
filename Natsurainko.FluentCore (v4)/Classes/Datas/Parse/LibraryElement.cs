@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Nrk.FluentCore.Interfaces;
 
 namespace Nrk.FluentCore.Classes.Datas.Parse;
 
 /// <summary>
 /// 表示一个依赖库文件
 /// </summary>
-public record LibraryElement
+public record LibraryElement : IDownloadElement
 {
     /// <summary>
     /// 是否为本地依赖库

@@ -246,7 +246,7 @@ jobs:
       - name: Create Pre-Release
         uses: ncipollo/release-action@v1.12.0
         with:  
-          artifacts: "${{ github.workspace }}/${{env.Artifacts_Path}}/*.msixbundle"
+          artifacts: "${{ github.workspace }}/${{env.Artifacts_Path}}/"
           prerelease: true
           
   Publish:
@@ -270,7 +270,7 @@ jobs:
           client-id: ${{ secrets.PARTNER_CENTER_CLIENT_ID }}
           client-secret: ${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}
           app-id: ${{ secrets.PARTNER_CENTER_APP_ID }}
-          package-path: "${{ github.workspace }}/${{env.Artifacts_Path}}/*.msixupload"
+          package-path: "${{ github.workspace }}/${{env.Artifacts_Path}}/"
           delete-pending: true
           delete-packages: true
           packages-keep: 6

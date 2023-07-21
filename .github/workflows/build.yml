@@ -264,7 +264,7 @@ jobs:
           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
       
       - name: Publish MSStore
-        uses: isaacrlevin/windows-store-action@v1
+        uses: isaacrlevin/windows-store-action@1.0
         with:
           tenant-id: ${{ secrets.PARTNER_CENTER_TENANT_ID }}
           client-id: ${{ secrets.PARTNER_CENTER_CLIENT_ID }}

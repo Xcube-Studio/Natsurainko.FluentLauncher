@@ -1,19 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Natsurainko.Toolkits.IO;
-using Newtonsoft.Json.Linq;
-using Nrk.FluentCore.Classes.Enums;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using Tomlyn;
-using Tomlyn.Model;
+﻿namespace Natsurainko.FluentLauncher.Components.Manage;
 
-namespace Natsurainko.FluentLauncher.Components.FluentCore;
-
+/*
 public partial class ModInfo : ObservableObject
 {
     public FileInfo File { get; set; }
@@ -179,3 +166,4 @@ public class ModInfoReader
         return keyValuePairs[key].ToString();
     }
 }
+*/

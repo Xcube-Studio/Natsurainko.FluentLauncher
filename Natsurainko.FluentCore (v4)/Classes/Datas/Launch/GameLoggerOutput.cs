@@ -24,7 +24,7 @@ public partial record GameLoggerOutput
         var processOutput = new GameLoggerOutput()
         {
             FullData = data,
-            Text = data.Contains(": ") ? data.Substring(data.IndexOf(": ") + 2) : data,
+            Text = data.Contains(": ") ? data[(data.IndexOf(": ") + 2)..] : data,
             DateTime = string.IsNullOrEmpty(timeRegex) ? DateTime.Now : DateTime.Parse(timeRegex),
             Level = GameLoggerOutputLevel.Info,
         };

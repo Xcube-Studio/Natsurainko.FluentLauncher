@@ -1,7 +1,6 @@
-﻿using Natsurainko.FluentLauncher.Components;
-using Natsurainko.Toolkits.Network;
-using Nrk.FluentCore.Classes.Datas.Authenticate;
+﻿using Nrk.FluentCore.Classes.Datas.Authenticate;
 using Nrk.FluentCore.DefaultComponets.Authenticate;
+using Nrk.FluentCore.Utils;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -92,7 +91,7 @@ internal class AuthenticationService
                 $"client_id={ClientId}" +
                 "&scope=XboxLive.signin%20offline_access";
 
-            using var deviceAuthPostRes = await HttpWrapper.HttpPostAsync
+            using var deviceAuthPostRes = HttpUtils.HttpPost
                 ($"https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode", deviceAuthPost, "application/x-www-form-urlencoded");
             
             var deviceAuthResponse = JsonSerializer.Deserialize<DeviceCodeResponse>(await deviceAuthPostRes.Content.ReadAsStringAsync());
@@ -112,7 +111,7 @@ internal class AuthenticationService
                     $"&client_id={ClientId}" +
                     $"&device_code={deviceAuthResponse.DeviceCode}";
 
-                using var pollingPostRes = await HttpWrapper.HttpPostAsync
+                using var pollingPostRes = HttpUtils.HttpPost
                     ($"https://login.microsoftonline.com/consumers/oauth2/v2.0/token", pollingPost, "application/x-www-form-urlencoded");
                 var pollingPostJson = JsonNode.Parse(await pollingPostRes.Content.ReadAsStringAsync());
 

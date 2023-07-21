@@ -47,7 +47,7 @@ internal class LaunchService : DefaultLaunchService
     public void LaunchNewGame(GameInfo gameInfo)
     {
         var process = CreateLaunchProcess(gameInfo);
-        _launchProcesses.Add(process);
+        _launchProcesses.Insert(0, process);
 
         Task.Run(process.RunLaunch);
         Views.ShellPage.ContentFrame.Navigate(typeof(Views.Activities.ActivitiesNavigationPage), typeof(Views.Activities.LaunchPage));
@@ -78,26 +78,22 @@ internal class LaunchService : DefaultLaunchService
             })
             .SetCompleteResourcesAction(launchProcess =>
             {
-                UnzipUtils.BatchUnzip(
-                    Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId, "natives"),
-                    enabledNativesLibraries.Select(x => x.AbsolutePath));
-
-                var resoucresDownloader = _downloadService.CreateResoucresDownloader(gameInfo, enabledLibraries.Union(enabledNativesLibraries));
-                resoucresDownloader.SingleFileDownloaded += (_, _) => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-                {
-                    Interlocked.Increment(launchProcess.StepItems[2].FinishedTaskNumber);
-                    launchProcess.UpdateLaunchProgress();
-                });
-                resoucresDownloader.DownloadElementsPosted += (_, count) => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                var resourcesDownloader = _downloadService.CreateResourcesDownloader(gameInfo, enabledLibraries.Union(enabledNativesLibraries));
+                resourcesDownloader.SingleFileDownloaded += (_, _) => App.MainWindow.DispatcherQueue.TryEnqueue(launchProcess.UpdateDownloadProgress);
+                resourcesDownloader.DownloadElementsPosted += (_, count) => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
                 {
                     launchProcess.StepItems[2].TaskNumber = count;
                     launchProcess.UpdateLaunchProgress();
                 });
 
-                resoucresDownloader.Download();
+                resourcesDownloader.Download();
 
-                if (resoucresDownloader.ErrorDownload.Count > 0)
-                    throw new Exception("resoucresDownloader.ErrorDownload.Count > 0");
+                if (resourcesDownloader.ErrorDownload.Count > 0)
+                    throw new Exception("ResourcesDownloader.ErrorDownload.Count > 0");
+
+                UnzipUtils.BatchUnzip(
+                    Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId, "natives"),
+                    enabledNativesLibraries.Select(x => x.AbsolutePath));
             })
             .SetBuildArgumentsFunc(() =>
             {

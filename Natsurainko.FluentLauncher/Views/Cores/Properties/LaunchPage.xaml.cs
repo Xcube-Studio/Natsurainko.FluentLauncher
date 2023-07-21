@@ -1,6 +1,5 @@
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
-using Natsurainko.FluentLauncher.Components.FluentCore;
 using Nrk.FluentCore.Classes.Datas.Launch;
 
 namespace Natsurainko.FluentLauncher.Views.Cores.Properties;

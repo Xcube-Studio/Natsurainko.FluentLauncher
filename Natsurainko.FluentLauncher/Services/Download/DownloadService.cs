@@ -1,15 +1,10 @@
 ﻿using Natsurainko.FluentLauncher.Services.Settings;
-using Nrk.FluentCore.Classes.Datas.Download;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.Classes.Datas.Parse;
 using Nrk.FluentCore.DefaultComponets.Download;
-using Nrk.FluentCore.Interfaces.ServiceInterfaces;
 using Nrk.FluentCore.Services.Download;
-using System;
+using Nrk.FluentCore.Utils;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Services.Download;
 
@@ -22,12 +17,20 @@ public class DownloadService : DefaultDownloadService
         _settingsService= settingsService;
     }
 
-    public DefaultResoucresDownloader CreateResoucresDownloader(GameInfo gameInfo, IEnumerable<LibraryElement> libraryElements = null)
+    public DefaultResourcesDownloader CreateResourcesDownloader(GameInfo gameInfo, IEnumerable<LibraryElement> libraryElements = null)
     {
+        UpdateDownloadSettings();
+
         if (_settingsService.CurrentDownloadSource != "Mojang")
-            return base.CreateResoucresDownloader(gameInfo, libraryElements, downloadMirrorSource: 
+            return base.CreateResourcesDownloader(gameInfo, libraryElements, downloadMirrorSource: 
                 _settingsService.CurrentDownloadSource.Equals("Mcbbs") ? DownloadMirrors.Mcbbs : DownloadMirrors.Bmclapi);
 
-        return base.CreateResoucresDownloader(gameInfo, libraryElements);
+        return base.CreateResourcesDownloader(gameInfo, libraryElements);
+    }
+
+    private void UpdateDownloadSettings()
+    {
+        HttpUtils.DownloadSetting.EnableLargeFileMultiPartDownload = _settingsService.EnableFragmentDownload;
+        HttpUtils.DownloadSetting.MultiThreadsCount = _settingsService.MaxDownloadThreads;
     }
 }

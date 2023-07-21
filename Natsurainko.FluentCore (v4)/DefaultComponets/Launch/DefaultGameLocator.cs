@@ -3,6 +3,7 @@ using Nrk.FluentCore.Classes.Datas.Parse;
 using Nrk.FluentCore.Componets.Launch;
 using System;
 using System.Collections.Generic;
+using System.Formats.Tar;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -59,9 +60,6 @@ public class DefaultGameLocator : BaseGameLocator
             if (jsonEntity.AssetIndex != null)
                 gameInfo.AssetsIndexJsonPath = Path.Combine(MinecraftFolderPath, "assets", "indexes", $"{jsonEntity.AssetIndex?.Id}.json");
 
-            var jarFile = jsonFile.FullName.Replace(".json", ".jar");
-            if (File.Exists(jarFile)) gameInfo.JarPath = jarFile;
-
             if (!string.IsNullOrEmpty(jsonEntity.InheritsFrom))
             {
                 gameInfo.IsInheritedFrom = true;
@@ -71,7 +69,9 @@ public class DefaultGameLocator : BaseGameLocator
 
             TryGetIsVanillaAndAbsoluteVersion(gameInfo, jsonEntity);
 
+            if (!gameInfo.IsInheritedFrom) gameInfo.JarPath = jsonFile.FullName.Replace(".json", ".jar");
             if (!gameInfo.IsInheritedFrom && gameInfo.IsVanilla) enumedGames.Add(gameInfo);
+
             yield return gameInfo;
         }
 

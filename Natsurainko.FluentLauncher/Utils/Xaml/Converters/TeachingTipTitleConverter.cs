@@ -1,5 +1,4 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Natsurainko.FluentLauncher.Components.FluentCore;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using System;
 
@@ -13,8 +12,8 @@ public class TeachingTipTitleConverter : IValueConverter
             return null;
         if (value is GameInfo gameInfo)
             return $"{parameter} {gameInfo.AbsoluteId}";
-        if (value is ModInfo mod)
-            return $"{parameter} {mod.Name}";
+        //if (value is ModInfo mod)
+        //    return $"{parameter} {mod.Name}";
 
         return null;
     }

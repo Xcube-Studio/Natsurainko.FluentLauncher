@@ -27,7 +27,7 @@ public class DefaultDownloadService
         _settingsService = settingsService;
     }
 
-    public virtual DefaultResoucresDownloader CreateResoucresDownloader(GameInfo gameInfo, 
+    public virtual DefaultResourcesDownloader CreateResourcesDownloader(GameInfo gameInfo, 
         IEnumerable<LibraryElement> libraryElements = default,
         IEnumerable<AssetElement> assetElements = default,
         DownloadMirrorSource downloadMirrorSource = default)
@@ -64,13 +64,13 @@ public class DefaultDownloadService
         if (jar != null && !jar.VerifyFile())
             libraries.Add(jar);
 
-        var defaultResoucresDownloader = new DefaultResoucresDownloader(gameInfo);
+        var defaultResourcesDownloader = new DefaultResourcesDownloader(gameInfo);
 
-        defaultResoucresDownloader.SetLibraryElements(libraries);
-        defaultResoucresDownloader.SetAssetsElements(assetElements);
+        defaultResourcesDownloader.SetLibraryElements(libraries);
+        defaultResourcesDownloader.SetAssetsElements(assetElements);
 
-        if (downloadMirrorSource != null) defaultResoucresDownloader.SetDownloadMirror(downloadMirrorSource);
+        if (downloadMirrorSource != null) defaultResourcesDownloader.SetDownloadMirror(downloadMirrorSource);
 
-        return defaultResoucresDownloader;
+        return defaultResourcesDownloader;
     }
 }

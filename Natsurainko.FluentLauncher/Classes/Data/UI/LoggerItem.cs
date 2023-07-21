@@ -11,9 +11,12 @@ public partial class LoggerItem : ObservableObject
 {
     public LoggerItem(GameLoggerOutput output)
     {
-        var richTextBlock = new RichTextBlock();
-        LoggerColorLightLanguage.Formatter.FormatRichTextBlock(output.FullData, new LoggerColorLightLanguage(), richTextBlock);
-        RichTextBlock = richTextBlock;
+        App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+        {
+            var richTextBlock = new RichTextBlock();
+            LoggerColorLightLanguage.Formatter.FormatRichTextBlock(output.FullData, new LoggerColorLightLanguage(), richTextBlock);
+            RichTextBlock = richTextBlock;
+        });
 
         ErrorVisibility = (output.Level == GameLoggerOutputLevel.Error || output.Level == GameLoggerOutputLevel.Fatal)
             ? Visibility.Visible

@@ -12,35 +12,20 @@ namespace Natsurainko.FluentLauncher.ViewModels.Pages;
 
 partial class LoggerViewModel : ObservableObject
 {
-    public LoggerViewModel(List<GameLoggerOutput> processOutputs, LaunchProcess launchProcess, Views.LoggerPage view)
+    private readonly ObservableCollection<GameLoggerOutput> _gameLoggerOutputs;
+
+    public LoggerViewModel(LaunchProcess launchProcess, Views.LoggerPage view)
     {
+        _gameLoggerOutputs = launchProcess._gameLoggerOutputs;
+        _gameLoggerOutputs.CollectionChanged += LoggerItems_CollectionChanged;
+
         View = view;
 
-        LoggerItems = new(processOutputs);
-        LoggerItems.CollectionChanged += LoggerItems_CollectionChanged;
-
         if (!launchProcess.McProcess.HasExited)
-        {
-            View.Loaded += (_, e) =>
-            {
-                launchProcess.McProcess.OutputDataReceived += McProcess_OutputDataReceived;
-                launchProcess.McProcess.ErrorDataReceived += McProcess_ErrorDataReceived;
-            };
-            View.Unloaded += (_, e) =>
-            {
-                launchProcess.McProcess.OutputDataReceived -= McProcess_OutputDataReceived;
-                launchProcess.McProcess.ErrorDataReceived -= McProcess_ErrorDataReceived;
-            };
-        }
+            View.Unloaded += (_, e) => _gameLoggerOutputs.CollectionChanged -= LoggerItems_CollectionChanged;
 
-        this.OnPropertyChanged(nameof(LoggerItems));
+        OnPropertyChanged();
     }
-
-    private void McProcess_ErrorDataReceived(object sender, System.Diagnostics.DataReceivedEventArgs e)
-        => App.MainWindow.DispatcherQueue.TryEnqueue(() => LoggerItems.Add(GameLoggerOutput.Parse(e.Data, true)));
-
-    private void McProcess_OutputDataReceived(object sender, System.Diagnostics.DataReceivedEventArgs e)
-        => App.MainWindow.DispatcherQueue.TryEnqueue(() => LoggerItems.Add(GameLoggerOutput.Parse(e.Data)));
 
     [ObservableProperty]
     private bool info = true;
@@ -60,10 +45,7 @@ partial class LoggerViewModel : ObservableObject
     [ObservableProperty]
     private bool enableAutoScroll = true;
 
-    [ObservableProperty]
-    private ObservableCollection<LoggerItem> filterLoggerItems = new();
-
-    public ObservableCollection<GameLoggerOutput> LoggerItems;
+    public ObservableCollection<LoggerItem> FilterLoggerItems { get; } = new();
 
     public Views.LoggerPage View { get; set; }
 
@@ -90,10 +72,10 @@ partial class LoggerViewModel : ObservableObject
 
         foreach (var item in e.NewItems)
             if (item is GameLoggerOutput GameLoggerOutput && enums.Contains(GameLoggerOutput.Level))
-                FilterLoggerItems.Add(new LoggerItem(GameLoggerOutput));
+                App.MainWindow.DispatcherQueue.TryEnqueue(() => FilterLoggerItems.Add(new LoggerItem(GameLoggerOutput)));
 
         if (EnableAutoScroll)
-            ScrollToEnd();
+            App.MainWindow.DispatcherQueue.TryEnqueue(ScrollToEnd);
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -119,9 +101,9 @@ partial class LoggerViewModel : ObservableObject
             if (Debug)
                 enums.Add(GameLoggerOutputLevel.Debug);
 
-            FilterLoggerItems = new();
+            FilterLoggerItems.Clear();
 
-            foreach (var item in LoggerItems)
+            foreach (var item in _gameLoggerOutputs)
                 if (enums.Contains(item.Level))
                     FilterLoggerItems.Add(new LoggerItem(item));
         }
@@ -132,11 +114,8 @@ partial class LoggerViewModel : ObservableObject
 
     private void ScrollToEnd()
     {
-        App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-        {
-            View.ListView.SelectedIndex = View.ListView.Items.Count - 1;
+        View.ListView.SelectedIndex = View.ListView.Items.Count - 1;
 
-            try { View.ListView.ScrollIntoView(View.ListView.Items.Last()); } catch { }
-        });
+        try { View.ListView.ScrollIntoView(View.ListView.Items.Last()); } catch { }
     }
 }

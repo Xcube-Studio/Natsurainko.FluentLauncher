@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Services;
 using Natsurainko.FluentLauncher.Services.Accounts;
+using Natsurainko.FluentLauncher.Services.Download;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
@@ -92,6 +93,7 @@ public partial class App : Application
         services.AddSingleton<GameService>();
         services.AddSingleton<LaunchService>();
         services.AddSingleton<AccountService>();
+        services.AddSingleton<DownloadService>();
 
         // Services
         services.AddSingleton<OfficialNewsService>();

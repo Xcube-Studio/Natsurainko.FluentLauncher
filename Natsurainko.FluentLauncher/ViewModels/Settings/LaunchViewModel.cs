@@ -6,7 +6,6 @@ using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.ViewModels.Common;
-using Natsurainko.Toolkits.Values;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.ObjectModel;
@@ -139,7 +138,10 @@ partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
     [RelayCommand]
     public void SearchJava()
     {
-        Javas.AddNotRepeating(JavaUtils.SearchJava());
+        foreach (var java in JavaUtils.SearchJava())
+            if (!Javas.Contains(java))
+                Javas.Add(java);
+
         ActiveJava = Javas.Any() ? Javas[0] : null;
 
         OnPropertyChanged(nameof(Javas));

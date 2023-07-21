@@ -57,7 +57,7 @@
                         HorizontalContentAlignment="Stretch"
                         VerticalContentAlignment="Stretch"
                         HeaderIcon="{xh:FontIcon Glyph=&#xE737;}"
-                        IsExpanded="True">
+                        IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
 
                         <labs:SettingsExpander.Header>
                             <TextBlock TextTrimming="CharacterEllipsis">
@@ -101,12 +101,13 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBlock HorizontalAlignment="Right">
                                             <Run Text="Progress: " />
-                                            <Run Text="--.-%" />
+                                            <Run Text="{Binding ProgressText}" />
                                         </TextBlock>
                                         <ProgressBar
                                             Grid.Column="2"
                                             Width="300"
-                                            IsIndeterminate="True" />
+                                            Maximum="1"
+                                            Value="{Binding Progress}" />
                                     </Grid>
                                 </labs:SettingsCard.Header>
                             </labs:SettingsCard>
@@ -270,13 +271,13 @@
                                 </labs:SettingsCard.Header>
 
                                 <StackPanel Orientation="Horizontal" Spacing="10">
-                                    <Button>
+                                    <Button Command="{Binding LoggerButtonCommand}">
                                         <StackPanel Orientation="Horizontal" Spacing="5">
                                             <FontIcon FontSize="14" Glyph="&#xf000;" />
                                             <TextBlock Text="Open Log" />
                                         </StackPanel>
                                     </Button>
-                                    <Button>
+                                    <Button Command="{Binding KillButtonCommand}">
                                         <StackPanel Orientation="Horizontal" Spacing="5">
                                             <FontIcon FontSize="14" Glyph="&#xe71a;" />
                                             <TextBlock Text="Kill Process" />

@@ -12,7 +12,7 @@ using System.Threading.Tasks.Dataflow;
 
 namespace Nrk.FluentCore.DefaultComponets.Download;
 
-public class DefaultResoucresDownloader : BaseResourcesDownloader
+public class DefaultResourcesDownloader : BaseResourcesDownloader
 {
     protected DownloadMirrorSource _downloadMirrorSource;
     protected bool _enableUseDownloadSource;
@@ -24,10 +24,12 @@ public class DefaultResoucresDownloader : BaseResourcesDownloader
 
     public IReadOnlyList<DownloadResult> ErrorDownload => _errorDownload;
 
-    public DefaultResoucresDownloader(GameInfo gameInfo) : base(gameInfo) { }
+    public DefaultResourcesDownloader(GameInfo gameInfo) : base(gameInfo) { }
 
     public override void Download(CancellationTokenSource tokenSource = default)
     {
+        tokenSource ??= new CancellationTokenSource();
+
         var filteredLibraries = _libraryElements.AsParallel().Where(x => !x.VerifyFile()).ToList();
         var filteredAssets = _assetElements.AsParallel().Where(x => !x.VerifyFile()).ToList();
 
@@ -86,10 +88,10 @@ public class DefaultResoucresDownloader : BaseResourcesDownloader
 
         transformManyBlock.Post(filteredLibraries);
         transformManyBlock.Post(filteredAssets);
+        transformManyBlock.Complete();
 
         DownloadElementsPosted?.Invoke(this, filteredLibraries.Count + filteredAssets.Count);
 
-        actionBlock.Complete();
         actionBlock.Completion.Wait();
     }
 

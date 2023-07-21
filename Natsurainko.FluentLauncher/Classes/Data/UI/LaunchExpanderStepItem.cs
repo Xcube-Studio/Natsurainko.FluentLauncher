@@ -14,5 +14,7 @@ internal partial class LaunchExpanderStepItem : ObservableObject
     private int taskNumber = 1;
 
     [ObservableProperty]
-    private int finishedTaskNumber = 0;
+    public int finishedTaskNumber = 0;
+
+    internal void OnFinishedTaskNumberUpdate() => OnPropertyChanged(nameof(FinishedTaskNumber));
 }

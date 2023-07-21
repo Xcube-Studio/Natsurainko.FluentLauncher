@@ -20,6 +20,7 @@ public static class DownloadMirrors
         {
             { "https://launcher.mojang.com" , "https://bmclapi2.bangbang93.com" },
             { "https://libraries.minecraft.net", "https://bmclapi2.bangbang93.com/maven" },
+            { "https://piston-meta.mojang.com", "https://bmclapi2.bangbang93.com" },
             { "https://maven.minecraftforge.net", "https://bmclapi2.bangbang93.com/maven" },
             { "https://files.minecraftforge.net/maven", "https://bmclapi2.bangbang93.com/maven" },
             { "https://maven.fabricmc.net", "https://bmclapi2.bangbang93.com/maven" },
@@ -42,6 +43,7 @@ public static class DownloadMirrors
         {
             { "https://launcher.mojang.com" , "https://download.mcbbs.net" },
             { "https://libraries.minecraft.net", "https://download.mcbbs.net/maven" },
+            { "https://piston-meta.mojang.com", "https://download.mcbbs.net" },
             { "https://maven.minecraftforge.net", "https://download.mcbbs.net/maven" },
             { "https://files.minecraftforge.net/maven", "https://download.mcbbs.net/maven" },
             { "https://maven.fabricmc.net", "https://download.mcbbs.net/maven" },

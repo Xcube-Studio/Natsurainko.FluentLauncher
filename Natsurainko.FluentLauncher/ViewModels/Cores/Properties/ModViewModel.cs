@@ -1,13 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Microsoft.UI.Xaml;
-using Natsurainko.FluentLauncher.Components.FluentCore;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Natsurainko.FluentLauncher.ViewModels.Cores.Properties;
+﻿namespace Natsurainko.FluentLauncher.ViewModels.Cores.Properties;
 
 /*
 partial class ModViewModel : ObservableObject

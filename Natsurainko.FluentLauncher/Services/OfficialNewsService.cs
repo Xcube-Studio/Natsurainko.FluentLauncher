@@ -1,8 +1,8 @@
-﻿using Natsurainko.FluentLauncher.Services.Data;
-using Natsurainko.Toolkits.Network;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Natsurainko.FluentLauncher.Classes.Data.UI;
+using Nrk.FluentCore.Utils;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Services;
@@ -11,32 +11,14 @@ internal class OfficialNewsService
 {
     public async Task<NewsContentData[]> GetOfficialNews()
     {
-        var modelType = new
-        {
-            title = string.Empty,
-            date = string.Empty,
-            text = string.Empty,
-            tag = string.Empty,
-            readMoreLink = string.Empty,
-            newsPageImage = new
-            {
-                url = string.Empty
-            }
-        };
+        using var res = await Task.Run(() => HttpUtils.HttpGet("https://launchercontent.mojang.com/news.json"));
 
-        using var res = await HttpWrapper.HttpGetAsync("https://launchercontent.mojang.com/news.json");
-
-        return ((JArray)JObject.Parse(await res.Content.ReadAsStringAsync())["entries"])
+        return JsonNode.Parse(await res.Content.ReadAsStringAsync())["entries"].AsArray()
             .Select(x =>
             {
-                var model = JsonConvert.DeserializeAnonymousType(x.ToString(), modelType);
-                return new NewsContentData(
-                    $"https://launchercontent.mojang.com{model.newsPageImage.url}",
-                    model.title,
-                    model.tag,
-                    model.date,
-                    model.text,
-                    model.readMoreLink);
+                var contentData = x.Deserialize<NewsContentData>();
+                contentData.ImageUrl = x["newsPageImage"]["url"].GetValue<string>();
+                return contentData;
             }).ToArray();
     }
 }

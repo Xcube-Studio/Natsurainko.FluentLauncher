@@ -1,14 +1,23 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI;
+using Microsoft.UI.Xaml.Media;
 using Natsurainko.FluentLauncher.Classes.Data.UI;
+using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Utils.Xaml;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.Classes.Enums;
 using Nrk.FluentCore.Components.Launch;
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
+using WinUIEx;
 
 namespace Natsurainko.FluentLauncher.Components.Launch;
 
@@ -95,12 +104,14 @@ internal partial class LaunchProcess : BaseLaunchProcess
 
     private void McProcess_ErrorDataReceived(object sender, DataReceivedEventArgs e)
     {
-        // TODO: 接受游戏输出
+        if (!string.IsNullOrEmpty(e.Data))
+            _gameLoggerOutputs.Add(GameLoggerOutput.Parse(e.Data, true));
     }
 
     private void McProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
     {
-        // TODO: 接受游戏输出
+        if (!string.IsNullOrEmpty(e.Data))
+            _gameLoggerOutputs.Add(GameLoggerOutput.Parse(e.Data));
     }
 
     private void McProcess_Exited(object sender, EventArgs e)
@@ -128,13 +139,24 @@ internal partial class LaunchProcess : BaseLaunchProcess
     private int lastState;
 
     [ObservableProperty]
+    private bool isExpanded = true;
+
+    [ObservableProperty]
     private LaunchState displayState;
+
     [ObservableProperty]
     private string processStartTime;
+
     [ObservableProperty]
     private string processExitTime;
+
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ProgressText))]
     private double progress;
+
+    public ObservableCollection<GameLoggerOutput> _gameLoggerOutputs = new();
+
+    public string ProgressText => Progress.ToString("P1");
 
     private void LaunchProcess_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
@@ -161,6 +183,9 @@ internal partial class LaunchProcess : BaseLaunchProcess
         if (DisplayState == LaunchState.GameRunning) 
             ProcessStartTime = $"[{McProcess.StartTime:HH:mm:ss}]";
 
+        if (DisplayState == LaunchState.GameExited)
+            IsExpanded = false;
+
         if (DisplayState == LaunchState.GameExited || DisplayState == LaunchState.GameCrashed) 
             ProcessExitTime = $"[{McProcess.ExitTime:HH:mm:ss}]";
 
@@ -174,8 +199,49 @@ internal partial class LaunchProcess : BaseLaunchProcess
         int total = StepItems.Select(x => x.TaskNumber).Sum();
         int finished = StepItems.Select(x => x.FinishedTaskNumber).Sum();
 
-        Progress = (double)total / finished;
+        Progress = (double)finished / total;
     }
+
+    internal void UpdateDownloadProgress()
+    {
+#pragma warning disable MVVMTK0034 // Direct field reference to [ObservableProperty] backing field
+        Interlocked.Increment(ref StepItems[2].finishedTaskNumber);
+#pragma warning restore MVVMTK0034 // Direct field reference to [ObservableProperty] backing field
+        StepItems[2].OnFinishedTaskNumberUpdate();
+
+        UpdateLaunchProgress();
+    }
+
+    [RelayCommand]
+    public void KillButton() => KillProcess();
+
+    [RelayCommand]
+    public void LoggerButton()
+    {
+        var window = new WindowEx();
+
+        window.Title = $"Logger - {GameInfo.AbsoluteId}";
+
+        window.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets/AppIcon.ico"));
+        window.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
+        window.AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
+        window.AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+        window.SystemBackdrop = Environment.OSVersion.Version.Build >= 22000
+           ? new MicaBackdrop() { Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt }
+           : new DesktopAcrylicBackdrop();
+
+        (window.MinWidth, window.MinHeight) = (516, 328);
+        (window.Width, window.Height) = (873, 612);
+
+        var view = new Views.LoggerPage();
+        var viewModel = new ViewModels.Pages.LoggerViewModel(this, view);
+        viewModel.Title = window.Title;
+        view.DataContext = viewModel;
+
+        window.Content = view;
+        window.Show();
+    }
+
 
     #endregion
 }

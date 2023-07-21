@@ -1,6 +1,5 @@
 ﻿using Microsoft.Windows.AppLifecycle;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.Toolkits.Text;
 using System.Collections.Generic;
 using Windows.Globalization;
 

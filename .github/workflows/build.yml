@@ -214,7 +214,7 @@ jobs:
     runs-on: windows-latest
     name: Pre-Publish
     needs: build
-    if: ${{ contains(github.ref,'refs/tags/beta')&&!failure() }}
+    if: ${{ contains(github.ref,'refs/tags/beta')&&!failure()) }}
     env:
       Artifacts_Path: .artifacts
     steps:
@@ -265,7 +265,7 @@ jobs:
     runs-on: windows-latest
     name: Publish
     needs: build
-    if: ${{ contains(github.ref ,'refs/tags/v')&&!failure()  }}
+    if: ${{ contains(github.ref ,'refs/tags/v')&&!failure() ) }}
     env:
       Artifacts_Path: .artifacts
     steps:

@@ -73,6 +73,7 @@
     <PackageReference Include="Natsurainko.Toolkits" Version="1.0.4" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
     <PackageReference Include="Tomlyn" Version="0.16.2" />
+    <PackageReference Include="WindowsAPICodePack.Shell.CommonFileDialogs" Version="1.1.5" />
     <PackageReference Include="WinUIEx" Version="2.2.0" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>

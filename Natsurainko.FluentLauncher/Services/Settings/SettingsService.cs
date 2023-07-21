@@ -28,23 +28,29 @@ public partial class SettingsService : SettingsContainer, IFluentCoreSettingsSer
 
     #endregion
 
-    [SettingItem(typeof(Guid), "ActiveAccountUuid")]
-
     [SettingItem(typeof(bool), "EnableAutoMemory", Default = true, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(bool), "EnableAutoJava", Default = true, Converter = typeof(JsonStringConverter<bool>))]
+
     [SettingItem(typeof(bool), "EnableFullScreen", Default = false, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(bool), "EnableIndependencyCore", Default = false, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(string), "GameServerAddress", Default = "", Converter = typeof(JsonStringConverter<string>))]
     [SettingItem(typeof(int), "GameWindowHeight", Default = 480, Converter = typeof(JsonStringConverter<int>))]
     [SettingItem(typeof(int), "GameWindowWidth", Default = 854, Converter = typeof(JsonStringConverter<int>))]
     [SettingItem(typeof(string), "GameWindowTitle", Default = "", Converter = typeof(JsonStringConverter<string>))]
+
     [SettingItem(typeof(bool), "EnableDemoUser", Default = false, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(bool), "AutoRefresh", Default = true, Converter = typeof(JsonStringConverter<bool>))]
+    [SettingItem(typeof(Guid), "ActiveAccountUuid")]
+
     [SettingItem(typeof(string), "CurrentDownloadSource", Default = "Mcbbs", Converter = typeof(JsonStringConverter<string>))]
     [SettingItem(typeof(bool), "EnableFragmentDownload", Default = true, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(int), "MaxDownloadThreads", Default = 128, Converter = typeof(JsonStringConverter<int>))]
 
     [SettingItem(typeof(string), "CurrentLanguage", Default = "en-US, English", Converter = typeof(JsonStringConverter<string>))] // TODO: remove default value; set to system language if null
+    [SettingItem(typeof(int), "NavigationViewDisplayMode", Default = 0, Converter = typeof(JsonStringConverter<int>))]
+    [SettingItem(typeof(int), "DisplayTheme", Default = 0, Converter = typeof(JsonStringConverter<int>))]
+    [SettingItem(typeof(bool), "UseNewHomePage", Default = false, Converter = typeof(JsonStringConverter<bool>))]
+
     [SettingItem(typeof(double), "AppWindowHeight", Default = 500, Converter = typeof(JsonStringConverter<double>))]
     [SettingItem(typeof(double), "AppWindowWidth", Default = 950, Converter = typeof(JsonStringConverter<double>))]
     [SettingItem(typeof(bool), "FinishGuide", Default = false, Converter = typeof(JsonStringConverter<bool>))]
@@ -52,9 +58,6 @@ public partial class SettingsService : SettingsContainer, IFluentCoreSettingsSer
     [SettingItem(typeof(string), "CoresFilter", Default = "All", Converter = typeof(JsonStringConverter<string>))]
     [SettingItem(typeof(uint), "SettingsVersion", Default = 0u)]
 
-    [SettingItem(typeof(int), "NavigationViewDisplayMode", Default = 0, Converter = typeof(JsonStringConverter<int>))]
-    [SettingItem(typeof(int), "DisplayTheme", Default = 0, Converter = typeof(JsonStringConverter<int>))]
-    [SettingItem(typeof(bool), "UseNewHomePage", Default = false, Converter = typeof(JsonStringConverter<bool>))]
 
     public SettingsService(ISettingsStorage storage) : base(storage)
     {

@@ -230,7 +230,7 @@ jobs:
           # Get the name of the .msix file
           $file = Get-Item -Path "${{ env.Artifacts_Path }}\*.msixupload"
           if ($file -is [array]) {
-            $file = $file[0]
+            $file = $file[1]
           }
           $fileName = [System.IO.Path]::GetFileNameWithoutExtension($file.FullName)
           $version = $fileName -replace '^(.*?Natsurainko\.FluentLauncher)_(\d+\.\d+\.\d+\.\d+)(_x64|_arm64)$', '$2'
@@ -244,7 +244,7 @@ jobs:
           client-secret: ${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}
           app-id: ${{ secrets.PARTNER_CENTER_APP_ID }}
           flight-id: ${{ secrets.PARTNER_CENTER_BETA_APP_ID }}
-          package-path: "${{env.Artifacts_Path}}\\${{steps.get_msixupload_info.outputs.msixuploadFileName}}"
+          package-path: "${{env.Artifacts_Path}}\\${{steps.get_msixupload_info.outputs.msixuploadFileName}}.msixupload"
           delete-pending: true
           delete-packages: true
           packages-keep: 6
@@ -281,7 +281,7 @@ jobs:
           # Get the name of the .msix file
           $file = Get-Item -Path "${{ env.Artifacts_Path }}\*.msixupload"
           if ($file -is [array]) {
-            $file = $file[0]
+            $file = $file[1]
           }
           $fileName = [System.IO.Path]::GetFileNameWithoutExtension($file.FullName)
           $version = $fileName -replace '^(.*?Natsurainko\.FluentLauncher)_(\d+\.\d+\.\d+\.\d+)(_x64|_arm64)$', '$2'
@@ -294,7 +294,7 @@ jobs:
           client-id: ${{ secrets.PARTNER_CENTER_CLIENT_ID }}
           client-secret: ${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}
           app-id: ${{ secrets.PARTNER_CENTER_APP_ID }}
-          package-path: "${{env.Artifacts_Path}}\\${{steps.get_msixupload_info.outputs.msixuploadFileName}}"
+          package-path: "${{env.Artifacts_Path}}\\${{steps.get_msixupload_info.outputs.msixuploadFileName}}.msixupload"
           delete-pending: true
           delete-packages: true
           packages-keep: 6

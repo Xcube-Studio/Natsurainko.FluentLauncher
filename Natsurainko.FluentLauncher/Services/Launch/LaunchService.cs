@@ -108,12 +108,16 @@ internal class LaunchService : DefaultLaunchService
 
                 return builder.Build();
             })
-            .SetCreateProcessFunc(() => new Process
+            .SetCreateProcessFunc(() =>
             {
-                StartInfo = new ProcessStartInfo(suitableJava)
+                gameInfo.GetSpecialConfig().LastLaunchTime = DateTime.Now;
+                return new Process
                 {
-                    WorkingDirectory = gameDirectory
-                },
+                    StartInfo = new ProcessStartInfo(suitableJava)
+                    {
+                        WorkingDirectory = gameDirectory
+                    },
+                };
             })
             .Build();
 

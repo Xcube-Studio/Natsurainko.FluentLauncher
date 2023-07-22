@@ -52,6 +52,7 @@ internal class LaunchExpanderStepConverter : IValueConverter
             },
             "FontIconVisibility" => (int)value == 1 ? Visibility.Collapsed : Visibility.Visible,
             "ProgressRingActive" => (int)value == 1,
+            "ExitFontIcon" => (LaunchState)value == LaunchState.GameCrashed ? "\uE711" : "\uE73E",
             _ => null
         };
     }

@@ -25,6 +25,7 @@ namespace Natsurainko.FluentLauncher.Components.Launch;
 internal partial class LaunchProcess : BaseLaunchProcess
 {
     private bool isKilled;
+    private Exception Exception;
 
     private readonly LaunchService _launchService;
     internal string _suitableJava;
@@ -96,6 +97,7 @@ internal partial class LaunchProcess : BaseLaunchProcess
         {
             State = LaunchState.Faulted;
             McProcess?.Dispose();
+            Exception = ex.InnerException;
 
             throw;
         }

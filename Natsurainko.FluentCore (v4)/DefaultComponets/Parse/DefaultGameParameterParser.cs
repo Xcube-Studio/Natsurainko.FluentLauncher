@@ -1,17 +1,20 @@
-﻿using Nrk.FluentCore.Classes.Datas.Launch;
-using Nrk.FluentCore.Utils;
-using System;
+﻿using Nrk.FluentCore.Utils;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json.Nodes;
-using System.Threading.Tasks;
 
 namespace Nrk.FluentCore.DefaultComponets.Parse;
 
+/// <summary>
+/// 默认游戏参数解析器
+/// </summary>
 public static class DefaultGameParameterParser
 {
+    /// <summary>
+    /// 解析
+    /// </summary>
+    /// <param name="jsonNode"></param>
+    /// <returns></returns>
     public static IEnumerable<string> Parse(JsonNode jsonNode)
     {
         var jsonGame = jsonNode["arguments"]?["game"];

@@ -9,6 +9,7 @@ using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage.Pickers;
@@ -17,8 +18,6 @@ namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
 partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
 {
-    // TODO: Disable game window size settings when full screen mode is on
-
     [SettingsProvider]
     private readonly SettingsService _settingsService;
     private readonly GameService _gameService;
@@ -32,7 +31,6 @@ partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
     [BindToSetting(Path = nameof(SettingsService.ActiveMinecraftFolder))]
     private string activeMinecraftFolder;
 
-    // TODO: [BindToSetting(Path = nameof(SettingsService.Javas))]
     public ObservableCollection<string> Javas => _settingsService.Javas;
 
     [ObservableProperty]
@@ -88,6 +86,14 @@ partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
         _gameService = gameService;
 
         (this as ISettingsViewModel).InitializeSettings();
+    }
+
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+
+        if (e.PropertyName == nameof(ActiveMinecraftFolder))
+            _gameService.ActivateMinecraftFolder(ActiveMinecraftFolder);
     }
 
     [RelayCommand]

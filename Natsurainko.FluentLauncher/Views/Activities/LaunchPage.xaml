@@ -239,7 +239,15 @@
                                 </labs:SettingsCard.Visibility>
 
                                 <labs:SettingsCard.HeaderIcon>
-                                    <FontIcon Glyph="&#xE711;" />
+                                    <FontIcon>
+                                        <FontIcon.Glyph>
+                                            <Binding Converter="{ThemeResource LaunchExpanderStepConverter}" Path="DisplayState">
+                                                <Binding.ConverterParameter>
+                                                    <x:String>ExitFontIcon</x:String>
+                                                </Binding.ConverterParameter>
+                                            </Binding>
+                                        </FontIcon.Glyph>
+                                    </FontIcon>
                                 </labs:SettingsCard.HeaderIcon>
                                 <labs:SettingsCard.Header>
                                     <TextBlock Style="{ThemeResource BaseTextBlockStyle}" TextTrimming="CharacterEllipsis">

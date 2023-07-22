@@ -35,6 +35,9 @@ public class DefaultResourcesDownloader : BaseResourcesDownloader
 
         var transformBlock = new TransformBlock<IDownloadElement, IDownloadElement>(e =>
         {
+            if (string.IsNullOrEmpty(e.Url)) 
+                return e;
+
             if (_enableUseDownloadSource)
             {
                 if (e is LibraryElement library)

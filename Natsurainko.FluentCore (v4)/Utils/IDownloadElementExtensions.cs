@@ -11,6 +11,11 @@ namespace Nrk.FluentCore.Utils;
 
 public static class IDownloadElementExtensions
 {
+    /// <summary>
+    /// 验证文件
+    /// </summary>
+    /// <param name="element"></param>
+    /// <returns></returns>
     public static bool VerifyFile(this IDownloadElement element)
     {
         if (!File.Exists(element.AbsolutePath))
@@ -24,6 +29,6 @@ public static class IDownloadElementExtensions
                 .ToLower().Equals(element.Checksum);
         }
 
-        return false;
+        return true;
     }
 }

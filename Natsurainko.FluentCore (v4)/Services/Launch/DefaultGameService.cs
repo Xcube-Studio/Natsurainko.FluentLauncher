@@ -98,6 +98,12 @@ public class DefaultGameService
 
         if (_settingsService.ActiveGameInfo != null && _gameInfos.Contains(_settingsService.ActiveGameInfo))
             ActivateGameInfo(_settingsService.ActiveGameInfo);
-        else _settingsService.ActiveGameInfo = null;
+        else
+        {
+            _settingsService.ActiveGameInfo = null;
+
+            if (_gameInfos.Any())
+                ActivateGameInfo(_gameInfos.First());
+        }
     }
 }

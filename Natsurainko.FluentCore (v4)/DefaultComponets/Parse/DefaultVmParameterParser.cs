@@ -16,6 +16,11 @@ namespace Nrk.FluentCore.DefaultComponets.Parse;
 /// </summary>
 public static class DefaultVmParameterParser
 {
+    /// <summary>
+    /// 解析
+    /// </summary>
+    /// <param name="jsonNode"></param>
+    /// <returns></returns>
     public static IEnumerable<string> Parse(JsonNode jsonNode)
     {
         var jsonJvm = jsonNode["arguments"]?["jvm"];

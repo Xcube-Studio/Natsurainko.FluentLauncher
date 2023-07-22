@@ -4,18 +4,17 @@ using Nrk.FluentCore.Classes.Datas.Parse;
 using Nrk.FluentCore.Components.Launch;
 using Nrk.FluentCore.DefaultComponets.Parse;
 using Nrk.FluentCore.Utils;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Principal;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Threading.Tasks;
 
 namespace Nrk.FluentCore.DefaultComponets.Launch;
 
+/// <summary>
+/// 参数构建器的默认实现
+/// </summary>
 public class DefaultArgumentsBuilder : BaseArgumentsBuilder<DefaultArgumentsBuilder>
 {
     private bool _isCmdMode = false;
@@ -24,7 +23,7 @@ public class DefaultArgumentsBuilder : BaseArgumentsBuilder<DefaultArgumentsBuil
     private readonly string _librariesFolder;
     private readonly string _nativesFolder;
     private readonly string _assetsFolder;
-    private string _gameDirectory; //Working Folder
+    private string _gameDirectory;
 
     private IEnumerable<LibraryElement> _libraries;
 
@@ -53,6 +52,11 @@ public class DefaultArgumentsBuilder : BaseArgumentsBuilder<DefaultArgumentsBuil
 
         var vmParameters = DefaultVmParameterParser.Parse(jsonNode);
         var gameParameters = DefaultGameParameterParser.Parse(jsonNode);
+
+        if (GameInfo.IsInheritedFrom)
+            gameParameters = DefaultGameParameterParser
+                .Parse(JsonNode.Parse(File.ReadAllText(GameInfo.InheritsFrom.VersionJsonPath)))
+                .Union(gameParameters);
 
         var vmParametersReplace = new Dictionary<string, string>()
         {

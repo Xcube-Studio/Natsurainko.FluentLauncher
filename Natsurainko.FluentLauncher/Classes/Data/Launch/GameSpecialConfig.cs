@@ -10,6 +10,7 @@ namespace Natsurainko.FluentLauncher.Classes.Data.Launch;
 
 internal partial class GameSpecialConfig : ObservableObject
 {
+    [JsonIgnore]
     public string FilePath { get; set; }
 
     [ObservableProperty]

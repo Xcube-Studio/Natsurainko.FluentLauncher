@@ -29,14 +29,15 @@ public class DefaultAssetParser : BaseAssetParser
     {
         var assetIndex = JsonNode.Parse(File.ReadAllText(_gameInfo.IsInheritedFrom ? _gameInfo.InheritsFrom.VersionJsonPath : _gameInfo.VersionJsonPath))
             ["assetIndex"].Deserialize<AssstIndexJsonNode>();
+        var assetIndexFilePath = _gameInfo.IsInheritedFrom ? _gameInfo.InheritsFrom.AssetsIndexJsonPath : _gameInfo.AssetsIndexJsonPath;
 
         return new AssetElement
         {
             Name = assetIndex.Id + ".json",
             Checksum = assetIndex.Sha1,
             Url = assetIndex.Url,
-            AbsolutePath = _gameInfo.AssetsIndexJsonPath,
-            RelativePath = _gameInfo.AssetsIndexJsonPath.Replace(Path.Combine(_gameInfo.MinecraftFolderPath, "assets"), string.Empty).TrimStart('\\')
+            AbsolutePath = assetIndexFilePath,
+            RelativePath = assetIndexFilePath.Replace(Path.Combine(_gameInfo.MinecraftFolderPath, "assets"), string.Empty).TrimStart('\\')
         };
     }
 

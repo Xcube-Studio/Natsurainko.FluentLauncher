@@ -218,7 +218,7 @@ jobs:
         with:
           name: .msixupload
           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
-      
+  
       - name: Pre-Publish MSStore
         uses: trympet/microsoft-store-flight-action@v1
         with:
@@ -279,6 +279,7 @@ jobs:
         with:
            name: .msixbundle
            path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
+
      
       - name: Create Release
         uses: ncipollo/release-action@v1.12.0

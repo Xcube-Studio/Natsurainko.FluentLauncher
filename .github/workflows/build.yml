@@ -1,11 +1,6 @@
 name: Build
 
-on: 
-    workflow_dispatch:
-    push:
-      tags:
-        - v*
-        - beta*
+on: [workflow_dispatch,push]
 
 jobs:
 

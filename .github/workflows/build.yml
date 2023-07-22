@@ -1,6 +1,6 @@
 name: Build
 
-on: workflow_dispatch
+on: [workflow_dispatch,push]
 
 jobs:
 
@@ -204,3 +204,87 @@ jobs:
       with:
         name: .msixbundle
         path: ${{ steps.get_package_info.outputs.bundleFileName }}
+        
+  Pre-Publish:
+    runs-on: ubuntu-latest
+    name: Pre-Publish
+    needs: [build,release]
+    if: ${{ contains(github.ref,'refs/tags/beta')&&!failure() }}
+    env:
+      Artifacts_Path: .artifacts
+    steps:
+      - name: Download .msixupload from artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: .msixupload
+          path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
+  
+      - name: Pre-Publish MSStore
+        uses: trympet/microsoft-store-flight-action@v1
+        with:
+          tenant-id: ${{ secrets.PARTNER_CENTER_TENANT_ID }}
+          client-id: ${{ secrets.PARTNER_CENTER_CLIENT_ID }}
+          client-secret: ${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}
+          app-id: ${{ secrets.PARTNER_CENTER_APP_ID }}
+          flight-id: ${{ secrets.PARTNER_CENTER_BETA_APP_ID }}
+          package-path: "${{ github.workspace }}/${{env.Artifacts_Path}}/"
+          delete-pending: true
+          delete-packages: true
+          skip-polling: true
+          packages-keep: 9
+      
+      - name: Download .msixbundle from artifacts
+        uses: actions/download-artifact@v3
+        with:
+           name: .msixbundle
+           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
+     
+      - name: Create Pre-Release
+        uses: ncipollo/release-action@v1.12.0
+        with:  
+          artifacts: "${{ github.workspace }}/${{env.Artifacts_Path}}/*.msixbundle"
+          prerelease: true
+          allowUpdates: true
+          generateReleaseNotes: true
+          
+  Publish:
+    runs-on: ubuntu-latest
+    name: Publish
+    needs: [build,release]
+    if: ${{ contains(github.ref ,'refs/tags/v')&&!failure()  }}
+    env:
+      Artifacts_Path: .artifacts
+    steps:
+      - name: Download .msixupload from artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: .msixupload
+          path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
+      
+      - name: Publish MSStore
+        uses: isaacrlevin/windows-store-action@1.0
+        with:
+          tenant-id: ${{ secrets.PARTNER_CENTER_TENANT_ID }}
+          client-id: ${{ secrets.PARTNER_CENTER_CLIENT_ID }}
+          client-secret: ${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}
+          app-id: ${{ secrets.PARTNER_CENTER_APP_ID }}
+          package-path: "${{ github.workspace }}/${{env.Artifacts_Path}}/"
+          delete-pending: true
+          delete-packages: true
+          skip-polling: true
+          packages-keep: 9
+      
+      - name: Download .msixbundle from artifacts
+        uses: actions/download-artifact@v3
+        with:
+           name: .msixbundle
+           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
+
+     
+      - name: Create Release
+        uses: ncipollo/release-action@v1.12.0
+        with:  
+          artifacts: "${{ github.workspace }}/${{env.Artifacts_Path}}/*.msixbundle"
+          allowUpdates: true
+          generateReleaseNotes: true
+      

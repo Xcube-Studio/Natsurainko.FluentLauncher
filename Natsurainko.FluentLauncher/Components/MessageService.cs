@@ -1,7 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Natsurainko.FluentLauncher.Classes.Data.UI;
-using Natsurainko.FluentLauncher.Models;
 using Nrk.FluentCore.Classes.Exceptions;
 using System;
 using System.Text;

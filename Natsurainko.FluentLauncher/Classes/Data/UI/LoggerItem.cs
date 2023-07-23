@@ -5,7 +5,7 @@ using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.Classes.Enums;
 
-namespace Natsurainko.FluentLauncher.Models;
+namespace Natsurainko.FluentLauncher.Classes.Data.Launch;
 
 public partial class LoggerItem : ObservableObject
 {

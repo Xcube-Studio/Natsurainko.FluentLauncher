@@ -1,5 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Classes.Data.UI;
 using System;
 
 namespace Natsurainko.FluentLauncher.Utils.Xaml.Converters;

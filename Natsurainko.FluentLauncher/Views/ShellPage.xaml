@@ -74,6 +74,7 @@
                     x:Uid="Navigation_Mods"
                     Content="Mods"
                     Icon="{xh:FontIcon Glyph=&#xe8f1;}"
+                    IsEnabled="False"
                     Tag="Natsurainko.FluentLauncher.Views.Downloads.CurseForgePage" />
             </NavigationView.MenuItems>
 

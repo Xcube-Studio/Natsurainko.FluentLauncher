@@ -3,14 +3,10 @@ using Nrk.FluentCore.Classes.Datas.Parse;
 using Nrk.FluentCore.Componets.Launch;
 using System;
 using System.Collections.Generic;
-using System.Formats.Tar;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Nrk.FluentCore.DefaultComponets.Launch;
 
@@ -163,7 +159,7 @@ public class DefaultGameLocator : BaseGameLocator
         return games;
     }
 
-    public override GameInfo GetGameInfo(string absoluteId)
+    public override GameInfo GetGame(string absoluteId)
     {
         var jsonFile = new FileInfo(Path.Combine(MinecraftFolderPath, "versions", absoluteId, absoluteId + ".json"));
 
@@ -194,7 +190,7 @@ public class DefaultGameLocator : BaseGameLocator
 
         if (!string.IsNullOrEmpty(jsonEntity.InheritsFrom))
         {
-            var inheritsFrom = GetGameInfo(jsonEntity.InheritsFrom);
+            var inheritsFrom = GetGame(jsonEntity.InheritsFrom);
             if (inheritsFrom == null) // 继承的核心未找到
                 return null;
 

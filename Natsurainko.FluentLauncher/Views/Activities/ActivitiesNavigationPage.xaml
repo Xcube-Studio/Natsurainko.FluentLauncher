@@ -28,6 +28,7 @@
                 <NavigationViewItem
                     x:Uid="Navigation_Activities_Download"
                     Content="Download Task"
+                    IsEnabled="False"
                     Tag="Natsurainko.FluentLauncher.Views.Activities.DownloadPage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe896;" />
@@ -44,6 +45,7 @@
                 <NavigationViewItem
                     x:Uid="Navigation_Activities_Application"
                     Content="Application"
+                    IsEnabled="False"
                     Tag="Natsurainko.FluentLauncher.Views.Activities.ApplicationPage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe12a;" />

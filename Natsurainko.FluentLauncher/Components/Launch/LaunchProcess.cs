@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Media;
 using Natsurainko.FluentLauncher.Classes.Data.UI;
-using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Utils.Xaml;
 using Nrk.FluentCore.Classes.Datas.Launch;
@@ -15,7 +14,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using WinUIEx;
 
@@ -243,7 +241,6 @@ internal partial class LaunchProcess : BaseLaunchProcess
         window.Content = view;
         window.Show();
     }
-
 
     #endregion
 }

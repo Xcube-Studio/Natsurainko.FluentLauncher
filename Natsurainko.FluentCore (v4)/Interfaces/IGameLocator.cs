@@ -22,7 +22,7 @@ public interface IGameLocator
     /// </summary>
     /// <param name="absoluteId">游戏核心的 绝对Id</param>
     /// <returns></returns>
-    GameInfo GetGameInfo(string absoluteId);
+    GameInfo GetGame(string absoluteId);
 
     /// <summary>
     /// 快速遍历获取游戏核心

@@ -67,15 +67,18 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Border
-                        Width="32"
-                        Height="32"
+                        Width="36"
+                        Height="36"
                         VerticalAlignment="Bottom"
                         CornerRadius="4">
                         <Border.Background>
                             <ImageBrush ImageSource="{Binding Converter={ThemeResource IconConverter}}" />
                         </Border.Background>
                     </Border>
-                    <Grid Grid.Row="1" VerticalAlignment="Center">
+                    <Grid
+                        Grid.Row="1"
+                        Margin="0,5,0,0"
+                        VerticalAlignment="Center">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />

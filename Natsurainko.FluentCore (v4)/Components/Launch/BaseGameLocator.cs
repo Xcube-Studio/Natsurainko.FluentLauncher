@@ -24,7 +24,7 @@ public abstract class BaseGameLocator : IGameLocator
 
     public virtual IEnumerable<GameInfo> EnumerateGames() => throw new NotImplementedException();
 
-    public virtual GameInfo GetGameInfo(string absoluteId) => throw new NotImplementedException();
+    public virtual GameInfo GetGame(string absoluteId) => throw new NotImplementedException();
 
     public virtual IReadOnlyList<GameInfo> GetGames(out IReadOnlyList<string> errorGameNames)
     {

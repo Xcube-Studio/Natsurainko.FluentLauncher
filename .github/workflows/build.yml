@@ -218,6 +218,9 @@ jobs:
         with:
           name: .msixupload
           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
+          
+      - name: Delete arm Pkg
+        run: find "${{ github.workspace }}/${{env.Artifacts_Path}}" -name '*arm*' -exec rm {} \;
   
       - name: Pre-Publish MSStore
         uses: trympet/microsoft-store-flight-action@v1
@@ -260,7 +263,10 @@ jobs:
         with:
           name: .msixupload
           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
-      
+          
+      - name: Delete arm Pkg
+        run: find "${{ github.workspace }}/${{env.Artifacts_Path}}" -name '*arm*' -exec rm {} \;
+        
       - name: Publish MSStore
         uses: isaacrlevin/windows-store-action@1.0
         with:

@@ -1,0 +1,39 @@
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
+using Nrk.FluentCore.Classes.Datas.Launch;
+using System;
+
+namespace Natsurainko.FluentLauncher.Views.Cores;
+
+public sealed partial class ManageNavigationPage : Page
+{
+    private GameInfo _gameInfo;
+
+    public ManageNavigationPage()
+    {
+        this.InitializeComponent();
+    }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        base.OnNavigatedTo(e);
+        _gameInfo = e.Parameter as GameInfo;
+
+        BreadcrumbBar.ItemsSource = new string[]
+        {
+            "Cores Manage",
+            _gameInfo.Name
+        };
+    }
+
+    private void BreadcrumbBar_ItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
+    {
+        if (args.Index.Equals(0))
+            ShellPage.ContentFrame.GoBack();
+    }
+
+    private void NavigationView_ItemInvoked(NavigationView _, NavigationViewItemInvokedEventArgs args)
+    {
+        contentFrame.Navigate(Type.GetType(((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()));
+    }
+}

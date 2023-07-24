@@ -2,6 +2,7 @@
 using AppSettingsManagement.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
+using Microsoft.Windows.ApplicationModel.Resources;
 using Natsurainko.FluentLauncher.Services;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Download;
@@ -10,36 +11,13 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
 using System;
 using System.Text;
 
 namespace Natsurainko.FluentLauncher;
-/*
-public partial class App
-{
-    [DllImport("Microsoft.UI.Xaml.dll")]
-    private static extern void XamlCheckProcessRequirements();
-
-    [STAThread]
-    static int Main(string[] args)
-    {
-        if (args.Length != 0)
-            return WorkingProcessEntryPoint.Main(args);
-
-        XamlCheckProcessRequirements();
-        WinRT.ComWrappersSupport.InitializeComWrappers();
-
-        Microsoft.UI.Xaml.Application.Start((p) =>
-        {
-            SynchronizationContext.SetSynchronizationContext(new DispatcherQueueSynchronizationContext(DispatcherQueue.GetForCurrentThread()));
-            new App();
-        });
-
-        return 0;
-    }
-}*/
 
 public partial class App : Application
 {

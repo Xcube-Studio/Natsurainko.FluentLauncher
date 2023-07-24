@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Views.Cores;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -85,8 +86,5 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     }
 
     [RelayCommand]
-    public void OpneCoreView()
-    {
-
-    }
+    public void OpneCoreManage(GameInfo gameInfo) => Views.ShellPage.ContentFrame.Navigate(typeof(ManageNavigationPage), gameInfo);
 }

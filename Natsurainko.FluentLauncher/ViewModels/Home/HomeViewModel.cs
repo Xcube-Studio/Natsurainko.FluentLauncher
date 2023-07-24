@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Classes.Datas.Authenticate;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using System.Collections.ObjectModel;
@@ -30,6 +31,8 @@ partial class HomeViewModel : ObservableObject
     private readonly AccountService _accountService;
     private readonly LaunchService _launchService;
 
+    private string _coreNotSelected = ResourceUtils.GetValue("Home", "HomePage", "_NoCore");
+
     public HomeViewModel(GameService gameService, AccountService accountService, LaunchService launchService)
     {
         _accountService = accountService;
@@ -49,7 +52,7 @@ partial class HomeViewModel : ObservableObject
         });
     }
 
-    public string LaunchButtonTag => ActiveGameInfo is null ? "Core Not Selected" : ActiveGameInfo.AbsoluteId;
+    public string LaunchButtonTag => ActiveGameInfo is null ? _coreNotSelected : ActiveGameInfo.AbsoluteId;
 
     public Visibility NoAccountTag => ActiveAccount is null ? Visibility.Visible : Visibility.Collapsed;
 

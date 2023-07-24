@@ -48,10 +48,10 @@
                                 CornerRadius="4" />
                             <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                 <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding ActiveAccount.Name}" />
-                                <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Style="{ThemeResource CaptionTextBlockStyle}">
-                                    <Run Text="{Binding ActiveAccount.Type}" />
-                                    <Run Text="Account" />
-                                </TextBlock>
+                                <TextBlock
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                    Text="{Binding ActiveAccount.Type, Converter={ThemeResource AccountInfoConverter}}" />
                             </StackPanel>
                         </Grid>
                     </labs:SettingsExpander.Header>
@@ -66,10 +66,10 @@
                         </labs:SettingsCard>
                         <labs:SettingsCard>
                             <labs:SettingsCard.Visibility>
-                                <Binding Path="ActiveAccount">
-                                    <Binding.Converter>
-                                        <converters:AccountInfoConverter NeedProperty="LastRefreshVisibility" />
-                                    </Binding.Converter>
+                                <Binding Converter="{ThemeResource AccountInfoConverter}" Path="ActiveAccount">
+                                    <Binding.ConverterParameter>
+                                        <x:String>LastRefreshVisibility</x:String>
+                                    </Binding.ConverterParameter>
                                 </Binding>
                             </labs:SettingsCard.Visibility>
 
@@ -78,10 +78,10 @@
                                     <Run Text="Last Refresh Time:" />
                                     <Run>
                                         <Run.Text>
-                                            <Binding Path="ActiveAccount">
-                                                <Binding.Converter>
-                                                    <converters:AccountInfoConverter NeedProperty="LastRefreshTime" />
-                                                </Binding.Converter>
+                                            <Binding Converter="{ThemeResource AccountInfoConverter}" Path="ActiveAccount">
+                                                <Binding.ConverterParameter>
+                                                    <x:String>LastRefreshTime</x:String>
+                                                </Binding.ConverterParameter>
                                             </Binding>
                                         </Run.Text>
                                     </Run>

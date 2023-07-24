@@ -27,10 +27,10 @@
                 <StackPanel VerticalAlignment="Bottom">
                     <HyperlinkButton Background="Transparent" Command="{Binding AccountCommand}">
                         <StackPanel>
-                            <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Style="{ThemeResource CaptionTextBlockStyle}">
-                                <Run Text="{Binding ActiveAccount.Type}" />
-                                <Run x:Uid="Home_Account" Text="Account" />
-                            </TextBlock>
+                            <TextBlock
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                Text="{Binding ActiveAccount.Type, Converter={ThemeResource AccountInfoConverter}}" />
                             <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Text="{Binding ActiveAccount.Name}" />
                         </StackPanel>
                     </HyperlinkButton>
@@ -72,6 +72,7 @@
                         </Grid.ColumnDefinitions>
                         <FontIcon FontSize="14" Glyph="&#xF5B0;" />
                         <TextBlock
+                            x:Uid="Home_HomePage_LaunchButton"
                             Grid.Column="2"
                             Style="{ThemeResource BodyStrongTextBlockStyle}"
                             Text="Launch" />

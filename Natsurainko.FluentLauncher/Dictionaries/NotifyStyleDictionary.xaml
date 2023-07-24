@@ -88,10 +88,8 @@
                         HorizontalAlignment="Left"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Style="{ThemeResource CaptionTextBlockStyle}"
-                        TextTrimming="CharacterEllipsis">
-                        <Run Text="{Binding Type}" />
-                        <Run Text="Account" />
-                    </TextBlock>
+                        Text="{Binding Type, Converter={ThemeResource AccountInfoConverter}}"
+                        TextTrimming="CharacterEllipsis" />
                 </Grid>
             </ListViewItem>
         </StackPanel>

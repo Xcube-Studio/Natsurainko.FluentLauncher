@@ -35,6 +35,7 @@
                 <Setter Property="Opacity" Value="{ThemeResource ExpanderSplitterOpacity}" />
             </Style>
 
+            <converters:AccountInfoConverter x:Key="AccountInfoConverter" />
             <converters:JavaInfoConverter x:Key="JavaInfoConverter" />
             <converters:IconConverter x:Key="IconConverter" />
             <converters:GameCoreTagConverter x:Key="GameCoreTagConverter" />

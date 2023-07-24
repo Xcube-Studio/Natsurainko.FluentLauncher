@@ -56,14 +56,13 @@
                             Style="{ThemeResource CaptionTextBlockStyle}"
                             TextTrimming="CharacterEllipsis"
                             TextWrapping="WrapWholeWords">
-                            <Run Text="{Binding Type}" />
-                            <Run Text="Account" />
+                            <Run Text="{Binding Type, Converter={ThemeResource AccountInfoConverter}}" />
                             <Run>
                                 <Run.Text>
-                                    <Binding>
-                                        <Binding.Converter>
-                                            <converters:AccountInfoConverter NeedProperty="YggdrasilServerUrl" />
-                                        </Binding.Converter>
+                                    <Binding Converter="{ThemeResource AccountInfoConverter}">
+                                        <Binding.ConverterParameter>
+                                            <x:String>YggdrasilServerUrl</x:String>
+                                        </Binding.ConverterParameter>
                                     </Binding>
                                 </Run.Text>
                             </Run>

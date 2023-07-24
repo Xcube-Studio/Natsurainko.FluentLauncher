@@ -21,6 +21,7 @@
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <AppxBundle>Never</AppxBundle>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
 
   </PropertyGroup>
 
@@ -29,17 +30,19 @@
       <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
 
-  <!-- Multilingual App Toolkit -->
+  <!-- Multilingual App Toolkit
   <PropertyGroup Label="MultilingualAppToolkit">
     <MultilingualAppToolkitVersion>4.0</MultilingualAppToolkitVersion>
     <MultilingualFallbackLanguage>en-US</MultilingualFallbackLanguage>
     <TranslationReport Condition="'$(Configuration)' == 'Release'">true</TranslationReport>
     <SuppressPseudoWarning Condition="'$(Configuration)' == 'Debug'">true</SuppressPseudoWarning>
-  </PropertyGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.PriResources.targets" Label="MultilingualAppToolkit" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\v$(MultilingualAppToolkitVersion)\Microsoft.Multilingual.PriResources.targets')" />
+  </PropertyGroup>  
+  
+    <Import Project="$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.PriResources.targets" Label="MultilingualAppToolkit" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\v$(MultilingualAppToolkitVersion)\Microsoft.Multilingual.PriResources.targets')" />
   <Target Name="MATPrerequisite" BeforeTargets="PrepareForBuild" Condition="!Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.PriResources.targets')" Label="MultilingualAppToolkit">
     <Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
   </Target>
+  -->
   <ItemGroup>
     <None Remove="Dictionaries\CoresLayoutTemplateDictionary.xaml" />
     <None Remove="Views\AuthenticationWizard\BrowserMicrosoftAuthPage.xaml" />
@@ -52,13 +55,10 @@
     <None Remove="Views\Common\AuthenticationWizardDialog.xaml" />
     <None Remove="Views\Common\CopyrightLicenseDialog.xaml" />
     <None Remove="Views\Common\SwitchAccountDialog.xaml" />
+    <None Remove="Views\Cores\ManageNavigationPage.xaml" />
+    <None Remove="Views\Cores\Manage\CoreSettingsPage.xaml" />
     <None Remove="Views\Home\NewHomePage.xaml" />
     <None Remove="Views\NotifyStyleDictionary.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <XliffResource Include="MultilingualResources\Natsurainko.FluentLauncher.ru-RU.xlf" />
-    <XliffResource Include="MultilingualResources\Natsurainko.FluentLauncher.zh-Hans.xlf" />
-    <XliffResource Include="MultilingualResources\Natsurainko.FluentLauncher.zh-Hant.xlf" />
   </ItemGroup>
 
   <!-- NuGet Packages -->
@@ -93,6 +93,18 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Natsurainko.FluentCore (v4)\Natsurainko.FluentCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Cores\Manage\CoreSettingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Cores\ManageNavigationPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>
@@ -178,5 +190,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="cd ../&#xD;&#xA;call Localizer.bat &lt; nul" />
+  </Target>
 
 </Project>

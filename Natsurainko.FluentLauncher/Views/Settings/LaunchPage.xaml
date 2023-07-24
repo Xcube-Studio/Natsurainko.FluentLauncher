@@ -31,7 +31,7 @@
                 </win:StackPanel.ChildrenTransitions>
 
                 <TextBlock
-                    x:Uid="Settings_Launch_Item_16"
+                    x:Uid="Settings_LaunchPage_T1"
                     Margin="1,0,0,4"
                     FontSize="16"
                     FontWeight="Bold"
@@ -40,12 +40,12 @@
                 <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe8b7;}">
 
                     <labs:SettingsExpander.Header>
-                        <TextBlock x:Uid="Settings_Launch_Header_1" Text=".minecraft Folder" />
+                        <TextBlock x:Uid="Settings_LaunchPage_H1" Text=".minecraft Folder" />
                     </labs:SettingsExpander.Header>
 
                     <labs:SettingsExpander.Description>
                         <TextBlock
-                            x:Uid="Settings_Launch_Subtitle_1"
+                            x:Uid="Settings_LaunchPage_D1"
                             FontSize="14"
                             Text="Where to store the core of your game" />
                     </labs:SettingsExpander.Description>
@@ -53,7 +53,7 @@
                     <labs:SettingsExpander.Items>
                         <labs:SettingsCard Visibility="{Binding IsMinecraftFoldersEmpty, Converter={StaticResource InvertBoolConverter}}">
                             <labs:SettingsCard.Header>
-                                <TextBlock x:Uid="Settings_Launch_Item_1" Text="Current .minecraft folder:" />
+                                <TextBlock x:Uid="Settings_LaunchPage_SH1" Text="Current .minecraft folder:" />
                             </labs:SettingsCard.Header>
 
                             <ComboBox
@@ -75,7 +75,7 @@
 
                         <labs:SettingsCard>
                             <labs:SettingsCard.Header>
-                                <TextBlock x:Uid="Settings_Launch_Item_2" Text="Open the .minecraft folder:" />
+                                <TextBlock x:Uid="Settings_LaunchPage_SH2" Text="Open the .minecraft folder:" />
                             </labs:SettingsCard.Header>
 
                             <Button Command="{Binding BrowserFolderCommand}">
@@ -93,7 +93,7 @@
                         <labs:SettingsCard Visibility="{Binding IsMinecraftFoldersEmpty, Converter={StaticResource InvertBoolConverter}}">
                             <labs:SettingsCard.Header>
                                 <TextBlock
-                                    x:Uid="Settings_Launch_Item_3"
+                                    x:Uid="Settings_LaunchPage_SH3"
                                     VerticalAlignment="Center"
                                     Text="Remove the current .minecraft folder:" />
                             </labs:SettingsCard.Header>
@@ -122,12 +122,12 @@
 
                 <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe8f1;}">
                     <labs:SettingsExpander.Header>
-                        <TextBlock x:Uid="Settings_Launch_Header_2" Text="Java Runtime" />
+                        <TextBlock x:Uid="Settings_LaunchPage_H2" Text="Java Runtime" />
                     </labs:SettingsExpander.Header>
 
                     <labs:SettingsExpander.Description>
                         <TextBlock
-                            x:Uid="Settings_Launch_Subtitle_2"
+                            x:Uid="Settings_LaunchPage_D2"
                             FontSize="14"
                             Text="Executable to launch the game" />
                     </labs:SettingsExpander.Description>
@@ -135,7 +135,7 @@
                     <labs:SettingsExpander.Items>
                         <labs:SettingsCard Visibility="{Binding IsJavasEmpty, Converter={StaticResource InvertBoolConverter}}">
                             <labs:SettingsCard.Header>
-                                <TextBlock x:Uid="Settings_Launch_Item_4" Text="Current Java runtime:" />
+                                <TextBlock x:Uid="Settings_LaunchPage_SH4" Text="Current Java runtime:" />
                             </labs:SettingsCard.Header>
 
                             <ComboBox
@@ -185,7 +185,7 @@
 
                         <labs:SettingsCard>
                             <labs:SettingsCard.Header>
-                                <TextBlock x:Uid="Settings_Launch_Item_5" Text="Open the Java runtime:" />
+                                <TextBlock x:Uid="Settings_LaunchPage_SH5" Text="Open the Java runtime:" />
                             </labs:SettingsCard.Header>
 
                             <StackPanel Orientation="Horizontal">
@@ -220,7 +220,7 @@
                         <labs:SettingsCard Visibility="{Binding IsJavasEmpty, Converter={StaticResource InvertBoolConverter}}">
                             <labs:SettingsCard.Header>
 
-                                <TextBlock x:Uid="Settings_Launch_Item_7" Text="Remove the current Java runtime:" />
+                                <TextBlock x:Uid="Settings_LaunchPage_SH6" Text="Remove the current Java runtime:" />
                             </labs:SettingsCard.Header>
 
                             <Button
@@ -244,7 +244,7 @@
 
                         <labs:SettingsCard>
                             <labs:SettingsCard.Header>
-                                <TextBlock x:Uid="Settings_Launch_Item_6" Text="Automatically select the suitable Java:" />
+                                <TextBlock x:Uid="Settings_LaunchPage_SH7" Text="Automatically select the suitable Java:" />
                             </labs:SettingsCard.Header>
 
                             <ToggleSwitch IsOn="{Binding EnableAutoJava, Mode=TwoWay}" />
@@ -252,7 +252,7 @@
 
                         <labs:SettingsCard>
                             <labs:SettingsCard.Header>
-                                <TextBlock x:Uid="Settings_Launch_Item_8" Text="JVM memory:" />
+                                <TextBlock x:Uid="Settings_LaunchPage_SH8" Text="JVM memory:" />
                             </labs:SettingsCard.Header>
 
                             <NumberBox
@@ -264,7 +264,7 @@
 
                         <labs:SettingsCard>
                             <labs:SettingsCard.Header>
-                                <TextBlock x:Uid="Settings_Launch_Item_9" Text="Automatically allocate JVM memory:" />
+                                <TextBlock x:Uid="Settings_LaunchPage_SH9" Text="Automatically allocate JVM memory:" />
                             </labs:SettingsCard.Header>
 
                             <ToggleSwitch x:Name="AutoJVMMemory" IsOn="{Binding EnableAutoMemory, Mode=TwoWay}" />
@@ -274,12 +274,12 @@
 
                 <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe737;}">
                     <labs:SettingsExpander.Header>
-                        <TextBlock x:Uid="Settings_Launch_Header_3" Text="Game Settings" />
+                        <TextBlock x:Uid="Settings_LaunchPage_H3" Text="Game Settings" />
                     </labs:SettingsExpander.Header>
 
                     <labs:SettingsExpander.Description>
                         <TextBlock
-                            x:Uid="Settings_Launch_Subtitle_3"
+                            x:Uid="Settings_LaunchPage_D3"
                             FontSize="14"
                             Text="Game play settings" />
                     </labs:SettingsExpander.Description>
@@ -288,7 +288,7 @@
                         <labs:SettingsCard>
                             <labs:SettingsCard.Header>
 
-                                <TextBlock x:Uid="Settings_Launch_Item_10" Text="Global core independent:" />
+                                <TextBlock x:Uid="Settings_LaunchPage_SH10" Text="Global core independent:" />
                             </labs:SettingsCard.Header>
 
                             <ToggleSwitch IsOn="{Binding EnableIndependencyCore, Mode=TwoWay}" />
@@ -297,7 +297,7 @@
                         <labs:SettingsCard>
                             <labs:SettingsCard.Header>
 
-                                <TextBlock x:Uid="Settings_Launch_Item_11" Text="Full screen mode:" />
+                                <TextBlock x:Uid="Settings_LaunchPage_SH11" Text="Full screen mode:" />
                             </labs:SettingsCard.Header>
 
                             <ToggleSwitch IsOn="{Binding EnableFullScreen, Mode=TwoWay}" />
@@ -305,7 +305,7 @@
 
                         <labs:SettingsCard>
                             <labs:SettingsCard.Header>
-                                <TextBlock x:Uid="Settings_Launch_Item_12" Text="Game window resolution:" />
+                                <TextBlock x:Uid="Settings_LaunchPage_SH12" Text="Game window resolution:" />
                             </labs:SettingsCard.Header>
 
                             <StackPanel Orientation="Horizontal">
@@ -326,7 +326,7 @@
 
                         <labs:SettingsCard>
                             <labs:SettingsCard.Header>
-                                <TextBlock x:Uid="Settings_Launch_Item_13" Text="Server address:" />
+                                <TextBlock x:Uid="Settings_LaunchPage_SH13" Text="Server address:" />
                             </labs:SettingsCard.Header>
 
                             <TextBox Width="400" Text="{Binding GameServerAddress, Mode=TwoWay}">
@@ -338,7 +338,7 @@
 
                         <labs:SettingsCard>
                             <labs:SettingsCard.Header>
-                                <TextBlock x:Uid="Settings_Launch_Item_14" Text="Game window title:" />
+                                <TextBlock x:Uid="Settings_LaunchPage_SH14" Text="Game window title:" />
                             </labs:SettingsCard.Header>
 
                             <TextBox Width="400" Text="{Binding GameWindowTitle, Mode=TwoWay}">
@@ -351,14 +351,14 @@
                 </labs:SettingsExpander>
 
                 <TextBlock
-                    x:Uid="Settings_Launch_Item_15"
+                    x:Uid="Settings_LaunchPage_T2"
                     Margin="1,20,0,4"
                     FontSize="16"
                     FontWeight="Bold"
                     Text="Game specific settings" />
 
                 <labs:SettingsCard
-                    x:Uid="Settings_Launch_Item_17"
+                    x:Uid="Settings_LaunchPage_H4"
                     ActionIconToolTip="Go to Cores page"
                     Command="{Binding ActivateCoresPageCommand}"
                     Header="Edit game specific settings"

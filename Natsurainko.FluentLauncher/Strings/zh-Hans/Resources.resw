@@ -51,6 +51,33 @@
     <data name="ShellPage_NV_Item_5.Content" xml:space="preserve">
         <value>设置</value>
     </data>
+    <data name="Activities_ActivitiesNavigationPage_NV_Item1.Content" xml:space="preserve">
+        <value>启动任务</value>
+    </data>
+    <data name="Activities_ActivitiesNavigationPage_NV_Item2.Content" xml:space="preserve">
+        <value>下载任务</value>
+    </data>
+    <data name="Activities_ActivitiesNavigationPage_NV_Item3.Content" xml:space="preserve">
+        <value>新闻</value>
+    </data>
+    <data name="Activities_ActivitiesNavigationPage_NV_Item4.Content" xml:space="preserve">
+        <value>应用</value>
+    </data>
+    <data name="Cores_CoresPage_SearchBox.PlaceholderText" xml:space="preserve">
+        <value>搜索核心</value>
+    </data>
+    <data name="Cores_CoresPage_Text1.Text" xml:space="preserve">
+        <value>过滤条件：</value>
+    </data>
+    <data name="Cores_CoresPage_Text2.Text" xml:space="preserve">
+        <value>排序方式：</value>
+    </data>
+    <data name="Cores_CoresPage__Items1" xml:space="preserve">
+        <value>全部;正式版;快照版;远古版</value>
+    </data>
+    <data name="Cores_CoresPage__Items2" xml:space="preserve">
+        <value>名称;启动日期</value>
+    </data>
     <data name="Cores_ManageNavigationPage_NV_Item_1.Content" xml:space="preserve">
         <value>核心设置</value>
     </data>
@@ -131,6 +158,84 @@
     </data>
     <data name="Settings_AboutPage_D6.Text" xml:space="preserve">
         <value>提供下载源</value>
+    </data>
+    <data name="Settings_AccountPage_T1.Text" xml:space="preserve">
+        <value>账户</value>
+    </data>
+    <data name="Settings_AccountPage_T2.Text" xml:space="preserve">
+        <value>账户设置</value>
+    </data>
+    <data name="Settings_AccountPage_H1.Text" xml:space="preserve">
+        <value>添加新帐户：</value>
+    </data>
+    <data name="Settings_AccountPage_H2.Text" xml:space="preserve">
+        <value>使用 Demo 模式启动游戏：</value>
+    </data>
+    <data name="Settings_AccountPage_H3.Text" xml:space="preserve">
+        <value>自动刷新帐户：</value>
+    </data>
+    <data name="Settings_AccountPage_D1.Text" xml:space="preserve">
+        <value>每次启动前自动刷新验证令牌</value>
+    </data>
+    <data name="Settings_AccountPage_SH1.Text" xml:space="preserve">
+        <value>最后刷新时间：</value>
+    </data>
+    <data name="Settings_AppearancePage_T1.Text" xml:space="preserve">
+        <value>语言</value>
+    </data>
+    <data name="Settings_AppearancePage_T2.Text" xml:space="preserve">
+        <value>外观设置</value>
+    </data>
+    <data name="Settings_AppearancePage_H1.Text" xml:space="preserve">
+        <value>语言设置</value>
+    </data>
+    <data name="Settings_AppearancePage_H2.Text" xml:space="preserve">
+        <value>显示主题</value>
+    </data>
+    <data name="Settings_AppearancePage_H3.Text" xml:space="preserve">
+        <value>背景</value>
+    </data>
+    <data name="Settings_AppearancePage_H4.Text" xml:space="preserve">
+        <value>导航栏显示模式</value>
+    </data>
+    <data name="Settings_AppearancePage_H5.Text" xml:space="preserve">
+        <value>使用新主页</value>
+    </data>
+    <data name="Settings_AppearancePage_D1.Text" xml:space="preserve">
+        <value>深色和浅色主题，重启应用后生效</value>
+    </data>
+    <data name="Settings_AppearancePage_D2.Text" xml:space="preserve">
+        <value>应用程序背景设置。</value>
+    </data>
+    <data name="Settings_AppearancePage_D3.Text" xml:space="preserve">
+        <value>导航栏布局</value>
+    </data>
+    <data name="Settings_AppearancePage__Items1" xml:space="preserve">
+        <value>跟随系统;亮色;暗色</value>
+    </data>
+    <data name="Settings_AppearancePage__Items2" xml:space="preserve">
+        <value>云母;亚克力;纯色;图像</value>
+    </data>
+    <data name="Settings_AppearancePage__Items3" xml:space="preserve">
+        <value>默认;最小化</value>
+    </data>
+    <data name="Settings_DownloadPage_T1.Text" xml:space="preserve">
+        <value>下载</value>
+    </data>
+    <data name="Settings_DownloadPage_H1.Text" xml:space="preserve">
+        <value>当前下载源：</value>
+    </data>
+    <data name="Settings_DownloadPage_H2.Text" xml:space="preserve">
+        <value>最大下载线程数：</value>
+    </data>
+    <data name="Settings_DownloadPage_H3.Text" xml:space="preserve">
+        <value>启用大文件分片下载：</value>
+    </data>
+    <data name="Settings_DownloadPage_D1.Text" xml:space="preserve">
+        <value>请根据实际网络环境进行优化调整</value>
+    </data>
+    <data name="Settings_DownloadPage_D2.Text" xml:space="preserve">
+        <value>遇到大文件时可以有效加速</value>
     </data>
     <data name="Settings_LaunchPage_T1.Text" xml:space="preserve">
         <value>全局启动设置</value>

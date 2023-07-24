@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using System;
 
@@ -21,7 +22,7 @@ public sealed partial class ManageNavigationPage : Page
 
         BreadcrumbBar.ItemsSource = new string[]
         {
-            "Cores Manage",
+            ResourceUtils.GetValue("Cores", "ManageNavigationPage", "_BreadcrumbBar_First"),
             _gameInfo.Name
         };
     }

@@ -25,7 +25,7 @@
                 </win:StackPanel.ChildrenTransitions>
 
                 <TextBlock
-                    x:Uid="Settings_Download_Header"
+                    x:Uid="Settings_DownloadPage_T1"
                     Margin="1,0,0,4"
                     FontSize="16"
                     FontWeight="Bold"
@@ -33,7 +33,7 @@
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xEBD3;}">
                     <labs:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_Download_Item_1" Text="Current download sources:" />
+                        <TextBlock x:Uid="Settings_DownloadPage_H1" Text="Current download sources:" />
                     </labs:SettingsCard.Header>
 
                     <ComboBox SelectedItem="{Binding CurrentDownloadSource, Mode=TwoWay}">
@@ -45,10 +45,13 @@
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
                     <labs:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_Download_Item_2" Text="Maximum number of download threads:" />
+                        <TextBlock x:Uid="Settings_DownloadPage_H2" Text="Maximum number of download threads:" />
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock FontSize="14" Text="Please optimize and adjust according to the actual network environment" />
+                        <TextBlock
+                            x:Uid="Settings_DownloadPage_D1"
+                            FontSize="14"
+                            Text="Please optimize and adjust according to the actual network environment" />
                     </labs:SettingsCard.Description>
 
                     <Slider
@@ -64,10 +67,13 @@
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xEC4A;}">
                     <labs:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_Download_Item_3" Text="Enable fragmented download of large files:" />
+                        <TextBlock x:Uid="Settings_DownloadPage_H3" Text="Enable fragmented download of large files:" />
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock FontSize="14" Text="Can effectively speed up when encountering large files" />
+                        <TextBlock
+                            x:Uid="Settings_DownloadPage_D2"
+                            FontSize="14"
+                            Text="Can effectively speed up when encountering large files" />
                     </labs:SettingsCard.Description>
                     <ToggleSwitch IsOn="{Binding EnableFragmentDownload, Mode=TwoWay}" />
                 </labs:SettingsCard>

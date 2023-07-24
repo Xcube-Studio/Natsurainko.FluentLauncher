@@ -15,4 +15,9 @@ internal static class ResourceUtils
     {
         return resourceManager.MainResourceMap.GetValue($"Resources/{string.Join('_', strings)}").ValueAsString;
     }
+
+    public static string[] GetItems(params string[] strings)
+    {
+        return resourceManager.MainResourceMap.GetValue($"Resources/{string.Join('_', strings)}").ValueAsString.Split(";");
+    }
 }

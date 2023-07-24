@@ -52,7 +52,7 @@
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem
-                    x:Uid="Settings_NavigationPage_Item_5"
+                    x:Uid="Settings_NavigationPage_NV_Item_5"
                     Content="About"
                     Tag="Natsurainko.FluentLauncher.Views.Settings.AboutPage">
                     <NavigationViewItem.Icon>

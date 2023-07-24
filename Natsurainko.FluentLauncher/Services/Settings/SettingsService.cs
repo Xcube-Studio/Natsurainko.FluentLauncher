@@ -54,14 +54,12 @@ public partial class SettingsService : SettingsContainer, IFluentCoreSettingsSer
     [SettingItem(typeof(double), "AppWindowHeight", Default = 500, Converter = typeof(JsonStringConverter<double>))]
     [SettingItem(typeof(double), "AppWindowWidth", Default = 950, Converter = typeof(JsonStringConverter<double>))]
     [SettingItem(typeof(bool), "FinishGuide", Default = false, Converter = typeof(JsonStringConverter<bool>))]
-    //[SettingItem(typeof(string), "CoresSortBy", Default = "Name", Converter = typeof(JsonStringConverter<string>))]
-    //[SettingItem(typeof(string), "CoresFilter", Default = "All", Converter = typeof(JsonStringConverter<string>))]
-    [SettingItem(typeof(uint), "SettingsVersion", Default = 0u)]
 
     [SettingItem(typeof(int), "CoresSortByIndex", Default = 0, Converter = typeof(JsonStringConverter<int>))]
     [SettingItem(typeof(int), "CoresFilterIndex", Default = 0, Converter = typeof(JsonStringConverter<int>))]
     [SettingItem(typeof(int), "CoresLayoutIndex", Default = 0, Converter = typeof(JsonStringConverter<int>))]
 
+    [SettingItem(typeof(uint), "SettingsVersion", Default = 0u)]
     public SettingsService(ISettingsStorage storage) : base(storage)
     {
         var appsettings = ApplicationData.Current.LocalSettings;

@@ -47,6 +47,12 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     [ObservableProperty]
     private string searchBoxInput;
 
+    [ObservableProperty]
+    private string[] filters = ResourceUtils.GetItems("Cores", "CoresPage", "_Items1");
+
+    [ObservableProperty]
+    private string[] sorts = ResourceUtils.GetItems("Cores", "CoresPage", "_Items2");
+
     public ReadOnlyObservableCollection<GameInfo> GameInfos { get; init; }
 
     [ObservableProperty]

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,6 +29,15 @@ partial class AppearanceViewModel : SettingsViewModelBase, ISettingsViewModel
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.UseNewHomePage))]
     private bool useNewHomePage;
+
+    [ObservableProperty]
+    private string[] displayThemes = ResourceUtils.GetItems("Settings", "AppearancePage", "_Items1");
+
+    [ObservableProperty]
+    private string[] backgrounds = ResourceUtils.GetItems("Settings", "AppearancePage", "_Items2");
+
+    [ObservableProperty]
+    private string[] navigationViewDisplayModes = ResourceUtils.GetItems("Settings", "AppearancePage", "_Items3");
 
     public List<string> SupportedLanguages => LanguageResources.SupportedLanguages;
 

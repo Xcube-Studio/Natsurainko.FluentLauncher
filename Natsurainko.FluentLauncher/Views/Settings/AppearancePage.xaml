@@ -20,6 +20,7 @@
             <StackPanel MaxWidth="1000" Spacing="4">
 
                 <TextBlock
+                    x:Uid="Settings_AppearancePage_T1"
                     Margin="1,0,0,4"
                     FontSize="16"
                     FontWeight="Bold"
@@ -27,7 +28,7 @@
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xf2b7;}">
                     <labs:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_Launch_Header_4" Text="Language Settings" />
+                        <TextBlock x:Uid="Settings_AppearancePage_H1" Text="Language Settings" />
                     </labs:SettingsCard.Header>
 
                     <ComboBox ItemsSource="{Binding SupportedLanguages}" SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}">
@@ -39,6 +40,7 @@
                 </labs:SettingsCard>
 
                 <TextBlock
+                    x:Uid="Settings_AppearancePage_T2"
                     Margin="1,20,0,4"
                     FontSize="16"
                     FontWeight="Bold"
@@ -46,42 +48,40 @@
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xe706;}">
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="Display Theme" />
+                        <TextBlock x:Uid="Settings_AppearancePage_H2" Text="Display Theme" />
                     </labs:SettingsCard.Header>
 
                     <labs:SettingsCard.Description>
-                        <TextBlock FontSize="14" Text="Dark and light color themes, effective after restarting the app" />
+                        <TextBlock
+                            x:Uid="Settings_AppearancePage_D1"
+                            FontSize="14"
+                            Text="Dark and light color themes, effective after restarting the app" />
                     </labs:SettingsCard.Description>
 
-                    <ComboBox SelectedIndex="{Binding DisplayTheme, Mode=TwoWay}">
+                    <ComboBox ItemsSource="{Binding DisplayThemes}" SelectedIndex="{Binding DisplayTheme, Mode=TwoWay}">
                         <i:Interaction.Behaviors>
                             <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
                             <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                         </i:Interaction.Behaviors>
-                        <x:String>System</x:String>
-                        <x:String>Light</x:String>
-                        <x:String>Dark</x:String>
                     </ComboBox>
                 </labs:SettingsCard>
 
                 <labs:SettingsExpander x:Name="PreferenceExpander">
                     <labs:SettingsExpander.Header>
-                        <TextBlock Text="Background" />
+                        <TextBlock x:Uid="Settings_AppearancePage_H3" Text="Background" />
                     </labs:SettingsExpander.Header>
 
                     <labs:SettingsExpander.Description>
-                        <TextBlock FontSize="14" Text="Application background settings." />
+                        <TextBlock
+                            x:Uid="Settings_AppearancePage_D2"
+                            FontSize="14"
+                            Text="Application background settings." />
                     </labs:SettingsExpander.Description>
 
                     <labs:SettingsExpander.HeaderIcon>
                         <FontIcon Glyph="&#xE91B;" />
                     </labs:SettingsExpander.HeaderIcon>
-                    <ComboBox SelectedIndex="0">
-                        <x:String>Mica</x:String>
-                        <x:String>Acrylic</x:String>
-                        <x:String>Solid</x:String>
-                        <x:String>Image</x:String>
-                    </ComboBox>
+                    <ComboBox ItemsSource="{Binding Backgrounds}" SelectedIndex="0" />
 
                     <labs:SettingsExpander.Items>
                         <labs:SettingsCard Header="TintLuminosityOpacity" Tag="Acrylic">
@@ -172,26 +172,27 @@
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE700;}">
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="NavigationView Display Mode" />
+                        <TextBlock x:Uid="Settings_AppearancePage_H4" Text="NavigationView Display Mode" />
                     </labs:SettingsCard.Header>
 
                     <labs:SettingsCard.Description>
-                        <TextBlock FontSize="14" Text="NavigationView layout" />
+                        <TextBlock
+                            x:Uid="Settings_AppearancePage_D3"
+                            FontSize="14"
+                            Text="NavigationView layout" />
                     </labs:SettingsCard.Description>
 
-                    <ComboBox SelectedIndex="{Binding NavigationViewDisplayMode, Mode=TwoWay}">
+                    <ComboBox ItemsSource="{Binding NavigationViewDisplayModes}" SelectedIndex="{Binding NavigationViewDisplayMode, Mode=TwoWay}">
                         <i:Interaction.Behaviors>
                             <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
                             <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                         </i:Interaction.Behaviors>
-                        <x:String>Normal</x:String>
-                        <x:String>Minimum</x:String>
                     </ComboBox>
                 </labs:SettingsCard>
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE80F;}">
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="Use new homepage" />
+                        <TextBlock x:Uid="Settings_AppearancePage_H5" Text="Use new homepage" />
                     </labs:SettingsCard.Header>
 
                     <ToggleSwitch IsOn="{Binding UseNewHomePage, Mode=TwoWay}" />

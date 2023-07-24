@@ -51,6 +51,33 @@
     <data name="ShellPage_NV_Item_5.Content" xml:space="preserve">
         <value>Settings</value>
     </data>
+    <data name="Activities_ActivitiesNavigationPage_NV_Item1.Content" xml:space="preserve">
+        <value>Launch Task</value>
+    </data>
+    <data name="Activities_ActivitiesNavigationPage_NV_Item2.Content" xml:space="preserve">
+        <value>Download Task</value>
+    </data>
+    <data name="Activities_ActivitiesNavigationPage_NV_Item3.Content" xml:space="preserve">
+        <value>News</value>
+    </data>
+    <data name="Activities_ActivitiesNavigationPage_NV_Item4.Content" xml:space="preserve">
+        <value>Application</value>
+    </data>
+    <data name="Cores_CoresPage_SearchBox.PlaceholderText" xml:space="preserve">
+        <value>Search Core</value>
+    </data>
+    <data name="Cores_CoresPage_Text1.Text" xml:space="preserve">
+        <value>Filter criteria: </value>
+    </data>
+    <data name="Cores_CoresPage_Text2.Text" xml:space="preserve">
+        <value>Sort by: </value>
+    </data>
+    <data name="Cores_CoresPage__Items1" xml:space="preserve">
+        <value>All;Release;Snapshot;Old</value>
+    </data>
+    <data name="Cores_CoresPage__Items2" xml:space="preserve">
+        <value>Name;Launch Date</value>
+    </data>
     <data name="Cores_ManageNavigationPage_NV_Item_1.Content" xml:space="preserve">
         <value>Cores Settings</value>
     </data>
@@ -131,6 +158,84 @@
     </data>
     <data name="Settings_AboutPage_D6.Text" xml:space="preserve">
         <value>Provide Download Source</value>
+    </data>
+    <data name="Settings_AccountPage_T1.Text" xml:space="preserve">
+        <value>Accounts</value>
+    </data>
+    <data name="Settings_AccountPage_T2.Text" xml:space="preserve">
+        <value>Account Settings</value>
+    </data>
+    <data name="Settings_AccountPage_H1.Text" xml:space="preserve">
+        <value>Add new account:</value>
+    </data>
+    <data name="Settings_AccountPage_H2.Text" xml:space="preserve">
+        <value>Launch the game with a Demo account:</value>
+    </data>
+    <data name="Settings_AccountPage_H3.Text" xml:space="preserve">
+        <value>Auto refresh account:</value>
+    </data>
+    <data name="Settings_AccountPage_D1.Text" xml:space="preserve">
+        <value>Automatically refresh Token before each launch</value>
+    </data>
+    <data name="Settings_AccountPage_SH1.Text" xml:space="preserve">
+        <value>Last Refresh Time:</value>
+    </data>
+    <data name="Settings_AppearancePage_T1.Text" xml:space="preserve">
+        <value>Language</value>
+    </data>
+    <data name="Settings_AppearancePage_T2.Text" xml:space="preserve">
+        <value>Appearance settings</value>
+    </data>
+    <data name="Settings_AppearancePage_H1.Text" xml:space="preserve">
+        <value>Language Settings</value>
+    </data>
+    <data name="Settings_AppearancePage_H2.Text" xml:space="preserve">
+        <value>Display Theme</value>
+    </data>
+    <data name="Settings_AppearancePage_H3.Text" xml:space="preserve">
+        <value>Background</value>
+    </data>
+    <data name="Settings_AppearancePage_H4.Text" xml:space="preserve">
+        <value>NavigationView Display Mode</value>
+    </data>
+    <data name="Settings_AppearancePage_H5.Text" xml:space="preserve">
+        <value>Use new homepage</value>
+    </data>
+    <data name="Settings_AppearancePage_D1.Text" xml:space="preserve">
+        <value>Dark and light color themes, effective after restarting the app</value>
+    </data>
+    <data name="Settings_AppearancePage_D2.Text" xml:space="preserve">
+        <value>Application background settings.</value>
+    </data>
+    <data name="Settings_AppearancePage_D3.Text" xml:space="preserve">
+        <value>NavigationView layout</value>
+    </data>
+    <data name="Settings_AppearancePage__Items1" xml:space="preserve">
+        <value>System;Light;Dark</value>
+    </data>
+    <data name="Settings_AppearancePage__Items2" xml:space="preserve">
+        <value>Mica;Acrylic;Solid;Image</value>
+    </data>
+    <data name="Settings_AppearancePage__Items3" xml:space="preserve">
+        <value>Normal;Minimum</value>
+    </data>
+    <data name="Settings_DownloadPage_T1.Text" xml:space="preserve">
+        <value>Download</value>
+    </data>
+    <data name="Settings_DownloadPage_H1.Text" xml:space="preserve">
+        <value>Current download sources:</value>
+    </data>
+    <data name="Settings_DownloadPage_H2.Text" xml:space="preserve">
+        <value>Maximum number of download threads:</value>
+    </data>
+    <data name="Settings_DownloadPage_H3.Text" xml:space="preserve">
+        <value>Enable fragmented download of large files:</value>
+    </data>
+    <data name="Settings_DownloadPage_D1.Text" xml:space="preserve">
+        <value>Please optimize and adjust according to the actual network environment</value>
+    </data>
+    <data name="Settings_DownloadPage_D2.Text" xml:space="preserve">
+        <value>Can effectively speed up when encountering large files</value>
     </data>
     <data name="Settings_LaunchPage_T1.Text" xml:space="preserve">
         <value>Global launch settings</value>

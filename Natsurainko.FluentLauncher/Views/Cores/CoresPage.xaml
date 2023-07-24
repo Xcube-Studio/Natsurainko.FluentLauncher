@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <Page
     x:Class="Natsurainko.FluentLauncher.Views.Cores.CoresPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -30,6 +29,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <AutoSuggestBox
+                    x:Uid="Cores_CoresPage_SearchBox"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Center"
                     VerticalContentAlignment="Center"
@@ -89,6 +89,7 @@
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Glyph="&#xE71C;" />
                     <TextBlock
+                        x:Uid="Cores_CoresPage_Text1"
                         Margin="10,0,0,0"
                         VerticalAlignment="Center"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
@@ -96,12 +97,8 @@
                     <ComboBox
                         MinWidth="110"
                         Margin="5,0,0,0"
-                        SelectedIndex="{Binding FilterIndex, Mode=TwoWay}">
-                        <x:String>All</x:String>
-                        <x:String>Release</x:String>
-                        <x:String>Snapshot</x:String>
-                        <x:String>Old</x:String>
-                    </ComboBox>
+                        ItemsSource="{Binding Filters}"
+                        SelectedIndex="{Binding FilterIndex, Mode=TwoWay}" />
                 </StackPanel>
                 <StackPanel Grid.Column="2" Orientation="Horizontal">
                     <FontIcon
@@ -109,6 +106,7 @@
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Glyph="&#xE8CB;" />
                     <TextBlock
+                        x:Uid="Cores_CoresPage_Text2"
                         Margin="10,0,0,0"
                         VerticalAlignment="Center"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
@@ -116,10 +114,8 @@
                     <ComboBox
                         MinWidth="110"
                         Margin="5,0,0,0"
-                        SelectedIndex="{Binding SortByIndex, Mode=TwoWay}">
-                        <x:String>Name</x:String>
-                        <x:String>Launch Date</x:String>
-                    </ComboBox>
+                        ItemsSource="{Binding Sorts}"
+                        SelectedIndex="{Binding SortByIndex, Mode=TwoWay}" />
                 </StackPanel>
             </Grid>
         </StackPanel>

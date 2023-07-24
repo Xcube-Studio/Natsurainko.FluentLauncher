@@ -27,7 +27,7 @@
                 </win:StackPanel.ChildrenTransitions>
 
                 <TextBlock
-                    x:Uid="Settings_Account_Header"
+                    x:Uid="Settings_AccountPage_T1"
                     Margin="1,0,0,4"
                     FontSize="16"
                     FontWeight="Bold"
@@ -75,7 +75,7 @@
 
                             <labs:SettingsCard.Header>
                                 <TextBlock>
-                                    <Run Text="Last Refresh Time:" />
+                                    <Run x:Uid="Settings_AccountPage_SH1" Text="Last Refresh Time:" />
                                     <Run>
                                         <Run.Text>
                                             <Binding Converter="{ThemeResource AccountInfoConverter}" Path="ActiveAccount">
@@ -110,9 +110,10 @@
                         </Button>
                     </StackPanel>
                 </labs:SettingsExpander>
+
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xe8fa;}">
                     <labs:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_Account_Item_3" Text="Add new account:" />
+                        <TextBlock x:Uid="Settings_AccountPage_H1" Text="Add new account:" />
                     </labs:SettingsCard.Header>
                     <Button Command="{Binding LoginCommand}">
                         <StackPanel Orientation="Horizontal">
@@ -126,6 +127,7 @@
                 </labs:SettingsCard>
 
                 <TextBlock
+                    x:Uid="Settings_AccountPage_T2"
                     Margin="1,20,0,4"
                     FontSize="16"
                     FontWeight="Bold"
@@ -133,17 +135,20 @@
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xEC7A;}">
                     <labs:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_Account_Item_5" Text="Launch the game with a Demo account:" />
+                        <TextBlock x:Uid="Settings_AccountPage_H2" Text="Launch the game with a Demo account:" />
                     </labs:SettingsCard.Header>
                     <ToggleSwitch IsOn="{Binding EnableDemoUser, Mode=TwoWay}" />
                 </labs:SettingsCard>
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE72C;}">
                     <labs:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_Account_Item_6" Text="Auto refresh account:" />
+                        <TextBlock x:Uid="Settings_AccountPage_H3" Text="Auto refresh account:" />
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock FontSize="14" Text="Automatically refresh Token before each launch" />
+                        <TextBlock
+                            x:Uid="Settings_AccountPage_D1"
+                            FontSize="14"
+                            Text="Automatically refresh Token before each launch" />
                     </labs:SettingsCard.Description>
                     <ToggleSwitch IsOn="{Binding AutoRefresh, Mode=TwoWay}" />
                 </labs:SettingsCard>

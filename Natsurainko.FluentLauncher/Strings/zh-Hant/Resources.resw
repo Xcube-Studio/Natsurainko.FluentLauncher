@@ -12,6 +12,24 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+    <data name="Buttons_Browse.Text" xml:space="preserve">
+        <value>瀏覽</value>
+    </data>
+    <data name="Buttons_Remove.Text" xml:space="preserve">
+        <value>移除</value>
+    </data>
+    <data name="Buttons_Search.Text" xml:space="preserve">
+        <value>搜索</value>
+    </data>
+    <data name="Buttons_Refresh.Text" xml:space="preserve">
+        <value>刷新</value>
+    </data>
+    <data name="Buttons_SwitchAccount.Text" xml:space="preserve">
+        <value>切換賬戶</value>
+    </data>
+    <data name="Buttons_SignIn.Text" xml:space="preserve">
+        <value>登入</value>
+    </data>
     <data name="Converters__Account" xml:space="preserve">
         <value>賬戶</value>
     </data>
@@ -92,6 +110,57 @@
     </data>
     <data name="Cores_ManageNavigationPage__BreadcrumbBar_First" xml:space="preserve">
         <value>核心管理</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_T1.Text" xml:space="preserve">
+        <value>啟動設置</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_T2.Text" xml:space="preserve">
+        <value>賬戶設置</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_T3.Text" xml:space="preserve">
+        <value>Java 虛擬機設置</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H1.Text" xml:space="preserve">
+        <value>核心的暱稱:</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H2.Text" xml:space="preserve">
+        <value>啟用特定核心設置</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H3.Text" xml:space="preserve">
+        <value>版本獨立</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H4.Text" xml:space="preserve">
+        <value>進入遊戲後自動全屏模式</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H5.Text" xml:space="preserve">
+        <value>遊戲窗口分辨率</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H6.Text" xml:space="preserve">
+        <value>進入遊戲後自動連接的服務器地址</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H7.Text" xml:space="preserve">
+        <value>遊戲窗口標題</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H8.Text" xml:space="preserve">
+        <value>用於啟動這個遊戲的賬戶</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H9.Text" xml:space="preserve">
+        <value>額外 Java 虛擬機參數設置</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D1.Text" xml:space="preserve">
+        <value>僅作為顯示名稱，不會修改實際Id</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D2.Text" xml:space="preserve">
+        <value>只有你啟用了這一項，下面的設置才會生效</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D3.Text" xml:space="preserve">
+        <value>遊戲將運行在 versions\${version} 目錄下</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D4.Text" xml:space="preserve">
+        <value>若啟用後在賬戶列表中找不到選中的賬戶，則會報錯</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D5.Text" xml:space="preserve">
+        <value>會添加到生成的啟動參數中</value>
     </data>
     <data name="Home_HomePage_NoAccount.Text" xml:space="preserve">
         <value>沒有賬戶</value>

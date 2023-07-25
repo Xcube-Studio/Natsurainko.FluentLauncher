@@ -7,6 +7,7 @@
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Cores"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Background="Transparent"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
 
     <Grid Padding="30,20,30,10">

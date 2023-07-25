@@ -1,4 +1,5 @@
-﻿using Nrk.FluentCore.Classes.Datas.Authenticate;
+﻿using Natsurainko.FluentLauncher.Services.Storage;
+using Nrk.FluentCore.Classes.Datas.Authenticate;
 using Nrk.FluentCore.DefaultComponets.Authenticate;
 using Nrk.FluentCore.Utils;
 using System;
@@ -18,10 +19,12 @@ internal class AuthenticationService
     internal const string RedirectUrl = "https://login.live.com/oauth20_desktop.srf";
 
     private readonly AccountService _accountService;
+    private readonly SkinCacheService _skinCacheService;
 
-    public AuthenticationService(AccountService accountService)
+    public AuthenticationService(AccountService accountService, SkinCacheService skinCacheService)
     {
         _accountService = accountService;
+        _skinCacheService = skinCacheService;
     }
 
     public Task RefreshCurrentAccountAsync() => Task.Run(RefreshCurrentAccount);
@@ -54,6 +57,8 @@ internal class AuthenticationService
             _accountService.AddAccount(refreshedAccount);
 #pragma warning restore CS0612 // Type or member is obsolete
             _accountService.Activate(refreshedAccount);
+
+            Task.Run(() => _skinCacheService.TryCacheSkin(refreshedAccount));
         });
     }
 

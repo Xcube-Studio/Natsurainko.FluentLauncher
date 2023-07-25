@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <Page
     x:Class="Natsurainko.FluentLauncher.Views.Cores.Manage.CoreSettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -7,6 +6,7 @@
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Cores.Manage"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     Background="Transparent"
     mc:Ignorable="d">
@@ -16,12 +16,20 @@
         <Border Margin="0,10">
             <StackPanel MaxWidth="1000" Spacing="4">
 
+                <win:StackPanel.ChildrenTransitions>
+                    <win:EntranceThemeTransition FromVerticalOffset="50" />
+                    <win:RepositionThemeTransition IsStaggeringEnabled="False" />
+                </win:StackPanel.ChildrenTransitions>
+
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE8AC;}">
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="核心的昵称:" />
+                        <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_H1" Text="Core Nickname:" />
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock FontSize="14" Text="仅作为显示名称，不会修改实际Id" />
+                        <TextBlock
+                            x:Uid="Cores_Manage_CoreSettingsPage_D1"
+                            FontSize="14"
+                            Text="Only as a display name, the actual Id will not be modified" />
                     </labs:SettingsCard.Description>
 
                     <TextBox Width="150" />
@@ -29,42 +37,52 @@
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="启用特定核心设置" />
+                        <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_H2" Text="Enable specific core settings" />
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock FontSize="14" Text="只有你启用了这一项，下面的设置才会生效" />
+                        <TextBlock
+                            x:Uid="Cores_Manage_CoreSettingsPage_D2"
+                            FontSize="14"
+                            Text="Only if you enable this item, the following settings will take effect" />
                     </labs:SettingsCard.Description>
                     <ToggleSwitch Name="ToggleSwitch" />
                 </labs:SettingsCard>
 
-                <ContentControl HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" IsEnabled="{Binding ElementName=ToggleSwitch, Path=IsOn}">
+                <ContentControl
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    IsEnabled="{Binding ElementName=ToggleSwitch, Path=IsOn}">
                     <StackPanel>
                         <TextBlock
+                            x:Uid="Cores_Manage_CoreSettingsPage_T1"
                             Margin="1,20,0,4"
                             FontSize="16"
                             FontWeight="Bold"
-                            Text="启动设置" />
+                            Text="Launch Settings" />
 
                         <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
                             <labs:SettingsCard.Header>
-                                <TextBlock Text="版本独立" />
+                                <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_H3" Text="Core independent" />
                             </labs:SettingsCard.Header>
                             <labs:SettingsCard.Description>
-                                <TextBlock FontSize="14" Text="游戏将运行在 versions\${version} 目录下" />
+                                <TextBlock
+                                    x:Uid="Cores_Manage_CoreSettingsPage_D3"
+                                    FontSize="14"
+                                    Text="The game will run at versions\${version} directory" />
                             </labs:SettingsCard.Description>
                             <ToggleSwitch />
                         </labs:SettingsCard>
 
                         <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE740;}">
                             <labs:SettingsCard.Header>
-                                <TextBlock Text="进入游戏后自动全屏模式" />
+                                <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_H4" Text="Automatic full screen mode after entering the game" />
                             </labs:SettingsCard.Header>
                             <ToggleSwitch />
                         </labs:SettingsCard>
 
                         <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE744;}">
                             <labs:SettingsCard.Header>
-                                <TextBlock Text="游戏窗口分辨率" />
+                                <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_H5" Text="Game window resolution" />
                             </labs:SettingsCard.Header>
 
                             <StackPanel Orientation="Horizontal">
@@ -79,7 +97,7 @@
 
                         <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE967;}">
                             <labs:SettingsCard.Header>
-                                <TextBlock Text="进入游戏后自动连接的服务器地址" />
+                                <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_H6" Text="The server address to connect after entering the game" />
                             </labs:SettingsCard.Header>
 
                             <TextBox Width="250" />
@@ -87,24 +105,28 @@
 
                         <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE76F;}">
                             <labs:SettingsCard.Header>
-                                <TextBlock Text="游戏窗口标题" />
+                                <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_H7" Text="Game window title" />
                             </labs:SettingsCard.Header>
 
                             <TextBox Width="250" />
                         </labs:SettingsCard>
 
                         <TextBlock
+                            x:Uid="Cores_Manage_CoreSettingsPage_T2"
                             Margin="1,20,0,4"
                             FontSize="16"
                             FontWeight="Bold"
-                            Text="账户设置" />
+                            Text="Account Settings" />
 
                         <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE716;}">
                             <labs:SettingsCard.Header>
-                                <TextBlock Text="用于启动这个游戏的账户" />
+                                <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_H8" Text="Account used to launch this game" />
                             </labs:SettingsCard.Header>
                             <labs:SettingsCard.Description>
-                                <TextBlock FontSize="14" Text="若启用后在账户列表中找不到选中的账户，则会报错" />
+                                <TextBlock
+                                    x:Uid="Cores_Manage_CoreSettingsPage_D4"
+                                    FontSize="14"
+                                    Text="If the selected account cannot be found in the account list after enabling it, an error will be reported" />
                             </labs:SettingsCard.Description>
 
                             <StackPanel Orientation="Horizontal" Spacing="15">
@@ -118,17 +140,21 @@
                         </labs:SettingsCard>
 
                         <TextBlock
+                            x:Uid="Cores_Manage_CoreSettingsPage_T3"
                             Margin="1,20,0,4"
                             FontSize="16"
                             FontWeight="Bold"
-                            Text="Java 虚拟机设置" />
+                            Text="JVM Settings" />
 
                         <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
                             <labs:SettingsExpander.Header>
-                                <TextBlock Text="额外 Java 虚拟机参数设置" />
+                                <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_H9" Text="Additional JVM parameter settings" />
                             </labs:SettingsExpander.Header>
                             <labs:SettingsExpander.Description>
-                                <TextBlock FontSize="14" Text="会添加到生成的启动参数中" />
+                                <TextBlock
+                                    x:Uid="Cores_Manage_CoreSettingsPage_D5"
+                                    FontSize="14"
+                                    Text="These will be added to the generated launch parameters" />
                             </labs:SettingsExpander.Description>
                             <labs:SettingsExpander.ItemTemplate>
                                 <DataTemplate>

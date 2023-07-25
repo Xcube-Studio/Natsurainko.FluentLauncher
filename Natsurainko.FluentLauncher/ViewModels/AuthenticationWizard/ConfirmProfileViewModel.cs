@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml;
+using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
 using Nrk.FluentCore.Classes.Datas.Authenticate;
@@ -47,14 +48,20 @@ internal partial class ConfirmProfileViewModel : WizardViewModelBase
 
         Accounts = new();
 
-        Task.Run(() =>
+        Task.Run(async () =>
         {
             App.MainWindow.DispatcherQueue.TryEnqueue(() => Loading = Visibility.Visible);
             var accountsList = new List<Account>(_authenticateAction());
-            App.MainWindow.DispatcherQueue.TryEnqueue(() => 
+
+            foreach (var account in accountsList)
+                await Task.Run(() => App.GetService<SkinCacheService>().TryCacheSkin(account));
+
+            App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
                 Loading = Visibility.Collapsed;
-                accountsList.ForEach(account => Accounts.Add(account));
+
+                foreach (var account in accountsList)
+                    Accounts.Add(account);
             });
         }).ContinueWith(task =>
         {

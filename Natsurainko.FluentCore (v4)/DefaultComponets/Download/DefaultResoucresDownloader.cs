@@ -31,7 +31,7 @@ public class DefaultResourcesDownloader : BaseResourcesDownloader
         tokenSource ??= new CancellationTokenSource();
 
         var filteredLibraries = _libraryElements.AsParallel().Where(x => !x.VerifyFile()).ToList();
-        var filteredAssets = _assetElements.AsParallel().Where(x => !x.VerifyFile()).ToList();
+        var filteredAssets = _assetElements.AsParallel().Where(x => !x.VerifyFile()).ToList(); //TODO: assets 去重！
 
         var transformBlock = new TransformBlock<IDownloadElement, IDownloadElement>(e =>
         {

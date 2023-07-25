@@ -12,6 +12,24 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+    <data name="Buttons_Browse.Text" xml:space="preserve">
+        <value>Просматривать</value>
+    </data>
+    <data name="Buttons_Remove.Text" xml:space="preserve">
+        <value>Удалять</value>
+    </data>
+    <data name="Buttons_Search.Text" xml:space="preserve">
+        <value>Поиск</value>
+    </data>
+    <data name="Buttons_Refresh.Text" xml:space="preserve">
+        <value>Обновить</value>
+    </data>
+    <data name="Buttons_SwitchAccount.Text" xml:space="preserve">
+        <value>Сменить аккаунт</value>
+    </data>
+    <data name="Buttons_SignIn.Text" xml:space="preserve">
+        <value>Войти</value>
+    </data>
     <data name="Converters__Account" xml:space="preserve">
         <value>счет</value>
     </data>
@@ -92,6 +110,57 @@
     </data>
     <data name="Cores_ManageNavigationPage__BreadcrumbBar_First" xml:space="preserve">
         <value>Ядра Управление</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_T1.Text" xml:space="preserve">
+        <value>Настройки запуска</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_T2.Text" xml:space="preserve">
+        <value>Настройки учетной записи</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_T3.Text" xml:space="preserve">
+        <value>Настройки JVM</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H1.Text" xml:space="preserve">
+        <value>Основное прозвище:</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H2.Text" xml:space="preserve">
+        <value>Включить определенные основные настройки</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H3.Text" xml:space="preserve">
+        <value>Независимый от ядра</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H4.Text" xml:space="preserve">
+        <value>Автоматический полноэкранный режим после входа в игру</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H5.Text" xml:space="preserve">
+        <value>Разрешение окна игры</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H6.Text" xml:space="preserve">
+        <value>Адрес сервера для подключения после входа в игру</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H7.Text" xml:space="preserve">
+        <value>Заголовок игрового окна</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H8.Text" xml:space="preserve">
+        <value>Учетная запись, используемая для запуска этой игры</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H9.Text" xml:space="preserve">
+        <value>Дополнительные настройки параметров JVM</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D1.Text" xml:space="preserve">
+        <value>Только в качестве отображаемого имени, фактический идентификатор не будет изменен.</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D2.Text" xml:space="preserve">
+        <value>Только если вы включите этот пункт, вступят в силу следующие настройки</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D3.Text" xml:space="preserve">
+        <value>Игра будет работать в каталоге version\${version}</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D4.Text" xml:space="preserve">
+        <value>Если выбранная учетная запись не может быть найдена в списке учетных записей после ее включения, будет сообщено об ошибке</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D5.Text" xml:space="preserve">
+        <value>Они будут добавлены к сгенерированным параметрам запуска.</value>
     </data>
     <data name="Home_HomePage_NoAccount.Text" xml:space="preserve">
         <value>Нет аккаунта</value>

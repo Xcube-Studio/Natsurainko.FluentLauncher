@@ -16,6 +16,8 @@ using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
 using System;
 using System.Text;
+using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -39,7 +41,7 @@ public partial class App : Application
         App.GetService<AppearanceService>().ApplyDisplayTheme();
     }
 
-    protected override void OnLaunched(LaunchActivatedEventArgs args)
+    protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
         App.GetService<MessengerService>().SubscribeEvents();
 
@@ -79,7 +81,7 @@ public partial class App : Application
         services.AddSingleton<AuthenticationService>();
         services.AddSingleton<NotificationService>();
         services.AddSingleton<AppearanceService>();
-
+        services.AddSingleton<SkinCacheService>();
 
         //ViewModels
 

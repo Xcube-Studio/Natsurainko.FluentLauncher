@@ -87,6 +87,7 @@
 
   <ItemGroup>
     <Folder Include="ViewModels\Cores\InstallNewCore\" />
+    <Folder Include="ViewModels\Cores\Manage\" />
     <Folder Include="ViewModels\Downloads\" />
     <Folder Include="Views\Cores\InstallNewCore\" />
   </ItemGroup>

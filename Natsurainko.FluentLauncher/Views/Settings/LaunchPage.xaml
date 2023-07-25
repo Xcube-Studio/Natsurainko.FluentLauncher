@@ -82,7 +82,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <FontIcon FontSize="16" Glyph="&#xe838;" />
                                     <TextBlock
-                                        x:Uid="_Buttons_Browse"
+                                        x:Uid="Buttons_Browse"
                                         Margin="5,0,0,0"
                                         Text="Browse" />
                                 </StackPanel>
@@ -109,7 +109,7 @@
                                         Foreground="White"
                                         Glyph="&#xe74d;" />
                                     <TextBlock
-                                        x:Uid="_Buttons_Remove"
+                                        x:Uid="Buttons_Remove"
                                         Margin="5,0,0,0"
                                         Foreground="White"
                                         Text="Remove" />
@@ -200,7 +200,7 @@
                                             </AnimatedIcon.FallbackIconSource>
                                         </AnimatedIcon>
                                         <TextBlock
-                                            x:Uid="_Buttons_Search"
+                                            x:Uid="Buttons_Search"
                                             Margin="5,0,0,0"
                                             Text="Search" />
                                     </StackPanel>
@@ -209,7 +209,7 @@
                                     <StackPanel Orientation="Horizontal">
                                         <FontIcon FontSize="16" Glyph="&#xe838;" />
                                         <TextBlock
-                                            x:Uid="_Buttons_Browse"
+                                            x:Uid="Buttons_Browse"
                                             Margin="5,0,0,0"
                                             Text="Browse" />
                                     </StackPanel>
@@ -234,7 +234,7 @@
                                         Foreground="White"
                                         Glyph="&#xe74d;" />
                                     <TextBlock
-                                        x:Uid="_Buttons_Remove"
+                                        x:Uid="Buttons_Remove"
                                         Margin="5,0,0,0"
                                         Foreground="White"
                                         Text="Remove" />

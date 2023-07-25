@@ -88,4 +88,7 @@ public static class StringExtensions
             }
         }
     }
+
+    public static string ConvertFromBase64(this string value) => Encoding.UTF8.GetString(Convert.FromBase64String(value));
+
 }

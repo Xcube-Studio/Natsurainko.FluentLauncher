@@ -12,6 +12,24 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+    <data name="Buttons_Browse.Text" xml:space="preserve">
+        <value>Browse</value>
+    </data>
+    <data name="Buttons_Remove.Text" xml:space="preserve">
+        <value>Remove</value>
+    </data>
+    <data name="Buttons_Search.Text" xml:space="preserve">
+        <value>Search</value>
+    </data>
+    <data name="Buttons_Refresh.Text" xml:space="preserve">
+        <value>Refresh</value>
+    </data>
+    <data name="Buttons_SwitchAccount.Text" xml:space="preserve">
+        <value>Switch Account</value>
+    </data>
+    <data name="Buttons_SignIn.Text" xml:space="preserve">
+        <value>Sign in</value>
+    </data>
     <data name="Converters__Account" xml:space="preserve">
         <value>Account</value>
     </data>
@@ -92,6 +110,57 @@
     </data>
     <data name="Cores_ManageNavigationPage__BreadcrumbBar_First" xml:space="preserve">
         <value>Cores Manage</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_T1.Text" xml:space="preserve">
+        <value>Launch Settings</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_T2.Text" xml:space="preserve">
+        <value>Account Settings</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_T3.Text" xml:space="preserve">
+        <value>JVM Settings</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H1.Text" xml:space="preserve">
+        <value>Core Nickname:</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H2.Text" xml:space="preserve">
+        <value>Enable specific core settings</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H3.Text" xml:space="preserve">
+        <value>Core independent</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H4.Text" xml:space="preserve">
+        <value>Automatic full screen mode after entering the game</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H5.Text" xml:space="preserve">
+        <value>Game window resolution</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H6.Text" xml:space="preserve">
+        <value>The server address to connect after entering the game</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H7.Text" xml:space="preserve">
+        <value>Game window title</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H8.Text" xml:space="preserve">
+        <value>Account used to launch this game</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H9.Text" xml:space="preserve">
+        <value>Additional JVM parameter settings</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D1.Text" xml:space="preserve">
+        <value>Only as a display name, the actual Id will not be modified</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D2.Text" xml:space="preserve">
+        <value>Only if you enable this item, the following settings will take effect</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D3.Text" xml:space="preserve">
+        <value>The game will run at versions\${version} directory</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D4.Text" xml:space="preserve">
+        <value>If the selected account cannot be found in the account list after enabling it, an error will be reported</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D5.Text" xml:space="preserve">
+        <value>These will be added to the generated launch parameters</value>
     </data>
     <data name="Home_HomePage_NoAccount.Text" xml:space="preserve">
         <value>No Account</value>

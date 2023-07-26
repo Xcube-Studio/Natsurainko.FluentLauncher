@@ -238,6 +238,11 @@ jobs:
       - name: CheckOut
         uses: actions/checkout@v3
       
+      - name: config Git
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "GitHub-actions[bot]"
+          
       - name: Create Tag
         run: |
           git tag -a ${{inputs.tag1}}${{inputs.tag2}} -m "${{inputs.tag1}}${{inputs.tag2}}"

@@ -261,6 +261,7 @@ jobs:
         uses: actions/checkout@v3
       
       - name: CheckTag
+        id: CheckTag
         run: |
           if [ "${{inputs.flag}}" ]; then
             echo "tag=${{needs.Create-Tag.outputs.tag}}" >> "$GITHUB_OUTPUT"
@@ -321,6 +322,7 @@ jobs:
         uses: actions/checkout@v3
       
       - name: CheckTag
+        id: CheckTag
         run: |
           if [ "${{inputs.flag}}" ]; then
             echo "tag=${{needs.Create-Tag.outputs.tag}}" >> "$GITHUB_OUTPUT"

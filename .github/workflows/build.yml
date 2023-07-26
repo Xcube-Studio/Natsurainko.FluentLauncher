@@ -267,6 +267,7 @@ jobs:
           else 
             echo "tag=${{github.ref}}" >> "$GITHUB_OUTPUT"
             echo exit 0
+          fi
       
       - name: Download .msixupload from artifacts
         uses: actions/download-artifact@v3
@@ -326,6 +327,7 @@ jobs:
           else 
             echo "tag=${{github.ref}}" >> "$GITHUB_OUTPUT"
             echo exit 0
+          fi
       
       - name: Download .msixupload from artifacts
         uses: actions/download-artifact@v3

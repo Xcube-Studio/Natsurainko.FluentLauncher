@@ -247,7 +247,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Pre-Publish
     needs: [build,release,Create-Tag]
-    if: ${{ (contains(github.ref,'refs/tags/beta')||(${{inputs.flag}}&&contains(needs.Create-Tag.outputs.tag,'beta'))&&!failure() }}
+    if: ${{ (contains(github.ref,'refs/tags/beta')||(inputs.flag&&contains(needs.Create-Tag.outputs.tag,'beta'))&&!failure() }}
     env:
       Artifacts_Path: .artifacts
     steps:
@@ -306,7 +306,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Publish
     needs: [build,release,Create-Tag]
-    if: ${{ (contains(github.ref,'v')||(${{inputs.flag}}&&contains(needs.Create-Tag.outputs.tag,'v'))&&!failure()  }}
+    if: ${{ (contains(github.ref,'v')||(inputs.flag&&contains(needs.Create-Tag.outputs.tag,'v'))&&!failure()  }}
     env:
       Artifacts_Path: .artifacts
     steps:

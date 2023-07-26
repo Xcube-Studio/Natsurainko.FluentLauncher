@@ -1,11 +1,13 @@
 ﻿using AppSettingsManagement.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Natsurainko.FluentLauncher.Components;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Windows.UI;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
@@ -27,8 +29,36 @@ partial class AppearanceViewModel : SettingsViewModelBase, ISettingsViewModel
     private int displayTheme;
 
     [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.BackgroundMode))]
+    private int backgroundMode;
+
+    [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.UseNewHomePage))]
     private bool useNewHomePage;
+
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.EnableDefaultAcrylicBrush))]
+    private bool enableDefaultAcrylicBrush;
+
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.TintOpacity))]
+    private double tintOpacity;
+
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.TintLuminosityOpacity))]
+    private double tintLuminosityOpacity;
+
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.ImageFilePath))]
+    private string imageFilePath;
+
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.SolidSelectedIndex))]
+    private int solidSelectedIndex;
+
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.SolidCustomColor))]
+    private Color? solidCustomColor;
 
     [ObservableProperty]
     private string[] displayThemes = ResourceUtils.GetItems("Settings", "AppearancePage", "_Items1");
@@ -39,7 +69,8 @@ partial class AppearanceViewModel : SettingsViewModelBase, ISettingsViewModel
     [ObservableProperty]
     private string[] navigationViewDisplayModes = ResourceUtils.GetItems("Settings", "AppearancePage", "_Items3");
 
-    public List<string> SupportedLanguages => LanguageResources.SupportedLanguages;
+    public List<string> SupportedLanguages => ResourceUtils.Languages;
+    private Flyout ColorFlyout;
 
     public AppearanceViewModel(SettingsService settingsService)
     {
@@ -52,6 +83,16 @@ partial class AppearanceViewModel : SettingsViewModelBase, ISettingsViewModel
     private void AppearanceViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(CurrentLanguage))
-            LanguageResources.ApplyLanguage(CurrentLanguage);
+            ResourceUtils.ApplyLanguage(CurrentLanguage);
+    }
+
+    [RelayCommand]
+    private void SelectColorConfirm() => ColorFlyout.Hide();
+
+    [RelayCommand]
+    private void Loaded(object args)
+    {
+        var button = args.As<Button, object>().sender;
+        ColorFlyout = button.Flyout as Flyout;
     }
 }

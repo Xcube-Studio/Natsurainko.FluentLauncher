@@ -1,12 +1,11 @@
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
 using Natsurainko.FluentLauncher.Classes.Data.UI;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
-using System;
+using Natsurainko.FluentLauncher.Utils;
 using System.IO;
 using Windows.ApplicationModel;
 using Windows.Globalization;
@@ -23,21 +22,15 @@ public sealed partial class MainWindow : WindowEx
 
     public MainWindow()
     {
-#if !MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
         if (string.IsNullOrEmpty(ApplicationLanguages.PrimaryLanguageOverride))
-            LanguageResources.ApplyLanguage(_settings.CurrentLanguage);
-#endif
+            ResourceUtils.ApplyLanguage(_settings.CurrentLanguage);
 
         InitializeComponent();
 
         MessageService.RegisterContainer(MessageList);
         _notificationService.InitContainer(NotifyStackPanel, BackgroundGrid);
 
-#if MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED
-        AppWindow.SetIcon(Path.Combine(Directory.GetCurrentDirectory(), "Assets/AppIcon.png"));
-#else
-        AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets/AppIcon.png"));
-#endif
+        AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets/AppIcon.ico"));
 
         AppWindow.Title = "Fluent Launcher";
         AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
@@ -48,10 +41,6 @@ public sealed partial class MainWindow : WindowEx
 
         (MinWidth, MinHeight) = (516, 328);
         (Width, Height) = (_settings.AppWindowWidth, _settings.AppWindowHeight);
-
-        SystemBackdrop = Environment.OSVersion.Version.Build >= 22000
-           ? new MicaBackdrop() { Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt }
-           : new DesktopAcrylicBackdrop();
 
         if (_settings.FinishGuide)
             Frame.Navigate(typeof(ShellPage));

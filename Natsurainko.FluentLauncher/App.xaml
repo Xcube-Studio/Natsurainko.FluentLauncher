@@ -44,6 +44,7 @@
             <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <converters:CoresLayoutConverter x:Key="CoresLayoutConverter" />
+            <converters:BackgrondSettingItemVisibilityConverter x:Key="BackgrondSettingItemVisibilityConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -48,6 +48,8 @@ public partial class App : Application
         try
         {
             MainWindow = new MainWindow();
+            App.GetService<AppearanceService>().ApplyBackgroundAtWindowCreated(MainWindow);
+
             MainWindow.Activate();
         }
         catch (Exception e)

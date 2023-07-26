@@ -18,7 +18,7 @@ namespace Natsurainko.FluentLauncher.Services.Storage;
 class SkinCacheService
 {
     private readonly LocalStorageService _localStorageService;
-    private readonly Dictionary<Account, IEnumerable<SoftwareBitmapSource>> RuntimeCache = new ();
+    private readonly Dictionary<Account, IEnumerable<SoftwareBitmapSource>> RuntimeCache = new();
 
     public SkinCacheService(LocalStorageService storage)
     {
@@ -91,13 +91,14 @@ class SkinCacheService
 
     private async IAsyncEnumerable<SoftwareBitmapSource> GetSkinHeadSourcesAsync(int width, int height, Account account)
     {
+        /* //TODO: 运行时缓存
         if (RuntimeCache.ContainsKey(account))
         {
             foreach (var item in RuntimeCache[account])
                 yield return item;
 
             yield break;
-        }
+        }*/
 
         var sources = new List<SoftwareBitmapSource>();
         var dir = Path.Combine(_localStorageService.GetDirectory("skins").FullName, $"{account.Type}-{account.Uuid}");
@@ -113,7 +114,7 @@ class SkinCacheService
             var path = paths[i];
 
             if (i == 0 && !File.Exists(path)) 
-                path = (await StorageFile.GetFileFromApplicationUriAsync(new System.Uri("ms-appx:///Assets/Icons/steve.png"))).Path;
+                path = (await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/Icons/steve.png"))).Path;
 
             if (!File.Exists(path))
             {

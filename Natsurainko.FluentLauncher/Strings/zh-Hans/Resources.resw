@@ -274,7 +274,7 @@
         <value>深色和浅色主题，重启应用后生效</value>
     </data>
     <data name="Settings_AppearancePage_D2.Text" xml:space="preserve">
-        <value>应用程序背景设置。</value>
+        <value>应用程序背景设置，重启应用后生效</value>
     </data>
     <data name="Settings_AppearancePage_D3.Text" xml:space="preserve">
         <value>导航栏布局</value>
@@ -283,7 +283,7 @@
         <value>跟随系统;亮色;暗色</value>
     </data>
     <data name="Settings_AppearancePage__Items2" xml:space="preserve">
-        <value>云母;亚克力;纯色;图像</value>
+        <value>云母;亚克力;纯色;图片</value>
     </data>
     <data name="Settings_AppearancePage__Items3" xml:space="preserve">
         <value>默认;最小化</value>

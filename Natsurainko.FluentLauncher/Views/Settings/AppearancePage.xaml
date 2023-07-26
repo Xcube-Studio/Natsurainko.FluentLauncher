@@ -2,8 +2,10 @@
     x:Class="Natsurainko.FluentLauncher.Views.Settings.AppearancePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
-    xmlns:controls="using:Natsurainko.FluentLauncher.UserControls"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
@@ -81,42 +83,66 @@
                     <labs:SettingsExpander.HeaderIcon>
                         <FontIcon Glyph="&#xE91B;" />
                     </labs:SettingsExpander.HeaderIcon>
-                    <ComboBox ItemsSource="{Binding Backgrounds}" SelectedIndex="0" />
+                    <ComboBox ItemsSource="{Binding Backgrounds}" SelectedIndex="{Binding BackgroundMode, Mode=TwoWay}" />
 
                     <labs:SettingsExpander.Items>
-                        <labs:SettingsCard Header="TintLuminosityOpacity" Tag="Acrylic">
+                        <labs:SettingsCard Header="TintLuminosityOpacity" IsEnabled="{Binding ElementName=enableCheckBox, Path=IsChecked, Converter={ThemeResource InvertBoolConverter}}">
+                            <labs:SettingsCard.Visibility>
+                                <Binding Converter="{ThemeResource BackgrondSettingItemVisibilityConverter}" Path="BackgroundMode">
+                                    <Binding.ConverterParameter>
+                                        <x:String>Acrylic</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </labs:SettingsCard.Visibility>
                             <StackPanel Orientation="Horizontal" Spacing="10">
                                 <NumberBox
                                     Maximum="1"
                                     Minimum="0"
                                     SmallChange="0.1"
-                                    SpinButtonPlacementMode="Inline" />
+                                    SpinButtonPlacementMode="Inline"
+                                    Value="{Binding TintLuminosityOpacity, Mode=TwoWay}" />
                             </StackPanel>
                         </labs:SettingsCard>
-                        <labs:SettingsCard Header="TintOpacity" Tag="Acrylic">
+                        <labs:SettingsCard Header="TintOpacity" IsEnabled="{Binding ElementName=enableCheckBox, Path=IsChecked, Converter={ThemeResource InvertBoolConverter}}">
+                            <labs:SettingsCard.Visibility>
+                                <Binding Converter="{ThemeResource BackgrondSettingItemVisibilityConverter}" Path="BackgroundMode">
+                                    <Binding.ConverterParameter>
+                                        <x:String>Acrylic</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </labs:SettingsCard.Visibility>
                             <NumberBox
                                 Maximum="1"
                                 Minimum="0"
                                 SmallChange="0.1"
-                                SpinButtonPlacementMode="Inline" />
+                                SpinButtonPlacementMode="Inline"
+                                Value="{Binding TintOpacity, Mode=TwoWay}" />
                         </labs:SettingsCard>
-                        <labs:SettingsCard Tag="Acrylic">
-                            <CheckBox Content="Use the default style resource (SystemControlAcrylicWindowBrush)" />
+                        <labs:SettingsCard>
+                            <labs:SettingsCard.Visibility>
+                                <Binding Converter="{ThemeResource BackgrondSettingItemVisibilityConverter}" Path="BackgroundMode">
+                                    <Binding.ConverterParameter>
+                                        <x:String>Acrylic</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </labs:SettingsCard.Visibility>
+                            <labs:SettingsCard.Header>
+                                <CheckBox
+                                    Name="enableCheckBox"
+                                    Content="Use the default acrylic brush"
+                                    IsChecked="{Binding EnableDefaultAcrylicBrush, Mode=TwoWay}" />
+                            </labs:SettingsCard.Header>
                         </labs:SettingsCard>
-                        <labs:SettingsCard
-                            HorizontalContentAlignment="Left"
-                            Header="Application background color"
-                            Tag="Solid">
+                        <labs:SettingsCard HorizontalContentAlignment="Left" Header="Application background color">
+                            <labs:SettingsCard.Visibility>
+                                <Binding Converter="{ThemeResource BackgrondSettingItemVisibilityConverter}" Path="BackgroundMode">
+                                    <Binding.ConverterParameter>
+                                        <x:String>Solid</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </labs:SettingsCard.Visibility>
                             <StackPanel Orientation="Horizontal" Spacing="10">
-                                <GridView Margin="0,0,0,-15" SelectedIndex="1">
-                                    <GridViewItem>
-                                        <Border
-                                            Width="64"
-                                            Height="48"
-                                            Background="{ThemeResource SystemAccentColor}"
-                                            CornerRadius="4"
-                                            ToolTipService.ToolTip="SystemAccentColor" />
-                                    </GridViewItem>
+                                <GridView Margin="0,0,0,-15" SelectedIndex="{Binding SolidSelectedIndex, Mode=TwoWay}">
                                     <GridViewItem>
                                         <Border
                                             Width="64"
@@ -129,12 +155,20 @@
                                         <Border
                                             Width="64"
                                             Height="48"
-                                            Background="#003D92"
                                             CornerRadius="4"
-                                            ToolTipService.ToolTip="Customize" />
+                                            ToolTipService.ToolTip="Customize">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="{Binding SolidCustomColor}" />
+                                            </Border.Background>
+                                        </Border>
                                     </GridViewItem>
                                 </GridView>
                                 <Button Content="Color Selector" Style="{ThemeResource AccentButtonStyle}">
+                                    <i:Interaction.Behaviors>
+                                        <core:EventTriggerBehavior EventName="Loaded">
+                                            <actions:ModifiedInvokeCommandAction Command="{Binding LoadedCommand}" />
+                                        </core:EventTriggerBehavior>
+                                    </i:Interaction.Behaviors>
                                     <Button.Flyout>
                                         <Flyout Placement="Full">
                                             <Flyout.FlyoutPresenterStyle>
@@ -144,15 +178,12 @@
                                                 </Style>
                                             </Flyout.FlyoutPresenterStyle>
                                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <ColorPicker x:Name="myColorPicker" Orientation="Horizontal" />
-                                                <StackPanel
-                                                    x:Name="ColorPickerStackPanel"
-                                                    Margin="0,-20,0,0"
-                                                    HorizontalAlignment="Right"
-                                                    Orientation="Horizontal"
-                                                    Spacing="10">
-                                                    <Button Content="Confirm" Style="{ThemeResource AccentButtonStyle}" />
-                                                    <Button Content="Cancel" />
+                                                <controls:ColorPicker Color="{Binding SolidCustomColor, Mode=TwoWay}" />
+                                                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                                    <Button
+                                                        Command="{Binding SelectColorConfirmCommand}"
+                                                        Content="Confirm"
+                                                        Style="{ThemeResource AccentButtonStyle}" />
                                                 </StackPanel>
                                             </StackPanel>
                                         </Flyout>
@@ -160,13 +191,25 @@
                                 </Button>
                             </StackPanel>
                         </labs:SettingsCard>
-                        <labs:SettingsCard
-                            HorizontalContentAlignment="Left"
-                            Header="Image Path"
-                            Tag="Solid">
-                            <TextBox Width="400" />
+                        <labs:SettingsCard HorizontalContentAlignment="Left" Header="Image Path">
+                            <labs:SettingsCard.Visibility>
+                                <Binding Converter="{ThemeResource BackgrondSettingItemVisibilityConverter}" Path="BackgroundMode">
+                                    <Binding.ConverterParameter>
+                                        <x:String>Image</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </labs:SettingsCard.Visibility>
+                            <TextBox Width="400" Text="{Binding ImageFilePath, Mode=TwoWay}" />
                         </labs:SettingsCard>
-                        <labs:SettingsCard Header="No additional options" Tag="Mica" />
+                        <labs:SettingsCard Header="No additional options" Tag="Mica">
+                            <labs:SettingsCard.Visibility>
+                                <Binding Converter="{ThemeResource BackgrondSettingItemVisibilityConverter}" Path="BackgroundMode">
+                                    <Binding.ConverterParameter>
+                                        <x:String>Mica</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </labs:SettingsCard.Visibility>
+                        </labs:SettingsCard>
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
 
@@ -199,28 +242,5 @@
                 </labs:SettingsCard>
             </StackPanel>
         </Border>
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="WindowState">
-                <VisualState x:Name="WideState">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="650" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="myColorPicker.Orientation" Value="Horizontal" />
-                        <Setter Target="ColorPickerStackPanel.Margin" Value="0,-20,0,0" />
-                    </VisualState.Setters>
-                </VisualState>
-
-                <VisualState x:Name="NarrowState">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="myColorPicker.Orientation" Value="Vertical" />
-                        <Setter Target="ColorPickerStackPanel.Margin" Value="0" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
     </ScrollViewer>
 </Page>

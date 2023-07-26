@@ -274,7 +274,7 @@
         <value>Темные и светлые цветовые темы, вступающие в силу после перезапуска приложения.</value>
     </data>
     <data name="Settings_AppearancePage_D2.Text" xml:space="preserve">
-        <value>Настройки фона приложения.</value>
+        <value>Настройки фона приложения, вступающие в силу после перезапуска приложения.</value>
     </data>
     <data name="Settings_AppearancePage_D3.Text" xml:space="preserve">
         <value>Макет NavigationView</value>

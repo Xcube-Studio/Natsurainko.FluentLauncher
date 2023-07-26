@@ -92,5 +92,5 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     }
 
     [RelayCommand]
-    public void OpneCoreManage(GameInfo gameInfo) => Views.ShellPage.ContentFrame.Navigate(typeof(ManageNavigationPage), gameInfo);
+    public void OpenCoreManage(GameInfo gameInfo) => Views.ShellPage.ContentFrame.Navigate(typeof(ManageNavigationPage), gameInfo);
 }

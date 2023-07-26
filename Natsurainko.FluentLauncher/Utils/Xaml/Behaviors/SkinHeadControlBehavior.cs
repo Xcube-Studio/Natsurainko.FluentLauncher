@@ -29,11 +29,19 @@ internal class SkinHeadControlBehavior : DependencyObject, IBehavior
         AssociatedObject = associatedObject;
         Border border = (Border)associatedObject;
         border.Loaded += Border_Loaded;
+        border.Unloaded += Border_Unloaded;
+
+    }
+
+    private void Border_Unloaded(object sender, RoutedEventArgs e)
+    {
+        ((Border)AssociatedObject).Loaded -= Border_Loaded;
     }
 
     private void Border_Loaded(object sender, RoutedEventArgs e)
     {
-        skinCacheService.SetSkinHeadControlContent((Border)AssociatedObject, Account);
+        if (Account != null)
+            skinCacheService.SetSkinHeadControlContent((Border)AssociatedObject, Account);
     }
 
     public void Detach()

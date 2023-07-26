@@ -274,7 +274,7 @@
         <value>Dark and light color themes, effective after restarting the app</value>
     </data>
     <data name="Settings_AppearancePage_D2.Text" xml:space="preserve">
-        <value>Application background settings.</value>
+        <value>Application background settings, effective after restarting the app</value>
     </data>
     <data name="Settings_AppearancePage_D3.Text" xml:space="preserve">
         <value>NavigationView layout</value>

@@ -6,13 +6,21 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Natsurainko.FluentLauncher.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     ActualThemeChanged="Page_ActualThemeChanged"
     Loaded="Page_Loaded"
     SizeChanged="Page_SizeChanged"
     mc:Ignorable="d">
 
-    <Grid>
+    <Grid x:Name="MainGrid">
+        <Border Name="BackgroundImageBorder" Padding="20">
+            <Image
+                Name="BackgroundImage"
+                Margin="-20"
+                x:FieldModifier="public"
+                Stretch="UniformToFill" />
+        </Border>
         <Border
             x:Name="AppTitleBar"
             Height="{Binding CompactPaneLength, ElementName=NavigationViewControl}"

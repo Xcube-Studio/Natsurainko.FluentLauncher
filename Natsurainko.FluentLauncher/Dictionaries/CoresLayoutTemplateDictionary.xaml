@@ -16,7 +16,7 @@
             <i:Interaction.Behaviors>
                 <behaviors:AncestorBindingBehavior
                     AncestorType="ItemsRepeater"
-                    Binding="{Binding DataContext.OpneCoreManageCommand}"
+                    Binding="{Binding DataContext.OpenCoreManageCommand}"
                     TargetPropertyName="Command" />
             </i:Interaction.Behaviors>
             <labs:SettingsCard.Header>
@@ -72,7 +72,7 @@
             <i:Interaction.Behaviors>
                 <behaviors:AncestorBindingBehavior
                     AncestorType="ItemsRepeater"
-                    Binding="{Binding DataContext.OpneCoreManageCommand}"
+                    Binding="{Binding DataContext.OpenCoreManageCommand}"
                     TargetPropertyName="Command" />
             </i:Interaction.Behaviors>
             <Button.Content>
@@ -129,7 +129,7 @@
             <i:Interaction.Behaviors>
                 <behaviors:AncestorBindingBehavior
                     AncestorType="ItemsRepeater"
-                    Binding="{Binding DataContext.OpneCoreManageCommand}"
+                    Binding="{Binding DataContext.OpenCoreManageCommand}"
                     TargetPropertyName="Command" />
             </i:Interaction.Behaviors>
             <labs:SettingsCard.Header>

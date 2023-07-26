@@ -1,11 +1,16 @@
+using CommunityToolkit.WinUI.UI.Media;
+using CommunityToolkit.WinUI.UI.Media.Pipelines;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using System;
 using System.Linq;
+using System.Security.Policy;
+using System.Threading.Tasks;
 using Windows.Graphics;
 
 namespace Natsurainko.FluentLauncher.Views;
@@ -20,14 +25,11 @@ public sealed partial class ShellPage : Page
 
     public ShellPage()
     {
-        //this.Resources.Add("NavigationViewContentBackground", new SolidColorBrush(Colors.Transparent));
-        //this.Resources.Add("NavigationViewPaneContentGridMargin", new Thickness(-1, 0, -1, 0));
-        //this.Resources.Add("NavigationViewContentGridCornerRadius", new CornerRadius(0));
-        
+        _appearanceService.ApplyBackgroundBeforePageInit(this);
         InitializeComponent();
 
         ContentFrame = contentFrame;
-
+        _appearanceService.ApplyBackgroundAfterPageInit(this);
         _appearanceService.RegisterNavigationView(NavigationViewControl);
     }
 
@@ -149,6 +151,16 @@ public sealed partial class ShellPage : Page
 
             PaneContentGrid.SetValue(Grid.BackgroundProperty, acrylic);
         }*/
+    }
+
+    internal async void BlurAnimation(int from, int to)
+    {
+        var sprite = await PipelineBuilder
+            .FromBackdrop()
+            .Blur(from, out EffectAnimation<float> blurAnimation)
+            .AttachAsync(BackgroundImageBorder, BackgroundImageBorder);
+
+        await blurAnimation(sprite.Brush, to, TimeSpan.FromSeconds(0.1));
     }
 
     /*

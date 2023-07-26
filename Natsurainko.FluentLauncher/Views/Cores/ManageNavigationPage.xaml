@@ -22,7 +22,8 @@
                         Margin="10,0"
                         FontSize="24"
                         Style="{ThemeResource BaseTextBlockStyle}"
-                        Text="{Binding}" />
+                        Text="{Binding}"
+                        TextTrimming="CharacterEllipsis" />
                 </DataTemplate>
             </BreadcrumbBar.ItemTemplate>
         </BreadcrumbBar>

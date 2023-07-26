@@ -1,9 +1,9 @@
 ﻿using AppSettingsManagement.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
-using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using System.Collections.Generic;
 
@@ -22,7 +22,7 @@ partial class LanguageViewModel : SettingsViewModelBase, ISettingsViewModel
 
     #endregion
 
-    public List<string> Languages => LanguageResources.SupportedLanguages;
+    public List<string> Languages = ResourceUtils.Languages;
 
     private bool _isLoading = true;
 
@@ -35,7 +35,7 @@ partial class LanguageViewModel : SettingsViewModelBase, ISettingsViewModel
 
     partial void OnCurrentLanguageChanged(string oldValue, string newValue)
     {
-        bool isValid = LanguageResources.SupportedLanguages.Contains(CurrentLanguage);
+        bool isValid = Languages.Contains(CurrentLanguage);
         WeakReferenceMessenger.Default.Send(new GuideNavigationMessage()
         {
             CanNext = isValid,
@@ -43,7 +43,7 @@ partial class LanguageViewModel : SettingsViewModelBase, ISettingsViewModel
         });
         if (isValid && !_isLoading)
         {
-            LanguageResources.ApplyLanguage(CurrentLanguage);
+            ResourceUtils.ApplyLanguage(CurrentLanguage);
         }
     }
 

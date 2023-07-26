@@ -106,7 +106,7 @@ public class XSTSAuthenticateErrorModel
     public string Identity { get; set; }
 
     [JsonPropertyName("XErr")]
-    public string XErr { get; set; }
+    public long XErr { get; set; }
 
     [JsonPropertyName("Message")]
     public string Message { get; set; }

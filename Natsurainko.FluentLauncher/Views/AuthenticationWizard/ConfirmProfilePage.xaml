@@ -3,8 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:authenticationwizard="using:Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
     xmlns:converters="using:Natsurainko.FluentLauncher.Utils.Xaml.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.AuthenticationWizard"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=authenticationwizard:ConfirmProfileViewModel}"
@@ -34,12 +36,16 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <Image
+                        <Border
                             Grid.RowSpan="2"
                             Grid.Column="0"
                             Width="32"
                             Height="32"
-                            Source="/Assets/Icons/steve.png" />
+                            CornerRadius="4">
+                            <i:Interaction.Behaviors>
+                                <behaviors:SkinHeadControlBehavior Account="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </Border>
                         <TextBlock
                             Grid.Row="0"
                             Grid.Column="2"

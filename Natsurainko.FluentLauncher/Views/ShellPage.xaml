@@ -14,10 +14,16 @@
     mc:Ignorable="d">
 
     <Grid x:Name="MainGrid">
-        <Border Name="BackgroundImageBorder" Padding="20">
+        <Border
+            Name="BackgroundImageBorder"
+            Padding="20"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch">
             <Image
                 Name="BackgroundImage"
                 Margin="-20"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
                 x:FieldModifier="public"
                 Stretch="UniformToFill" />
         </Border>

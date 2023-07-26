@@ -85,7 +85,8 @@ public class DefaultMicrosoftAuthenticator : BaseAuthenticator<MicrosoftAccount>
 
         if (xSTSReqModelPostRes.StatusCode.Equals(HttpStatusCode.Unauthorized))
         {
-            var xSTSAuthenticateErrorModel = JsonSerializer.Deserialize<XSTSAuthenticateErrorModel>(xSTSReqModelPostRes.Content.ReadAsString());
+            var error = xSTSReqModelPostRes.Content.ReadAsString();
+            var xSTSAuthenticateErrorModel = JsonSerializer.Deserialize<XSTSAuthenticateErrorModel>(error);
 
             var message = "An error occurred while verifying with Xbox Live";
             if (!string.IsNullOrEmpty(xSTSAuthenticateErrorModel.Message))
@@ -96,13 +97,13 @@ public class DefaultMicrosoftAuthenticator : BaseAuthenticator<MicrosoftAccount>
                 Message = message,
                 HelpLink = xSTSAuthenticateErrorModel.XErr switch
                 {
-                    "2148916233" => "The account doesn't have an Xbox account. Once they sign up for one (or login through minecraft.net to create one) " +
+                    2148916233 => "The account doesn't have an Xbox account. Once they sign up for one (or login through minecraft.net to create one) " +
                         "then they can proceed with the login. This shouldn't happen with accounts that have purchased Minecraft with a Microsoft account, " +
                         "as they would've already gone through that Xbox signup process.",
-                    "2148916235" => "The account is from a country where Xbox Live is not available/banned",
-                    "2148916236" => "The account needs adult verification on Xbox page. (South Korea)",
-                    "2148916237" => "The account needs adult verification on Xbox page. (South Korea)",
-                    "2148916238" => "The account is a child (under 18) and cannot proceed unless the account is added to a Family by an adult. " +
+                    2148916235 => "The account is from a country where Xbox Live is not available/banned",
+                    2148916236 => "The account needs adult verification on Xbox page. (South Korea)",
+                    2148916237 => "The account needs adult verification on Xbox page. (South Korea)",
+                    2148916238 => "The account is a child (under 18) and cannot proceed unless the account is added to a Family by an adult. " +
                         "This only seems to occur when using a custom Microsoft Azure application. When using the Minecraft launchers client id, " +
                         "this doesn't trigger.",
                     _ => string.Empty

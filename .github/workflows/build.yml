@@ -227,13 +227,14 @@ jobs:
       with:
         name: .msixbundle
         path: ${{ steps.get_package_info.outputs.bundleFileName }}
+        
   Create-Tag:
     runs-on: ubuntu-latest
     name: Create-Tag
     needs: [build]
     if: ${{inputs.flag}}
     outputs: 
-      tag:  ('refs/tags/'+${{inputs.tag1}}${{inputs.tag2}})
+      tag:  'refs/tags/${{inputs.tag1}}${{inputs.tag2}}'
     steps:
       - name: CheckOut
         uses: actions/checkout@v3

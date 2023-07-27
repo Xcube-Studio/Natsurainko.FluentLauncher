@@ -39,6 +39,9 @@
     <data name="Buttons_Next.Text" xml:space="preserve">
         <value>下一步</value>
     </data>
+    <data name="Buttons_Open.Text" xml:space="preserve">
+        <value>打開</value>
+    </data>
     <data name="Converters__Account" xml:space="preserve">
         <value>賬戶</value>
     </data>
@@ -443,6 +446,9 @@
     </data>
     <data name="Settings_LaunchPage_SH14.Text" xml:space="preserve">
         <value>遊戲窗口標題：</value>
+    </data>
+    <data name="Settings_LaunchPage_SH15.Text" xml:space="preserve">
+        <value>轉到第三方 Java 下載源：</value>
     </data>
     <data name="Settings_NavigationPage_NV_Item_1.Content" xml:space="preserve">
         <value>啟動</value>

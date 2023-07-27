@@ -55,6 +55,7 @@
     <None Remove="Views\Common\AddVmArgumentDialog.xaml" />
     <None Remove="Views\Common\AuthenticationWizardDialog.xaml" />
     <None Remove="Views\Common\CopyrightLicenseDialog.xaml" />
+    <None Remove="Views\Common\JavaMirrorsDialog.xaml" />
     <None Remove="Views\Common\SwitchAccountDialog.xaml" />
     <None Remove="Views\Cores\ManageNavigationPage.xaml" />
     <None Remove="Views\Cores\Manage\CoreSettingsPage.xaml" />
@@ -98,6 +99,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Natsurainko.FluentCore (v4)\Natsurainko.FluentCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Common\JavaMirrorsDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>

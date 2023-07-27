@@ -6,6 +6,8 @@ using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.ViewModels.Common;
+using Natsurainko.FluentLauncher.Views;
+using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.ObjectModel;
@@ -175,4 +177,13 @@ partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
 
     [RelayCommand]
     public void ActivateCoresPage() => Views.ShellPage.ContentFrame.Navigate(typeof(Views.Cores.CoresPage));
+
+    [RelayCommand]
+    public void OpenJavaMirrorsDialog() 
+    {
+        _ = new JavaMirrorsDialog
+        {
+            XamlRoot = ShellPage._XamlRoot
+        }.ShowAsync();
+    }
 }

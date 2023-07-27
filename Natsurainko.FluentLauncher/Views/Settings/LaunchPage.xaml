@@ -269,6 +269,23 @@
 
                             <ToggleSwitch x:Name="AutoJVMMemory" IsOn="{Binding EnableAutoMemory, Mode=TwoWay}" />
                         </labs:SettingsCard>
+
+                        <labs:SettingsCard>
+                            <labs:SettingsCard.Header>
+                                <TextBlock x:Uid="Settings_LaunchPage_SH15" Text="Go to third-party Java download sources:" />
+                            </labs:SettingsCard.Header>
+
+                            <Button Command="{Binding OpenJavaMirrorsDialogCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon FontSize="16" Glyph="&#xE71B;" />
+                                    <TextBlock
+                                        x:Uid="Buttons_Open"
+                                        Margin="5,0,0,0"
+                                        Text="Open" />
+                                </StackPanel>
+                            </Button>
+                        </labs:SettingsCard>
+
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
 

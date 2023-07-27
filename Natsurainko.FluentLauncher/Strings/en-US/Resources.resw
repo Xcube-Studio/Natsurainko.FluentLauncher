@@ -39,6 +39,9 @@
     <data name="Buttons_Next.Text" xml:space="preserve">
         <value>Next</value>
     </data>
+    <data name="Buttons_Open.Text" xml:space="preserve">
+        <value>Open</value>
+    </data>
     <data name="Converters__Account" xml:space="preserve">
         <value>Account</value>
     </data>
@@ -443,6 +446,9 @@
     </data>
     <data name="Settings_LaunchPage_SH14.Text" xml:space="preserve">
         <value>Game window title:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH15.Text" xml:space="preserve">
+        <value>Go to third-party Java download sources:</value>
     </data>
     <data name="Settings_NavigationPage_NV_Item_1.Content" xml:space="preserve">
         <value>Launch</value>

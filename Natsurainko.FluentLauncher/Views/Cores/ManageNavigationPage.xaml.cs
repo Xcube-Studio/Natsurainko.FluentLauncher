@@ -1,15 +1,15 @@
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views.Cores.Manage;
-using Nrk.FluentCore.Classes.Datas.Launch;
 using System;
 
 namespace Natsurainko.FluentLauncher.Views.Cores;
 
 public sealed partial class ManageNavigationPage : Page
 {
-    private GameInfo _gameInfo;
+    private ExtendedGameInfo _gameInfo;
 
     public ManageNavigationPage()
     {
@@ -19,7 +19,7 @@ public sealed partial class ManageNavigationPage : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        _gameInfo = e.Parameter as GameInfo;
+        _gameInfo = e.Parameter as ExtendedGameInfo;
 
         BreadcrumbBar.ItemsSource = new string[]
         {
@@ -36,7 +36,7 @@ public sealed partial class ManageNavigationPage : Page
 
     private void NavigationView_ItemInvoked(NavigationView _, NavigationViewItemInvokedEventArgs args)
     {
-        contentFrame.Navigate(Type.GetType(((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()));
+        contentFrame.Navigate(Type.GetType(((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()), _gameInfo);
     }
 
     private void Page_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

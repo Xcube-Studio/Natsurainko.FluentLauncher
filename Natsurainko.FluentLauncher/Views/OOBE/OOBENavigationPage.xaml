@@ -24,7 +24,7 @@
                 CommandParameter="{Binding ElementName=contentFrame}"
                 FontWeight="SemiBold"
                 IsEnabled="{Binding ElementName=contentFrame, Path=CanGoBack}">
-                <TextBlock x:Uid="_Buttons_Back" Text="Back" />
+                <TextBlock x:Uid="Buttons_Back" Text="Back" />
             </Button>
             <Button
                 Width="85"
@@ -35,7 +35,7 @@
                 Foreground="White"
                 IsEnabled="{Binding CanNext}"
                 Style="{ThemeResource AccentButtonStyle}">
-                <TextBlock x:Uid="_Buttons_Next" Text="Next" />
+                <TextBlock x:Uid="Buttons_Next" Text="Next" />
             </Button>
         </StackPanel>
         <NavigationView
@@ -51,7 +51,7 @@
                     Tag="Natsurainko.FluentLauncher.Views.OOBE.LanguagePage">
                     <NavigationViewItem.Content>
                         <TextBlock
-                            x:Uid="Guide_Navigation_Language"
+                            x:Uid="OOBE_OOBENavigationPage_NV_Item1"
                             FontWeight="SemiBold"
                             Text="Language" />
                     </NavigationViewItem.Content>
@@ -59,7 +59,7 @@
                 <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xe713;}" Tag="Natsurainko.FluentLauncher.Views.OOBE.BasicPage">
                     <NavigationViewItem.Content>
                         <TextBlock
-                            x:Uid="Guide_Navigation_Basic"
+                            x:Uid="OOBE_OOBENavigationPage_NV_Item2"
                             FontWeight="SemiBold"
                             Text="Basic Settings" />
                     </NavigationViewItem.Content>
@@ -67,7 +67,7 @@
                 <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xe77b;}" Tag="Natsurainko.FluentLauncher.Views.OOBE.AccountPage">
                     <NavigationViewItem.Content>
                         <TextBlock
-                            x:Uid="Guide_Navigation_Account"
+                            x:Uid="OOBE_OOBENavigationPage_NV_Item3"
                             FontWeight="SemiBold"
                             Text="Account" />
                     </NavigationViewItem.Content>
@@ -77,7 +77,7 @@
                 <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xE736;}" Tag="Natsurainko.FluentLauncher.Views.OOBE.GetStartedPage">
                     <NavigationViewItem.Content>
                         <TextBlock
-                            x:Uid="Guide_Navigation_GetStarted"
+                            x:Uid="OOBE_OOBENavigationPage_NV_Item4"
                             FontWeight="SemiBold"
                             Text="Get Started" />
                     </NavigationViewItem.Content>

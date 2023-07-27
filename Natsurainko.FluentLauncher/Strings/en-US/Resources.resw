@@ -30,6 +30,15 @@
     <data name="Buttons_SignIn.Text" xml:space="preserve">
         <value>Sign in</value>
     </data>
+    <data name="Buttons_Add.Text" xml:space="preserve">
+        <value>Add</value>
+    </data>
+    <data name="Buttons_Back.Text" xml:space="preserve">
+        <value>Back</value>
+    </data>
+    <data name="Buttons_Next.Text" xml:space="preserve">
+        <value>Next</value>
+    </data>
     <data name="Converters__Account" xml:space="preserve">
         <value>Account</value>
     </data>
@@ -173,6 +182,66 @@
     </data>
     <data name="Home_HomePage__NoCore" xml:space="preserve">
         <value>Core Not Selected</value>
+    </data>
+    <data name="OOBE_AccountPage_T.Text" xml:space="preserve">
+        <value>Account Settings</value>
+    </data>
+    <data name="OOBE_AccountPage_H.Text" xml:space="preserve">
+        <value>Accounts</value>
+    </data>
+    <data name="OOBE_AccountPage_D1.Text" xml:space="preserve">
+        <value>You need at least one account to start the game</value>
+    </data>
+    <data name="OOBE_AccountPage_D2.Text" xml:space="preserve">
+        <value>Access to online servers is only possible with a Microsoft account</value>
+    </data>
+    <data name="OOBE_AccountPage_D3.Text" xml:space="preserve">
+        <value>Offline accounts will not be verified by the server</value>
+    </data>
+    <data name="OOBE_AccountPage_L.Text" xml:space="preserve">
+        <value>Minecraft Official Website</value>
+    </data>
+    <data name="OOBE_BasicPage_T.Text" xml:space="preserve">
+        <value>Basic Launch Settings</value>
+    </data>
+    <data name="OOBE_BasicPage_D1.Text" xml:space="preserve">
+        <value>You need at least a .minecraft directory to store your game cores</value>
+    </data>
+    <data name="OOBE_BasicPage_D2.Text" xml:space="preserve">
+        <value>You need at least a Java Runtime to start your game core</value>
+    </data>
+    <data name="OOBE_BasicPage_D3.Text" xml:space="preserve">
+        <value>Once done, you can also modify these settings in the global game settings</value>
+    </data>
+    <data name="OOBE_BasicPage_H1.Text" xml:space="preserve">
+        <value>.minecraft Folder:</value>
+    </data>
+    <data name="OOBE_BasicPage_H2.Text" xml:space="preserve">
+        <value>Java Runtimes:</value>
+    </data>
+    <data name="OOBE_GetStartedPage_T.Text" xml:space="preserve">
+        <value>All Finished</value>
+    </data>
+    <data name="OOBE_GetStartedPage_ST.Text" xml:space="preserve">
+        <value>You have all the basic settings done</value>
+    </data>
+    <data name="OOBE_GetStartedPage_B.Text" xml:space="preserve">
+        <value>Let's Get Started</value>
+    </data>
+    <data name="OOBE_LanguagePage_Welcome.Text" xml:space="preserve">
+        <value>Welcome</value>
+    </data>
+    <data name="OOBE_OOBENavigationPage_NV_Item1.Text" xml:space="preserve">
+        <value>Language</value>
+    </data>
+    <data name="OOBE_OOBENavigationPage_NV_Item2.Text" xml:space="preserve">
+        <value>Basic Settings</value>
+    </data>
+    <data name="OOBE_OOBENavigationPage_NV_Item3.Text" xml:space="preserve">
+        <value>Account</value>
+    </data>
+    <data name="OOBE_OOBENavigationPage_NV_Item4.Text" xml:space="preserve">
+        <value>Get Started</value>
     </data>
     <data name="Settings_AboutPage_T1.Text" xml:space="preserve">
         <value>About Fluent Launcher</value>

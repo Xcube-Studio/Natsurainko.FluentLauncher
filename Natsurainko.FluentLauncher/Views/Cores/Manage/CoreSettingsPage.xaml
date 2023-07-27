@@ -2,14 +2,25 @@
     x:Class="Natsurainko.FluentLauncher.Views.Cores.Manage.CoreSettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Cores.Manage"
+    xmlns:manage="using:Natsurainko.FluentLauncher.ViewModels.Cores.Manage"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
+    d:DataContext="{d:DesignInstance Type=manage:CoreSettingsViewModel}"
     Background="Transparent"
     mc:Ignorable="d">
+    <i:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="Unloaded">
+            <actions:ModifiedInvokeCommandAction Command="{Binding UnloadEventCommand}" />
+        </core:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
 
     <ScrollViewer Padding="30,0" VerticalScrollBarVisibility="Auto">
         <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
@@ -32,7 +43,7 @@
                             Text="Only as a display name, the actual Id will not be modified" />
                     </labs:SettingsCard.Description>
 
-                    <TextBox Width="150" />
+                    <TextBox Width="150" Text="{Binding GameSpecialConfig.NickName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </labs:SettingsCard>
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
@@ -45,7 +56,7 @@
                             FontSize="14"
                             Text="Only if you enable this item, the following settings will take effect" />
                     </labs:SettingsCard.Description>
-                    <ToggleSwitch Name="ToggleSwitch" />
+                    <ToggleSwitch Name="ToggleSwitch" IsOn="{Binding GameSpecialConfig.EnableSpecialSetting, Mode=TwoWay}" />
                 </labs:SettingsCard>
 
                 <ContentControl
@@ -70,14 +81,14 @@
                                     FontSize="14"
                                     Text="The game will run at versions\${version} directory" />
                             </labs:SettingsCard.Description>
-                            <ToggleSwitch />
+                            <ToggleSwitch IsOn="{Binding GameSpecialConfig.EnableIndependencyCore, Mode=TwoWay}" />
                         </labs:SettingsCard>
 
                         <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE740;}">
                             <labs:SettingsCard.Header>
                                 <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_H4" Text="Automatic full screen mode after entering the game" />
                             </labs:SettingsCard.Header>
-                            <ToggleSwitch />
+                            <ToggleSwitch IsOn="{Binding GameSpecialConfig.EnableFullScreen, Mode=TwoWay}" />
                         </labs:SettingsCard>
 
                         <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE744;}">
@@ -86,12 +97,18 @@
                             </labs:SettingsCard.Header>
 
                             <StackPanel Orientation="Horizontal">
-                                <NumberBox Width="75" Minimum="0" />
+                                <NumberBox
+                                    Width="75"
+                                    Minimum="0"
+                                    Value="{Binding GameSpecialConfig.GameWindowWidth, Mode=TwoWay}" />
                                 <FontIcon
                                     Margin="10,0"
                                     FontSize="14"
                                     Glyph="&#xe947;" />
-                                <NumberBox Width="75" Minimum="0" />
+                                <NumberBox
+                                    Width="75"
+                                    Minimum="0"
+                                    Value="{Binding GameSpecialConfig.GameWindowHeight, Mode=TwoWay}" />
                             </StackPanel>
                         </labs:SettingsCard>
 
@@ -100,7 +117,7 @@
                                 <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_H6" Text="The server address to connect after entering the game" />
                             </labs:SettingsCard.Header>
 
-                            <TextBox Width="250" />
+                            <TextBox Width="250" Text="{Binding GameSpecialConfig.ServerAddress, Mode=TwoWay}" />
                         </labs:SettingsCard>
 
                         <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE76F;}">
@@ -108,7 +125,7 @@
                                 <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_H7" Text="Game window title" />
                             </labs:SettingsCard.Header>
 
-                            <TextBox Width="250" />
+                            <TextBox Width="250" Text="{Binding GameSpecialConfig.GameWindowTitle, Mode=TwoWay}" />
                         </labs:SettingsCard>
 
                         <TextBlock
@@ -130,12 +147,52 @@
                             </labs:SettingsCard.Description>
 
                             <StackPanel Orientation="Horizontal" Spacing="15">
-                                <ComboBox IsEnabled="{Binding ElementName=AccountToggleSwitch, Path=IsOn}" SelectedItem="{Binding CurrentDownloadSource, Mode=TwoWay}">
-                                    <x:String>Mojang</x:String>
-                                    <x:String>Bmclapi</x:String>
-                                    <x:String>Mcbbs</x:String>
+                                <ComboBox
+                                    IsEnabled="{Binding ElementName=AccountToggleSwitch, Path=IsOn}"
+                                    ItemsSource="{Binding Accounts}"
+                                    SelectedItem="{Binding TargetedAccount, Mode=TwoWay}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="8" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <TextBlock
+                                                    Grid.Row="0"
+                                                    Grid.Column="2"
+                                                    FontWeight="SemiBold"
+                                                    Text="{Binding Name}"
+                                                    TextTrimming="CharacterEllipsis" />
+                                                <TextBlock
+                                                    Grid.Row="1"
+                                                    Grid.Column="2"
+                                                    HorizontalAlignment="Left"
+                                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    TextTrimming="CharacterEllipsis"
+                                                    TextWrapping="WrapWholeWords">
+                                                    <Run Text="{Binding Type, Converter={ThemeResource AccountInfoConverter}}" />
+                                                    <Run>
+                                                        <Run.Text>
+                                                            <Binding Converter="{ThemeResource AccountInfoConverter}">
+                                                                <Binding.ConverterParameter>
+                                                                    <x:String>YggdrasilServerUrl</x:String>
+                                                                </Binding.ConverterParameter>
+                                                            </Binding>
+                                                        </Run.Text>
+                                                    </Run>
+                                                </TextBlock>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
                                 </ComboBox>
-                                <ToggleSwitch Name="AccountToggleSwitch" />
+                                <ToggleSwitch Name="AccountToggleSwitch" IsOn="{Binding GameSpecialConfig.EnableTargetedAccount, Mode=TwoWay}" />
                             </StackPanel>
                         </labs:SettingsCard>
 
@@ -146,7 +203,7 @@
                             FontWeight="Bold"
                             Text="JVM Settings" />
 
-                        <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
+                        <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xE713;}" ItemsSource="{Binding VmArguments}">
                             <labs:SettingsExpander.Header>
                                 <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_H9" Text="Additional JVM parameter settings" />
                             </labs:SettingsExpander.Header>
@@ -160,28 +217,28 @@
                                 <DataTemplate>
                                     <labs:SettingsCard>
                                         <labs:SettingsCard.Header>
-                                            <TextBlock Text="{Binding}" />
+                                            <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
                                         </labs:SettingsCard.Header>
-                                        <Button Grid.Column="2">
+                                        <Button Grid.Column="2" CommandParameter="{Binding}">
+                                            <i:Interaction.Behaviors>
+                                                <behaviors:AncestorBindingBehavior
+                                                    AncestorType="SettingsExpander"
+                                                    Binding="{Binding DataContext.RemoveArgumentCommand}"
+                                                    TargetPropertyName="Command" />
+                                            </i:Interaction.Behaviors>
                                             <StackPanel Orientation="Horizontal" Spacing="5">
                                                 <FontIcon FontSize="16" Glyph="&#xE738;" />
-                                                <TextBlock Text="移除" />
+                                                <TextBlock x:Uid="Buttons_Remove" Text="Remove" />
                                             </StackPanel>
                                         </Button>
                                     </labs:SettingsCard>
                                 </DataTemplate>
                             </labs:SettingsExpander.ItemTemplate>
-                            <labs:SettingsExpander.Items>
-                                <x:String>A</x:String>
-                                <x:String>A</x:String>
-                                <x:String>A</x:String>
-                            </labs:SettingsExpander.Items>
 
-
-                            <Button>
+                            <Button Command="{Binding AddArgumentCommand}">
                                 <StackPanel Orientation="Horizontal" Spacing="5">
                                     <FontIcon FontSize="16" Glyph="&#xE710;" />
-                                    <TextBlock Text="添加" />
+                                    <TextBlock x:Uid="Buttons_Add" Text="Add" />
                                 </StackPanel>
                             </Button>
                         </labs:SettingsExpander>

@@ -18,7 +18,7 @@
             SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}">
             <ComboBox.Header>
                 <TextBlock
-                    x:Uid="Guide_Welcome"
+                    x:Uid="OOBE_LanguagePage_Welcome"
                     FontSize="16"
                     FontWeight="SemiBold"
                     Text="Welcome" />

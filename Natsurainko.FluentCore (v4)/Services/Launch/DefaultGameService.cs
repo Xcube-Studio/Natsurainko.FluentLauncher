@@ -19,21 +19,29 @@ namespace Nrk.FluentCore.Services.Launch;
 /// </summary>
 public class DefaultGameService
 {
-    public ReadOnlyObservableCollection<GameInfo> GameInfos { get; }
+    public ReadOnlyObservableCollection<GameInfo> GameInfos { get; protected set; }
 
-    protected readonly ObservableCollection<GameInfo> _gameInfos;
+    protected ObservableCollection<GameInfo> _gameInfos;
 
-    public ReadOnlyObservableCollection<string> MinecraftFolders { get; }
+    public ReadOnlyObservableCollection<string> MinecraftFolders { get; protected set; }
 
-    protected readonly ObservableCollection<string> _minecraftFolders;
+    protected ObservableCollection<string> _minecraftFolders;
 
-    public string ActiveMinecraftFolder { get; private set; }
+    public string ActiveMinecraftFolder { get; protected set; }
 
-    public GameInfo ActiveGameInfo { get; private set; }
+    public GameInfo ActiveGameInfo { get; protected set; }
 
     protected DefaultGameLocator _locator;
     //protected FileSystemWatcher _versionsFolderWatcher; TODO: 文件监控实时更新GameInfos
-    protected readonly IFluentCoreSettingsService _settingsService;
+    protected IFluentCoreSettingsService _settingsService;
+
+    /// <summary>
+    /// 以供完全自定义构造函数和重写该类
+    /// </summary>
+    public DefaultGameService()
+    {
+
+    }
 
     /// <summary>
     /// 
@@ -53,7 +61,7 @@ public class DefaultGameService
         else ActiveMinecraftFolder = null;
     }
 
-    public void ActivateMinecraftFolder(string folder)
+    public virtual void ActivateMinecraftFolder(string folder)
     {
         if (!_minecraftFolders.Contains(folder))
             throw new ArgumentException("Not an folder managed by GameService", nameof(folder));
@@ -67,7 +75,7 @@ public class DefaultGameService
         }
     }
 
-    public void ActivateGameInfo(GameInfo gameInfo)
+    public virtual void ActivateGameInfo(GameInfo gameInfo)
     {
         if (!_gameInfos.Contains(gameInfo))
             throw new ArgumentException("Not an game managed by GameService", nameof(gameInfo));
@@ -79,7 +87,7 @@ public class DefaultGameService
         }
     }
 
-    protected void InitFolder()
+    protected virtual void InitFolder()
     {
         //_versionsFolderWatcher?.Dispose();
 
@@ -89,7 +97,7 @@ public class DefaultGameService
         //_versionsFolderWatcher = new FileSystemWatcher(ActiveMinecraftFolder);
     }
 
-    protected void RefreshGames()
+    protected virtual void RefreshGames()
     {
         _gameInfos.Clear();
 

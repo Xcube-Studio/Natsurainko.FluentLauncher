@@ -115,7 +115,7 @@
                             Grid.Column="2"
                             HorizontalTextAlignment="Right"
                             Style="{ThemeResource TitleLargeTextBlockStyle}"
-                            Text="{Binding ActiveGameInfo.AbsoluteId}"
+                            Text="{Binding ActiveGameInfo.Name}"
                             TextTrimming="CharacterEllipsis" />
                     </Grid>
                     <Button.Flyout>
@@ -150,7 +150,7 @@
                                                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                                         <TextBlock
                                                             Style="{ThemeResource BaseTextBlockStyle}"
-                                                            Text="{Binding AbsoluteId}"
+                                                            Text="{Binding Name}"
                                                             TextTrimming="CharacterEllipsis"
                                                             TextWrapping="NoWrap"
                                                             ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />

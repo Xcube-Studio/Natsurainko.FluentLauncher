@@ -26,7 +26,8 @@ internal partial class LaunchProcess : BaseLaunchProcess
     private Exception Exception;
 
     private readonly LaunchService _launchService;
-    internal string _suitableJava;
+
+    public event EventHandler GameProcessStart;
 
     public override LaunchState State 
     { 
@@ -85,6 +86,7 @@ internal partial class LaunchProcess : BaseLaunchProcess
             McProcess.Exited += McProcess_Exited;
 
             McProcess.Start();
+            GameProcessStart.Invoke(this, null);
 
             State = LaunchState.GameRunning;
 

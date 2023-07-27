@@ -2,12 +2,12 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
+using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Classes.Datas.Authenticate;
-using Nrk.FluentCore.Classes.Datas.Launch;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -16,7 +16,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.Home;
 partial class HomeViewModel : ObservableObject
 {
     public ReadOnlyObservableCollection<Account> Accounts { get; init; }
-    public ReadOnlyObservableCollection<GameInfo> GameInfos { get; init; }
+    public ReadOnlyObservableCollection<ExtendedGameInfo> GameInfos { get; init; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(AccountTag))]
@@ -25,7 +25,7 @@ partial class HomeViewModel : ObservableObject
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(LaunchButtonTag))]
-    private GameInfo activeGameInfo;
+    private ExtendedGameInfo activeGameInfo;
 
     private readonly GameService _gameService;
     private readonly AccountService _accountService;
@@ -52,7 +52,7 @@ partial class HomeViewModel : ObservableObject
         });
     }
 
-    public string LaunchButtonTag => ActiveGameInfo is null ? _coreNotSelected : ActiveGameInfo.AbsoluteId;
+    public string LaunchButtonTag => ActiveGameInfo is null ? _coreNotSelected : ActiveGameInfo.Name;
 
     public Visibility NoAccountTag => ActiveAccount is null ? Visibility.Visible : Visibility.Collapsed;
 

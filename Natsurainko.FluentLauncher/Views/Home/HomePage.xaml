@@ -138,7 +138,7 @@
                                 </Grid.RowDefinitions>
                                 <TextBlock
                                     FontWeight="SemiBold"
-                                    Text="{Binding AbsoluteId}"
+                                    Text="{Binding Name}"
                                     TextTrimming="CharacterEllipsis"
                                     ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
                                 <TextBlock

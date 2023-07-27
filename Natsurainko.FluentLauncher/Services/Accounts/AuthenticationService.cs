@@ -62,6 +62,38 @@ internal class AuthenticationService
         });
     }
 
+    public void RefreshContainedAccount(Account account)
+    {
+        Account refreshedAccount = default;
+
+        if (account is MicrosoftAccount microsoftAccount)
+        {
+            refreshedAccount = DefaultMicrosoftAuthenticator
+                .CreateForRefresh(ClientId, RedirectUrl, microsoftAccount)
+                .Authenticate();
+        }
+        else if (account is YggdrasilAccount yggdrasilAccount)
+        {
+            refreshedAccount = DefaultYggdrasilAuthenticator
+                .CreateForRefresh(yggdrasilAccount)
+                .Authenticate()
+                .First(account => account.Uuid.Equals(account.Uuid));
+        }
+        else if (account is OfflineAccount offlineAccount)
+            refreshedAccount = new DefaultOfflineAuthenticator(account.Name, account.Uuid).Authenticate();
+
+        App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+        {
+            _accountService.Remove(account);
+
+#pragma warning disable CS0612 // Type or member is obsolete
+            _accountService.AddAccount(refreshedAccount);
+#pragma warning restore CS0612
+
+            Task.Run(() => _skinCacheService.TryCacheSkin(refreshedAccount));
+        });
+    }
+
     public OfflineAccount AuthenticateOffline(string name, string uuid)
         => new DefaultOfflineAuthenticator(name, uuid == null ? null : Guid.Parse(uuid)).Authenticate();
 

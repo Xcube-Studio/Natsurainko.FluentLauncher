@@ -30,6 +30,15 @@
     <data name="Buttons_SignIn.Text" xml:space="preserve">
         <value>Войти</value>
     </data>
+    <data name="Buttons_Add.Text" xml:space="preserve">
+        <value>Добавлять</value>
+    </data>
+    <data name="Buttons_Back.Text" xml:space="preserve">
+        <value>Назад</value>
+    </data>
+    <data name="Buttons_Next.Text" xml:space="preserve">
+        <value>Следующий</value>
+    </data>
     <data name="Converters__Account" xml:space="preserve">
         <value>счет</value>
     </data>
@@ -173,6 +182,66 @@
     </data>
     <data name="Home_HomePage__NoCore" xml:space="preserve">
         <value>Ядро не выбрано</value>
+    </data>
+    <data name="OOBE_AccountPage_T.Text" xml:space="preserve">
+        <value>Настройки учетной записи</value>
+    </data>
+    <data name="OOBE_AccountPage_H.Text" xml:space="preserve">
+        <value>Счета</value>
+    </data>
+    <data name="OOBE_AccountPage_D1.Text" xml:space="preserve">
+        <value>У вас должен быть хотя бы один аккаунт, чтобы начать игру</value>
+    </data>
+    <data name="OOBE_AccountPage_D2.Text" xml:space="preserve">
+        <value>Доступ к онлайн-серверам возможен только с учетной записью Microsoft.</value>
+    </data>
+    <data name="OOBE_AccountPage_D3.Text" xml:space="preserve">
+        <value>Офлайн-аккаунты не будут проверяться сервером</value>
+    </data>
+    <data name="OOBE_AccountPage_L.Text" xml:space="preserve">
+        <value>Официальный сайт Майнкрафт</value>
+    </data>
+    <data name="OOBE_BasicPage_T.Text" xml:space="preserve">
+        <value>Основные параметры запуска</value>
+    </data>
+    <data name="OOBE_BasicPage_D1.Text" xml:space="preserve">
+        <value>Вам нужен как минимум каталог .minecraft для хранения игровых ядер.</value>
+    </data>
+    <data name="OOBE_BasicPage_D2.Text" xml:space="preserve">
+        <value>Вам нужна как минимум среда выполнения Java, чтобы запустить ядро ​​игры.</value>
+    </data>
+    <data name="OOBE_BasicPage_D3.Text" xml:space="preserve">
+        <value>После этого вы также можете изменить эти настройки в глобальных настройках игры.</value>
+    </data>
+    <data name="OOBE_BasicPage_H1.Text" xml:space="preserve">
+        <value>.minecraft Папка:</value>
+    </data>
+    <data name="OOBE_BasicPage_H2.Text" xml:space="preserve">
+        <value>Среды выполнения Java:</value>
+    </data>
+    <data name="OOBE_GetStartedPage_T.Text" xml:space="preserve">
+        <value>Все закончено</value>
+    </data>
+    <data name="OOBE_GetStartedPage_ST.Text" xml:space="preserve">
+        <value>Вы выполнили все основные настройки</value>
+    </data>
+    <data name="OOBE_GetStartedPage_B.Text" xml:space="preserve">
+        <value>Давайте начнем</value>
+    </data>
+    <data name="OOBE_LanguagePage_Welcome.Text" xml:space="preserve">
+        <value>Добро пожаловать</value>
+    </data>
+    <data name="OOBE_OOBENavigationPage_NV_Item1.Text" xml:space="preserve">
+        <value>Язык</value>
+    </data>
+    <data name="OOBE_OOBENavigationPage_NV_Item2.Text" xml:space="preserve">
+        <value>Базовые настройки</value>
+    </data>
+    <data name="OOBE_OOBENavigationPage_NV_Item3.Text" xml:space="preserve">
+        <value>Счет</value>
+    </data>
+    <data name="OOBE_OOBENavigationPage_NV_Item4.Text" xml:space="preserve">
+        <value>Начать</value>
     </data>
     <data name="Settings_AboutPage_T1.Text" xml:space="preserve">
         <value>О Fluent Launcher</value>

@@ -2,7 +2,6 @@
 using AppSettingsManagement.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
-using Microsoft.Windows.ApplicationModel.Resources;
 using Natsurainko.FluentLauncher.Services;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Download;
@@ -11,13 +10,10 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
-using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
 using System;
 using System.Text;
-using System.Threading.Tasks;
-using Windows.Storage;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -90,9 +86,7 @@ public partial class App : Application
         /// Activities
         services.AddSingleton<ViewModels.Activities.NewsViewModel>();
         services.AddTransient<ViewModels.Activities.LaunchViewModel>();
-        services.AddTransient<ViewModels.Activities.DownloadViewModel>();
-
-
+        //services.AddTransient<ViewModels.Activities.DownloadViewModel>();
         //services.AddSingleton<ViewModels.Downloads.CurseForgeViewModel>();
 
         services.AddTransient<ViewModels.Common.SwitchAccountDialogViewModel>();
@@ -142,8 +136,17 @@ public partial class App : Application
         {
             App.MainWindow.DispatcherQueue?.TryEnqueue(async () =>
             {
-                var dialog = new ExceptionDialog(errorMessage) { XamlRoot = MainWindow.Content.XamlRoot };
-                await dialog.ShowAsync();
+                try
+                {
+                    var dialog = new ExceptionDialog(errorMessage) { XamlRoot = MainWindow.Content.XamlRoot };
+                    await dialog.ShowAsync();
+                }
+                catch 
+                {
+                    var window = new Window() { Title = "Fluent Launcher" };
+                    window.Content = new ExceptionPage(errorMessage);
+                    window.Activate();
+                }
             });
         }
         else

@@ -1,13 +1,16 @@
-﻿using Natsurainko.FluentLauncher.Components.Launch;
+﻿using Natsurainko.FluentLauncher.Classes.Data.Launch;
+using Natsurainko.FluentLauncher.Components.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Download;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
+using Nrk.FluentCore.Classes.Datas.Authenticate;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.DefaultComponets.Launch;
 using Nrk.FluentCore.DefaultComponets.Parse;
 using Nrk.FluentCore.Services.Launch;
 using Nrk.FluentCore.Utils;
+using PInvoke;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,7 +18,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
@@ -24,6 +26,7 @@ internal class LaunchService : DefaultLaunchService
 {
     private readonly AuthenticationService _authenticationService;
     private readonly new SettingsService _settingsService;
+    private readonly new AccountService _accountService;
     private readonly ObservableCollection<LaunchProcess> _launchProcesses = new();
     private readonly DownloadService _downloadService;
 
@@ -37,6 +40,7 @@ internal class LaunchService : DefaultLaunchService
         DownloadService downloadService)
         : base(settingsService, gameService, accountService) 
     {
+        _accountService = accountService;
         _authenticationService = authenticationService;
         _settingsService = settingsService;
         _downloadService = downloadService;
@@ -58,14 +62,17 @@ internal class LaunchService : DefaultLaunchService
         var libraryParser = new DefaultLibraryParser(gameInfo);
         libraryParser.EnumerateLibraries(out var enabledLibraries, out var enabledNativesLibraries);
 
+        var specialConfig = gameInfo.GetSpecialConfig();
+
         string suitableJava = default;
-        string gameDirectory = GetGameDirectory(gameInfo);
+        string gameDirectory = GetGameDirectory(gameInfo, specialConfig);
+        var launchAccount = GetLaunchAccount(specialConfig);
 
         var launchProcess = new LaunchProcessBuilder(gameInfo)
             .SetInspectAction(() =>
             {
                 if (_settingsService.ActiveJava == null) return false;
-                if (_accountService.ActiveAccount == null) return false;
+                if (launchAccount == null) return false;
 
                 suitableJava = GetSuitableJava(gameInfo);
                 if (suitableJava == null) return false;
@@ -74,7 +81,19 @@ internal class LaunchService : DefaultLaunchService
             })
             .SetAuthenticateFunc(() => 
             {
-                if (_settingsService.AutoRefresh) _authenticationService.RefreshCurrentAccount();
+                if (_settingsService.AutoRefresh)
+                {
+                    if (launchAccount.Equals(_accountService.ActiveAccount))
+                    {
+                        _authenticationService.RefreshCurrentAccount();
+                        launchAccount = _accountService.ActiveAccount;
+                    }
+                    else
+                    {
+                        _authenticationService.RefreshContainedAccount(launchAccount);
+                        launchAccount = GetLaunchAccount(specialConfig);
+                    }
+                }
             })
             .SetCompleteResourcesAction(launchProcess =>
             {
@@ -101,16 +120,20 @@ internal class LaunchService : DefaultLaunchService
 
                 var builder = new DefaultArgumentsBuilder(gameInfo)
                     .SetLibraries(enabledLibraries)
-                    .SetAccountSettings(_accountService.ActiveAccount, _settingsService.EnableDemoUser)
+                    .SetAccountSettings(launchAccount, _settingsService.EnableDemoUser)
                     .SetJavaSettings(suitableJava, maxMemory, minMemory)
-                    .SetGameDirectory(gameDirectory);
-                    //.AddExtraParameters(); TODO: 加入额外的虚拟机参数  如：-XX:+UseG1GC 以及额外游戏参数 如：--fullscreen
+                    .SetGameDirectory(gameDirectory)
+                    .AddExtraParameters(GetExtraVmParameters(specialConfig), GetExtraGameParameters(specialConfig)); //TODO: 加入额外的虚拟机参数  如：-XX:+UseG1GC 以及额外游戏参数 如：--fullscreen
 
                 return builder.Build();
             })
             .SetCreateProcessFunc(() =>
             {
-                gameInfo.GetSpecialConfig().LastLaunchTime = DateTime.Now;
+                var launchTime = DateTime.Now;
+
+                specialConfig.LastLaunchTime = launchTime;
+                (gameInfo as ExtendedGameInfo).LastLaunchTime = launchTime;
+
                 return new Process
                 {
                     StartInfo = new ProcessStartInfo(suitableJava)
@@ -121,7 +144,31 @@ internal class LaunchService : DefaultLaunchService
             })
             .Build();
 
-        launchProcess._suitableJava = suitableJava;
+        launchProcess.GameProcessStart += (_, _) =>
+        {
+            var title = GameWindowTitle(specialConfig);
+            if (string.IsNullOrEmpty(title)) return;
+
+            Task.Run(async () =>
+            {
+                try
+                {
+                    while (!(launchProcess.McProcess?.HasExited).GetValueOrDefault(true))
+                    {
+                        if (launchProcess.McProcess != null && launchProcess.McProcess?.MainWindowTitle != title)
+                            User32.SetWindowText(launchProcess.McProcess.MainWindowHandle, title);
+
+                        await Task.Delay(1000);
+                        launchProcess.McProcess?.Refresh();
+                    }
+                }
+                catch //(Exception ex)
+                {
+                    //throw;
+                }
+            });
+        };
+
         return launchProcess;
     }
 
@@ -149,17 +196,112 @@ internal class LaunchService : DefaultLaunchService
         return suits.First().Item1;
     }
 
-    private string GetGameDirectory(GameInfo gameInfo)
+    private string GetGameDirectory(GameInfo gameInfo, GameSpecialConfig specialConfig)
     {
-        string gameDirectory = gameInfo.MinecraftFolderPath;
-        string independence = Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId);
-
-        var specialConfig = gameInfo.GetSpecialConfig();
-
         if (specialConfig.EnableSpecialSetting)
-            gameDirectory = specialConfig.EnableIndependencyCore ? independence : gameDirectory;
-        else gameDirectory = _settingsService.EnableIndependencyCore ? independence : gameDirectory;
+        {
+            if (specialConfig.EnableIndependencyCore)
+                return Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId);
+            else return gameInfo.MinecraftFolderPath;
+        }
 
-        return gameDirectory;
+        if (_settingsService.EnableIndependencyCore)
+            return Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId);
+
+        return gameInfo.MinecraftFolderPath;
+    }
+
+    private string GameWindowTitle(GameSpecialConfig specialConfig)
+    {
+        if (specialConfig.EnableSpecialSetting)
+        {
+            if (!string.IsNullOrEmpty(specialConfig.GameWindowTitle))
+                return specialConfig.GameWindowTitle;
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(_settingsService.GameWindowTitle))
+                return _settingsService.GameWindowTitle;
+        }
+
+        return null;
+    }
+
+    private Account GetLaunchAccount(GameSpecialConfig specialConfig)
+    {
+        if (specialConfig.EnableSpecialSetting && specialConfig.EnableTargetedAccount && specialConfig.Account != null)
+        {
+            var matchAccount = _accountService.Accounts.Where(account =>
+            {
+                if (!account.Type.Equals(specialConfig.Account.Type)) return false;
+                if (!account.Uuid.Equals(specialConfig.Account.Uuid)) return false;
+                if (!account.Name.Equals(specialConfig.Account.Name)) return false;
+
+                if (specialConfig.Account is YggdrasilAccount yggdrasil)
+                {
+                    if (!((YggdrasilAccount)account).YggdrasilServerUrl.Equals(yggdrasil.YggdrasilServerUrl)) 
+                        return false;
+                }
+
+                return true;
+            });
+
+            if (matchAccount.Any())
+                return matchAccount.First();
+            else throw new Exception("Can't find target account");
+        }
+
+        return _accountService.ActiveAccount;
+    }
+
+    private IEnumerable<string> GetExtraVmParameters(GameSpecialConfig specialConfig)
+    {
+        if (!specialConfig.EnableSpecialSetting)
+            yield break;
+
+        foreach (var item in specialConfig.VmParameters)
+            yield return item;
+    }
+
+    private IEnumerable<string> GetExtraGameParameters(GameSpecialConfig specialConfig)
+    {
+        if (specialConfig.EnableSpecialSetting)
+        {
+            if (specialConfig.EnableFullScreen)
+                yield return "--fullscreen";
+
+            if (specialConfig.GameWindowWidth > 0)
+                yield return $"--width {specialConfig.GameWindowWidth}";
+
+            if (specialConfig.GameWindowHeight > 0)
+                yield return $"--height {specialConfig.GameWindowHeight}";
+
+            if (!string.IsNullOrEmpty(specialConfig.ServerAddress))
+            {
+                specialConfig.ServerAddress.ParseServerAddress(out var host, out var port);
+
+                yield return $"--server {host}";
+                yield return $"--port {port}";
+            }
+        }
+        else
+        {
+            if (_settingsService.EnableFullScreen)
+                yield return "--fullscreen";
+
+            if (_settingsService.GameWindowWidth > 0)
+                yield return $"--width {_settingsService.GameWindowWidth}";
+
+            if (_settingsService.GameWindowHeight > 0)
+                yield return $"--height {_settingsService.GameWindowHeight}";
+
+            if (!string.IsNullOrEmpty(_settingsService.GameServerAddress))
+            {
+                specialConfig.ServerAddress.ParseServerAddress(out var host, out var port);
+
+                yield return $"--server {host}";
+                yield return $"--port {port}";
+            }
+        }
     }
 }

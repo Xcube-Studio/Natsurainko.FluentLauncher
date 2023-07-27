@@ -1,6 +1,7 @@
 ﻿using AppSettingsManagement.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
@@ -17,6 +18,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
 {
     private readonly GameService _gameService;
+    private bool initSettings = false;
 
     [SettingsProvider]
     private readonly SettingsService _settingsService;
@@ -29,6 +31,8 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
         GameInfos = _gameService.GameInfos;
 
         (this as ISettingsViewModel).InitializeSettings();
+        initSettings = true;
+
         Task.Run(UpdateDisplayGameInfos);
     }
 
@@ -53,14 +57,17 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     [ObservableProperty]
     private string[] sorts = ResourceUtils.GetItems("Cores", "CoresPage", "_Items2");
 
-    public ReadOnlyObservableCollection<GameInfo> GameInfos { get; init; }
+    public ReadOnlyObservableCollection<ExtendedGameInfo> GameInfos { get; init; }
 
     [ObservableProperty]
-    private IEnumerable<GameInfo> displayGameInfos;
+    private IEnumerable<ExtendedGameInfo> displayGameInfos;
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
+
+        if (!initSettings)
+            return;
 
         if (e.PropertyName == nameof(FilterIndex) ||
             e.PropertyName == nameof(SortByIndex) ||
@@ -82,11 +89,11 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
         });
 
         if (!string.IsNullOrEmpty(SearchBoxInput))
-            infos = infos.Where(x => x.AbsoluteId.Contains(SearchBoxInput));
+            infos = infos.Where(x => x.Name.Contains(SearchBoxInput));
 
         var list = SortByIndex.Equals(0)
-            ? infos.OrderBy(x => x.AbsoluteId).ToList()
-            : infos.OrderByDescending(x => x.GetSpecialConfig().LastLaunchTime).ToList();
+            ? infos.OrderBy(x => x.Name).ToList()
+            : infos.OrderByDescending(x => x.LastLaunchTime).ToList();
 
         App.MainWindow.DispatcherQueue.TryEnqueue(() => DisplayGameInfos = list);
     }

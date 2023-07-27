@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Nrk.FluentCore.Classes.Datas.Authenticate;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,31 +15,37 @@ internal partial class GameSpecialConfig : ObservableObject
     public string FilePath { get; set; }
 
     [ObservableProperty]
+    private string nickName;
+
+    [ObservableProperty]
     private bool enableSpecialSetting;
 
     [ObservableProperty]
     private DateTime? lastLaunchTime;
 
     [ObservableProperty]
-    private string minecraftFolder;
+    private bool enableIndependencyCore;
 
     [ObservableProperty]
-    private bool enableIndependencyCore;
+    private bool enableFullScreen;
+
+    [ObservableProperty]
+    private int gameWindowWidth = 854;
+
+    [ObservableProperty]
+    private int gameWindowHeight = 480;
 
     [ObservableProperty]
     private string serverAddress;
 
     [ObservableProperty]
-    private int width;
+    private string gameWindowTitle;
 
     [ObservableProperty]
-    private int height;
+    private Account account;
 
     [ObservableProperty]
-    private bool isFullscreen;
-
-    [ObservableProperty]
-    private string windowTitle;
+    private bool enableTargetedAccount;
 
     [ObservableProperty]
     private IEnumerable<string> vmParameters;

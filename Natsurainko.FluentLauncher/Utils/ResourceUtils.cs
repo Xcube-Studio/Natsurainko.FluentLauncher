@@ -13,9 +13,9 @@ internal static class ResourceUtils
     public static List<string> Languages = new()
     {
         "en-US, English",
-        "ru-RU, Russian",
-        "zh-CN, 简体中文 (中国)",
-        "zh-TW, 繁体中文 (中国台湾)"
+        "ru-RU, Русский",
+        "zh-Hans, 简体中文",
+        "zh-Hant, 繁體中文"
     };
 
     public static string GetValue(params string[] strings)

@@ -22,7 +22,7 @@ partial class LanguageViewModel : SettingsViewModelBase, ISettingsViewModel
 
     #endregion
 
-    public List<string> Languages = ResourceUtils.Languages;
+    public List<string> Languages { get; } = ResourceUtils.Languages;
 
     private bool _isLoading = true;
 
@@ -46,5 +46,4 @@ partial class LanguageViewModel : SettingsViewModelBase, ISettingsViewModel
             ResourceUtils.ApplyLanguage(CurrentLanguage);
         }
     }
-
 }

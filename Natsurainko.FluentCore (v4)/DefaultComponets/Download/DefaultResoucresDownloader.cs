@@ -69,8 +69,29 @@ public class DefaultResourcesDownloader : BaseResourcesDownloader
                 return;
             }
 
-            var downloadResult = await HttpUtils.DownloadElementAsync(e, tokenSource: tokenSource);
-            if (downloadResult.IsFaulted) _errorDownload.Add(downloadResult);
+            await HttpUtils.DownloadElementAsync(e, tokenSource: tokenSource).ContinueWith(task => 
+            { 
+                if (task.IsFaulted)
+                {
+                    if (!e.VerifyFile())
+                        _errorDownload.Add(new DownloadResult
+                        {
+                            DownloadElement = e,
+                            Exception = task.Exception,
+                            IsFaulted = true
+                        });
+
+                    return;
+                }
+
+                var downloadResult = task.Result;
+
+                if (downloadResult.IsFaulted)
+                {
+                    if (!downloadResult.DownloadElement.VerifyFile())
+                        _errorDownload.Add(downloadResult);
+                }
+            });
 
             OnSingleFileDownloaded();
         },

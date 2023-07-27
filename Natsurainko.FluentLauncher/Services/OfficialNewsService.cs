@@ -17,7 +17,7 @@ internal class OfficialNewsService
             .Select(x =>
             {
                 var contentData = x.Deserialize<NewsContentData>();
-                contentData.ImageUrl = x["newsPageImage"]["url"].GetValue<string>();
+                contentData.ImageUrl = $"https://launchercontent.mojang.com{x["newsPageImage"]["url"].GetValue<string>()}";
                 return contentData;
             }).ToArray();
     }

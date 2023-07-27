@@ -1,16 +1,11 @@
-using CommunityToolkit.WinUI.UI.Media;
 using CommunityToolkit.WinUI.UI.Media.Pipelines;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using System;
 using System.Linq;
-using System.Security.Policy;
-using System.Threading.Tasks;
 using Windows.Graphics;
 
 namespace Natsurainko.FluentLauncher.Views;
@@ -71,11 +66,22 @@ public sealed partial class ShellPage : Page
         RefreshDragArea();
     }
 
-    private void Page_Loaded(object sender, RoutedEventArgs e)
+    private async void Page_Loaded(object sender, RoutedEventArgs e)
     {
         _XamlRoot = XamlRoot;
 
         App.MainWindow.SetTitleBar(AppTitleBar);
+
+        if (_settings.BackgroundMode == 3)
+        {
+            var sprite = await PipelineBuilder
+                .FromBackdrop()
+                .Blur(0, out EffectAnimation<float> blurAnimation)
+                .AttachAsync(BackgroundImageBorder, BackgroundImageBorder);
+
+            await blurAnimation(sprite.Brush, 0, TimeSpan.FromMilliseconds(1));
+        }
+
         contentFrame.Navigate(_appearanceService.HomePageType);
 
         RefreshDragArea();

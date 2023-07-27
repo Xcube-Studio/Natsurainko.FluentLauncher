@@ -1,6 +1,5 @@
 ﻿using AppSettingsManagement;
 using AppSettingsManagement.Converters;
-using Microsoft.UI;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Classes.Datas.Launch;

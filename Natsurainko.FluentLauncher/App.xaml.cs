@@ -19,6 +19,7 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Natsurainko.FluentLauncher.Services.UI.Windows;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -78,6 +79,14 @@ public partial class App : Application
         {
             ProcessException(e);
         }
+
+        // Demo
+        var activationService = WinUIActivationService.GetBuilder()
+            .WithSingleInstanceWindow<MainWindow>("MainWindow")
+            //.WithSingleInstanceWindow<OOBEWindow>("OOBEWindow")
+            //.WithMultiInstanceWindow<LogWindow>("LogWindow")
+            .Build();
+        activationService.ActivateWindow("MainWindow");
     }
 
     /// <summary>

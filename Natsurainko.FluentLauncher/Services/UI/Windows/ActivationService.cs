@@ -24,8 +24,9 @@ abstract class ActivationService<TWindow> : IActivationService
         ServiceCollection windowsCollection = new();
         foreach ((Type type, bool multiInstance) in registeredWindows.Values)
         {
-            if (type.IsSubclassOf(typeof(TWindow)) == false)
-                throw new ArgumentException($"Type {type} is not a subclass of {typeof(TWindow)}");
+            // No need to check window type. This is an internal constructor that can only be called by the builder.
+            //if (type.IsSubclassOf(typeof(TWindow)) == false)
+            //    throw new ArgumentException($"Type {type} is not a subclass of {typeof(TWindow)}");
 
             if (multiInstance)
                 windowsCollection.AddTransient(type);
@@ -35,14 +36,14 @@ abstract class ActivationService<TWindow> : IActivationService
         _windowProvider = windowsCollection.BuildServiceProvider();
     }
 
-    IWindowService IActivationService.ActivateWindow(string key)
+    public IWindowService ActivateWindow(string key)
     {
         (Type windowType, bool _) = RegisteredWindows[key];
         TWindow window = (TWindow)_windowProvider.GetService(windowType);
         return ActivateWindow(window);
     }
 
-    public abstract IWindowService ActivateWindow(TWindow window);
+    protected abstract IWindowService ActivateWindow(TWindow window);
 
     public void Register(string key, Type windowType, bool multiInstance)
     {

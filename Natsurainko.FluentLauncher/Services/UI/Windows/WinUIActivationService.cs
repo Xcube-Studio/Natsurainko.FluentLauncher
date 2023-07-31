@@ -18,9 +18,9 @@ internal class WinUIActivationService : ActivationService<Window>
     private WinUIActivationService(IReadOnlyDictionary<string, (Type windowType, bool multiInstance)> registeredWindows) 
         : base(registeredWindows) { }
 
-    public override IWindowService ActivateWindow(Window window)
+    protected override IWindowService ActivateWindow(Window window)
     {
         window.Activate();
-        throw new NotImplementedException();
+        throw new NotImplementedException(); // TODO:
     }
 }

@@ -10,7 +10,7 @@ namespace Natsurainko.FluentLauncher.Services.UI.Windows;
 /// <summary>
 /// Default implementation of <see cref="IActivationService"/>
 /// </summary>
-abstract class ActivationService<TWindow> : IActivationService
+abstract class ActivationService<TWindowBase> : IActivationService
 {
     protected readonly IServiceProvider _windowProvider;
     protected readonly IReadOnlyDictionary<string, (Type windowType, bool multiInstance)> _registeredWindows;
@@ -39,11 +39,11 @@ abstract class ActivationService<TWindow> : IActivationService
     public IWindowService ActivateWindow(string key)
     {
         (Type windowType, bool _) = RegisteredWindows[key];
-        TWindow window = (TWindow)_windowProvider.GetService(windowType);
+        TWindowBase window = (TWindowBase)_windowProvider.GetService(windowType);
         return ActivateWindow(window);
     }
 
-    protected abstract IWindowService ActivateWindow(TWindow window);
+    protected abstract IWindowService ActivateWindow(TWindowBase window);
 
     public void Register(string key, Type windowType, bool multiInstance)
     {

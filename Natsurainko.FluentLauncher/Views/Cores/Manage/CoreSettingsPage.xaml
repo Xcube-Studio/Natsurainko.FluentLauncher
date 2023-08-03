@@ -63,7 +63,7 @@
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Stretch"
                     IsEnabled="{Binding ElementName=ToggleSwitch, Path=IsOn}">
-                    <StackPanel>
+                    <StackPanel Spacing="4">
                         <TextBlock
                             x:Uid="Cores_Manage_CoreSettingsPage_T1"
                             Margin="1,20,0,4"

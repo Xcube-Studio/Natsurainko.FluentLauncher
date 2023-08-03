@@ -1,15 +1,11 @@
 ﻿using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.Classes.Datas.Parse;
 using Nrk.FluentCore.Components.Parse;
-using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Threading.Tasks;
 
 namespace Nrk.FluentCore.DefaultComponets.Parse;
 
@@ -47,7 +43,7 @@ public class DefaultAssetParser : BaseAssetParser
 
         var assets = JsonNode.Parse(File.ReadAllText(_gameInfo.AssetsIndexJsonPath))["objects"].Deserialize<Dictionary<string, AssetJsonNode>>();
 
-        foreach ( var keyValuePair in assets )
+        foreach (var keyValuePair in assets)
         {
             var hashPath = Path.Combine(keyValuePair.Value.Hash[..2], keyValuePair.Value.Hash);
             var relativePath = Path.Combine("objects", hashPath);

@@ -1,10 +1,13 @@
 ﻿using Natsurainko.FluentLauncher.Classes.Data.Launch;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Nrk.FluentCore.Classes.Datas.Authenticate;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.Classes.Enums;
+using Nrk.FluentCore.Utils;
 using System;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -64,7 +67,7 @@ internal static class GameInfoExtensions
             AbsoluteId = gameInfo.AbsoluteId,
             AbsoluteVersion = gameInfo.AbsoluteVersion,
             AssetsIndexJsonPath = gameInfo.AssetsIndexJsonPath,
-            InheritsFrom = gameInfo.InheritsFrom == null ? null : gameInfo.Extend(),
+            InheritsFrom = gameInfo.InheritsFrom,// == null ? null : gameInfo.Extend(),
             IsInheritedFrom = gameInfo.IsInheritedFrom,
             IsVanilla = gameInfo.IsVanilla,
             JarPath = gameInfo.JarPath,
@@ -74,5 +77,37 @@ internal static class GameInfoExtensions
             Type = gameInfo.Type,
             VersionJsonPath = gameInfo.VersionJsonPath,
         };
+    }
+
+    public static bool IsSupportMod(this GameInfo gameInfo)
+    {
+        if (gameInfo.IsVanilla) return false;
+
+        var loaders = gameInfo.GetModLoaders().Select(x => x.LoaderType).ToArray();
+
+        if (!(loaders.Contains(ModLoaderType.Forge) || 
+            loaders.Contains(ModLoaderType.Fabric) || 
+            loaders.Contains(ModLoaderType.Quilt) ||
+            loaders.Contains(ModLoaderType.LiteLoader)))
+            return false;
+
+        return true;
+    }
+
+    public static string GetGameDirectory(this GameInfo gameInfo)
+    {
+        var specialConfig = gameInfo.GetSpecialConfig();
+
+        if (specialConfig.EnableSpecialSetting)
+        {
+            if (specialConfig.EnableIndependencyCore)
+                return Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId);
+            else return gameInfo.MinecraftFolderPath;
+        }
+
+        if (App.GetService<SettingsService>().EnableIndependencyCore)
+            return Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId);
+
+        return gameInfo.MinecraftFolderPath;
     }
 }

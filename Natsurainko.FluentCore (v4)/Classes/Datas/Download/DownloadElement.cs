@@ -1,12 +1,10 @@
 ﻿using Nrk.FluentCore.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nrk.FluentCore.Classes.Datas.Download;
 
+/// <summary>
+/// 表示一个下载元素
+/// </summary>
 public class DownloadElement : IDownloadElement
 {
     /// <summary>

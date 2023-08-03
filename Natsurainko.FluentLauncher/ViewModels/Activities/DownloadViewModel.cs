@@ -1,12 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.UI.Xaml;
-using Natsurainko.FluentLauncher.Components;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Activities;
 
-public partial class DownloadViewModel : ObservableObject
+internal partial class DownloadViewModel : ObservableObject
 {
     // TODO: DownloadService
     //[ObservableProperty]

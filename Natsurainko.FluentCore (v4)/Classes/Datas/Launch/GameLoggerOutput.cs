@@ -4,18 +4,42 @@ using System.Text.RegularExpressions;
 
 namespace Nrk.FluentCore.Classes.Datas.Launch;
 
+/// <summary>
+/// 表示游戏日志的一行输出
+/// </summary>
 public partial record GameLoggerOutput
 {
+    /// <summary>
+    /// 日志等级
+    /// </summary>
     public GameLoggerOutputLevel Level { get; private set; }
 
+    /// <summary>
+    /// 日志产生线程
+    /// </summary>
     public string Thread { get; private set; }
 
+    /// <summary>
+    /// 正文内容
+    /// </summary>
     public string Text { get; private set; }
 
+    /// <summary>
+    /// 源文本
+    /// </summary>
     public string FullData { get; private set; }
 
+    /// <summary>
+    /// 日志产生时间
+    /// </summary>
     public DateTime DateTime { get; private set; }
 
+    /// <summary>
+    /// 解析一行日志
+    /// </summary>
+    /// <param name="data">源文本</param>
+    /// <param name="error">是否为错误流输出</param>
+    /// <returns></returns>
     public static GameLoggerOutput Parse(string data, bool error = false)
     {
         var timeRegex = TimeRegex().Match(data).Value;

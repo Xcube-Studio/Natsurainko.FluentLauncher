@@ -97,7 +97,7 @@ public class DefaultGameLocator : BaseGameLocator
         {
             errorGameNames = errorGames;
             return games;
-        } 
+        }
 
         foreach (var dir in versionsDirectory.EnumerateDirectories())
         {
@@ -143,7 +143,7 @@ public class DefaultGameLocator : BaseGameLocator
         foreach (var keyValuePair in inheritedFromGames)
         {
             var inheritsFrom = games.FirstOrDefault(info => info.AbsoluteId.Equals(keyValuePair.Key.InheritsFrom), null);
-            if (inheritsFrom == null) 
+            if (inheritsFrom == null)
             {
                 errorGames.Add(keyValuePair.Key.Id);
                 continue;
@@ -208,20 +208,21 @@ public class DefaultGameLocator : BaseGameLocator
     {
         gameInfo.IsVanilla = true;
 
-        var ensureMainClass = jsonEntity.MainClass switch {
-            "net.minecraft.client.main.Main" 
-            or "net.minecraft.launchwrapper.Launch" 
+        var ensureMainClass = jsonEntity.MainClass switch
+        {
+            "net.minecraft.client.main.Main"
+            or "net.minecraft.launchwrapper.Launch"
             or "com.mojang.rubydung.RubyDung" => true,
             _ => false,
         };
 
         if (!string.IsNullOrEmpty(jsonEntity.InheritsFrom)
             || !ensureMainClass
-            || (ensureMainClass 
-                && (jsonEntity.MinecraftArguments?.Contains("--tweakClass")).GetValueOrDefault() 
+            || (ensureMainClass
+                && (jsonEntity.MinecraftArguments?.Contains("--tweakClass")).GetValueOrDefault()
                 && !(jsonEntity.MinecraftArguments?.Contains("--tweakClass net.minecraft.launchwrapper.AlphaVanillaTweaker")).GetValueOrDefault())
-            || (ensureMainClass 
-                && (jsonEntity.Arguments?.Game?.Where(e => e.ValueKind.Equals(JsonValueKind.String) 
+            || (ensureMainClass
+                && (jsonEntity.Arguments?.Game?.Where(e => e.ValueKind.Equals(JsonValueKind.String)
                 && e.GetString().Equals("--tweakClass")).Any()).GetValueOrDefault()))
             gameInfo.IsVanilla = false;
 

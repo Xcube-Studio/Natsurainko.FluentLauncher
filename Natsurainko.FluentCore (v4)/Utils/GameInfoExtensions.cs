@@ -1,5 +1,4 @@
 ﻿using Nrk.FluentCore.Classes.Data.Launch;
-using Nrk.FluentCore.Classes.Datas.Download;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.Classes.Datas.Parse;
 using Nrk.FluentCore.Classes.Enums;

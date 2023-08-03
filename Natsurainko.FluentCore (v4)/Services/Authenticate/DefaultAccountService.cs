@@ -1,11 +1,5 @@
 ﻿using Nrk.FluentCore.Classes.Datas.Authenticate;
-using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.Interfaces.ServiceInterfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nrk.FluentCore.Services.Authenticate;
 

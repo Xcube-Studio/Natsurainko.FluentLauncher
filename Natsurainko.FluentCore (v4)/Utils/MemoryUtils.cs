@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Nrk.FluentCore.Classes.Datas;
+using System;
 using System.Diagnostics;
-using Nrk.FluentCore.Classes.Datas;
 using System.Runtime.Versioning;
 
 namespace Nrk.FluentCore.Utils;
@@ -62,7 +58,6 @@ public static class MemoryUtils
             Free = double.Parse(memory[3])
         };
     }
-
 
     public static (int, int) CalculateJavaMemory(int min = 512)
     {

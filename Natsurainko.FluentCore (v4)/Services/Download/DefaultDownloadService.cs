@@ -6,7 +6,6 @@ using Nrk.FluentCore.DefaultComponets.Parse;
 using Nrk.FluentCore.Interfaces.ServiceInterfaces;
 using Nrk.FluentCore.Utils;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace Nrk.FluentCore.Services.Download;
@@ -27,7 +26,7 @@ public class DefaultDownloadService
         _settingsService = settingsService;
     }
 
-    public virtual DefaultResourcesDownloader CreateResourcesDownloader(GameInfo gameInfo, 
+    public virtual DefaultResourcesDownloader CreateResourcesDownloader(GameInfo gameInfo,
         IEnumerable<LibraryElement> libraryElements = default,
         IEnumerable<AssetElement> assetElements = default,
         DownloadMirrorSource downloadMirrorSource = default)

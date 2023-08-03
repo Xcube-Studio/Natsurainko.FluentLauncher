@@ -17,7 +17,7 @@ public abstract class BaseLibraryParser
     /// </summary>
     /// <param name="gameInfo">要解析的游戏核心</param>
     /// <exception cref="ArgumentNullException"></exception>
-    public BaseLibraryParser(GameInfo gameInfo) 
+    public BaseLibraryParser(GameInfo gameInfo)
     {
         _gameInfo = gameInfo ?? throw new ArgumentNullException(nameof(gameInfo));
     }

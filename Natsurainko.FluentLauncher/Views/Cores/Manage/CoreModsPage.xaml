@@ -1,0 +1,158 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Cores.Manage.CoreModsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
+    xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
+    xmlns:converters="using:Natsurainko.FluentLauncher.Utils.Xaml.Converters"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Cores.Manage"
+    xmlns:manage="using:Natsurainko.FluentLauncher.ViewModels.Cores.Manage"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
+    d:DataContext="{d:DesignInstance Type=manage:CoreModsViewModel}"
+    Background="Transparent"
+    mc:Ignorable="d">
+
+    <ScrollViewer Padding="30,0" VerticalScrollBarVisibility="Auto">
+        <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
+        <Border Margin="0,10">
+            <StackPanel MaxWidth="1000" Spacing="4">
+
+                <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE711;}">
+                    <labs:SettingsCard.Visibility>
+                        <Binding Path="SupportMod">
+                            <Binding.Converter>
+                                <converters:BoolToVisibilityConverter Inverted="True" />
+                            </Binding.Converter>
+                        </Binding>
+                    </labs:SettingsCard.Visibility>
+
+                    <labs:SettingsCard.Header>
+                        <TextBlock Text="The game core does not support mods" />
+                    </labs:SettingsCard.Header>
+                    <labs:SettingsCard.Description>
+                        <TextBlock FontSize="14" Text="To install a core with mod loader" />
+                    </labs:SettingsCard.Description>
+
+                    <Button>
+                        <TextBlock Text="Go" />
+                    </Button>
+                </labs:SettingsCard>
+
+                <ContentControl
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch">
+                    <ContentControl.Visibility>
+                        <Binding Path="SupportMod">
+                            <Binding.Converter>
+                                <converters:BoolToVisibilityConverter Inverted="False" />
+                            </Binding.Converter>
+                        </Binding>
+                    </ContentControl.Visibility>
+                    <StackPanel Spacing="4">
+                        <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE8B7;}">
+                            <labs:SettingsCard.Header>
+                                <TextBlock Text="Mods Folder" />
+                            </labs:SettingsCard.Header>
+                            <labs:SettingsCard.Description>
+                                <TextBlock FontSize="14" Text="{Binding ModsFolder}" />
+                            </labs:SettingsCard.Description>
+
+                            <Button Command="{Binding OpenFolderCommand}">
+                                <TextBlock Text="Open" />
+                            </Button>
+                        </labs:SettingsCard>
+                        <Grid>
+                            <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE721;}" />
+                            <AutoSuggestBox
+                                Margin="58.5,0,25,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                PlaceholderText="Search Mod"
+                                Text="{Binding SearchBoxInput, Mode=TwoWay}">
+                                <AutoSuggestBox.QueryIcon>
+                                    <AnimatedIcon Width="14" Height="14">
+                                        <AnimatedIcon.Source>
+                                            <animatedvisuals:AnimatedFindVisualSource />
+                                        </AnimatedIcon.Source>
+                                        <AnimatedIcon.FallbackIconSource>
+                                            <SymbolIconSource Symbol="Find" />
+                                        </AnimatedIcon.FallbackIconSource>
+                                    </AnimatedIcon>
+                                </AutoSuggestBox.QueryIcon>
+                            </AutoSuggestBox>
+
+                        </Grid>
+
+                        <TextBlock
+                            Margin="1,20,0,4"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            Text="Mods" />
+
+                        <ItemsRepeater ItemsSource="{Binding DisplayMods}">
+                            <ItemsRepeater.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="2">
+                                        <labs:SettingsCard HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                            <labs:SettingsCard.Header>
+                                                <Grid Background="Transparent">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="10" />
+                                                        <ColumnDefinition Width="1*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <FontIcon
+                                                        Width="32"
+                                                        Height="32"
+                                                        Glyph="&#xF158;" />
+                                                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                                        <TextBlock
+                                                            FontWeight="SemiBold"
+                                                            Text="{Binding DisplayName}"
+                                                            TextTrimming="CharacterEllipsis" />
+                                                        <TextBlock
+                                                            Margin="0,0,85,0"
+                                                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                            Style="{ThemeResource CaptionTextBlockStyle}"
+                                                            Text="{Binding Converter={ThemeResource ModItemTagConverter}}"
+                                                            TextTrimming="CharacterEllipsis"
+                                                            TextWrapping="NoWrap" />
+                                                    </StackPanel>
+                                                </Grid>
+                                            </labs:SettingsCard.Header>
+                                        </labs:SettingsCard>
+                                        <ToggleSwitch
+                                            x:Name="toggleSwitch"
+                                            Margin="0,0,-65,0"
+                                            HorizontalAlignment="Right"
+                                            IsOn="{Binding IsEnabled, Mode=OneTime}">
+                                            <i:Interaction.Behaviors>
+                                                <behaviors:AncestorBindingBehavior
+                                                    AncestorType="ItemsRepeater"
+                                                    Binding="{Binding DataContext.ToggleSwitchLoadedCommand}"
+                                                    TargetPropertyName="Tag" />
+
+                                                <core:EventTriggerBehavior EventName="Loaded">
+                                                    <actions:ModifiedInvokeCommandAction Command="{Binding ElementName=toggleSwitch, Path=Tag}" />
+                                                </core:EventTriggerBehavior>
+                                            </i:Interaction.Behaviors>
+                                        </ToggleSwitch>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsRepeater.ItemTemplate>
+                        </ItemsRepeater>
+                    </StackPanel>
+                </ContentControl>
+
+            </StackPanel>
+        </Border>
+    </ScrollViewer>
+</Page>

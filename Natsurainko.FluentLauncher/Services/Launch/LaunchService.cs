@@ -256,7 +256,7 @@ internal class LaunchService : DefaultLaunchService
 
     private IEnumerable<string> GetExtraVmParameters(GameSpecialConfig specialConfig)
     {
-        if (!specialConfig.EnableSpecialSetting)
+        if (!specialConfig.EnableSpecialSetting || specialConfig.VmParameters == null)
             yield break;
 
         foreach (var item in specialConfig.VmParameters)

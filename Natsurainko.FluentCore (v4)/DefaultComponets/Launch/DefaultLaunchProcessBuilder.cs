@@ -8,7 +8,7 @@ namespace Nrk.FluentCore.DefaultComponets.Launch;
 
 public class DefaultLaunchProcessBuilder : BaseLaunchProcessBuilder<DefaultLaunchProcess, DefaultLaunchProcessBuilder>
 {
-    public DefaultLaunchProcessBuilder(GameInfo gameInfo) : base(gameInfo) 
+    public DefaultLaunchProcessBuilder(GameInfo gameInfo) : base(gameInfo)
     {
         _launchProcess = new DefaultLaunchProcess();
     }

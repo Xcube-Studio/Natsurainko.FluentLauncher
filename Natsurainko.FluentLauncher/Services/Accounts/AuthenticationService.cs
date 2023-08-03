@@ -1,13 +1,8 @@
 ﻿using Natsurainko.FluentLauncher.Services.Storage;
 using Nrk.FluentCore.Classes.Datas.Authenticate;
 using Nrk.FluentCore.DefaultComponets.Authenticate;
-using Nrk.FluentCore.Utils;
 using System;
-using System.Diagnostics;
 using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Services.Accounts;
@@ -114,67 +109,5 @@ internal class AuthenticationService
         //authenticator.ProgressChanged += (_, e) => progressChanged(e.Item2);
 
         return (MicrosoftAccount)authenticator.Authenticate();
-    }
-
-    // TODO: 转为同步方法斌迁移至FluentCore
-    public static Task<DeviceFlowResponse> DeviceFlowAuthAsync(Action<DeviceCodeResponse> ReceiveUserCodeAction, out CancellationTokenSource cancellationTokenSource)
-    {
-        cancellationTokenSource = new CancellationTokenSource();
-        var token = cancellationTokenSource.Token;
-
-        return Task.Run(async () =>
-        {
-            var deviceAuthPost =
-                $"client_id={ClientId}" +
-                "&scope=XboxLive.signin%20offline_access";
-
-            using var deviceAuthPostRes = HttpUtils.HttpPost
-                ($"https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode", deviceAuthPost, "application/x-www-form-urlencoded");
-            
-            var deviceAuthResponse = JsonSerializer.Deserialize<DeviceCodeResponse>(await deviceAuthPostRes.Content.ReadAsStringAsync());
-            ReceiveUserCodeAction(deviceAuthResponse);
-
-            var stopwatch = Stopwatch.StartNew();
-
-            while (stopwatch.Elapsed < TimeSpan.FromSeconds(deviceAuthResponse.ExpiresIn))
-            {
-                if (token.IsCancellationRequested)
-                    break;
-
-                await Task.Delay(deviceAuthResponse.Interval * 1000);
-
-                var pollingPost =
-                    "grant_type=urn:ietf:params:oauth:grant-type:device_code" +
-                    $"&client_id={ClientId}" +
-                    $"&device_code={deviceAuthResponse.DeviceCode}";
-
-                using var pollingPostRes = HttpUtils.HttpPost
-                    ($"https://login.microsoftonline.com/consumers/oauth2/v2.0/token", pollingPost, "application/x-www-form-urlencoded");
-                var pollingPostJson = JsonNode.Parse(await pollingPostRes.Content.ReadAsStringAsync());
-
-                if (pollingPostRes.IsSuccessStatusCode)
-                    return new()
-                    {
-                        Success = true,
-                        OAuth20TokenResponse = pollingPostJson.Deserialize<OAuth20TokenResponseModel>()
-                    };
-                else
-                {
-                    var error = (string)pollingPostJson["error"];
-                    if (error.Equals("authorization_declined") ||
-                        error.Equals("bad_verification_code") ||
-                        error.Equals("expired_token"))
-                        break;
-                }
-            }
-
-            stopwatch.Stop();
-
-            return new DeviceFlowResponse()
-            {
-                Success = false
-            };
-
-        }, token);
     }
 }

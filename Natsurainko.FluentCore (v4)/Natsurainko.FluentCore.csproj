@@ -11,8 +11,6 @@
 
   <ItemGroup>
     <Folder Include="Classes\Datas\Manage\" />
-    <Folder Include="Components\Manage\" />
-    <Folder Include="DefaultComponets\Manage\" />
   </ItemGroup>
 
 </Project>

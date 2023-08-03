@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Nrk.FluentCore.Utils;
 
@@ -22,7 +21,7 @@ public static class StringExtensions
     /// <param name="text"></param>
     /// <param name="keyValuePairs"></param>
     /// <returns></returns>
-    public static string ReplaceFromDictionary(this string text, Dictionary<string,string> keyValuePairs)
+    public static string ReplaceFromDictionary(this string text, Dictionary<string, string> keyValuePairs)
     {
         string replacedText = text;
 
@@ -55,7 +54,7 @@ public static class StringExtensions
         string path = string.Empty;
 
         foreach (var subPath in FormatLibraryName(name))
-                path = Path.Combine(path, subPath);
+            path = Path.Combine(path, subPath);
 
         return path;
     }

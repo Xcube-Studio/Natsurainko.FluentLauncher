@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Activities;
 
-partial class LaunchViewModel : ObservableObject
+internal partial class LaunchViewModel : ObservableObject
 {
     public ReadOnlyObservableCollection<LaunchProcess> LaunchProcesses { get; init; }
 

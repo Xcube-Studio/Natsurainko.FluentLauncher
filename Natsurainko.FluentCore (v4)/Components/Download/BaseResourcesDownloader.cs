@@ -3,10 +3,7 @@ using Nrk.FluentCore.Classes.Datas.Parse;
 using Nrk.FluentCore.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Nrk.FluentCore.Components.Download;
 
@@ -26,10 +23,22 @@ public abstract class BaseResourcesDownloader : IResourcesDownloader
 
     public event EventHandler SingleFileDownloaded;
 
+    /// <summary>
+    /// 设置要下载的依赖资源
+    /// </summary>
+    /// <param name="assetElements"></param>
     public abstract void SetAssetsElements(IEnumerable<AssetElement> assetElements);
 
+    /// <summary>
+    /// 设置要下载的依赖库
+    /// </summary>
+    /// <param name="libraryElements"></param>
     public abstract void SetLibraryElements(IEnumerable<LibraryElement> libraryElements);
 
+    /// <summary>
+    /// 下载并等待结束
+    /// </summary>
+    /// <param name="tokenSource"></param>
     public abstract void Download(CancellationTokenSource tokenSource = default);
 
     protected virtual void OnSingleFileDownloaded() => SingleFileDownloaded?.Invoke(this, EventArgs.Empty);

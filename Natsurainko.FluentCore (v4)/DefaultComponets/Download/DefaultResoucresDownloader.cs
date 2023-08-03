@@ -35,7 +35,7 @@ public class DefaultResourcesDownloader : BaseResourcesDownloader
 
         var transformBlock = new TransformBlock<IDownloadElement, IDownloadElement>(e =>
         {
-            if (string.IsNullOrEmpty(e.Url)) 
+            if (string.IsNullOrEmpty(e.Url))
                 return e;
 
             if (_enableUseDownloadSource)
@@ -69,8 +69,8 @@ public class DefaultResourcesDownloader : BaseResourcesDownloader
                 return;
             }
 
-            await HttpUtils.DownloadElementAsync(e, tokenSource: tokenSource).ContinueWith(task => 
-            { 
+            await HttpUtils.DownloadElementAsync(e, tokenSource: tokenSource).ContinueWith(task =>
+            {
                 if (task.IsFaulted)
                 {
                     if (!e.VerifyFile())

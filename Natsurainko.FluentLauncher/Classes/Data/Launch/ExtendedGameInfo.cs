@@ -8,7 +8,7 @@ internal record ExtendedGameInfo : GameInfo
 {
     public DateTime? LastLaunchTime { get; set; }
 
-    public new ExtendedGameInfo InheritsFrom { get; set; }
+    //public new ExtendedGameInfo InheritsFrom { get; set; }
 
     public void InitSpecialConfig()
     {
@@ -22,7 +22,7 @@ internal record ExtendedGameInfo : GameInfo
         AbsoluteId = AbsoluteId,
         AbsoluteVersion = AbsoluteVersion,
         AssetsIndexJsonPath = AssetsIndexJsonPath,
-        InheritsFrom = InheritsFrom == null ? null : InheritsFrom.GetGameInfo(),
+        InheritsFrom = InheritsFrom,// == null ? null : InheritsFrom.GetGameInfo(),
         IsInheritedFrom = IsInheritedFrom,
         IsVanilla = IsVanilla,
         JarPath = JarPath,

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Nrk.FluentCore.Classes.Datas.Launch;
+﻿namespace Nrk.FluentCore.Classes.Datas.Launch;
 
 /// <summary>
 /// 用于记录游戏的基本信息和信息源

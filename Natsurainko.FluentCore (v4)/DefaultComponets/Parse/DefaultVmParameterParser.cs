@@ -1,13 +1,8 @@
-﻿using Nrk.FluentCore.Classes.Datas.Launch;
-using Nrk.FluentCore.Classes.Datas.Parse;
-using Nrk.FluentCore.Utils;
+﻿using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json.Nodes;
-using System.Threading.Tasks;
 
 namespace Nrk.FluentCore.DefaultComponets.Parse;
 
@@ -35,7 +30,7 @@ public static class DefaultVmParameterParser
             yield break;
         }
 
-        foreach (var item in StringExtensions. ArgumnetsGroup(jsonJvm.AsArray().Where(x => x is JsonValue).Select(x => x.GetValue<string>())))
+        foreach (var item in StringExtensions.ArgumnetsGroup(jsonJvm.AsArray().Where(x => x is JsonValue).Select(x => x.GetValue<string>())))
             yield return item;
     }
 

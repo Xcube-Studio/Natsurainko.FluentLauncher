@@ -58,7 +58,9 @@
     <None Remove="Views\Common\JavaMirrorsDialog.xaml" />
     <None Remove="Views\Common\SwitchAccountDialog.xaml" />
     <None Remove="Views\Cores\ManageNavigationPage.xaml" />
+    <None Remove="Views\Cores\Manage\CoreModsPage.xaml" />
     <None Remove="Views\Cores\Manage\CoreSettingsPage.xaml" />
+    <None Remove="Views\Downloads\DownloadsPage.xaml" />
     <None Remove="Views\Home\NewHomePage.xaml" />
     <None Remove="Views\NotifyStyleDictionary.xaml" />
   </ItemGroup>
@@ -79,7 +81,6 @@
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
     <PackageReference Include="PInvoke.User32" Version="0.7.124" />
-    <PackageReference Include="Tomlyn" Version="0.16.2" />
     <PackageReference Include="WindowsAPICodePack.Shell.CommonFileDialogs" Version="1.1.5" />
     <PackageReference Include="WinUIEx" Version="2.2.0" />
     <Manifest Include="$(ApplicationManifest)" />
@@ -94,11 +95,23 @@
 
   <ItemGroup>
     <Folder Include="ViewModels\Downloads\" />
-    <Folder Include="Views\Cores\InstallNewCore\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Natsurainko.FluentCore (v4)\Natsurainko.FluentCore.csproj" />
+    <ProjectReference Include="..\Natsurainko.FluentCore.Manage\Natsurainko.FluentCore.Manage.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Downloads\DownloadsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Cores\Manage\CoreModsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>

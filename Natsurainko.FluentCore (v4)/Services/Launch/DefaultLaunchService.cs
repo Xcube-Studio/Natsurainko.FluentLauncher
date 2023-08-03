@@ -19,8 +19,8 @@ public class DefaultLaunchService
     protected readonly DefaultAccountService _accountService;
 
     public DefaultLaunchService(
-        IFluentCoreSettingsService settingsService, 
-        DefaultGameService gameService, 
+        IFluentCoreSettingsService settingsService,
+        DefaultGameService gameService,
         DefaultAccountService accountService)
     {
         _settingsService = settingsService;
@@ -50,9 +50,9 @@ public class DefaultLaunchService
             {
                 // 解压 Natives
                 UnzipUtils.BatchUnzip(
-                    Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId, "natives"), 
+                    Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId, "natives"),
                     enabledNativesLibraries.Select(x => x.AbsolutePath));
-                
+
                 // TODO: 补全 Libraries 和 Assets
             })
             .SetBuildArgumentsFunc(() =>
@@ -61,8 +61,8 @@ public class DefaultLaunchService
                     .SetLibraries(enabledLibraries)
                     .SetAccountSettings(_accountService.ActiveAccount, _settingsService.EnableDemoUser)
                     .SetJavaSettings(_settingsService.ActiveJava, _settingsService.JavaMemory, _settingsService.JavaMemory); //TODO: 自动选择 Java、自动分配启动内存
-                    //.AddExtraParameters(); TODO: 加入额外的虚拟机参数  如：-XX:+UseG1GC 以及额外游戏参数 如：--fullscreen
-                    //.SetGameDirectory(); TODO: 版本隔离设置游戏目录
+                                                                                                                             //.AddExtraParameters(); TODO: 加入额外的虚拟机参数  如：-XX:+UseG1GC 以及额外游戏参数 如：--fullscreen
+                                                                                                                             //.SetGameDirectory(); TODO: 版本隔离设置游戏目录
 
                 return builder.Build();
             })

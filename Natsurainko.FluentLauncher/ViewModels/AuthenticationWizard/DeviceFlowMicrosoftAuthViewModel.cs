@@ -5,6 +5,7 @@ using Natsurainko.FluentLauncher.Utils.Xaml;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
 using Nrk.FluentCore.Classes.Datas.Authenticate;
+using Nrk.FluentCore.DefaultComponets.Authenticate;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
@@ -81,7 +82,7 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
     {
         CancellationTokenSource?.Dispose();
 
-        DeviceFlowProcess = AuthenticationService.DeviceFlowAuthAsync(
+        DeviceFlowProcess = DefaultMicrosoftAuthenticator.DeviceFlowAuthAsync(AuthenticationService.ClientId,
             res => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
                 DeviceCode = res.UserCode;

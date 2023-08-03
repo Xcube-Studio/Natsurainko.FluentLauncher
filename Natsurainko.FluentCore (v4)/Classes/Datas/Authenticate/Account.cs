@@ -1,9 +1,5 @@
 ﻿using Nrk.FluentCore.Classes.Enums;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nrk.FluentCore.Classes.Datas.Authenticate;
 
@@ -33,22 +29,37 @@ public abstract record Account
     public string AccessToken { get; set; }
 }
 
+/// <summary>
+/// 微软账户
+/// </summary>
 public record MicrosoftAccount : Account
 {
     public override AccountType Type => AccountType.Microsoft;
 
     public string RefreshToken { get; set; }
 
+    /// <summary>
+    /// 最后一次刷新时间
+    /// </summary>
     public DateTime LastRefreshTime { get; set; }
 }
 
+/// <summary>
+/// 外置账户
+/// </summary>
 public record YggdrasilAccount : Account
 {
     public override AccountType Type => AccountType.Yggdrasil;
 
+    /// <summary>
+    /// 外置验证服务器Url
+    /// </summary>
     public string YggdrasilServerUrl { get; set; }
 }
 
+/// <summary>
+/// 离线账户
+/// </summary>
 public record OfflineAccount : Account
 {
     public override AccountType Type => AccountType.Offline;

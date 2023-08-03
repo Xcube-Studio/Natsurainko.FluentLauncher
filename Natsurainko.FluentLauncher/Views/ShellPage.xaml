@@ -88,8 +88,7 @@
                     x:Uid="ShellPage_NV_Item_4"
                     Content="Mods"
                     Icon="{xh:FontIcon Glyph=&#xe8f1;}"
-                    IsEnabled="False"
-                    Tag="Natsurainko.FluentLauncher.Views.Downloads.CurseForgePage" />
+                    Tag="Natsurainko.FluentLauncher.Views.Downloads.DownloadsPage" />
             </NavigationView.MenuItems>
 
             <NavigationView.FooterMenuItems>

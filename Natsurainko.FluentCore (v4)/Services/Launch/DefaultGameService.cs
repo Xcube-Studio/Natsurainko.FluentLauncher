@@ -2,15 +2,8 @@
 using Nrk.FluentCore.DefaultComponets.Launch;
 using Nrk.FluentCore.Interfaces.ServiceInterfaces;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nrk.FluentCore.Services.Launch;
 

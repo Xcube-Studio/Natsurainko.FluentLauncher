@@ -67,8 +67,8 @@ public static class HttpUtils
     }
 
     public static async Task<DownloadResult> DownloadElementAsync(
-        IDownloadElement downloadElement, 
-        DownloadSetting downloadSetting = default, 
+        IDownloadElement downloadElement,
+        DownloadSetting downloadSetting = default,
         CancellationTokenSource tokenSource = default)
     {
         var settings = downloadSetting ?? DownloadSetting;
@@ -101,13 +101,13 @@ public static class HttpUtils
                     return new DownloadResult
                     {
                         IsFaulted = responseMessage.Content.Headers.ContentLength.Value != task.Result,
-                        Exception = responseMessage.Content.Headers.ContentLength.Value != task.Result 
+                        Exception = responseMessage.Content.Headers.ContentLength.Value != task.Result
                             ? new Exception("文件下载不完整") : null,
                         DownloadElement = downloadElement
                     };
                 });
         return await WriteFileFromHttpResponseAsync(responseMessage, downloadElement.AbsolutePath, tokenSource)
-            .ContinueWith(task => 
+            .ContinueWith(task =>
             {
                 if (task.IsFaulted)
                     return new DownloadResult
@@ -128,7 +128,7 @@ public static class HttpUtils
     }
 
     private async static Task<long> WriteFileFromHttpResponseAsync(
-        HttpResponseMessage responseMessage, 
+        HttpResponseMessage responseMessage,
         string absolutePath,
         CancellationTokenSource tokenSource)
     {
@@ -161,7 +161,7 @@ public static class HttpUtils
         requestMessage.Headers.Range = new RangeHeaderValue(0, 1);
 
         using var httpResponse = await HttpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead, tokenSource.Token);
-        
+
         if (!httpResponse.IsSuccessStatusCode)
             return await WriteFileFromHttpResponseAsync(responseMessage, absolutePath, tokenSource);
 
@@ -204,7 +204,7 @@ public static class HttpUtils
         });
 
         var actionBlock = new ActionBlock<(HttpResponseMessage, DownloadRange)>
-            (async t => await WriteFileFromHttpResponseAsync(t.Item1, t.Item2.TempFileAbsolutePath, tokenSource), 
+            (async t => await WriteFileFromHttpResponseAsync(t.Item1, t.Item2.TempFileAbsolutePath, tokenSource),
             new ExecutionDataflowBlockOptions
             {
                 BoundedCapacity = downloadSetting.MultiPartsCount,

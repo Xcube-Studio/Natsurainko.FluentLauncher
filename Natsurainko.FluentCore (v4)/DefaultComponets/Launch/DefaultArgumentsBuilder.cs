@@ -130,7 +130,7 @@ public class DefaultArgumentsBuilder : BaseArgumentsBuilder<DefaultArgumentsBuil
         return this;
     }
 
-    public override DefaultArgumentsBuilder SetAccountSettings(Account account, bool enableDemoUser) 
+    public override DefaultArgumentsBuilder SetAccountSettings(Account account, bool enableDemoUser)
     {
         _account = account;
         _enableDemoUser = enableDemoUser;

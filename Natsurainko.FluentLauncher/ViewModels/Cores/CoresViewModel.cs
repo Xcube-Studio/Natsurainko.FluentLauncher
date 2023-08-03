@@ -89,7 +89,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
         });
 
         if (!string.IsNullOrEmpty(SearchBoxInput))
-            infos = infos.Where(x => x.Name.Contains(SearchBoxInput));
+            infos = infos.Where(x => x.Name.ToLower().Contains(SearchBoxInput.ToLower()));
 
         var list = SortByIndex.Equals(0)
             ? infos.OrderBy(x => x.Name).ToList()

@@ -2,9 +2,6 @@
 using Nrk.FluentCore.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nrk.FluentCore.Componets.Launch;
 
@@ -17,7 +14,7 @@ public abstract class BaseGameLocator : IGameLocator
 
     /// <param name="folder">.minecraft 目录绝对路径</param>
     /// <exception cref="ArgumentNullException"></exception>
-    public BaseGameLocator(string folder) 
+    public BaseGameLocator(string folder)
     {
         MinecraftFolderPath = folder ?? throw new ArgumentNullException(nameof(folder));
     }

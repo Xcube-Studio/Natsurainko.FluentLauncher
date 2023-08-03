@@ -1,0 +1,244 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Downloads.DownloadsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
+    Background="Transparent"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Default">
+                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="CardBackgroundFillColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="ControlFillColorSecondaryBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="ControlFillColorDisabledBrush" />
+
+                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="TextFillColorPrimaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+
+                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="ControlElevationBorderBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="Light">
+                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="CardBackgroundFillColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="ControlFillColorSecondaryBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="ControlFillColorDisabledBrush" />
+
+                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="TextFillColorPrimaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+
+                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="ControlElevationBorderBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="HighContrast">
+                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="SystemColorButtonFaceColorBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="SystemColorHighlightTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="SystemControlBackgroundBaseLowBrush" />
+
+                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="SystemColorButtonTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="SystemColorHighlightColorBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="SystemControlDisabledBaseMediumLowBrush" />
+
+                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="SystemColorButtonTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="SystemColorHighlightColorBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="SystemControlDisabledTransparentBrush" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <ScrollViewer Padding="30,20,30,0" VerticalScrollBarVisibility="Auto">
+        <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
+        <Border Margin="0,10">
+            <StackPanel MaxWidth="1000" Spacing="4">
+
+                <TextBlock
+                    Margin="1,0,0,4"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Text="Minecraft 本体" />
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="1.5*" />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        Background="{ThemeResource SettingsCardBackground}"
+                        BorderBrush="{ThemeResource SettingsCardBorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="{ThemeResource ControlCornerRadius}">
+                        <Grid RequestedTheme="Dark">
+                            <Border CornerRadius="{ThemeResource ControlCornerRadius}">
+                                <Image Source="https://www.minecraft.net/content/dam/games/minecraft/screenshots/1.20.1%201170x500.jpg" Stretch="UniformToFill" />
+                            </Border>
+                            <Button
+                                Margin="5"
+                                Padding="5"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Background="Transparent"
+                                BorderBrush="Transparent">
+                                <FontIcon
+                                    FontSize="12"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Glyph="&#xE8A7;" />
+                            </Button>
+                            <Grid
+                                Height="Auto"
+                                Padding="15,10,15,15"
+                                VerticalAlignment="Bottom"
+                                BorderBrush="{ThemeResource SettingsCardBorderBrush}"
+                                BorderThickness="0,2,0,0"
+                                CornerRadius="0,0,2,2">
+                                <Grid.Background>
+                                    <media:BackdropBlurBrush Amount="50" />
+                                </Grid.Background>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="5" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Spacing="15">
+                                    <TextBlock
+                                        FontFamily="Minecraft Ten"
+                                        Style="{ThemeResource TitleTextBlockStyle}"
+                                        Text="Minecraft:Java Edition 1.20.1"
+                                        TextWrapping="WrapWholeWords" />
+                                    <TextBlock
+                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                        Text="12 June 2023 14:13:48 UTC" />
+                                </StackPanel>
+                                <Button
+                                    Grid.Column="2"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom">
+                                    <StackPanel Orientation="Horizontal" Spacing="7.5">
+                                        <FontIcon FontSize="12" Glyph="&#xE72A;" />
+                                        <TextBlock Text="下载" />
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <Border
+                            Height="250"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Background="{ThemeResource SettingsCardBackground}"
+                            BorderBrush="{ThemeResource SettingsCardBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="{ThemeResource ControlCornerRadius}">
+                            <Grid RequestedTheme="Dark">
+                                <Border CornerRadius="{ThemeResource ControlCornerRadius}">
+                                    <Image Source="https://www.minecraft.net/content/dam/games/minecraft/screenshots/23w31a_1170x500.jpg" Stretch="UniformToFill" />
+                                </Border>
+                                <Button
+                                    Margin="5"
+                                    Padding="5"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
+                                    <FontIcon FontSize="12" Glyph="&#xE8A7;" />
+                                </Button>
+                                <Grid
+                                    Height="Auto"
+                                    Padding="15,10,15,15"
+                                    VerticalAlignment="Bottom"
+                                    BorderBrush="{ThemeResource SettingsCardBorderBrush}"
+                                    BorderThickness="0,2,0,0"
+                                    CornerRadius="0,0,2,2">
+                                    <Grid.Background>
+                                        <media:BackdropBlurBrush Amount="50" />
+                                    </Grid.Background>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="5" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Spacing="15">
+                                        <TextBlock
+                                            FontFamily="Minecraft Ten"
+                                            Style="{ThemeResource TitleTextBlockStyle}"
+                                            Text="Minecraft Snapshot 23w31a"
+                                            TextWrapping="WrapWholeWords" />
+                                        <TextBlock
+                                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                            Style="{ThemeResource CaptionTextBlockStyle}"
+                                            Text="02 August 2023 14:57:20 UTC" />
+                                    </StackPanel>
+                                    <Button
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Bottom">
+                                        <StackPanel Orientation="Horizontal" Spacing="7.5">
+                                            <FontIcon FontSize="12" Glyph="&#xE72A;" />
+                                            <TextBlock Text="下载" />
+                                        </StackPanel>
+                                    </Button>
+
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <labs:SettingsCard Grid.Row="2" IsClickEnabled="True">
+                            <labs:SettingsCard.HeaderIcon>
+                                <AnimatedIcon Width="18" Height="18">
+                                    <AnimatedIcon.Source>
+                                        <animatedvisuals:AnimatedFindVisualSource />
+                                    </AnimatedIcon.Source>
+                                    <AnimatedIcon.FallbackIconSource>
+                                        <SymbolIconSource Symbol="Find" />
+                                    </AnimatedIcon.FallbackIconSource>
+                                </AnimatedIcon>
+                            </labs:SettingsCard.HeaderIcon>
+                            <labs:SettingsCard.Header>
+                                <TextBlock Text="列出全部版本核心" />
+                            </labs:SettingsCard.Header>
+                            <labs:SettingsCard.Description>
+                                <TextBlock Text="查找版本核心并安装" />
+                            </labs:SettingsCard.Description>
+                        </labs:SettingsCard>
+
+                    </Grid>
+                </Grid>
+
+                <TextBlock
+                    Margin="1,20,0,4"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Text="模组资源" />
+            </StackPanel>
+        </Border>
+    </ScrollViewer>
+</Page>

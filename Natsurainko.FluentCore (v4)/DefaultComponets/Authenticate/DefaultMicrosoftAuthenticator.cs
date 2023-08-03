@@ -3,10 +3,13 @@ using Nrk.FluentCore.Classes.Events;
 using Nrk.FluentCore.Components.Authenticate;
 using Nrk.FluentCore.Utils;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Threading;
+using System.Threading.Tasks;
 using AuthException = Nrk.FluentCore.Classes.Exceptions.MicrosoftAuthenticateException;
 using AuthExceptionType = Nrk.FluentCore.Classes.Enums.MicrosoftAuthenticateExceptionType;
 using AuthStep = Nrk.FluentCore.Classes.Enums.MicrosoftAuthenticateStep;
@@ -165,7 +168,7 @@ public class DefaultMicrosoftAuthenticator : BaseAuthenticator<MicrosoftAccount>
 
         ProgressChanged?.Invoke(this, (AuthStep.Get_the_profile, 0.9));
 
-        using var profileRes = HttpUtils.HttpGet( "https://api.minecraftservices.com/minecraft/profile", authorization);
+        using var profileRes = HttpUtils.HttpGet("https://api.minecraftservices.com/minecraft/profile", authorization);
 
         profileRes.EnsureSuccessStatusCode();
 
@@ -201,11 +204,72 @@ public class DefaultMicrosoftAuthenticator : BaseAuthenticator<MicrosoftAccount>
         _parameterName = "refresh_token"
     };
 
-    public static DefaultMicrosoftAuthenticator CreateFromDeviceFlow(string clientId, string redirectUri, OAuth20TokenResponseModel oAuth20TokenResponseModel)=> new()
+    public static DefaultMicrosoftAuthenticator CreateFromDeviceFlow(string clientId, string redirectUri, OAuth20TokenResponseModel oAuth20TokenResponseModel) => new()
     {
         _redirectUri = redirectUri,
         _clientId = clientId,
         _oAuth20TokenResponse = oAuth20TokenResponseModel,
         _createdFromDeviceFlow = true
     };
+
+    public static Task<DeviceFlowResponse> DeviceFlowAuthAsync(string clientId, Action<DeviceCodeResponse> ReceiveUserCodeAction, out CancellationTokenSource cancellationTokenSource)
+    {
+        cancellationTokenSource = new CancellationTokenSource();
+        var token = cancellationTokenSource.Token;
+
+        return Task.Run(async () =>
+        {
+            var deviceAuthPost =
+                $"client_id={clientId}" +
+                "&scope=XboxLive.signin%20offline_access";
+
+            using var deviceAuthPostRes = HttpUtils.HttpPost
+                ($"https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode", deviceAuthPost, "application/x-www-form-urlencoded");
+
+            var deviceAuthResponse = JsonSerializer.Deserialize<DeviceCodeResponse>(await deviceAuthPostRes.Content.ReadAsStringAsync());
+            ReceiveUserCodeAction(deviceAuthResponse);
+
+            var stopwatch = Stopwatch.StartNew();
+
+            while (stopwatch.Elapsed < TimeSpan.FromSeconds(deviceAuthResponse.ExpiresIn))
+            {
+                if (token.IsCancellationRequested)
+                    break;
+
+                await Task.Delay(deviceAuthResponse.Interval * 1000);
+
+                var pollingPost =
+                    "grant_type=urn:ietf:params:oauth:grant-type:device_code" +
+                    $"&client_id={clientId}" +
+                    $"&device_code={deviceAuthResponse.DeviceCode}";
+
+                using var pollingPostRes = HttpUtils.HttpPost
+                    ($"https://login.microsoftonline.com/consumers/oauth2/v2.0/token", pollingPost, "application/x-www-form-urlencoded");
+                var pollingPostJson = JsonNode.Parse(await pollingPostRes.Content.ReadAsStringAsync());
+
+                if (pollingPostRes.IsSuccessStatusCode)
+                    return new()
+                    {
+                        Success = true,
+                        OAuth20TokenResponse = pollingPostJson.Deserialize<OAuth20TokenResponseModel>()
+                    };
+                else
+                {
+                    var error = (string)pollingPostJson["error"];
+                    if (error.Equals("authorization_declined") ||
+                        error.Equals("bad_verification_code") ||
+                        error.Equals("expired_token"))
+                        break;
+                }
+            }
+
+            stopwatch.Stop();
+
+            return new DeviceFlowResponse()
+            {
+                Success = false
+            };
+
+        }, token);
+    }
 }

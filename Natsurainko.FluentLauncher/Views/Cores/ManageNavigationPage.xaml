@@ -45,7 +45,10 @@
                         <FontIcon Glyph="&#xe945;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Cores_ManageNavigationPage_NV_Item_2" Content="Mods Manage">
+                <NavigationViewItem
+                    x:Uid="Cores_ManageNavigationPage_NV_Item_2"
+                    Content="Mods Manage"
+                    Tag="Natsurainko.FluentLauncher.Views.Cores.Manage.CoreModsPage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe8f1;" />
                     </NavigationViewItem.Icon>

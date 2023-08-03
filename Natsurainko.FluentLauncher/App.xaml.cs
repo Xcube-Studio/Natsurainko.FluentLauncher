@@ -69,24 +69,26 @@ public partial class App : Application
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
+        // Demo
+        var activationService = WinUIActivationService.GetBuilder(Services)
+            .WithSingleInstanceWindow<MainWindow>("MainWindow")
+            //.WithSingleInstanceWindow<OOBEWindow>("OOBEWindow")
+            //.WithMultiInstanceWindow<LogWindow>("LogWindow")
+            .Build();
+
         App.GetService<MessengerService>().SubscribeEvents();
         try
         {
-            MainWindow = new MainWindow();
-            MainWindow.Activate();
+            //MainWindow = new MainWindow();
+            //MainWindow.Activate();
+            activationService.ActivateWindow("MainWindow");
+            MainWindow = App.GetService<MainWindow>();
         }
         catch (Exception e)
         {
             ProcessException(e);
         }
 
-        // Demo
-        var activationService = WinUIActivationService.GetBuilder()
-            .WithSingleInstanceWindow<MainWindow>("MainWindow")
-            //.WithSingleInstanceWindow<OOBEWindow>("OOBEWindow")
-            //.WithMultiInstanceWindow<LogWindow>("LogWindow")
-            .Build();
-        activationService.ActivateWindow("MainWindow");
     }
 
     /// <summary>
@@ -123,6 +125,8 @@ public partial class App : Application
 
         services.AddTransient<ViewModels.Cores.CoresViewModel>();
         services.AddTransient<ViewModels.Home.HomeViewModel>();
+
+        services.AddSingleton<MainWindow>();
 
         return services.BuildServiceProvider();
     }

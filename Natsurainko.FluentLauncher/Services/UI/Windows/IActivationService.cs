@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Services.UI.Windows;
 
+#nullable enable
+
+public record WindowDescriptor(Type WindowType, bool MultiInstance = false);
+
 /// <summary>
 /// A service for activating app windows.
 /// A window can be registered as single instance or multiple instances with a string key.
@@ -15,7 +19,7 @@ interface IActivationService
     /// <summary>
     /// A dictionary of registered windows that maps a string key to a window type.
     /// </summary>
-    IReadOnlyDictionary<string, (Type windowType, bool multiInstance)> RegisteredWindows { get; }
+    IReadOnlyDictionary<string, WindowDescriptor> RegisteredWindows { get; }
 
     /// <summary>
     /// Attempts to activate a registered window

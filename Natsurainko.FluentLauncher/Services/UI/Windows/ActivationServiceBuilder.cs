@@ -14,12 +14,17 @@ namespace Natsurainko.FluentLauncher.Services.UI.Windows;
 /// <typeparam name="TWindowBase">Base type of the window managed by the activation service</typeparam>
 class ActivationServiceBuilder<TService, TWindowBase> where TService: ActivationService<TWindowBase>
 {
-    private Dictionary<string, (Type windowType, bool multiInstance)> _registeredWindows = new Dictionary<string, (Type windowType, bool multiInstance)>();
-    private Func<IReadOnlyDictionary<string, (Type, bool)>, TService> _serviceFactory;
+    private Dictionary<string, WindowDescriptor> _registeredWindows = new();
+    private Func<IReadOnlyDictionary<string, WindowDescriptor>, IServiceProvider, TService> _serviceFactory;
+    private IServiceProvider _windowProvider;
 
-    public ActivationServiceBuilder() { }
+    public ActivationServiceBuilder(IServiceProvider windowProvider)
+    {
+        _windowProvider = windowProvider;
+    }
 
-    public ActivationServiceBuilder<TService, TWindowBase> WithServiceFactory(Func<IReadOnlyDictionary<string, (Type, bool)>, TService> serviceFactory)
+    public ActivationServiceBuilder<TService, TWindowBase> WithServiceFactory(
+        Func<IReadOnlyDictionary<string, WindowDescriptor>, IServiceProvider, TService> serviceFactory)
     {
         _serviceFactory = serviceFactory;
         return this;
@@ -36,7 +41,7 @@ class ActivationServiceBuilder<TService, TWindowBase> where TService: Activation
         if (!windowType.IsSubclassOf(typeof(TWindowBase)))
             throw new ArgumentException($"Type {windowType} is not a subclass of {typeof(TWindowBase)}");
 
-        _registeredWindows.Add(key, (windowType, multiInstance));
+        _registeredWindows.Add(key, new(windowType, multiInstance));
         return this;
     }
 
@@ -47,7 +52,7 @@ class ActivationServiceBuilder<TService, TWindowBase> where TService: Activation
 
     public TService Build()
     {
-        var registeredWindowsReadOnly = new ReadOnlyDictionary<string, (Type windowType, bool multiInstance)>(_registeredWindows);
-        return _serviceFactory(registeredWindowsReadOnly);
+        var registeredWindows = new ReadOnlyDictionary<string, WindowDescriptor>(_registeredWindows);
+        return _serviceFactory(registeredWindows, _windowProvider);
     }
 }

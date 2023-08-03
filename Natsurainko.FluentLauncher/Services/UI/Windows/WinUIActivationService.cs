@@ -10,17 +10,18 @@ namespace Natsurainko.FluentLauncher.Services.UI.Windows;
 internal class WinUIActivationService : ActivationService<Window>
 {
     // Factory pattern
-    public static ActivationServiceBuilder<WinUIActivationService, Window> GetBuilder()
+    public static ActivationServiceBuilder<WinUIActivationService, Window> GetBuilder(IServiceProvider windowProvider)
     {
-        return new ActivationServiceBuilder<WinUIActivationService, Window>().WithServiceFactory(e => new WinUIActivationService(e));
+        return new ActivationServiceBuilder<WinUIActivationService, Window>(windowProvider)
+            .WithServiceFactory((r, p) => new WinUIActivationService(r, p));
     }
 
-    private WinUIActivationService(IReadOnlyDictionary<string, (Type windowType, bool multiInstance)> registeredWindows) 
-        : base(registeredWindows) { }
+    private WinUIActivationService(IReadOnlyDictionary<string, WindowDescriptor> registeredWindows, IServiceProvider windowProvier) 
+        : base(registeredWindows, windowProvier) { }
 
     protected override IWindowService ActivateWindow(Window window)
     {
         window.Activate();
-        throw new NotImplementedException(); // TODO:
+        return null; // TODO: build window service from `window`
     }
 }

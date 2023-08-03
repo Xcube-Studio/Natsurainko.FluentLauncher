@@ -13,40 +13,22 @@ namespace Natsurainko.FluentLauncher.Services.UI.Windows;
 abstract class ActivationService<TWindowBase> : IActivationService
 {
     protected readonly IServiceProvider _windowProvider;
-    protected readonly IReadOnlyDictionary<string, (Type windowType, bool multiInstance)> _registeredWindows;
+    protected readonly IReadOnlyDictionary<string, WindowDescriptor> _registeredWindows;
 
-    public IReadOnlyDictionary<string, (Type windowType, bool multiInstance)> RegisteredWindows => _registeredWindows;
+    public IReadOnlyDictionary<string, WindowDescriptor> RegisteredWindows => _registeredWindows;
 
-    internal ActivationService(IReadOnlyDictionary<string, (Type windowType, bool multiInstance)> registeredWindows)
+    internal ActivationService(IReadOnlyDictionary<string, WindowDescriptor> registeredWindows, IServiceProvider windowProvider)
     {
         _registeredWindows = registeredWindows;
-
-        ServiceCollection windowsCollection = new();
-        foreach ((Type type, bool multiInstance) in registeredWindows.Values)
-        {
-            // No need to check window type. This is an internal constructor that can only be called by the builder.
-            //if (type.IsSubclassOf(typeof(TWindow)) == false)
-            //    throw new ArgumentException($"Type {type} is not a subclass of {typeof(TWindow)}");
-
-            if (multiInstance)
-                windowsCollection.AddTransient(type);
-            else
-                windowsCollection.AddSingleton(type);
-        }
-        _windowProvider = windowsCollection.BuildServiceProvider();
+        _windowProvider = windowProvider;
     }
 
     public IWindowService ActivateWindow(string key)
     {
-        (Type windowType, bool _) = RegisteredWindows[key];
+        Type windowType = RegisteredWindows[key].WindowType; // windowType is guaranteed to be a subclass of TWindowBase when the activation service is built
         TWindowBase window = (TWindowBase)_windowProvider.GetService(windowType);
         return ActivateWindow(window);
     }
 
     protected abstract IWindowService ActivateWindow(TWindowBase window);
-
-    public void Register(string key, Type windowType, bool multiInstance)
-    {
-        throw new NotImplementedException();
-    }
 }

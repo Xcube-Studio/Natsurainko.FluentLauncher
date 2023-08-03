@@ -25,7 +25,6 @@ public sealed partial class MainWindow : WindowEx
         if (string.IsNullOrEmpty(ApplicationLanguages.PrimaryLanguageOverride))
             LanguageResources.ApplyLanguage(_settings.CurrentLanguage);
 #endif
-
         InitializeComponent();
 
         MessageService.RegisterContainer(MessageList);

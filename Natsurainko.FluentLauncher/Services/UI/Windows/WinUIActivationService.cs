@@ -22,6 +22,6 @@ internal class WinUIActivationService : ActivationService<Window>
     protected override IWindowService ActivateWindow(Window window)
     {
         window.Activate();
-        return null; // TODO: build window service from `window`
+        return new WindowService(window);
     }
 }

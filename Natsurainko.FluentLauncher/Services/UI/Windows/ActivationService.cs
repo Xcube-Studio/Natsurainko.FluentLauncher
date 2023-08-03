@@ -17,6 +17,11 @@ abstract class ActivationService<TWindowBase> : IActivationService
 
     public IReadOnlyDictionary<string, WindowDescriptor> RegisteredWindows => _registeredWindows;
 
+    /// <summary>
+    /// Build an activation service that supports activating the windows described
+    /// </summary>
+    /// <param name="registeredWindows">A read only dictionary that maps string keys to <see cref="WindowDescriptor"/> objects.</param>
+    /// <param name="windowProvider">An <see cref="IServiceProvider"/> that has been configured to support window types according to the rules defined by <paramref name="registeredWindows"/>.</param>
     internal ActivationService(IReadOnlyDictionary<string, WindowDescriptor> registeredWindows, IServiceProvider windowProvider)
     {
         _registeredWindows = registeredWindows;

@@ -12,6 +12,7 @@ internal class NotificationService
     private StackPanel _itemsContainer;
     private Grid _shadowReceiver;
     private ThemeShadow _themeShadow;
+    private int _nextItemZIndex = 1;
 
     public void InitContainer(StackPanel itemsContainer, Grid shadowReceiver)
     {
@@ -22,15 +23,24 @@ internal class NotificationService
         _themeShadow.Receivers.Add(shadowReceiver);
     }
 
+    public void NotifyMessage(string title, string text, string description = "", string icon = "\uE7E7", int delay = 5000)
+    {
+        NotifyWithSpecialContent(title, "NormalMessageNotifyTemplate", new
+        {
+            Text = text,
+            Description = description
+        }, icon, delay);
+    }
+
     public void NotifyWithSpecialContent(string title, string contentTemplateKey, object contentDataContext, string icon = "\uE7E7", int delay = 5000)
     {
-        _itemsContainer.Children.Add(CreateNotifyPresenter(
+        _itemsContainer.Children.Insert(0, CreateNotifyPresenter(
             title, contentTemplateKey, contentDataContext, icon, delay));
     }
     
     private ContentPresenter CreateNotifyPresenter(string title, string contentTemplateKey, object contentDataContext, string icon = "\uE7E7", int delay = 5000)
     {
-        var translateTransform = new TranslateTransform() { X = 500 };
+        var translateTransform = new TranslateTransform() { Y = -125 };
         var popupAnimation = CreatePopupAnimation(translateTransform);
 
         var contentPresenter = new ContentPresenter
@@ -38,13 +48,18 @@ internal class NotificationService
             CornerRadius = new CornerRadius(8),
             ContentTemplate = (DataTemplate)App.Current.Resources["NotifyPresenterTemplate"],
             Shadow = _themeShadow,
-            RenderTransform = translateTransform
+            RenderTransform = translateTransform,
+            MaxWidth = 500,
         };
+
+        Canvas.SetZIndex(contentPresenter, _nextItemZIndex);
+        _nextItemZIndex++;
 
         contentPresenter.Translation += new System.Numerics.Vector3(0, 0, 48);
 
         async void ContentPresenter_Loaded(object sender, RoutedEventArgs e)
         {
+            contentPresenter.Loaded -= ContentPresenter_Loaded;
             popupAnimation.Begin();
 
             var notifyPresenterViewModel = new NotifyPresenterViewModel
@@ -52,18 +67,22 @@ internal class NotificationService
                 Icon = icon,
                 NotifyTitile = title,
                 NotifyContent = CreateNotifyContent(contentTemplateKey, contentDataContext),
-                Remove = () => _itemsContainer.Children.Remove(contentPresenter),
-                RetractAnimation = CreateRetractAnimation(translateTransform)
+                CreateRetractAnimationAction = () => CreateRetractAnimation(translateTransform),
+                Remove = () =>
+                {
+                    _itemsContainer.Children.Remove(contentPresenter);
+                    OnRemovedItem();
+                },
             };
             contentPresenter.DataContext = notifyPresenterViewModel;
 
             await Task.Delay(delay);
-            await notifyPresenterViewModel.Close();
 
-            contentPresenter.Loaded -= ContentPresenter_Loaded;
+            if (!notifyPresenterViewModel._removed)
+                await notifyPresenterViewModel.Close();
         }
-        contentPresenter.Loaded += ContentPresenter_Loaded; 
 
+        contentPresenter.Loaded += ContentPresenter_Loaded; 
         return contentPresenter;
     }
 
@@ -93,7 +112,7 @@ internal class NotificationService
 
         storyboard.Children.Add(doubleAnimation);
         Storyboard.SetTarget(doubleAnimation, transform);
-        Storyboard.SetTargetProperty(storyboard, "X");
+        Storyboard.SetTargetProperty(storyboard, "Y");
 
         return storyboard;
     }
@@ -102,13 +121,19 @@ internal class NotificationService
     {
         var storyboard = new Storyboard();
         var doubleAnimation = new DoubleAnimation();
-        doubleAnimation.To = 500;
+        doubleAnimation.To = -_itemsContainer.ActualHeight - 75;
         doubleAnimation.EasingFunction = new CircleEase();
 
         storyboard.Children.Add(doubleAnimation);
         Storyboard.SetTarget(doubleAnimation, transform);
-        Storyboard.SetTargetProperty(storyboard, "X");
+        Storyboard.SetTargetProperty(storyboard, "Y");
 
         return storyboard;
+    }
+
+    private void OnRemovedItem()
+    {
+        if (_itemsContainer.Children.Count == 0)
+            _nextItemZIndex = 1;
     }
 }

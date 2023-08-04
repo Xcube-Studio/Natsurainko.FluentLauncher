@@ -67,7 +67,7 @@ public static class MemoryUtils
             : GetUnixMetrics();
 #pragma warning restore CA1416
 
-        var willUsed = (metrics.Free / 1024) * 0.6;
+        var willUsed = metrics.Free * 0.6;
         var max = willUsed < min ? min : Convert.ToInt32(willUsed);
 
         return (max, min);

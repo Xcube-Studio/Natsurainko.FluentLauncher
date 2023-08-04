@@ -1,6 +1,7 @@
 ﻿using Nrk.FluentCore.Classes.Datas.Authenticate;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.Classes.Datas.Parse;
+using Nrk.FluentCore.Classes.Enums;
 using Nrk.FluentCore.Components.Launch;
 using Nrk.FluentCore.DefaultComponets.Parse;
 using Nrk.FluentCore.Utils;
@@ -78,7 +79,7 @@ public class DefaultArgumentsBuilder : BaseArgumentsBuilder<DefaultArgumentsBuil
             { "${auth_access_token}" , _account.AccessToken },
             { "${auth_session}" , _account.AccessToken },
             { "${auth_uuid}" ,_account.Uuid.ToString("N") },
-            { "${user_type}" , "Mojang" },
+            { "${user_type}" , _account.Type.Equals(AccountType.Microsoft) ? "MSA" : "Mojang" },
             { "${user_properties}" , "{}" },
             { "${version_name}" , GameInfo.AbsoluteId },
             { "${version_type}" , GameInfo.Type },

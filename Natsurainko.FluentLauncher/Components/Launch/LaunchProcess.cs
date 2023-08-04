@@ -101,7 +101,6 @@ internal partial class LaunchProcess : BaseLaunchProcess
 
             throw;
         }
-
     }
 
     private void McProcess_ErrorDataReceived(object sender, DataReceivedEventArgs e)

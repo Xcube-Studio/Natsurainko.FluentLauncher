@@ -66,12 +66,15 @@
         </ListBox>
 
         <ScrollViewer
-            Margin="0,50,10,50"
-            Padding="-25"
-            HorizontalAlignment="Right"
+            Margin="50,50,50,20"
+            Padding="-25,-50,-25,-25"
+            HorizontalAlignment="Stretch"
             VerticalAlignment="Top"
-            Background="Transparent">
-            <StackPanel x:Name="NotifyStackPanel" Margin="25" />
+            VerticalScrollBarVisibility="Hidden">
+            <StackPanel
+                x:Name="NotifyStackPanel"
+                Margin="25,50,25,25"
+                Spacing="4" />
         </ScrollViewer>
     </Grid>
 </winuiex:WindowEx>

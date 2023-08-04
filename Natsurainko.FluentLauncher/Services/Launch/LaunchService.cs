@@ -27,6 +27,7 @@ internal class LaunchService : DefaultLaunchService
     private readonly AuthenticationService _authenticationService;
     private readonly new SettingsService _settingsService;
     private readonly new AccountService _accountService;
+    private readonly new GameService _gameService;
     private readonly ObservableCollection<LaunchProcess> _launchProcesses = new();
     private readonly DownloadService _downloadService;
 
@@ -44,6 +45,7 @@ internal class LaunchService : DefaultLaunchService
         _authenticationService = authenticationService;
         _settingsService = settingsService;
         _downloadService = downloadService;
+        _gameService = gameService;
 
         LaunchProcesses = new(_launchProcesses);
     }
@@ -132,6 +134,7 @@ internal class LaunchService : DefaultLaunchService
                 var launchTime = DateTime.Now;
 
                 specialConfig.LastLaunchTime = launchTime;
+                _gameService.GameInfos.Where(x => x.Equals(gameInfo)).FirstOrDefault().LastLaunchTime = launchTime;
                 (gameInfo as ExtendedGameInfo).LastLaunchTime = launchTime;
 
                 return new Process

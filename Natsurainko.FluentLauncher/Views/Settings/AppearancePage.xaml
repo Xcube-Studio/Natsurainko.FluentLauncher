@@ -52,10 +52,7 @@
                     </labs:SettingsCard.Header>
 
                     <labs:SettingsCard.Description>
-                        <TextBlock
-                            x:Uid="Settings_AppearancePage_D1"
-                            FontSize="14"
-                            Text="Dark and light color themes, effective after restarting the app" />
+                        <TextBlock x:Uid="Settings_AppearancePage_D1" Text="Dark and light color themes, effective after restarting the app" />
                     </labs:SettingsCard.Description>
 
                     <ComboBox ItemsSource="{Binding DisplayThemes}" SelectedIndex="{Binding DisplayTheme, Mode=TwoWay}">
@@ -72,10 +69,7 @@
                     </labs:SettingsExpander.Header>
 
                     <labs:SettingsExpander.Description>
-                        <TextBlock
-                            x:Uid="Settings_AppearancePage_D2"
-                            FontSize="14"
-                            Text="Application background settings." />
+                        <TextBlock x:Uid="Settings_AppearancePage_D2" Text="Application background settings." />
                     </labs:SettingsExpander.Description>
 
                     <labs:SettingsExpander.HeaderIcon>
@@ -217,10 +211,7 @@
                     </labs:SettingsCard.Header>
 
                     <labs:SettingsCard.Description>
-                        <TextBlock
-                            x:Uid="Settings_AppearancePage_D3"
-                            FontSize="14"
-                            Text="NavigationView layout" />
+                        <TextBlock x:Uid="Settings_AppearancePage_D3" Text="NavigationView layout" />
                     </labs:SettingsCard.Description>
 
                     <ComboBox ItemsSource="{Binding NavigationViewDisplayModes}" SelectedIndex="{Binding NavigationViewDisplayMode, Mode=TwoWay}">

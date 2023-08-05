@@ -94,10 +94,7 @@
                     </labs:SettingsCard.Header>
 
                     <labs:SettingsCard.Description>
-                        <TextBlock
-                            x:Uid="Settings_AboutPage_D2"
-                            FontSize="14"
-                            Text="Navigate to the GitHub repository" />
+                        <TextBlock x:Uid="Settings_AboutPage_D2" Text="Navigate to the GitHub repository" />
                     </labs:SettingsCard.Description>
                 </labs:SettingsCard>
 
@@ -115,7 +112,6 @@
                     <labs:SettingsCard.Description>
                         <TextBlock
                             x:Uid="Settings_AboutPage_D3"
-                            FontSize="14"
                             Text="Minecraft is copyrighted by Mojang Studios. We are not responsible for any copyright infringement arising from use of this software."
                             TextWrapping="WrapWholeWords" />
                     </labs:SettingsCard.Description>
@@ -148,37 +144,28 @@
                     </labs:SettingsExpander.Header>
 
                     <labs:SettingsExpander.Description>
-                        <TextBlock
-                            x:Uid="Settings_AboutPage_D4"
-                            FontSize="14"
-                            Text="Thanks for all the services provided to this app" />
+                        <TextBlock x:Uid="Settings_AboutPage_D4" Text="Thanks for all the services provided to this app" />
                     </labs:SettingsExpander.Description>
 
                     <labs:SettingsExpander.Items>
 
                         <labs:SettingsCard Header="BMCLAPI">
                             <labs:SettingsCard.Description>
-                                <TextBlock
-                                    x:Uid="Settings_AboutPage_D6"
-                                    FontSize="14"
-                                    Text="Provide Download Source" />
+                                <TextBlock x:Uid="Settings_AboutPage_D6" Text="Provide Download Source" />
                             </labs:SettingsCard.Description>
 
                             <HyperlinkButton NavigateUri="https://bmclapidoc.bangbang93.com/" ToolTipService.ToolTip="https://bmclapidoc.bangbang93.com/">
-                                <TextBlock FontSize="14" Text="bangbang93.com" />
+                                <TextBlock Text="bangbang93.com" />
                             </HyperlinkButton>
                         </labs:SettingsCard>
 
                         <labs:SettingsCard Header="MCBBS">
                             <labs:SettingsCard.Description>
-                                <TextBlock
-                                    x:Uid="Settings_AboutPage_D6"
-                                    FontSize="14"
-                                    Text="Provide Download Source" />
+                                <TextBlock x:Uid="Settings_AboutPage_D6" Text="Provide Download Source" />
                             </labs:SettingsCard.Description>
 
                             <HyperlinkButton NavigateUri="https://download.mcbbs.net" ToolTipService.ToolTip="https://download.mcbbs.net">
-                                <TextBlock FontSize="14" Text="mcbbs.net" />
+                                <TextBlock Text="mcbbs.net" />
                             </HyperlinkButton>
                         </labs:SettingsCard>
 
@@ -193,10 +180,7 @@
                     </labs:SettingsExpander.Header>
 
                     <labs:SettingsExpander.Description>
-                        <TextBlock
-                            x:Uid="Settings_AboutPage_D5"
-                            FontSize="14"
-                            Text="Libraries used for this application development" />
+                        <TextBlock x:Uid="Settings_AboutPage_D5" Text="Libraries used for this application development" />
                     </labs:SettingsExpander.Description>
 
                     <labs:SettingsExpander.Items>

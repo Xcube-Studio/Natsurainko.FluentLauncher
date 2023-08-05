@@ -43,10 +43,7 @@
                     </labs:SettingsExpander.Header>
 
                     <labs:SettingsExpander.Description>
-                        <TextBlock
-                            x:Uid="Settings_LaunchPage_D1"
-                            FontSize="14"
-                            Text="Where to store the core of your game" />
+                        <TextBlock x:Uid="Settings_LaunchPage_D1" Text="Where to store the core of your game" />
                     </labs:SettingsExpander.Description>
 
                     <labs:SettingsExpander.Items>
@@ -125,10 +122,7 @@
                     </labs:SettingsExpander.Header>
 
                     <labs:SettingsExpander.Description>
-                        <TextBlock
-                            x:Uid="Settings_LaunchPage_D2"
-                            FontSize="14"
-                            Text="Executable to launch the game" />
+                        <TextBlock x:Uid="Settings_LaunchPage_D2" Text="Executable to launch the game" />
                     </labs:SettingsExpander.Description>
 
                     <labs:SettingsExpander.Items>
@@ -294,10 +288,7 @@
                     </labs:SettingsExpander.Header>
 
                     <labs:SettingsExpander.Description>
-                        <TextBlock
-                            x:Uid="Settings_LaunchPage_D3"
-                            FontSize="14"
-                            Text="Game play settings" />
+                        <TextBlock x:Uid="Settings_LaunchPage_D3" Text="Game play settings" />
                     </labs:SettingsExpander.Description>
 
                     <labs:SettingsExpander.Items>

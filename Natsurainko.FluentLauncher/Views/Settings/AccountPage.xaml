@@ -147,10 +147,7 @@
                         <TextBlock x:Uid="Settings_AccountPage_H3" Text="Auto refresh account:" />
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock
-                            x:Uid="Settings_AccountPage_D1"
-                            FontSize="14"
-                            Text="Automatically refresh Token before each launch" />
+                        <TextBlock x:Uid="Settings_AccountPage_D1" Text="Automatically refresh Token before each launch" />
                     </labs:SettingsCard.Description>
                     <ToggleSwitch IsOn="{Binding AutoRefresh, Mode=TwoWay}" />
                 </labs:SettingsCard>

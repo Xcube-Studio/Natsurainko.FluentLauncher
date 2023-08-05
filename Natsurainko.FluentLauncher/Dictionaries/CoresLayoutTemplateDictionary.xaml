@@ -26,10 +26,12 @@
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
                     <Border
-                        Width="32"
-                        Height="32"
+                        Width="36"
+                        Height="36"
                         Margin="2,2,0,0"
                         VerticalAlignment="Center"
+                        BorderBrush="{ThemeResource IconBorder}"
+                        BorderThickness="2"
                         CornerRadius="4">
                         <Border.Background>
                             <ImageBrush ImageSource="{Binding Converter={ThemeResource IconConverter}}" />
@@ -85,6 +87,8 @@
                         Width="36"
                         Height="36"
                         VerticalAlignment="Bottom"
+                        BorderBrush="{ThemeResource IconBorder}"
+                        BorderThickness="2"
                         CornerRadius="4">
                         <Border.Background>
                             <ImageBrush ImageSource="{Binding Converter={ThemeResource IconConverter}}" />
@@ -139,10 +143,12 @@
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
                     <Border
-                        Width="32"
-                        Height="32"
+                        Width="36"
+                        Height="36"
                         Margin="2,2,0,0"
                         VerticalAlignment="Center"
+                        BorderBrush="{ThemeResource IconBorder}"
+                        BorderThickness="2"
                         CornerRadius="4">
                         <Border.Background>
                             <ImageBrush ImageSource="{Binding Converter={ThemeResource IconConverter}}" />

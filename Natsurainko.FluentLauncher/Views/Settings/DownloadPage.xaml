@@ -46,10 +46,7 @@
                         <TextBlock x:Uid="Settings_DownloadPage_H2" Text="Maximum number of download threads:" />
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock
-                            x:Uid="Settings_DownloadPage_D1"
-                            FontSize="14"
-                            Text="Please optimize and adjust according to the actual network environment" />
+                        <TextBlock x:Uid="Settings_DownloadPage_D1" Text="Please optimize and adjust according to the actual network environment" />
                     </labs:SettingsCard.Description>
 
                     <Slider
@@ -68,10 +65,7 @@
                         <TextBlock x:Uid="Settings_DownloadPage_H3" Text="Enable fragmented download of large files:" />
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock
-                            x:Uid="Settings_DownloadPage_D2"
-                            FontSize="14"
-                            Text="Can effectively speed up when encountering large files" />
+                        <TextBlock x:Uid="Settings_DownloadPage_D2" Text="Can effectively speed up when encountering large files" />
                     </labs:SettingsCard.Description>
                     <ToggleSwitch IsOn="{Binding EnableFragmentDownload, Mode=TwoWay}" />
                 </labs:SettingsCard>

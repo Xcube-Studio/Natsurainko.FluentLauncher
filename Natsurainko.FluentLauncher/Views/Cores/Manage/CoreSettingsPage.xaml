@@ -37,10 +37,7 @@
                         <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_H1" Text="Core Nickname:" />
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock
-                            x:Uid="Cores_Manage_CoreSettingsPage_D1"
-                            FontSize="14"
-                            Text="Only as a display name, the actual Id will not be modified" />
+                        <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_D1" Text="Only as a display name, the actual Id will not be modified" />
                     </labs:SettingsCard.Description>
 
                     <TextBox Width="150" Text="{Binding GameSpecialConfig.NickName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -51,10 +48,7 @@
                         <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_H2" Text="Enable specific core settings" />
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock
-                            x:Uid="Cores_Manage_CoreSettingsPage_D2"
-                            FontSize="14"
-                            Text="Only if you enable this item, the following settings will take effect" />
+                        <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_D2" Text="Only if you enable this item, the following settings will take effect" />
                     </labs:SettingsCard.Description>
                     <ToggleSwitch Name="ToggleSwitch" IsOn="{Binding GameSpecialConfig.EnableSpecialSetting, Mode=TwoWay}" />
                 </labs:SettingsCard>
@@ -75,10 +69,7 @@
                                 <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_H3" Text="Core independent" />
                             </labs:SettingsCard.Header>
                             <labs:SettingsCard.Description>
-                                <TextBlock
-                                    x:Uid="Cores_Manage_CoreSettingsPage_D3"
-                                    FontSize="14"
-                                    Text="The game will run at versions\${version} directory" />
+                                <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_D3" Text="The game will run at versions\${version} directory" />
                             </labs:SettingsCard.Description>
                             <ToggleSwitch IsOn="{Binding GameSpecialConfig.EnableIndependencyCore, Mode=TwoWay}" />
                         </labs:SettingsCard>
@@ -138,10 +129,7 @@
                                 <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_H8" Text="Account used to launch this game" />
                             </labs:SettingsCard.Header>
                             <labs:SettingsCard.Description>
-                                <TextBlock
-                                    x:Uid="Cores_Manage_CoreSettingsPage_D4"
-                                    FontSize="14"
-                                    Text="If the selected account cannot be found in the account list after enabling it, an error will be reported" />
+                                <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_D4" Text="If the selected account cannot be found in the account list after enabling it, an error will be reported" />
                             </labs:SettingsCard.Description>
 
                             <StackPanel Orientation="Horizontal" Spacing="15">
@@ -205,10 +193,7 @@
                                 <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_H9" Text="Additional JVM parameter settings" />
                             </labs:SettingsExpander.Header>
                             <labs:SettingsExpander.Description>
-                                <TextBlock
-                                    x:Uid="Cores_Manage_CoreSettingsPage_D5"
-                                    FontSize="14"
-                                    Text="These will be added to the generated launch parameters" />
+                                <TextBlock x:Uid="Cores_Manage_CoreSettingsPage_D5" Text="These will be added to the generated launch parameters" />
                             </labs:SettingsExpander.Description>
                             <labs:SettingsExpander.ItemTemplate>
                                 <DataTemplate>

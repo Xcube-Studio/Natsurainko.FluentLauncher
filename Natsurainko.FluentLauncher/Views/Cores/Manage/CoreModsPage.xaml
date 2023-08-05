@@ -13,6 +13,7 @@
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Cores.Manage"
     xmlns:manage="using:Natsurainko.FluentLauncher.ViewModels.Cores.Manage"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     d:DataContext="{d:DesignInstance Type=manage:CoreModsViewModel}"
     Background="Transparent"
@@ -22,6 +23,11 @@
         <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
         <Border Margin="0,10">
             <StackPanel MaxWidth="1000" Spacing="4">
+
+                <win:StackPanel.ChildrenTransitions>
+                    <win:EntranceThemeTransition FromVerticalOffset="50" />
+                    <win:RepositionThemeTransition IsStaggeringEnabled="False" />
+                </win:StackPanel.ChildrenTransitions>
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE711;}">
                     <labs:SettingsCard.Visibility>
@@ -36,7 +42,7 @@
                         <TextBlock Text="The game core does not support mods" />
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock FontSize="14" Text="To install a core with mod loader" />
+                        <TextBlock Text="To install a core with mod loader" />
                     </labs:SettingsCard.Description>
 
                     <Button>
@@ -61,7 +67,7 @@
                                 <TextBlock Text="Mods Folder" />
                             </labs:SettingsCard.Header>
                             <labs:SettingsCard.Description>
-                                <TextBlock FontSize="14" Text="{Binding ModsFolder}" />
+                                <TextBlock Text="{Binding ModsFolder}" />
                             </labs:SettingsCard.Description>
 
                             <Button Command="{Binding OpenFolderCommand}">

@@ -6,7 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Classes.Datas.Authenticate;
@@ -39,12 +41,18 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
 
     private readonly AccountService _accountService;
     private readonly AuthenticationService _authenticationService;
+    private readonly NotificationService _notificationService;
 
-    public AccountViewModel(SettingsService settingsService, AccountService accountService, AuthenticationService authenticationService)
+    public AccountViewModel(
+        SettingsService settingsService, 
+        AccountService accountService, 
+        AuthenticationService authenticationService, 
+        NotificationService notificationService)
     {
         _settingsService = settingsService;
         _accountService = accountService;
         _authenticationService = authenticationService;
+        _notificationService = notificationService;
 
         Accounts = accountService.Accounts;
         ActiveAccount = accountService.ActiveAccount;
@@ -69,8 +77,10 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
     public Task Refresh() => Task.Run(_authenticationService.RefreshCurrentAccount).ContinueWith(task =>
     {
         if (task.IsFaulted)
-            MessageService.ShowException(task.Exception, "Failed to refresh account");
-        else MessageService.ShowSuccess("Successfully refreshed Account", $"Welcome back, {_accountService.ActiveAccount.Name}");
+            _notificationService.NotifyException("_AccountRefreshFailedTitle", task.Exception, "_AccountRefreshFailedDescription");
+        else _notificationService.NotifyMessage(
+            ResourceUtils.GetValue("Notifications", "_AccountRefreshedTitle"), 
+            ResourceUtils.GetValue("Notifications", "_AccountRefreshedDescription").Replace("${name}", _accountService.ActiveAccount.Name));
     });
 
     [RelayCommand]
@@ -83,14 +93,4 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
         };
         _ = switchAccountDialog.ShowAsync();
     }
-
-    private void SetAccount(Account account) => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-    {
-#pragma warning disable CS0612 // Type or member is obsolete
-        _accountService.AddAccount(account);
-#pragma warning restore CS0612 // Type or member is obsolete
-        ActiveAccount = account;
-
-        MessageService.ShowSuccess($"Add {account.Type} Account Successfully", $"Welcome back, {account.Name}");
-    });
 }

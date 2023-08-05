@@ -93,8 +93,7 @@
 
                         <TextBlock
                             Margin="1,20,0,4"
-                            FontSize="16"
-                            FontWeight="Bold"
+                            Style="{ThemeResource BaseTextBlockStyle}"
                             Text="Mods" />
 
                         <ItemsRepeater ItemsSource="{Binding DisplayMods}">

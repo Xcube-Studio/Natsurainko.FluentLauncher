@@ -35,6 +35,8 @@
                 <Setter Property="Opacity" Value="{ThemeResource ExpanderSplitterOpacity}" />
             </Style>
 
+            <FontFamily x:Key="MinecraftTen">/Assets/MinecraftTen.ttf#Minecraft Ten</FontFamily>
+
             <converters:AccountInfoConverter x:Key="AccountInfoConverter" />
             <converters:JavaInfoConverter x:Key="JavaInfoConverter" />
             <converters:IconConverter x:Key="IconConverter" />

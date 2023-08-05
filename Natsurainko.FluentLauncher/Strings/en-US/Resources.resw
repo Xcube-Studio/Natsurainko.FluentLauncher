@@ -66,6 +66,18 @@
     <data name="ExceptionPage_Button.Content" xml:space="preserve">
         <value>Copy and go to GitHub</value>
     </data>
+    <data name="Notifications__AccountRefreshFailedTitle" xml:space="preserve">
+        <value>Failed to refresh account</value>
+    </data>
+    <data name="Notifications__AccountRefreshFailedDescription" xml:space="preserve">
+        <value>The account has expired and you need to log in again or cannot connect to the server due to network problems</value>
+    </data>
+    <data name="Notifications__AccountRefreshedTitle" xml:space="preserve">
+        <value>Successfully refreshed Account</value>
+    </data>
+    <data name="Notifications__AccountRefreshedDescription" xml:space="preserve">
+        <value>Welcome back, ${name}</value>
+    </data>
     <data name="ShellPage_NV_Item_1.Content" xml:space="preserve">
         <value>Home</value>
     </data>

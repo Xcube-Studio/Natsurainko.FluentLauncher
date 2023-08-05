@@ -24,8 +24,7 @@
                 <TextBlock
                     x:Uid="Settings_AppearancePage_T1"
                     Margin="1,0,0,4"
-                    FontSize="16"
-                    FontWeight="Bold"
+                    Style="{ThemeResource BaseTextBlockStyle}"
                     Text="Language" />
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xf2b7;}">
@@ -44,8 +43,7 @@
                 <TextBlock
                     x:Uid="Settings_AppearancePage_T2"
                     Margin="1,20,0,4"
-                    FontSize="16"
-                    FontWeight="Bold"
+                    Style="{ThemeResource BaseTextBlockStyle}"
                     Text="Appearance settings" />
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xe706;}">

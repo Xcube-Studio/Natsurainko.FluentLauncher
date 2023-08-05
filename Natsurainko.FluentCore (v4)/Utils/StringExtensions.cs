@@ -90,6 +90,8 @@ public static class StringExtensions
 
     public static string ConvertFromBase64(this string value) => Encoding.UTF8.GetString(Convert.FromBase64String(value));
 
+    public static string ConvertToBase64(this string value) => Convert.ToBase64String(Encoding.UTF8.GetBytes(value));
+
     public static void ParseServerAddress(this string value, out string host, out int? port)
     {
         if (value.Contains(':'))

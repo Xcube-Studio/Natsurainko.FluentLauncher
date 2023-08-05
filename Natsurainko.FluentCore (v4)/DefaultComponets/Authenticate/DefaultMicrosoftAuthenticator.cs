@@ -95,9 +95,8 @@ public class DefaultMicrosoftAuthenticator : BaseAuthenticator<MicrosoftAccount>
             if (!string.IsNullOrEmpty(xSTSAuthenticateErrorModel.Message))
                 message += $" ({xSTSAuthenticateErrorModel.Message})";
 
-            throw new AuthException
+            throw new AuthException(message)
             {
-                Message = message,
                 HelpLink = xSTSAuthenticateErrorModel.XErr switch
                 {
                     2148916233 => "The account doesn't have an Xbox account. Once they sign up for one (or login through minecraft.net to create one) " +
@@ -154,9 +153,8 @@ public class DefaultMicrosoftAuthenticator : BaseAuthenticator<MicrosoftAccount>
         var gameOwnershipItems = JsonNode.Parse(checkingGameOwnershipGetRes.Content.ReadAsString())["items"].AsArray();
 
         if (!gameOwnershipItems.Any())
-            throw new AuthException
+            throw new AuthException("An error occurred while checking game ownership")
             {
-                Message = "An error occurred while checking game ownership",
                 HelpLink = "The account doesn't own the game",
                 Step = AuthStep.Checking_Game_Ownership,
                 Type = AuthExceptionType.GameOwnershipError

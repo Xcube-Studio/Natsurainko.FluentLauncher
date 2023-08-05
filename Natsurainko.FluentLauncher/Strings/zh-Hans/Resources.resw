@@ -66,6 +66,18 @@
     <data name="ExceptionPage_Button.Content" xml:space="preserve">
         <value>复制并转到 GitHub</value>
     </data>
+    <data name="Notifications__AccountRefreshFailedTitle" xml:space="preserve">
+        <value>刷新帐户失败</value>
+    </data>
+    <data name="Notifications__AccountRefreshFailedDescription" xml:space="preserve">
+        <value>该账户已过期需重新登录或因网络问题导致无法连接服务器</value>
+    </data>
+    <data name="Notifications__AccountRefreshedTitle" xml:space="preserve">
+        <value>账户刷新成功</value>
+    </data>
+    <data name="Notifications__AccountRefreshedDescription" xml:space="preserve">
+        <value>欢迎回来，${name}</value>
+    </data>
     <data name="ShellPage_NV_Item_1.Content" xml:space="preserve">
         <value>主页面</value>
     </data>

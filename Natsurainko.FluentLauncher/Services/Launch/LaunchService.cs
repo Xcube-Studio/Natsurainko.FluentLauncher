@@ -19,6 +19,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
 
@@ -125,7 +126,7 @@ internal class LaunchService : DefaultLaunchService
                     .SetAccountSettings(launchAccount, _settingsService.EnableDemoUser)
                     .SetJavaSettings(suitableJava, maxMemory, minMemory)
                     .SetGameDirectory(gameDirectory)
-                    .AddExtraParameters(GetExtraVmParameters(specialConfig), GetExtraGameParameters(specialConfig)); //TODO: 加入额外的虚拟机参数  如：-XX:+UseG1GC 以及额外游戏参数 如：--fullscreen
+                    .AddExtraParameters(GetExtraVmParameters(specialConfig, launchAccount), GetExtraGameParameters(specialConfig)); //TODO: 加入额外的虚拟机参数  如：-XX:+UseG1GC 以及额外游戏参数 如：--fullscreen
 
                 return builder.Build();
             })
@@ -257,8 +258,17 @@ internal class LaunchService : DefaultLaunchService
         return _accountService.ActiveAccount;
     }
 
-    private IEnumerable<string> GetExtraVmParameters(GameSpecialConfig specialConfig)
+    private IEnumerable<string> GetExtraVmParameters(GameSpecialConfig specialConfig, Account account)
     {
+        if (account is YggdrasilAccount yggdrasil)
+        {
+            using var res = HttpUtils.HttpGet(yggdrasil.YggdrasilServerUrl);
+
+            yield return $"-javaagent:{Path.Combine(Package.Current.InstalledLocation.Path, "Assets", "Libs", "authlib-injector-1.2.3.jar").ToPathParameter()}={yggdrasil.YggdrasilServerUrl}";
+            yield return "-Dauthlibinjector.side=client";
+            yield return $"-Dauthlibinjector.yggdrasil.prefetched={(res.Content.ReadAsString()).ConvertToBase64()}";
+        }
+
         if (!specialConfig.EnableSpecialSetting || specialConfig.VmParameters == null)
             yield break;
 

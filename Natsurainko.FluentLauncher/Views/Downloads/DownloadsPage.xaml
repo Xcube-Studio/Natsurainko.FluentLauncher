@@ -75,8 +75,7 @@
 
                 <TextBlock
                     Margin="1,0,0,4"
-                    FontSize="16"
-                    FontWeight="Bold"
+                    Style="{ThemeResource BaseTextBlockStyle}"
                     Text="Minecraft 本体" />
 
                 <Grid>
@@ -123,7 +122,7 @@
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Spacing="15">
                                     <TextBlock
-                                        FontFamily="Minecraft Ten"
+                                        FontFamily="{ThemeResource MinecraftTen}"
                                         Style="{ThemeResource TitleTextBlockStyle}"
                                         Text="Minecraft:Java Edition 1.20.1"
                                         TextWrapping="WrapWholeWords" />
@@ -189,7 +188,7 @@
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Spacing="15">
                                         <TextBlock
-                                            FontFamily="Minecraft Ten"
+                                            FontFamily="{ThemeResource MinecraftTen}"
                                             Style="{ThemeResource TitleTextBlockStyle}"
                                             Text="Minecraft Snapshot 23w31a"
                                             TextWrapping="WrapWholeWords" />
@@ -229,14 +228,12 @@
                                 <TextBlock Text="查找版本核心并安装" />
                             </labs:SettingsCard.Description>
                         </labs:SettingsCard>
-
                     </Grid>
                 </Grid>
 
                 <TextBlock
                     Margin="1,20,0,4"
-                    FontSize="16"
-                    FontWeight="Bold"
+                    Style="{ThemeResource BaseTextBlockStyle}"
                     Text="模组资源" />
             </StackPanel>
         </Border>

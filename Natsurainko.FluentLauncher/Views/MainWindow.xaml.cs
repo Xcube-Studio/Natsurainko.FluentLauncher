@@ -1,8 +1,6 @@
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.Classes.Data.UI;
-using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
@@ -27,33 +25,18 @@ public sealed partial class MainWindow : WindowEx
 
         InitializeComponent();
 
-        MessageService.RegisterContainer(MessageList);
         _notificationService.InitContainer(NotifyStackPanel, BackgroundGrid);
 
         AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets/AppIcon.ico"));
 
         AppWindow.Title = "Fluent Launcher";
         AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
-        AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
-        AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-        AppWindow.TitleBar.ButtonForegroundColor = App.Current.RequestedTheme == ApplicationTheme.Light 
-            ? Colors.Black : Colors.White;
+        AppWindow.TitleBar.ButtonBackgroundColor = AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+        AppWindow.TitleBar.ButtonForegroundColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
 
         (MinWidth, MinHeight) = (516, 328);
         (Width, Height) = (_settings.AppWindowWidth, _settings.AppWindowHeight);
 
-        if (_settings.FinishGuide)
-            Frame.Navigate(typeof(ShellPage));
-        else Frame.Navigate(typeof(OOBE.OOBENavigationPage));
+        Frame.Navigate(_settings.FinishGuide ? typeof(ShellPage) : typeof(OOBE.OOBENavigationPage));
     }
-
-    private void InfoBar_CloseButtonClick(InfoBar sender, object args)
-    {
-        var messageData = sender.DataContext as MessageData;
-        messageData.Removed = true;
-
-        MessageList.Items.Remove(messageData);
-    }
-
-    private void InfoBar_Loaded(object sender, RoutedEventArgs e) => ((InfoBar)sender).Translation += new System.Numerics.Vector3(0, 0, 32);
 }

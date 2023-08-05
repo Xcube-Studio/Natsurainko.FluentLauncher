@@ -126,7 +126,7 @@
                                 <Grid x:Name="TextAreaGrid" Padding="15,10,15,15">
                                     <StackPanel Spacing="10">
                                         <TextBlock
-                                            FontFamily="Minecraft Ten"
+                                            FontFamily="{ThemeResource MinecraftTen}"
                                             Style="{ThemeResource TitleTextBlockStyle}"
                                             Text="{Binding Title}"
                                             TextWrapping="WrapWholeWords" />

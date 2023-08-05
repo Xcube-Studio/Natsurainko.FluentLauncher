@@ -67,8 +67,7 @@
                         <TextBlock
                             x:Uid="Cores_Manage_CoreSettingsPage_T1"
                             Margin="1,20,0,4"
-                            FontSize="16"
-                            FontWeight="Bold"
+                            Style="{ThemeResource BaseTextBlockStyle}"
                             Text="Launch Settings" />
 
                         <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
@@ -131,8 +130,7 @@
                         <TextBlock
                             x:Uid="Cores_Manage_CoreSettingsPage_T2"
                             Margin="1,20,0,4"
-                            FontSize="16"
-                            FontWeight="Bold"
+                            Style="{ThemeResource BaseTextBlockStyle}"
                             Text="Account Settings" />
 
                         <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE716;}">
@@ -199,8 +197,7 @@
                         <TextBlock
                             x:Uid="Cores_Manage_CoreSettingsPage_T3"
                             Margin="1,20,0,4"
-                            FontSize="16"
-                            FontWeight="Bold"
+                            Style="{ThemeResource BaseTextBlockStyle}"
                             Text="JVM Settings" />
 
                         <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xE713;}" ItemsSource="{Binding VmArguments}">

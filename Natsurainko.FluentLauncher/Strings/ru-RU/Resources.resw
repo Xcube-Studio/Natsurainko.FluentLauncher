@@ -66,6 +66,18 @@
     <data name="ExceptionPage_Button.Content" xml:space="preserve">
         <value></value>
     </data>
+    <data name="Notifications__AccountRefreshFailedTitle" xml:space="preserve">
+        <value>Не удалось обновить учетную запись</value>
+    </data>
+    <data name="Notifications__AccountRefreshFailedDescription" xml:space="preserve">
+        <value>Срок действия учетной записи истек, и вам необходимо снова войти в систему или вы не можете подключиться к серверу из-за проблем с сетью.</value>
+    </data>
+    <data name="Notifications__AccountRefreshedTitle" xml:space="preserve">
+        <value>Аккаунт успешно обновлен</value>
+    </data>
+    <data name="Notifications__AccountRefreshedDescription" xml:space="preserve">
+        <value>С возвращением, ${name}</value>
+    </data>
     <data name="ShellPage_NV_Item_1.Content" xml:space="preserve">
         <value>Домашняя страница</value>
     </data>

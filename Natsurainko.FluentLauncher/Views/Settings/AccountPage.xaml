@@ -27,8 +27,7 @@
                 <TextBlock
                     x:Uid="Settings_AccountPage_T1"
                     Margin="1,0,0,4"
-                    FontSize="16"
-                    FontWeight="Bold"
+                    Style="{ThemeResource BaseTextBlockStyle}"
                     Text="Accounts" />
 
                 <labs:SettingsExpander>
@@ -133,8 +132,7 @@
                 <TextBlock
                     x:Uid="Settings_AccountPage_T2"
                     Margin="1,20,0,4"
-                    FontSize="16"
-                    FontWeight="Bold"
+                    Style="{ThemeResource BaseTextBlockStyle}"
                     Text="Account Settings" />
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xEC7A;}">

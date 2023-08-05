@@ -33,8 +33,7 @@
                 <TextBlock
                     x:Uid="Settings_LaunchPage_T1"
                     Margin="1,0,0,4"
-                    FontSize="16"
-                    FontWeight="Bold"
+                    Style="{ThemeResource BaseTextBlockStyle}"
                     Text="Global launch settings" />
 
                 <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe8b7;}">
@@ -370,8 +369,7 @@
                 <TextBlock
                     x:Uid="Settings_LaunchPage_T2"
                     Margin="1,20,0,4"
-                    FontSize="16"
-                    FontWeight="Bold"
+                    Style="{ThemeResource BaseTextBlockStyle}"
                     Text="Game specific settings" />
 
                 <labs:SettingsCard

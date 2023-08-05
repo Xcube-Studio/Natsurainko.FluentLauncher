@@ -2,9 +2,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
-using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
@@ -23,6 +23,7 @@ partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
     [SettingsProvider]
     private readonly SettingsService _settingsService;
     private readonly GameService _gameService;
+    private readonly NotificationService _notificationService;
 
     #region Settings
 
@@ -82,10 +83,14 @@ partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
 
     public bool IsJavasEmpty => Javas.Count == 0;
 
-    public LaunchViewModel(SettingsService settingsService, GameService gameService)
+    public LaunchViewModel(
+        SettingsService settingsService, 
+        GameService gameService,
+        NotificationService notificationService)
     {
         _settingsService = settingsService;
         _gameService = gameService;
+        _notificationService = notificationService;
 
         (this as ISettingsViewModel).InitializeSettings();
     }
@@ -114,7 +119,7 @@ partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
             {
                 if (MinecraftFolders.Contains(folder.Path))
                 {
-                    MessageService.Show("This folder already exists");
+                    _notificationService.NotifyMessage("Failed to add the folder", "This folder already exists", icon: "\uF89A");
                     return;
                 }
 
@@ -154,7 +159,7 @@ partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
 
         OnPropertyChanged(nameof(Javas));
 
-        MessageService.Show("Added the search Java to the runtime list");
+        _notificationService.NotifyWithoutContent("Added the search Java to the runtime list", icon: "\uE73E");
     }
 
     [RelayCommand]

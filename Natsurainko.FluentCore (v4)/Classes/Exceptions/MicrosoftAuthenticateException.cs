@@ -5,13 +5,12 @@ namespace Nrk.FluentCore.Classes.Exceptions;
 
 public class MicrosoftAuthenticateException : Exception
 {
-    public MicrosoftAuthenticateExceptionType Type { get; internal set; }
+    public MicrosoftAuthenticateException(string message) : base(message)
+    {
 
-    public new string HelpLink { get; internal set; }
+    }
 
-    public MicrosoftAuthenticateStep Step { get; internal set; }
+    public MicrosoftAuthenticateExceptionType Type { get; internal set; } 
 
-    public new string Message { get; internal set; }
-
-    public new Exception InnerException { get; internal set; }
+    public MicrosoftAuthenticateStep Step { get; internal set; } 
 }

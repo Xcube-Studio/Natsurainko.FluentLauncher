@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Views.Common;
@@ -57,14 +56,4 @@ partial class AccountViewModel : ObservableRecipient, IRecipient<ActiveAccountCh
 
     [RelayCommand]
     public void Login(Button parameter) => _ = new AuthenticationWizardDialog { XamlRoot = parameter.XamlRoot }.ShowAsync();
-
-    private void SetAccount(Account account) => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-    {
-#pragma warning disable CS0612 // Type or member is obsolete
-        _accountService.AddAccount(account);
-#pragma warning restore CS0612 // Type or member is obsolete
-        _accountService.Activate(account);
-
-        MessageService.ShowSuccess($"Add {account.Type} Account Successfully", $"Welcome back, {account.Name}");
-    });
 }

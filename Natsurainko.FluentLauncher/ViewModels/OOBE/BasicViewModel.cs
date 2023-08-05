@@ -2,9 +2,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.Utils;
@@ -41,14 +41,19 @@ partial class BasicViewModel : SettingsViewModelBase, ISettingsViewModel
     #endregion
 
     private readonly GameService _gameService;
+    private readonly NotificationService _notificationService;
 
     [ObservableProperty]
     private bool dropDownOpen;
 
-    public BasicViewModel(SettingsService settingsService, GameService gameService)
+    public BasicViewModel(
+        SettingsService settingsService, 
+        GameService gameService, 
+        NotificationService notificationService)
     {
         _settingsService = settingsService;
         _gameService = gameService;
+        _notificationService = notificationService;
 
         (this as ISettingsViewModel).InitializeSettings();
     }
@@ -91,7 +96,7 @@ partial class BasicViewModel : SettingsViewModelBase, ISettingsViewModel
             {
                 if (MinecraftFolders.Contains(folder.Path))
                 {
-                    MessageService.Show("This folder already exists");
+                    _notificationService.NotifyMessage("Failed to add the folder", "This folder already exists", icon: "\uF89A");
                     return;
                 }
 
@@ -133,6 +138,6 @@ partial class BasicViewModel : SettingsViewModelBase, ISettingsViewModel
         OnPropertyChanged(nameof(Javas));
 
         DropDownOpen = true;
-        MessageService.Show("Added the search Java to the runtime list");
+        _notificationService.NotifyWithoutContent("Added the search Java to the runtime list", icon: "\uE73E");
     }
 }

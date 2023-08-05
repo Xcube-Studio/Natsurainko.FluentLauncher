@@ -28,8 +28,7 @@
                 <TextBlock
                     x:Uid="Settings_AboutPage_T1"
                     Margin="1,0,0,4"
-                    FontSize="16"
-                    FontWeight="Bold"
+                    Style="{ThemeResource BaseTextBlockStyle}"
                     Text="About Fluent Launcher" />
 
                 <labs:SettingsExpander>
@@ -105,8 +104,7 @@
                 <TextBlock
                     x:Uid="Settings_AboutPage_T2"
                     Margin="1,20,0,4"
-                    FontSize="16"
-                    FontWeight="Bold"
+                    Style="{ThemeResource BaseTextBlockStyle}"
                     Text="Other information" />
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xea1f;}">
@@ -140,8 +138,7 @@
                 <TextBlock
                     x:Uid="Settings_AboutPage_T3"
                     Margin="1,20,0,4"
-                    FontSize="16"
-                    FontWeight="Bold"
+                    Style="{ThemeResource BaseTextBlockStyle}"
                     Text="Credits" />
 
                 <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe8b5;}">

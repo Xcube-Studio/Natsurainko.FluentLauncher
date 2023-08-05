@@ -20,5 +20,9 @@ public sealed partial class NewHomePage : Page
     {
         SharedShadow.Receivers.Add(BackgroundGrid);
         PanelGrid.Translation += new System.Numerics.Vector3(0, 0, 48);
+
+        var vm = DataContext as HomeViewModel;
+        vm.LoadGameInfo();
+
     }
 }

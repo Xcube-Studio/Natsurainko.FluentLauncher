@@ -15,8 +15,8 @@ namespace Natsurainko.FluentLauncher.ViewModels.Home;
 
 partial class HomeViewModel : ObservableObject
 {
-    public ReadOnlyObservableCollection<Account> Accounts { get; init; }
-    public ReadOnlyObservableCollection<ExtendedGameInfo> GameInfos { get; init; }
+    public ReadOnlyObservableCollection<Account> Accounts { get; private set; }
+    public ReadOnlyObservableCollection<ExtendedGameInfo> GameInfos { get; private set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(AccountTag))]
@@ -42,14 +42,22 @@ partial class HomeViewModel : ObservableObject
         Accounts = accountService.Accounts;
         ActiveAccount = accountService.ActiveAccount;
 
-        GameInfos = gameService.GameInfos;
-        ActiveGameInfo = gameService.ActiveGameInfo;
 
         WeakReferenceMessenger.Default.Register<ActiveAccountChangedMessage>(this, (r, m) =>
         {
             HomeViewModel vm = r as HomeViewModel;
             vm.ActiveAccount = m.Value;
         });
+    }
+
+    // Workaround for the bug that the first item of the listview cannot load the icon
+    // Note: The ObservableCollections should have init; setter. Using private set; is only for the workaround.
+    public void LoadGameInfo()
+    {
+        GameInfos = _gameService.GameInfos;
+        ActiveGameInfo = _gameService.ActiveGameInfo;
+        OnPropertyChanged(nameof(GameInfos));
+        OnPropertyChanged(nameof(ActiveGameInfo));
     }
 
     public string LaunchButtonTag => ActiveGameInfo is null ? _coreNotSelected : ActiveGameInfo.Name;

@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Classes.Data.UI;
 using Natsurainko.FluentLauncher.Services;
+using Natsurainko.FluentLauncher.Services.Storage;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,15 +11,15 @@ namespace Natsurainko.FluentLauncher.ViewModels.Activities;
 
 internal partial class NewsViewModel : ObservableObject
 {
-    public NewsViewModel(OfficialNewsService service)
+    public NewsViewModel(InterfaceCacheService service)
     {
         Task.Run(async () =>
         {
-            var newsContentDatas = await service.GetOfficialNews();
+            var newsDatas = await service.FetchNews();
 
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                NewsContentDatas = newsContentDatas;
+                NewsDatas = newsDatas;
                 Loading = Visibility.Collapsed;
             });
         }).ContinueWith(task =>
@@ -29,7 +30,7 @@ internal partial class NewsViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private IReadOnlyList<NewsContentData> newsContentDatas;
+    private IReadOnlyList<NewsData> newsDatas;
 
     [ObservableProperty]
     private Visibility loading = Visibility.Visible;

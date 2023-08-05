@@ -23,8 +23,8 @@ public static class HttpUtils
         MultiThreadsCount = 64
     };
 
-    static readonly HttpClient HttpClient = new();
-    static readonly MemoryPool<byte> MemoryPool = MemoryPool<byte>.Shared;
+    public static readonly HttpClient HttpClient = new();
+    public static readonly MemoryPool<byte> MemoryPool = MemoryPool<byte>.Shared;
 
     public static HttpResponseMessage HttpPost(string url, string content, string contentType = "application/json")
     {

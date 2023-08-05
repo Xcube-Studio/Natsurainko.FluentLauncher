@@ -101,7 +101,7 @@ class SkinCacheService
         }*/
 
         var sources = new List<SoftwareBitmapSource>();
-        var dir = Path.Combine(_localStorageService.GetDirectory("skins").FullName, $"{account.Type}-{account.Uuid}");
+        var dir = Path.Combine(_localStorageService.GetDirectory("cache-skins").FullName, $"{account.Type}-{account.Uuid}");
 
         string[] paths = new string[]
         {
@@ -149,7 +149,7 @@ class SkinCacheService
 
     private string GetSkinFilePath(Account account)
     {
-        var dir = Path.Combine(_localStorageService.GetDirectory("skins").FullName, $"{account.Type}-{account.Uuid}");
+        var dir = Path.Combine(_localStorageService.GetDirectory("cache-skins").FullName, $"{account.Type}-{account.Uuid}");
 
         return Path.Combine(dir, "skin.png");
     }

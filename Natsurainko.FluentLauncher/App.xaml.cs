@@ -2,7 +2,6 @@
 using AppSettingsManagement.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
-using Natsurainko.FluentLauncher.Services;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Download;
 using Natsurainko.FluentLauncher.Services.Launch;
@@ -72,7 +71,6 @@ public partial class App : Application
         services.AddSingleton<DownloadService>();
 
         // Services
-        services.AddSingleton<OfficialNewsService>();
         //services.AddSingleton<CurseForgeModService>();
         services.AddSingleton<LocalStorageService>();
         services.AddSingleton<MessengerService>();
@@ -80,6 +78,7 @@ public partial class App : Application
         services.AddSingleton<NotificationService>();
         services.AddSingleton<AppearanceService>();
         services.AddSingleton<SkinCacheService>();
+        services.AddSingleton<InterfaceCacheService>();
 
         //ViewModels
 

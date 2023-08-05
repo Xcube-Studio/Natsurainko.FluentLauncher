@@ -2,7 +2,7 @@
 
 namespace Natsurainko.FluentLauncher.Classes.Data.UI;
 
-internal class NewsContentData
+internal class NewsData
 {
     public string ImageUrl { get; set; }
 

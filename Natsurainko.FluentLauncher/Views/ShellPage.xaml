@@ -33,6 +33,7 @@
             VerticalAlignment="Top"
             x:FieldModifier="public"
             Background="Transparent"
+            Canvas.ZIndex="1"
             IsHitTestVisible="True">
             <StackPanel
                 x:Name="AppTitle"

@@ -4,11 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:downloads="using:Natsurainko.FluentLauncher.ViewModels.Downloads"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
-    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
+    d:DataContext="{d:DesignInstance Type=downloads:DownloadsViewModel}"
     Background="Transparent"
     mc:Ignorable="d">
     <Page.Resources>
@@ -88,23 +89,26 @@
                         Background="{ThemeResource SettingsCardBackground}"
                         BorderBrush="{ThemeResource SettingsCardBorderBrush}"
                         BorderThickness="1"
-                        CornerRadius="{ThemeResource ControlCornerRadius}">
+                        CornerRadius="{ThemeResource ControlCornerRadius}"
+                        DataContext="{Binding PrimaryPublishData}">
                         <Grid RequestedTheme="Dark">
                             <Border CornerRadius="{ThemeResource ControlCornerRadius}">
-                                <Image Source="https://www.minecraft.net/content/dam/games/minecraft/screenshots/1.20.1%201170x500.jpg" Stretch="UniformToFill" />
+                                <Image Stretch="UniformToFill">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="{Binding ImageUrl}" />
+                                    </Image.Source>
+                                </Image>
                             </Border>
-                            <Button
+                            <HyperlinkButton
                                 Margin="5"
                                 Padding="5"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Background="Transparent"
-                                BorderBrush="Transparent">
-                                <FontIcon
-                                    FontSize="12"
-                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                    Glyph="&#xE8A7;" />
-                            </Button>
+                                BorderBrush="Transparent"
+                                NavigateUri="{Binding ReadMoreUrl}">
+                                <FontIcon FontSize="12" Glyph="&#xE8A7;" />
+                            </HyperlinkButton>
                             <Grid
                                 Height="Auto"
                                 Padding="15,10,15,15"
@@ -124,12 +128,12 @@
                                     <TextBlock
                                         FontFamily="{ThemeResource MinecraftTen}"
                                         Style="{ThemeResource TitleTextBlockStyle}"
-                                        Text="Minecraft:Java Edition 1.20.1"
+                                        Text="{Binding Title}"
                                         TextWrapping="WrapWholeWords" />
                                     <TextBlock
                                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                         Style="{ThemeResource CaptionTextBlockStyle}"
-                                        Text="12 June 2023 14:13:48 UTC" />
+                                        Text="{Binding Date}" />
                                 </StackPanel>
                                 <Button
                                     Grid.Column="2"
@@ -156,21 +160,26 @@
                             Background="{ThemeResource SettingsCardBackground}"
                             BorderBrush="{ThemeResource SettingsCardBorderBrush}"
                             BorderThickness="1"
-                            CornerRadius="{ThemeResource ControlCornerRadius}">
+                            CornerRadius="{ThemeResource ControlCornerRadius}"
+                            DataContext="{Binding SecondaryPublishData}">
                             <Grid RequestedTheme="Dark">
                                 <Border CornerRadius="{ThemeResource ControlCornerRadius}">
-                                    <Image Source="https://www.minecraft.net/content/dam/games/minecraft/screenshots/23w31a_1170x500.jpg" Stretch="UniformToFill" />
+                                    <Image Stretch="UniformToFill">
+                                        <Image.Source>
+                                            <BitmapImage UriSource="{Binding ImageUrl}" />
+                                        </Image.Source>
+                                    </Image>
                                 </Border>
-                                <Button
+                                <HyperlinkButton
                                     Margin="5"
                                     Padding="5"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
                                     Background="Transparent"
                                     BorderBrush="Transparent"
-                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
+                                    NavigateUri="{Binding ReadMoreUrl}">
                                     <FontIcon FontSize="12" Glyph="&#xE8A7;" />
-                                </Button>
+                                </HyperlinkButton>
                                 <Grid
                                     Height="Auto"
                                     Padding="15,10,15,15"
@@ -190,12 +199,12 @@
                                         <TextBlock
                                             FontFamily="{ThemeResource MinecraftTen}"
                                             Style="{ThemeResource TitleTextBlockStyle}"
-                                            Text="Minecraft Snapshot 23w31a"
+                                            Text="{Binding Title}"
                                             TextWrapping="WrapWholeWords" />
                                         <TextBlock
                                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                             Style="{ThemeResource CaptionTextBlockStyle}"
-                                            Text="02 August 2023 14:57:20 UTC" />
+                                            Text="{Binding Date}" />
                                     </StackPanel>
                                     <Button
                                         Grid.Column="2"

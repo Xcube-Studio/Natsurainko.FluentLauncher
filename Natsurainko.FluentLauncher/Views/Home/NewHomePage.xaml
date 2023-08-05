@@ -135,7 +135,7 @@
             CompactPaneLength="0"
             DisplayMode="Overlay"
             IsPaneOpen="False"
-            OpenPaneLength="325"
+            OpenPaneLength="280"
             PaneBackground="Transparent"
             PanePlacement="Right">
             <SplitView.Pane>
@@ -201,7 +201,7 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                </Grid>            
+                </Grid>
             </SplitView.Pane>
             <Grid x:Name="SplitContentGrid" HorizontalAlignment="Stretch" />
         </SplitView>
@@ -213,7 +213,7 @@
                         <AdaptiveTrigger MinWindowWidth="650" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="buttonFlyout.Placement" Value="LeftEdgeAlignedBottom" />
+                        <Setter Target="splitView.OpenPaneLength" Value="325" />
                     </VisualState.Setters>
                 </VisualState>
 
@@ -222,7 +222,7 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="buttonFlyout.Placement" Value="TopEdgeAlignedRight" />
+                        <Setter Target="splitView.OpenPaneLength" Value="280" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

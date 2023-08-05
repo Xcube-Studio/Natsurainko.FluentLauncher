@@ -96,10 +96,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\Downloads\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Natsurainko.FluentCore (v4)\Natsurainko.FluentCore.csproj" />
     <ProjectReference Include="..\Natsurainko.FluentCore.Manage\Natsurainko.FluentCore.Manage.csproj" />
   </ItemGroup>

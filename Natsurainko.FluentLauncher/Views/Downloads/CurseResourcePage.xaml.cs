@@ -1,9 +1,9 @@
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.Storage;
-using Natsurainko.FluentLauncher.ViewModels.Downloads;
 using Nrk.FluentCore.Classes.Datas.Download;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Views.Downloads;
@@ -22,7 +22,10 @@ public sealed partial class CurseResourcePage : Page
         var resource = e.Parameter as CurseResource;
 
         base.OnNavigatedTo(e);
-        this.DataContext = new CurseResourceViewModel(resource);
+        this.DataContext = resource;
+
+        if (!(resource.ScreenshotUrls?.ToList().Any()).GetValueOrDefault())
+            stackPanel.Children.Remove(ScreenshotsBorder);
 
         Task.Run(() =>
         {
@@ -38,7 +41,7 @@ public sealed partial class CurseResourcePage : Page
         }).ContinueWith(task =>
         {
             if (task.IsFaulted)
-                App.MainWindow.DispatcherQueue.TryEnqueue(() => descriptionBorder.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed);
+                App.MainWindow.DispatcherQueue.TryEnqueue(() => stackPanel.Children.Remove(descriptionBorder));
         });
     }
 

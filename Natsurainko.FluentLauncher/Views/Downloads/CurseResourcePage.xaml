@@ -3,12 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:downloads="using:Natsurainko.FluentLauncher.ViewModels.Downloads"
+    xmlns:data="using:Nrk.FluentCore.Classes.Datas.Download"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
-    d:DataContext="{d:DesignInstance Type=downloads:CurseResourceViewModel}"
+    d:DataContext="{d:DesignInstance Type=data:CurseResource}"
     Background="Transparent"
     mc:Ignorable="d">
     <Page.Resources>
@@ -71,27 +69,30 @@
     <ScrollViewer Padding="30,20,30,0" VerticalScrollBarVisibility="Auto">
         <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
         <Border Margin="0,10">
-            <StackPanel MaxWidth="1000" Spacing="4">
+            <StackPanel
+                x:Name="stackPanel"
+                MaxWidth="1000"
+                Spacing="4">
                 <labs:SettingsCard>
                     <labs:SettingsCard.HeaderIcon>
                         <ImageIcon>
                             <ImageIcon.Source>
-                                <BitmapImage UriSource="{Binding Resource.IconUrl}" />
+                                <BitmapImage UriSource="{Binding IconUrl}" />
                             </ImageIcon.Source>
                         </ImageIcon>
                     </labs:SettingsCard.HeaderIcon>
                     <labs:SettingsCard.Header>
-                        <TextBlock FontWeight="SemiBold" Text="{Binding Resource.Name}" />
+                        <TextBlock FontWeight="SemiBold" Text="{Binding Name}" />
                     </labs:SettingsCard.Header>
 
                     <labs:SettingsCard.Description>
-                        <TextBlock Text="{Binding Resource.Summary}" />
+                        <TextBlock Text="{Binding Summary}" />
                     </labs:SettingsCard.Description>
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <Button Width="125" Style="{ThemeResource AccentButtonStyle}">
                             <TextBlock Text="下载" />
                         </Button>
-                        <HyperlinkButton Width="125">
+                        <HyperlinkButton Width="125" NavigateUri="{Binding WebLink}">
                             <TextBlock Text="在网页中查看" />
                         </HyperlinkButton>
                     </StackPanel>
@@ -130,7 +131,7 @@
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
                                     Text="作者" />
-                                <ItemsRepeater Grid.Row="1" ItemsSource="{Binding Resource.Authors}">
+                                <ItemsRepeater Grid.Row="1" ItemsSource="{Binding Authors}">
                                     <ItemsRepeater.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding}" />
@@ -165,7 +166,7 @@
                                 <TextBlock
                                     Grid.Row="1"
                                     Style="{ThemeResource BaseTextBlockStyle}"
-                                    Text="{Binding Resource.DownloadCount}" />
+                                    Text="{Binding DownloadCount}" />
                             </Grid>
                         </Grid>
                         <Border
@@ -194,13 +195,14 @@
                                 <TextBlock
                                     Grid.Row="1"
                                     Style="{ThemeResource BaseTextBlockStyle}"
-                                    Text="{Binding Resource.DateModified}" />
+                                    Text="{Binding DateModified}" />
                             </Grid>
                         </Grid>
                     </Grid>
                 </Border>
 
                 <Border
+                    x:Name="ScreenshotsBorder"
                     Padding="20,15"
                     Background="{ThemeResource SettingsCardBackground}"
                     BorderBrush="{ThemeResource SettingsCardBorderBrush}"
@@ -222,7 +224,7 @@
                         <FlipView
                             Grid.Row="2"
                             MaxHeight="300"
-                            ItemsSource="{Binding Resource.ScreenshotUrls}">
+                            ItemsSource="{Binding ScreenshotUrls}">
                             <FlipView.ItemTemplate>
                                 <DataTemplate>
                                     <Image>

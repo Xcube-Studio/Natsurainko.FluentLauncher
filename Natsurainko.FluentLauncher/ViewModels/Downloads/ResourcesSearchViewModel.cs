@@ -27,7 +27,7 @@ internal partial class ResourcesSearchViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private string searchBoxInput;
+    private string searchBoxInput = string.Empty;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ModSearchProperty))]

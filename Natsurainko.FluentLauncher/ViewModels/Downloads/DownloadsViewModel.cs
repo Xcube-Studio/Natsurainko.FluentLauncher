@@ -42,7 +42,7 @@ internal partial class DownloadsViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private string searchBoxInput;
+    private string searchBoxInput = string.Empty;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ModSearchProperty))]
@@ -74,6 +74,16 @@ internal partial class DownloadsViewModel : ObservableObject
     [RelayCommand]
     public void NavigateCurseResourcePage(CurseResource curseResource)
         => ShellPage.ContentFrame.Navigate(typeof(CurseResourcePage), curseResource);
+
+    [RelayCommand]
+    public void SearchAllMinecraft()
+        => ShellPage.ContentFrame.Navigate(typeof(ResourcesSearchPage), new ResourceSearchData
+        {
+            SearchInput = string.Empty,
+            ResourceType = 0,
+            Source = SelectedSource,
+            Version = SelectedVersion,
+        });
 
     [RelayCommand]
     public void Search()

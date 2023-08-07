@@ -50,6 +50,7 @@
                     <StackPanel Orientation="Horizontal">
                         <FontIcon FontSize="14" Glyph="&#xE896;" />
                         <TextBlock
+                            x:Uid="Cores_CoresPage_InstallButton"
                             Margin="7.5,0,0,0"
                             Style="{ThemeResource BodyTextBlockStyle}"
                             Text="Install Cores" />

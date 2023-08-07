@@ -10,7 +10,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Cores.Manage"
     xmlns:manage="using:Natsurainko.FluentLauncher.ViewModels.Cores.Manage"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -39,14 +38,14 @@
                     </labs:SettingsCard.Visibility>
 
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="The game core does not support mods" />
+                        <TextBlock x:Uid="Cores_Manage_CoreModsPage_H1" Text="The game core does not support mods" />
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock Text="To install a core with mod loader" />
+                        <TextBlock x:Uid="Cores_Manage_CoreModsPage_D" Text="To install a core with mod loader" />
                     </labs:SettingsCard.Description>
 
                     <Button>
-                        <TextBlock Text="Go" />
+                        <TextBlock x:Uid="Buttons_Go" Text="Go" />
                     </Button>
                 </labs:SettingsCard>
 
@@ -64,19 +63,20 @@
                     <StackPanel Spacing="4">
                         <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE8B7;}">
                             <labs:SettingsCard.Header>
-                                <TextBlock Text="Mods Folder" />
+                                <TextBlock x:Uid="Cores_Manage_CoreModsPage_H2" Text="Mods Folder" />
                             </labs:SettingsCard.Header>
                             <labs:SettingsCard.Description>
                                 <TextBlock Text="{Binding ModsFolder}" />
                             </labs:SettingsCard.Description>
 
                             <Button Command="{Binding OpenFolderCommand}">
-                                <TextBlock Text="Open" />
+                                <TextBlock x:Uid="Buttons_Open" Text="Open" />
                             </Button>
                         </labs:SettingsCard>
                         <Grid>
                             <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE721;}" />
                             <AutoSuggestBox
+                                x:Uid="Cores_Manage_CoreModsPage_SearchBox"
                                 Margin="58.5,0,25,0"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
@@ -94,10 +94,10 @@
                                     </AnimatedIcon>
                                 </AutoSuggestBox.QueryIcon>
                             </AutoSuggestBox>
-
                         </Grid>
 
                         <TextBlock
+                            x:Uid="Cores_Manage_CoreModsPage_T"
                             Margin="1,20,0,4"
                             Style="{ThemeResource BaseTextBlockStyle}"
                             Text="Mods" />

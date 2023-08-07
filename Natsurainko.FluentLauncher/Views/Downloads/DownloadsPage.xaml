@@ -298,7 +298,10 @@
                                 </Grid>
                             </Grid>
                         </Border>
-                        <labs:SettingsCard Grid.Row="2" IsClickEnabled="True">
+                        <labs:SettingsCard
+                            Grid.Row="2"
+                            Command="{Binding SearchAllMinecraftCommand}"
+                            IsClickEnabled="True">
                             <labs:SettingsCard.HeaderIcon>
                                 <AnimatedIcon Width="18" Height="18">
                                     <AnimatedIcon.Source>

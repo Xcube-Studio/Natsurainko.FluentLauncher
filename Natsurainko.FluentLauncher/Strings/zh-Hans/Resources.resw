@@ -42,6 +42,9 @@
     <data name="Buttons_Open.Text" xml:space="preserve">
         <value>打开</value>
     </data>
+    <data name="Buttons_Go.Text" xml:space="preserve">
+        <value>前往</value>
+    </data>
     <data name="Converters__Account" xml:space="preserve">
         <value>账户</value>
     </data>
@@ -105,6 +108,12 @@
     <data name="Activities_ActivitiesNavigationPage_NV_Item4.Content" xml:space="preserve">
         <value>应用</value>
     </data>
+    <data name="Activities_LaunchPage_Tip.Text" xml:space="preserve">
+        <value>无启动任务</value>
+    </data>
+    <data name="Activities_LaunchPage_Hyperlink.Content" xml:space="preserve">
+        <value>进入主页面来创建</value>
+    </data>
     <data name="Cores_CoresPage_SearchBox.PlaceholderText" xml:space="preserve">
         <value>搜索核心</value>
     </data>
@@ -120,6 +129,9 @@
     <data name="Cores_CoresPage__Items2" xml:space="preserve">
         <value>名称;启动日期</value>
     </data>
+    <data name="Cores_CoresPage_InstallButton.Text" xml:space="preserve">
+        <value>安装核心</value>
+    </data>
     <data name="Cores_ManageNavigationPage_NV_Item_1.Content" xml:space="preserve">
         <value>核心设置</value>
     </data>
@@ -134,6 +146,21 @@
     </data>
     <data name="Cores_ManageNavigationPage__BreadcrumbBar_First" xml:space="preserve">
         <value>核心管理</value>
+    </data>
+    <data name="Cores_Manage_CoreModsPage_T.Text" xml:space="preserve">
+        <value>模组</value>
+    </data>
+    <data name="Cores_Manage_CoreModsPage_H1.Text" xml:space="preserve">
+        <value>该游戏核心不支持模组</value>
+    </data>
+    <data name="Cores_Manage_CoreModsPage_H2.Text" xml:space="preserve">
+        <value>模组文件夹</value>
+    </data>
+    <data name="Cores_Manage_CoreModsPage_D.Text" xml:space="preserve">
+        <value>安装一个带有模组加载器的核心</value>
+    </data>
+    <data name="Cores_Manage_CoreModsPage_SearchBox.PlaceholderText" xml:space="preserve">
+        <value>搜索已有模组</value>
     </data>
     <data name="Cores_Manage_CoreSettingsPage_T1.Text" xml:space="preserve">
         <value>启动设置</value>

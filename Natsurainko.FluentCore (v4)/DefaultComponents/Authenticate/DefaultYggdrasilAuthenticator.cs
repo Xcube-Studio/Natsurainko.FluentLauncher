@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Text.Json;
 
-namespace Nrk.FluentCore.DefaultComponets.Authenticate;
+namespace Nrk.FluentCore.DefaultComponents.Authenticate;
 
 public class DefaultYggdrasilAuthenticator : BaseAuthenticator<YggdrasilAccount[]>
 {

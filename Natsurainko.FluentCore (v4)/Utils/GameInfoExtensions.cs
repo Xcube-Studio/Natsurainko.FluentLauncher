@@ -2,7 +2,7 @@
 using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.Classes.Datas.Parse;
 using Nrk.FluentCore.Classes.Enums;
-using Nrk.FluentCore.DefaultComponets.Parse;
+using Nrk.FluentCore.DefaultComponents.Parse;
 using System;
 using System.Collections.Generic;
 using System.IO;

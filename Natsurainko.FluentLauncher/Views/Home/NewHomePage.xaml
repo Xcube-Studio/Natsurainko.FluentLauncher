@@ -150,7 +150,7 @@
                         <RowDefinition Height="1*" />
                     </Grid.RowDefinitions>
                     <Grid.Background>
-                        <AcrylicBrush />
+                        <AcrylicBrush TintColor="{ThemeResource AcrylicTintColor}" />
                     </Grid.Background>
                     <HyperlinkButton Margin="15,0">
                         <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="转到核心管理页面" />

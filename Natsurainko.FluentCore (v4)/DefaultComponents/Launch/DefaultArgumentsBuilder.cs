@@ -3,7 +3,7 @@ using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.Classes.Datas.Parse;
 using Nrk.FluentCore.Classes.Enums;
 using Nrk.FluentCore.Components.Launch;
-using Nrk.FluentCore.DefaultComponets.Parse;
+using Nrk.FluentCore.DefaultComponents.Parse;
 using Nrk.FluentCore.Utils;
 using System.Collections.Generic;
 using System.IO;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-namespace Nrk.FluentCore.DefaultComponets.Launch;
+namespace Nrk.FluentCore.DefaultComponents.Launch;
 
 /// <summary>
 /// 参数构建器的默认实现

@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Data;
+using Nrk.FluentCore.Classes.Datas.Download;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using System;
 using System.Collections.Generic;
@@ -31,16 +32,16 @@ public class GameCoreTagConverter : IValueConverter
             return string.Join(" ", strings);
         }
 
-        /*
-        if (value is CoreManifestItem coreManifestItem)
-            return coreManifestItem.Type switch
+        
+        if (value is VersionManifestItem manifestItem)
+            return manifestItem.Type switch
             {
                 "release" => "Release",
                 "snapshot" => "Snapshot",
                 "old_beta" => "Old Beta",
                 "old_alpha" => "Old Alpha",
                 _ => "Unknown"
-            };*/
+            };
 
         return null;
     }

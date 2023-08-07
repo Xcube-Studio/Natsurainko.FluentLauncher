@@ -1,6 +1,6 @@
 ﻿using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.Classes.Datas.Parse;
-using Nrk.FluentCore.Componets.Launch;
+using Nrk.FluentCore.Components.Launch;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-namespace Nrk.FluentCore.DefaultComponets.Launch;
+namespace Nrk.FluentCore.DefaultComponents.Launch;
 
 /// <summary>
 /// 游戏定位器的默认实现

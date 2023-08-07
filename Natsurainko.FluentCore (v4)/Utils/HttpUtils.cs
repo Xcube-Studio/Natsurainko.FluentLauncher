@@ -4,6 +4,7 @@ using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -25,6 +26,21 @@ public static class HttpUtils
 
     public static readonly HttpClient HttpClient = new();
     public static readonly MemoryPool<byte> MemoryPool = MemoryPool<byte>.Shared;
+
+    public static HttpResponseMessage HttpPost(string url, string content, Dictionary<string, string> headers, string contentType = "application/json")
+    {
+        var requestMessage = new HttpRequestMessage(HttpMethod.Post, url);
+        using var httpContent = new StringContent(content);
+        httpContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+
+        if (headers != null)
+            foreach (var kvp in headers)
+                requestMessage.Headers.Add(kvp.Key, kvp.Value);
+
+        requestMessage.Content = httpContent;
+
+        return HttpClient.Send(requestMessage);
+    }
 
     public static HttpResponseMessage HttpPost(string url, string content, string contentType = "application/json")
     {
@@ -53,6 +69,29 @@ public static class HttpUtils
             GC.Collect();
 
             return HttpGet(redirectUrl, authorization, httpCompletionOption);
+        }
+
+        return responseMessage;
+    }
+
+    public static HttpResponseMessage HttpGet(string url, Dictionary<string, string> headers, HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead)
+    {
+        using var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
+
+        if (headers != null)
+            foreach (var kvp in headers)
+                requestMessage.Headers.Add(kvp.Key, kvp.Value);
+
+        var responseMessage = HttpClient.Send(requestMessage, httpCompletionOption, CancellationToken.None);
+
+        if (responseMessage.StatusCode.Equals(HttpStatusCode.Found))
+        {
+            string redirectUrl = responseMessage.Headers.Location.AbsoluteUri;
+
+            responseMessage.Dispose();
+            GC.Collect();
+
+            return HttpGet(redirectUrl, headers, httpCompletionOption);
         }
 
         return responseMessage;

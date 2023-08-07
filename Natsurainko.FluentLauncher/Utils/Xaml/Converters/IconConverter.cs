@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Imaging;
+using Nrk.FluentCore.Classes.Datas.Download;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using System;
 
@@ -19,9 +20,9 @@ public class IconConverter : IValueConverter
                 _ => "grass_block_side"
             }), UriKind.RelativeOrAbsolute));
 
-        /*
-        if (value is CoreManifestItem coreManifestItem)
-            return new BitmapImage(new Uri(string.Format("ms-appx:///Assets/Icons/{0}.png", coreManifestItem.Type switch
+        
+        if (value is VersionManifestItem manifestItem)
+            return new BitmapImage(new Uri(string.Format("ms-appx:///Assets/Icons/{0}.png", manifestItem.Type switch
             {
                 "release" => "grass_block_side",
                 "snapshot" => "crafting_table_front",
@@ -30,6 +31,7 @@ public class IconConverter : IValueConverter
                 _ => "grass_block_side"
             }), UriKind.RelativeOrAbsolute));
 
+        /*
         if (value is ModLoaderType modLoaderType)
             return new BitmapImage(new Uri($"ms-appx:///Assets/Icons/{modLoaderType}Icon.png", UriKind.RelativeOrAbsolute));*/
 

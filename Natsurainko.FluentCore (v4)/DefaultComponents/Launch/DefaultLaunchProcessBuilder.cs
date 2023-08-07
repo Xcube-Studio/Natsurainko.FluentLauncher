@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Nrk.FluentCore.DefaultComponets.Launch;
+namespace Nrk.FluentCore.DefaultComponents.Launch;
 
 public class DefaultLaunchProcessBuilder : BaseLaunchProcessBuilder<DefaultLaunchProcess, DefaultLaunchProcessBuilder>
 {

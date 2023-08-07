@@ -3,7 +3,7 @@ using Nrk.FluentCore.Interfaces;
 using System;
 using System.Collections.Generic;
 
-namespace Nrk.FluentCore.Componets.Launch;
+namespace Nrk.FluentCore.Components.Launch;
 
 /// <summary>
 /// 游戏定位器的抽象定义

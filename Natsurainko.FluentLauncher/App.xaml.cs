@@ -36,7 +36,7 @@ public partial class App : Application
         App.GetService<AppearanceService>().ApplyDisplayTheme();
     }
 
-    protected override async void OnLaunched(LaunchActivatedEventArgs args)
+    protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
         App.GetService<MessengerService>().SubscribeEvents();
 

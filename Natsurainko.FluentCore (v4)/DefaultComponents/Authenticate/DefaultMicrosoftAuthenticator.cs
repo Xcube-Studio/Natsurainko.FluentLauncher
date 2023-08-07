@@ -14,7 +14,7 @@ using AuthException = Nrk.FluentCore.Classes.Exceptions.MicrosoftAuthenticateExc
 using AuthExceptionType = Nrk.FluentCore.Classes.Enums.MicrosoftAuthenticateExceptionType;
 using AuthStep = Nrk.FluentCore.Classes.Enums.MicrosoftAuthenticateStep;
 
-namespace Nrk.FluentCore.DefaultComponets.Authenticate;
+namespace Nrk.FluentCore.DefaultComponents.Authenticate;
 
 public class DefaultMicrosoftAuthenticator : BaseAuthenticator<MicrosoftAccount>
 {

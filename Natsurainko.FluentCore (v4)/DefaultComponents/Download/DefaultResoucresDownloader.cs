@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks.Dataflow;
 
-namespace Nrk.FluentCore.DefaultComponets.Download;
+namespace Nrk.FluentCore.DefaultComponents.Download;
 
 public class DefaultResourcesDownloader : BaseResourcesDownloader
 {

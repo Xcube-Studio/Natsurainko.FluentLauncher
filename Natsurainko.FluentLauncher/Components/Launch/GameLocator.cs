@@ -1,6 +1,6 @@
 ﻿using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Nrk.FluentCore.Classes.Datas.Parse;
-using Nrk.FluentCore.Componets.Launch;
+using Nrk.FluentCore.Components.Launch;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

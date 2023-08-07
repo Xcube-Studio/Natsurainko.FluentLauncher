@@ -47,6 +47,7 @@
     <None Remove="Assets\Libs\authlib-injector-1.2.3.jar" />
     <None Remove="Assets\MinecraftTen.ttf" />
     <None Remove="Dictionaries\CoresLayoutTemplateDictionary.xaml" />
+    <None Remove="Dictionaries\ResourceItemTemplateDictionary.xaml" />
     <None Remove="Views\AuthenticationWizard\BrowserMicrosoftAuthPage.xaml" />
     <None Remove="Views\AuthenticationWizard\ChooseAccountTypePage.xaml" />
     <None Remove="Views\AuthenticationWizard\ChooseMicrosoftAuthMethodPage.xaml" />
@@ -62,7 +63,9 @@
     <None Remove="Views\Cores\ManageNavigationPage.xaml" />
     <None Remove="Views\Cores\Manage\CoreModsPage.xaml" />
     <None Remove="Views\Cores\Manage\CoreSettingsPage.xaml" />
+    <None Remove="Views\Downloads\CurseResourcePage.xaml" />
     <None Remove="Views\Downloads\DownloadsPage.xaml" />
+    <None Remove="Views\Downloads\ResourcesSearchPage.xaml" />
     <None Remove="Views\Home\NewHomePage.xaml" />
     <None Remove="Views\NotifyStyleDictionary.xaml" />
   </ItemGroup>
@@ -98,6 +101,24 @@
   <ItemGroup>
     <ProjectReference Include="..\Natsurainko.FluentCore (v4)\Natsurainko.FluentCore.csproj" />
     <ProjectReference Include="..\Natsurainko.FluentCore.Manage\Natsurainko.FluentCore.Manage.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Dictionaries\ResourceItemTemplateDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Downloads\ResourcesSearchPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Downloads\CurseResourcePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>

@@ -7,7 +7,7 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-namespace Nrk.FluentCore.DefaultComponets.Parse;
+namespace Nrk.FluentCore.DefaultComponents.Parse;
 
 /// <summary>
 /// 依赖材质解析器的默认实现

@@ -1,0 +1,106 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI">
+
+    <DataTemplate x:Key="CurseResourceTemplate">
+        <labs:SettingsCard
+            Padding="20,0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            BorderThickness="1"
+            CommandParameter="{Binding}"
+            IsClickEnabled="True">
+            <i:Interaction.Behaviors>
+                <behaviors:AncestorBindingBehavior
+                    AncestorType="ScrollViewer"
+                    Binding="{Binding DataContext.NavigateCurseResourcePageCommand}"
+                    TargetPropertyName="Command" />
+            </i:Interaction.Behaviors>
+            <labs:SettingsCard.Header>
+                <Grid Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        Width="36"
+                        Height="36"
+                        VerticalAlignment="Center"
+                        BorderBrush="{ThemeResource IconBorder}"
+                        BorderThickness="2"
+                        CornerRadius="4">
+                        <Border.Background>
+                            <ImageBrush>
+                                <ImageBrush.ImageSource>
+                                    <BitmapImage UriSource="{Binding IconUrl}" />
+                                </ImageBrush.ImageSource>
+                            </ImageBrush>
+                        </Border.Background>
+                    </Border>
+                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                        <TextBlock
+                            Style="{ThemeResource BaseTextBlockStyle}"
+                            Text="{Binding Name}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
+                        <TextBlock
+                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                            Style="{ThemeResource CaptionTextBlockStyle}"
+                            Text="{Binding Summary}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
+                    </StackPanel>
+                </Grid>
+            </labs:SettingsCard.Header>
+        </labs:SettingsCard>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ManifestItemTemplate">
+        <labs:SettingsCard
+            Padding="20,0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            BorderThickness="1"
+            CommandParameter="{Binding}"
+            IsClickEnabled="True">
+            <labs:SettingsCard.Header>
+                <Grid Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        Width="36"
+                        Height="36"
+                        VerticalAlignment="Center"
+                        BorderBrush="{ThemeResource IconBorder}"
+                        BorderThickness="2"
+                        CornerRadius="4">
+                        <Border.Background>
+                            <ImageBrush ImageSource="{Binding Converter={ThemeResource IconConverter}}" />
+                        </Border.Background>
+                    </Border>
+                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                        <TextBlock
+                            Style="{ThemeResource BaseTextBlockStyle}"
+                            Text="{Binding Id}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
+                        <TextBlock
+                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                            Style="{ThemeResource CaptionTextBlockStyle}"
+                            Text="{Binding Converter={ThemeResource GameCoreTagConverter}}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
+                    </StackPanel>
+                </Grid>
+            </labs:SettingsCard.Header>
+        </labs:SettingsCard>
+    </DataTemplate>
+
+</ResourceDictionary>

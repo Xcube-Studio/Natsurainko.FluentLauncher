@@ -4,7 +4,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Nrk.FluentCore.DefaultComponets.Authenticate;
+namespace Nrk.FluentCore.DefaultComponents.Authenticate;
 
 public class DefaultOfflineAuthenticator : BaseAuthenticator<OfflineAccount>
 {

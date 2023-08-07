@@ -1,0 +1,265 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Downloads.CurseResourcePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:downloads="using:Natsurainko.FluentLauncher.ViewModels.Downloads"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
+    d:DataContext="{d:DesignInstance Type=downloads:CurseResourceViewModel}"
+    Background="Transparent"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Default">
+                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="CardBackgroundFillColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="ControlFillColorSecondaryBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="ControlFillColorDisabledBrush" />
+
+                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="TextFillColorPrimaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+
+                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="ControlElevationBorderBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="Light">
+                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="CardBackgroundFillColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="ControlFillColorSecondaryBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="ControlFillColorDisabledBrush" />
+
+                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="TextFillColorPrimaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+
+                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="ControlElevationBorderBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="HighContrast">
+                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="SystemColorButtonFaceColorBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="SystemColorHighlightTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="SystemControlBackgroundBaseLowBrush" />
+
+                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="SystemColorButtonTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="SystemColorHighlightColorBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="SystemControlDisabledBaseMediumLowBrush" />
+
+                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="SystemColorButtonTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="SystemColorHighlightColorBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="SystemControlDisabledTransparentBrush" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <ScrollViewer Padding="30,20,30,0" VerticalScrollBarVisibility="Auto">
+        <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
+        <Border Margin="0,10">
+            <StackPanel MaxWidth="1000" Spacing="4">
+                <labs:SettingsCard>
+                    <labs:SettingsCard.HeaderIcon>
+                        <ImageIcon>
+                            <ImageIcon.Source>
+                                <BitmapImage UriSource="{Binding Resource.IconUrl}" />
+                            </ImageIcon.Source>
+                        </ImageIcon>
+                    </labs:SettingsCard.HeaderIcon>
+                    <labs:SettingsCard.Header>
+                        <TextBlock FontWeight="SemiBold" Text="{Binding Resource.Name}" />
+                    </labs:SettingsCard.Header>
+
+                    <labs:SettingsCard.Description>
+                        <TextBlock Text="{Binding Resource.Summary}" />
+                    </labs:SettingsCard.Description>
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Button Width="125" Style="{ThemeResource AccentButtonStyle}">
+                            <TextBlock Text="下载" />
+                        </Button>
+                        <HyperlinkButton Width="125">
+                            <TextBlock Text="在网页中查看" />
+                        </HyperlinkButton>
+                    </StackPanel>
+                </labs:SettingsCard>
+
+                <Border
+                    Padding="20,15"
+                    Background="{ThemeResource SettingsCardBackground}"
+                    BorderBrush="{ThemeResource SettingsCardBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{ThemeResource ControlCornerRadius}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <FontIcon
+                                Margin="10,0"
+                                VerticalAlignment="Center"
+                                Glyph="&#xE716;" />
+                            <Grid Grid.Column="1" VerticalAlignment="Center">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                    Text="作者" />
+                                <ItemsRepeater Grid.Row="1" ItemsSource="{Binding Resource.Authors}">
+                                    <ItemsRepeater.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding}" />
+                                        </DataTemplate>
+                                    </ItemsRepeater.ItemTemplate>
+                                </ItemsRepeater>
+                            </Grid>
+                        </Grid>
+                        <Border
+                            Grid.Column="1"
+                            Width="1"
+                            VerticalAlignment="Stretch"
+                            Background="{ThemeResource SettingsCardBorderBrush}" />
+                        <Grid Grid.Column="2" HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <FontIcon
+                                Margin="10,0"
+                                VerticalAlignment="Center"
+                                Glyph="&#xE896;" />
+                            <Grid Grid.Column="1" VerticalAlignment="Center">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                    Text="下载数" />
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Style="{ThemeResource BaseTextBlockStyle}"
+                                    Text="{Binding Resource.DownloadCount}" />
+                            </Grid>
+                        </Grid>
+                        <Border
+                            Grid.Column="3"
+                            Width="1"
+                            VerticalAlignment="Stretch"
+                            Background="{ThemeResource SettingsCardBorderBrush}" />
+                        <Grid Grid.Column="4" HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <FontIcon
+                                Margin="10,0"
+                                VerticalAlignment="Center"
+                                Glyph="&#xECC5;" />
+                            <Grid Grid.Column="1" VerticalAlignment="Center">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                    Text="更新日期" />
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Style="{ThemeResource BaseTextBlockStyle}"
+                                    Text="{Binding Resource.DateModified}" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Border
+                    Padding="20,15"
+                    Background="{ThemeResource SettingsCardBackground}"
+                    BorderBrush="{ThemeResource SettingsCardBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{ThemeResource ControlCornerRadius}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="屏幕截图" />
+                        <Border
+                            Grid.Row="1"
+                            Height="1"
+                            Margin="-20,10"
+                            HorizontalAlignment="Stretch"
+                            Background="{ThemeResource SettingsCardBorderBrush}" />
+                        <FlipView
+                            Grid.Row="2"
+                            MaxHeight="300"
+                            ItemsSource="{Binding Resource.ScreenshotUrls}">
+                            <FlipView.ItemTemplate>
+                                <DataTemplate>
+                                    <Image>
+                                        <Image.Source>
+                                            <BitmapImage UriSource="{Binding}" />
+                                        </Image.Source>
+                                    </Image>
+                                </DataTemplate>
+                            </FlipView.ItemTemplate>
+                        </FlipView>
+                    </Grid>
+                </Border>
+
+                <Border
+                    x:Name="descriptionBorder"
+                    Padding="20,15"
+                    Background="{ThemeResource SettingsCardBackground}"
+                    BorderBrush="{ThemeResource SettingsCardBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{ThemeResource ControlCornerRadius}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="详细描述" />
+                        <Border
+                            Grid.Row="1"
+                            Height="1"
+                            Margin="-20,10"
+                            HorizontalAlignment="Stretch"
+                            Background="{ThemeResource SettingsCardBorderBrush}" />
+                        <WebView2 x:Name="webView2" Grid.Row="2" />
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </Border>
+    </ScrollViewer>
+</Page>

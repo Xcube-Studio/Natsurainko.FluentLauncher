@@ -1,5 +1,5 @@
 ﻿using Nrk.FluentCore.Classes.Datas;
-using Nrk.FluentCore.Componets.Manage;
+using Nrk.FluentCore.Components.Manage;
 using Nrk.FluentCore.DefaultComponents.Parse;
 using System;
 using System.Collections.Generic;

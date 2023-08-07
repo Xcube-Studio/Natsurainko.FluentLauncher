@@ -1,5 +1,5 @@
 ﻿using Nrk.FluentCore.Classes.Datas.Launch;
-using Nrk.FluentCore.DefaultComponets.Launch;
+using Nrk.FluentCore.DefaultComponents.Launch;
 using Nrk.FluentCore.Interfaces.ServiceInterfaces;
 using System;
 using System.Collections.ObjectModel;

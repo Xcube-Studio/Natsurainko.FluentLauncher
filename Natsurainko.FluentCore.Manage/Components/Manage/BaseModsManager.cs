@@ -1,7 +1,7 @@
 ﻿using Nrk.FluentCore.Classes.Datas;
 using System.Collections.Generic;
 
-namespace Nrk.FluentCore.Componets.Manage;
+namespace Nrk.FluentCore.Components.Manage;
 
 public abstract class BaseModsManager
 {

@@ -1,7 +1,7 @@
 ﻿using Natsurainko.FluentLauncher.Services.Settings;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.Classes.Datas.Parse;
-using Nrk.FluentCore.DefaultComponets.Download;
+using Nrk.FluentCore.DefaultComponents.Download;
 using Nrk.FluentCore.Services.Download;
 using Nrk.FluentCore.Utils;
 using System.Collections.Generic;

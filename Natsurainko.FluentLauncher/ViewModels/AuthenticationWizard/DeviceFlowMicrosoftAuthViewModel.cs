@@ -5,7 +5,7 @@ using Natsurainko.FluentLauncher.Utils.Xaml;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
 using Nrk.FluentCore.Classes.Datas.Authenticate;
-using Nrk.FluentCore.DefaultComponets.Authenticate;
+using Nrk.FluentCore.DefaultComponents.Authenticate;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;

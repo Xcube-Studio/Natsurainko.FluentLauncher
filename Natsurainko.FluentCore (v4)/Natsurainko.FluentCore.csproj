@@ -9,8 +9,4 @@
 	<LangVersion>11.0</LangVersion>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Classes\Datas\Manage\" />
-  </ItemGroup>
-
 </Project>

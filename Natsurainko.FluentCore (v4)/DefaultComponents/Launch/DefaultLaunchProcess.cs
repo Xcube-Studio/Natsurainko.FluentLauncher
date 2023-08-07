@@ -1,7 +1,7 @@
 ﻿using Nrk.FluentCore.Components.Launch;
 using System;
 
-namespace Nrk.FluentCore.DefaultComponets.Launch;
+namespace Nrk.FluentCore.DefaultComponents.Launch;
 
 public class DefaultLaunchProcess : BaseLaunchProcess
 {

@@ -6,8 +6,8 @@
     xmlns:common="using:Natsurainko.FluentLauncher.ViewModels.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Common"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Uid="Dialogs_SwitchAccountDialog"
     Title="Switch Account"
     d:DataContext="{d:DesignInstance Type=common:SwitchAccountDialogViewModel}"
     DefaultButton="Primary"
@@ -85,6 +85,7 @@
                 <StackPanel Orientation="Horizontal">
                     <FontIcon FontSize="16" Glyph="&#xe74d;" />
                     <TextBlock
+                        x:Uid="Dialogs_SwitchAccountDialog_B"
                         Margin="5,0,0,0"
                         Style="{ThemeResource BaseTextBlockStyle}"
                         Text="Remove Selected Account" />

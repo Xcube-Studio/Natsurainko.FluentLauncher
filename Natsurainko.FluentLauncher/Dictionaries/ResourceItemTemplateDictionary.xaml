@@ -33,13 +33,13 @@
                         BorderBrush="{ThemeResource IconBorder}"
                         BorderThickness="2"
                         CornerRadius="4">
-                        <Border.Background>
-                            <ImageBrush>
-                                <ImageBrush.ImageSource>
+                        <Border CornerRadius="4">
+                            <Image>
+                                <Image.Source>
                                     <BitmapImage UriSource="{Binding IconUrl}" />
-                                </ImageBrush.ImageSource>
-                            </ImageBrush>
-                        </Border.Background>
+                                </Image.Source>
+                            </Image>
+                        </Border>
                     </Border>
                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
                         <TextBlock

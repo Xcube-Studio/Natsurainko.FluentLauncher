@@ -45,6 +45,9 @@
     <data name="Buttons_Go.Text" xml:space="preserve">
         <value>Go</value>
     </data>
+    <data name="Buttons_Cancel.Text" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
     <data name="Converters__Account" xml:space="preserve">
         <value>Account</value>
     </data>
@@ -56,6 +59,96 @@
     </data>
     <data name="Converters__Yggdrasil" xml:space="preserve">
         <value>Yggdrasil</value>
+    </data>
+    <data name="Converters__Release" xml:space="preserve">
+        <value>Release</value>
+    </data>
+    <data name="Converters__Snapshot" xml:space="preserve">
+        <value>Snapshot</value>
+    </data>
+    <data name="Converters__Old Beta" xml:space="preserve">
+        <value>Old Beta</value>
+    </data>
+    <data name="Converters__Old Alpha" xml:space="preserve">
+        <value>Old Alpha</value>
+    </data>
+    <data name="Converters__Unknown" xml:space="preserve">
+        <value>Unknown</value>
+    </data>
+    <data name="Converters__Inherited From" xml:space="preserve">
+        <value>Inherited From</value>
+    </data>
+    <data name="Converters__LaunchState_Created" xml:space="preserve">
+        <value>The launch task is created</value>
+    </data>
+    <data name="Converters__LaunchState_Inspecting" xml:space="preserve">
+        <value>Checking required items before launching</value>
+    </data>
+    <data name="Converters__LaunchState_Authenticating" xml:space="preserve">
+        <value>Verifying and refreshing account token</value>
+    </data>
+    <data name="Converters__LaunchState_CompletingResources" xml:space="preserve">
+        <value>Completing the game dependent resources</value>
+    </data>
+    <data name="Converters__LaunchState_BuildingArguments" xml:space="preserve">
+        <value>Generating startup parameters</value>
+    </data>
+    <data name="Converters__LaunchState_LaunchingProcess" xml:space="preserve">
+        <value>Launching the game process</value>
+    </data>
+    <data name="Converters__LaunchState_GameRunning" xml:space="preserve">
+        <value>The game is running</value>
+    </data>
+    <data name="Converters__LaunchState_GameExited" xml:space="preserve">
+        <value>The game has exited normally</value>
+    </data>
+    <data name="Converters__LaunchState_Faulted" xml:space="preserve">
+        <value>Launch failed</value>
+    </data>
+    <data name="Converters__LaunchState_Killed" xml:space="preserve">
+        <value>The game was forced to quit</value>
+    </data>
+    <data name="Converters__LaunchState_GameCrashed" xml:space="preserve">
+        <value>The game crashed</value>
+    </data>
+    <data name="Dialogs_JavaMirrorsDialog.Title" xml:space="preserve">
+        <value>Third-party Java Download Sources</value>
+    </data>
+    <data name="Dialogs_JavaMirrorsDialog.PrimaryButtonText" xml:space="preserve">
+        <value>Confirm</value>
+    </data>
+    <data name="Dialogs_CopyrightLicenseDialog.Title" xml:space="preserve">
+        <value>Copyright &amp; License Information</value>
+    </data>
+    <data name="Dialogs_CopyrightLicenseDialog.PrimaryButtonText" xml:space="preserve">
+        <value>Confirm</value>
+    </data>
+    <data name="Dialogs_AddVmArgumentDialog_T.Text" xml:space="preserve">
+        <value>Add a single JVM argument</value>
+    </data>
+    <data name="Dialogs_ExceptionDialog.Title" xml:space="preserve">
+        <value>The program has encountered an error</value>
+    </data>
+    <data name="Dialogs_ExceptionDialog.PrimaryButtonText" xml:space="preserve">
+        <value>Copy and go to GitHub</value>
+    </data>
+    <data name="Dialogs_ExceptionDialog.SecondaryButtonText" xml:space="preserve">
+        <value>Close</value>
+    </data>
+    <data name="Dialogs_SwitchAccountDialog.Title" xml:space="preserve">
+        <value>Switch Account</value>
+    </data>
+    <data name="Dialogs_SwitchAccountDialog.PrimaryButtonText" xml:space="preserve">
+        <value>Confirm</value>
+    </data>
+    <data name="Dialogs_SwitchAccountDialog.SecondaryButtonText" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
+    <data name="Dialogs_SwitchAccountDialog_B.Text" xml:space="preserve">
+        <value>Remove Selected Account</value>
+    </data>
+    <data name="Dialogs_AuthenticationWizardDialog_T.Text" xml:space="preserve">
+        <value>Account Add Wizard:</value>
     </data>
     <data name="ExceptionPage_Title.Text" xml:space="preserve">
         <value>An error has occurred when starting Fluent Launcher</value>
@@ -113,6 +206,126 @@
     </data>
     <data name="Activities_LaunchPage_Hyperlink.Content" xml:space="preserve">
         <value>Go to HomePage to create</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_T.Text" xml:space="preserve">
+        <value>Launch Task</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_TD.Text" xml:space="preserve">
+        <value>State</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H1.Text" xml:space="preserve">
+        <value>Progress: </value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H2.Text" xml:space="preserve">
+        <value>The game has been launched successfully</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H3.Text" xml:space="preserve">
+        <value>Game progress management</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H4.Text" xml:space="preserve">
+        <value>Crash analysis report</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H5.Text" xml:space="preserve">
+        <value>Reason:</value>
+    </data>
+    <data name="Activities_LaunchPage_B1.Text" xml:space="preserve">
+        <value>Open Log</value>
+    </data>
+    <data name="Activities_LaunchPage_B2.Text" xml:space="preserve">
+        <value>Kill Process</value>
+    </data>
+    <data name="Activities_LaunchPage_B3.Text" xml:space="preserve">
+        <value>Open Report</value>
+    </data>
+    <data name="Activities_LaunchPage_B4.Text" xml:space="preserve">
+        <value>Show Details</value>
+    </data>
+    <data name="AuthenticationWizard_BrowserMicrosoftAuthPage_Page.Tag" xml:space="preserve">
+        <value>Built-in Browser Microsoft Authenticate (2/3)</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_Page.Tag" xml:space="preserve">
+        <value>Choose Account Type (1/3)</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_H1.Text" xml:space="preserve">
+        <value>Microsoft Account</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_H2.Text" xml:space="preserve">
+        <value>Yggdrasil Account</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_H3.Text" xml:space="preserve">
+        <value>Offline Account</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_D1.Text" xml:space="preserve">
+        <value>Genuine account to play online servers</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_D2.Text" xml:space="preserve">
+        <value>Can enter the third-party Yggdrasil verification server</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_D3.Text" xml:space="preserve">
+        <value>Can only be played locally and offline</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_NoMc.Text" xml:space="preserve">
+        <value>Don't have Minecraft?</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_Page.Tag" xml:space="preserve">
+        <value>Choose Microsoft Authenticate Method (1/3)</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_H1.Text" xml:space="preserve">
+        <value>Authenticate using the built-in browser</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_H2.Text" xml:space="preserve">
+        <value>Authenticate with device flow code</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_D1.Text" xml:space="preserve">
+        <value>The built-in browser can be slow on poor connections</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_D2.Text" xml:space="preserve">
+        <value>Need to enter verification code on external browser</value>
+    </data>
+    <data name="AuthenticationWizard_ConfirmProfilePage_Page.Tag" xml:space="preserve">
+        <value>Confirm Minecraft Profile (3/3)</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_Page.Tag" xml:space="preserve">
+        <value>Device Flow Microsoft Authenticate (2/3)</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_L.Text" xml:space="preserve">
+        <value>Device Code:</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_P1.Text" xml:space="preserve">
+        <value>Please complete the next verification steps in your browser, then return to the launcher to continue verification</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_P2.Text" xml:space="preserve">
+        <value>Device flow code is valid for 15 minutes</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_B1.Text" xml:space="preserve">
+        <value>Copy Code</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_B2.Text" xml:space="preserve">
+        <value>Refresh Code</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_Link.Text" xml:space="preserve">
+        <value>Manual Access https://login.live.com/oauth20_remoteconnect.srf</value>
+    </data>
+    <data name="AuthenticationWizard_EnterOfflineProfilePage_Page.Tag" xml:space="preserve">
+        <value>Enter Offline Account Profile (2/3)</value>
+    </data>
+    <data name="AuthenticationWizard_EnterOfflineProfilePage_TB1.PlaceholderText" xml:space="preserve">
+        <value>Name:</value>
+    </data>
+    <data name="AuthenticationWizard_EnterOfflineProfilePage_TB2.PlaceholderText" xml:space="preserve">
+        <value>UUID: (Optional)</value>
+    </data>
+    <data name="AuthenticationWizard_EnterYggdrasilProfilePage_Page.Tag" xml:space="preserve">
+        <value>Enter Yggdrasil Account Profile (2/3)</value>
+    </data>
+    <data name="AuthenticationWizard_EnterYggdrasilProfilePage_TB1.PlaceholderText" xml:space="preserve">
+        <value>Yggdrasil Server Url:</value>
+    </data>
+    <data name="AuthenticationWizard_EnterYggdrasilProfilePage_TB2.PlaceholderText" xml:space="preserve">
+        <value>Email:</value>
+    </data>
+    <data name="AuthenticationWizard_EnterYggdrasilProfilePage_TB3.PlaceholderText" xml:space="preserve">
+        <value>Password:</value>
     </data>
     <data name="Cores_CoresPage_SearchBox.PlaceholderText" xml:space="preserve">
         <value>Search Core</value>
@@ -224,6 +437,15 @@
     </data>
     <data name="Home_HomePage__NoCore" xml:space="preserve">
         <value>Core Not Selected</value>
+    </data>
+    <data name="Home_HomePage_D1.Text" xml:space="preserve">
+        <value>Click to switch</value>
+    </data>
+    <data name="Home_HomePage_D2.Text" xml:space="preserve">
+        <value>the currently selected core</value>
+    </data>
+    <data name="Home_HomePage_Hyperlink.Text" xml:space="preserve">
+        <value>Go to the CoresPage</value>
     </data>
     <data name="OOBE_AccountPage_T.Text" xml:space="preserve">
         <value>Account Settings</value>

@@ -33,9 +33,9 @@
                         BorderBrush="{ThemeResource IconBorder}"
                         BorderThickness="2"
                         CornerRadius="4">
-                        <Border.Background>
-                            <ImageBrush ImageSource="{Binding Converter={ThemeResource IconConverter}}" />
-                        </Border.Background>
+                        <Border CornerRadius="4">
+                            <Image Source="{Binding Converter={ThemeResource IconConverter}}" />
+                        </Border>
                     </Border>
                     <Grid Grid.Column="2" VerticalAlignment="Center">
                         <Grid.RowDefinitions>
@@ -90,9 +90,9 @@
                         BorderBrush="{ThemeResource IconBorder}"
                         BorderThickness="2"
                         CornerRadius="4">
-                        <Border.Background>
-                            <ImageBrush ImageSource="{Binding Converter={ThemeResource IconConverter}}" />
-                        </Border.Background>
+                        <Border CornerRadius="4">
+                            <Image Source="{Binding Converter={ThemeResource IconConverter}}" />
+                        </Border>
                     </Border>
                     <Grid
                         Grid.Row="1"
@@ -150,9 +150,9 @@
                         BorderBrush="{ThemeResource IconBorder}"
                         BorderThickness="2"
                         CornerRadius="4">
-                        <Border.Background>
-                            <ImageBrush ImageSource="{Binding Converter={ThemeResource IconConverter}}" />
-                        </Border.Background>
+                        <Border CornerRadius="4">
+                            <Image Source="{Binding Converter={ThemeResource IconConverter}}" />
+                        </Border>
                     </Border>
                     <Grid Grid.Column="2" VerticalAlignment="Center">
                         <Grid.RowDefinitions>

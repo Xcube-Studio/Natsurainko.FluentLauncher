@@ -45,6 +45,9 @@
     <data name="Buttons_Go.Text" xml:space="preserve">
         <value>前往</value>
     </data>
+    <data name="Buttons_Cancel.Text" xml:space="preserve">
+        <value>取消</value>
+    </data>
     <data name="Converters__Account" xml:space="preserve">
         <value>账户</value>
     </data>
@@ -56,6 +59,96 @@
     </data>
     <data name="Converters__Yggdrasil" xml:space="preserve">
         <value>外置</value>
+    </data>
+    <data name="Converters__Release" xml:space="preserve">
+        <value>正式版</value>
+    </data>
+    <data name="Converters__Snapshot" xml:space="preserve">
+        <value>快照版</value>
+    </data>
+    <data name="Converters__Old Beta" xml:space="preserve">
+        <value>远古版 β</value>
+    </data>
+    <data name="Converters__Old Alpha" xml:space="preserve">
+        <value>远古版 α</value>
+    </data>
+    <data name="Converters__Unknown" xml:space="preserve">
+        <value>未知版本</value>
+    </data>
+    <data name="Converters__Inherited From" xml:space="preserve">
+        <value>继承自</value>
+    </data>
+    <data name="Converters__LaunchState_Created" xml:space="preserve">
+        <value>启动任务已创建</value>
+    </data>
+    <data name="Converters__LaunchState_Inspecting" xml:space="preserve">
+        <value>启动前检查所需项目</value>
+    </data>
+    <data name="Converters__LaunchState_Authenticating" xml:space="preserve">
+        <value>验证并刷新帐户令牌</value>
+    </data>
+    <data name="Converters__LaunchState_CompletingResources" xml:space="preserve">
+        <value>补全游戏依赖资源</value>
+    </data>
+    <data name="Converters__LaunchState_BuildingArguments" xml:space="preserve">
+        <value>生成启动参数</value>
+    </data>
+    <data name="Converters__LaunchState_LaunchingProcess" xml:space="preserve">
+        <value>启动游戏进程</value>
+    </data>
+    <data name="Converters__LaunchState_GameRunning" xml:space="preserve">
+        <value>游戏正在运行</value>
+    </data>
+    <data name="Converters__LaunchState_GameExited" xml:space="preserve">
+        <value>游戏已正常退出</value>
+    </data>
+    <data name="Converters__LaunchState_Faulted" xml:space="preserve">
+        <value>启动失败</value>
+    </data>
+    <data name="Converters__LaunchState_Killed" xml:space="preserve">
+        <value>进程强制退出</value>
+    </data>
+    <data name="Converters__LaunchState_GameCrashed" xml:space="preserve">
+        <value>游戏崩溃</value>
+    </data>
+    <data name="Dialogs_JavaMirrorsDialog.Title" xml:space="preserve">
+        <value>第三方 Java 下载源</value>
+    </data>
+    <data name="Dialogs_JavaMirrorsDialog.PrimaryButtonText" xml:space="preserve">
+        <value>确认</value>
+    </data>
+    <data name="Dialogs_CopyrightLicenseDialog.Title" xml:space="preserve">
+        <value>版权及开源协议信息</value>
+    </data>
+    <data name="Dialogs_CopyrightLicenseDialog.PrimaryButtonText" xml:space="preserve">
+        <value>确认</value>
+    </data>
+    <data name="Dialogs_AddVmArgumentDialog_T.Text" xml:space="preserve">
+        <value>添加单个 JVM 参数</value>
+    </data>
+    <data name="Dialogs_ExceptionDialog.Title" xml:space="preserve">
+        <value>应用程序未捕获的异常</value>
+    </data>
+    <data name="Dialogs_ExceptionDialog.PrimaryButtonText" xml:space="preserve">
+        <value>复制并转到 GitHub</value>
+    </data>
+    <data name="Dialogs_ExceptionDialog.SecondaryButtonText" xml:space="preserve">
+        <value>关闭</value>
+    </data>
+    <data name="Dialogs_SwitchAccountDialog.Title" xml:space="preserve">
+        <value>切换账户</value>
+    </data>
+    <data name="Dialogs_SwitchAccountDialog.PrimaryButtonText" xml:space="preserve">
+        <value>确认</value>
+    </data>
+    <data name="Dialogs_SwitchAccountDialog.SecondaryButtonText" xml:space="preserve">
+        <value>取消</value>
+    </data>
+    <data name="Dialogs_SwitchAccountDialog_B.Text" xml:space="preserve">
+        <value>删除选中的帐户</value>
+    </data>
+    <data name="Dialogs_AuthenticationWizardDialog_T.Text" xml:space="preserve">
+        <value>帐户添加向导：</value>
     </data>
     <data name="ExceptionPage_Title.Text" xml:space="preserve">
         <value>启动 Fluent Launcher 时出现错误</value>
@@ -112,7 +205,127 @@
         <value>无启动任务</value>
     </data>
     <data name="Activities_LaunchPage_Hyperlink.Content" xml:space="preserve">
-        <value>进入主页面来创建</value>
+        <value>转到主页面来创建</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_T.Text" xml:space="preserve">
+        <value>启动任务</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_TD.Text" xml:space="preserve">
+        <value>状态</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H1.Text" xml:space="preserve">
+        <value>进度：</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H2.Text" xml:space="preserve">
+        <value>游戏已成功启动</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H3.Text" xml:space="preserve">
+        <value>游戏进程管理</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H4.Text" xml:space="preserve">
+        <value>崩溃分析报告</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H5.Text" xml:space="preserve">
+        <value>原因：</value>
+    </data>
+    <data name="Activities_LaunchPage_B1.Text" xml:space="preserve">
+        <value>显示日志</value>
+    </data>
+    <data name="Activities_LaunchPage_B2.Text" xml:space="preserve">
+        <value>终止进程</value>
+    </data>
+    <data name="Activities_LaunchPage_B3.Text" xml:space="preserve">
+        <value>显示报告</value>
+    </data>
+    <data name="Activities_LaunchPage_B4.Text" xml:space="preserve">
+        <value>显示详细信息</value>
+    </data>
+    <data name="AuthenticationWizard_BrowserMicrosoftAuthPage_Page.Tag" xml:space="preserve">
+        <value>使用内置浏览器进行微软验证 (2/3)</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_Page.Tag" xml:space="preserve">
+        <value>选择账户类型 (1/3)</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_H1.Text" xml:space="preserve">
+        <value>微软帐户</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_H2.Text" xml:space="preserve">
+        <value>外置帐户</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_H3.Text" xml:space="preserve">
+        <value>离线账户</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_D1.Text" xml:space="preserve">
+        <value>正版账号才能游玩在线服务器</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_D2.Text" xml:space="preserve">
+        <value>可以进入第三方 Yggdrasil 验证服务器</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_D3.Text" xml:space="preserve">
+        <value>只能在本地离线游玩</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_NoMc.Text" xml:space="preserve">
+        <value>没有 Minecraft ？</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_Page.Tag" xml:space="preserve">
+        <value>选择 Microsoft 身份验证方式 (1/3)</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_H1.Text" xml:space="preserve">
+        <value>使用内置浏览器进行身份验证</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_H2.Text" xml:space="preserve">
+        <value>使用设备代码流进行身份验证</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_D1.Text" xml:space="preserve">
+        <value>如果网络状况不佳，内置浏览器可能会更慢</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_D2.Text" xml:space="preserve">
+        <value>需要在外部浏览器输入验证码</value>
+    </data>
+    <data name="AuthenticationWizard_ConfirmProfilePage_Page.Tag" xml:space="preserve">
+        <value>确认 Minecraft 档案 (3/3)</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_Page.Tag" xml:space="preserve">
+        <value>使用设备代码流进行微软验证 (2/3)</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_L.Text" xml:space="preserve">
+        <value>设备代码：</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_P1.Text" xml:space="preserve">
+        <value>请在浏览器中完成后续验证步骤，然后返回启动器继续验证</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_P2.Text" xml:space="preserve">
+        <value>设备代码的有效期为 15 分钟</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_B1.Text" xml:space="preserve">
+        <value>复制代码</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_B2.Text" xml:space="preserve">
+        <value>刷新代码</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_Link.Text" xml:space="preserve">
+        <value>手动访问 https://login.live.com/oauth20_remoteconnect.srf</value>
+    </data>
+    <data name="AuthenticationWizard_EnterOfflineProfilePage_Page.Tag" xml:space="preserve">
+        <value>输入离线帐户资料 (2/3)</value>
+    </data>
+    <data name="AuthenticationWizard_EnterOfflineProfilePage_TB1.PlaceholderText" xml:space="preserve">
+        <value>名字：</value>
+    </data>
+    <data name="AuthenticationWizard_EnterOfflineProfilePage_TB2.PlaceholderText" xml:space="preserve">
+        <value>UUID：（可选）</value>
+    </data>
+    <data name="AuthenticationWizard_EnterYggdrasilProfilePage_Page.Tag" xml:space="preserve">
+        <value>输入外置帐户资料 (2/3)</value>
+    </data>
+    <data name="AuthenticationWizard_EnterYggdrasilProfilePage_TB1.PlaceholderText" xml:space="preserve">
+        <value>Yggdrasil 服务器：</value>
+    </data>
+    <data name="AuthenticationWizard_EnterYggdrasilProfilePage_TB2.PlaceholderText" xml:space="preserve">
+        <value>电子邮件：</value>
+    </data>
+    <data name="AuthenticationWizard_EnterYggdrasilProfilePage_TB3.PlaceholderText" xml:space="preserve">
+        <value>密码：</value>
     </data>
     <data name="Cores_CoresPage_SearchBox.PlaceholderText" xml:space="preserve">
         <value>搜索核心</value>
@@ -224,6 +437,15 @@
     </data>
     <data name="Home_HomePage__NoCore" xml:space="preserve">
         <value>未选择核心</value>
+    </data>
+    <data name="Home_HomePage_D1.Text" xml:space="preserve">
+        <value>单击以切换</value>
+    </data>
+    <data name="Home_HomePage_D2.Text" xml:space="preserve">
+        <value>当前选中的核心</value>
+    </data>
+    <data name="Home_HomePage_Hyperlink.Text" xml:space="preserve">
+        <value>转到核心管理页面</value>
     </data>
     <data name="OOBE_AccountPage_T.Text" xml:space="preserve">
         <value>账户设置</value>

@@ -14,34 +14,34 @@ public class GameCoreTagConverter : IValueConverter
         {
             var strings = new List<string>
             {
-                game.Type switch
+                ResourceUtils.GetValue("Converters", "_" + game.Type switch
                 {
                     "release" => "Release",
                     "snapshot" => "Snapshot",
                     "old_beta" => "Old Beta",
                     "old_alpha" => "Old Alpha",
                     _ => "Unknown"
-                }
+                })
             };
 
             if (game.IsInheritedFrom)
-                strings.Add("Inherited From");
+                strings.Add(ResourceUtils.GetValue("Converters", "_Inherited From"));
 
             strings.Add(game.AbsoluteVersion);
 
             return string.Join(" ", strings);
         }
 
-        
+
         if (value is VersionManifestItem manifestItem)
-            return manifestItem.Type switch
+            return ResourceUtils.GetValue("Converters", "_" + manifestItem.Type switch
             {
                 "release" => "Release",
                 "snapshot" => "Snapshot",
                 "old_beta" => "Old Beta",
                 "old_alpha" => "Old Alpha",
                 _ => "Unknown"
-            };
+            });
 
         return null;
     }

@@ -19,7 +19,7 @@
     </ContentDialog.Resources>
     <ContentDialog.Title>
         <StackPanel Margin="24,24,24,0">
-            <TextBlock Text="Add a single JVM argument" />
+            <TextBlock x:Uid="Dialogs_AddVmArgumentDialog_T" Text="Add a single JVM argument" />
         </StackPanel>
     </ContentDialog.Title>
 
@@ -74,17 +74,19 @@
                     Grid.Column="0"
                     HorizontalAlignment="Stretch"
                     Command="{Binding AddCommand}"
-                    Content="Add"
                     ElementSoundMode="FocusOnly"
                     IsTabStop="False"
-                    Style="{ThemeResource AccentButtonStyle}" />
+                    Style="{ThemeResource AccentButtonStyle}">
+                    <TextBlock x:Uid="Buttons_Add" Text="Add" />
+                </Button>
                 <Button
                     Grid.Column="2"
                     HorizontalAlignment="Stretch"
                     Command="{Binding CancelCommand}"
-                    Content="Cancel"
                     ElementSoundMode="FocusOnly"
-                    IsTabStop="False" />
+                    IsTabStop="False">
+                    <TextBlock x:Uid="Buttons_Cancel" Text="Cancel" />
+                </Button>
             </Grid>
         </Border>
     </Grid>

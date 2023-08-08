@@ -7,7 +7,6 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Common"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="Dialog"
     d:DataContext="{d:DesignInstance Type=common:AuthenticationWizardDialogViewModel}"
@@ -351,6 +350,7 @@
     <ContentDialog.Title>
         <StackPanel Margin="24,24,24,0">
             <TextBlock
+                x:Uid="Dialogs_AuthenticationWizardDialog_T"
                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                 Style="{ThemeResource BaseTextBlockStyle}"
                 Text="Account Add Wizard:" />

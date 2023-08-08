@@ -42,22 +42,14 @@ partial class HomeViewModel : ObservableObject
         Accounts = accountService.Accounts;
         ActiveAccount = accountService.ActiveAccount;
 
+        GameInfos = _gameService.GameInfos;
+        ActiveGameInfo = _gameService.ActiveGameInfo;
 
         WeakReferenceMessenger.Default.Register<ActiveAccountChangedMessage>(this, (r, m) =>
         {
             HomeViewModel vm = r as HomeViewModel;
             vm.ActiveAccount = m.Value;
         });
-    }
-
-    // Workaround for the bug that the first item of the listview cannot load the icon
-    // Note: The ObservableCollections should have init; setter. Using private set; is only for the workaround.
-    public void LoadGameInfo()
-    {
-        GameInfos = _gameService.GameInfos;
-        ActiveGameInfo = _gameService.ActiveGameInfo;
-        OnPropertyChanged(nameof(GameInfos));
-        OnPropertyChanged(nameof(ActiveGameInfo));
     }
 
     public string LaunchButtonTag => ActiveGameInfo is null ? _coreNotSelected : ActiveGameInfo.Name;
@@ -74,6 +66,9 @@ partial class HomeViewModel : ObservableObject
 
     [RelayCommand]
     public void Account() => Views.ShellPage.ContentFrame.Navigate(typeof(Views.Settings.NavigationPage), typeof(Views.Settings.AccountPage));
+
+    [RelayCommand]
+    public void Cores() => Views.ShellPage.ContentFrame.Navigate(typeof(Views.Cores.CoresPage));
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {

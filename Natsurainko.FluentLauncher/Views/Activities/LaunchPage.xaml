@@ -34,7 +34,10 @@
 
                             <labs:SettingsExpander.Header>
                                 <TextBlock TextTrimming="CharacterEllipsis">
-                                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="Launch Task" />
+                                    <Run
+                                        x:Uid="Activities_LaunchPage_Item_T"
+                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                        Text="Launch Task" />
                                     <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
                                     <Run FontWeight="SemiBold" Text="{Binding GameInfo.AbsoluteId}" />
                                 </TextBlock>
@@ -42,7 +45,10 @@
 
                             <labs:SettingsExpander.Description>
                                 <TextBlock FontSize="13" TextTrimming="CharacterEllipsis">
-                                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="State" />
+                                    <Run
+                                        x:Uid="Activities_LaunchPage_Item_TD"
+                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                        Text="State" />
                                     <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
                                     <Run>
                                         <Run.Text>
@@ -73,7 +79,7 @@
                                                 <ColumnDefinition Width="1*" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock HorizontalAlignment="Right">
-                                                <Run Text="Progress: " />
+                                                <Run x:Uid="Activities_LaunchPage_Item_H1" Text="Progress: " />
                                                 <Run Text="{Binding ProgressText}" />
                                             </TextBlock>
                                             <ProgressBar
@@ -197,7 +203,8 @@
                                     <labs:SettingsCard.Header>
                                         <TextBlock Style="{ThemeResource BaseTextBlockStyle}" TextTrimming="CharacterEllipsis">
                                             <Run Text="{Binding ProcessStartTime}" />
-                                            <Run Text=": The game has been launched successfully" />
+                                            <Run Text=":" />
+                                            <Run x:Uid="Activities_LaunchPage_Item_H2" Text="The game has been launched successfully" />
                                         </TextBlock>
                                     </labs:SettingsCard.Header>
                                 </labs:SettingsCard>
@@ -225,6 +232,7 @@
                                     <labs:SettingsCard.Header>
                                         <TextBlock Style="{ThemeResource BaseTextBlockStyle}" TextTrimming="CharacterEllipsis">
                                             <Run Text="{Binding ProcessExitTime}" />
+                                            <Run Text=":" />
                                             <Run>
                                                 <Run.Text>
                                                     <Binding Converter="{ThemeResource LaunchExpanderStepConverter}" Path="DisplayState">
@@ -248,20 +256,20 @@
                                     </labs:SettingsCard.Visibility>
 
                                     <labs:SettingsCard.Header>
-                                        <TextBlock Text="Game progress management" />
+                                        <TextBlock x:Uid="Activities_LaunchPage_Item_H3" Text="Game progress management" />
                                     </labs:SettingsCard.Header>
 
                                     <StackPanel Orientation="Horizontal" Spacing="10">
                                         <Button Command="{Binding LoggerButtonCommand}">
                                             <StackPanel Orientation="Horizontal" Spacing="5">
                                                 <FontIcon FontSize="14" Glyph="&#xf000;" />
-                                                <TextBlock Text="Open Log" />
+                                                <TextBlock x:Uid="Activities_LaunchPage_B1" Text="Open Log" />
                                             </StackPanel>
                                         </Button>
                                         <Button Command="{Binding KillButtonCommand}">
                                             <StackPanel Orientation="Horizontal" Spacing="5">
                                                 <FontIcon FontSize="14" Glyph="&#xe71a;" />
-                                                <TextBlock Text="Kill Process" />
+                                                <TextBlock x:Uid="Activities_LaunchPage_B2" Text="Kill Process" />
                                             </StackPanel>
                                         </Button>
                                     </StackPanel>
@@ -277,13 +285,13 @@
                                     </labs:SettingsCard.Visibility>
 
                                     <labs:SettingsCard.Header>
-                                        <TextBlock Text="Crash analysis report" />
+                                        <TextBlock x:Uid="Activities_LaunchPage_Item_H4" Text="Crash analysis report" />
                                     </labs:SettingsCard.Header>
 
                                     <Button>
                                         <StackPanel Orientation="Horizontal" Spacing="5">
                                             <FontIcon FontSize="14" Glyph="&#xf000;" />
-                                            <TextBlock Text="Open Report" />
+                                            <TextBlock x:Uid="Activities_LaunchPage_B3" Text="Open Report" />
                                         </StackPanel>
                                     </Button>
                                 </labs:SettingsCard>
@@ -299,15 +307,15 @@
 
                                     <labs:SettingsCard.Header>
                                         <TextBlock>
-                                            <Run Text="Reason:" />
-                                            <Run Text="---" />
+                                            <Run x:Uid="Activities_LaunchPage_Item_H5" Text="Reason:" />
+                                            <Run Text=" " />
                                         </TextBlock>
                                     </labs:SettingsCard.Header>
 
                                     <Button>
                                         <StackPanel Orientation="Horizontal" Spacing="5">
                                             <FontIcon FontSize="14" Glyph="&#xf000;" />
-                                            <TextBlock Text="Show Details" />
+                                            <TextBlock x:Uid="Activities_LaunchPage_B4" Text="Show Details" />
                                         </StackPanel>
                                     </Button>
                                 </labs:SettingsCard>
@@ -326,12 +334,14 @@
             VerticalAlignment="Center"
             Visibility="{Binding TipVisibility}">
             <TextBlock
+                x:Uid="Activities_LaunchPage_Tip"
                 HorizontalAlignment="Center"
                 FontSize="26"
                 FontWeight="SemiBold"
                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                 Text="No Launch Arrangements" />
             <HyperlinkButton
+                x:Uid="Activities_LaunchPage_Hyperlink"
                 Padding="0"
                 HorizontalAlignment="Center"
                 Command="{Binding HomeCommand}"

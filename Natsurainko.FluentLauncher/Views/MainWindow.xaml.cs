@@ -33,6 +33,12 @@ public sealed partial class MainWindow : WindowEx
         AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
         AppWindow.TitleBar.ButtonBackgroundColor = AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
         AppWindow.TitleBar.ButtonForegroundColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
+        AppWindow.TitleBar.ButtonHoverForegroundColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
+
+        var hoverColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
+        hoverColor.A = 35;
+
+        AppWindow.TitleBar.ButtonHoverBackgroundColor = hoverColor;
 
         (MinWidth, MinHeight) = (516, 328);
         (Width, Height) = (_settings.AppWindowWidth, _settings.AppWindowHeight);

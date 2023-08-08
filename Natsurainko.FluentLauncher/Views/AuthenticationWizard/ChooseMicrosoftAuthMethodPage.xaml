@@ -8,8 +8,8 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.AuthenticationWizard"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Uid="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_Page"
     d:DataContext="{d:DesignInstance Type=authenticationwizard:ChooseMicrosoftAuthMethodViewModel}"
     Background="Transparent"
     Tag="Choose Microsoft Authenticate Method (1/3)"
@@ -30,8 +30,12 @@
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
             <StackPanel>
-                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Authenticate using the built-in browser" />
                 <TextBlock
+                    x:Uid="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_H1"
+                    Style="{ThemeResource BaseTextBlockStyle}"
+                    Text="Authenticate using the built-in browser" />
+                <TextBlock
+                    x:Uid="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_D1"
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                     Style="{ThemeResource CaptionTextBlockStyle}"
                     Text="The built-in browser can be slow on poor connections" />
@@ -51,8 +55,12 @@
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
             <StackPanel>
-                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Authenticate with device flow code" />
                 <TextBlock
+                    x:Uid="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_H2"
+                    Style="{ThemeResource BaseTextBlockStyle}"
+                    Text="Authenticate with device flow code" />
+                <TextBlock
+                    x:Uid="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_D2"
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                     Style="{ThemeResource CaptionTextBlockStyle}"
                     Text="Need to enter verification code on external browser" />

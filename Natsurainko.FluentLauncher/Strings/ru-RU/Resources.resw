@@ -45,6 +45,9 @@
     <data name="Buttons_Go.Text" xml:space="preserve">
         <value>Идти</value>
     </data>
+    <data name="Buttons_Cancel.Text" xml:space="preserve">
+        <value>Отмена</value>
+    </data>
     <data name="Converters__Account" xml:space="preserve">
         <value>счет</value>
     </data>
@@ -56,6 +59,96 @@
     </data>
     <data name="Converters__Yggdrasil" xml:space="preserve">
         <value>внешний</value>
+    </data>
+    <data name="Converters__Release" xml:space="preserve">
+        <value>Выпускать</value>
+    </data>
+    <data name="Converters__Snapshot" xml:space="preserve">
+        <value>Снимок</value>
+    </data>
+    <data name="Converters__Old Beta" xml:space="preserve">
+        <value>Старая бета</value>
+    </data>
+    <data name="Converters__Old Alpha" xml:space="preserve">
+        <value>Старый Альфа</value>
+    </data>
+    <data name="Converters__Unknown" xml:space="preserve">
+        <value>Неизвестный</value>
+    </data>
+    <data name="Converters__Inherited From" xml:space="preserve">
+        <value>Унаследовано от</value>
+    </data>
+    <data name="Converters__LaunchState_Created" xml:space="preserve">
+        <value>Задача запуска создана</value>
+    </data>
+    <data name="Converters__LaunchState_Inspecting" xml:space="preserve">
+        <value>Проверка необходимых элементов перед запуском</value>
+    </data>
+    <data name="Converters__LaunchState_Authenticating" xml:space="preserve">
+        <value>Проверка и обновление токена учетной записи</value>
+    </data>
+    <data name="Converters__LaunchState_CompletingResources" xml:space="preserve">
+        <value>Завершение ресурсов, зависящих от игры</value>
+    </data>
+    <data name="Converters__LaunchState_BuildingArguments" xml:space="preserve">
+        <value>Генерация параметров запуска</value>
+    </data>
+    <data name="Converters__LaunchState_LaunchingProcess" xml:space="preserve">
+        <value>Запускаем игровой процесс</value>
+    </data>
+    <data name="Converters__LaunchState_GameRunning" xml:space="preserve">
+        <value>Игра запущена</value>
+    </data>
+    <data name="Converters__LaunchState_GameExited" xml:space="preserve">
+        <value>Игра вышла нормально</value>
+    </data>
+    <data name="Converters__LaunchState_Faulted" xml:space="preserve">
+        <value>Ошибка запуска</value>
+    </data>
+    <data name="Converters__LaunchState_Killed" xml:space="preserve">
+        <value>Игра была вынуждена выйти</value>
+    </data>
+    <data name="Converters__LaunchState_GameCrashed" xml:space="preserve">
+        <value>Игра вылетела</value>
+    </data>
+    <data name="Dialogs_JavaMirrorsDialog.Title" xml:space="preserve">
+        <value>Сторонние источники загрузки Java</value>
+    </data>
+    <data name="Dialogs_JavaMirrorsDialog.PrimaryButtonText" xml:space="preserve">
+        <value>Подтверждать</value>
+    </data>
+    <data name="Dialogs_CopyrightLicenseDialog.Title" xml:space="preserve">
+        <value>Авторское право &amp;amp; Информация о лицензии</value>
+    </data>
+    <data name="Dialogs_CopyrightLicenseDialog.PrimaryButtonText" xml:space="preserve">
+        <value>Подтверждать</value>
+    </data>
+    <data name="Dialogs_AddVmArgumentDialog_T.Text" xml:space="preserve">
+        <value>Добавьте один аргумент JVM</value>
+    </data>
+    <data name="Dialogs_ExceptionDialog.Title" xml:space="preserve">
+        <value>Программа обнаружила ошибку</value>
+    </data>
+    <data name="Dialogs_ExceptionDialog.PrimaryButtonText" xml:space="preserve">
+        <value>Скопируйте и перейдите на GitHub</value>
+    </data>
+    <data name="Dialogs_ExceptionDialog.SecondaryButtonText" xml:space="preserve">
+        <value>Закрывать</value>
+    </data>
+    <data name="Dialogs_SwitchAccountDialog.Title" xml:space="preserve">
+        <value>Сменить аккаунт</value>
+    </data>
+    <data name="Dialogs_SwitchAccountDialog.PrimaryButtonText" xml:space="preserve">
+        <value>Подтверждать</value>
+    </data>
+    <data name="Dialogs_SwitchAccountDialog.SecondaryButtonText" xml:space="preserve">
+        <value>Отмена</value>
+    </data>
+    <data name="Dialogs_SwitchAccountDialog_B.Text" xml:space="preserve">
+        <value>Удалить выбранную учетную запись</value>
+    </data>
+    <data name="Dialogs_AuthenticationWizardDialog_T.Text" xml:space="preserve">
+        <value>Мастер добавления учетной записи:</value>
     </data>
     <data name="ExceptionPage_Title.Text" xml:space="preserve">
         <value></value>
@@ -109,10 +202,130 @@
         <value>Приложение</value>
     </data>
     <data name="Activities_LaunchPage_Tip.Text" xml:space="preserve">
-        <value></value>
+        <value>Нет договоренностей о запуске</value>
     </data>
     <data name="Activities_LaunchPage_Hyperlink.Content" xml:space="preserve">
-        <value></value>
+        <value>Перейдите на главную страницу, чтобы создать</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_T.Text" xml:space="preserve">
+        <value>Запустить задачу</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_TD.Text" xml:space="preserve">
+        <value>Состояние</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H1.Text" xml:space="preserve">
+        <value>Прогресс:</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H2.Text" xml:space="preserve">
+        <value>Игра успешно запущена</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H3.Text" xml:space="preserve">
+        <value>Управление игровым прогрессом</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H4.Text" xml:space="preserve">
+        <value>Отчет об анализе сбоев</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H5.Text" xml:space="preserve">
+        <value>Причина:</value>
+    </data>
+    <data name="Activities_LaunchPage_B1.Text" xml:space="preserve">
+        <value>Открыть журнал</value>
+    </data>
+    <data name="Activities_LaunchPage_B2.Text" xml:space="preserve">
+        <value>Убить процесс</value>
+    </data>
+    <data name="Activities_LaunchPage_B3.Text" xml:space="preserve">
+        <value>Открыть отчет</value>
+    </data>
+    <data name="Activities_LaunchPage_B4.Text" xml:space="preserve">
+        <value>Показать детали</value>
+    </data>
+    <data name="AuthenticationWizard_BrowserMicrosoftAuthPage_Page.Tag" xml:space="preserve">
+        <value>Аутентификация Microsoft с использованием встроенного браузера (2/3)</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_Page.Tag" xml:space="preserve">
+        <value>Выберите тип учетной записи (1/3)</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_H1.Text" xml:space="preserve">
+        <value>Учетная запись Майкрософт</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_H2.Text" xml:space="preserve">
+        <value>Аккаунт Иггдрасиль</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_H3.Text" xml:space="preserve">
+        <value>Автономный аккаунт</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_D1.Text" xml:space="preserve">
+        <value>Подлинная учетная запись для игры на онлайн-серверах</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_D2.Text" xml:space="preserve">
+        <value>Можно войти на сторонний сервер проверки Yggdrasil</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_D3.Text" xml:space="preserve">
+        <value>Можно играть только локально и в автономном режиме</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_NoMc.Text" xml:space="preserve">
+        <value>У вас нет майнкрафта?</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_Page.Tag" xml:space="preserve">
+        <value>Выберите метод проверки подлинности Microsoft (1/3)</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_H1.Text" xml:space="preserve">
+        <value>Аутентификация с помощью встроенного браузера</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_H2.Text" xml:space="preserve">
+        <value>Аутентификация с кодом потока устройства</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_D1.Text" xml:space="preserve">
+        <value>Встроенный браузер может работать медленно при плохом соединении</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_D2.Text" xml:space="preserve">
+        <value>Необходимо ввести код подтверждения во внешнем браузере</value>
+    </data>
+    <data name="AuthenticationWizard_ConfirmProfilePage_Page.Tag" xml:space="preserve">
+        <value>Подтвердить профиль Minecraft (3/3)</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_Page.Tag" xml:space="preserve">
+        <value>Поток устройств Microsoft Authenticate (2/3)</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_L.Text" xml:space="preserve">
+        <value>Код устройства:</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_P1.Text" xml:space="preserve">
+        <value>Пожалуйста, выполните следующие шаги проверки в своем браузере, затем вернитесь в панель запуска, чтобы продолжить проверку.</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_P2.Text" xml:space="preserve">
+        <value>Код потока устройства действителен в течение 15 минут.</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_B1.Text" xml:space="preserve">
+        <value>Скопировать код</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_B2.Text" xml:space="preserve">
+        <value>Обновить код</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_Link.Text" xml:space="preserve">
+        <value>Ручной доступ https://login.live.com/oauth20_remoteconnect.srf</value>
+    </data>
+    <data name="AuthenticationWizard_EnterOfflineProfilePage_Page.Tag" xml:space="preserve">
+        <value>Введите профиль автономной учетной записи (2/3)</value>
+    </data>
+    <data name="AuthenticationWizard_EnterOfflineProfilePage_TB1.PlaceholderText" xml:space="preserve">
+        <value>Имя:</value>
+    </data>
+    <data name="AuthenticationWizard_EnterOfflineProfilePage_TB2.PlaceholderText" xml:space="preserve">
+        <value>UUID: (необязательно)</value>
+    </data>
+    <data name="AuthenticationWizard_EnterYggdrasilProfilePage_Page.Tag" xml:space="preserve">
+        <value>Войдите в профиль учетной записи Yggdrasil (2/3)</value>
+    </data>
+    <data name="AuthenticationWizard_EnterYggdrasilProfilePage_TB1.PlaceholderText" xml:space="preserve">
+        <value>URL-адрес сервера Yggdrasil:</value>
+    </data>
+    <data name="AuthenticationWizard_EnterYggdrasilProfilePage_TB2.PlaceholderText" xml:space="preserve">
+        <value>Электронная почта:</value>
+    </data>
+    <data name="AuthenticationWizard_EnterYggdrasilProfilePage_TB3.PlaceholderText" xml:space="preserve">
+        <value>Пароль:</value>
     </data>
     <data name="Cores_CoresPage_SearchBox.PlaceholderText" xml:space="preserve">
         <value>Ядро поиска</value>
@@ -224,6 +437,15 @@
     </data>
     <data name="Home_HomePage__NoCore" xml:space="preserve">
         <value>Ядро не выбрано</value>
+    </data>
+    <data name="Home_HomePage_D1.Text" xml:space="preserve">
+        <value>Нажмите, чтобы переключиться</value>
+    </data>
+    <data name="Home_HomePage_D2.Text" xml:space="preserve">
+        <value>текущее выбранное ядро</value>
+    </data>
+    <data name="Home_HomePage_Hyperlink.Text" xml:space="preserve">
+        <value>Перейти на главную страницу</value>
     </data>
     <data name="OOBE_AccountPage_T.Text" xml:space="preserve">
         <value>Настройки учетной записи</value>

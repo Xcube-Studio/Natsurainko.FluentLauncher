@@ -91,15 +91,19 @@
                     <ColumnDefinition Width="10" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <StackPanel VerticalAlignment="Center">
+                <StackPanel VerticalAlignment="Center" Visibility="Collapsed">
                     <TextBlock
+                        x:Uid="Home_HomePage_D1"
+                        HorizontalAlignment="Right"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Style="{ThemeResource CaptionTextBlockStyle}"
-                        Text="单击以切换" />
+                        Text="Click to switch" />
                     <TextBlock
+                        x:Uid="Home_HomePage_D2"
+                        HorizontalAlignment="Right"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Style="{ThemeResource CaptionTextBlockStyle}"
-                        Text="当前选中的核心" />
+                        Text="the currently selected core" />
                 </StackPanel>
                 <Button
                     Grid.Column="2"
@@ -152,12 +156,16 @@
                     <Grid.Background>
                         <AcrylicBrush TintColor="{ThemeResource AcrylicTintColor}" />
                     </Grid.Background>
-                    <HyperlinkButton Margin="15,0">
-                        <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="转到核心管理页面" />
+                    <HyperlinkButton Margin="15,0" Command="{Binding CoresCommand}">
+                        <TextBlock
+                            x:Uid="Home_HomePage_Hyperlink"
+                            Style="{ThemeResource BaseTextBlockStyle}"
+                            Text="Go to the CoresPage" />
                     </HyperlinkButton>
                     <ListView
+                        x:Name="listView"
                         Grid.Row="2"
-                        Padding="15,0"
+                        Padding="15,0,15,15"
                         ItemsSource="{Binding GameInfos}"
                         SelectedItem="{Binding ActiveGameInfo, Mode=TwoWay}">
                         <ListView.ItemTemplate>
@@ -178,9 +186,9 @@
                                         BorderBrush="{ThemeResource IconBorder}"
                                         BorderThickness="2"
                                         CornerRadius="4">
-                                        <Border.Background>
-                                            <ImageBrush ImageSource="{Binding Converter={ThemeResource IconConverter}}" />
-                                        </Border.Background>
+                                        <Border CornerRadius="4">
+                                            <Image Source="{Binding Converter={ThemeResource IconConverter}}" />
+                                        </Border>
                                     </Border>
                                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                         <TextBlock

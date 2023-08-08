@@ -9,6 +9,5 @@ public sealed partial class HomePage : Page
     {
         InitializeComponent();
         DataContext = App.GetService<HomeViewModel>();
-        (DataContext as HomeViewModel).LoadGameInfo();
     }
 }

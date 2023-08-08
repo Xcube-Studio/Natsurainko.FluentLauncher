@@ -14,21 +14,7 @@ internal class LaunchExpanderStepConverter : IValueConverter
 
         return needProperty switch
         {
-            "StepName" => (LaunchState)value switch
-            {
-                LaunchState.Created => "The launch task is created",
-                LaunchState.Inspecting => "Checking required items before launching",
-                LaunchState.Authenticating => "Verifying and refreshing account token",
-                LaunchState.CompletingResources => "Completing the game dependent resources",
-                LaunchState.BuildingArguments => "Generating startup parameters",
-                LaunchState.LaunchingProcess => "Launching the game process",
-                LaunchState.GameRunning => "The game is running",
-                LaunchState.GameExited => "The game has exited normally",
-                LaunchState.Faulted => "Launch failed",
-                LaunchState.Killed => "The game was forced to quit",
-                LaunchState.GameCrashed => "The game crashed",
-                _ => null,
-            },
+            "StepName" => ResourceUtils.GetValue("Converters", $"_LaunchState_{value}"),
             "FontForeground" => (int)value switch
             {
                 1 or -1 => App.Current.Resources["ApplicationForegroundThemeBrush"],

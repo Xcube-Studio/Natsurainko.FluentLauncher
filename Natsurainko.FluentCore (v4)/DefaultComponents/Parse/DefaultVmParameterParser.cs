@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text.Json.Nodes;
 
 namespace Nrk.FluentCore.DefaultComponents.Parse;
@@ -18,7 +19,8 @@ public static class DefaultVmParameterParser
     /// <returns></returns>
     public static IEnumerable<string> Parse(JsonNode jsonNode)
     {
-        var jsonJvm = jsonNode["arguments"]?["jvm"];
+        var jsonJvm = jsonNode["arguments"]?["jvm"]?.AsArray();
+        var jvm = new List<string>();
 
         if (jsonJvm == null)
         {
@@ -30,8 +32,23 @@ public static class DefaultVmParameterParser
             yield break;
         }
 
-        foreach (var item in StringExtensions.ArgumnetsGroup(jsonJvm.AsArray().Where(x => x is JsonValue).Select(x => x.GetValue<string>())))
+        foreach (var item in jsonJvm)
+        {
+            if (item is JsonValue jsonValue)
+            {
+                var value = jsonValue.GetValue<string>().Trim();
+
+                if (value.Contains(' '))
+                    jvm.AddRange(value.Split(' '));
+                else jvm.Add(value);
+            }
+        }
+
+        foreach (var item in StringExtensions.ArgumnetsGroup(jvm))
             yield return item;
+
+        if (!jvm.Contains("-cp"))
+            yield return "-cp ${classpath}";
     }
 
     /// <summary>

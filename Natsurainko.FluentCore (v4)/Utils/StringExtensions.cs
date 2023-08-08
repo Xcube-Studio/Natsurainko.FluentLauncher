@@ -66,26 +66,26 @@ public static class StringExtensions
     /// <returns></returns>
     public static IEnumerable<string> ArgumnetsGroup(IEnumerable<string> parameters)
     {
-        var parameter = new List<string>();
+        var queue = new Queue<string>(parameters);
+        var group = new List<string>();
 
-        foreach (var item in parameters)
+        while (queue.Count > 0)
         {
-            if (parameter.Any() && parameter[0].StartsWith("-") && item.StartsWith("-"))
-            {
-                yield return parameter[0].Trim(' ');
+            var next = queue.Dequeue();
 
-                parameter = new List<string> { item };
-            }
-            else if (parameters.Last() == item && !parameter.Any())
-                yield return item.Trim(' ');
-            else parameter.Add(item);
-
-            if (parameter.Count == 2)
+            if (group.Count == 0) group.Add(next);
+            else
             {
-                yield return string.Join(" ", parameter).Trim(' ');
-                parameter = new List<string>();
+                if (group.First().StartsWith('-') && next.StartsWith('-'))
+                {
+                    yield return string.Join(group.First().EndsWith('=') ? "" : " ", group);
+                    group.Clear();
+                }
+                group.Add(next);
             }
         }
+
+        if (group.Count > 0) yield return string.Join(group.First().EndsWith('=') ? "" : " ", group);
     }
 
     public static string ConvertFromBase64(this string value) => Encoding.UTF8.GetString(Convert.FromBase64String(value));

@@ -105,7 +105,7 @@
                         <ItemsRepeater ItemsSource="{Binding DisplayMods}">
                             <ItemsRepeater.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid Margin="2">
+                                    <Grid Name="grid" Margin="2">
                                         <labs:SettingsCard HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                             <labs:SettingsCard.Header>
                                                 <Grid Background="Transparent">
@@ -138,18 +138,8 @@
                                             x:Name="toggleSwitch"
                                             Margin="0,0,-65,0"
                                             HorizontalAlignment="Right"
-                                            IsOn="{Binding IsEnabled, Mode=OneTime}">
-                                            <i:Interaction.Behaviors>
-                                                <behaviors:AncestorBindingBehavior
-                                                    AncestorType="ItemsRepeater"
-                                                    Binding="{Binding DataContext.ToggleSwitchLoadedCommand}"
-                                                    TargetPropertyName="Tag" />
-
-                                                <core:EventTriggerBehavior EventName="Loaded">
-                                                    <actions:ModifiedInvokeCommandAction Command="{Binding ElementName=toggleSwitch, Path=Tag}" />
-                                                </core:EventTriggerBehavior>
-                                            </i:Interaction.Behaviors>
-                                        </ToggleSwitch>
+                                            IsOn="{Binding IsEnabled, Mode=OneTime}"
+                                            Loaded="toggleSwitch_Loaded" />
                                     </Grid>
                                 </DataTemplate>
                             </ItemsRepeater.ItemTemplate>

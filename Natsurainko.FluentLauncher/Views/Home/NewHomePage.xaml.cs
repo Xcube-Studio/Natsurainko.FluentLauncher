@@ -23,6 +23,5 @@ public sealed partial class NewHomePage : Page
 
         var vm = DataContext as HomeViewModel;
         vm.LoadGameInfo();
-
     }
 }

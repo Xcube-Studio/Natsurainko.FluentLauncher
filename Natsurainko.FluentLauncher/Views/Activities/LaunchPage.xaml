@@ -18,8 +18,11 @@
     </Page.Resources>
 
     <Grid>
-        <ScrollViewer Padding="30,7.5,30,22.5">
-            <ItemsRepeater Background="Transparent" ItemsSource="{Binding LaunchProcesses}">
+        <ScrollViewer Padding="30,7.5,30,0">
+            <ItemsRepeater
+                Margin="0,0,0,20"
+                Background="Transparent"
+                ItemsSource="{Binding LaunchProcesses}">
                 <ItemsRepeater.ItemTemplate>
                     <DataTemplate>
                         <labs:SettingsExpander
@@ -312,6 +315,9 @@
                         </labs:SettingsExpander>
                     </DataTemplate>
                 </ItemsRepeater.ItemTemplate>
+                <ItemsRepeater.Layout>
+                    <StackLayout Spacing="4" />
+                </ItemsRepeater.Layout>
             </ItemsRepeater>
         </ScrollViewer>
         <StackPanel

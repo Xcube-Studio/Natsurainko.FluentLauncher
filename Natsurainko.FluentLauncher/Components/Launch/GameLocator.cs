@@ -1,4 +1,6 @@
 ﻿using Natsurainko.FluentLauncher.Classes.Data.Launch;
+using Natsurainko.FluentLauncher.Utils;
+using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.Classes.Datas.Parse;
 using Nrk.FluentCore.Components.Launch;
 using System.Collections.Generic;
@@ -27,8 +29,8 @@ internal class GameLocator : BaseGameLocator
 
         if (!versionsDirectory.Exists) yield break; // 不存在 .versions 文件夹
 
-        var enumedGames = new List<ExtendedGameInfo>();
-        var inheritedFromGames = new Dictionary<VersionJsonEntity, ExtendedGameInfo>();
+        var enumedGames = new List<GameInfo>();
+        var inheritedFromGames = new Dictionary<VersionJsonEntity, GameInfo>();
 
         foreach (var dir in versionsDirectory.EnumerateDirectories())
         {
@@ -41,7 +43,7 @@ internal class GameLocator : BaseGameLocator
 
             if (jsonEntity == null) continue; // version.json 读取失败
 
-            var gameInfo = new ExtendedGameInfo
+            var gameInfo = new GameInfo
             {
                 AbsoluteId = jsonEntity.Id,
                 Name = jsonEntity.Id,
@@ -66,9 +68,7 @@ internal class GameLocator : BaseGameLocator
             if (!gameInfo.IsInheritedFrom) gameInfo.JarPath = jsonFile.FullName.Replace(".json", ".jar");
             if (!gameInfo.IsInheritedFrom && gameInfo.IsVanilla) enumedGames.Add(gameInfo);
 
-            gameInfo.InitSpecialConfig();
-
-            yield return gameInfo;
+            yield return gameInfo.Extend();
         }
 
         foreach (var keyValuePair in inheritedFromGames)
@@ -80,25 +80,23 @@ internal class GameLocator : BaseGameLocator
             keyValuePair.Value.JarPath ??= inheritsFrom.JarPath;
             TryGetIsVanillaAndAbsoluteVersion(keyValuePair.Value, keyValuePair.Key);
 
-            keyValuePair.Value.InitSpecialConfig();
-
-            yield return keyValuePair.Value;
+            yield return keyValuePair.Value.Extend();
         }
     }
 
     public override IReadOnlyList<ExtendedGameInfo> GetGames(out IReadOnlyList<string> errorGameNames)
     {
-        var games = new List<ExtendedGameInfo>();
+        var games = new List<GameInfo>();
         var errorGames = new List<string>();
 
         var versionsDirectory = new DirectoryInfo(Path.Combine(MinecraftFolderPath, "versions"));
 
-        var inheritedFromGames = new Dictionary<VersionJsonEntity, ExtendedGameInfo>();
+        var inheritedFromGames = new Dictionary<VersionJsonEntity, GameInfo>();
 
         if (!versionsDirectory.Exists) // 不存在 .versions 文件夹
         {
             errorGameNames = errorGames;
-            return games;
+            return games.Select(x => x.Extend()).ToList();
         }
 
         foreach (var dir in versionsDirectory.EnumerateDirectories())
@@ -112,7 +110,7 @@ internal class GameLocator : BaseGameLocator
 
             if (jsonEntity == null) continue; // version.json 读取失败
 
-            var gameInfo = new ExtendedGameInfo
+            var gameInfo = new GameInfo
             {
                 AbsoluteId = jsonEntity.Id,
                 Name = jsonEntity.Id,
@@ -137,8 +135,6 @@ internal class GameLocator : BaseGameLocator
 
             TryGetIsVanillaAndAbsoluteVersion(gameInfo, jsonEntity);
 
-            gameInfo.InitSpecialConfig();
-
             games.Add(gameInfo);
         }
 
@@ -157,12 +153,10 @@ internal class GameLocator : BaseGameLocator
             keyValuePair.Value.JarPath ??= inheritsFrom.JarPath;
             TryGetIsVanillaAndAbsoluteVersion(keyValuePair.Value, keyValuePair.Key);
 
-            keyValuePair.Value.InitSpecialConfig();
-
             games.Add(keyValuePair.Value);
         }
 
-        return games;
+        return games.Select(x => x.Extend()).ToList();
     }
 
     public override ExtendedGameInfo GetGame(string absoluteId)
@@ -211,7 +205,7 @@ internal class GameLocator : BaseGameLocator
         return gameInfo;
     }
 
-    private static void TryGetIsVanillaAndAbsoluteVersion(ExtendedGameInfo gameInfo, VersionJsonEntity jsonEntity)
+    private static void TryGetIsVanillaAndAbsoluteVersion(GameInfo gameInfo, VersionJsonEntity jsonEntity)
     {
         gameInfo.IsVanilla = true;
 

@@ -55,9 +55,14 @@ public class DefaultArgumentsBuilder : BaseArgumentsBuilder<DefaultArgumentsBuil
         var gameParameters = DefaultGameParameterParser.Parse(jsonNode);
 
         if (GameInfo.IsInheritedFrom)
+        {
+            vmParameters = DefaultVmParameterParser
+                .Parse(JsonNode.Parse(File.ReadAllText(GameInfo.InheritsFrom.VersionJsonPath)))
+                .Union(vmParameters);
             gameParameters = DefaultGameParameterParser
                 .Parse(JsonNode.Parse(File.ReadAllText(GameInfo.InheritsFrom.VersionJsonPath)))
                 .Union(gameParameters);
+        }
 
         var vmParametersReplace = new Dictionary<string, string>()
         {

@@ -89,5 +89,4 @@ internal class GameService : DefaultGameService
             _settingsService.ActiveGameInfo = gameInfo;
         }
     }
-
 }

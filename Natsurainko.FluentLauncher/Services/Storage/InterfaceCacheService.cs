@@ -72,7 +72,7 @@ internal class InterfaceCacheService
                 Url = url
             }).ContinueWith(task =>
             {
-
+                //
             });
         }
 

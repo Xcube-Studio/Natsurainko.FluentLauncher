@@ -6,7 +6,6 @@ using Nrk.FluentCore.Classes.Datas;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.DefaultComponents.Manage;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -15,9 +14,9 @@ using Windows.System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
 
-internal partial class CoreModsViewModel: ObservableObject
+internal partial class CoreModsViewModel : ObservableObject
 {
-    private readonly DefaultModsManager modsManager;
+    public readonly DefaultModsManager modsManager;
 
     public CoreModsViewModel(GameInfo gameInfo)
     {
@@ -48,24 +47,6 @@ internal partial class CoreModsViewModel: ObservableObject
 
     [ObservableProperty]
     private string searchBoxInput;
-
-    [RelayCommand]
-    public void ToggleSwitchLoaded(object args)
-    {
-        void ToggleSwitch_Toggled(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-        {
-            var toggleSwitch = sender as ToggleSwitch;
-            var modInfo = toggleSwitch.DataContext as ModInfo;
-
-            if (modInfo != null)
-                modsManager.Switch(modInfo, toggleSwitch.IsOn);
-        }
-
-        var toggleSwitch = args.As<ToggleSwitch, object>().sender;
-
-        toggleSwitch.Toggled += ToggleSwitch_Toggled;
-        toggleSwitch.Unloaded += (_, _) => toggleSwitch.Toggled -= ToggleSwitch_Toggled;
-    }
 
     [RelayCommand]
     public void OpenFolder() => _ = Launcher.LaunchFolderPathAsync(ModsFolder);

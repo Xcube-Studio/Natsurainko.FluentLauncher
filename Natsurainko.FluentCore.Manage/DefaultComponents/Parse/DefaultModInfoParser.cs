@@ -75,7 +75,7 @@ public static class DefaultModInfoParser
 
     private static ModInfo ParseMcmodInfo(ref ModInfo mod, string jsonContent)
     {
-        var jsonNode = JsonNode.Parse(jsonContent.Replace("\u000a", "")).AsArray().FirstOrDefault() 
+        var jsonNode = JsonNode.Parse(jsonContent.Replace("\u000a", "")).AsArray().FirstOrDefault()
             ?? throw new InvalidDataException("Invalid mcmod.info");
 
         mod.DisplayName = jsonNode["name"].GetValue<string>();

@@ -49,6 +49,7 @@
             <converters:CoresLayoutConverter x:Key="CoresLayoutConverter" />
             <converters:BackgrondSettingItemVisibilityConverter x:Key="BackgrondSettingItemVisibilityConverter" />
             <converters:ModItemTagConverter x:Key="ModItemTagConverter" />
+            <converters:ResourceAuthorsConverter x:Key="ResourceAuthorsConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

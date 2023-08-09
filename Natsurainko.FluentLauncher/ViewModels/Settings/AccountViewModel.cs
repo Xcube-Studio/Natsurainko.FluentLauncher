@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
-using Natsurainko.FluentLauncher.Components;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
@@ -44,9 +43,9 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
     private readonly NotificationService _notificationService;
 
     public AccountViewModel(
-        SettingsService settingsService, 
-        AccountService accountService, 
-        AuthenticationService authenticationService, 
+        SettingsService settingsService,
+        AccountService accountService,
+        AuthenticationService authenticationService,
         NotificationService notificationService)
     {
         _settingsService = settingsService;
@@ -79,7 +78,7 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
         if (task.IsFaulted)
             _notificationService.NotifyException("_AccountRefreshFailedTitle", task.Exception, "_AccountRefreshFailedDescription");
         else _notificationService.NotifyMessage(
-            ResourceUtils.GetValue("Notifications", "_AccountRefreshedTitle"), 
+            ResourceUtils.GetValue("Notifications", "_AccountRefreshedTitle"),
             ResourceUtils.GetValue("Notifications", "_AccountRefreshedDescription").Replace("${name}", _accountService.ActiveAccount.Name));
     });
 

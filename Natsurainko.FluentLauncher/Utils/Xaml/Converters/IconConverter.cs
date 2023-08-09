@@ -20,7 +20,7 @@ public class IconConverter : IValueConverter
                 _ => "grass_block_side"
             }), UriKind.RelativeOrAbsolute));
 
-        
+
         if (value is VersionManifestItem manifestItem)
             return new BitmapImage(new Uri(string.Format("ms-appx:///Assets/Icons/{0}.png", manifestItem.Type switch
             {

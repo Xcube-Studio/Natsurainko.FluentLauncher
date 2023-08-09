@@ -29,13 +29,13 @@ internal partial class LaunchProcess : BaseLaunchProcess
 
     public event EventHandler GameProcessStart;
 
-    public override LaunchState State 
-    { 
+    public override LaunchState State
+    {
         get => DisplayState;
         protected set => App.MainWindow.DispatcherQueue.SynchronousTryEnqueue(() => DisplayState = value);
     }
 
-    public LaunchProcess(GameInfo gameInfo) : base() 
+    public LaunchProcess(GameInfo gameInfo) : base()
     {
         GameInfo = gameInfo;
         _launchService = App.GetService<LaunchService>();
@@ -175,19 +175,19 @@ internal partial class LaunchProcess : BaseLaunchProcess
             if (state != 4) StepItems[lastState - 1].FinishedTaskNumber = 1;
         }
 
-        if (1 <= state && state <= 5) 
+        if (1 <= state && state <= 5)
             StepItems[state - 1].RunState = 1;
 
-        if (DisplayState == LaunchState.Faulted) 
+        if (DisplayState == LaunchState.Faulted)
             StepItems[lastState - 1].RunState = -1;
 
-        if (DisplayState == LaunchState.GameRunning) 
+        if (DisplayState == LaunchState.GameRunning)
             ProcessStartTime = $"[{McProcess.StartTime:HH:mm:ss}]";
 
         if (DisplayState == LaunchState.GameExited)
             IsExpanded = false;
 
-        if (DisplayState == LaunchState.GameExited || DisplayState == LaunchState.GameCrashed) 
+        if (DisplayState == LaunchState.GameExited || DisplayState == LaunchState.GameCrashed)
             ProcessExitTime = $"[{McProcess.ExitTime:HH:mm:ss}]";
 
         lastState = state;

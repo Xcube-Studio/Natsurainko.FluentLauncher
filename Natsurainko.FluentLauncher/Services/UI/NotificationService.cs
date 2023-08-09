@@ -151,7 +151,7 @@ internal class NotificationService
                 await notifyPresenterViewModel.Close();
         }
 
-        contentPresenter.Loaded += ContentPresenter_Loaded; 
+        contentPresenter.Loaded += ContentPresenter_Loaded;
         return contentPresenter;
     }
 

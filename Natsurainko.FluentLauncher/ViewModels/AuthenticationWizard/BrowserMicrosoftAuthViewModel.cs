@@ -67,7 +67,7 @@ internal partial class BrowserMicrosoftAuthViewModel : WizardViewModelBase
             return;
         }
 
-        if (!Source.AbsoluteUri.StartsWith("https://login.live.com/oauth20_desktop.srf?") )
+        if (!Source.AbsoluteUri.StartsWith("https://login.live.com/oauth20_desktop.srf?"))
             return;
 
         var nameValueCollection = HttpUtility.ParseQueryString(Source.Query);

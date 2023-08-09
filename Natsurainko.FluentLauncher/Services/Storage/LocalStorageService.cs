@@ -1,10 +1,6 @@
 ﻿using Natsurainko.FluentLauncher.Utils;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Storage;
 
 namespace Natsurainko.FluentLauncher.Services.Storage;

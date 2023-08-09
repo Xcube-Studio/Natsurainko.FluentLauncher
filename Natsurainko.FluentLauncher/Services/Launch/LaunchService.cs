@@ -35,12 +35,12 @@ internal class LaunchService : DefaultLaunchService
     public ReadOnlyObservableCollection<LaunchProcess> LaunchProcesses { get; init; }
 
     public LaunchService(
-        SettingsService settingsService, 
-        GameService gameService, 
+        SettingsService settingsService,
+        GameService gameService,
         AccountService accountService,
         AuthenticationService authenticationService,
         DownloadService downloadService)
-        : base(settingsService, gameService, accountService) 
+        : base(settingsService, gameService, accountService)
     {
         _accountService = accountService;
         _authenticationService = authenticationService;
@@ -82,7 +82,7 @@ internal class LaunchService : DefaultLaunchService
 
                 return true;
             })
-            .SetAuthenticateFunc(() => 
+            .SetAuthenticateFunc(() =>
             {
                 if (_settingsService.AutoRefresh)
                 {
@@ -243,7 +243,7 @@ internal class LaunchService : DefaultLaunchService
 
                 if (specialConfig.Account is YggdrasilAccount yggdrasil)
                 {
-                    if (!((YggdrasilAccount)account).YggdrasilServerUrl.Equals(yggdrasil.YggdrasilServerUrl)) 
+                    if (!((YggdrasilAccount)account).YggdrasilServerUrl.Equals(yggdrasil.YggdrasilServerUrl))
                         return false;
                 }
 

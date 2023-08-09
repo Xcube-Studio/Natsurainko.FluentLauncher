@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
@@ -13,7 +12,6 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
 
@@ -31,7 +29,7 @@ partial class CoreSettingsViewModel : ObservableObject
     private Account targetedAccount;
 
     public GameSpecialConfig GameSpecialConfig { get; set; }
-    
+
     public ObservableCollection<string> VmArguments { get; set; }
 
     public CoreSettingsViewModel(ExtendedGameInfo gameInfo)

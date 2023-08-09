@@ -1,14 +1,15 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Natsurainko.FluentLauncher.Classes.Data.UI;
-using Natsurainko.FluentLauncher.Services.Storage;
-using Natsurainko.FluentLauncher.Views.Downloads;
-using Natsurainko.FluentLauncher.Views;
-using Nrk.FluentCore.Classes.Datas.Download;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Classes.Data.Download;
+using Natsurainko.FluentLauncher.Classes.Data.UI;
+using Natsurainko.FluentLauncher.Services.Storage;
+using Natsurainko.FluentLauncher.Views;
+using Natsurainko.FluentLauncher.Views.Downloads;
+using Nrk.FluentCore.Classes.Datas.Download;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 
@@ -45,6 +46,7 @@ internal partial class DownloadsViewModel : ObservableObject
     private string searchBoxInput = string.Empty;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ComboBoxEnable))]
     [NotifyPropertyChangedFor(nameof(ModSearchProperty))]
     private int resourceType;
 
@@ -71,9 +73,20 @@ internal partial class DownloadsViewModel : ObservableObject
 
     public Visibility ModSearchProperty => ResourceType == 0 ? Visibility.Collapsed : Visibility.Visible;
 
+    public bool ComboBoxEnable => ResourceType == 4 ? false : true;
+
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+
+        if (e.PropertyName == nameof(ResourceType))
+            if (ResourceType == 4)
+                SelectedSource = 0;
+    }
+
     [RelayCommand]
-    public void NavigateCurseResourcePage(CurseResource curseResource)
-        => ShellPage.ContentFrame.Navigate(typeof(CurseResourcePage), curseResource);
+    public void NavigateResourcePage(object resource)
+        => ShellPage.ContentFrame.Navigate(typeof(ResourceItemPage), resource);
 
     [RelayCommand]
     public void SearchAllMinecraft()

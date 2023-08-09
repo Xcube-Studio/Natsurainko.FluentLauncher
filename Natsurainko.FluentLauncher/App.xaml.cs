@@ -25,9 +25,9 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
-        
+
         // Global exception handler
-        UnhandledException += (_, e) => 
+        UnhandledException += (_, e) =>
         {
             e.Handled = true;
             ProcessException(e.Exception);
@@ -140,7 +140,7 @@ public partial class App : Application
                     var dialog = new ExceptionDialog(errorMessage) { XamlRoot = MainWindow.Content.XamlRoot };
                     await dialog.ShowAsync();
                 }
-                catch 
+                catch
                 {
                     var window = new Window() { Title = "Fluent Launcher" };
                     window.Content = new ExceptionPage(errorMessage);

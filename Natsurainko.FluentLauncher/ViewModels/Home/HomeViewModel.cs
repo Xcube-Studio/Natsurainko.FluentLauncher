@@ -59,10 +59,10 @@ partial class HomeViewModel : ObservableObject
     public Visibility AccountTag => ActiveAccount is null ? Visibility.Collapsed : Visibility.Visible;
 
     [RelayCommand]
-    public void Launch() 
+    public void Launch()
     {
         _launchService.LaunchNewGame(ActiveGameInfo);
-    } 
+    }
 
     [RelayCommand]
     public void Account() => Views.ShellPage.ContentFrame.Navigate(typeof(Views.Settings.NavigationPage), typeof(Views.Settings.AccountPage));

@@ -85,8 +85,8 @@ internal static class GameInfoExtensions
 
         var loaders = gameInfo.GetModLoaders().Select(x => x.LoaderType).ToArray();
 
-        if (!(loaders.Contains(ModLoaderType.Forge) || 
-            loaders.Contains(ModLoaderType.Fabric) || 
+        if (!(loaders.Contains(ModLoaderType.Forge) ||
+            loaders.Contains(ModLoaderType.Fabric) ||
             loaders.Contains(ModLoaderType.Quilt) ||
             loaders.Contains(ModLoaderType.LiteLoader)))
             return false;

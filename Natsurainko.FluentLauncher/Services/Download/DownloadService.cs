@@ -14,7 +14,7 @@ public class DownloadService : DefaultDownloadService
 
     public DownloadService(SettingsService settingsService) : base(settingsService)
     {
-        _settingsService= settingsService;
+        _settingsService = settingsService;
     }
 
     public DefaultResourcesDownloader CreateResourcesDownloader(GameInfo gameInfo, IEnumerable<LibraryElement> libraryElements = null)
@@ -22,7 +22,7 @@ public class DownloadService : DefaultDownloadService
         UpdateDownloadSettings();
 
         if (_settingsService.CurrentDownloadSource != "Mojang")
-            return base.CreateResourcesDownloader(gameInfo, libraryElements, downloadMirrorSource: 
+            return base.CreateResourcesDownloader(gameInfo, libraryElements, downloadMirrorSource:
                 _settingsService.CurrentDownloadSource.Equals("Mcbbs") ? DownloadMirrors.Mcbbs : DownloadMirrors.Bmclapi);
 
         return base.CreateResourcesDownloader(gameInfo, libraryElements);

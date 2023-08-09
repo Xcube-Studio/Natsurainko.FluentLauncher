@@ -2,9 +2,9 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace Natsurainko.FluentLauncher.Views.Common;
 
-public sealed partial class CopyrightLicenseDialog : ContentDialog
+public sealed partial class ResourceDownloadDialog : ContentDialog
 {
-    public CopyrightLicenseDialog()
+    public ResourceDownloadDialog(object resource)
     {
         this.InitializeComponent();
     }

@@ -39,7 +39,7 @@ partial class SwitchAccountDialogViewModel : SettingsViewModelBase, ISettingsVie
     public void Confirm() => _accountService.Activate(ActiveAccount);
 
     [RelayCommand(CanExecute = nameof(EnableRemoveAccount))]
-    public void Remove() 
+    public void Remove()
     {
         _accountService.Remove(ActiveAccount);
         ActiveAccount = _accountService.ActiveAccount;

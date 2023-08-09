@@ -6,16 +6,14 @@ namespace Natsurainko.FluentLauncher.Utils.Xaml.TemplateSelectors;
 
 internal class ResourceTemplateSelector : DataTemplateSelector
 {
-    public DataTemplate CurseResource { get; set; }
-
-    public DataTemplate ModrinthResource { get; set; }
+    public DataTemplate Resource { get; set; }
 
     public DataTemplate MinecraftCore { get; set; }
 
     protected override DataTemplate SelectTemplateCore(object item)
     {
-        if (item is CurseResource)
-            return CurseResource;
+        if (item is CurseResource || item is ModrinthResource)
+            return Resource;
 
         if (item is VersionManifestItem)
             return MinecraftCore;

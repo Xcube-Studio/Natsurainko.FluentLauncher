@@ -18,9 +18,9 @@ internal class GameLocator : BaseGameLocator
 
     }
 
-    public GameLocator(DirectoryInfo directory) : base(directory.FullName) 
+    public GameLocator(DirectoryInfo directory) : base(directory.FullName)
     {
-        
+
     }
 
     public override IEnumerable<ExtendedGameInfo> EnumerateGames()

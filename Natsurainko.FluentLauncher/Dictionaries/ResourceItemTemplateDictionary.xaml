@@ -5,7 +5,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI">
 
-    <DataTemplate x:Key="CurseResourceTemplate">
+    <DataTemplate x:Key="ResourceTemplate">
         <labs:SettingsCard
             Padding="20,0"
             HorizontalAlignment="Stretch"
@@ -16,7 +16,7 @@
             <i:Interaction.Behaviors>
                 <behaviors:AncestorBindingBehavior
                     AncestorType="ScrollViewer"
-                    Binding="{Binding DataContext.NavigateCurseResourcePageCommand}"
+                    Binding="{Binding DataContext.NavigateResourcePageCommand}"
                     TargetPropertyName="Command" />
             </i:Interaction.Behaviors>
             <labs:SettingsCard.Header>

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Natsurainko.FluentLauncher"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Natsurainko.FluentCore", "Natsurainko.FluentCore (v4)\Natsurainko.FluentCore.csproj", "{E7119A35-58D0-45EA-8149-FE5F6524B378}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Natsurainko.FluentCore.Manage", "Natsurainko.FluentCore.Manage\Natsurainko.FluentCore.Manage.csproj", "{B2A7DEBD-9117-4EDB-A9AC-F9F8B09037A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Natsurainko.FluentCore.Manage", "Natsurainko.FluentCore.Manage\Natsurainko.FluentCore.Manage.csproj", "{B2A7DEBD-9117-4EDB-A9AC-F9F8B09037A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

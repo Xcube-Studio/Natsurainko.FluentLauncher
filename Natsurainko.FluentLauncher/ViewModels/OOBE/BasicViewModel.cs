@@ -47,8 +47,8 @@ partial class BasicViewModel : SettingsViewModelBase, ISettingsViewModel
     private bool dropDownOpen;
 
     public BasicViewModel(
-        SettingsService settingsService, 
-        GameService gameService, 
+        SettingsService settingsService,
+        GameService gameService,
         NotificationService notificationService)
     {
         _settingsService = settingsService;

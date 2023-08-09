@@ -47,7 +47,7 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
     public Task RefreshCode() => Task.Run(() =>
     {
         App.MainWindow.DispatcherQueue.SynchronousTryEnqueue(() => Loading = true);
-        
+
         CancellationTokenSource.Cancel();
         if (DeviceFlowProcess.Status == TaskStatus.Running)
             DeviceFlowProcess.Wait();

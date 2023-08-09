@@ -16,7 +16,7 @@ internal partial class ChooseAccountTypeViewModel : WizardViewModelBase
     [NotifyPropertyChangedFor(nameof(CanNext))]
     private AccountType? selectedAccountType;
 
-    public ChooseAccountTypeViewModel() 
+    public ChooseAccountTypeViewModel()
     {
         XamlPageType = typeof(ChooseAccountTypePage);
     }

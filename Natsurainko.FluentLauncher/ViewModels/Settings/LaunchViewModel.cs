@@ -84,7 +84,7 @@ partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
     public bool IsJavasEmpty => Javas.Count == 0;
 
     public LaunchViewModel(
-        SettingsService settingsService, 
+        SettingsService settingsService,
         GameService gameService,
         NotificationService notificationService)
     {
@@ -184,7 +184,7 @@ partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
     public void ActivateCoresPage() => Views.ShellPage.ContentFrame.Navigate(typeof(Views.Cores.CoresPage));
 
     [RelayCommand]
-    public void OpenJavaMirrorsDialog() 
+    public void OpenJavaMirrorsDialog()
     {
         _ = new JavaMirrorsDialog
         {

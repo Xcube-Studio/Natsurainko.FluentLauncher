@@ -11,7 +11,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Security.Policy;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
@@ -28,8 +27,11 @@ internal class InterfaceCacheService
         ApiKey = "$2a$10$Awb53b9gSOIJJkdV3Zrgp.CyFP.dI13QKbWn/4UZI4G4ff18WneB6",
         GameId = 432
     };
+    private readonly ModrinthClient _modrinthClient = new ModrinthClient();
 
     public CurseForgeClient CurseForgeClient => _curseForgeClient;
+    public ModrinthClient ModrinthClient => _modrinthClient;
+
 
     private IEnumerable<CurseResource> _CurseMcMods;
     private IEnumerable<CurseResource> _CurseModPacks;
@@ -83,7 +85,7 @@ internal class InterfaceCacheService
     {
         bool fetchFailed = !File.Exists(fileFullPath) && fetchAction();
 
-        if (fetchFailed) return string.Empty; 
+        if (fetchFailed) return string.Empty;
         if (autoRefresh) Task.Run(fetchAction);
 
         return fileFullPath;
@@ -99,7 +101,7 @@ internal class InterfaceCacheService
     }
 
     private Task<NewsData[]> _fetchNewsTask;
-    public Task<NewsData[]> FetchNews() 
+    public Task<NewsData[]> FetchNews()
     {
         if (_fetchNewsTask != null)
             return _fetchNewsTask;
@@ -122,7 +124,7 @@ internal class InterfaceCacheService
     }
 
     private Task<PublishData[]> _fetchMinecraftPublishesTask;
-    public Task<PublishData[]> FetchMinecraftPublishes() 
+    public Task<PublishData[]> FetchMinecraftPublishes()
     {
         if (_fetchMinecraftPublishesTask != null)
             return _fetchMinecraftPublishesTask;

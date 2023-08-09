@@ -8,7 +8,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:downloads="using:Natsurainko.FluentLauncher.ViewModels.Downloads"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:selectors="using:Natsurainko.FluentLauncher.Utils.Xaml.TemplateSelectors"
     d:DataContext="{d:DesignInstance Type=downloads:ResourcesSearchViewModel}"
@@ -85,6 +84,7 @@
                 <ComboBox
                     Grid.Column="5"
                     MinWidth="150"
+                    IsEnabled="{Binding ComboBoxEnable}"
                     PlaceholderText="Source"
                     SelectedIndex="{Binding SelectedSource, Mode=TwoWay}">
                     <x:String>CurseForge</x:String>
@@ -97,7 +97,7 @@
         <ScrollViewer Grid.Row="2" Padding="30,0">
             <ItemsRepeater Margin="0,0,0,20" ItemsSource="{Binding SearchedItems}">
                 <ItemsRepeater.ItemTemplate>
-                    <selectors:ResourceTemplateSelector CurseResource="{StaticResource CurseResourceTemplate}" MinecraftCore="{StaticResource ManifestItemTemplate}" />
+                    <selectors:ResourceTemplateSelector MinecraftCore="{StaticResource ManifestItemTemplate}" Resource="{StaticResource ResourceTemplate}" />
                 </ItemsRepeater.ItemTemplate>
                 <ItemsRepeater.Layout>
                     <StackLayout Spacing="4" />

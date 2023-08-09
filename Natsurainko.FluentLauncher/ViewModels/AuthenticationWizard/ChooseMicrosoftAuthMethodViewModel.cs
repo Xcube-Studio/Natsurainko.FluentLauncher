@@ -14,7 +14,7 @@ internal partial class ChooseMicrosoftAuthMethodViewModel : WizardViewModelBase
     [NotifyPropertyChangedFor(nameof(CanNext))]
     private MicrosoftAuthMethod? selectedMicrosoftAuthMethod;
 
-    public ChooseMicrosoftAuthMethodViewModel() 
+    public ChooseMicrosoftAuthMethodViewModel()
     {
         XamlPageType = typeof(ChooseMicrosoftAuthMethodPage);
     }

@@ -2,7 +2,6 @@
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
-using System.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 

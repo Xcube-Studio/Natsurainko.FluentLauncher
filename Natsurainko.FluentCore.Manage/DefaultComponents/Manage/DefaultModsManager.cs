@@ -26,8 +26,8 @@ public class DefaultModsManager : BaseModsManager
 
             try { modInfo = DefaultModInfoParser.Parse(file); }
             catch (Exception ex)
-            { 
-                _errorMods.Add((ex, file)); 
+            {
+                _errorMods.Add((ex, file));
 
                 modInfo = new ModInfo
                 {

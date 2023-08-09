@@ -53,7 +53,7 @@ class SkinCacheService
         if (account is YggdrasilAccount yggdrasil)
         {
             using var responseMessage = HttpUtils.HttpGet(
-                yggdrasil.YggdrasilServerUrl + 
+                yggdrasil.YggdrasilServerUrl +
                 "/sessionserver/session/minecraft/profile/" +
                 yggdrasil.Uuid.ToString("N").ToLower()
                 , authorization);
@@ -113,7 +113,7 @@ class SkinCacheService
         {
             var path = paths[i];
 
-            if (i == 0 && !File.Exists(path)) 
+            if (i == 0 && !File.Exists(path))
                 path = (await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/Icons/steve.png"))).Path;
 
             if (!File.Exists(path))

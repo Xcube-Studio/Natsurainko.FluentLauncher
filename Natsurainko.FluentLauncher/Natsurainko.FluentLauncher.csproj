@@ -59,12 +59,13 @@
     <None Remove="Views\Common\AuthenticationWizardDialog.xaml" />
     <None Remove="Views\Common\CopyrightLicenseDialog.xaml" />
     <None Remove="Views\Common\JavaMirrorsDialog.xaml" />
+    <None Remove="Views\Common\ResourceDownloadDialog.xaml" />
     <None Remove="Views\Common\SwitchAccountDialog.xaml" />
     <None Remove="Views\Cores\ManageNavigationPage.xaml" />
     <None Remove="Views\Cores\Manage\CoreModsPage.xaml" />
     <None Remove="Views\Cores\Manage\CoreSettingsPage.xaml" />
-    <None Remove="Views\Downloads\CurseResourcePage.xaml" />
     <None Remove="Views\Downloads\DownloadsPage.xaml" />
+    <None Remove="Views\Downloads\ResourceItemPage.xaml" />
     <None Remove="Views\Downloads\ResourcesSearchPage.xaml" />
     <None Remove="Views\Home\NewHomePage.xaml" />
     <None Remove="Views\NotifyStyleDictionary.xaml" />
@@ -86,6 +87,7 @@
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
     <PackageReference Include="PInvoke.User32" Version="0.7.124" />
+    <PackageReference Include="ReverseMarkdown" Version="3.25.0" />
     <PackageReference Include="WindowsAPICodePack.Shell.CommonFileDialogs" Version="1.1.5" />
     <PackageReference Include="WinUIEx" Version="2.2.0" />
     <Manifest Include="$(ApplicationManifest)" />
@@ -104,6 +106,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\Common\ResourceDownloadDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
     <Page Update="Dictionaries\ResourceItemTemplateDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -116,7 +124,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Views\Downloads\CurseResourcePage.xaml">
+    <Page Update="Views\Downloads\ResourceItemPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

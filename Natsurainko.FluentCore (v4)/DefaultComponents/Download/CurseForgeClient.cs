@@ -22,7 +22,7 @@ public class CurseForgeClient
     private Dictionary<string, string> Header => new() { { "x-api-key", ApiKey } };
 
     public IEnumerable<CurseResource> SearchResources(
-        string searchFilter, 
+        string searchFilter,
         CurseResourceType? resourceType = default,
         string version = default)
     {
@@ -31,7 +31,7 @@ public class CurseForgeClient
         stringBuilder.Append($"&sortField=Featured");
         stringBuilder.Append($"&sortOrder=desc");
 
-        if (resourceType != null) 
+        if (resourceType != null)
             stringBuilder.Append($"&categoryId=0&classId={(int)resourceType}");
 
         stringBuilder.Append($"&searchFilter={HttpUtility.UrlEncode(searchFilter)}");
@@ -45,8 +45,8 @@ public class CurseForgeClient
     public void GetFeaturedResources(out IEnumerable<CurseResource> mcMods, out IEnumerable<CurseResource> modPacks)
     {
         using var responseMessage = HttpUtils.HttpPost(
-            Host + "mods/featured", 
-            JsonSerializer.Serialize(new { gameId = 432 }), 
+            Host + "mods/featured",
+            JsonSerializer.Serialize(new { gameId = 432 }),
             Header);
 
         responseMessage.EnsureSuccessStatusCode();

@@ -3,12 +3,13 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Classes.Data.Download;
 using Natsurainko.FluentLauncher.Services.Storage;
-using Natsurainko.FluentLauncher.Views.Downloads;
 using Natsurainko.FluentLauncher.Views;
+using Natsurainko.FluentLauncher.Views.Downloads;
 using Nrk.FluentCore.Classes.Datas.Download;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 
@@ -16,7 +17,7 @@ internal partial class ResourcesSearchViewModel : ObservableObject
 {
     private readonly InterfaceCacheService _interfaceCacheService = App.GetService<InterfaceCacheService>();
 
-    public ResourcesSearchViewModel(ResourceSearchData searchData) 
+    public ResourcesSearchViewModel(ResourceSearchData searchData)
     {
         SearchBoxInput = searchData.SearchInput;
         ResourceType = searchData.ResourceType;
@@ -30,6 +31,7 @@ internal partial class ResourcesSearchViewModel : ObservableObject
     private string searchBoxInput = string.Empty;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ComboBoxEnable))]
     [NotifyPropertyChangedFor(nameof(ModSearchProperty))]
     private int resourceType;
 
@@ -46,6 +48,17 @@ internal partial class ResourcesSearchViewModel : ObservableObject
     private object searchedItems;
 
     public Visibility ModSearchProperty => ResourceType == 0 ? Visibility.Collapsed : Visibility.Visible;
+
+    public bool ComboBoxEnable => ResourceType == 4 ? false : true;
+
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+
+        if (e.PropertyName == nameof(ResourceType))
+            if (ResourceType == 4)
+                SelectedSource = 0;
+    }
 
     [RelayCommand]
     private void Search()
@@ -79,9 +92,22 @@ internal partial class ResourcesSearchViewModel : ObservableObject
                 App.MainWindow.DispatcherQueue.TryEnqueue(() => SearchedItems = resources);
             });
         }
+        else
+        {
+            Task.Run(() =>
+            {
+                var resources = _interfaceCacheService.ModrinthClient.SearchResources(SearchBoxInput, ResourceType switch
+                {
+                    2 => Nrk.FluentCore.Classes.Enums.ModrinthResourceType.ModPack,
+                    3 => Nrk.FluentCore.Classes.Enums.ModrinthResourceType.Resourcepack,
+                    _ => Nrk.FluentCore.Classes.Enums.ModrinthResourceType.McMod
+                });
+
+                App.MainWindow.DispatcherQueue.TryEnqueue(() => SearchedItems = resources);
+            });
+        }
     }
 
     [RelayCommand]
-    public void NavigateCurseResourcePage(CurseResource curseResource)
-        => ShellPage.ContentFrame.Navigate(typeof(CurseResourcePage), curseResource);
+    public void NavigateResourcePage(object resource) => ShellPage.ContentFrame.Navigate(typeof(ResourceItemPage), resource);
 }

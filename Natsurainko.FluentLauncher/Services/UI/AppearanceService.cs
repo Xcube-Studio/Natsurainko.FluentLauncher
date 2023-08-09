@@ -24,14 +24,14 @@ internal class AppearanceService
 
     public Type HomePageType => _settingsService.UseNewHomePage ? typeof(NewHomePage) : typeof(HomePage);
 
-    public AppearanceService(SettingsService settingsService) 
+    public AppearanceService(SettingsService settingsService)
     {
         _settingsService = settingsService;
     }
 
     private void NavigationViewDisplayModeChanged(AppSettingsManagement.SettingsContainer sender, AppSettingsManagement.SettingChangedEventArgs e)
     {
-        _navigationView.PaneDisplayMode = _settingsService.NavigationViewDisplayMode == 0 
+        _navigationView.PaneDisplayMode = _settingsService.NavigationViewDisplayMode == 0
             ? NavigationViewPaneDisplayMode.Auto
             : NavigationViewPaneDisplayMode.LeftMinimal;
     }

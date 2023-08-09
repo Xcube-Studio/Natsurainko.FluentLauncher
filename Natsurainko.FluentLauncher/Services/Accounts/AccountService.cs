@@ -35,7 +35,7 @@ internal class AccountService : DefaultAccountService
     /// <summary>
     /// The active account of Fluent Launcher. The Accounts collection always contains this account. This is null if no account is available.
     /// </summary>
-    
+
     //public Account ActiveAccount { get; private set; } 已继承 DefaultAccountService
 
     public event PropertyChangedEventHandler ActiveAccountChanged;

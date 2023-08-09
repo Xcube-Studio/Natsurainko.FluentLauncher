@@ -10,7 +10,7 @@ public class MicrosoftAuthenticateException : Exception
 
     }
 
-    public MicrosoftAuthenticateExceptionType Type { get; internal set; } 
+    public MicrosoftAuthenticateExceptionType Type { get; internal set; }
 
-    public MicrosoftAuthenticateStep Step { get; internal set; } 
+    public MicrosoftAuthenticateStep Step { get; internal set; }
 }

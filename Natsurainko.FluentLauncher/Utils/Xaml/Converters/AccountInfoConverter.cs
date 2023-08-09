@@ -1,6 +1,5 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Data;
-using Natsurainko.FluentLauncher.Services.Storage;
 using Nrk.FluentCore.Classes.Datas.Authenticate;
 using Nrk.FluentCore.Classes.Enums;
 using System;
@@ -28,7 +27,7 @@ internal class AccountInfoConverter : IValueConverter
 
         return NeedProperty switch
         {
-            "LastRefreshTime" => value is MicrosoftAccount microsoftAccount 
+            "LastRefreshTime" => value is MicrosoftAccount microsoftAccount
                 ? microsoftAccount.LastRefreshTime
                 : null,
             "LastRefreshVisibility" => value is MicrosoftAccount

@@ -18,7 +18,7 @@ public partial class SettingsService : SettingsContainer, IFluentCoreSettingsSer
 {
     #region New IFluentCoreSettingsService Property
 
-    public ObservableCollection<string> MinecraftFolders { get; private set; } = new ();
+    public ObservableCollection<string> MinecraftFolders { get; private set; } = new();
     public ObservableCollection<string> Javas { get; private set; } = new();
 
     [SettingItem(typeof(string), "ActiveMinecraftFolder", Default = "", Converter = typeof(JsonStringConverter<string>))]

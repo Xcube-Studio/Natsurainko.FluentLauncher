@@ -142,6 +142,7 @@
                         <ComboBox
                             Grid.Column="5"
                             MinWidth="150"
+                            IsEnabled="{Binding ComboBoxEnable}"
                             PlaceholderText="Source"
                             SelectedIndex="{Binding SelectedSource, Mode=TwoWay}">
                             <x:String>CurseForge</x:String>
@@ -329,7 +330,7 @@
 
                 <ui:AdaptiveGridView
                     DesiredWidth="300"
-                    ItemTemplate="{ThemeResource CurseResourceTemplate}"
+                    ItemTemplate="{ThemeResource ResourceTemplate}"
                     ItemsSource="{Binding CurseMcMods}"
                     SelectionMode="None" />
 
@@ -340,7 +341,7 @@
 
                 <ui:AdaptiveGridView
                     DesiredWidth="300"
-                    ItemTemplate="{ThemeResource CurseResourceTemplate}"
+                    ItemTemplate="{ThemeResource ResourceTemplate}"
                     ItemsSource="{Binding CurseModPacks}"
                     SelectionMode="None" />
             </StackPanel>

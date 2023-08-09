@@ -13,13 +13,13 @@ public record CurseResource
     public int ClassId { get; set; }
 
     [JsonPropertyName("name")]
-    public string Name { get; set; } 
+    public string Name { get; set; }
 
     [JsonPropertyName("summary")]
     public string Summary { get; set; }
 
     [JsonPropertyName("downloadCount")]
-    public int DownloadCount { get; set; }  
+    public int DownloadCount { get; set; }
 
     [JsonPropertyName("dateModified")]
     public DateTime DateModified { get; set; }

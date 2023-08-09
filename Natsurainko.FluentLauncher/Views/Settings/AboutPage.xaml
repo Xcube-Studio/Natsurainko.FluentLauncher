@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Settings"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Settings"
     xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -196,8 +195,8 @@
                             </HyperlinkButton>
                         </labs:SettingsCard>
 
-                        <labs:SettingsCard Description="8.2.1" Header="CommunityToolkit.Mvvm">
-                            <HyperlinkButton NavigateUri="https://github.com/CommunityToolkit/dotnet" ToolTipService.ToolTip="https://github.com/CommunityToolkit/dotnet">
+                        <labs:SettingsCard Description="0.0.3" Header="CommunityToolkit.Labs.WinUI.SegmentedControl">
+                            <HyperlinkButton NavigateUri="https://github.com/CommunityToolkit/Labs-Windows" ToolTipService.ToolTip="https://github.com/CommunityToolkit/Labs-Windows">
                                 <TextBlock Text="Github" />
                             </HyperlinkButton>
                         </labs:SettingsCard>
@@ -208,8 +207,14 @@
                             </HyperlinkButton>
                         </labs:SettingsCard>
 
-                        <labs:SettingsCard Description="0.0.3" Header="CommunityToolkit.Labs.WinUI.SegmentedControl">
-                            <HyperlinkButton NavigateUri="https://github.com/CommunityToolkit/Labs-Windows" ToolTipService.ToolTip="https://github.com/CommunityToolkit/Labs-Windows">
+                        <labs:SettingsCard Description="8.2.1" Header="CommunityToolkit.Mvvm">
+                            <HyperlinkButton NavigateUri="https://github.com/CommunityToolkit/dotnet" ToolTipService.ToolTip="https://github.com/CommunityToolkit/dotnet">
+                                <TextBlock Text="Github" />
+                            </HyperlinkButton>
+                        </labs:SettingsCard>
+
+                        <labs:SettingsCard Description="7.1.2" Header="CommunityToolkit.WinUI.UI">
+                            <HyperlinkButton NavigateUri="https://github.com/CommunityToolkit/WindowsCommunityToolkit" ToolTipService.ToolTip="https://github.com/CommunityToolkit/WindowsCommunityToolkit">
                                 <TextBlock Text="Github" />
                             </HyperlinkButton>
                         </labs:SettingsCard>
@@ -222,6 +227,12 @@
 
                         <labs:SettingsCard Description="built-in" Header="Natsurainko.FluentCore">
                             <HyperlinkButton NavigateUri="https://github.com/Xcube-Studio/Natsurainko.FluentCore" ToolTipService.ToolTip="https://github.com/Xcube-Studio/Natsurainko.FluentCore">
+                                <TextBlock Text="Github" />
+                            </HyperlinkButton>
+                        </labs:SettingsCard>
+
+                        <labs:SettingsCard Description="3.25.0" Header="ReverseMarkdown">
+                            <HyperlinkButton NavigateUri="https://github.com/mysticmind/reversemarkdown-net" ToolTipService.ToolTip="https://github.com/mysticmind/reversemarkdown-net">
                                 <TextBlock Text="Github" />
                             </HyperlinkButton>
                         </labs:SettingsCard>

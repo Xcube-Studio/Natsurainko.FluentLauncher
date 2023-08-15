@@ -67,7 +67,9 @@ jobs:
     - name: Add nuget source
       # if: steps.cache.outputs.cache-hit != 'true'
       run: dotnet nuget add source "https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json"
-
+    - name: Get Natsurainko.FluentCore SubModule
+      run: git submodule update --init --recursive
+      
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore NuGet packages
       # must run

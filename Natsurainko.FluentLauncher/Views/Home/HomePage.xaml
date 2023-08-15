@@ -122,10 +122,12 @@
                                 <ColumnDefinition Width="1*" />
                             </Grid.ColumnDefinitions>
                             <Border
-                                Width="32"
-                                Height="32"
+                                Width="36"
+                                Height="36"
                                 Margin="2,2,0,0"
                                 VerticalAlignment="Center"
+                                BorderBrush="{ThemeResource IconBorder}"
+                                BorderThickness="2"
                                 CornerRadius="4">
                                 <Border CornerRadius="4">
                                     <Image Source="{Binding Converter={ThemeResource IconConverter}}" />
@@ -144,6 +146,7 @@
                                 <TextBlock
                                     Grid.Row="1"
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
                                     Text="{Binding Converter={ThemeResource GameCoreTagConverter}}"
                                     TextTrimming="CharacterEllipsis"
                                     ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />

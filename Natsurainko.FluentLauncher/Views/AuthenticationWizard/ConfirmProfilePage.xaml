@@ -103,12 +103,13 @@
                 Margin="0,10,0,0"
                 VerticalAlignment="Top"
                 Glyph="&#xE711;" />
-            <TextBlock
-                Grid.Column="2"
-                VerticalAlignment="Center"
-                Style="{ThemeResource BaseTextBlockStyle}"
-                Text="{Binding FaultedMessage}"
-                TextWrapping="WrapWholeWords" />
+            <ScrollViewer Grid.Column="2" VerticalAlignment="Center">
+                <RichTextBlock>
+                    <Paragraph>
+                        <Run FontWeight="SemiBold" Text="{Binding FaultedMessage}" />
+                    </Paragraph>
+                </RichTextBlock>
+            </ScrollViewer>
         </Grid>
 
     </Grid>

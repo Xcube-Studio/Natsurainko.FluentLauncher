@@ -136,8 +136,8 @@ internal class AccountService : DefaultAccountService
     private void LoadAccountsList()
     {
         // Read settings/accounts.json from local storage service
-        string accountJsonPath = _storageService.GetFile(AccountsJsonPath).FullName;
-        string accountsJson = File.ReadAllText(accountJsonPath);
+        var accountJson = _storageService.GetFile(AccountsJsonPath);
+        string accountsJson = accountJson.Exists ? File.ReadAllText(accountJson.FullName) : "[]";
 
         // Parse accounts.json
         if (JsonNode.Parse(accountsJson) is not JsonNode jsonNode)
@@ -181,7 +181,11 @@ internal class AccountService : DefaultAccountService
 
         // Save to file
         string json = jsonArray.ToJsonString();
-        string path = _storageService.GetFile(AccountsJsonPath).FullName;
-        File.WriteAllText(path, json);
+        var file = _storageService.GetFile(AccountsJsonPath);
+
+        if (!file.Directory.Exists)
+            file.Directory.Create();
+
+        File.WriteAllText(file.FullName, json);
     }
 }

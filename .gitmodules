@@ -1,0 +1,3 @@
+[submodule "Natsurainko.FluentCore"]
+	path = Natsurainko.FluentCore
+	url = https://github.com/Xcube-Studio/Natsurainko.FluentCore.git

@@ -92,17 +92,16 @@
     <PackageReference Include="WinUIEx" Version="2.2.0" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Natsurainko.FluentCore\Natsurainko.FluentCore.Manage\Natsurainko.FluentCore.Manage.csproj" />
+    <ProjectReference Include="..\Natsurainko.FluentCore\Natsurainko.FluentCore\Natsurainko.FluentCore.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
     <Page Update="*.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Natsurainko.FluentCore (v4)\Natsurainko.FluentCore.csproj" />
-    <ProjectReference Include="..\Natsurainko.FluentCore.Manage\Natsurainko.FluentCore.Manage.csproj" />
   </ItemGroup>
 
   <ItemGroup>

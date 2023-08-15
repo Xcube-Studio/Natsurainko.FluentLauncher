@@ -71,6 +71,9 @@ public partial class SettingsService : SettingsContainer, IFluentCoreSettingsSer
     {
         var appsettings = ApplicationData.Current.LocalSettings;
 
+        // Migrate settings data structures from old versions
+        Migrate();
+
         // Init MinecraftFolders
         string[] minecraftFolders = JsonSerializer.Deserialize<string[]>(appsettings.Values["MinecraftFolders"] as string ?? "null");
         Array.ForEach(minecraftFolders ?? Array.Empty<string>(), MinecraftFolders.Add);
@@ -86,23 +89,50 @@ public partial class SettingsService : SettingsContainer, IFluentCoreSettingsSer
         {
             appsettings.Values["Javas"] = JsonSerializer.Serialize(Javas.ToArray());
         };
-
-        // Migrate settings data structures from old versions
-        Migrate();
     }
 
     private void Migrate()
     {
-        //ApplicationData.Current.LocalSettings.Values["SettingsVersion"] = 0u; // TODO: testing only, to be removed
+        ApplicationData.Current.LocalSettings.Values["SettingsVersion"] = 1u; // TODO: testing only, to be removed
         if (SettingsVersion == 0u) // Version 0: Before Release 2.1.8.0
         {
             MigrateFrom_2_1_8_0();
             SettingsVersion = 1;
         }
+
+        if (SettingsVersion == 1) // Version 0: Before Release 2.1.13.0
+        {
+            MigrateFrom_2_1_13_0();
+            SettingsVersion = 2;
+        }
+
         //if (SettingsVersion == 1) // Version 1: Release vNext
         //{
         //    SettingsVersion = 2;
         //}
+    }
+
+    private static void MigrateFrom_2_1_13_0()
+    {
+        if (!MsixPackageUtils.IsPackaged)
+            return;
+
+        var appsettings = ApplicationData.Current.LocalSettings;
+
+        if (appsettings.Values["GameFolders"] is string oldGameFolders)
+            appsettings.Values["MinecraftFolders"] = oldGameFolders;
+
+        if (appsettings.Values["JavaRuntimes"] is string oldJavaRuntimes)
+            appsettings.Values["Javas"] = oldJavaRuntimes;
+
+        if (appsettings.Values["CurrentGameFolder"] is string oldCurrentGameFolder)
+            appsettings.Values["ActiveMinecraftFolder"] = oldCurrentGameFolder;
+
+        if (appsettings.Values["CurrentJavaRuntime"] is string oldCurrentJavaRuntime)
+            appsettings.Values["ActiveJava"] = oldCurrentJavaRuntime;
+
+        if (appsettings.Values["JavaVirtualMachineMemory"] is string oldJavaVirtualMachineMemory)
+            appsettings.Values["JavaMemory"] = oldJavaVirtualMachineMemory;
     }
 
     private static void MigrateFrom_2_1_8_0()

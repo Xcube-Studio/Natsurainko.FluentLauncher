@@ -4,15 +4,14 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
 using Natsurainko.FluentLauncher.Utils.Xaml;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Notification;
 
 internal partial class NotifyPresenterViewModel : ObservableObject
 {
+    public bool _removed = false;
+
     [ObservableProperty]
     private string notifyTitile;
 
@@ -22,7 +21,7 @@ internal partial class NotifyPresenterViewModel : ObservableObject
     [ObservableProperty]
     private ContentPresenter notifyContent;
 
-    public Storyboard RetractAnimation { get; set; }
+    public Func<Storyboard> CreateRetractAnimationAction { get; set; }
 
     public Action Remove { get; set; }
 
@@ -31,8 +30,11 @@ internal partial class NotifyPresenterViewModel : ObservableObject
     {
         App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
         {
-            await RetractAnimation.BeginAsync();
+            var retractAnimation = CreateRetractAnimationAction();
+            await retractAnimation.BeginAsync();
             Remove();
+
+            _removed = true;
         });
     });
 }

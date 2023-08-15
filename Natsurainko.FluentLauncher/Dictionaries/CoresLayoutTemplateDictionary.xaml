@@ -1,0 +1,180 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI">
+    <DataTemplate x:Key="StackTemplate">
+        <labs:SettingsCard
+            Margin="2"
+            Padding="20,0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            CommandParameter="{Binding}"
+            IsClickEnabled="True">
+            <i:Interaction.Behaviors>
+                <behaviors:AncestorBindingBehavior
+                    AncestorType="ItemsRepeater"
+                    Binding="{Binding DataContext.OpenCoreManageCommand}"
+                    TargetPropertyName="Command" />
+            </i:Interaction.Behaviors>
+            <labs:SettingsCard.Header>
+                <Grid x:Name="DataGrid" Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        Width="36"
+                        Height="36"
+                        Margin="2,2,0,0"
+                        VerticalAlignment="Center"
+                        BorderBrush="{ThemeResource IconBorder}"
+                        BorderThickness="2"
+                        CornerRadius="4">
+                        <Border CornerRadius="4">
+                            <Image Source="{Binding Converter={ThemeResource IconConverter}}" />
+                        </Border>
+                    </Border>
+                    <Grid Grid.Column="2" VerticalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            FontWeight="SemiBold"
+                            Text="{Binding Name}"
+                            TextTrimming="CharacterEllipsis"
+                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                            Style="{ThemeResource CaptionTextBlockStyle}"
+                            Text="{Binding Converter={ThemeResource GameCoreTagConverter}}"
+                            TextTrimming="CharacterEllipsis"
+                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                    </Grid>
+                </Grid>
+            </labs:SettingsCard.Header>
+        </labs:SettingsCard>
+    </DataTemplate>
+    <DataTemplate x:Key="CardTemplate">
+        <Button
+            Margin="2"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            BorderThickness="1"
+            CommandParameter="{Binding}"
+            DoubleTapped="0">
+            <i:Interaction.Behaviors>
+                <behaviors:AncestorBindingBehavior
+                    AncestorType="ItemsRepeater"
+                    Binding="{Binding DataContext.OpenCoreManageCommand}"
+                    TargetPropertyName="Command" />
+            </i:Interaction.Behaviors>
+            <Button.Content>
+                <Grid x:Name="DataGrid" Background="Transparent">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Border
+                        Width="36"
+                        Height="36"
+                        VerticalAlignment="Bottom"
+                        BorderBrush="{ThemeResource IconBorder}"
+                        BorderThickness="2"
+                        CornerRadius="4">
+                        <Border CornerRadius="4">
+                            <Image Source="{Binding Converter={ThemeResource IconConverter}}" />
+                        </Border>
+                    </Border>
+                    <Grid
+                        Grid.Row="1"
+                        Margin="0,5,0,0"
+                        VerticalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontWeight="SemiBold"
+                            Text="{Binding Name}"
+                            TextTrimming="CharacterEllipsis"
+                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                        <TextBlock
+                            Grid.Row="1"
+                            HorizontalAlignment="Center"
+                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                            Style="{ThemeResource CaptionTextBlockStyle}"
+                            Text="{Binding Converter={ThemeResource GameCoreTagConverter}}"
+                            TextTrimming="CharacterEllipsis"
+                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                    </Grid>
+                </Grid>
+            </Button.Content>
+        </Button>
+    </DataTemplate>
+    <DataTemplate x:Key="TileTemplate">
+        <labs:SettingsCard
+            Margin="2"
+            Padding="20,0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            CommandParameter="{Binding}"
+            IsClickEnabled="True">
+            <i:Interaction.Behaviors>
+                <behaviors:AncestorBindingBehavior
+                    AncestorType="ItemsRepeater"
+                    Binding="{Binding DataContext.OpenCoreManageCommand}"
+                    TargetPropertyName="Command" />
+            </i:Interaction.Behaviors>
+            <labs:SettingsCard.Header>
+                <Grid x:Name="DataGrid" Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        Width="36"
+                        Height="36"
+                        Margin="2,2,0,0"
+                        VerticalAlignment="Center"
+                        BorderBrush="{ThemeResource IconBorder}"
+                        BorderThickness="2"
+                        CornerRadius="4">
+                        <Border CornerRadius="4">
+                            <Image Source="{Binding Converter={ThemeResource IconConverter}}" />
+                        </Border>
+                    </Border>
+                    <Grid Grid.Column="2" VerticalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            FontWeight="SemiBold"
+                            Text="{Binding Name}"
+                            TextTrimming="CharacterEllipsis"
+                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                            Style="{ThemeResource CaptionTextBlockStyle}"
+                            Text="{Binding Converter={ThemeResource GameCoreTagConverter}}"
+                            TextTrimming="CharacterEllipsis"
+                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                    </Grid>
+                </Grid>
+            </labs:SettingsCard.Header>
+        </labs:SettingsCard>
+    </DataTemplate>
+</ResourceDictionary>
+

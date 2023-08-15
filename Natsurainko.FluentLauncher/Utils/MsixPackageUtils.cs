@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Utils;
 internal static class MsixPackageUtils
 {
     public static bool IsPackaged { get; }
 
-    static MsixPackageUtils() 
+    static MsixPackageUtils()
     {
         IsPackaged = isPackaged();
     }

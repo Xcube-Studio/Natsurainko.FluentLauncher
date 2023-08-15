@@ -1,14 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Natsurainko.FluentCore.Model.Auth;
-using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Classes.Data.UI;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 
@@ -20,7 +14,7 @@ internal partial class ChooseMicrosoftAuthMethodViewModel : WizardViewModelBase
     [NotifyPropertyChangedFor(nameof(CanNext))]
     private MicrosoftAuthMethod? selectedMicrosoftAuthMethod;
 
-    public ChooseMicrosoftAuthMethodViewModel() 
+    public ChooseMicrosoftAuthMethodViewModel()
     {
         XamlPageType = typeof(ChooseMicrosoftAuthMethodPage);
     }

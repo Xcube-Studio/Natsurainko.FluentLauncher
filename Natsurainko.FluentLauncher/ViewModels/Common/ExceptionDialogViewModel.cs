@@ -17,7 +17,7 @@ public partial class ExceptionDialogViewModel : ObservableObject
     }
 
     [RelayCommand]
-    async void CopyAndLaunchGitHub()
+    void CopyAndLaunchGitHub()
     {
         // Copy error message
         var package = new DataPackage();
@@ -25,6 +25,6 @@ public partial class ExceptionDialogViewModel : ObservableObject
         Clipboard.SetContent(package);
 
         // Launch GitHub
-        await Launcher.LaunchUriAsync(new Uri("https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/issues/new/choose"));
+        _ = Launcher.LaunchUriAsync(new Uri("https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/issues/new/choose"));
     }
 }

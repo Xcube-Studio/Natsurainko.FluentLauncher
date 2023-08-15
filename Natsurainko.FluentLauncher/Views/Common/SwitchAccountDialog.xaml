@@ -2,10 +2,12 @@
     x:Class="Natsurainko.FluentLauncher.Views.Common.SwitchAccountDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
     xmlns:common="using:Natsurainko.FluentLauncher.ViewModels.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Common"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Uid="Dialogs_SwitchAccountDialog"
     Title="Switch Account"
     d:DataContext="{d:DesignInstance Type=common:SwitchAccountDialogViewModel}"
     DefaultButton="Primary"
@@ -35,12 +37,16 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <Image
+                        <Border
                             Grid.RowSpan="2"
                             Grid.Column="0"
                             Width="32"
                             Height="32"
-                            Source="/Assets/Icons/steve.png" />
+                            CornerRadius="4">
+                            <i:Interaction.Behaviors>
+                                <behaviors:SkinHeadControlBehavior Account="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </Border>
                         <TextBlock
                             Grid.Row="0"
                             Grid.Column="2"
@@ -55,9 +61,16 @@
                             Style="{ThemeResource CaptionTextBlockStyle}"
                             TextTrimming="CharacterEllipsis"
                             TextWrapping="WrapWholeWords">
-                            <Run Text="{Binding Type}" />
-                            <Run Text="Account" />
-                            <Run Text="{Binding YggdrasilServerUrl}" />
+                            <Run Text="{Binding Type, Converter={ThemeResource AccountInfoConverter}}" />
+                            <Run>
+                                <Run.Text>
+                                    <Binding Converter="{ThemeResource AccountInfoConverter}">
+                                        <Binding.ConverterParameter>
+                                            <x:String>YggdrasilServerUrl</x:String>
+                                        </Binding.ConverterParameter>
+                                    </Binding>
+                                </Run.Text>
+                            </Run>
                         </TextBlock>
                     </Grid>
                 </DataTemplate>
@@ -72,6 +85,7 @@
                 <StackPanel Orientation="Horizontal">
                     <FontIcon FontSize="16" Glyph="&#xe74d;" />
                     <TextBlock
+                        x:Uid="Dialogs_SwitchAccountDialog_B"
                         Margin="5,0,0,0"
                         Style="{ThemeResource BaseTextBlockStyle}"
                         Text="Remove Selected Account" />

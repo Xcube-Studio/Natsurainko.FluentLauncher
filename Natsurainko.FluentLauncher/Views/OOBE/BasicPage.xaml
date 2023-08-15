@@ -18,7 +18,7 @@
 
         <StackPanel VerticalAlignment="Center">
             <TextBlock
-                x:Uid="Guide_Basic_Title"
+                x:Uid="OOBE_BasicPage_T"
                 Margin="20,0,0,0"
                 FontSize="22"
                 FontWeight="Bold"
@@ -41,7 +41,7 @@
                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                             <FontIcon Glyph="&#xe8b7;" />
                             <TextBlock
-                                x:Uid="Guide_Basic_Folder"
+                                x:Uid="OOBE_BasicPage_H1"
                                 Margin="17,0"
                                 Text=".minecraft Folder:" />
                         </StackPanel>
@@ -56,8 +56,8 @@
                             </Grid.ColumnDefinitions>
                             <ComboBox
                                 HorizontalAlignment="Stretch"
-                                ItemsSource="{Binding GameFolders}"
-                                SelectedItem="{Binding CurrentGameFolder, Mode=TwoWay}">
+                                ItemsSource="{Binding MinecraftFolders}"
+                                SelectedItem="{Binding ActiveMinecraftFolder, Mode=TwoWay}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate x:DataType="x:String">
                                         <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
@@ -87,7 +87,7 @@
                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                             <FontIcon Glyph="&#xe8f1;" />
                             <TextBlock
-                                x:Uid="Guide_Basic_Java"
+                                x:Uid="OOBE_BasicPage_H2"
                                 Margin="17,0"
                                 Text="Java Runtimes:" />
                         </StackPanel>
@@ -103,8 +103,8 @@
                             <ComboBox
                                 HorizontalAlignment="Stretch"
                                 IsDropDownOpen="{Binding DropDownOpen, Mode=TwoWay}"
-                                ItemsSource="{Binding JavaRuntimes}"
-                                SelectedItem="{Binding CurrentJavaRuntime, Mode=TwoWay}">
+                                ItemsSource="{Binding Javas}"
+                                SelectedItem="{Binding ActiveJava, Mode=TwoWay}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock TextTrimming="CharacterEllipsis">
@@ -132,7 +132,7 @@
                                     Style="{ThemeResource AccentButtonStyle}">
                                     <Button.Content>
                                         <TextBlock
-                                            x:Uid="_Buttons_Search"
+                                            x:Uid="Buttons_Search"
                                             FontWeight="SemiBold"
                                             Foreground="White"
                                             Text="Search" />
@@ -151,13 +151,13 @@
             FontWeight="SemiBold"
             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
             <Paragraph>
-                <Run x:Uid="Guide_Basic_Para_1" Text="You need at least a .minecraft directory to store your game cores" />
+                <Run x:Uid="OOBE_BasicPage_D1" Text="You need at least a .minecraft directory to store your game cores" />
             </Paragraph>
             <Paragraph>
-                <Run x:Uid="Guide_Basic_Para_2" Text="You need at least a Java Runtime to start your game core" />
+                <Run x:Uid="OOBE_BasicPage_D2" Text="You need at least a Java Runtime to start your game core" />
             </Paragraph>
             <Paragraph Margin="0,25,0,0">
-                <Run x:Uid="Guide_Basic_Para_3" Text="Once done, you can also modify these settings in the global game settings" />
+                <Run x:Uid="OOBE_BasicPage_D3" Text="Once done, you can also modify these settings in the global game settings" />
             </Paragraph>
         </RichTextBlock>
     </Grid>

@@ -1,17 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Natsurainko.FluentCore.Interface;
-using Natsurainko.FluentCore.Model.Auth;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
+using Nrk.FluentCore.Classes.Datas.Authenticate;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
@@ -73,7 +67,7 @@ internal partial class BrowserMicrosoftAuthViewModel : WizardViewModelBase
             return;
         }
 
-        if (!Source.AbsoluteUri.StartsWith("https://login.live.com/oauth20_desktop.srf?") )
+        if (!Source.AbsoluteUri.StartsWith("https://login.live.com/oauth20_desktop.srf?"))
             return;
 
         var nameValueCollection = HttpUtility.ParseQueryString(Source.Query);
@@ -98,7 +92,7 @@ internal partial class BrowserMicrosoftAuthViewModel : WizardViewModelBase
     {
         ConfirmProfileViewModel confirmProfileViewModel = default;
 
-        confirmProfileViewModel = new ConfirmProfileViewModel(() => new IAccount[]
+        confirmProfileViewModel = new ConfirmProfileViewModel(() => new Account[]
         {
             _authenticationService.AuthenticateMicrosoft(AccessCode,
                 progress => App.MainWindow.DispatcherQueue.TryEnqueue(() => confirmProfileViewModel.LoadingProgressText = progress))

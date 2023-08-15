@@ -1,15 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static PInvoke.User32;
-using System.Xml.Linq;
-using Natsurainko.FluentLauncher.Services.Accounts;
-using Natsurainko.FluentCore.Interface;
 
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 
@@ -39,7 +31,7 @@ internal partial class EnterYggdrasilProfileViewModel : WizardViewModelBase
     }
 
     public override WizardViewModelBase GetNextViewModel()
-        => new ConfirmProfileViewModel(() => _authenticationService.AuthenticateYggdrasil(Url, Email, Password).Select(x => (IAccount)x))
+        => new ConfirmProfileViewModel(() => _authenticationService.AuthenticateYggdrasil(Url, Email, Password))
         {
             LoadingProgressText = "Authenticating with Yggdrasil Server"
         };

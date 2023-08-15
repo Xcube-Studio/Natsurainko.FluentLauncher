@@ -1,19 +1,9 @@
-﻿using Natsurainko.FluentCore.Model.Auth;
-using Natsurainko.FluentLauncher.Services.Settings;
+﻿using Natsurainko.FluentLauncher.Services.Storage;
+using Nrk.FluentCore.Classes.Datas.Authenticate;
+using Nrk.FluentCore.DefaultComponents.Authenticate;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using Natsurainko.Toolkits.Values;
-using Natsurainko.Toolkits.Network;
-using Newtonsoft.Json;
-using Natsurainko.Toolkits.Text;
-using Newtonsoft.Json.Linq;
-using System.Diagnostics;
-using System.Threading;
-using Natsurainko.FluentCore.Module.Authenticator;
 
 namespace Natsurainko.FluentLauncher.Services.Accounts;
 
@@ -24,132 +14,100 @@ internal class AuthenticationService
     internal const string RedirectUrl = "https://login.live.com/oauth20_desktop.srf";
 
     private readonly AccountService _accountService;
+    private readonly SkinCacheService _skinCacheService;
 
-    public AuthenticationService(AccountService accountService)
+    public AuthenticationService(AccountService accountService, SkinCacheService skinCacheService)
     {
         _accountService = accountService;
+        _skinCacheService = skinCacheService;
     }
 
-    public async Task RefreshCurrentAccountAsync()
-    {
+    public Task RefreshCurrentAccountAsync() => Task.Run(RefreshCurrentAccount);
 
-    }
-
-    public OfflineAccount AuthenticateOffline(string name, string uuid) => new()
+    public void RefreshCurrentAccount()
     {
-        AccessToken = Guid.NewGuid().ToString("N"),
-        ClientToken = Guid.NewGuid().ToString("N"),
-        Name = name,
-        Uuid = string.IsNullOrEmpty(uuid)
-            ? GuidHelper.FromString(name)
-            : Guid.Parse(uuid)
-    };
-
-    public IEnumerable<YggdrasilAccount> AuthenticateYggdrasil(string url, string email, string password)
-    {
-        var resTask = HttpWrapper.HttpPostAsync(url + "/authserver/authenticate", new LoginRequestModel
+        Account activeAccount = _accountService.ActiveAccount;
+        Account refreshedAccount = default;
+        if (activeAccount is MicrosoftAccount microsoftAccount)
         {
-            ClientToken = Guid.NewGuid().ToString("N"),
-            UserName = email,
-            Password = password
-        }.ToJson());
-
-        resTask.Wait();
-        using var res = resTask.Result;
-
-        var resultTask = res.Content.ReadAsStringAsync();
-
-        resultTask.Wait();
-        string result = resultTask.Result;
-
-        res.EnsureSuccessStatusCode();
-
-        var model = JsonConvert.DeserializeObject<YggdrasilResponseModel>(result);
-
-        return model.AvailableProfiles.Select(x => new YggdrasilAccount()
+            refreshedAccount = DefaultMicrosoftAuthenticator
+                .CreateForRefresh(ClientId, RedirectUrl, microsoftAccount)
+                .Authenticate();
+        }
+        else if (activeAccount is YggdrasilAccount yggdrasilAccount)
         {
-            AccessToken = model.AccessToken,
-            ClientToken = model.ClientToken,
-            Name = x.Name,
-            Uuid = Guid.Parse(x.Id),
-            YggdrasilServerUrl = url
+            refreshedAccount = DefaultYggdrasilAuthenticator
+                .CreateForRefresh(yggdrasilAccount)
+                .Authenticate()
+                .First(account => account.Uuid.Equals(activeAccount.Uuid));
+        }
+        else if (activeAccount is OfflineAccount offlineAccount)
+            refreshedAccount = new DefaultOfflineAuthenticator(activeAccount.Name, activeAccount.Uuid).Authenticate();
+
+        App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+        {
+            _accountService.Remove(activeAccount);
+
+#pragma warning disable CS0612 // Type or member is obsolete
+            _accountService.AddAccount(refreshedAccount);
+#pragma warning restore CS0612 // Type or member is obsolete
+            _accountService.Activate(refreshedAccount);
+
+            Task.Run(() => _skinCacheService.TryCacheSkin(refreshedAccount));
         });
     }
 
-    public MicrosoftAccount AuthenticateMicrosoft(DeviceFlowAuthResult deviceFlowAuthResult, Action<string> progressChanged)
+    public void RefreshContainedAccount(Account account)
     {
-        var authenticator = new MicrosoftAuthenticator(deviceFlowAuthResult.OAuth20TokenResponse, ClientId, RedirectUrl);
-        authenticator.ProgressChanged += (_, e) => progressChanged(e.Item2);
+        Account refreshedAccount = default;
 
-        return (MicrosoftAccount)authenticator.Authenticate();
+        if (account is MicrosoftAccount microsoftAccount)
+        {
+            refreshedAccount = DefaultMicrosoftAuthenticator
+                .CreateForRefresh(ClientId, RedirectUrl, microsoftAccount)
+                .Authenticate();
+        }
+        else if (account is YggdrasilAccount yggdrasilAccount)
+        {
+            refreshedAccount = DefaultYggdrasilAuthenticator
+                .CreateForRefresh(yggdrasilAccount)
+                .Authenticate()
+                .First(account => account.Uuid.Equals(account.Uuid));
+        }
+        else if (account is OfflineAccount offlineAccount)
+            refreshedAccount = new DefaultOfflineAuthenticator(account.Name, account.Uuid).Authenticate();
+
+        App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+        {
+            _accountService.Remove(account);
+
+#pragma warning disable CS0612 // Type or member is obsolete
+            _accountService.AddAccount(refreshedAccount);
+#pragma warning restore CS0612
+
+            Task.Run(() => _skinCacheService.TryCacheSkin(refreshedAccount));
+        });
+    }
+
+    public OfflineAccount AuthenticateOffline(string name, string uuid)
+        => new DefaultOfflineAuthenticator(name, uuid == null ? null : Guid.Parse(uuid)).Authenticate();
+
+    public YggdrasilAccount[] AuthenticateYggdrasil(string url, string email, string password)
+        => DefaultYggdrasilAuthenticator.CreateForLogin(email, password, url).Authenticate();
+
+    public MicrosoftAccount AuthenticateMicrosoft(DeviceFlowResponse deviceFlowResponse, Action<string> progressChanged)
+    {
+        var authenticator = DefaultMicrosoftAuthenticator.CreateFromDeviceFlow(ClientId, RedirectUrl, deviceFlowResponse.OAuth20TokenResponse);
+        //authenticator.ProgressChanged += (_, e) => progressChanged(e.Item2); //TODO:
+
+        return authenticator.Authenticate();
     }
 
     public MicrosoftAccount AuthenticateMicrosoft(string accessCode, Action<string> progressChanged)
     {
-        var authenticator = new MicrosoftAuthenticator(accessCode, ClientId, RedirectUrl);
-        authenticator.ProgressChanged += (_, e) => progressChanged(e.Item2);
+        var authenticator = DefaultMicrosoftAuthenticator.CreateForLogin(ClientId, RedirectUrl, accessCode);
+        //authenticator.ProgressChanged += (_, e) => progressChanged(e.Item2);
 
         return (MicrosoftAccount)authenticator.Authenticate();
     }
-
-    public static Task<DeviceFlowAuthResult> DeviceFlowAuthAsync(Action<DeviceAuthorizationResponse> ReceiveUserCodeAction, out CancellationTokenSource cancellationTokenSource)
-    {
-        cancellationTokenSource = new CancellationTokenSource();
-        var token = cancellationTokenSource.Token;
-
-        return Task.Run(async () =>
-        {
-            var deviceAuthPost =
-                $"client_id={ClientId}" +
-                "&scope=XboxLive.signin%20offline_access";
-
-            using var deviceAuthPostRes = await HttpWrapper.HttpPostAsync
-                ($"https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode", deviceAuthPost, "application/x-www-form-urlencoded");
-            var deviceAuthResponse = JsonConvert.DeserializeObject<DeviceAuthorizationResponse>(await deviceAuthPostRes.Content.ReadAsStringAsync());
-            ReceiveUserCodeAction(deviceAuthResponse);
-
-            var stopwatch = Stopwatch.StartNew();
-
-            while (stopwatch.Elapsed < TimeSpan.FromSeconds(deviceAuthResponse.ExpiresIn))
-            {
-                if (token.IsCancellationRequested)
-                    break;
-
-                await Task.Delay(deviceAuthResponse.Interval * 1000);
-
-                var pollingPost =
-                    "grant_type=urn:ietf:params:oauth:grant-type:device_code" +
-                    $"&client_id={ClientId}" +
-                    $"&device_code={deviceAuthResponse.DeviceCode}";
-
-                using var pollingPostRes = await HttpWrapper.HttpPostAsync
-                    ($"https://login.microsoftonline.com/consumers/oauth2/v2.0/token", pollingPost, "application/x-www-form-urlencoded");
-                var pollingPostJson = JObject.Parse(await pollingPostRes.Content.ReadAsStringAsync());
-
-                if (pollingPostRes.IsSuccessStatusCode)
-                    return new()
-                    {
-                        Success = true,
-                        OAuth20TokenResponse = pollingPostJson.ToObject<OAuth20TokenResponseModel>()
-                    };
-                else
-                {
-                    var error = (string)pollingPostJson["error"];
-                    if (error.Equals("authorization_declined") ||
-                        error.Equals("bad_verification_code") ||
-                        error.Equals("expired_token"))
-                        break;
-                }
-            }
-
-            stopwatch.Stop();
-
-            return new DeviceFlowAuthResult()
-            {
-                Success = false
-            };
-
-        }, token);
-    }
-
 }

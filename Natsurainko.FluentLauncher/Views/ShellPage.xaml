@@ -6,13 +6,27 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Natsurainko.FluentLauncher.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     ActualThemeChanged="Page_ActualThemeChanged"
     Loaded="Page_Loaded"
     SizeChanged="Page_SizeChanged"
     mc:Ignorable="d">
 
-    <Grid>
+    <Grid x:Name="MainGrid">
+        <Border
+            Name="BackgroundImageBorder"
+            Padding="20"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch">
+            <Image
+                Name="BackgroundImage"
+                Margin="-20"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                x:FieldModifier="public"
+                Stretch="UniformToFill" />
+        </Border>
         <Border
             x:Name="AppTitleBar"
             Height="{Binding CompactPaneLength, ElementName=NavigationViewControl}"
@@ -55,31 +69,31 @@
 
             <NavigationView.MenuItems>
                 <NavigationViewItem
-                    x:Uid="Navigation_Home"
+                    x:Uid="ShellPage_NV_Item_1"
                     Content="Home"
                     Icon="{xh:FontIcon Glyph=&#xE80F;}"
                     IsSelected="True"
                     Tag="Natsurainko.FluentLauncher.Views.Home.HomePage" />
                 <NavigationViewItem
-                    x:Uid="Navigation_Cores"
+                    x:Uid="ShellPage_NV_Item_2"
                     Content="Cores"
                     Icon="{xh:FontIcon Glyph=&#xf158;}"
                     Tag="Natsurainko.FluentLauncher.Views.Cores.CoresPage" />
                 <NavigationViewItem
-                    x:Uid="Navigation_Activities"
+                    x:Uid="ShellPage_NV_Item_3"
                     Content="Activities"
                     Icon="{xh:FontIcon Glyph=&#xE945;}"
                     Tag="Natsurainko.FluentLauncher.Views.Activities.ActivitiesNavigationPage" />
                 <NavigationViewItem
-                    x:Uid="Navigation_Mods"
+                    x:Uid="ShellPage_NV_Item_4"
                     Content="Mods"
                     Icon="{xh:FontIcon Glyph=&#xe8f1;}"
-                    Tag="Natsurainko.FluentLauncher.Views.Downloads.CurseForgePage" />
+                    Tag="Natsurainko.FluentLauncher.Views.Downloads.DownloadsPage" />
             </NavigationView.MenuItems>
 
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem
-                    x:Uid="Navigation_Settings"
+                    x:Uid="ShellPage_NV_Item_5"
                     Content="Settings"
                     Tag="Natsurainko.FluentLauncher.Views.Settings.NavigationPage">
                     <NavigationViewItem.Icon>

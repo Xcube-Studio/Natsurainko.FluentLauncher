@@ -1,5 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Natsurainko.FluentLauncher.Components.FluentCore;
+using Nrk.FluentCore.Classes.Datas.Launch;
 using System;
 
 namespace Natsurainko.FluentLauncher.Utils.Xaml.Converters;
@@ -10,10 +10,10 @@ public class TeachingTipTitleConverter : IValueConverter
     {
         if (value == null || parameter == null)
             return null;
-        if (value is GameCore core)
-            return $"{parameter} {core.Id}";
-        if (value is ModInfo mod)
-            return $"{parameter} {mod.Name}";
+        if (value is GameInfo gameInfo)
+            return $"{parameter} {gameInfo.AbsoluteId}";
+        //if (value is ModInfo mod)
+        //    return $"{parameter} {mod.Name}";
 
         return null;
     }

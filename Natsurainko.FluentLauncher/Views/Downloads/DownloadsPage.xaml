@@ -1,0 +1,350 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Downloads.DownloadsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
+    xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:downloads="using:Natsurainko.FluentLauncher.ViewModels.Downloads"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI.Controls"
+    d:DataContext="{d:DesignInstance Type=downloads:DownloadsViewModel}"
+    Background="Transparent"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Default">
+                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="CardBackgroundFillColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="ControlFillColorSecondaryBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="ControlFillColorDisabledBrush" />
+
+                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="TextFillColorPrimaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+
+                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="ControlElevationBorderBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="Light">
+                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="CardBackgroundFillColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="ControlFillColorSecondaryBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="ControlFillColorDisabledBrush" />
+
+                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="TextFillColorPrimaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+
+                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="ControlElevationBorderBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="HighContrast">
+                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="SystemColorButtonFaceColorBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="SystemColorHighlightTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="SystemControlBackgroundBaseLowBrush" />
+
+                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="SystemColorButtonTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="SystemColorHighlightColorBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="SystemControlDisabledBaseMediumLowBrush" />
+
+                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="SystemColorButtonTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="SystemColorHighlightColorBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="SystemControlDisabledTransparentBrush" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <ScrollViewer Padding="30,20,30,0" VerticalScrollBarVisibility="Auto">
+        <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
+        <Border Margin="0,10">
+            <StackPanel MaxWidth="1000" Spacing="4">
+
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <AutoSuggestBox
+                            Grid.Column="2"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            PlaceholderText="Search.."
+                            Text="{Binding SearchBoxInput, Mode=TwoWay}">
+                            <i:Interaction.Behaviors>
+                                <core:EventTriggerBehavior EventName="QuerySubmitted">
+                                    <actions:ModifiedInvokeCommandAction Command="{Binding SearchCommand}" />
+                                </core:EventTriggerBehavior>
+                            </i:Interaction.Behaviors>
+                            <AutoSuggestBox.QueryIcon>
+                                <AnimatedIcon Width="14" Height="14">
+                                    <AnimatedIcon.Source>
+                                        <animatedvisuals:AnimatedFindVisualSource />
+                                    </AnimatedIcon.Source>
+                                    <AnimatedIcon.FallbackIconSource>
+                                        <SymbolIconSource Symbol="Find" />
+                                    </AnimatedIcon.FallbackIconSource>
+                                </AnimatedIcon>
+                            </AutoSuggestBox.QueryIcon>
+                        </AutoSuggestBox>
+                        <ComboBox
+                            MinWidth="150"
+                            PlaceholderText="资源类型"
+                            SelectedIndex="{Binding ResourceType, Mode=TwoWay}">
+                            <x:String>游戏本体</x:String>
+                            <x:String>模组</x:String>
+                            <x:String>整合包</x:String>
+                            <x:String>资源包</x:String>
+                            <x:String>地图</x:String>
+                        </ComboBox>
+                    </Grid>
+                    <Grid Margin="0,10,0,0" Visibility="{Binding ModSearchProperty}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Style="{ThemeResource BaseTextBlockStyle}"
+                            Text="模组搜索选项：" />
+                        <ComboBox
+                            Grid.Column="3"
+                            MinWidth="100"
+                            ItemsSource="{Binding Versions}"
+                            PlaceholderText="版本"
+                            SelectedItem="{Binding SelectedVersion, Mode=TwoWay}" />
+                        <ComboBox
+                            Grid.Column="5"
+                            MinWidth="150"
+                            IsEnabled="{Binding ComboBoxEnable}"
+                            PlaceholderText="Source"
+                            SelectedIndex="{Binding SelectedSource, Mode=TwoWay}">
+                            <x:String>CurseForge</x:String>
+                            <x:String>Modrinth</x:String>
+                        </ComboBox>
+                    </Grid>
+                </StackPanel>
+
+                <TextBlock
+                    Margin="1,20,0,4"
+                    Style="{ThemeResource BaseTextBlockStyle}"
+                    Text="Minecraft 本体" />
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="1.5*" />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        Background="{ThemeResource SettingsCardBackground}"
+                        BorderBrush="{ThemeResource SettingsCardBorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="{ThemeResource ControlCornerRadius}"
+                        DataContext="{Binding PrimaryPublishData}">
+                        <Grid RequestedTheme="Dark">
+                            <Border CornerRadius="{ThemeResource ControlCornerRadius}">
+                                <Image Stretch="UniformToFill">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="{Binding ImageUrl}" />
+                                    </Image.Source>
+                                </Image>
+                            </Border>
+                            <HyperlinkButton
+                                Margin="5"
+                                Padding="5"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                NavigateUri="{Binding ReadMoreUrl}">
+                                <FontIcon FontSize="12" Glyph="&#xE8A7;" />
+                            </HyperlinkButton>
+                            <Grid
+                                Height="Auto"
+                                Padding="15,10,15,15"
+                                VerticalAlignment="Bottom"
+                                BorderBrush="{ThemeResource SettingsCardBorderBrush}"
+                                BorderThickness="0,2,0,0"
+                                CornerRadius="0,0,2,2">
+                                <Grid.Background>
+                                    <media:BackdropBlurBrush Amount="50" />
+                                </Grid.Background>
+                                <StackPanel Spacing="15">
+                                    <TextBlock
+                                        FontFamily="{ThemeResource MinecraftTen}"
+                                        Style="{ThemeResource TitleTextBlockStyle}"
+                                        Text="{Binding Title}"
+                                        TextWrapping="WrapWholeWords" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="5" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock
+                                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                            Style="{ThemeResource CaptionTextBlockStyle}"
+                                            Text="{Binding Date}" />
+                                        <Button
+                                            Grid.Column="2"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Bottom">
+                                            <StackPanel Orientation="Horizontal" Spacing="7.5">
+                                                <FontIcon FontSize="12" Glyph="&#xE72A;" />
+                                                <TextBlock Text="下载" />
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <Border
+                            Height="250"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Background="{ThemeResource SettingsCardBackground}"
+                            BorderBrush="{ThemeResource SettingsCardBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="{ThemeResource ControlCornerRadius}"
+                            DataContext="{Binding SecondaryPublishData}">
+                            <Grid RequestedTheme="Dark">
+                                <Border CornerRadius="{ThemeResource ControlCornerRadius}">
+                                    <Image Stretch="UniformToFill">
+                                        <Image.Source>
+                                            <BitmapImage UriSource="{Binding ImageUrl}" />
+                                        </Image.Source>
+                                    </Image>
+                                </Border>
+                                <HyperlinkButton
+                                    Margin="5"
+                                    Padding="5"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    NavigateUri="{Binding ReadMoreUrl}">
+                                    <FontIcon FontSize="12" Glyph="&#xE8A7;" />
+                                </HyperlinkButton>
+                                <Grid
+                                    Height="Auto"
+                                    Padding="15,10,15,15"
+                                    VerticalAlignment="Bottom"
+                                    BorderBrush="{ThemeResource SettingsCardBorderBrush}"
+                                    BorderThickness="0,2,0,0"
+                                    CornerRadius="0,0,2,2">
+                                    <Grid.Background>
+                                        <media:BackdropBlurBrush Amount="50" />
+                                    </Grid.Background>
+                                    <StackPanel Spacing="15">
+                                        <TextBlock
+                                            FontFamily="{ThemeResource MinecraftTen}"
+                                            Style="{ThemeResource TitleTextBlockStyle}"
+                                            Text="{Binding Title}"
+                                            TextWrapping="WrapWholeWords" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*" />
+                                                <ColumnDefinition Width="5" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock
+                                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                                Text="{Binding Date}" />
+                                            <Button
+                                                Grid.Column="2"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Bottom">
+                                                <StackPanel Orientation="Horizontal" Spacing="7.5">
+                                                    <FontIcon FontSize="12" Glyph="&#xE72A;" />
+                                                    <TextBlock Text="下载" />
+                                                </StackPanel>
+                                            </Button>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <labs:SettingsCard
+                            Grid.Row="2"
+                            Command="{Binding SearchAllMinecraftCommand}"
+                            IsClickEnabled="True">
+                            <labs:SettingsCard.HeaderIcon>
+                                <AnimatedIcon Width="18" Height="18">
+                                    <AnimatedIcon.Source>
+                                        <animatedvisuals:AnimatedFindVisualSource />
+                                    </AnimatedIcon.Source>
+                                    <AnimatedIcon.FallbackIconSource>
+                                        <SymbolIconSource Symbol="Find" />
+                                    </AnimatedIcon.FallbackIconSource>
+                                </AnimatedIcon>
+                            </labs:SettingsCard.HeaderIcon>
+                            <labs:SettingsCard.Header>
+                                <TextBlock Text="列出全部版本核心" />
+                            </labs:SettingsCard.Header>
+                            <labs:SettingsCard.Description>
+                                <TextBlock Text="查找版本核心并安装" />
+                            </labs:SettingsCard.Description>
+                        </labs:SettingsCard>
+                    </Grid>
+                </Grid>
+
+                <TextBlock
+                    Margin="1,20,0,4"
+                    Style="{ThemeResource BaseTextBlockStyle}"
+                    Text="CurseForge 热门模组资源" />
+
+                <ui:AdaptiveGridView
+                    DesiredWidth="300"
+                    ItemTemplate="{ThemeResource ResourceTemplate}"
+                    ItemsSource="{Binding CurseMcMods}"
+                    SelectionMode="None" />
+
+                <TextBlock
+                    Margin="1,20,0,4"
+                    Style="{ThemeResource BaseTextBlockStyle}"
+                    Text="CurseForge 热门整合包资源" />
+
+                <ui:AdaptiveGridView
+                    DesiredWidth="300"
+                    ItemTemplate="{ThemeResource ResourceTemplate}"
+                    ItemsSource="{Binding CurseModPacks}"
+                    SelectionMode="None" />
+            </StackPanel>
+        </Border>
+    </ScrollViewer>
+</Page>

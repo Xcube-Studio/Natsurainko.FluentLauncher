@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
-    xmlns:controls="using:Natsurainko.FluentLauncher.UserControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
@@ -26,10 +25,9 @@
                 </win:StackPanel.ChildrenTransitions>
 
                 <TextBlock
-                    x:Uid="Settings_Account_Header"
+                    x:Uid="Settings_AccountPage_T1"
                     Margin="1,0,0,4"
-                    FontSize="16"
-                    FontWeight="Bold"
+                    Style="{ThemeResource BaseTextBlockStyle}"
                     Text="Accounts" />
 
                 <labs:SettingsExpander>
@@ -43,14 +41,17 @@
                             <Border
                                 Width="36"
                                 Height="36"
-                                Background="Wheat"
-                                CornerRadius="4" />
+                                CornerRadius="4">
+                                <i:Interaction.Behaviors>
+                                    <behaviors:SkinHeadControlBehavior Account="{Binding ActiveAccount}" />
+                                </i:Interaction.Behaviors>
+                            </Border>
                             <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                 <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding ActiveAccount.Name}" />
-                                <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Style="{ThemeResource CaptionTextBlockStyle}">
-                                    <Run Text="{Binding ActiveAccount.Type}" />
-                                    <Run Text="Account" />
-                                </TextBlock>
+                                <TextBlock
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                    Text="{Binding ActiveAccount.Type, Converter={ThemeResource AccountInfoConverter}}" />
                             </StackPanel>
                         </Grid>
                     </labs:SettingsExpander.Header>
@@ -64,10 +65,26 @@
                             </labs:SettingsCard.Header>
                         </labs:SettingsCard>
                         <labs:SettingsCard>
+                            <labs:SettingsCard.Visibility>
+                                <Binding Converter="{ThemeResource AccountInfoConverter}" Path="ActiveAccount">
+                                    <Binding.ConverterParameter>
+                                        <x:String>LastRefreshVisibility</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </labs:SettingsCard.Visibility>
+
                             <labs:SettingsCard.Header>
                                 <TextBlock>
-                                    <Run Text="Last Refresh Time:" />
-                                    <Run Text="{Binding ActiveAccount.DateTime}" />
+                                    <Run x:Uid="Settings_AccountPage_SH1" Text="Last Refresh Time:" />
+                                    <Run>
+                                        <Run.Text>
+                                            <Binding Converter="{ThemeResource AccountInfoConverter}" Path="ActiveAccount">
+                                                <Binding.ConverterParameter>
+                                                    <x:String>LastRefreshTime</x:String>
+                                                </Binding.ConverterParameter>
+                                            </Binding>
+                                        </Run.Text>
+                                    </Run>
                                 </TextBlock>
                             </labs:SettingsCard.Header>
                         </labs:SettingsCard>
@@ -80,7 +97,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <FontIcon FontSize="16" Glyph="&#xe72c;" />
                                 <TextBlock
-                                    x:Uid="_Buttons_Refresh"
+                                    x:Uid="Buttons_Refresh"
                                     Margin="5,0,0,0"
                                     Text="Refresh" />
                             </StackPanel>
@@ -88,20 +105,24 @@
                         <Button Command="{Binding SwitchCommand}">
                             <StackPanel Orientation="Horizontal">
                                 <FontIcon FontSize="16" Glyph="&#xE748;" />
-                                <TextBlock Margin="5,0,0,0" Text="Switch Account" />
+                                <TextBlock
+                                    x:Uid="Buttons_SwitchAccount"
+                                    Margin="5,0,0,0"
+                                    Text="Switch Account" />
                             </StackPanel>
                         </Button>
                     </StackPanel>
                 </labs:SettingsExpander>
+
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xe8fa;}">
                     <labs:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_Account_Item_3" Text="Add new account:" />
+                        <TextBlock x:Uid="Settings_AccountPage_H1" Text="Add new account:" />
                     </labs:SettingsCard.Header>
                     <Button Command="{Binding LoginCommand}">
                         <StackPanel Orientation="Horizontal">
                             <FontIcon FontSize="16" Glyph="&#xe8fa;" />
                             <TextBlock
-                                x:Uid="_Buttons_SignIn"
+                                x:Uid="Buttons_SignIn"
                                 Margin="5,0,0,0"
                                 Text="Sign in" />
                         </StackPanel>
@@ -109,24 +130,24 @@
                 </labs:SettingsCard>
 
                 <TextBlock
+                    x:Uid="Settings_AccountPage_T2"
                     Margin="1,20,0,4"
-                    FontSize="16"
-                    FontWeight="Bold"
+                    Style="{ThemeResource BaseTextBlockStyle}"
                     Text="Account Settings" />
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xEC7A;}">
                     <labs:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_Account_Item_5" Text="Launch the game with a Demo account:" />
+                        <TextBlock x:Uid="Settings_AccountPage_H2" Text="Launch the game with a Demo account:" />
                     </labs:SettingsCard.Header>
                     <ToggleSwitch IsOn="{Binding EnableDemoUser, Mode=TwoWay}" />
                 </labs:SettingsCard>
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE72C;}">
                     <labs:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_Account_Item_6" Text="Auto refresh account:" />
+                        <TextBlock x:Uid="Settings_AccountPage_H3" Text="Auto refresh account:" />
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock FontSize="14" Text="Automatically refresh Token before each launch" />
+                        <TextBlock x:Uid="Settings_AccountPage_D1" Text="Automatically refresh Token before each launch" />
                     </labs:SettingsCard.Description>
                     <ToggleSwitch IsOn="{Binding AutoRefresh, Mode=TwoWay}" />
                 </labs:SettingsCard>

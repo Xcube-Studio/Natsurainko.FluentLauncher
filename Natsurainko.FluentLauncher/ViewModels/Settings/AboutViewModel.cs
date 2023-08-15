@@ -40,7 +40,8 @@ partial class AboutViewModel : ObservableObject
     [RelayCommand]
     public async void DisplayCopyrightLicense()
     {
-        await new CopyrightLicenseDialog {
+        await new CopyrightLicenseDialog
+        {
             XamlRoot = ShellPage._XamlRoot
         }.ShowAsync();
     }

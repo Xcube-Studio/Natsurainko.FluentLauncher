@@ -1,0 +1,40 @@
+<ContentDialog
+    x:Class="Natsurainko.FluentLauncher.Views.Common.JavaMirrorsDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Common"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Uid="Dialogs_JavaMirrorsDialog"
+    Title="Third-party Java Download Sources"
+    DefaultButton="Primary"
+    PrimaryButtonText="Confirm"
+    Style="{ThemeResource DefaultContentDialogStyle}"
+    mc:Ignorable="d">
+
+    <ScrollViewer>
+        <ItemsRepeater Width="375" ItemsSource="{x:Bind Sources}">
+            <ItemsRepeater.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            Style="{ThemeResource BaseTextBlockStyle}"
+                            Text="{Binding Name}" />
+                        <HyperlinkButton
+                            Grid.Column="2"
+                            HorizontalAlignment="Left"
+                            Content="{Binding Url}"
+                            NavigateUri="{Binding Url}" />
+                    </Grid>
+                </DataTemplate>
+            </ItemsRepeater.ItemTemplate>
+        </ItemsRepeater>
+    </ScrollViewer>
+</ContentDialog>

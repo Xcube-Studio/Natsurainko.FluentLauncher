@@ -7,10 +7,15 @@
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Home"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=home:HomeViewModel}"
-    Background="Transparent"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
 
     <Grid>
+        <Grid.Resources>
+            <ThemeShadow x:Name="SharedShadow" />
+        </Grid.Resources>
+        <Grid x:Name="BackgroundGrid" Background="Transparent" />
+
         <Grid VerticalAlignment="Bottom">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
@@ -28,10 +33,10 @@
                 <StackPanel VerticalAlignment="Bottom">
                     <HyperlinkButton Background="Transparent" Command="{Binding AccountCommand}">
                         <StackPanel>
-                            <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Style="{ThemeResource CaptionTextBlockStyle}">
-                                <Run Text="{Binding ActiveAccount.Type}" />
-                                <Run x:Uid="Home_Account" Text="Account" />
-                            </TextBlock>
+                            <TextBlock
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                Text="{Binding ActiveAccount.Type, Converter={ThemeResource AccountInfoConverter}}" />
                             <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Text="{Binding ActiveAccount.Name}" />
                         </StackPanel>
                     </HyperlinkButton>
@@ -73,13 +78,14 @@
                         </Grid.ColumnDefinitions>
                         <FontIcon FontSize="14" Glyph="&#xF5B0;" />
                         <TextBlock
+                            x:Uid="Home_HomePage_LaunchButton"
                             Grid.Column="2"
                             Style="{ThemeResource BodyStrongTextBlockStyle}"
                             Text="Launch" />
                     </Grid>
                 </Button>
             </Grid>
-            <Grid Margin="25,0">
+            <Grid Margin="25,0" HorizontalAlignment="Right">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="10" />
@@ -87,20 +93,24 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel VerticalAlignment="Center" Visibility="Collapsed">
                     <TextBlock
+                        x:Uid="Home_HomePage_D1"
                         HorizontalAlignment="Right"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Style="{ThemeResource CaptionTextBlockStyle}"
-                        Text="单击以切换" />
+                        Text="Click to switch" />
                     <TextBlock
+                        x:Uid="Home_HomePage_D2"
+                        HorizontalAlignment="Right"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Style="{ThemeResource CaptionTextBlockStyle}"
-                        Text="当前选中的核心" />
+                        Text="the currently selected core" />
                 </StackPanel>
                 <Button
                     Grid.Column="2"
                     HorizontalAlignment="Right"
                     Background="Transparent"
-                    BorderBrush="Transparent">
+                    BorderBrush="Transparent"
+                    Click="Button_Click">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -115,64 +125,95 @@
                             Grid.Column="2"
                             HorizontalTextAlignment="Right"
                             Style="{ThemeResource TitleLargeTextBlockStyle}"
-                            Text="{Binding CurrentGameCore.Id}"
+                            Text="{Binding ActiveGameInfo.Name}"
                             TextTrimming="CharacterEllipsis" />
                     </Grid>
-                    <Button.Flyout>
-                        <Flyout x:Name="buttonFlyout" Placement="LeftEdgeAlignedBottom">
-                            <Grid Width="250">
-                                <StackPanel Spacing="10">
-                                    <AutoSuggestBox
-                                        Height="32"
-                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                                        PlaceholderText="搜索核心..." />
-                                    <ListView ItemsSource="{Binding GameCores}" SelectedItem="{Binding CurrentGameCore, Mode=TwoWay}">
-                                        <ListView.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid
-                                                    x:Name="DataGrid"
-                                                    Padding="0,10"
-                                                    Background="Transparent">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="10" />
-                                                        <ColumnDefinition Width="1*" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <Border
-                                                        Width="32"
-                                                        Height="32"
-                                                        VerticalAlignment="Center"
-                                                        CornerRadius="4">
-                                                        <Border.Background>
-                                                            <ImageBrush ImageSource="{Binding Converter={ThemeResource IconConverter}}" />
-                                                        </Border.Background>
-                                                    </Border>
-                                                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                                                        <TextBlock
-                                                            Style="{ThemeResource BaseTextBlockStyle}"
-                                                            Text="{Binding Id}"
-                                                            TextTrimming="CharacterEllipsis"
-                                                            TextWrapping="NoWrap"
-                                                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
-                                                        <TextBlock
-                                                            Grid.Row="1"
-                                                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                                            Style="{ThemeResource CaptionTextBlockStyle}"
-                                                            Text="{Binding Converter={ThemeResource GameCoreTagConverter}}"
-                                                            TextTrimming="CharacterEllipsis"
-                                                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
-                                                    </StackPanel>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ListView.ItemTemplate>
-                                    </ListView>
-                                </StackPanel>
-                            </Grid>
-                        </Flyout>
-                    </Button.Flyout>
                 </Button>
             </Grid>
         </Grid>
+
+        <SplitView
+            x:Name="splitView"
+            Margin="0,-48,0,0"
+            HorizontalAlignment="Stretch"
+            CompactPaneLength="0"
+            DisplayMode="Overlay"
+            IsPaneOpen="False"
+            OpenPaneLength="280"
+            PaneBackground="Transparent"
+            PanePlacement="Right">
+            <SplitView.Pane>
+                <Grid
+                    x:Name="PanelGrid"
+                    Margin="25,0,0,0"
+                    Padding="0,68,0,0"
+                    Shadow="{ThemeResource SharedShadow}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <Grid.Background>
+                        <AcrylicBrush TintColor="{ThemeResource AcrylicTintColor}" />
+                    </Grid.Background>
+                    <HyperlinkButton Margin="15,0" Command="{Binding CoresCommand}">
+                        <TextBlock
+                            x:Uid="Home_HomePage_Hyperlink"
+                            Style="{ThemeResource BaseTextBlockStyle}"
+                            Text="Go to the CoresPage" />
+                    </HyperlinkButton>
+                    <ListView
+                        x:Name="listView"
+                        Grid.Row="2"
+                        Padding="15,0,15,15"
+                        ItemsSource="{Binding GameInfos}"
+                        SelectedItem="{Binding ActiveGameInfo, Mode=TwoWay}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid
+                                    x:Name="DataGrid"
+                                    Padding="0,10"
+                                    Background="Transparent">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Border
+                                        Width="36"
+                                        Height="36"
+                                        VerticalAlignment="Center"
+                                        BorderBrush="{ThemeResource IconBorder}"
+                                        BorderThickness="2"
+                                        CornerRadius="4">
+                                        <Border CornerRadius="4">
+                                            <Image Source="{Binding Converter={ThemeResource IconConverter}}" />
+                                        </Border>
+                                    </Border>
+                                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                        <TextBlock
+                                            Style="{ThemeResource BaseTextBlockStyle}"
+                                            Text="{Binding Name}"
+                                            TextTrimming="CharacterEllipsis"
+                                            TextWrapping="NoWrap"
+                                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                                        <TextBlock
+                                            Grid.Row="1"
+                                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                            Style="{ThemeResource CaptionTextBlockStyle}"
+                                            Text="{Binding Converter={ThemeResource GameCoreTagConverter}}"
+                                            TextTrimming="CharacterEllipsis"
+                                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </SplitView.Pane>
+            <Grid x:Name="SplitContentGrid" HorizontalAlignment="Stretch" />
+        </SplitView>
+
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="WindowState">
                 <VisualState x:Name="WideState">
@@ -180,7 +221,7 @@
                         <AdaptiveTrigger MinWindowWidth="650" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="buttonFlyout.Placement" Value="LeftEdgeAlignedBottom" />
+                        <Setter Target="splitView.OpenPaneLength" Value="325" />
                     </VisualState.Setters>
                 </VisualState>
 
@@ -189,7 +230,7 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="buttonFlyout.Placement" Value="TopEdgeAlignedRight" />
+                        <Setter Target="splitView.OpenPaneLength" Value="280" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
-using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;

@@ -1,5 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Natsurainko.FluentCore.Extension.Windows.Service;
+using Nrk.FluentCore.Utils;
 using System;
 
 namespace Natsurainko.FluentLauncher.Utils.Xaml.Converters;
@@ -12,7 +12,7 @@ public class JavaInfoConverter : IValueConverter
 
         if (string.IsNullOrEmpty(file))
             return null;
-        var info = JavaHelper.GetJavaRuntimeInfo(file);
+        var info = JavaUtils.GetJavaInfo(file);
 
         return $"{info.Name} ({info.Architecture}, {info.Version})";
     }

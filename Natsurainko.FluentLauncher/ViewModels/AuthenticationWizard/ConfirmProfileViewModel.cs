@@ -1,21 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml;
-using Microsoft.WindowsAppSDK.Runtime.Packages;
-using Natsurainko.FluentCore.Interface;
-using Natsurainko.FluentCore.Model.Auth;
-using Natsurainko.FluentCore.Module.Authenticator;
+using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
-using Natsurainko.Toolkits.Values;
+using Nrk.FluentCore.Classes.Datas.Authenticate;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
+
 internal partial class ConfirmProfileViewModel : WizardViewModelBase
 {
     public override bool CanCancel => Loading == Visibility.Collapsed;
@@ -24,9 +20,9 @@ internal partial class ConfirmProfileViewModel : WizardViewModelBase
 
     public override bool CanNext => Loading == Visibility.Collapsed && SelectedAccount != null;
 
-    private readonly Func<IEnumerable<IAccount>> _authenticateAction;
+    private readonly Func<IEnumerable<Account>> _authenticateAction;
 
-    public ObservableCollection<IAccount> Accounts { get; init; }
+    public ObservableCollection<Account> Accounts { get; init; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
@@ -43,23 +39,29 @@ internal partial class ConfirmProfileViewModel : WizardViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
-    private IAccount selectedAccount;
+    private Account selectedAccount;
 
-    public ConfirmProfileViewModel(Func<IEnumerable<IAccount>> authenticateAction)
+    public ConfirmProfileViewModel(Func<IEnumerable<Account>> authenticateAction)
     {
         XamlPageType = typeof(ConfirmProfilePage);
         _authenticateAction = authenticateAction;
 
         Accounts = new();
 
-        Task.Run(() =>
+        Task.Run(async () =>
         {
             App.MainWindow.DispatcherQueue.TryEnqueue(() => Loading = Visibility.Visible);
-            var accountsList = new List<IAccount>(_authenticateAction());
-            App.MainWindow.DispatcherQueue.TryEnqueue(() => 
+            var accountsList = new List<Account>(_authenticateAction());
+
+            foreach (var account in accountsList)
+                await Task.Run(() => App.GetService<SkinCacheService>().TryCacheSkin(account));
+
+            App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
                 Loading = Visibility.Collapsed;
-                accountsList.ForEach(account => Accounts.Add(account));
+
+                foreach (var account in accountsList)
+                    Accounts.Add(account);
             });
         }).ContinueWith(task =>
         {

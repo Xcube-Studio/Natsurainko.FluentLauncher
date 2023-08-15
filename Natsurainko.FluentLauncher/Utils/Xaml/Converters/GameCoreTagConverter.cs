@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Natsurainko.FluentCore.Model.Install.Vanilla;
-using Natsurainko.FluentLauncher.Components.FluentCore;
+using Nrk.FluentCore.Classes.Datas.Download;
+using Nrk.FluentCore.Classes.Datas.Launch;
 using System;
 using System.Collections.Generic;
 
@@ -10,37 +10,38 @@ public class GameCoreTagConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is GameCore core)
+        if (value is GameInfo game)
         {
             var strings = new List<string>
             {
-                core.Type switch
+                ResourceUtils.GetValue("Converters", "_" + game.Type switch
                 {
                     "release" => "Release",
                     "snapshot" => "Snapshot",
                     "old_beta" => "Old Beta",
                     "old_alpha" => "Old Alpha",
                     _ => "Unknown"
-                }
+                })
             };
 
-            if (!string.IsNullOrEmpty(core.InheritsFrom))
-                strings.Add("Inherited From");
+            if (game.IsInheritedFrom)
+                strings.Add(ResourceUtils.GetValue("Converters", "_Inherited From"));
 
-            strings.Add(core.Source);
+            strings.Add(game.AbsoluteVersion);
 
             return string.Join(" ", strings);
         }
 
-        if (value is CoreManifestItem coreManifestItem)
-            return coreManifestItem.Type switch
+
+        if (value is VersionManifestItem manifestItem)
+            return ResourceUtils.GetValue("Converters", "_" + manifestItem.Type switch
             {
                 "release" => "Release",
                 "snapshot" => "Snapshot",
                 "old_beta" => "Old Beta",
                 "old_alpha" => "Old Alpha",
                 _ => "Unknown"
-            };
+            });
 
         return null;
     }

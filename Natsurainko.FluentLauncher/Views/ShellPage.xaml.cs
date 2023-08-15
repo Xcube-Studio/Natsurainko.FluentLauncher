@@ -1,3 +1,4 @@
+using CommunityToolkit.WinUI.UI.Media.Pipelines;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
@@ -19,15 +20,11 @@ public sealed partial class ShellPage : Page
 
     public ShellPage()
     {
-        /*
-        this.Resources.Add("NavigationViewContentBackground", new SolidColorBrush(Colors.Transparent));
-        this.Resources.Add("NavigationViewPaneContentGridMargin", new Thickness(-1, 0, -1, 0));
-        this.Resources.Add("NavigationViewContentGridCornerRadius", new CornerRadius(0));
-        */
+        _appearanceService.ApplyBackgroundBeforePageInit(this);
         InitializeComponent();
 
         ContentFrame = contentFrame;
-
+        _appearanceService.ApplyBackgroundAfterPageInit(this);
         _appearanceService.RegisterNavigationView(NavigationViewControl);
     }
 
@@ -69,11 +66,22 @@ public sealed partial class ShellPage : Page
         RefreshDragArea();
     }
 
-    private void Page_Loaded(object sender, RoutedEventArgs e)
+    private async void Page_Loaded(object sender, RoutedEventArgs e)
     {
         _XamlRoot = XamlRoot;
 
         App.MainWindow.SetTitleBar(AppTitleBar);
+
+        if (_settings.BackgroundMode == 3)
+        {
+            var sprite = await PipelineBuilder
+                .FromBackdrop()
+                .Blur(0, out EffectAnimation<float> blurAnimation)
+                .AttachAsync(BackgroundImageBorder, BackgroundImageBorder);
+
+            await blurAnimation(sprite.Brush, 0, TimeSpan.FromMilliseconds(1));
+        }
+
         contentFrame.Navigate(_appearanceService.HomePageType);
 
         RefreshDragArea();
@@ -149,6 +157,16 @@ public sealed partial class ShellPage : Page
 
             PaneContentGrid.SetValue(Grid.BackgroundProperty, acrylic);
         }*/
+    }
+
+    internal async void BlurAnimation(int from, int to)
+    {
+        var sprite = await PipelineBuilder
+            .FromBackdrop()
+            .Blur(from, out EffectAnimation<float> blurAnimation)
+            .AttachAsync(BackgroundImageBorder, BackgroundImageBorder);
+
+        await blurAnimation(sprite.Brush, to, TimeSpan.FromSeconds(0.1));
     }
 
     /*

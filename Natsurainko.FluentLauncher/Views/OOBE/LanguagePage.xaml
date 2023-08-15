@@ -18,7 +18,7 @@
             SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}">
             <ComboBox.Header>
                 <TextBlock
-                    x:Uid="Guide_Welcome"
+                    x:Uid="OOBE_LanguagePage_Welcome"
                     FontSize="16"
                     FontWeight="SemiBold"
                     Text="Welcome" />
@@ -35,9 +35,13 @@
                 BorderBrush="{ThemeResource IconBorder}"
                 BorderThickness="2"
                 CornerRadius="8">
-                <Border.Background>
-                    <ImageBrush ImageSource="ms-appx:/Assets/AppIcon.png" />
-                </Border.Background>
+                <Border CornerRadius="8">
+                    <Image>
+                        <Image.Source>
+                            <BitmapImage UriSource="ms-appx:/Assets/AppIcon.png" />
+                        </Image.Source>
+                    </Image>
+                </Border>
             </Border>
             <StackPanel Margin="15,0,0,0">
                 <TextBlock

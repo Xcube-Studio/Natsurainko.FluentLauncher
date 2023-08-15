@@ -2,8 +2,10 @@
     x:Class="Natsurainko.FluentLauncher.Views.Settings.AppearancePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
-    xmlns:controls="using:Natsurainko.FluentLauncher.UserControls"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
@@ -20,14 +22,14 @@
             <StackPanel MaxWidth="1000" Spacing="4">
 
                 <TextBlock
+                    x:Uid="Settings_AppearancePage_T1"
                     Margin="1,0,0,4"
-                    FontSize="16"
-                    FontWeight="Bold"
+                    Style="{ThemeResource BaseTextBlockStyle}"
                     Text="Language" />
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xf2b7;}">
                     <labs:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_Launch_Header_4" Text="Language Settings" />
+                        <TextBlock x:Uid="Settings_AppearancePage_H1" Text="Language Settings" />
                     </labs:SettingsCard.Header>
 
                     <ComboBox ItemsSource="{Binding SupportedLanguages}" SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}">
@@ -39,84 +41,100 @@
                 </labs:SettingsCard>
 
                 <TextBlock
+                    x:Uid="Settings_AppearancePage_T2"
                     Margin="1,20,0,4"
-                    FontSize="16"
-                    FontWeight="Bold"
+                    Style="{ThemeResource BaseTextBlockStyle}"
                     Text="Appearance settings" />
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xe706;}">
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="Display Theme" />
+                        <TextBlock x:Uid="Settings_AppearancePage_H2" Text="Display Theme" />
                     </labs:SettingsCard.Header>
 
                     <labs:SettingsCard.Description>
-                        <TextBlock FontSize="14" Text="Dark and light color themes, effective after restarting the app" />
+                        <TextBlock x:Uid="Settings_AppearancePage_D1" Text="Dark and light color themes, effective after restarting the app" />
                     </labs:SettingsCard.Description>
 
-                    <ComboBox SelectedIndex="{Binding DisplayTheme, Mode=TwoWay}">
+                    <ComboBox ItemsSource="{Binding DisplayThemes}" SelectedIndex="{Binding DisplayTheme, Mode=TwoWay}">
                         <i:Interaction.Behaviors>
                             <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
                             <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                         </i:Interaction.Behaviors>
-                        <x:String>System</x:String>
-                        <x:String>Light</x:String>
-                        <x:String>Dark</x:String>
                     </ComboBox>
                 </labs:SettingsCard>
 
                 <labs:SettingsExpander x:Name="PreferenceExpander">
                     <labs:SettingsExpander.Header>
-                        <TextBlock Text="Background" />
+                        <TextBlock x:Uid="Settings_AppearancePage_H3" Text="Background" />
                     </labs:SettingsExpander.Header>
 
                     <labs:SettingsExpander.Description>
-                        <TextBlock FontSize="14" Text="Application background settings." />
+                        <TextBlock x:Uid="Settings_AppearancePage_D2" Text="Application background settings." />
                     </labs:SettingsExpander.Description>
 
                     <labs:SettingsExpander.HeaderIcon>
                         <FontIcon Glyph="&#xE91B;" />
                     </labs:SettingsExpander.HeaderIcon>
-                    <ComboBox SelectedIndex="0">
-                        <x:String>Mica</x:String>
-                        <x:String>Acrylic</x:String>
-                        <x:String>Solid</x:String>
-                        <x:String>Image</x:String>
-                    </ComboBox>
+                    <ComboBox ItemsSource="{Binding Backgrounds}" SelectedIndex="{Binding BackgroundMode, Mode=TwoWay}" />
 
                     <labs:SettingsExpander.Items>
-                        <labs:SettingsCard Header="TintLuminosityOpacity" Tag="Acrylic">
+                        <labs:SettingsCard Header="TintLuminosityOpacity" IsEnabled="{Binding ElementName=enableCheckBox, Path=IsChecked, Converter={ThemeResource InvertBoolConverter}}">
+                            <labs:SettingsCard.Visibility>
+                                <Binding Converter="{ThemeResource BackgrondSettingItemVisibilityConverter}" Path="BackgroundMode">
+                                    <Binding.ConverterParameter>
+                                        <x:String>Acrylic</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </labs:SettingsCard.Visibility>
                             <StackPanel Orientation="Horizontal" Spacing="10">
                                 <NumberBox
                                     Maximum="1"
                                     Minimum="0"
                                     SmallChange="0.1"
-                                    SpinButtonPlacementMode="Inline" />
+                                    SpinButtonPlacementMode="Inline"
+                                    Value="{Binding TintLuminosityOpacity, Mode=TwoWay}" />
                             </StackPanel>
                         </labs:SettingsCard>
-                        <labs:SettingsCard Header="TintOpacity" Tag="Acrylic">
+                        <labs:SettingsCard Header="TintOpacity" IsEnabled="{Binding ElementName=enableCheckBox, Path=IsChecked, Converter={ThemeResource InvertBoolConverter}}">
+                            <labs:SettingsCard.Visibility>
+                                <Binding Converter="{ThemeResource BackgrondSettingItemVisibilityConverter}" Path="BackgroundMode">
+                                    <Binding.ConverterParameter>
+                                        <x:String>Acrylic</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </labs:SettingsCard.Visibility>
                             <NumberBox
                                 Maximum="1"
                                 Minimum="0"
                                 SmallChange="0.1"
-                                SpinButtonPlacementMode="Inline" />
+                                SpinButtonPlacementMode="Inline"
+                                Value="{Binding TintOpacity, Mode=TwoWay}" />
                         </labs:SettingsCard>
-                        <labs:SettingsCard Tag="Acrylic">
-                            <CheckBox Content="Use the default style resource (SystemControlAcrylicWindowBrush)" />
+                        <labs:SettingsCard>
+                            <labs:SettingsCard.Visibility>
+                                <Binding Converter="{ThemeResource BackgrondSettingItemVisibilityConverter}" Path="BackgroundMode">
+                                    <Binding.ConverterParameter>
+                                        <x:String>Acrylic</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </labs:SettingsCard.Visibility>
+                            <labs:SettingsCard.Header>
+                                <CheckBox
+                                    Name="enableCheckBox"
+                                    Content="Use the default acrylic brush"
+                                    IsChecked="{Binding EnableDefaultAcrylicBrush, Mode=TwoWay}" />
+                            </labs:SettingsCard.Header>
                         </labs:SettingsCard>
-                        <labs:SettingsCard
-                            HorizontalContentAlignment="Left"
-                            Header="Application background color"
-                            Tag="Solid">
+                        <labs:SettingsCard HorizontalContentAlignment="Left" Header="Application background color">
+                            <labs:SettingsCard.Visibility>
+                                <Binding Converter="{ThemeResource BackgrondSettingItemVisibilityConverter}" Path="BackgroundMode">
+                                    <Binding.ConverterParameter>
+                                        <x:String>Solid</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </labs:SettingsCard.Visibility>
                             <StackPanel Orientation="Horizontal" Spacing="10">
-                                <GridView Margin="0,0,0,-15" SelectedIndex="1">
-                                    <GridViewItem>
-                                        <Border
-                                            Width="64"
-                                            Height="48"
-                                            Background="{ThemeResource SystemAccentColor}"
-                                            CornerRadius="4"
-                                            ToolTipService.ToolTip="SystemAccentColor" />
-                                    </GridViewItem>
+                                <GridView Margin="0,0,0,-15" SelectedIndex="{Binding SolidSelectedIndex, Mode=TwoWay}">
                                     <GridViewItem>
                                         <Border
                                             Width="64"
@@ -129,12 +147,20 @@
                                         <Border
                                             Width="64"
                                             Height="48"
-                                            Background="#003D92"
                                             CornerRadius="4"
-                                            ToolTipService.ToolTip="Customize" />
+                                            ToolTipService.ToolTip="Customize">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="{Binding SolidCustomColor}" />
+                                            </Border.Background>
+                                        </Border>
                                     </GridViewItem>
                                 </GridView>
                                 <Button Content="Color Selector" Style="{ThemeResource AccentButtonStyle}">
+                                    <i:Interaction.Behaviors>
+                                        <core:EventTriggerBehavior EventName="Loaded">
+                                            <actions:ModifiedInvokeCommandAction Command="{Binding LoadedCommand}" />
+                                        </core:EventTriggerBehavior>
+                                    </i:Interaction.Behaviors>
                                     <Button.Flyout>
                                         <Flyout Placement="Full">
                                             <Flyout.FlyoutPresenterStyle>
@@ -144,15 +170,12 @@
                                                 </Style>
                                             </Flyout.FlyoutPresenterStyle>
                                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <ColorPicker x:Name="myColorPicker" Orientation="Horizontal" />
-                                                <StackPanel
-                                                    x:Name="ColorPickerStackPanel"
-                                                    Margin="0,-20,0,0"
-                                                    HorizontalAlignment="Right"
-                                                    Orientation="Horizontal"
-                                                    Spacing="10">
-                                                    <Button Content="Confirm" Style="{ThemeResource AccentButtonStyle}" />
-                                                    <Button Content="Cancel" />
+                                                <controls:ColorPicker Color="{Binding SolidCustomColor, Mode=TwoWay}" />
+                                                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                                    <Button
+                                                        Command="{Binding SelectColorConfirmCommand}"
+                                                        Content="Confirm"
+                                                        Style="{ThemeResource AccentButtonStyle}" />
                                                 </StackPanel>
                                             </StackPanel>
                                         </Flyout>
@@ -160,66 +183,53 @@
                                 </Button>
                             </StackPanel>
                         </labs:SettingsCard>
-                        <labs:SettingsCard
-                            HorizontalContentAlignment="Left"
-                            Header="Image Path"
-                            Tag="Solid">
-                            <TextBox Width="400" />
+                        <labs:SettingsCard HorizontalContentAlignment="Left" Header="Image Path">
+                            <labs:SettingsCard.Visibility>
+                                <Binding Converter="{ThemeResource BackgrondSettingItemVisibilityConverter}" Path="BackgroundMode">
+                                    <Binding.ConverterParameter>
+                                        <x:String>Image</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </labs:SettingsCard.Visibility>
+                            <TextBox Width="400" Text="{Binding ImageFilePath, Mode=TwoWay}" />
                         </labs:SettingsCard>
-                        <labs:SettingsCard Header="No additional options" Tag="Mica" />
+                        <labs:SettingsCard Header="No additional options" Tag="Mica">
+                            <labs:SettingsCard.Visibility>
+                                <Binding Converter="{ThemeResource BackgrondSettingItemVisibilityConverter}" Path="BackgroundMode">
+                                    <Binding.ConverterParameter>
+                                        <x:String>Mica</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </labs:SettingsCard.Visibility>
+                        </labs:SettingsCard>
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE700;}">
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="NavigationView Display Mode" />
+                        <TextBlock x:Uid="Settings_AppearancePage_H4" Text="NavigationView Display Mode" />
                     </labs:SettingsCard.Header>
 
                     <labs:SettingsCard.Description>
-                        <TextBlock FontSize="14" Text="NavigationView layout" />
+                        <TextBlock x:Uid="Settings_AppearancePage_D3" Text="NavigationView layout" />
                     </labs:SettingsCard.Description>
 
-                    <ComboBox SelectedIndex="{Binding NavigationViewDisplayMode, Mode=TwoWay}">
+                    <ComboBox ItemsSource="{Binding NavigationViewDisplayModes}" SelectedIndex="{Binding NavigationViewDisplayMode, Mode=TwoWay}">
                         <i:Interaction.Behaviors>
                             <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
                             <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                         </i:Interaction.Behaviors>
-                        <x:String>Normal</x:String>
-                        <x:String>Minimum</x:String>
                     </ComboBox>
                 </labs:SettingsCard>
 
                 <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE80F;}">
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="Use new homepage" />
+                        <TextBlock x:Uid="Settings_AppearancePage_H5" Text="Use new homepage" />
                     </labs:SettingsCard.Header>
 
                     <ToggleSwitch IsOn="{Binding UseNewHomePage, Mode=TwoWay}" />
                 </labs:SettingsCard>
             </StackPanel>
         </Border>
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="WindowState">
-                <VisualState x:Name="WideState">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="650" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="myColorPicker.Orientation" Value="Horizontal" />
-                        <Setter Target="ColorPickerStackPanel.Margin" Value="0,-20,0,0" />
-                    </VisualState.Setters>
-                </VisualState>
-
-                <VisualState x:Name="NarrowState">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="myColorPicker.Orientation" Value="Vertical" />
-                        <Setter Target="ColorPickerStackPanel.Margin" Value="0" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
     </ScrollViewer>
 </Page>

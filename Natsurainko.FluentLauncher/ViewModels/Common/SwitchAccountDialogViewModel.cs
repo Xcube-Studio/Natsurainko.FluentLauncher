@@ -1,16 +1,10 @@
 ﻿using AppSettingsManagement.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Natsurainko.FluentCore.Interface;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
+using Nrk.FluentCore.Classes.Datas.Authenticate;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
@@ -23,11 +17,11 @@ partial class SwitchAccountDialogViewModel : SettingsViewModelBase, ISettingsVie
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(RemoveCommand))]
-    private IAccount activeAccount;
+    private Account activeAccount;
 
     #endregion
 
-    public ReadOnlyObservableCollection<IAccount> Accounts { get; init; }
+    public ReadOnlyObservableCollection<Account> Accounts { get; init; }
 
     private readonly AccountService _accountService;
 
@@ -45,7 +39,7 @@ partial class SwitchAccountDialogViewModel : SettingsViewModelBase, ISettingsVie
     public void Confirm() => _accountService.Activate(ActiveAccount);
 
     [RelayCommand(CanExecute = nameof(EnableRemoveAccount))]
-    public void Remove() 
+    public void Remove()
     {
         _accountService.Remove(ActiveAccount);
         ActiveAccount = _accountService.ActiveAccount;

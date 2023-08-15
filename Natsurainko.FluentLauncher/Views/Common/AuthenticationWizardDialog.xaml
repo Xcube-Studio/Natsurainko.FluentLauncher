@@ -7,7 +7,6 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Common"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="Dialog"
     d:DataContext="{d:DesignInstance Type=common:AuthenticationWizardDialogViewModel}"
@@ -351,6 +350,7 @@
     <ContentDialog.Title>
         <StackPanel Margin="24,24,24,0">
             <TextBlock
+                x:Uid="Dialogs_AuthenticationWizardDialog_T"
                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                 Style="{ThemeResource BaseTextBlockStyle}"
                 Text="Account Add Wizard:" />
@@ -417,26 +417,29 @@
                     Grid.Column="2"
                     HorizontalAlignment="Stretch"
                     Command="{Binding NextCommand}"
-                    Content="Next"
                     ElementSoundMode="FocusOnly"
                     IsEnabled="{Binding CurrentFrameDataContext.CanNext}"
                     IsTabStop="False"
-                    Style="{ThemeResource AccentButtonStyle}" />
+                    Style="{ThemeResource AccentButtonStyle}">
+                    <TextBlock x:Uid="Buttons_Next" Text="Next" />
+                </Button>
                 <Button
                     HorizontalAlignment="Stretch"
                     Command="{Binding PreviousCommand}"
-                    Content="Back"
                     ElementSoundMode="FocusOnly"
                     IsEnabled="{Binding CurrentFrameDataContext.CanPrevious}"
-                    IsTabStop="False" />
+                    IsTabStop="False">
+                    <TextBlock x:Uid="Buttons_Back" Text="Back" />
+                </Button>
                 <Button
                     Grid.Column="4"
                     HorizontalAlignment="Stretch"
                     Command="{Binding CancelCommand}"
-                    Content="Cancel"
                     ElementSoundMode="FocusOnly"
                     IsEnabled="{Binding CurrentFrameDataContext.CanCancel}"
-                    IsTabStop="False" />
+                    IsTabStop="False">
+                    <TextBlock x:Uid="Buttons_Cancel" Text="Cancel" />
+                </Button>
             </Grid>
         </Border>
     </Grid>

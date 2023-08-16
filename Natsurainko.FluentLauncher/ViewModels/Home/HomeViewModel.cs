@@ -13,7 +13,7 @@ using System.ComponentModel;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Home;
 
-partial class HomeViewModel : ObservableObject
+internal partial class HomeViewModel : ObservableObject
 {
     public ReadOnlyObservableCollection<Account> Accounts { get; private set; }
     public ReadOnlyObservableCollection<ExtendedGameInfo> GameInfos { get; private set; }

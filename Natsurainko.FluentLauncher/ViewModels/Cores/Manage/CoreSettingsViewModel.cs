@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
 
-partial class CoreSettingsViewModel : ObservableObject
+internal partial class CoreSettingsViewModel : ObservableObject
 {
     private readonly GameService _gameService = App.GetService<GameService>();
     private readonly AccountService _accountService = App.GetService<AccountService>();

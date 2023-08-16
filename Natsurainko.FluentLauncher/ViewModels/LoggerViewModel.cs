@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Pages;
 
-partial class LoggerViewModel : ObservableObject
+internal partial class LoggerViewModel : ObservableObject
 {
     private readonly ObservableCollection<GameLoggerOutput> _gameLoggerOutputs;
 

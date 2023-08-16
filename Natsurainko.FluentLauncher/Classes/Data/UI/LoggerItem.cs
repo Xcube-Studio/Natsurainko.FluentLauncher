@@ -7,7 +7,7 @@ using Nrk.FluentCore.Classes.Enums;
 
 namespace Natsurainko.FluentLauncher.Classes.Data.Launch;
 
-public partial class LoggerItem : ObservableObject
+internal partial class LoggerItem : ObservableObject
 {
     public LoggerItem(GameLoggerOutput output)
     {

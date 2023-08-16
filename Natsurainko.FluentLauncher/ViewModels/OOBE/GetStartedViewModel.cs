@@ -6,7 +6,7 @@ using Natsurainko.FluentLauncher.Services.UI.Messaging;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
-public partial class GetStartedViewModel : ObservableObject
+internal partial class GetStartedViewModel : ObservableObject
 {
     private readonly SettingsService _settings;
 

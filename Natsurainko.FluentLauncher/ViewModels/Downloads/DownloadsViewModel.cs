@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Classes.Data.Download;
 using Natsurainko.FluentLauncher.Classes.Data.UI;
 using Natsurainko.FluentLauncher.Services.Storage;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Downloads;
 using Nrk.FluentCore.Classes.Datas.Download;
@@ -49,6 +50,9 @@ internal partial class DownloadsViewModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(ComboBoxEnable))]
     [NotifyPropertyChangedFor(nameof(ModSearchProperty))]
     private int resourceType;
+
+    [ObservableProperty]
+    private string[] resourceTypes = ResourceUtils.GetItems("Cores", "CoresPage", "_Items1");
 
     [ObservableProperty]
     private PublishData primaryPublishData;

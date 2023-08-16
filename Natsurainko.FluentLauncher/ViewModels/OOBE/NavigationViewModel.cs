@@ -8,7 +8,7 @@ using System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
-public partial class OOBENavigationViewModel : ObservableObject
+internal partial class OOBENavigationViewModel : ObservableObject
 {
     [ObservableProperty]
     private bool canNext;

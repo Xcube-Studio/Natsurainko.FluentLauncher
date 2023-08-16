@@ -18,7 +18,7 @@ using Windows.Storage.Pickers;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
+internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;

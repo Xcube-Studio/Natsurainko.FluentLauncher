@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
+internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
 {
     #region Settings
 

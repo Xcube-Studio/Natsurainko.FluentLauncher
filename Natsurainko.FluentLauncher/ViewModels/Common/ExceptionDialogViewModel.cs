@@ -6,7 +6,7 @@ using Windows.System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
-public partial class ExceptionDialogViewModel : ObservableObject
+internal partial class ExceptionDialogViewModel : ObservableObject
 {
     [ObservableProperty]
     string errorMessage;

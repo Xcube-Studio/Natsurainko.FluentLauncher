@@ -48,6 +48,9 @@
     <data name="Buttons_Cancel.Text" xml:space="preserve">
         <value>取消</value>
     </data>
+    <data name="Buttons_Download.Text" xml:space="preserve">
+        <value>下载</value>
+    </data>
     <data name="Converters__Account" xml:space="preserve">
         <value>账户</value>
     </data>
@@ -426,6 +429,36 @@
     <data name="Cores_Manage_CoreSettingsPage_D5.Text" xml:space="preserve">
         <value>会添加到生成的启动参数中</value>
     </data>
+    <data name="Downloads_DownloadsPage_T1.Text" xml:space="preserve">
+        <value>Minecraft 本体</value>
+    </data>
+    <data name="Downloads_DownloadsPage_T2.Text" xml:space="preserve">
+        <value>CurseForge 热门模组资源</value>
+    </data>
+    <data name="Downloads_DownloadsPage_T3.Text" xml:space="preserve">
+        <value>CurseForge 热门整合包资源</value>
+    </data>
+    <data name="Downloads_DownloadsPage_H.Text" xml:space="preserve">
+        <value>列出全部版本核心</value>
+    </data>
+    <data name="Downloads_DownloadsPage_D.Text" xml:space="preserve">
+        <value>查找版本核心并安装</value>
+    </data>
+    <data name="Downloads_DownloadsPage_SearchBox.PlaceholderText" xml:space="preserve">
+        <value>搜索..</value>
+    </data>
+    <data name="Downloads_DownloadsPage_C1.PlaceholderText" xml:space="preserve">
+        <value>资源类型</value>
+    </data>
+    <data name="Downloads_DownloadsPage_C2.PlaceholderText" xml:space="preserve">
+        <value>版本</value>
+    </data>
+    <data name="Downloads_DownloadsPage_C3.PlaceholderText" xml:space="preserve">
+        <value>来源</value>
+    </data>
+    <data name="Downloads_DownloadsPage_ST.Text" xml:space="preserve">
+        <value>模组搜索选项：</value>
+    </data>
     <data name="Home_HomePage_NoAccount.Text" xml:space="preserve">
         <value>没有账户</value>
     </data>
@@ -560,6 +593,12 @@
     </data>
     <data name="Settings_AboutPage_D6.Text" xml:space="preserve">
         <value>提供下载源</value>
+    </data>
+    <data name="Settings_AboutPage__Debug" xml:space="preserve">
+        <value>调试版</value>
+    </data>
+    <data name="Settings_AboutPage__Release" xml:space="preserve">
+        <value>发布版</value>
     </data>
     <data name="Settings_AccountPage_T1.Text" xml:space="preserve">
         <value>账户</value>

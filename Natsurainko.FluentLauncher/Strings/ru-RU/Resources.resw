@@ -48,6 +48,9 @@
     <data name="Buttons_Cancel.Text" xml:space="preserve">
         <value>Отмена</value>
     </data>
+    <data name="Buttons_Download.Text" xml:space="preserve">
+        <value>Скачать</value>
+    </data>
     <data name="Converters__Account" xml:space="preserve">
         <value>счет</value>
     </data>
@@ -426,6 +429,36 @@
     <data name="Cores_Manage_CoreSettingsPage_D5.Text" xml:space="preserve">
         <value>Они будут добавлены к сгенерированным параметрам запуска.</value>
     </data>
+    <data name="Downloads_DownloadsPage_T1.Text" xml:space="preserve">
+        <value>Игры Майнкрафт</value>
+    </data>
+    <data name="Downloads_DownloadsPage_T2.Text" xml:space="preserve">
+        <value>Ресурсы популярных модов CurseForge</value>
+    </data>
+    <data name="Downloads_DownloadsPage_T3.Text" xml:space="preserve">
+        <value>Популярные ресурсы CurseForge Modpack</value>
+    </data>
+    <data name="Downloads_DownloadsPage_H.Text" xml:space="preserve">
+        <value>Список всех ядер версии</value>
+    </data>
+    <data name="Downloads_DownloadsPage_D.Text" xml:space="preserve">
+        <value>Найдите версию ядра и установите ее.</value>
+    </data>
+    <data name="Downloads_DownloadsPage_SearchBox.PlaceholderText" xml:space="preserve">
+        <value>Поиск..</value>
+    </data>
+    <data name="Downloads_DownloadsPage_C1.PlaceholderText" xml:space="preserve">
+        <value>Тип ресурса</value>
+    </data>
+    <data name="Downloads_DownloadsPage_C2.PlaceholderText" xml:space="preserve">
+        <value>Версия</value>
+    </data>
+    <data name="Downloads_DownloadsPage_C3.PlaceholderText" xml:space="preserve">
+        <value>Источник</value>
+    </data>
+    <data name="Downloads_DownloadsPage_ST.Text" xml:space="preserve">
+        <value>Варианты поиска мода:</value>
+    </data>
     <data name="Home_HomePage_NoAccount.Text" xml:space="preserve">
         <value>Нет аккаунта</value>
     </data>
@@ -560,6 +593,12 @@
     </data>
     <data name="Settings_AboutPage_D6.Text" xml:space="preserve">
         <value>Источник скачивания</value>
+    </data>
+    <data name="Settings_AboutPage__Debug" xml:space="preserve">
+        <value>Отладочная версия</value>
+    </data>
+    <data name="Settings_AboutPage__Release" xml:space="preserve">
+        <value>Релизное издание</value>
     </data>
     <data name="Settings_AccountPage_T1.Text" xml:space="preserve">
         <value>Счета</value>

@@ -72,6 +72,8 @@ public sealed partial class ShellPage : Page
 
         App.MainWindow.SetTitleBar(AppTitleBar);
 
+        contentFrame.Navigate(_appearanceService.HomePageType);
+
         if (_settings.BackgroundMode == 3)
         {
             var sprite = await PipelineBuilder
@@ -81,8 +83,6 @@ public sealed partial class ShellPage : Page
 
             await blurAnimation(sprite.Brush, 0, TimeSpan.FromMilliseconds(1));
         }
-
-        contentFrame.Navigate(_appearanceService.HomePageType);
 
         RefreshDragArea();
     }

@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
-partial class SwitchAccountDialogViewModel : SettingsViewModelBase, ISettingsViewModel
+internal partial class SwitchAccountDialogViewModel : SettingsViewModelBase, ISettingsViewModel
 {
     #region Settings
 

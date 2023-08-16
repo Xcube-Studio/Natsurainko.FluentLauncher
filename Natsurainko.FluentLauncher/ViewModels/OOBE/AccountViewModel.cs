@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
-partial class AccountViewModel : ObservableRecipient, IRecipient<ActiveAccountChangedMessage>
+internal partial class AccountViewModel : ObservableRecipient, IRecipient<ActiveAccountChangedMessage>
 {
     public ReadOnlyObservableCollection<Account> Accounts { get; init; }
 

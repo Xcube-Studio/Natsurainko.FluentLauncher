@@ -48,6 +48,9 @@
     <data name="Buttons_Cancel.Text" xml:space="preserve">
         <value>Cancel</value>
     </data>
+    <data name="Buttons_Download.Text" xml:space="preserve">
+        <value>Download</value>
+    </data>
     <data name="Converters__Account" xml:space="preserve">
         <value>Account</value>
     </data>
@@ -426,6 +429,36 @@
     <data name="Cores_Manage_CoreSettingsPage_D5.Text" xml:space="preserve">
         <value>These will be added to the generated launch parameters</value>
     </data>
+    <data name="Downloads_DownloadsPage_T1.Text" xml:space="preserve">
+        <value>Minecraft Games</value>
+    </data>
+    <data name="Downloads_DownloadsPage_T2.Text" xml:space="preserve">
+        <value>CurseForge Popular Mod Resources</value>
+    </data>
+    <data name="Downloads_DownloadsPage_T3.Text" xml:space="preserve">
+        <value>CurseForge Popular Modpack Resources</value>
+    </data>
+    <data name="Downloads_DownloadsPage_H.Text" xml:space="preserve">
+        <value>List all version cores</value>
+    </data>
+    <data name="Downloads_DownloadsPage_D.Text" xml:space="preserve">
+        <value>Find the version core and install it</value>
+    </data>
+    <data name="Downloads_DownloadsPage_SearchBox.PlaceholderText" xml:space="preserve">
+        <value>Search..</value>
+    </data>
+    <data name="Downloads_DownloadsPage_C1.PlaceholderText" xml:space="preserve">
+        <value>Resource Type</value>
+    </data>
+    <data name="Downloads_DownloadsPage_C2.PlaceholderText" xml:space="preserve">
+        <value>Version</value>
+    </data>
+    <data name="Downloads_DownloadsPage_C3.PlaceholderText" xml:space="preserve">
+        <value>Source</value>
+    </data>
+    <data name="Downloads_DownloadsPage_ST.Text" xml:space="preserve">
+        <value>Mod search options:</value>
+    </data>
     <data name="Home_HomePage_NoAccount.Text" xml:space="preserve">
         <value>No Account</value>
     </data>
@@ -560,6 +593,12 @@
     </data>
     <data name="Settings_AboutPage_D6.Text" xml:space="preserve">
         <value>Provide Download Source</value>
+    </data>
+    <data name="Settings_AboutPage__Debug" xml:space="preserve">
+        <value>Debug Edition</value>
+    </data>
+    <data name="Settings_AboutPage__Release" xml:space="preserve">
+        <value>Release Edition</value>
     </data>
     <data name="Settings_AccountPage_T1.Text" xml:space="preserve">
         <value>Accounts</value>

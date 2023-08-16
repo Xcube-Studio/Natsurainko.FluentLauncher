@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
-partial class LanguageViewModel : SettingsViewModelBase, ISettingsViewModel
+internal partial class LanguageViewModel : SettingsViewModelBase, ISettingsViewModel
 {
     #region Settings
 

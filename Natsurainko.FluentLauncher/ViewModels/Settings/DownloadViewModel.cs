@@ -5,7 +5,7 @@ using Natsurainko.FluentLauncher.ViewModels.Common;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-partial class DownloadViewModel : SettingsViewModelBase, ISettingsViewModel
+internal partial class DownloadViewModel : SettingsViewModelBase, ISettingsViewModel
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;

@@ -11,7 +11,7 @@ using Windows.UI;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-partial class AppearanceViewModel : SettingsViewModelBase, ISettingsViewModel
+internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsViewModel
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;

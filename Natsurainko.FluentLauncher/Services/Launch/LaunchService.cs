@@ -126,7 +126,7 @@ internal class LaunchService : DefaultLaunchService
                     .SetAccountSettings(launchAccount, _settingsService.EnableDemoUser)
                     .SetJavaSettings(suitableJava, maxMemory, minMemory)
                     .SetGameDirectory(gameDirectory)
-                    .AddExtraParameters(GetExtraVmParameters(specialConfig, launchAccount), GetExtraGameParameters(specialConfig)); //TODO: 加入额外的虚拟机参数  如：-XX:+UseG1GC 以及额外游戏参数 如：--fullscreen
+                    .AddExtraParameters(GetExtraVmParameters(specialConfig, launchAccount), GetExtraGameParameters(specialConfig));
 
                 return builder.Build();
             })

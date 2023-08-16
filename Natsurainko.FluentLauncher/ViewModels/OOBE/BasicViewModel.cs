@@ -17,7 +17,7 @@ using Windows.Storage.Pickers;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
-partial class BasicViewModel : SettingsViewModelBase, ISettingsViewModel
+internal partial class BasicViewModel : SettingsViewModelBase, ISettingsViewModel
 {
     #region Settings
 

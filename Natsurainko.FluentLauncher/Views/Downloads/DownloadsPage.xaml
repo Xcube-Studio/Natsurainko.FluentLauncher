@@ -9,7 +9,6 @@
     xmlns:downloads="using:Natsurainko.FluentLauncher.ViewModels.Downloads"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:ui="using:CommunityToolkit.WinUI.UI.Controls"
@@ -86,6 +85,7 @@
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
                         <AutoSuggestBox
+                            x:Uid="Downloads_DownloadsPage_SearchBox"
                             Grid.Column="2"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center"
@@ -109,8 +109,9 @@
                             </AutoSuggestBox.QueryIcon>
                         </AutoSuggestBox>
                         <ComboBox
+                            x:Uid="Downloads_DownloadsPage_C1"
                             MinWidth="150"
-                            PlaceholderText="资源类型"
+                            PlaceholderText="Resource Type"
                             SelectedIndex="{Binding ResourceType, Mode=TwoWay}">
                             <x:String>游戏本体</x:String>
                             <x:String>模组</x:String>
@@ -129,17 +130,21 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock
+                            x:Uid="Downloads_DownloadsPage_ST"
                             Grid.Column="1"
                             VerticalAlignment="Center"
                             Style="{ThemeResource BaseTextBlockStyle}"
-                            Text="模组搜索选项：" />
+                            Text="Mod search options:" />
                         <ComboBox
+                            x:Uid="Downloads_DownloadsPage_C2"
                             Grid.Column="3"
                             MinWidth="100"
+                            IsEnabled="False"
                             ItemsSource="{Binding Versions}"
-                            PlaceholderText="版本"
+                            PlaceholderText="Version"
                             SelectedItem="{Binding SelectedVersion, Mode=TwoWay}" />
                         <ComboBox
+                            x:Uid="Downloads_DownloadsPage_C3"
                             Grid.Column="5"
                             MinWidth="150"
                             IsEnabled="{Binding ComboBoxEnable}"
@@ -152,9 +157,10 @@
                 </StackPanel>
 
                 <TextBlock
+                    x:Uid="Downloads_DownloadsPage_T1"
                     Margin="1,20,0,4"
                     Style="{ThemeResource BaseTextBlockStyle}"
-                    Text="Minecraft 本体" />
+                    Text="Minecraft Games" />
 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -218,7 +224,7 @@
                                             VerticalAlignment="Bottom">
                                             <StackPanel Orientation="Horizontal" Spacing="7.5">
                                                 <FontIcon FontSize="12" Glyph="&#xE72A;" />
-                                                <TextBlock Text="下载" />
+                                                <TextBlock x:Uid="Buttons_Download" Text="Download" />
                                             </StackPanel>
                                         </Button>
                                     </Grid>
@@ -291,7 +297,7 @@
                                                 VerticalAlignment="Bottom">
                                                 <StackPanel Orientation="Horizontal" Spacing="7.5">
                                                     <FontIcon FontSize="12" Glyph="&#xE72A;" />
-                                                    <TextBlock Text="下载" />
+                                                    <TextBlock x:Uid="Buttons_Download" Text="Download" />
                                                 </StackPanel>
                                             </Button>
                                         </Grid>
@@ -314,19 +320,20 @@
                                 </AnimatedIcon>
                             </labs:SettingsCard.HeaderIcon>
                             <labs:SettingsCard.Header>
-                                <TextBlock Text="列出全部版本核心" />
+                                <TextBlock x:Uid="Downloads_DownloadsPage_H" Text="List all version cores" />
                             </labs:SettingsCard.Header>
                             <labs:SettingsCard.Description>
-                                <TextBlock Text="查找版本核心并安装" />
+                                <TextBlock x:Uid="Downloads_DownloadsPage_D" Text="Find the version core and install it" />
                             </labs:SettingsCard.Description>
                         </labs:SettingsCard>
                     </Grid>
                 </Grid>
 
                 <TextBlock
+                    x:Uid="Downloads_DownloadsPage_T2"
                     Margin="1,20,0,4"
                     Style="{ThemeResource BaseTextBlockStyle}"
-                    Text="CurseForge 热门模组资源" />
+                    Text="CurseForge Popular Mod Resources" />
 
                 <ui:AdaptiveGridView
                     DesiredWidth="300"
@@ -335,9 +342,10 @@
                     SelectionMode="None" />
 
                 <TextBlock
+                    x:Uid="Downloads_DownloadsPage_T3"
                     Margin="1,20,0,4"
                     Style="{ThemeResource BaseTextBlockStyle}"
-                    Text="CurseForge 热门整合包资源" />
+                    Text="CurseForge Popular Modpack Resources" />
 
                 <ui:AdaptiveGridView
                     DesiredWidth="300"

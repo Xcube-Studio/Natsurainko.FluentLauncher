@@ -77,10 +77,22 @@ _编译前提：_
 
 准备好上述环境后
 
-1. clone 该仓库然后在本地用 Visual Studio 打开
-2. 在 Nuget 包管理器中添加 CommunityToolkit-Labs 的 Nuget 包源  
+1. 克隆该仓库及其子模块 Natsurainko.FluentCore
+2. 确保代码完整后，在本地用 Visual Studio 打开
+3. 在 Nuget 包管理器中添加 CommunityToolkit-Labs 的 Nuget 包源  
 https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json
-3. F5 编译运行
+4. F5 编译运行
+
+#### 如何与本地化联立开发
+
+1. 克隆项目 [FluentLauncher.LocalizationPoroject](https://github.com/Xcube-Studio/FluentLauncher.LocalizationPoroject) 并将其与本项目的仓库的目录并列在同一目录下
+
+![image](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/assets/55646983/29d67f5d-d561-458a-a8c0-e0793036c8b4)  
+
+2. 在 Visual Studio 中正常编译即可
+3. 对于 FluentLauncher.LocalizationPoroject 的修改，请在其仓库中提交pr
+
+调试本地化资源时，只需要修改 FluentLauncher.LocalizationPoroject 仓库下的 .csv 文件，Visual Studio 生成时会通过 `Localizer.bat` 自动生成 Strings 文件夹
 
 #### 如何贡献该项目
 

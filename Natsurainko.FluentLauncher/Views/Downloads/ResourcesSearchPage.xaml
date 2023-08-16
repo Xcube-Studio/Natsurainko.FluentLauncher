@@ -10,6 +10,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:selectors="using:Natsurainko.FluentLauncher.Utils.Xaml.TemplateSelectors"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     d:DataContext="{d:DesignInstance Type=downloads:ResourcesSearchViewModel}"
     Background="Transparent"
     mc:Ignorable="d">
@@ -28,6 +29,7 @@
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
                 <AutoSuggestBox
+                    x:Uid="Downloads_ResourcesSearchPage_SearchBox"
                     Grid.Column="2"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Center"
@@ -51,15 +53,11 @@
                     </AutoSuggestBox.QueryIcon>
                 </AutoSuggestBox>
                 <ComboBox
+                    x:Uid="Downloads_ResourcesSearchPage_C1"
                     MinWidth="150"
-                    PlaceholderText="资源类型"
-                    SelectedIndex="{Binding ResourceType, Mode=TwoWay}">
-                    <x:String>游戏本体</x:String>
-                    <x:String>模组</x:String>
-                    <x:String>整合包</x:String>
-                    <x:String>资源包</x:String>
-                    <x:String>地图</x:String>
-                </ComboBox>
+                    ItemsSource="{xh:ComboBox ResourceKey=_Items}"
+                    PlaceholderText="Resource Type"
+                    SelectedIndex="{Binding ResourceType, Mode=TwoWay}" />
             </Grid>
             <Grid Margin="0,10,0,0" Visibility="{Binding ModSearchProperty}">
                 <Grid.ColumnDefinitions>
@@ -71,17 +69,21 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <TextBlock
+                    x:Uid="Downloads_ResourcesSearchPage_ST"
                     Grid.Column="1"
                     VerticalAlignment="Center"
                     Style="{ThemeResource BaseTextBlockStyle}"
-                    Text="模组搜索选项：" />
+                    Text="Mod search options:" />
                 <ComboBox
+                    x:Uid="Downloads_ResourcesSearchPage_C2"
                     Grid.Column="3"
                     MinWidth="100"
+                    IsEnabled="False"
                     ItemsSource="{Binding Versions}"
-                    PlaceholderText="版本"
+                    PlaceholderText="Version"
                     SelectedItem="{Binding SelectedVersion, Mode=TwoWay}" />
                 <ComboBox
+                    x:Uid="Downloads_ResourcesSearchPage_C3"
                     Grid.Column="5"
                     MinWidth="150"
                     IsEnabled="{Binding ComboBoxEnable}"

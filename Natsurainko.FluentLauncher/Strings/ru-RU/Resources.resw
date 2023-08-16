@@ -462,6 +462,39 @@
     <data name="Downloads_DownloadsPage__Items" xml:space="preserve">
         <value>Игры Minecraft;Моды;Паки модов;Пакеты ресурсов;Миры</value>
     </data>
+    <data name="Downloads_ResourceItemPage_Hyperlink.Text" xml:space="preserve">
+        <value>Открыть в браузере</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_T1.Text" xml:space="preserve">
+        <value>Скриншоты</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_T2.Text" xml:space="preserve">
+        <value>Подробности</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_D1.Text" xml:space="preserve">
+        <value>Автор</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_D2.Text" xml:space="preserve">
+        <value>Счетчик загрузок</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_D3.Text" xml:space="preserve">
+        <value>Дата обновления</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage_SearchBox.PlaceholderText" xml:space="preserve">
+        <value>Поиск..</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage_C1.PlaceholderText" xml:space="preserve">
+        <value>Тип ресурса</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage_C2.PlaceholderText" xml:space="preserve">
+        <value>Версия</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage_C3.PlaceholderText" xml:space="preserve">
+        <value>Источник</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage__Items" xml:space="preserve">
+        <value>Игры Minecraft;Моды;Паки модов;Пакеты ресурсов;Миры</value>
+    </data>
     <data name="Home_HomePage_NoAccount.Text" xml:space="preserve">
         <value>Нет аккаунта</value>
     </data>

@@ -91,10 +91,10 @@
                     </labs:SettingsCard.Description>
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <Button Width="125" Style="{ThemeResource AccentButtonStyle}">
-                            <TextBlock Text="下载" />
+                            <TextBlock x:Uid="Buttons_Download" Text="Download" />
                         </Button>
                         <HyperlinkButton Width="125" NavigateUri="{Binding WebLink}">
-                            <TextBlock Text="在网页中查看" />
+                            <TextBlock x:Uid="Downloads_ResourceItemPage_Hyperlink" Text="Open in Browser" />
                         </HyperlinkButton>
                     </StackPanel>
                 </labs:SettingsCard>
@@ -129,9 +129,10 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <TextBlock
+                                    x:Uid="Downloads_ResourceItemPage_D1"
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="作者" />
+                                    Text="Author" />
                                 <TextBlock
                                     Grid.Row="1"
                                     Style="{ThemeResource BaseTextBlockStyle}"
@@ -158,9 +159,10 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <TextBlock
+                                    x:Uid="Downloads_ResourceItemPage_D2"
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="下载数" />
+                                    Text="Download Count" />
                                 <TextBlock
                                     Grid.Row="1"
                                     Style="{ThemeResource BaseTextBlockStyle}"
@@ -187,9 +189,10 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <TextBlock
+                                    x:Uid="Downloads_ResourceItemPage_D3"
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="更新日期" />
+                                    Text="Update Date" />
                                 <TextBlock
                                     Grid.Row="1"
                                     Style="{ThemeResource BaseTextBlockStyle}"
@@ -212,7 +215,10 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
-                        <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="屏幕截图" />
+                        <TextBlock
+                            x:Uid="Downloads_ResourceItemPage_T1"
+                            Style="{ThemeResource BaseTextBlockStyle}"
+                            Text="Screenshots" />
                         <Border
                             Grid.Row="1"
                             Height="1"
@@ -252,7 +258,10 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
-                        <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="详细描述" />
+                        <TextBlock
+                            x:Uid="Downloads_ResourceItemPage_T2"
+                            Style="{ThemeResource BaseTextBlockStyle}"
+                            Text="Details" />
                         <Border
                             Grid.Row="1"
                             Height="1"

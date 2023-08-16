@@ -462,6 +462,39 @@
     <data name="Downloads_DownloadsPage__Items" xml:space="preserve">
         <value>Minecraft Games;Mods;Modpacks;Resource Packs;Worlds</value>
     </data>
+    <data name="Downloads_ResourceItemPage_Hyperlink.Text" xml:space="preserve">
+        <value>Open in Browser</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_T1.Text" xml:space="preserve">
+        <value>Screenshots</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_T2.Text" xml:space="preserve">
+        <value>Details</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_D1.Text" xml:space="preserve">
+        <value>Author</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_D2.Text" xml:space="preserve">
+        <value>Download Count</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_D3.Text" xml:space="preserve">
+        <value>Update Date</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage_SearchBox.PlaceholderText" xml:space="preserve">
+        <value>Search..</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage_C1.PlaceholderText" xml:space="preserve">
+        <value>Resource Type</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage_C2.PlaceholderText" xml:space="preserve">
+        <value>Version</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage_C3.PlaceholderText" xml:space="preserve">
+        <value>Source</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage__Items" xml:space="preserve">
+        <value>Minecraft Games;Mods;Modpacks;Resource Packs;Worlds</value>
+    </data>
     <data name="Home_HomePage_NoAccount.Text" xml:space="preserve">
         <value>No Account</value>
     </data>

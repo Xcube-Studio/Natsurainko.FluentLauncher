@@ -12,6 +12,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:ui="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     d:DataContext="{d:DesignInstance Type=downloads:DownloadsViewModel}"
     Background="Transparent"
     mc:Ignorable="d">
@@ -111,14 +112,9 @@
                         <ComboBox
                             x:Uid="Downloads_DownloadsPage_C1"
                             MinWidth="150"
+                            ItemsSource="{xh:ComboBox ResourceKey=_Items}"
                             PlaceholderText="Resource Type"
-                            SelectedIndex="{Binding ResourceType, Mode=TwoWay}">
-                            <x:String>游戏本体</x:String>
-                            <x:String>模组</x:String>
-                            <x:String>整合包</x:String>
-                            <x:String>资源包</x:String>
-                            <x:String>地图</x:String>
-                        </ComboBox>
+                            SelectedIndex="{Binding ResourceType, Mode=TwoWay}" />
                     </Grid>
                     <Grid Margin="0,10,0,0" Visibility="{Binding ModSearchProperty}">
                         <Grid.ColumnDefinitions>

@@ -60,15 +60,6 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     [BindToSetting(Path = nameof(SettingsService.SolidCustomColor))]
     private Color? solidCustomColor;
 
-    [ObservableProperty]
-    private string[] displayThemes = ResourceUtils.GetItems("Settings", "AppearancePage", "_Items1");
-
-    [ObservableProperty]
-    private string[] backgrounds = ResourceUtils.GetItems("Settings", "AppearancePage", "_Items2");
-
-    [ObservableProperty]
-    private string[] navigationViewDisplayModes = ResourceUtils.GetItems("Settings", "AppearancePage", "_Items3");
-
     public List<string> SupportedLanguages => ResourceUtils.Languages;
     private Flyout ColorFlyout;
 

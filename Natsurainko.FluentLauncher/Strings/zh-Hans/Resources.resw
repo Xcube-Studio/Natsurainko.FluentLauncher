@@ -459,6 +459,9 @@
     <data name="Downloads_DownloadsPage_ST.Text" xml:space="preserve">
         <value>模组搜索选项：</value>
     </data>
+    <data name="Downloads_DownloadsPage__Items" xml:space="preserve">
+        <value>游戏本体;模组;整合包;资源包;地图</value>
+    </data>
     <data name="Home_HomePage_NoAccount.Text" xml:space="preserve">
         <value>没有账户</value>
     </data>

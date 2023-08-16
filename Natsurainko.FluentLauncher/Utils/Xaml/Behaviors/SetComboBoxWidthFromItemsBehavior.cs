@@ -6,7 +6,7 @@ using Windows.Foundation.Collections;
 
 namespace Natsurainko.FluentLauncher.Utils.Xaml.Behaviors;
 
-class SetComboBoxWidthFromItemsBehavior : Behavior<ComboBox>
+class SetComboBoxWidthFromItemsBehavior : Behavior<Microsoft.UI.Xaml.Controls.ComboBox>
 {
     #region SetWidthFromItemsProperty
 
@@ -27,14 +27,14 @@ class SetComboBoxWidthFromItemsBehavior : Behavior<ComboBox>
 
     #endregion
 
-    ComboBox target;
+    Microsoft.UI.Xaml.Controls.ComboBox target;
 
     private static void OnSetWidthFromItemsPropertyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         SetComboBoxWidthFromItemsBehavior behavior = (SetComboBoxWidthFromItemsBehavior)d;
-        ComboBox comboBox = behavior.AssociatedObject;
+        Microsoft.UI.Xaml.Controls.ComboBox comboBox = behavior.AssociatedObject;
 
         bool newValue = (bool)e.NewValue;
         bool oldValue = (bool)e.OldValue;
@@ -81,7 +81,7 @@ class SetComboBoxWidthFromItemsBehavior : Behavior<ComboBox>
     /// Set the width of a ComboBox to the longest item in its drop down menu
     /// </summary>
     /// <param name="comboBox">Target</param>
-    private static void SetComboBoxWidth(ComboBox comboBox)
+    private static void SetComboBoxWidth(Microsoft.UI.Xaml.Controls.ComboBox comboBox)
     {
         // Open ComboBox drop down and prepare ItemContainerGenerator
         comboBox.IsDropDownOpen = true;

@@ -9,7 +9,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Settings"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Settings"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
@@ -55,7 +54,7 @@
                         <TextBlock x:Uid="Settings_AppearancePage_D1" Text="Dark and light color themes, effective after restarting the app" />
                     </labs:SettingsCard.Description>
 
-                    <ComboBox ItemsSource="{Binding DisplayThemes}" SelectedIndex="{Binding DisplayTheme, Mode=TwoWay}">
+                    <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items1}" SelectedIndex="{Binding DisplayTheme, Mode=TwoWay}">
                         <i:Interaction.Behaviors>
                             <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
                             <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
@@ -75,7 +74,7 @@
                     <labs:SettingsExpander.HeaderIcon>
                         <FontIcon Glyph="&#xE91B;" />
                     </labs:SettingsExpander.HeaderIcon>
-                    <ComboBox ItemsSource="{Binding Backgrounds}" SelectedIndex="{Binding BackgroundMode, Mode=TwoWay}" />
+                    <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items2}" SelectedIndex="{Binding BackgroundMode, Mode=TwoWay}" />
 
                     <labs:SettingsExpander.Items>
                         <labs:SettingsCard Header="TintLuminosityOpacity" IsEnabled="{Binding ElementName=enableCheckBox, Path=IsChecked, Converter={ThemeResource InvertBoolConverter}}">
@@ -214,7 +213,7 @@
                         <TextBlock x:Uid="Settings_AppearancePage_D3" Text="NavigationView layout" />
                     </labs:SettingsCard.Description>
 
-                    <ComboBox ItemsSource="{Binding NavigationViewDisplayModes}" SelectedIndex="{Binding NavigationViewDisplayMode, Mode=TwoWay}">
+                    <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items3}" SelectedIndex="{Binding NavigationViewDisplayMode, Mode=TwoWay}">
                         <i:Interaction.Behaviors>
                             <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
                             <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />

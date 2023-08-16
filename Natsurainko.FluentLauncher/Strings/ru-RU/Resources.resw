@@ -459,6 +459,9 @@
     <data name="Downloads_DownloadsPage_ST.Text" xml:space="preserve">
         <value>Варианты поиска мода:</value>
     </data>
+    <data name="Downloads_DownloadsPage__Items" xml:space="preserve">
+        <value>Игры Minecraft;Моды;Паки модов;Пакеты ресурсов;Миры</value>
+    </data>
     <data name="Home_HomePage_NoAccount.Text" xml:space="preserve">
         <value>Нет аккаунта</value>
     </data>

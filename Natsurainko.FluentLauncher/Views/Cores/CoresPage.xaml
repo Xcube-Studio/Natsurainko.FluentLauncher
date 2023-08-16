@@ -6,9 +6,9 @@
     xmlns:cores="using:Natsurainko.FluentLauncher.ViewModels.Cores"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Cores"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:selectors="using:Natsurainko.FluentLauncher.Utils.Xaml.TemplateSelectors"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     d:DataContext="{d:DesignInstance Type=cores:CoresViewModel}"
     Background="Transparent"
     mc:Ignorable="d">
@@ -98,7 +98,7 @@
                     <ComboBox
                         MinWidth="110"
                         Margin="5,0,0,0"
-                        ItemsSource="{Binding Filters}"
+                        ItemsSource="{xh:ComboBox ResourceKey=_Items1}"
                         SelectedIndex="{Binding FilterIndex, Mode=TwoWay}" />
                 </StackPanel>
                 <StackPanel Grid.Column="2" Orientation="Horizontal">
@@ -115,7 +115,7 @@
                     <ComboBox
                         MinWidth="110"
                         Margin="5,0,0,0"
-                        ItemsSource="{Binding Sorts}"
+                        ItemsSource="{xh:ComboBox ResourceKey=_Items2}"
                         SelectedIndex="{Binding SortByIndex, Mode=TwoWay}" />
                 </StackPanel>
             </Grid>

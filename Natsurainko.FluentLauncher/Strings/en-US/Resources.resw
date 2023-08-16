@@ -459,6 +459,9 @@
     <data name="Downloads_DownloadsPage_ST.Text" xml:space="preserve">
         <value>Mod search options:</value>
     </data>
+    <data name="Downloads_DownloadsPage__Items" xml:space="preserve">
+        <value>Minecraft Games;Mods;Modpacks;Resource Packs;Worlds</value>
+    </data>
     <data name="Home_HomePage_NoAccount.Text" xml:space="preserve">
         <value>No Account</value>
     </data>

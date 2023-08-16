@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.Input;
 using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views.Cores;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using System.Collections.Generic;
@@ -50,12 +49,6 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
 
     [ObservableProperty]
     private string searchBoxInput;
-
-    [ObservableProperty]
-    private string[] filters = ResourceUtils.GetItems("Cores", "CoresPage", "_Items1");
-
-    [ObservableProperty]
-    private string[] sorts = ResourceUtils.GetItems("Cores", "CoresPage", "_Items2");
 
     public ReadOnlyObservableCollection<ExtendedGameInfo> GameInfos { get; init; }
 

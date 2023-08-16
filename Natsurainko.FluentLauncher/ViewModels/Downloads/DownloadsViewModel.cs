@@ -52,9 +52,6 @@ internal partial class DownloadsViewModel : ObservableObject
     private int resourceType;
 
     [ObservableProperty]
-    private string[] resourceTypes = ResourceUtils.GetItems("Cores", "CoresPage", "_Items1");
-
-    [ObservableProperty]
     private PublishData primaryPublishData;
 
     [ObservableProperty]

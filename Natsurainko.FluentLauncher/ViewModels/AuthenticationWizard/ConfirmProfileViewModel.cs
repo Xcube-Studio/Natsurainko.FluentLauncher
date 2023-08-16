@@ -4,6 +4,7 @@ using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
 using Nrk.FluentCore.Classes.Datas.Authenticate;
+using Nrk.FluentCore.Classes.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -74,9 +75,21 @@ internal partial class ConfirmProfileViewModel : WizardViewModelBase
 
                     var builder = new StringBuilder();
                     builder.AppendLine("Failed to fetch account list");
-                    builder.AppendLine(task.Exception.InnerException.Message);
-                    builder.AppendLine(task.Exception.InnerException.HelpLink);
-                    builder.AppendLine(task.Exception.InnerException.StackTrace);
+
+                    if (task.Exception.InnerException is MicrosoftAuthenticateException microsoftAuthenticateException)
+                    {
+                        builder.AppendLine(microsoftAuthenticateException.Message);
+                        builder.AppendLine(microsoftAuthenticateException.HelpLink);
+                        builder.AppendLine(microsoftAuthenticateException.StackTrace);
+
+                        builder.AppendLine(task.Exception.InnerException.StackTrace);
+                    }
+                    else
+                    {
+                        builder.AppendLine(task.Exception.InnerException.Message);
+                        builder.AppendLine(task.Exception.InnerException.HelpLink);
+                        builder.AppendLine(task.Exception.InnerException.StackTrace);
+                    }
 
                     FaultedMessage = builder.ToString();
                 });

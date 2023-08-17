@@ -30,10 +30,30 @@ abstract class ActivationService<TWindowBase> : IActivationService
 
     public IWindowService ActivateWindow(string key)
     {
+        // Creates a new scope for resources owned by the window
+        IServiceScope scope = _windowProvider.CreateScope();
+
+        // Constructs the window
         Type windowType = RegisteredWindows[key].WindowType; // windowType is guaranteed to be a subclass of TWindowBase when the activation service is built
-        TWindowBase window = (TWindowBase)_windowProvider.GetService(windowType);
+        TWindowBase window = (TWindowBase)scope.ServiceProvider.GetService(windowType);
+
+        // Configures the scope to be disposed when the window is closed
+        ConfigureScopeDisposal(window, scope);
+
+        // Activates the window
         return ActivateWindow(window);
     }
 
+    /// <summary>
+    /// Activate the <paramref name="window"/> resolved and return an <see cref="IWindowService"/> that can be used to control it.
+    /// </summary>
+    /// <param name="window"></param>
+    /// <returns></returns>
     protected abstract IWindowService ActivateWindow(TWindowBase window);
+    /// <summary>
+    /// Configure the <paramref name="scope"/> to be disposed when the <paramref name="window"/> is closed.
+    /// </summary>
+    /// <param name="window"></param>
+    /// <param name="scope"></param>
+    protected abstract void ConfigureScopeDisposal(TWindowBase window, IServiceScope scope);
 }

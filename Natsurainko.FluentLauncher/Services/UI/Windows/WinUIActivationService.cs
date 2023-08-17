@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,5 +24,10 @@ internal class WinUIActivationService : ActivationService<Window>
     {
         window.Activate();
         return new WindowService(window);
+    }
+
+    protected override void ConfigureScopeDisposal(Window window, IServiceScope scope)
+    {
+        window.Closed += (_, _) => scope.Dispose();
     }
 }

@@ -1,14 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using Natsurainko.FluentCore.Interface;
+using Nrk.FluentCore.Classes.Datas.Authenticate;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Services.UI.Messaging;
 
-class ActiveAccountChangedMessage : ValueChangedMessage<IAccount>
+class ActiveAccountChangedMessage : ValueChangedMessage<Account>
 {
-    public ActiveAccountChangedMessage(IAccount value) : base(value) { }
+    public ActiveAccountChangedMessage(Account value) : base(value) { }
+}
+
+class GuideNavigationMessage
+{
+    public bool CanNext { get; set; }
+
+    public Type NextPage { get; set; }
 }

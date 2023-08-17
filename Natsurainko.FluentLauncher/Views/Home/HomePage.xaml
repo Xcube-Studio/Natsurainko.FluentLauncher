@@ -28,7 +28,7 @@
             Style="{ThemeResource SplitButtonRevealStyle}">
             <StackPanel Orientation="Horizontal">
                 <TextBlock
-                    x:Uid="Home_NoAccount"
+                    x:Uid="Home_HomePage_NoAccount"
                     VerticalAlignment="Center"
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                     Text="No Account"
@@ -42,10 +42,8 @@
                     <TextBlock
                         Margin="10,0,0,0"
                         VerticalAlignment="Center"
-                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
-                        <Run Text="{Binding ActiveAccount.Type}" />
-                        <Run x:Uid="Home_Account" Text="Account" />
-                    </TextBlock>
+                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                        Text="{Binding ActiveAccount.Type, Converter={ThemeResource AccountInfoConverter}}" />
                 </StackPanel>
             </StackPanel>
             <SplitButton.Flyout>
@@ -59,7 +57,7 @@
                                 <TextBlock TextTrimming="CharacterEllipsis">
                                     <Run FontWeight="SemiBold" Text="{Binding Name}" />
                                     <Run Text="," />
-                                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding Type}" />
+                                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding Type, Converter={ThemeResource AccountInfoConverter}}" />
                                 </TextBlock>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -91,7 +89,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <TextBlock
-                        x:Uid="Home_Launch"
+                        x:Uid="Home_HomePage_LaunchButton"
                         HorizontalAlignment="Center"
                         FontSize="16"
                         FontWeight="SemiBold"
@@ -109,12 +107,12 @@
             </Button>
             <ComboBox
                 Name="ComboBox"
-                x:Uid="Home_ComboBox"
+                x:Uid="Home_HomePage_ComboBox"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
-                ItemsSource="{Binding GameCores}"
+                ItemsSource="{Binding GameInfos}"
                 PlaceholderText="Select Game Core"
-                SelectedItem="{Binding CurrentGameCore, Mode=TwoWay}">
+                SelectedItem="{Binding ActiveGameInfo, Mode=TwoWay}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <Grid x:Name="DataGrid" Background="Transparent">
@@ -124,14 +122,16 @@
                                 <ColumnDefinition Width="1*" />
                             </Grid.ColumnDefinitions>
                             <Border
-                                Width="32"
-                                Height="32"
+                                Width="36"
+                                Height="36"
                                 Margin="2,2,0,0"
                                 VerticalAlignment="Center"
+                                BorderBrush="{ThemeResource IconBorder}"
+                                BorderThickness="2"
                                 CornerRadius="4">
-                                <Border.Background>
-                                    <ImageBrush ImageSource="{Binding Converter={ThemeResource IconConverter}}" />
-                                </Border.Background>
+                                <Border CornerRadius="4">
+                                    <Image Source="{Binding Converter={ThemeResource IconConverter}}" />
+                                </Border>
                             </Border>
                             <Grid Grid.Column="2" VerticalAlignment="Center">
                                 <Grid.RowDefinitions>
@@ -140,12 +140,13 @@
                                 </Grid.RowDefinitions>
                                 <TextBlock
                                     FontWeight="SemiBold"
-                                    Text="{Binding Id}"
+                                    Text="{Binding Name}"
                                     TextTrimming="CharacterEllipsis"
                                     ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
                                 <TextBlock
                                     Grid.Row="1"
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
                                     Text="{Binding Converter={ThemeResource GameCoreTagConverter}}"
                                     TextTrimming="CharacterEllipsis"
                                     ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />

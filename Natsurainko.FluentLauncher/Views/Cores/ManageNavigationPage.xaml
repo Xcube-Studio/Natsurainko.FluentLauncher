@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Cores.ManageNavigationPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Cores"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="Transparent"
+    Loaded="Page_Loaded"
+    mc:Ignorable="d">
+
+    <Grid Padding="30,20,30,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <BreadcrumbBar x:Name="BreadcrumbBar" ItemClicked="BreadcrumbBar_ItemClicked">
+            <BreadcrumbBar.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock
+                        Margin="10,0"
+                        FontSize="24"
+                        Style="{ThemeResource BaseTextBlockStyle}"
+                        Text="{Binding}"
+                        TextTrimming="CharacterEllipsis" />
+                </DataTemplate>
+            </BreadcrumbBar.ItemTemplate>
+        </BreadcrumbBar>
+        <NavigationView
+            Grid.Row="1"
+            Margin="-30,0"
+            IsBackButtonVisible="Collapsed"
+            IsBackEnabled="False"
+            IsSettingsVisible="False"
+            ItemInvoked="NavigationView_ItemInvoked"
+            PaneDisplayMode="Top">
+            <NavigationView.MenuItems>
+                <NavigationViewItem
+                    x:Uid="Cores_ManageNavigationPage_NV_Item_1"
+                    Content="Cores Settings"
+                    IsSelected="True"
+                    Tag="Natsurainko.FluentLauncher.Views.Cores.Manage.CoreSettingsPage">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xe945;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem
+                    x:Uid="Cores_ManageNavigationPage_NV_Item_2"
+                    Content="Mods Manage"
+                    Tag="Natsurainko.FluentLauncher.Views.Cores.Manage.CoreModsPage">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xe8f1;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem
+                    x:Uid="Cores_ManageNavigationPage_NV_Item_3"
+                    Content="Saves Manage"
+                    IsEnabled="False">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xe81e;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem
+                    x:Uid="Cores_ManageNavigationPage_NV_Item_4"
+                    Content="Statistics Data"
+                    IsEnabled="False">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xF0E3;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+            <Frame x:Name="contentFrame" Grid.Row="2" />
+        </NavigationView>
+    </Grid>
+</Page>

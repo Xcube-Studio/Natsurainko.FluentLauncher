@@ -1,0 +1,26 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.AuthenticationWizard.EnterOfflineProfilePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:authenticationwizard="using:Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Uid="AuthenticationWizard_EnterOfflineProfilePage_Page"
+    d:DataContext="{d:DesignInstance Type=authenticationwizard:EnterOfflineProfileViewModel}"
+    Background="Transparent"
+    Tag="Enter Offline Account Profile (2/3)"
+    mc:Ignorable="d">
+
+    <StackPanel Spacing="10">
+        <TextBox
+            x:Uid="AuthenticationWizard_EnterOfflineProfilePage_TB1"
+            BorderBrush="{ThemeResource ButtonBorderBrush}"
+            PlaceholderText="Name:"
+            Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox
+            x:Uid="AuthenticationWizard_EnterOfflineProfilePage_TB2"
+            BorderBrush="{ThemeResource ButtonBorderBrush}"
+            PlaceholderText="UUID: (Optional)"
+            Text="{Binding Uuid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    </StackPanel>
+</Page>

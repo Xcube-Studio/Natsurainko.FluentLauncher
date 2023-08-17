@@ -18,12 +18,13 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0">
             <TextBlock
+                x:Uid="ExceptionPage_Title"
                 Margin="0,0,0,16"
                 FontSize="26"
                 FontWeight="Bold"
                 Text="An error has occurred when starting Fluent Launcher" />
-            <TextBlock Text="Please report this issue on GitHub." />
-            <TextBlock Text="Providing the following information might help us fix the issue:" />
+            <TextBlock x:Uid="ExceptionPage_Description_1" Text="Please report this issue on GitHub." />
+            <TextBlock x:Uid="ExceptionPage_Description_2" Text="Providing the following information might help us fix the issue:" />
         </StackPanel>
 
         <ScrollViewer
@@ -40,6 +41,7 @@
         </ScrollViewer>
 
         <Button
+            x:Uid="ExceptionPage_Button"
             Grid.Row="2"
             Margin="0,8,0,0"
             Command="{Binding CopyAndLaunchGitHubCommand}"

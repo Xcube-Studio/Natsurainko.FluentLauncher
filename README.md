@@ -12,7 +12,7 @@
 <br />
 
 <p align="center">
-  <a href="https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/">
+  <a>
     <img src="docs/images/AppIcon.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -21,12 +21,9 @@
     基于 WinUI 3 的 Minecraft: Java Edition 启动器
     <br />
     <p align="center">
-      简体中文 |
-      <a href="https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/docs/README_EN.md">English</a>
+      简体中文 | English（暂无）
     </p>
     <p align="center">
-      <a href="https://github.com/Xcube-Studio/Natsurainko.FluentLauncher">开发文档</a>
-      ·
       <a href="https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/releases">查看发行版</a>
       ·
       <a href="https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/issues">报告Bug</a>
@@ -38,84 +35,95 @@
 
 
 ## 目录
-
-- [上手指南](#上手指南)
-  - [运行前的配置要求](#运行前的配置要求)
-  - [安装方式](#安装方式)
-- [源代码部署](#源代码部署)
+- [简介](#简介)
+  - [如何安装](#如何安装)
+  - [如何使用](#如何使用)
+- [开发相关](#开发相关)
+  - [如何编译源代码](#如何编译源代码)
+  - [如何贡献该项目](#如何贡献该项目)
 - [贡献者](#贡献者)
-  - [如何参与开源项目](#如何参与开源项目)
-- [版本控制](#版本控制)
-- [作者](#作者)
+  - [联系开发者](#联系开发者)
 - [鸣谢](#鸣谢)
 
-### 上手指南
-  
-1. 安装运行
-2. 在设置页面对启动器进行初步的配置 如游戏目录的选取 Java 运行时的添加 游戏帐户的添加
-    + 后续计划更新: 在第一次运行启动器时显示启动器配置向导
-3. 开始食用
+### 简介
 
-<a href="https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/">
-  <img src="docs/images/Main.png" alt="main">
-</a>
+**这是一款完全基于 WinUI3 技术开的一款 Fluent Design 的 Minecraft 启动器  
+我们的设计目标在于简洁、流畅的视觉体验**
 
-###### 运行前的配置要求
-+ **在微软商店中安装应用可以跳过此项** (需要验证
+<img src="docs/images/image3.png">  
 
-1. Windows 10.0.19041.0 及以上系统版本
-    + WinUI 3 最低支持 Windows 10.0.17763.0 (所以理论上可以调低版本限制 但是目前看来还不必要
-2. [net6.0 运行时](https://dotnet.microsoft.com/zh-cn/download/dotnet/6.0)
-3. [WindowsAppSDK 1.2 运行时](https://learn.microsoft.com/zh-cn/windows/apps/windows-app-sdk/downloads)
-4. [WebView2 运行时](https://developer.microsoft.com/zh-cn/microsoft-edge/webview2/consumer/)
-    + 如果你的电脑上 已经有默认安装的 基于 Chromium 的 Edge 则你不需要安装此项 (需要验证
+----------------------
+#### 如何安装
 
-###### **安装方式**
++ 我们推荐你直接从 Microsoft Store 直接安装我们的应用，这应该是最省事的办法（但是可能存在更新不及时的问题）
+ [![Microsoft Store](https://get.microsoft.com/images/en-us%20dark.svg)](https://apps.microsoft.com/store/detail/natsuriankofluentlauncher/9p4nqqxq942p)
++ 从我们的提交的自动构建（Action）里面下载最近一次的 Build 的 msixbundle 安装包进行手动安装 
+  + [如何安装 Msixbundle 包 ?](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85-Msixbundle-%E5%8C%85)
++ 你可以 clone 这个仓库，从源码手动编译程序
 
-+ [在 Microsoft Store 中获取 Natsurainko.FluentLauncher](https://apps.microsoft.com/store/detail/natsuriankofluentlauncher/9p4nqqxq942p?hl=zh-cn&gl=cn)  
- [![在 Microsoft Store 中获取 Natsurainko.FluentLauncher](https://user-images.githubusercontent.com/76810494/189479518-fc0f18a9-b0a4-4a63-8e7b-27a4284d93af.png)](https://apps.microsoft.com/store/detail/natsuriankofluentlauncher/9p4nqqxq942p?hl=zh-cn&gl=cn)
-+ 或安装 [Release](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/releases) 中的 Msixbundle 安装包
-    + [如何安装 Msixbundle 包 ?](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85-Msixbundle-%E5%8C%85)
+#### 如何使用
 
-### 源代码部署
-+ **此项面向开发人员**
-+ **首先确保你的电脑上以及安装好了 Visual Studio 2022**
-+ **并且以及安装好了 .NET 6 SDK、Windows 11 SDK、WindowsAppSDK 等开发所需要的环境**
+> 安装完后，第一次使用程序时会提供一个配置向导，来帮助你完成基础启动器配置，其他的高级设置需要你在设置中手动设置  
+> 剩下的你只需要像别的启动器一样操作就行
 
-+ 从源代码仓库部署
-  1. 克隆本项目、[Natsurainko.FluentCore](https://github.com/Xcube-Studio/Natsurainko.FluentCore)、[Natsurainko.Toolkits](https://github.com/natsurainko/Natsurainko.Toolkits) 到同一文件夹中。 
-  2. 使用 Release x64 配置运行项目 
+### 开发相关
 
-+ 直接向作者要一份已经合并好的项目源代码文件
-  > 这样子能够避免引用项目文件版本对不上的问题, 但作者在线时间较少
+#### 如何编译源代码
 
-### 贡献者
+_编译前提：_
++ 安装好 .NET 7 SDK 的开发工具
++ 已经安装好 .NET 桌面开发的 Visual Studio 2022
++ 已经安装好 WindowsAppSDK 1.3 的开发环境和 VS 扩展
 
-查看更多关于这个项目的贡献者，请阅读 [contributors](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/graphs/contributors) 
+准备好上述环境后
 
-#### 如何参与开源项目
+1. 克隆该仓库及其子模块 Natsurainko.FluentCore
+2. 确保代码完整后，在本地用 Visual Studio 打开
+3. 在 Nuget 包管理器中添加 CommunityToolkit-Labs 的 Nuget 包源  
+https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json
+4. F5 编译运行
 
-贡献使开源社区成为一个学习、激励和创造的绝佳场所。你所作的任何贡献都是**非常感谢**的。
+#### 如何与本地化联立开发
 
-1. 点击右上角`Fork`，再点击下方`Create fork`创建一份本仓库的分支
+1. 克隆项目 [FluentLauncher.LocalizationPoroject](https://github.com/Xcube-Studio/FluentLauncher.LocalizationPoroject) 并将其与本项目的仓库的目录并列在同一目录下
+
+![image](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/assets/55646983/29d67f5d-d561-458a-a8c0-e0793036c8b4)  
+
+2. 在 Visual Studio 中正常编译即可
+3. 对于 FluentLauncher.LocalizationPoroject 的修改，请在其仓库中提交pr
+
+调试本地化资源时，只需要修改 FluentLauncher.LocalizationPoroject 仓库下的 .csv 文件，Visual Studio 生成时会通过 `Localizer.bat` 自动生成 Strings 文件夹
+
+#### 如何贡献该项目
+
+1. 点击右上角 `Fork` ，再点击下方 `Create fork` 创建一份本仓库的分支
 2. 创建你的内容分支：`git checkout -b feature/[your-feature]`
 3. 提交你的更改：`git commit -m '[描述你的更改]'`
 4. 将更改推送至远程分支：`git push origin feature/[your-feature]`
 5. 创建拉取请求
 
+#### 如何贡献本地化资源
+
+详细见仓库 **[Xcube-Studio/FluentLauncher.LocalizationPoroject](https://github.com/Xcube-Studio/FluentLauncher.LocalizationPoroject)**
+
 ### 版本控制
 
 该项目使用Git进行版本管理。您可以在 repository 参看当前可用版本。
 
-### 作者
+### 贡献者
 
 * **natsurainko** - *启动核心 启动器*
-* **xingxing520** - *服务 网络服务部署*
+* **gavinY** - *启动器 后端架构*
+* **xingxing520** - *启动器发布 微软商店服务*
 
-> natsurainko a-275@qq.com  
-> qq group:1138713376
+等其他贡献者与参与测试人员
 
 *您也可以在贡献者名单中参看所有参与该项目的开发者。*
+
+#### 联系开发者
+
+> natsurainko a-275@qq.com  
+> Xcube Studio qq群:1138713376
 
 ### 版权说明
 
@@ -127,6 +135,13 @@ Copyright (c) 2022-2023 Xcube Studio
 - [Best_README_template 模板](https://github.com/shaojintian/Best_README_template)
 - [bmclapi 下载源](https://bmclapidoc.bangbang93.com/)
 - [mcbbs 下载源](https://download.mcbbs.net)
+- [Cloudflare CDN](https://www.cloudflare.com)
+
+## 这里是一只猫猫
+
+<p align="center">
+  <img src="docs/images/70.png" height="150">  
+</p>
 
 <!-- links -->
 [your-project-path]:Xcube-Studio/Natsurainko.FluentLauncher

@@ -8,7 +8,7 @@
     <Platforms>x86;x64;ARM64</Platforms>
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
     <UseWinUI>true</UseWinUI>
-    <StartupObject>Natsurainko.FluentLauncher.App</StartupObject>
+    <StartupObject>Natsurainko.FluentLauncher.Program</StartupObject>
 
     <!-- Packaging -->
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -21,6 +21,7 @@
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <AppxBundle>Never</AppxBundle>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
 
   </PropertyGroup>
 
@@ -29,40 +30,71 @@
       <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
 
-  <!-- Multilingual App Toolkit -->
+  <!-- Multilingual App Toolkit
   <PropertyGroup Label="MultilingualAppToolkit">
     <MultilingualAppToolkitVersion>4.0</MultilingualAppToolkitVersion>
     <MultilingualFallbackLanguage>en-US</MultilingualFallbackLanguage>
     <TranslationReport Condition="'$(Configuration)' == 'Release'">true</TranslationReport>
     <SuppressPseudoWarning Condition="'$(Configuration)' == 'Debug'">true</SuppressPseudoWarning>
-  </PropertyGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.PriResources.targets" Label="MultilingualAppToolkit" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\v$(MultilingualAppToolkitVersion)\Microsoft.Multilingual.PriResources.targets')" />
+  </PropertyGroup>  
+  
+    <Import Project="$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.PriResources.targets" Label="MultilingualAppToolkit" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\v$(MultilingualAppToolkitVersion)\Microsoft.Multilingual.PriResources.targets')" />
   <Target Name="MATPrerequisite" BeforeTargets="PrepareForBuild" Condition="!Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.PriResources.targets')" Label="MultilingualAppToolkit">
     <Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
   </Target>
+  -->
   <ItemGroup>
-    <XliffResource Include="MultilingualResources\Natsurainko.FluentLauncher.ru-RU.xlf" />
-    <XliffResource Include="MultilingualResources\Natsurainko.FluentLauncher.zh-Hans.xlf" />
-    <XliffResource Include="MultilingualResources\Natsurainko.FluentLauncher.zh-Hant.xlf" />
+    <None Remove="Assets\Libs\authlib-injector-1.2.3.jar" />
+    <None Remove="Assets\MinecraftTen.ttf" />
+    <None Remove="Dictionaries\CoresLayoutTemplateDictionary.xaml" />
+    <None Remove="Dictionaries\ResourceItemTemplateDictionary.xaml" />
+    <None Remove="Views\AuthenticationWizard\BrowserMicrosoftAuthPage.xaml" />
+    <None Remove="Views\AuthenticationWizard\ChooseAccountTypePage.xaml" />
+    <None Remove="Views\AuthenticationWizard\ChooseMicrosoftAuthMethodPage.xaml" />
+    <None Remove="Views\AuthenticationWizard\ConfirmProfilePage.xaml" />
+    <None Remove="Views\AuthenticationWizard\DeviceFlowMicrosoftAuthPage.xaml" />
+    <None Remove="Views\AuthenticationWizard\EnterOfflineProfilePage.xaml" />
+    <None Remove="Views\AuthenticationWizard\EnterYggdrasilProfilePage.xaml" />
+    <None Remove="Views\Common\AddVmArgumentDialog.xaml" />
+    <None Remove="Views\Common\AuthenticationWizardDialog.xaml" />
+    <None Remove="Views\Common\CopyrightLicenseDialog.xaml" />
+    <None Remove="Views\Common\JavaMirrorsDialog.xaml" />
+    <None Remove="Views\Common\ResourceDownloadDialog.xaml" />
+    <None Remove="Views\Common\SwitchAccountDialog.xaml" />
+    <None Remove="Views\Cores\ManageNavigationPage.xaml" />
+    <None Remove="Views\Cores\Manage\CoreModsPage.xaml" />
+    <None Remove="Views\Cores\Manage\CoreSettingsPage.xaml" />
+    <None Remove="Views\Downloads\DownloadsPage.xaml" />
+    <None Remove="Views\Downloads\ResourceItemPage.xaml" />
+    <None Remove="Views\Downloads\ResourcesSearchPage.xaml" />
+    <None Remove="Views\Home\NewHomePage.xaml" />
+    <None Remove="Views\NotifyStyleDictionary.xaml" />
   </ItemGroup>
 
   <!-- NuGet Packages -->
   <ItemGroup>
     <PackageReference Include="AppSettingsManagement.Windows" Version="0.2.6-alpha" />
-    <PackageReference Include="ColorCode.WinUI" Version="2.0.14" />
+    <PackageReference Include="ColorCode.WinUI" Version="2.0.15" />
+    <PackageReference Include="CommunityToolkit.Labs.WinUI.SegmentedControl" Version="0.0.3" />
     <PackageReference Include="CommunityToolkit.Labs.WinUI.SettingsControls" Version="0.0.18" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Behaviors" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Media" Version="7.1.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.3.230502000" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.3.230724000" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
-    <PackageReference Include="Natsurainko.FluentCore" Version="2.0.6-fix-1" />
-    <PackageReference Include="Natsurainko.FluentCore.Extension.Windows" Version="2.0.5" />
-    <PackageReference Include="Natsurainko.Toolkits" Version="1.0.4" />
-    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
-    <PackageReference Include="Tomlyn" Version="0.16.2" />
+    <PackageReference Include="PInvoke.User32" Version="0.7.124" />
+    <PackageReference Include="ReverseMarkdown" Version="3.25.0" />
+    <PackageReference Include="WindowsAPICodePack.Shell.CommonFileDialogs" Version="1.1.5" />
     <PackageReference Include="WinUIEx" Version="2.2.0" />
     <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Natsurainko.FluentCore\Natsurainko.FluentCore.Manage\Natsurainko.FluentCore.Manage.csproj" />
+    <ProjectReference Include="..\Natsurainko.FluentCore\Natsurainko.FluentCore\Natsurainko.FluentCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -73,7 +105,151 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Cores\InstallNewCore\" />
+    <Page Update="Views\Common\ResourceDownloadDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Dictionaries\ResourceItemTemplateDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Downloads\ResourcesSearchPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Downloads\ResourceItemPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Downloads\DownloadsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Cores\Manage\CoreModsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Common\JavaMirrorsDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Common\AddVmArgumentDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Cores\Manage\CoreSettingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Cores\ManageNavigationPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Dictionaries\CoresLayoutTemplateDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Cores\CoresPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Home\NewHomePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\NotifyStyleDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AuthenticationWizard\ConfirmProfilePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AuthenticationWizard\BrowserMicrosoftAuthPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AuthenticationWizard\DeviceFlowMicrosoftAuthPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AuthenticationWizard\EnterYggdrasilProfilePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AuthenticationWizard\EnterOfflineProfilePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AuthenticationWizard\ChooseMicrosoftAuthMethodPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AuthenticationWizard\ChooseAccountTypePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Common\AuthenticationWizardDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Common\CopyrightLicenseDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Common\SwitchAccountDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="cd ../&#xD;&#xA;call Localizer.bat &lt; nul" />
+  </Target>
 
 </Project>

@@ -17,7 +17,7 @@
             PaneDisplayMode="Top">
             <NavigationView.MenuItems>
                 <NavigationViewItem
-                    x:Uid="Navigation_Settings_Launch"
+                    x:Uid="Settings_NavigationPage_NV_Item_1"
                     Content="Launch"
                     IsSelected="True"
                     Tag="Natsurainko.FluentLauncher.Views.Settings.LaunchPage">
@@ -26,7 +26,7 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem
-                    x:Uid="Navigation_Settings_Account"
+                    x:Uid="Settings_NavigationPage_NV_Item_2"
                     Content="Account"
                     Tag="Natsurainko.FluentLauncher.Views.Settings.AccountPage">
                     <NavigationViewItem.Icon>
@@ -34,7 +34,7 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem
-                    x:Uid="Navigation_Settings_Download"
+                    x:Uid="Settings_NavigationPage_NV_Item_3"
                     Content="Download"
                     Tag="Natsurainko.FluentLauncher.Views.Settings.DownloadPage">
                     <NavigationViewItem.Icon>
@@ -42,7 +42,7 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem
-                    x:Uid="Navigation_Settings_Appearance"
+                    x:Uid="Settings_NavigationPage_NV_Item_4"
                     Content="Appearance"
                     Tag="Natsurainko.FluentLauncher.Views.Settings.AppearancePage">
                     <NavigationViewItem.Icon>
@@ -52,7 +52,7 @@
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem
-                    x:Uid="Navigation_Settings_About"
+                    x:Uid="Settings_NavigationPage_NV_Item_5"
                     Content="About"
                     Tag="Natsurainko.FluentLauncher.Views.Settings.AboutPage">
                     <NavigationViewItem.Icon>

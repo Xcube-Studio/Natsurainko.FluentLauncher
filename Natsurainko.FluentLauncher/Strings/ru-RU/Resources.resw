@@ -1,438 +1,804 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <data name="About_Acknowledgments.Text" xml:space="preserve">
-    <value>Отдельная благодарность</value>
-  </data>
-  <data name="About_Acknowledgments_Content.Text" xml:space="preserve">
-    <value>Спасибо за все сервисы, предоставленные лаунчеру</value>
-  </data>
-  <data name="About_CheckUpdate.Text" xml:space="preserve">
-    <value>Проверить обновление в Microsoft Store</value>
-  </data>
-  <data name="About_Developer_Tag.Text" xml:space="preserve">
-    <value>Разработчик лаунчера</value>
-  </data>
-  <data name="About_ProvideDownloadSource.Text" xml:space="preserve">
-    <value>Источник скачивания</value>
-  </data>
-  <data name="About_References.Text" xml:space="preserve">
-    <value>Ссылки</value>
-  </data>
-  <data name="About_References_Content.Text" xml:space="preserve">
-    <value>Библиотеки, используемые для разработки лаунчера</value>
-  </data>
-  <data name="About_Sources.Text" xml:space="preserve">
-    <value>Исходный код</value>
-  </data>
-  <data name="About_Sources_Content.Text" xml:space="preserve">
-    <value>Посетить репозиторий GitHub</value>
-  </data>
-  <data name="About_Statements.Text" xml:space="preserve">
-    <value>Заявление</value>
-  </data>
-  <data name="About_Statements_Content.Text" xml:space="preserve">
-    <value>Авторские права на Minecraft принадлежат Mojang Studios. Мы не несем ответственности за любые нарушения авторских прав, связанные с использованием этого программного обеспечения.</value>
-  </data>
-  <data name="Cores_Install.Text" xml:space="preserve">
-    <value>Установить новое ядро</value>
-  </data>
-  <data name="Cores_Search.PlaceholderText" xml:space="preserve">
-    <value>Поиск ядра...</value>
-  </data>
-  <data name="Cores_ToolTip_1.Text" xml:space="preserve">
-    <value>Открыть папку</value>
-  </data>
-  <data name="Cores_ToolTip_2.Text" xml:space="preserve">
-    <value>Переименовать</value>
-  </data>
-  <data name="Cores_ToolTip_3.Text" xml:space="preserve">
-    <value>Удалить</value>
-  </data>
-  <data name="Cores_ToolTip_4.Text" xml:space="preserve">
-    <value>Сгенерировать сценарий запуска</value>
-  </data>
-  <data name="Cores_ToolTip_5.Text" xml:space="preserve">
-    <value>Параметры</value>
-  </data>
-  <data name="Cores_ToolTip_6.Text" xml:space="preserve">
-    <value>Дополнительно</value>
-  </data>
-  <data name="Cores_ToolTip_7.Text" xml:space="preserve">
-    <value>Запустить</value>
-  </data>
-  <data name="Guide_Account_Accounts.Text" xml:space="preserve">
-    <value>Аккаунты</value>
-  </data>
-  <data name="Guide_Account_Login.Text" xml:space="preserve">
-    <value>Вход в аккаунт Microsoft</value>
-  </data>
-  <data name="Guide_Account_Offline.Text" xml:space="preserve">
-    <value>У вас нет аккаунта Microsoft?</value>
-  </data>
-  <data name="Guide_Account_Para_1.Text" xml:space="preserve">
-    <value>Чтобы играть, нужен хотя бы один аккаунт</value>
-  </data>
-  <data name="Guide_Account_Para_2.Text" xml:space="preserve">
-    <value>Доступ к онлайн-серверам доступен только с аккаунтом Microsoft</value>
-  </data>
-  <data name="Guide_Account_Para_3.Text" xml:space="preserve">
-    <value>Автономные аккаунты не будут проверяться сервером</value>
-  </data>
-  <data name="Guide_Account_Title.Text" xml:space="preserve">
-    <value>Аккаунт</value>
-  </data>
-  <data name="Guide_Account_Website.Text" xml:space="preserve">
-    <value>Официальный сайт Minecraft</value>
-  </data>
-  <data name="Guide_Back.Content" xml:space="preserve">
-    <value>Назад</value>
-  </data>
-  <data name="Guide_Basic_Folder.Text" xml:space="preserve">
-    <value>Папка для хранения</value>
-  </data>
-  <data name="Guide_Basic_Java.Text" xml:space="preserve">
-    <value>Java</value>
-  </data>
-  <data name="Guide_Basic_Para_1.Text" xml:space="preserve">
-    <value>Для хранения игровых ядер, нужна хотя бы папка .minecraft</value>
-  </data>
-  <data name="Guide_Basic_Para_2.Text" xml:space="preserve">
-    <value>Для запуска игровых ядер, необходима Java Runtime</value>
-  </data>
-  <data name="Guide_Basic_Para_3.Text" xml:space="preserve">
-    <value>Изменить эти настройки можно в глобальных настройках игры</value>
-  </data>
-  <data name="Guide_Basic_Title.Text" xml:space="preserve">
-    <value>Настройки запуска</value>
-  </data>
-  <data name="Guide_GetStarted_Description.Text" xml:space="preserve">
-    <value>Все базовые настройки готовы</value>
-  </data>
-  <data name="Guide_GetStarted_Start.Content" xml:space="preserve">
-    <value>Начать</value>
-  </data>
-  <data name="Guide_GetStarted_Title.Text" xml:space="preserve">
-    <value>Всё готово</value>
-  </data>
-  <data name="Guide_Navigation_Account.Text" xml:space="preserve">
-    <value>Аккаунт</value>
-  </data>
-  <data name="Guide_Navigation_Basic.Text" xml:space="preserve">
-    <value>Базовые настройки</value>
-  </data>
-  <data name="Guide_Navigation_GetStarted.Text" xml:space="preserve">
-    <value>Начало</value>
-  </data>
-  <data name="Guide_Navigation_Language.Text" xml:space="preserve">
-    <value>Язык</value>
-  </data>
-  <data name="Guide_Next.Content" xml:space="preserve">
-    <value>Далее</value>
-  </data>
-  <data name="Guide_Welcome.Text" xml:space="preserve">
-    <value>Добро пожаловать</value>
-  </data>
-  <data name="Home_Account.Text" xml:space="preserve">
-    <value>Аккаунт</value>
-  </data>
-  <data name="Home_ComboBox.PlaceholderText" xml:space="preserve">
-    <value>Выбрать ядро игры</value>
-  </data>
-  <data name="Home_Launch.Text" xml:space="preserve">
-    <value>Запустить игру</value>
-  </data>
-  <data name="Home_NoAccount.Text" xml:space="preserve">
-    <value>Нет аккаунта</value>
-  </data>
-  <data name="Navigation_Activities.Content" xml:space="preserve">
-    <value>Активности</value>
-  </data>
-  <data name="Navigation_Activities_Application.Content" xml:space="preserve">
-    <value>Приложение</value>
-  </data>
-  <data name="Navigation_Activities_Download.Content" xml:space="preserve">
-    <value>Загрузки</value>
-  </data>
-  <data name="Navigation_Activities_Launch.Content" xml:space="preserve">
-    <value>Запуск</value>
-  </data>
-  <data name="Navigation_Activities_News.Content" xml:space="preserve">
-    <value>Новости</value>
-  </data>
-  <data name="Navigation_Cores.Content" xml:space="preserve">
-    <value>Ядра</value>
-  </data>
-  <data name="Navigation_Home.Content" xml:space="preserve">
-    <value>Главная</value>
-  </data>
-  <data name="Navigation_Mods.Content" xml:space="preserve">
-    <value>Моды</value>
-  </data>
-  <data name="Navigation_Options_Launch.Content" xml:space="preserve">
-    <value>Настройки запуска</value>
-  </data>
-  <data name="Navigation_Options_Mods.Content" xml:space="preserve">
-    <value>Моды</value>
-  </data>
-  <data name="Navigation_Options_Property.Text" xml:space="preserve">
-    <value>Параметры</value>
-  </data>
-  <data name="Navigation_Options_Saves.Content" xml:space="preserve">
-    <value>Сохранения</value>
-  </data>
-  <data name="Navigation_Settings.Content" xml:space="preserve">
-    <value>Настройки</value>
-  </data>
-  <data name="Navigation_Settings_About.Content" xml:space="preserve">
-    <value>О лаунчере</value>
-  </data>
-  <data name="Navigation_Settings_Account.Content" xml:space="preserve">
-    <value>Настройки аккаунта</value>
-  </data>
-  <data name="Navigation_Settings_Download.Content" xml:space="preserve">
-    <value>Настройки скачивания</value>
-  </data>
-  <data name="Navigation_Settings_Launch.Content" xml:space="preserve">
-    <value>Настройки запуска</value>
-  </data>
-  <data name="Properties_Information_Header.Text" xml:space="preserve">
-    <value>Свойства</value>
-  </data>
-  <data name="Properties_Information_Item_1.Text" xml:space="preserve">
-    <value>Расположение</value>
-  </data>
-  <data name="Properties_Information_Item_2.Text" xml:space="preserve">
-    <value>Последний запуск</value>
-  </data>
-  <data name="Properties_Information_Item_3.Text" xml:space="preserve">
-    <value>Загрузчик модов</value>
-  </data>
-  <data name="Properties_Information_Item_4.Text" xml:space="preserve">
-    <value>Занимает места на диске</value>
-  </data>
-  <data name="Properties_Information_Item_5.Text" xml:space="preserve">
-    <value>Зависимых библиотек</value>
-  </data>
-  <data name="Properties_Information_Item_6.Text" xml:space="preserve">
-    <value>Зависимых ресурсов</value>
-  </data>
-  <data name="Properties_Information_Subtitle.Text" xml:space="preserve">
-    <value>Основные базовые атрибуты</value>
-  </data>
-  <data name="Properties_Launch_Header_1.Text" xml:space="preserve">
-    <value>Параметры сохранены в</value>
-  </data>
-  <data name="Properties_Launch_Header_2.Text" xml:space="preserve">
-    <value>Собственные настройки</value>
-  </data>
-  <data name="Properties_Launch_Item.Text" xml:space="preserve">
-    <value>Изоляция версии</value>
-  </data>
-  <data name="Properties_Mod_Header.Text" xml:space="preserve">
-    <value>Папка с модами</value>
-  </data>
-  <data name="Settings_Account_Header.Text" xml:space="preserve">
-    <value>Аккаунты</value>
-  </data>
-  <data name="Settings_Account_Item_1.Text" xml:space="preserve">
-    <value>Текущий аккаунт</value>
-  </data>
-  <data name="Settings_Account_Item_2.Text" xml:space="preserve">
-    <value>Информация аккаунта</value>
-  </data>
-  <data name="Settings_Account_Item_3.Text" xml:space="preserve">
-    <value>Добавить новый</value>
-  </data>
-  <data name="Settings_Account_Item_4.Text" xml:space="preserve">
-    <value>Удалить текущий</value>
-  </data>
-  <data name="Settings_Account_Item_5.Text" xml:space="preserve">
-    <value>Запускать игру с демо-аккаунта</value>
-  </data>
-  <data name="Settings_Account_Item_6.Text" xml:space="preserve">
-    <value>Обновлять аккаунт автоматически (перед запуском)</value>
-  </data>
-  <data name="Settings_Account_Subtitle.Text" xml:space="preserve">
-    <value>Аккаунт для входа в игру</value>
-  </data>
-  <data name="Settings_Download_Header.Text" xml:space="preserve">
-    <value>Скачивание</value>
-  </data>
-  <data name="Settings_Download_Item_1.Text" xml:space="preserve">
-    <value>Источник скачивания</value>
-  </data>
-  <data name="Settings_Download_Item_2.Text" xml:space="preserve">
-    <value>Потоков скачивания</value>
-  </data>
-  <data name="Settings_Download_Item_3.Text" xml:space="preserve">
-    <value>Скачивать большие файлы частями</value>
-  </data>
-  <data name="Settings_Download_Subtitle.Text" xml:space="preserve">
-    <value>Настройки скачивания игровых ресурсов при запуске игры</value>
-  </data>
-  <data name="Settings_Launch_Header_1.Text" xml:space="preserve">
-    <value>Папка для хранения</value>
-  </data>
-  <data name="Settings_Launch_Header_2.Text" xml:space="preserve">
-    <value>Java Runtime</value>
-  </data>
-  <data name="Settings_Launch_Header_3.Text" xml:space="preserve">
-    <value>Настройки игры</value>
-  </data>
-  <data name="Settings_Launch_Header_4.Text" xml:space="preserve">
-    <value>Язык лаунчера</value>
-  </data>
-  <data name="Settings_Launch_Item_1.Text" xml:space="preserve">
-    <value>Текущая папка</value>
-  </data>
-  <data name="Settings_Launch_Item_10.Text" xml:space="preserve">
-    <value>Общая изоляция версий</value>
-  </data>
-  <data name="Settings_Launch_Item_11.Text" xml:space="preserve">
-    <value>Полноэкранный режим</value>
-  </data>
-  <data name="Settings_Launch_Item_12.Text" xml:space="preserve">
-    <value>Разрешение игрового окна</value>
-  </data>
-  <data name="Settings_Launch_Item_13.Text" xml:space="preserve">
-    <value>Адрес сервера</value>
-  </data>
-  <data name="Settings_Launch_Item_14.Text" xml:space="preserve">
-    <value>Заголовок игрового окна</value>
-  </data>
-  <data name="Settings_Launch_Item_2.Text" xml:space="preserve">
-    <value>Выбрать папку для хранения</value>
-  </data>
-  <data name="Settings_Launch_Item_3.Text" xml:space="preserve">
-    <value>Удалить текущую папку</value>
-  </data>
-  <data name="Settings_Launch_Item_4.Text" xml:space="preserve">
-    <value>Текущая Java</value>
-  </data>
-  <data name="Settings_Launch_Item_5.Text" xml:space="preserve">
-    <value>Выбрать Java вручную</value>
-  </data>
-  <data name="Settings_Launch_Item_6.Text" xml:space="preserve">
-    <value>Выбирать подходящую Java автоматически</value>
-  </data>
-  <data name="Settings_Launch_Item_7.Text" xml:space="preserve">
-    <value>Удалить текущую Java</value>
-  </data>
-  <data name="Settings_Launch_Item_8.Text" xml:space="preserve">
-    <value>Память JVM</value>
-  </data>
-  <data name="Settings_Launch_Item_9.Text" xml:space="preserve">
-    <value>Выделять память JVM автоматически</value>
-  </data>
-  <data name="Settings_Launch_Subtitle_1.Text" xml:space="preserve">
-    <value>Где хранить ядро вашей игры</value>
-  </data>
-  <data name="Settings_Launch_Subtitle_2.Text" xml:space="preserve">
-    <value>Исполняемый файл для запуска игры</value>
-  </data>
-  <data name="Settings_Launch_Subtitle_3.Text" xml:space="preserve">
-    <value>Настройки игрового процесса</value>
-  </data>
-  <data name="_Buttons_Back.Text" xml:space="preserve">
-    <value>Назад</value>
-  </data>
-  <data name="_Buttons_Browse.Text" xml:space="preserve">
-    <value>Обзор</value>
-  </data>
-  <data name="_Buttons_Cancel.Text" xml:space="preserve">
-    <value>Отмена</value>
-  </data>
-  <data name="_Buttons_Check.Text" xml:space="preserve">
-    <value>Проверить</value>
-  </data>
-  <data name="_Buttons_Confirm.Text" xml:space="preserve">
-    <value>Подтвердить</value>
-  </data>
-  <data name="_Buttons_Delete.Text" xml:space="preserve">
-    <value>Удалить</value>
-  </data>
-  <data name="_Buttons_Expand.Text" xml:space="preserve">
-    <value>Раскрыть</value>
-  </data>
-  <data name="_Buttons_Install.Text" xml:space="preserve">
-    <value>Установить</value>
-  </data>
-  <data name="_Buttons_Next.Text" xml:space="preserve">
-    <value>Далее</value>
-  </data>
-  <data name="_Buttons_Refresh.Text" xml:space="preserve">
-    <value>Перезагрузить</value>
-  </data>
-  <data name="_Buttons_Remove.Text" xml:space="preserve">
-    <value>Удалить</value>
-  </data>
-  <data name="_Buttons_Rename.Text" xml:space="preserve">
-    <value>Переименовать</value>
-  </data>
-  <data name="_Buttons_Search.Text" xml:space="preserve">
-    <value>Поиск</value>
-  </data>
-  <data name="_Buttons_SignIn.Text" xml:space="preserve">
-    <value>Войти</value>
-  </data>
-  <data name="_TeachingTips_Delete.Subtitle" xml:space="preserve">
-    <value>Точно удалить? После удаления невозможно восстановить.</value>
-  </data>
-  <data name="_TeachingTips_Rename.Subtitle" xml:space="preserve">
-    <value>Введите допустимое имя</value>
-  </data>
-  <data name="Cores_New_Name.PlaceholderText" xml:space="preserve">
-    <value>Новое название</value>
-  </data>
-  <data name="Properties_Mod_Author.Text" xml:space="preserve">
-    <value> Автор:</value>
-  </data>
-  <data name="Properties_Mod_Description.Text" xml:space="preserve">
-    <value> Описание:</value>
-  </data>
-  <data name="Properties_Mod_Version.Text" xml:space="preserve">
-    <value> Версия:</value>
-  </data>
-  <data name="Mods_Install_New_Core.Content" xml:space="preserve">
-    <value>Установить новое ядро</value>
-  </data>
-  <data name="Settings_Account_Type.PlaceholderText" xml:space="preserve">
-    <value>Тип аккаунта</value>
-  </data>
-  <data name="Settings_Choose_Account_Type.Text" xml:space="preserve">
-    <value>Выберите тип аккаунта</value>
-  </data>
-  <data name="Settings_Confirm_Role.Text" xml:space="preserve">
-    <value>Подтвердить роль</value>
-  </data>
-  <data name="Settings_Confirm_Role_Desc.Text" xml:space="preserve">
-    <value>Здесь несколько ролей, необходимо выбрать одну, чтобы продолжить</value>
-  </data>
-  <data name="Settings_Microsoft_Account_Loading.Text" xml:space="preserve">
-    <value>Загрузка...</value>
-  </data>
-  <data name="Settings_Yggdrasil_Password.PlaceholderText" xml:space="preserve">
-    <value>Пароль</value>
-  </data>
-  <data name="Settings_Yggdrasil_Url.PlaceholderText" xml:space="preserve">
-    <value>Ссылка сервера Yggdrasil</value>
-  </data>
-  <data name="Title_Offline_Account.Text" xml:space="preserve">
-    <value>Автономный аккаунт</value>
-  </data>
-  <data name="Settings_Yggdrasil_Login.PlaceholderText" xml:space="preserve">
-    <value>Эл. почта</value>
-  </data>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Buttons_Browse.Text" xml:space="preserve">
+        <value>Просматривать</value>
+    </data>
+    <data name="Buttons_Remove.Text" xml:space="preserve">
+        <value>Удалять</value>
+    </data>
+    <data name="Buttons_Search.Text" xml:space="preserve">
+        <value>Поиск</value>
+    </data>
+    <data name="Buttons_Refresh.Text" xml:space="preserve">
+        <value>Обновить</value>
+    </data>
+    <data name="Buttons_SwitchAccount.Text" xml:space="preserve">
+        <value>Сменить аккаунт</value>
+    </data>
+    <data name="Buttons_SignIn.Text" xml:space="preserve">
+        <value>Войти</value>
+    </data>
+    <data name="Buttons_Add.Text" xml:space="preserve">
+        <value>Добавлять</value>
+    </data>
+    <data name="Buttons_Back.Text" xml:space="preserve">
+        <value>Назад</value>
+    </data>
+    <data name="Buttons_Next.Text" xml:space="preserve">
+        <value>Следующий</value>
+    </data>
+    <data name="Buttons_Open.Text" xml:space="preserve">
+        <value>Открыть</value>
+    </data>
+    <data name="Buttons_Go.Text" xml:space="preserve">
+        <value>Идти</value>
+    </data>
+    <data name="Buttons_Cancel.Text" xml:space="preserve">
+        <value>Отмена</value>
+    </data>
+    <data name="Buttons_Download.Text" xml:space="preserve">
+        <value>Скачать</value>
+    </data>
+    <data name="Converters__Account" xml:space="preserve">
+        <value>счет</value>
+    </data>
+    <data name="Converters__Microsoft" xml:space="preserve">
+        <value>Майкрософт</value>
+    </data>
+    <data name="Converters__Offline" xml:space="preserve">
+        <value>не в сети</value>
+    </data>
+    <data name="Converters__Yggdrasil" xml:space="preserve">
+        <value>внешний</value>
+    </data>
+    <data name="Converters__Release" xml:space="preserve">
+        <value>Выпускать</value>
+    </data>
+    <data name="Converters__Snapshot" xml:space="preserve">
+        <value>Снимок</value>
+    </data>
+    <data name="Converters__Old Beta" xml:space="preserve">
+        <value>Старая бета</value>
+    </data>
+    <data name="Converters__Old Alpha" xml:space="preserve">
+        <value>Старый Альфа</value>
+    </data>
+    <data name="Converters__Unknown" xml:space="preserve">
+        <value>Неизвестный</value>
+    </data>
+    <data name="Converters__Inherited From" xml:space="preserve">
+        <value>Унаследовано от</value>
+    </data>
+    <data name="Converters__LaunchState_Created" xml:space="preserve">
+        <value>Задача запуска создана</value>
+    </data>
+    <data name="Converters__LaunchState_Inspecting" xml:space="preserve">
+        <value>Проверка необходимых элементов перед запуском</value>
+    </data>
+    <data name="Converters__LaunchState_Authenticating" xml:space="preserve">
+        <value>Проверка и обновление токена учетной записи</value>
+    </data>
+    <data name="Converters__LaunchState_CompletingResources" xml:space="preserve">
+        <value>Завершение ресурсов, зависящих от игры</value>
+    </data>
+    <data name="Converters__LaunchState_BuildingArguments" xml:space="preserve">
+        <value>Генерация параметров запуска</value>
+    </data>
+    <data name="Converters__LaunchState_LaunchingProcess" xml:space="preserve">
+        <value>Запускаем игровой процесс</value>
+    </data>
+    <data name="Converters__LaunchState_GameRunning" xml:space="preserve">
+        <value>Игра запущена</value>
+    </data>
+    <data name="Converters__LaunchState_GameExited" xml:space="preserve">
+        <value>Игра вышла нормально</value>
+    </data>
+    <data name="Converters__LaunchState_Faulted" xml:space="preserve">
+        <value>Ошибка запуска</value>
+    </data>
+    <data name="Converters__LaunchState_Killed" xml:space="preserve">
+        <value>Игра была вынуждена выйти</value>
+    </data>
+    <data name="Converters__LaunchState_GameCrashed" xml:space="preserve">
+        <value>Игра вылетела</value>
+    </data>
+    <data name="Dialogs_JavaMirrorsDialog.Title" xml:space="preserve">
+        <value>Сторонние источники загрузки Java</value>
+    </data>
+    <data name="Dialogs_JavaMirrorsDialog.PrimaryButtonText" xml:space="preserve">
+        <value>Подтверждать</value>
+    </data>
+    <data name="Dialogs_CopyrightLicenseDialog.Title" xml:space="preserve">
+        <value>Авторское право &amp;amp; Информация о лицензии</value>
+    </data>
+    <data name="Dialogs_CopyrightLicenseDialog.PrimaryButtonText" xml:space="preserve">
+        <value>Подтверждать</value>
+    </data>
+    <data name="Dialogs_AddVmArgumentDialog_T.Text" xml:space="preserve">
+        <value>Добавьте один аргумент JVM</value>
+    </data>
+    <data name="Dialogs_ExceptionDialog.Title" xml:space="preserve">
+        <value>Программа обнаружила ошибку</value>
+    </data>
+    <data name="Dialogs_ExceptionDialog.PrimaryButtonText" xml:space="preserve">
+        <value>Скопируйте и перейдите на GitHub</value>
+    </data>
+    <data name="Dialogs_ExceptionDialog.SecondaryButtonText" xml:space="preserve">
+        <value>Закрывать</value>
+    </data>
+    <data name="Dialogs_SwitchAccountDialog.Title" xml:space="preserve">
+        <value>Сменить аккаунт</value>
+    </data>
+    <data name="Dialogs_SwitchAccountDialog.PrimaryButtonText" xml:space="preserve">
+        <value>Подтверждать</value>
+    </data>
+    <data name="Dialogs_SwitchAccountDialog.SecondaryButtonText" xml:space="preserve">
+        <value>Отмена</value>
+    </data>
+    <data name="Dialogs_SwitchAccountDialog_B.Text" xml:space="preserve">
+        <value>Удалить выбранную учетную запись</value>
+    </data>
+    <data name="Dialogs_AuthenticationWizardDialog_T.Text" xml:space="preserve">
+        <value>Мастер добавления учетной записи:</value>
+    </data>
+    <data name="ExceptionPage_Title.Text" xml:space="preserve">
+        <value></value>
+    </data>
+    <data name="ExceptionPage_Description_1.Text" xml:space="preserve">
+        <value></value>
+    </data>
+    <data name="ExceptionPage_Description_2.Text" xml:space="preserve">
+        <value></value>
+    </data>
+    <data name="ExceptionPage_Button.Content" xml:space="preserve">
+        <value></value>
+    </data>
+    <data name="Notifications__AccountRefreshFailedTitle" xml:space="preserve">
+        <value>Не удалось обновить учетную запись</value>
+    </data>
+    <data name="Notifications__AccountRefreshFailedDescription" xml:space="preserve">
+        <value>Срок действия учетной записи истек, и вам необходимо снова войти в систему или вы не можете подключиться к серверу из-за проблем с сетью.</value>
+    </data>
+    <data name="Notifications__AccountRefreshedTitle" xml:space="preserve">
+        <value>Аккаунт успешно обновлен</value>
+    </data>
+    <data name="Notifications__AccountRefreshedDescription" xml:space="preserve">
+        <value>С возвращением, ${name}</value>
+    </data>
+    <data name="ShellPage_NV_Item_1.Content" xml:space="preserve">
+        <value>Домашняя страница</value>
+    </data>
+    <data name="ShellPage_NV_Item_2.Content" xml:space="preserve">
+        <value>Ядра Управление</value>
+    </data>
+    <data name="ShellPage_NV_Item_3.Content" xml:space="preserve">
+        <value>Задачи Управление</value>
+    </data>
+    <data name="ShellPage_NV_Item_4.Content" xml:space="preserve">
+        <value>Загрузка ресурсов</value>
+    </data>
+    <data name="ShellPage_NV_Item_5.Content" xml:space="preserve">
+        <value>Настройки</value>
+    </data>
+    <data name="Activities_ActivitiesNavigationPage_NV_Item1.Content" xml:space="preserve">
+        <value>Запустить задачу</value>
+    </data>
+    <data name="Activities_ActivitiesNavigationPage_NV_Item2.Content" xml:space="preserve">
+        <value>Скачать задание</value>
+    </data>
+    <data name="Activities_ActivitiesNavigationPage_NV_Item3.Content" xml:space="preserve">
+        <value>Новости</value>
+    </data>
+    <data name="Activities_ActivitiesNavigationPage_NV_Item4.Content" xml:space="preserve">
+        <value>Приложение</value>
+    </data>
+    <data name="Activities_LaunchPage_Tip.Text" xml:space="preserve">
+        <value>Нет договоренностей о запуске</value>
+    </data>
+    <data name="Activities_LaunchPage_Hyperlink.Content" xml:space="preserve">
+        <value>Перейдите на главную страницу, чтобы создать</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_T.Text" xml:space="preserve">
+        <value>Запустить задачу</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_TD.Text" xml:space="preserve">
+        <value>Состояние</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H1.Text" xml:space="preserve">
+        <value>Прогресс:</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H2.Text" xml:space="preserve">
+        <value>Игра успешно запущена</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H3.Text" xml:space="preserve">
+        <value>Управление игровым прогрессом</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H4.Text" xml:space="preserve">
+        <value>Отчет об анализе сбоев</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H5.Text" xml:space="preserve">
+        <value>Причина:</value>
+    </data>
+    <data name="Activities_LaunchPage_B1.Text" xml:space="preserve">
+        <value>Открыть журнал</value>
+    </data>
+    <data name="Activities_LaunchPage_B2.Text" xml:space="preserve">
+        <value>Убить процесс</value>
+    </data>
+    <data name="Activities_LaunchPage_B3.Text" xml:space="preserve">
+        <value>Открыть отчет</value>
+    </data>
+    <data name="Activities_LaunchPage_B4.Text" xml:space="preserve">
+        <value>Показать детали</value>
+    </data>
+    <data name="AuthenticationWizard_BrowserMicrosoftAuthPage_Page.Tag" xml:space="preserve">
+        <value>Аутентификация Microsoft с использованием встроенного браузера (2/3)</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_Page.Tag" xml:space="preserve">
+        <value>Выберите тип учетной записи (1/3)</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_H1.Text" xml:space="preserve">
+        <value>Учетная запись Майкрософт</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_H2.Text" xml:space="preserve">
+        <value>Аккаунт Иггдрасиль</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_H3.Text" xml:space="preserve">
+        <value>Автономный аккаунт</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_D1.Text" xml:space="preserve">
+        <value>Подлинная учетная запись для игры на онлайн-серверах</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_D2.Text" xml:space="preserve">
+        <value>Можно войти на сторонний сервер проверки Yggdrasil</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_D3.Text" xml:space="preserve">
+        <value>Можно играть только локально и в автономном режиме</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_NoMc.Text" xml:space="preserve">
+        <value>У вас нет майнкрафта?</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_Page.Tag" xml:space="preserve">
+        <value>Выберите метод проверки подлинности Microsoft (1/3)</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_H1.Text" xml:space="preserve">
+        <value>Аутентификация с помощью встроенного браузера</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_H2.Text" xml:space="preserve">
+        <value>Аутентификация с кодом потока устройства</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_D1.Text" xml:space="preserve">
+        <value>Встроенный браузер может работать медленно при плохом соединении</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_D2.Text" xml:space="preserve">
+        <value>Необходимо ввести код подтверждения во внешнем браузере</value>
+    </data>
+    <data name="AuthenticationWizard_ConfirmProfilePage_Page.Tag" xml:space="preserve">
+        <value>Подтвердить профиль Minecraft (3/3)</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_Page.Tag" xml:space="preserve">
+        <value>Поток устройств Microsoft Authenticate (2/3)</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_L.Text" xml:space="preserve">
+        <value>Код устройства:</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_P1.Text" xml:space="preserve">
+        <value>Пожалуйста, выполните следующие шаги проверки в своем браузере, затем вернитесь в панель запуска, чтобы продолжить проверку.</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_P2.Text" xml:space="preserve">
+        <value>Код потока устройства действителен в течение 15 минут.</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_B1.Text" xml:space="preserve">
+        <value>Скопировать код</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_B2.Text" xml:space="preserve">
+        <value>Обновить код</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_Link.Text" xml:space="preserve">
+        <value>Ручной доступ https://login.live.com/oauth20_remoteconnect.srf</value>
+    </data>
+    <data name="AuthenticationWizard_EnterOfflineProfilePage_Page.Tag" xml:space="preserve">
+        <value>Введите профиль автономной учетной записи (2/3)</value>
+    </data>
+    <data name="AuthenticationWizard_EnterOfflineProfilePage_TB1.PlaceholderText" xml:space="preserve">
+        <value>Имя:</value>
+    </data>
+    <data name="AuthenticationWizard_EnterOfflineProfilePage_TB2.PlaceholderText" xml:space="preserve">
+        <value>UUID: (необязательно)</value>
+    </data>
+    <data name="AuthenticationWizard_EnterYggdrasilProfilePage_Page.Tag" xml:space="preserve">
+        <value>Войдите в профиль учетной записи Yggdrasil (2/3)</value>
+    </data>
+    <data name="AuthenticationWizard_EnterYggdrasilProfilePage_TB1.PlaceholderText" xml:space="preserve">
+        <value>URL-адрес сервера Yggdrasil:</value>
+    </data>
+    <data name="AuthenticationWizard_EnterYggdrasilProfilePage_TB2.PlaceholderText" xml:space="preserve">
+        <value>Электронная почта:</value>
+    </data>
+    <data name="AuthenticationWizard_EnterYggdrasilProfilePage_TB3.PlaceholderText" xml:space="preserve">
+        <value>Пароль:</value>
+    </data>
+    <data name="Cores_CoresPage_SearchBox.PlaceholderText" xml:space="preserve">
+        <value>Ядро поиска</value>
+    </data>
+    <data name="Cores_CoresPage_Text1.Text" xml:space="preserve">
+        <value>Критерии фильтрации:</value>
+    </data>
+    <data name="Cores_CoresPage_Text2.Text" xml:space="preserve">
+        <value>Сортировать по:</value>
+    </data>
+    <data name="Cores_CoresPage__Items1" xml:space="preserve">
+        <value>Все;Выпуск;Снимок;Старый</value>
+    </data>
+    <data name="Cores_CoresPage__Items2" xml:space="preserve">
+        <value>Имя;Дата запуска</value>
+    </data>
+    <data name="Cores_CoresPage_InstallButton.Text" xml:space="preserve">
+        <value>Установить ядра</value>
+    </data>
+    <data name="Cores_ManageNavigationPage_NV_Item_1.Content" xml:space="preserve">
+        <value>Настройки ядер</value>
+    </data>
+    <data name="Cores_ManageNavigationPage_NV_Item_2.Content" xml:space="preserve">
+        <value>Управление модами</value>
+    </data>
+    <data name="Cores_ManageNavigationPage_NV_Item_3.Content" xml:space="preserve">
+        <value>Сохранить Управление</value>
+    </data>
+    <data name="Cores_ManageNavigationPage_NV_Item_4.Content" xml:space="preserve">
+        <value>Статистические данные</value>
+    </data>
+    <data name="Cores_ManageNavigationPage__BreadcrumbBar_First" xml:space="preserve">
+        <value>Ядра Управление</value>
+    </data>
+    <data name="Cores_Manage_CoreModsPage_T.Text" xml:space="preserve">
+        <value>Моды</value>
+    </data>
+    <data name="Cores_Manage_CoreModsPage_H1.Text" xml:space="preserve">
+        <value>Ядро игры не поддерживает моды</value>
+    </data>
+    <data name="Cores_Manage_CoreModsPage_H2.Text" xml:space="preserve">
+        <value>Папка модов</value>
+    </data>
+    <data name="Cores_Manage_CoreModsPage_D.Text" xml:space="preserve">
+        <value>Установка ядра с загрузчиком модов</value>
+    </data>
+    <data name="Cores_Manage_CoreModsPage_SearchBox.PlaceholderText" xml:space="preserve">
+        <value>Поиск Мод</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_T1.Text" xml:space="preserve">
+        <value>Настройки запуска</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_T2.Text" xml:space="preserve">
+        <value>Настройки учетной записи</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_T3.Text" xml:space="preserve">
+        <value>Настройки JVM</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H1.Text" xml:space="preserve">
+        <value>Основное прозвище:</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H2.Text" xml:space="preserve">
+        <value>Включить определенные основные настройки</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H3.Text" xml:space="preserve">
+        <value>Независимый от ядра</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H4.Text" xml:space="preserve">
+        <value>Автоматический полноэкранный режим после входа в игру</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H5.Text" xml:space="preserve">
+        <value>Разрешение окна игры</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H6.Text" xml:space="preserve">
+        <value>Адрес сервера для подключения после входа в игру</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H7.Text" xml:space="preserve">
+        <value>Заголовок игрового окна</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H8.Text" xml:space="preserve">
+        <value>Учетная запись, используемая для запуска этой игры</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H9.Text" xml:space="preserve">
+        <value>Дополнительные настройки параметров JVM</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D1.Text" xml:space="preserve">
+        <value>Только в качестве отображаемого имени, фактический идентификатор не будет изменен.</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D2.Text" xml:space="preserve">
+        <value>Только если вы включите этот пункт, вступят в силу следующие настройки</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D3.Text" xml:space="preserve">
+        <value>Игра будет работать в каталоге version\${version}</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D4.Text" xml:space="preserve">
+        <value>Если выбранная учетная запись не может быть найдена в списке учетных записей после ее включения, будет сообщено об ошибке</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D5.Text" xml:space="preserve">
+        <value>Они будут добавлены к сгенерированным параметрам запуска.</value>
+    </data>
+    <data name="Downloads_DownloadsPage_T1.Text" xml:space="preserve">
+        <value>Игры Майнкрафт</value>
+    </data>
+    <data name="Downloads_DownloadsPage_T2.Text" xml:space="preserve">
+        <value>Ресурсы популярных модов CurseForge</value>
+    </data>
+    <data name="Downloads_DownloadsPage_T3.Text" xml:space="preserve">
+        <value>Популярные ресурсы CurseForge Modpack</value>
+    </data>
+    <data name="Downloads_DownloadsPage_H.Text" xml:space="preserve">
+        <value>Список всех ядер версии</value>
+    </data>
+    <data name="Downloads_DownloadsPage_D.Text" xml:space="preserve">
+        <value>Найдите версию ядра и установите ее.</value>
+    </data>
+    <data name="Downloads_DownloadsPage_SearchBox.PlaceholderText" xml:space="preserve">
+        <value>Поиск..</value>
+    </data>
+    <data name="Downloads_DownloadsPage_C1.PlaceholderText" xml:space="preserve">
+        <value>Тип ресурса</value>
+    </data>
+    <data name="Downloads_DownloadsPage_C2.PlaceholderText" xml:space="preserve">
+        <value>Версия</value>
+    </data>
+    <data name="Downloads_DownloadsPage_C3.PlaceholderText" xml:space="preserve">
+        <value>Источник</value>
+    </data>
+    <data name="Downloads_DownloadsPage_ST.Text" xml:space="preserve">
+        <value>Варианты поиска мода:</value>
+    </data>
+    <data name="Downloads_DownloadsPage__Items" xml:space="preserve">
+        <value>Игры Minecraft;Моды;Паки модов;Пакеты ресурсов;Миры</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_Hyperlink.Text" xml:space="preserve">
+        <value>Открыть в браузере</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_T1.Text" xml:space="preserve">
+        <value>Скриншоты</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_T2.Text" xml:space="preserve">
+        <value>Подробности</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_D1.Text" xml:space="preserve">
+        <value>Автор</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_D2.Text" xml:space="preserve">
+        <value>Счетчик загрузок</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_D3.Text" xml:space="preserve">
+        <value>Дата обновления</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage_SearchBox.PlaceholderText" xml:space="preserve">
+        <value>Поиск..</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage_C1.PlaceholderText" xml:space="preserve">
+        <value>Тип ресурса</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage_C2.PlaceholderText" xml:space="preserve">
+        <value>Версия</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage_C3.PlaceholderText" xml:space="preserve">
+        <value>Источник</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage__Items" xml:space="preserve">
+        <value>Игры Minecraft;Моды;Паки модов;Пакеты ресурсов;Миры</value>
+    </data>
+    <data name="Home_HomePage_NoAccount.Text" xml:space="preserve">
+        <value>Нет аккаунта</value>
+    </data>
+    <data name="Home_HomePage_LaunchButton.Text" xml:space="preserve">
+        <value>Запустить Minecraft</value>
+    </data>
+    <data name="Home_HomePage_ComboBox.PlaceholderText" xml:space="preserve">
+        <value>Выберите игровое ядро</value>
+    </data>
+    <data name="Home_HomePage__NoCore" xml:space="preserve">
+        <value>Ядро не выбрано</value>
+    </data>
+    <data name="Home_HomePage_D1.Text" xml:space="preserve">
+        <value>Нажмите, чтобы переключиться</value>
+    </data>
+    <data name="Home_HomePage_D2.Text" xml:space="preserve">
+        <value>текущее выбранное ядро</value>
+    </data>
+    <data name="Home_HomePage_Hyperlink.Text" xml:space="preserve">
+        <value>Перейти на главную страницу</value>
+    </data>
+    <data name="OOBE_AccountPage_T.Text" xml:space="preserve">
+        <value>Настройки учетной записи</value>
+    </data>
+    <data name="OOBE_AccountPage_H.Text" xml:space="preserve">
+        <value>Счета</value>
+    </data>
+    <data name="OOBE_AccountPage_D1.Text" xml:space="preserve">
+        <value>У вас должен быть хотя бы один аккаунт, чтобы начать игру</value>
+    </data>
+    <data name="OOBE_AccountPage_D2.Text" xml:space="preserve">
+        <value>Доступ к онлайн-серверам возможен только с учетной записью Microsoft.</value>
+    </data>
+    <data name="OOBE_AccountPage_D3.Text" xml:space="preserve">
+        <value>Офлайн-аккаунты не будут проверяться сервером</value>
+    </data>
+    <data name="OOBE_AccountPage_L.Text" xml:space="preserve">
+        <value>Официальный сайт Майнкрафт</value>
+    </data>
+    <data name="OOBE_BasicPage_T.Text" xml:space="preserve">
+        <value>Основные параметры запуска</value>
+    </data>
+    <data name="OOBE_BasicPage_D1.Text" xml:space="preserve">
+        <value>Вам нужен как минимум каталог .minecraft для хранения игровых ядер.</value>
+    </data>
+    <data name="OOBE_BasicPage_D2.Text" xml:space="preserve">
+        <value>Вам нужна как минимум среда выполнения Java, чтобы запустить ядро ​​игры.</value>
+    </data>
+    <data name="OOBE_BasicPage_D3.Text" xml:space="preserve">
+        <value>После этого вы также можете изменить эти настройки в глобальных настройках игры.</value>
+    </data>
+    <data name="OOBE_BasicPage_H1.Text" xml:space="preserve">
+        <value>.minecraft Папка:</value>
+    </data>
+    <data name="OOBE_BasicPage_H2.Text" xml:space="preserve">
+        <value>Среды выполнения Java:</value>
+    </data>
+    <data name="OOBE_GetStartedPage_T.Text" xml:space="preserve">
+        <value>Все закончено</value>
+    </data>
+    <data name="OOBE_GetStartedPage_ST.Text" xml:space="preserve">
+        <value>Вы выполнили все основные настройки</value>
+    </data>
+    <data name="OOBE_GetStartedPage_B.Text" xml:space="preserve">
+        <value>Давайте начнем</value>
+    </data>
+    <data name="OOBE_LanguagePage_Welcome.Text" xml:space="preserve">
+        <value>Добро пожаловать</value>
+    </data>
+    <data name="OOBE_OOBENavigationPage_NV_Item1.Text" xml:space="preserve">
+        <value>Язык</value>
+    </data>
+    <data name="OOBE_OOBENavigationPage_NV_Item2.Text" xml:space="preserve">
+        <value>Базовые настройки</value>
+    </data>
+    <data name="OOBE_OOBENavigationPage_NV_Item3.Text" xml:space="preserve">
+        <value>Счет</value>
+    </data>
+    <data name="OOBE_OOBENavigationPage_NV_Item4.Text" xml:space="preserve">
+        <value>Начать</value>
+    </data>
+    <data name="Settings_AboutPage_T1.Text" xml:space="preserve">
+        <value>О Fluent Launcher</value>
+    </data>
+    <data name="Settings_AboutPage_T2.Text" xml:space="preserve">
+        <value>Дополнительная информация</value>
+    </data>
+    <data name="Settings_AboutPage_T3.Text" xml:space="preserve">
+        <value>Спасибо</value>
+    </data>
+    <data name="Settings_AboutPage_H1.Text" xml:space="preserve">
+        <value>Исходный код</value>
+    </data>
+    <data name="Settings_AboutPage_H2.Text" xml:space="preserve">
+        <value>Заявление</value>
+    </data>
+    <data name="Settings_AboutPage_H3.Text" xml:space="preserve">
+        <value>Информация об авторских правах и лицензии</value>
+    </data>
+    <data name="Settings_AboutPage_H4.Text" xml:space="preserve">
+        <value>Особая благодарность</value>
+    </data>
+    <data name="Settings_AboutPage_H5.Text" xml:space="preserve">
+        <value>Ссылки</value>
+    </data>
+    <data name="Settings_AboutPage_SH1.Text" xml:space="preserve">
+        <value>Обновлять</value>
+    </data>
+    <data name="Settings_AboutPage_SH2.Text" xml:space="preserve">
+        <value>Разработчик лаунчера</value>
+    </data>
+    <data name="Settings_AboutPage_B1.Text" xml:space="preserve">
+        <value>Проверить обновление в Microsoft Store</value>
+    </data>
+    <data name="Settings_AboutPage_B2.Text" xml:space="preserve">
+        <value>Показать детали</value>
+    </data>
+    <data name="Settings_AboutPage_D1.Text" xml:space="preserve">
+        <value>Студия Xcube © 2022-2023. Все права защищены.</value>
+    </data>
+    <data name="Settings_AboutPage_D2.Text" xml:space="preserve">
+        <value>Посетить репозиторий GitHub</value>
+    </data>
+    <data name="Settings_AboutPage_D3.Text" xml:space="preserve">
+        <value>Авторские права на Minecraft принадлежат Mojang Studios. Мы не несем ответственности за любые нарушения авторских прав, связанные с использованием этого программного обеспечения.</value>
+    </data>
+    <data name="Settings_AboutPage_D4.Text" xml:space="preserve">
+        <value>Спасибо за все сервисы, предоставленные лаунчеру</value>
+    </data>
+    <data name="Settings_AboutPage_D5.Text" xml:space="preserve">
+        <value>Библиотеки, используемые для разработки лаунчера</value>
+    </data>
+    <data name="Settings_AboutPage_D6.Text" xml:space="preserve">
+        <value>Источник скачивания</value>
+    </data>
+    <data name="Settings_AboutPage__Debug" xml:space="preserve">
+        <value>Отладочная версия</value>
+    </data>
+    <data name="Settings_AboutPage__Release" xml:space="preserve">
+        <value>Релизное издание</value>
+    </data>
+    <data name="Settings_AccountPage_T1.Text" xml:space="preserve">
+        <value>Счета</value>
+    </data>
+    <data name="Settings_AccountPage_T2.Text" xml:space="preserve">
+        <value>Настройки учетной записи</value>
+    </data>
+    <data name="Settings_AccountPage_H1.Text" xml:space="preserve">
+        <value>Добавить новую учетную запись:</value>
+    </data>
+    <data name="Settings_AccountPage_H2.Text" xml:space="preserve">
+        <value>Запустите игру с демо-счета:</value>
+    </data>
+    <data name="Settings_AccountPage_H3.Text" xml:space="preserve">
+        <value>Автообновление учетной записи:</value>
+    </data>
+    <data name="Settings_AccountPage_D1.Text" xml:space="preserve">
+        <value>Автоматически обновлять токен перед каждым запуском</value>
+    </data>
+    <data name="Settings_AccountPage_SH1.Text" xml:space="preserve">
+        <value>Время последнего обновления:</value>
+    </data>
+    <data name="Settings_AppearancePage_T1.Text" xml:space="preserve">
+        <value>Язык</value>
+    </data>
+    <data name="Settings_AppearancePage_T2.Text" xml:space="preserve">
+        <value>Настройки внешнего вида</value>
+    </data>
+    <data name="Settings_AppearancePage_H1.Text" xml:space="preserve">
+        <value>Языковые настройки</value>
+    </data>
+    <data name="Settings_AppearancePage_H2.Text" xml:space="preserve">
+        <value>Показать тему</value>
+    </data>
+    <data name="Settings_AppearancePage_H3.Text" xml:space="preserve">
+        <value>Фон</value>
+    </data>
+    <data name="Settings_AppearancePage_H4.Text" xml:space="preserve">
+        <value>Режим отображения NavigationView</value>
+    </data>
+    <data name="Settings_AppearancePage_H5.Text" xml:space="preserve">
+        <value>Использовать новую домашнюю страницу</value>
+    </data>
+    <data name="Settings_AppearancePage_D1.Text" xml:space="preserve">
+        <value>Темные и светлые цветовые темы, вступающие в силу после перезапуска приложения.</value>
+    </data>
+    <data name="Settings_AppearancePage_D2.Text" xml:space="preserve">
+        <value>Настройки фона приложения, вступающие в силу после перезапуска приложения.</value>
+    </data>
+    <data name="Settings_AppearancePage_D3.Text" xml:space="preserve">
+        <value>Макет NavigationView</value>
+    </data>
+    <data name="Settings_AppearancePage__Items1" xml:space="preserve">
+        <value>Система;Светлая;Темная</value>
+    </data>
+    <data name="Settings_AppearancePage__Items2" xml:space="preserve">
+        <value>Слюда;Акрил;Твердый;Изображение</value>
+    </data>
+    <data name="Settings_AppearancePage__Items3" xml:space="preserve">
+        <value>Нормальный;Минимальный</value>
+    </data>
+    <data name="Settings_DownloadPage_T1.Text" xml:space="preserve">
+        <value>Скачать</value>
+    </data>
+    <data name="Settings_DownloadPage_H1.Text" xml:space="preserve">
+        <value>Текущие источники загрузки:</value>
+    </data>
+    <data name="Settings_DownloadPage_H2.Text" xml:space="preserve">
+        <value>Максимальное количество потоков загрузки:</value>
+    </data>
+    <data name="Settings_DownloadPage_H3.Text" xml:space="preserve">
+        <value>Включить фрагментированную загрузку больших файлов:</value>
+    </data>
+    <data name="Settings_DownloadPage_D1.Text" xml:space="preserve">
+        <value>Пожалуйста, оптимизируйте и настройте в соответствии с реальной сетевой средой</value>
+    </data>
+    <data name="Settings_DownloadPage_D2.Text" xml:space="preserve">
+        <value>Может эффективно ускориться при обнаружении больших файлов</value>
+    </data>
+    <data name="Settings_LaunchPage_T1.Text" xml:space="preserve">
+        <value>Глобальные настройки запуска</value>
+    </data>
+    <data name="Settings_LaunchPage_T2.Text" xml:space="preserve">
+        <value>Специфические настройки игры</value>
+    </data>
+    <data name="Settings_LaunchPage_H1.Text" xml:space="preserve">
+        <value>Папка .minecraft</value>
+    </data>
+    <data name="Settings_LaunchPage_H2.Text" xml:space="preserve">
+        <value>Java-среда выполнения</value>
+    </data>
+    <data name="Settings_LaunchPage_H3.Text" xml:space="preserve">
+        <value>Игровые настройки</value>
+    </data>
+    <data name="Settings_LaunchPage_H4.Header" xml:space="preserve">
+        <value>Изменить настройки для конкретных игровых ядер</value>
+    </data>
+    <data name="Settings_LaunchPage_D1.Text" xml:space="preserve">
+        <value>Где хранить игровые ядра</value>
+    </data>
+    <data name="Settings_LaunchPage_D2.Text" xml:space="preserve">
+        <value>Исполняемый файл, используемый для запуска игры</value>
+    </data>
+    <data name="Settings_LaunchPage_D3.Text" xml:space="preserve">
+        <value>Настройки игрового процесса</value>
+    </data>
+    <data name="Settings_LaunchPage_SH1.Text" xml:space="preserve">
+        <value>Текущая папка .minecraft:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH2.Text" xml:space="preserve">
+        <value>Откройте папку .minecraft:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH3.Text" xml:space="preserve">
+        <value>Удалите текущую папку .minecraft:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH4.Text" xml:space="preserve">
+        <value>Текущая Java:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH5.Text" xml:space="preserve">
+        <value>Откройте Java:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH6.Text" xml:space="preserve">
+        <value>Удалить текущую Java:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH7.Text" xml:space="preserve">
+        <value>Автоматически выбрать подходящую Java:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH8.Text" xml:space="preserve">
+        <value>Память виртуальной машины Java:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH9.Text" xml:space="preserve">
+        <value>Автоматически выделять память виртуальной машины:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH10.Text" xml:space="preserve">
+        <value>Изоляция глобальной версии:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH11.Text" xml:space="preserve">
+        <value>Полноэкранный режим:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH12.Text" xml:space="preserve">
+        <value>Разрешение окна игры:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH13.Text" xml:space="preserve">
+        <value>Адрес сервера:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH14.Text" xml:space="preserve">
+        <value>Заголовок игрового окна:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH15.Text" xml:space="preserve">
+        <value>Перейдите к сторонним источникам загрузки Java:</value>
+    </data>
+    <data name="Settings_NavigationPage_NV_Item_1.Content" xml:space="preserve">
+        <value>Запуск</value>
+    </data>
+    <data name="Settings_NavigationPage_NV_Item_2.Content" xml:space="preserve">
+        <value>Счет</value>
+    </data>
+    <data name="Settings_NavigationPage_NV_Item_3.Content" xml:space="preserve">
+        <value>Скачать</value>
+    </data>
+    <data name="Settings_NavigationPage_NV_Item_4.Content" xml:space="preserve">
+        <value>Появление</value>
+    </data>
+    <data name="Settings_NavigationPage_NV_Item_5.Content" xml:space="preserve">
+        <value>О</value>
+    </data>
 </root>

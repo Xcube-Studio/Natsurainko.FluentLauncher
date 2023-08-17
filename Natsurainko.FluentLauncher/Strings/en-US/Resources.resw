@@ -1,579 +1,804 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Buttons_Browse.Text" xml:space="preserve">
+        <value>Browse</value>
     </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
+    <data name="Buttons_Remove.Text" xml:space="preserve">
+        <value>Remove</value>
     </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <data name="About_AboutFluentLauncher.Text" xml:space="preserve">
-    <value>About Fluent Launcher</value>
-  </data>
-  <data name="About_Acknowledgments.Text" xml:space="preserve">
-    <value>Acknowledgments</value>
-  </data>
-  <data name="About_Acknowledgments_Content.Text" xml:space="preserve">
-    <value>Thanks for all the services provided to this app</value>
-  </data>
-  <data name="About_CheckUpdate.Text" xml:space="preserve">
-    <value>Check Updates in the Microsoft Store</value>
-  </data>
-  <data name="About_Copyright.Text" xml:space="preserve">
-    <value>Copyright</value>
-  </data>
-  <data name="About_Credits.Text" xml:space="preserve">
-    <value>Credits</value>
-  </data>
-  <data name="About_Developer_Tag.Text" xml:space="preserve">
-    <value>the Developer of this Application</value>
-  </data>
-  <data name="About_OtherInfo.Text" xml:space="preserve">
-    <value>Other Information</value>
-  </data>
-  <data name="About_ProvideDownloadSource.Text" xml:space="preserve">
-    <value>Provide Download Source</value>
-  </data>
-  <data name="About_References.Text" xml:space="preserve">
-    <value>References</value>
-  </data>
-  <data name="About_References_Content.Text" xml:space="preserve">
-    <value>Libraries used for this application development</value>
-  </data>
-  <data name="About_Sources.Text" xml:space="preserve">
-    <value>Sources</value>
-  </data>
-  <data name="About_Sources_Content.Text" xml:space="preserve">
-    <value>Navigate to the GitHub repository</value>
-  </data>
-  <data name="About_Statements.Text" xml:space="preserve">
-    <value>Statements</value>
-  </data>
-  <data name="About_Statements_Content.Text" xml:space="preserve">
-    <value>Minecraft is copyrighted by Mojang Studios. We are not responsible for any copyright infringement arising from use of this software.</value>
-  </data>
-  <data name="CF_Download_Files.Content" xml:space="preserve">
-    <value>Download Files</value>
-  </data>
-  <data name="Cores_Install.Text" xml:space="preserve">
-    <value>Install New Core</value>
-  </data>
-  <data name="Cores_New_Name.PlaceholderText" xml:space="preserve">
-    <value>New Name</value>
-  </data>
-  <data name="Cores_Search.PlaceholderText" xml:space="preserve">
-    <value>Search Core...</value>
-  </data>
-  <data name="Cores_ToolTip_1.Text" xml:space="preserve">
-    <value>Open Folder</value>
-  </data>
-  <data name="Cores_ToolTip_2.Text" xml:space="preserve">
-    <value>Rename</value>
-  </data>
-  <data name="Cores_ToolTip_3.Text" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="Cores_ToolTip_4.Text" xml:space="preserve">
-    <value>Generate Launch Script</value>
-  </data>
-  <data name="Cores_ToolTip_5.Text" xml:space="preserve">
-    <value>Options</value>
-  </data>
-  <data name="Cores_ToolTip_6.Text" xml:space="preserve">
-    <value>More</value>
-  </data>
-  <data name="Cores_ToolTip_7.Text" xml:space="preserve">
-    <value>Launch</value>
-  </data>
-  <data name="Guide_Account_Accounts.Text" xml:space="preserve">
-    <value>Accounts</value>
-  </data>
-  <data name="Guide_Account_Login.Text" xml:space="preserve">
-    <value>Login Microsoft Account</value>
-  </data>
-  <data name="Guide_Account_Offline.Text" xml:space="preserve">
-    <value>Don't have a Microsoft account?</value>
-  </data>
-  <data name="Guide_Account_Para_1.Text" xml:space="preserve">
-    <value>You need at least one account to start the game</value>
-  </data>
-  <data name="Guide_Account_Para_2.Text" xml:space="preserve">
-    <value>Access to online servers is only possible with a Microsoft account</value>
-  </data>
-  <data name="Guide_Account_Para_3.Text" xml:space="preserve">
-    <value>Offline accounts will not be verified by the server</value>
-  </data>
-  <data name="Guide_Account_Title.Text" xml:space="preserve">
-    <value>Account</value>
-  </data>
-  <data name="Guide_Account_Website.Text" xml:space="preserve">
-    <value>Minecraft Official Website</value>
-  </data>
-  <data name="Guide_Back.Content" xml:space="preserve">
-    <value>Back</value>
-  </data>
-  <data name="Guide_Basic_Folder.Text" xml:space="preserve">
-    <value>.minecraft Folder:</value>
-  </data>
-  <data name="Guide_Basic_Java.Text" xml:space="preserve">
-    <value>Java Runtimes:</value>
-  </data>
-  <data name="Guide_Basic_Para_1.Text" xml:space="preserve">
-    <value>You need at least a .minecraft directory to store your game cores</value>
-  </data>
-  <data name="Guide_Basic_Para_2.Text" xml:space="preserve">
-    <value>You need at least a Java Runtime to start your game core</value>
-  </data>
-  <data name="Guide_Basic_Para_3.Text" xml:space="preserve">
-    <value>Once done, you can also modify these settings in the global game settings</value>
-  </data>
-  <data name="Guide_Basic_Title.Text" xml:space="preserve">
-    <value>Basic Launch Settings</value>
-  </data>
-  <data name="Guide_GetStarted_Description.Text" xml:space="preserve">
-    <value>You have all the basic settings done</value>
-  </data>
-  <data name="Guide_GetStarted_Start.Content" xml:space="preserve">
-    <value>Let's Get Started</value>
-  </data>
-  <data name="Guide_GetStarted_Title.Text" xml:space="preserve">
-    <value>All Finished</value>
-  </data>
-  <data name="Guide_Navigation_Account.Text" xml:space="preserve">
-    <value>Account</value>
-  </data>
-  <data name="Guide_Navigation_Basic.Text" xml:space="preserve">
-    <value>Basic Settings</value>
-  </data>
-  <data name="Guide_Navigation_GetStarted.Text" xml:space="preserve">
-    <value>Get Started</value>
-  </data>
-  <data name="Guide_Navigation_Language.Text" xml:space="preserve">
-    <value>Language</value>
-  </data>
-  <data name="Guide_Next.Content" xml:space="preserve">
-    <value>Next</value>
-  </data>
-  <data name="Guide_Welcome.Text" xml:space="preserve">
-    <value>Welcome</value>
-  </data>
-  <data name="Home_Account.Text" xml:space="preserve">
-    <value>Account</value>
-  </data>
-  <data name="Home_ComboBox.PlaceholderText" xml:space="preserve">
-    <value>Select Game Core</value>
-  </data>
-  <data name="Home_Launch.Text" xml:space="preserve">
-    <value>Launch Minecraft</value>
-  </data>
-  <data name="Home_NoAccount.Text" xml:space="preserve">
-    <value>No Account</value>
-  </data>
-  <data name="Mods_Install_New_Core.Content" xml:space="preserve">
-    <value>Install New Core</value>
-  </data>
-  <data name="Navigation_Activities.Content" xml:space="preserve">
-    <value>Activities</value>
-  </data>
-  <data name="Navigation_Activities_Application.Content" xml:space="preserve">
-    <value>Application</value>
-  </data>
-  <data name="Navigation_Activities_Download.Content" xml:space="preserve">
-    <value>Download Task</value>
-  </data>
-  <data name="Navigation_Activities_Launch.Content" xml:space="preserve">
-    <value>Launch Task</value>
-  </data>
-  <data name="Navigation_Activities_News.Content" xml:space="preserve">
-    <value>News</value>
-  </data>
-  <data name="Navigation_Cores.Content" xml:space="preserve">
-    <value>Cores</value>
-  </data>
-  <data name="Navigation_Home.Content" xml:space="preserve">
-    <value>Home</value>
-  </data>
-  <data name="Navigation_Mods.Content" xml:space="preserve">
-    <value>Mods</value>
-  </data>
-  <data name="Navigation_Options_Launch.Content" xml:space="preserve">
-    <value>Launch Settings</value>
-  </data>
-  <data name="Navigation_Options_Mods.Content" xml:space="preserve">
-    <value>Mods</value>
-  </data>
-  <data name="Navigation_Options_Property.Text" xml:space="preserve">
-    <value>Property</value>
-  </data>
-  <data name="Navigation_Options_Saves.Content" xml:space="preserve">
-    <value>Saves</value>
-  </data>
-  <data name="Navigation_Settings.Content" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="Navigation_Settings_About.Content" xml:space="preserve">
-    <value>About</value>
-  </data>
-  <data name="Navigation_Settings_Account.Content" xml:space="preserve">
-    <value>Account</value>
-  </data>
-  <data name="Navigation_Settings_Appearance.Content" xml:space="preserve">
-    <value>Appearance</value>
-  </data>
-  <data name="Navigation_Settings_Download.Content" xml:space="preserve">
-    <value>Download</value>
-  </data>
-  <data name="Navigation_Settings_Launch.Content" xml:space="preserve">
-    <value>Launch</value>
-  </data>
-  <data name="OfflineAccountDialog_Name.PlaceholderText" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="OfflineAccountDialog_UUID.PlaceholderText" xml:space="preserve">
-    <value>UUID (Optional)</value>
-  </data>
-  <data name="Properties_Information_Header.Text" xml:space="preserve">
-    <value>Property</value>
-  </data>
-  <data name="Properties_Information_Item_1.Text" xml:space="preserve">
-    <value>Path:</value>
-  </data>
-  <data name="Properties_Information_Item_2.Text" xml:space="preserve">
-    <value>Last launch time:</value>
-  </data>
-  <data name="Properties_Information_Item_3.Text" xml:space="preserve">
-    <value>Mod Loaders:</value>
-  </data>
-  <data name="Properties_Information_Item_4.Text" xml:space="preserve">
-    <value>Occupied disk space size:</value>
-  </data>
-  <data name="Properties_Information_Item_5.Text" xml:space="preserve">
-    <value>Number of dependent library files:</value>
-  </data>
-  <data name="Properties_Information_Item_6.Text" xml:space="preserve">
-    <value>Number of dependent asset files:</value>
-  </data>
-  <data name="Properties_Information_Subtitle.Text" xml:space="preserve">
-    <value>Basic properties of the core</value>
-  </data>
-  <data name="Properties_Launch_Header_1.Text" xml:space="preserve">
-    <value>Profile saved to:</value>
-  </data>
-  <data name="Properties_Launch_Header_2.Text" xml:space="preserve">
-    <value>Enable spcific game settings</value>
-  </data>
-  <data name="Properties_Launch_Item.Text" xml:space="preserve">
-    <value>Core independent:</value>
-  </data>
-  <data name="Properties_Mod_Author.Text" xml:space="preserve">
-    <value> authors:</value>
-  </data>
-  <data name="Properties_Mod_Description.Text" xml:space="preserve">
-    <value> description:</value>
-  </data>
-  <data name="Properties_Mod_Header.Text" xml:space="preserve">
-    <value>Mods Folder:</value>
-  </data>
-  <data name="Properties_Mod_Version.Text" xml:space="preserve">
-    <value> version:</value>
-  </data>
-  <data name="Settings_Account_Header.Text" xml:space="preserve">
-    <value>Accounts</value>
-  </data>
-  <data name="Settings_Account_Item_1.Text" xml:space="preserve">
-    <value>Current account:</value>
-  </data>
-  <data name="Settings_Account_Item_2.Text" xml:space="preserve">
-    <value>Details of the current account:</value>
-  </data>
-  <data name="Settings_Account_Item_3.Text" xml:space="preserve">
-    <value>Add new account:</value>
-  </data>
-  <data name="Settings_Account_Item_4.Text" xml:space="preserve">
-    <value>Remove current account:</value>
-  </data>
-  <data name="Settings_Account_Item_5.Text" xml:space="preserve">
-    <value>Launch the game with a Demo account:</value>
-  </data>
-  <data name="Settings_Account_Item_6.Text" xml:space="preserve">
-    <value>Auto refresh account: (before launch)</value>
-  </data>
-  <data name="Settings_Account_Subtitle.Text" xml:space="preserve">
-    <value>Account after entering the game</value>
-  </data>
-  <data name="Settings_Account_Type.PlaceholderText" xml:space="preserve">
-    <value>Account Type</value>
-  </data>
-  <data name="Settings_Choose_Account_Type.Text" xml:space="preserve">
-    <value>Choose Account Type</value>
-  </data>
-  <data name="Settings_Confirm_Role.Text" xml:space="preserve">
-    <value>Confirm Role</value>
-  </data>
-  <data name="Settings_Confirm_Role_Desc.Text" xml:space="preserve">
-    <value>There are multiple roles here, you need to choose one to continue</value>
-  </data>
-  <data name="Settings_Download_Header.Text" xml:space="preserve">
-    <value>Download</value>
-  </data>
-  <data name="Settings_Download_Item_1.Text" xml:space="preserve">
-    <value>Current download sources:</value>
-  </data>
-  <data name="Settings_Download_Item_2.Text" xml:space="preserve">
-    <value>Maximum number of download threads:</value>
-  </data>
-  <data name="Settings_Download_Item_3.Text" xml:space="preserve">
-    <value>Enable fragmented download of large files:</value>
-  </data>
-  <data name="Settings_Download_Subtitle.Text" xml:space="preserve">
-    <value>Configuration for download game resources</value>
-  </data>
-  <data name="Settings_Launch_Header_1.Text" xml:space="preserve">
-    <value>.minecraft Folder</value>
-  </data>
-  <data name="Settings_Launch_Header_2.Text" xml:space="preserve">
-    <value>Java Runtime</value>
-  </data>
-  <data name="Settings_Launch_Header_3.Text" xml:space="preserve">
-    <value>Game Settings</value>
-  </data>
-  <data name="Settings_Launch_Header_4.Text" xml:space="preserve">
-    <value>Language Settings</value>
-  </data>
-  <data name="Settings_Launch_Item_1.Text" xml:space="preserve">
-    <value>Current .minecraft folder:</value>
-  </data>
-  <data name="Settings_Launch_Item_10.Text" xml:space="preserve">
-    <value>Global core independent:</value>
-  </data>
-  <data name="Settings_Launch_Item_11.Text" xml:space="preserve">
-    <value>Full screen mode:</value>
-  </data>
-  <data name="Settings_Launch_Item_12.Text" xml:space="preserve">
-    <value>Game window resolution:</value>
-  </data>
-  <data name="Settings_Launch_Item_13.Text" xml:space="preserve">
-    <value>Server address:</value>
-  </data>
-  <data name="Settings_Launch_Item_14.Text" xml:space="preserve">
-    <value>Game window title:</value>
-  </data>
-  <data name="Settings_Launch_Item_15.Text" xml:space="preserve">
-    <value>Game specific settings</value>
-  </data>
-  <data name="Settings_Launch_Item_16.Text" xml:space="preserve">
-    <value>Global launch settings</value>
-  </data>
-  <data name="Settings_Launch_Item_17.ActionIconToolTip" xml:space="preserve">
-    <value>Go to Cores page</value>
-  </data>
-  <data name="Settings_Launch_Item_17.Header" xml:space="preserve">
-    <value>Edit game specific settings</value>
-  </data>
-  <data name="Settings_Launch_Item_2.Text" xml:space="preserve">
-    <value>Open the .minecraft folder:</value>
-  </data>
-  <data name="Settings_Launch_Item_3.Text" xml:space="preserve">
-    <value>Remove the current .minecraft folder:</value>
-  </data>
-  <data name="Settings_Launch_Item_4.Text" xml:space="preserve">
-    <value>Current Java runtime:</value>
-  </data>
-  <data name="Settings_Launch_Item_5.Text" xml:space="preserve">
-    <value>Open the Java runtime:</value>
-  </data>
-  <data name="Settings_Launch_Item_6.Text" xml:space="preserve">
-    <value>Automatically select the suitable Java:</value>
-  </data>
-  <data name="Settings_Launch_Item_7.Text" xml:space="preserve">
-    <value>Remove the current Java runtime:</value>
-  </data>
-  <data name="Settings_Launch_Item_8.Text" xml:space="preserve">
-    <value>JVM memory:</value>
-  </data>
-  <data name="Settings_Launch_Item_9.Text" xml:space="preserve">
-    <value>Automatically allocate JVM memory:</value>
-  </data>
-  <data name="Settings_Launch_Subtitle_1.Text" xml:space="preserve">
-    <value>Where to store the core of your game</value>
-  </data>
-  <data name="Settings_Launch_Subtitle_2.Text" xml:space="preserve">
-    <value>Executable to launch the game</value>
-  </data>
-  <data name="Settings_Launch_Subtitle_3.Text" xml:space="preserve">
-    <value>Game play settings</value>
-  </data>
-  <data name="Settings_Microsoft_Account_Loading.Text" xml:space="preserve">
-    <value>Loading...</value>
-  </data>
-  <data name="Settings_Yggdrasil_Login.PlaceholderText" xml:space="preserve">
-    <value>Email:</value>
-  </data>
-  <data name="Settings_Yggdrasil_Password.PlaceholderText" xml:space="preserve">
-    <value>Password:</value>
-  </data>
-  <data name="Settings_Yggdrasil_Url.PlaceholderText" xml:space="preserve">
-    <value>Yggdrasil Server Url:</value>
-  </data>
-  <data name="Title_Offline_Account.Text" xml:space="preserve">
-    <value>Offline Account</value>
-  </data>
-  <data name="_Buttons_Back.Text" xml:space="preserve">
-    <value>Back</value>
-  </data>
-  <data name="_Buttons_Browse.Text" xml:space="preserve">
-    <value>Browse</value>
-  </data>
-  <data name="_Buttons_Cancel.Text" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="_Buttons_Check.Text" xml:space="preserve">
-    <value>Check</value>
-  </data>
-  <data name="_Buttons_Confirm.Text" xml:space="preserve">
-    <value>Confirm</value>
-  </data>
-  <data name="_Buttons_Delete.Text" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="_Buttons_Expand.Text" xml:space="preserve">
-    <value>Expand</value>
-  </data>
-  <data name="_Buttons_Install.Text" xml:space="preserve">
-    <value>Install</value>
-  </data>
-  <data name="_Buttons_Next.Text" xml:space="preserve">
-    <value>Next</value>
-  </data>
-  <data name="_Buttons_Refresh.Text" xml:space="preserve">
-    <value>Refresh</value>
-  </data>
-  <data name="_Buttons_Remove.Text" xml:space="preserve">
-    <value>Remove</value>
-  </data>
-  <data name="_Buttons_Rename.Text" xml:space="preserve">
-    <value>Rename</value>
-  </data>
-  <data name="_Buttons_Search.Text" xml:space="preserve">
-    <value>Search</value>
-  </data>
-  <data name="_Buttons_SignIn.Text" xml:space="preserve">
-    <value>Sign in</value>
-  </data>
-  <data name="_TeachingTips_Delete.Subtitle" xml:space="preserve">
-    <value>Are you sure you want to delete? Once deleted it cannot be restored</value>
-  </data>
-  <data name="_TeachingTips_Rename.Subtitle" xml:space="preserve">
-    <value>Please enter a valid name</value>
-  </data>
+    <data name="Buttons_Search.Text" xml:space="preserve">
+        <value>Search</value>
+    </data>
+    <data name="Buttons_Refresh.Text" xml:space="preserve">
+        <value>Refresh</value>
+    </data>
+    <data name="Buttons_SwitchAccount.Text" xml:space="preserve">
+        <value>Switch Account</value>
+    </data>
+    <data name="Buttons_SignIn.Text" xml:space="preserve">
+        <value>Sign in</value>
+    </data>
+    <data name="Buttons_Add.Text" xml:space="preserve">
+        <value>Add</value>
+    </data>
+    <data name="Buttons_Back.Text" xml:space="preserve">
+        <value>Back</value>
+    </data>
+    <data name="Buttons_Next.Text" xml:space="preserve">
+        <value>Next</value>
+    </data>
+    <data name="Buttons_Open.Text" xml:space="preserve">
+        <value>Open</value>
+    </data>
+    <data name="Buttons_Go.Text" xml:space="preserve">
+        <value>Go</value>
+    </data>
+    <data name="Buttons_Cancel.Text" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
+    <data name="Buttons_Download.Text" xml:space="preserve">
+        <value>Download</value>
+    </data>
+    <data name="Converters__Account" xml:space="preserve">
+        <value>Account</value>
+    </data>
+    <data name="Converters__Microsoft" xml:space="preserve">
+        <value>Microsoft</value>
+    </data>
+    <data name="Converters__Offline" xml:space="preserve">
+        <value>Offline</value>
+    </data>
+    <data name="Converters__Yggdrasil" xml:space="preserve">
+        <value>Yggdrasil</value>
+    </data>
+    <data name="Converters__Release" xml:space="preserve">
+        <value>Release</value>
+    </data>
+    <data name="Converters__Snapshot" xml:space="preserve">
+        <value>Snapshot</value>
+    </data>
+    <data name="Converters__Old Beta" xml:space="preserve">
+        <value>Old Beta</value>
+    </data>
+    <data name="Converters__Old Alpha" xml:space="preserve">
+        <value>Old Alpha</value>
+    </data>
+    <data name="Converters__Unknown" xml:space="preserve">
+        <value>Unknown</value>
+    </data>
+    <data name="Converters__Inherited From" xml:space="preserve">
+        <value>Inherited From</value>
+    </data>
+    <data name="Converters__LaunchState_Created" xml:space="preserve">
+        <value>The launch task is created</value>
+    </data>
+    <data name="Converters__LaunchState_Inspecting" xml:space="preserve">
+        <value>Checking required items before launching</value>
+    </data>
+    <data name="Converters__LaunchState_Authenticating" xml:space="preserve">
+        <value>Verifying and refreshing account token</value>
+    </data>
+    <data name="Converters__LaunchState_CompletingResources" xml:space="preserve">
+        <value>Completing the game dependent resources</value>
+    </data>
+    <data name="Converters__LaunchState_BuildingArguments" xml:space="preserve">
+        <value>Generating startup parameters</value>
+    </data>
+    <data name="Converters__LaunchState_LaunchingProcess" xml:space="preserve">
+        <value>Launching the game process</value>
+    </data>
+    <data name="Converters__LaunchState_GameRunning" xml:space="preserve">
+        <value>The game is running</value>
+    </data>
+    <data name="Converters__LaunchState_GameExited" xml:space="preserve">
+        <value>The game has exited normally</value>
+    </data>
+    <data name="Converters__LaunchState_Faulted" xml:space="preserve">
+        <value>Launch failed</value>
+    </data>
+    <data name="Converters__LaunchState_Killed" xml:space="preserve">
+        <value>The game was forced to quit</value>
+    </data>
+    <data name="Converters__LaunchState_GameCrashed" xml:space="preserve">
+        <value>The game crashed</value>
+    </data>
+    <data name="Dialogs_JavaMirrorsDialog.Title" xml:space="preserve">
+        <value>Third-party Java Download Sources</value>
+    </data>
+    <data name="Dialogs_JavaMirrorsDialog.PrimaryButtonText" xml:space="preserve">
+        <value>Confirm</value>
+    </data>
+    <data name="Dialogs_CopyrightLicenseDialog.Title" xml:space="preserve">
+        <value>Copyright &amp; License Information</value>
+    </data>
+    <data name="Dialogs_CopyrightLicenseDialog.PrimaryButtonText" xml:space="preserve">
+        <value>Confirm</value>
+    </data>
+    <data name="Dialogs_AddVmArgumentDialog_T.Text" xml:space="preserve">
+        <value>Add a single JVM argument</value>
+    </data>
+    <data name="Dialogs_ExceptionDialog.Title" xml:space="preserve">
+        <value>The program has encountered an error</value>
+    </data>
+    <data name="Dialogs_ExceptionDialog.PrimaryButtonText" xml:space="preserve">
+        <value>Copy and go to GitHub</value>
+    </data>
+    <data name="Dialogs_ExceptionDialog.SecondaryButtonText" xml:space="preserve">
+        <value>Close</value>
+    </data>
+    <data name="Dialogs_SwitchAccountDialog.Title" xml:space="preserve">
+        <value>Switch Account</value>
+    </data>
+    <data name="Dialogs_SwitchAccountDialog.PrimaryButtonText" xml:space="preserve">
+        <value>Confirm</value>
+    </data>
+    <data name="Dialogs_SwitchAccountDialog.SecondaryButtonText" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
+    <data name="Dialogs_SwitchAccountDialog_B.Text" xml:space="preserve">
+        <value>Remove Selected Account</value>
+    </data>
+    <data name="Dialogs_AuthenticationWizardDialog_T.Text" xml:space="preserve">
+        <value>Account Add Wizard:</value>
+    </data>
+    <data name="ExceptionPage_Title.Text" xml:space="preserve">
+        <value>An error has occurred when starting Fluent Launcher</value>
+    </data>
+    <data name="ExceptionPage_Description_1.Text" xml:space="preserve">
+        <value>Please report this issue on GitHub.</value>
+    </data>
+    <data name="ExceptionPage_Description_2.Text" xml:space="preserve">
+        <value>Providing the following information might help us fix the issue:</value>
+    </data>
+    <data name="ExceptionPage_Button.Content" xml:space="preserve">
+        <value>Copy and go to GitHub</value>
+    </data>
+    <data name="Notifications__AccountRefreshFailedTitle" xml:space="preserve">
+        <value>Failed to refresh account</value>
+    </data>
+    <data name="Notifications__AccountRefreshFailedDescription" xml:space="preserve">
+        <value>The account has expired and you need to log in again or cannot connect to the server due to network problems</value>
+    </data>
+    <data name="Notifications__AccountRefreshedTitle" xml:space="preserve">
+        <value>Successfully refreshed Account</value>
+    </data>
+    <data name="Notifications__AccountRefreshedDescription" xml:space="preserve">
+        <value>Welcome back, ${name}</value>
+    </data>
+    <data name="ShellPage_NV_Item_1.Content" xml:space="preserve">
+        <value>Home</value>
+    </data>
+    <data name="ShellPage_NV_Item_2.Content" xml:space="preserve">
+        <value>Cores Manage</value>
+    </data>
+    <data name="ShellPage_NV_Item_3.Content" xml:space="preserve">
+        <value>Tasks Manage</value>
+    </data>
+    <data name="ShellPage_NV_Item_4.Content" xml:space="preserve">
+        <value>Resources Download</value>
+    </data>
+    <data name="ShellPage_NV_Item_5.Content" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+    <data name="Activities_ActivitiesNavigationPage_NV_Item1.Content" xml:space="preserve">
+        <value>Launch Task</value>
+    </data>
+    <data name="Activities_ActivitiesNavigationPage_NV_Item2.Content" xml:space="preserve">
+        <value>Download Task</value>
+    </data>
+    <data name="Activities_ActivitiesNavigationPage_NV_Item3.Content" xml:space="preserve">
+        <value>News</value>
+    </data>
+    <data name="Activities_ActivitiesNavigationPage_NV_Item4.Content" xml:space="preserve">
+        <value>Application</value>
+    </data>
+    <data name="Activities_LaunchPage_Tip.Text" xml:space="preserve">
+        <value>No Launch Arrangements</value>
+    </data>
+    <data name="Activities_LaunchPage_Hyperlink.Content" xml:space="preserve">
+        <value>Go to HomePage to create</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_T.Text" xml:space="preserve">
+        <value>Launch Task</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_TD.Text" xml:space="preserve">
+        <value>State</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H1.Text" xml:space="preserve">
+        <value>Progress: </value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H2.Text" xml:space="preserve">
+        <value>The game has been launched successfully</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H3.Text" xml:space="preserve">
+        <value>Game progress management</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H4.Text" xml:space="preserve">
+        <value>Crash analysis report</value>
+    </data>
+    <data name="Activities_LaunchPage_Item_H5.Text" xml:space="preserve">
+        <value>Reason:</value>
+    </data>
+    <data name="Activities_LaunchPage_B1.Text" xml:space="preserve">
+        <value>Open Log</value>
+    </data>
+    <data name="Activities_LaunchPage_B2.Text" xml:space="preserve">
+        <value>Kill Process</value>
+    </data>
+    <data name="Activities_LaunchPage_B3.Text" xml:space="preserve">
+        <value>Open Report</value>
+    </data>
+    <data name="Activities_LaunchPage_B4.Text" xml:space="preserve">
+        <value>Show Details</value>
+    </data>
+    <data name="AuthenticationWizard_BrowserMicrosoftAuthPage_Page.Tag" xml:space="preserve">
+        <value>Built-in Browser Microsoft Authenticate (2/3)</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_Page.Tag" xml:space="preserve">
+        <value>Choose Account Type (1/3)</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_H1.Text" xml:space="preserve">
+        <value>Microsoft Account</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_H2.Text" xml:space="preserve">
+        <value>Yggdrasil Account</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_H3.Text" xml:space="preserve">
+        <value>Offline Account</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_D1.Text" xml:space="preserve">
+        <value>Genuine account to play online servers</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_D2.Text" xml:space="preserve">
+        <value>Can enter the third-party Yggdrasil verification server</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_D3.Text" xml:space="preserve">
+        <value>Can only be played locally and offline</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseAccountTypePage_NoMc.Text" xml:space="preserve">
+        <value>Don't have Minecraft?</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_Page.Tag" xml:space="preserve">
+        <value>Choose Microsoft Authenticate Method (1/3)</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_H1.Text" xml:space="preserve">
+        <value>Authenticate using the built-in browser</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_H2.Text" xml:space="preserve">
+        <value>Authenticate with device flow code</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_D1.Text" xml:space="preserve">
+        <value>The built-in browser can be slow on poor connections</value>
+    </data>
+    <data name="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_D2.Text" xml:space="preserve">
+        <value>Need to enter verification code on external browser</value>
+    </data>
+    <data name="AuthenticationWizard_ConfirmProfilePage_Page.Tag" xml:space="preserve">
+        <value>Confirm Minecraft Profile (3/3)</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_Page.Tag" xml:space="preserve">
+        <value>Device Flow Microsoft Authenticate (2/3)</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_L.Text" xml:space="preserve">
+        <value>Device Code:</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_P1.Text" xml:space="preserve">
+        <value>Please complete the next verification steps in your browser, then return to the launcher to continue verification</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_P2.Text" xml:space="preserve">
+        <value>Device flow code is valid for 15 minutes</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_B1.Text" xml:space="preserve">
+        <value>Copy Code</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_B2.Text" xml:space="preserve">
+        <value>Refresh Code</value>
+    </data>
+    <data name="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_Link.Text" xml:space="preserve">
+        <value>Manual Access https://login.live.com/oauth20_remoteconnect.srf</value>
+    </data>
+    <data name="AuthenticationWizard_EnterOfflineProfilePage_Page.Tag" xml:space="preserve">
+        <value>Enter Offline Account Profile (2/3)</value>
+    </data>
+    <data name="AuthenticationWizard_EnterOfflineProfilePage_TB1.PlaceholderText" xml:space="preserve">
+        <value>Name:</value>
+    </data>
+    <data name="AuthenticationWizard_EnterOfflineProfilePage_TB2.PlaceholderText" xml:space="preserve">
+        <value>UUID: (Optional)</value>
+    </data>
+    <data name="AuthenticationWizard_EnterYggdrasilProfilePage_Page.Tag" xml:space="preserve">
+        <value>Enter Yggdrasil Account Profile (2/3)</value>
+    </data>
+    <data name="AuthenticationWizard_EnterYggdrasilProfilePage_TB1.PlaceholderText" xml:space="preserve">
+        <value>Yggdrasil Server Url:</value>
+    </data>
+    <data name="AuthenticationWizard_EnterYggdrasilProfilePage_TB2.PlaceholderText" xml:space="preserve">
+        <value>Email:</value>
+    </data>
+    <data name="AuthenticationWizard_EnterYggdrasilProfilePage_TB3.PlaceholderText" xml:space="preserve">
+        <value>Password:</value>
+    </data>
+    <data name="Cores_CoresPage_SearchBox.PlaceholderText" xml:space="preserve">
+        <value>Search Core</value>
+    </data>
+    <data name="Cores_CoresPage_Text1.Text" xml:space="preserve">
+        <value>Filter criteria: </value>
+    </data>
+    <data name="Cores_CoresPage_Text2.Text" xml:space="preserve">
+        <value>Sort by: </value>
+    </data>
+    <data name="Cores_CoresPage__Items1" xml:space="preserve">
+        <value>All;Release;Snapshot;Old</value>
+    </data>
+    <data name="Cores_CoresPage__Items2" xml:space="preserve">
+        <value>Name;Launch Date</value>
+    </data>
+    <data name="Cores_CoresPage_InstallButton.Text" xml:space="preserve">
+        <value>Install Cores</value>
+    </data>
+    <data name="Cores_ManageNavigationPage_NV_Item_1.Content" xml:space="preserve">
+        <value>Cores Settings</value>
+    </data>
+    <data name="Cores_ManageNavigationPage_NV_Item_2.Content" xml:space="preserve">
+        <value>Mods Manage</value>
+    </data>
+    <data name="Cores_ManageNavigationPage_NV_Item_3.Content" xml:space="preserve">
+        <value>Saves Manage</value>
+    </data>
+    <data name="Cores_ManageNavigationPage_NV_Item_4.Content" xml:space="preserve">
+        <value>Statistics Data</value>
+    </data>
+    <data name="Cores_ManageNavigationPage__BreadcrumbBar_First" xml:space="preserve">
+        <value>Cores Manage</value>
+    </data>
+    <data name="Cores_Manage_CoreModsPage_T.Text" xml:space="preserve">
+        <value>Mods</value>
+    </data>
+    <data name="Cores_Manage_CoreModsPage_H1.Text" xml:space="preserve">
+        <value>The game core does not support mods</value>
+    </data>
+    <data name="Cores_Manage_CoreModsPage_H2.Text" xml:space="preserve">
+        <value>Mods Folder</value>
+    </data>
+    <data name="Cores_Manage_CoreModsPage_D.Text" xml:space="preserve">
+        <value>To install a core with mod loader</value>
+    </data>
+    <data name="Cores_Manage_CoreModsPage_SearchBox.PlaceholderText" xml:space="preserve">
+        <value>Search Mod</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_T1.Text" xml:space="preserve">
+        <value>Launch Settings</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_T2.Text" xml:space="preserve">
+        <value>Account Settings</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_T3.Text" xml:space="preserve">
+        <value>JVM Settings</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H1.Text" xml:space="preserve">
+        <value>Core Nickname:</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H2.Text" xml:space="preserve">
+        <value>Enable specific core settings</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H3.Text" xml:space="preserve">
+        <value>Core independent</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H4.Text" xml:space="preserve">
+        <value>Automatic full screen mode after entering the game</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H5.Text" xml:space="preserve">
+        <value>Game window resolution</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H6.Text" xml:space="preserve">
+        <value>The server address to connect after entering the game</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H7.Text" xml:space="preserve">
+        <value>Game window title</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H8.Text" xml:space="preserve">
+        <value>Account used to launch this game</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_H9.Text" xml:space="preserve">
+        <value>Additional JVM parameter settings</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D1.Text" xml:space="preserve">
+        <value>Only as a display name, the actual Id will not be modified</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D2.Text" xml:space="preserve">
+        <value>Only if you enable this item, the following settings will take effect</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D3.Text" xml:space="preserve">
+        <value>The game will run at versions\${version} directory</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D4.Text" xml:space="preserve">
+        <value>If the selected account cannot be found in the account list after enabling it, an error will be reported</value>
+    </data>
+    <data name="Cores_Manage_CoreSettingsPage_D5.Text" xml:space="preserve">
+        <value>These will be added to the generated launch parameters</value>
+    </data>
+    <data name="Downloads_DownloadsPage_T1.Text" xml:space="preserve">
+        <value>Minecraft Games</value>
+    </data>
+    <data name="Downloads_DownloadsPage_T2.Text" xml:space="preserve">
+        <value>CurseForge Popular Mod Resources</value>
+    </data>
+    <data name="Downloads_DownloadsPage_T3.Text" xml:space="preserve">
+        <value>CurseForge Popular Modpack Resources</value>
+    </data>
+    <data name="Downloads_DownloadsPage_H.Text" xml:space="preserve">
+        <value>List all version cores</value>
+    </data>
+    <data name="Downloads_DownloadsPage_D.Text" xml:space="preserve">
+        <value>Find the version core and install it</value>
+    </data>
+    <data name="Downloads_DownloadsPage_SearchBox.PlaceholderText" xml:space="preserve">
+        <value>Search..</value>
+    </data>
+    <data name="Downloads_DownloadsPage_C1.PlaceholderText" xml:space="preserve">
+        <value>Resource Type</value>
+    </data>
+    <data name="Downloads_DownloadsPage_C2.PlaceholderText" xml:space="preserve">
+        <value>Version</value>
+    </data>
+    <data name="Downloads_DownloadsPage_C3.PlaceholderText" xml:space="preserve">
+        <value>Source</value>
+    </data>
+    <data name="Downloads_DownloadsPage_ST.Text" xml:space="preserve">
+        <value>Mod search options:</value>
+    </data>
+    <data name="Downloads_DownloadsPage__Items" xml:space="preserve">
+        <value>Minecraft Games;Mods;Modpacks;Resource Packs;Worlds</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_Hyperlink.Text" xml:space="preserve">
+        <value>Open in Browser</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_T1.Text" xml:space="preserve">
+        <value>Screenshots</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_T2.Text" xml:space="preserve">
+        <value>Details</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_D1.Text" xml:space="preserve">
+        <value>Author</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_D2.Text" xml:space="preserve">
+        <value>Download Count</value>
+    </data>
+    <data name="Downloads_ResourceItemPage_D3.Text" xml:space="preserve">
+        <value>Update Date</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage_SearchBox.PlaceholderText" xml:space="preserve">
+        <value>Search..</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage_C1.PlaceholderText" xml:space="preserve">
+        <value>Resource Type</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage_C2.PlaceholderText" xml:space="preserve">
+        <value>Version</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage_C3.PlaceholderText" xml:space="preserve">
+        <value>Source</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage__Items" xml:space="preserve">
+        <value>Minecraft Games;Mods;Modpacks;Resource Packs;Worlds</value>
+    </data>
+    <data name="Home_HomePage_NoAccount.Text" xml:space="preserve">
+        <value>No Account</value>
+    </data>
+    <data name="Home_HomePage_LaunchButton.Text" xml:space="preserve">
+        <value>Launch Minecraft</value>
+    </data>
+    <data name="Home_HomePage_ComboBox.PlaceholderText" xml:space="preserve">
+        <value>Select Game Core</value>
+    </data>
+    <data name="Home_HomePage__NoCore" xml:space="preserve">
+        <value>Core Not Selected</value>
+    </data>
+    <data name="Home_HomePage_D1.Text" xml:space="preserve">
+        <value>Click to switch</value>
+    </data>
+    <data name="Home_HomePage_D2.Text" xml:space="preserve">
+        <value>the currently selected core</value>
+    </data>
+    <data name="Home_HomePage_Hyperlink.Text" xml:space="preserve">
+        <value>Go to the CoresPage</value>
+    </data>
+    <data name="OOBE_AccountPage_T.Text" xml:space="preserve">
+        <value>Account Settings</value>
+    </data>
+    <data name="OOBE_AccountPage_H.Text" xml:space="preserve">
+        <value>Accounts</value>
+    </data>
+    <data name="OOBE_AccountPage_D1.Text" xml:space="preserve">
+        <value>You need at least one account to start the game</value>
+    </data>
+    <data name="OOBE_AccountPage_D2.Text" xml:space="preserve">
+        <value>Access to online servers is only possible with a Microsoft account</value>
+    </data>
+    <data name="OOBE_AccountPage_D3.Text" xml:space="preserve">
+        <value>Offline accounts will not be verified by the server</value>
+    </data>
+    <data name="OOBE_AccountPage_L.Text" xml:space="preserve">
+        <value>Minecraft Official Website</value>
+    </data>
+    <data name="OOBE_BasicPage_T.Text" xml:space="preserve">
+        <value>Basic Launch Settings</value>
+    </data>
+    <data name="OOBE_BasicPage_D1.Text" xml:space="preserve">
+        <value>You need at least a .minecraft directory to store your game cores</value>
+    </data>
+    <data name="OOBE_BasicPage_D2.Text" xml:space="preserve">
+        <value>You need at least a Java Runtime to start your game core</value>
+    </data>
+    <data name="OOBE_BasicPage_D3.Text" xml:space="preserve">
+        <value>Once done, you can also modify these settings in the global game settings</value>
+    </data>
+    <data name="OOBE_BasicPage_H1.Text" xml:space="preserve">
+        <value>.minecraft Folder:</value>
+    </data>
+    <data name="OOBE_BasicPage_H2.Text" xml:space="preserve">
+        <value>Java Runtimes:</value>
+    </data>
+    <data name="OOBE_GetStartedPage_T.Text" xml:space="preserve">
+        <value>All Finished</value>
+    </data>
+    <data name="OOBE_GetStartedPage_ST.Text" xml:space="preserve">
+        <value>You have all the basic settings done</value>
+    </data>
+    <data name="OOBE_GetStartedPage_B.Text" xml:space="preserve">
+        <value>Let's Get Started</value>
+    </data>
+    <data name="OOBE_LanguagePage_Welcome.Text" xml:space="preserve">
+        <value>Welcome</value>
+    </data>
+    <data name="OOBE_OOBENavigationPage_NV_Item1.Text" xml:space="preserve">
+        <value>Language</value>
+    </data>
+    <data name="OOBE_OOBENavigationPage_NV_Item2.Text" xml:space="preserve">
+        <value>Basic Settings</value>
+    </data>
+    <data name="OOBE_OOBENavigationPage_NV_Item3.Text" xml:space="preserve">
+        <value>Account</value>
+    </data>
+    <data name="OOBE_OOBENavigationPage_NV_Item4.Text" xml:space="preserve">
+        <value>Get Started</value>
+    </data>
+    <data name="Settings_AboutPage_T1.Text" xml:space="preserve">
+        <value>About Fluent Launcher</value>
+    </data>
+    <data name="Settings_AboutPage_T2.Text" xml:space="preserve">
+        <value>Other information</value>
+    </data>
+    <data name="Settings_AboutPage_T3.Text" xml:space="preserve">
+        <value>Credits</value>
+    </data>
+    <data name="Settings_AboutPage_H1.Text" xml:space="preserve">
+        <value>Sources</value>
+    </data>
+    <data name="Settings_AboutPage_H2.Text" xml:space="preserve">
+        <value>Statements</value>
+    </data>
+    <data name="Settings_AboutPage_H3.Text" xml:space="preserve">
+        <value>Copyright &amp; License Information</value>
+    </data>
+    <data name="Settings_AboutPage_H4.Text" xml:space="preserve">
+        <value>Acknowledgments</value>
+    </data>
+    <data name="Settings_AboutPage_H5.Text" xml:space="preserve">
+        <value>References</value>
+    </data>
+    <data name="Settings_AboutPage_SH1.Text" xml:space="preserve">
+        <value>Update</value>
+    </data>
+    <data name="Settings_AboutPage_SH2.Text" xml:space="preserve">
+        <value>The Developers of this Application</value>
+    </data>
+    <data name="Settings_AboutPage_B1.Text" xml:space="preserve">
+        <value>Check Updates in the Microsoft Store</value>
+    </data>
+    <data name="Settings_AboutPage_B2.Text" xml:space="preserve">
+        <value>Display Details</value>
+    </data>
+    <data name="Settings_AboutPage_D1.Text" xml:space="preserve">
+        <value>Xcube Studio ©2022-2023. All rights reserved.</value>
+    </data>
+    <data name="Settings_AboutPage_D2.Text" xml:space="preserve">
+        <value>Navigate to the GitHub repository</value>
+    </data>
+    <data name="Settings_AboutPage_D3.Text" xml:space="preserve">
+        <value>Minecraft is copyrighted by Mojang Studios. We are not responsible for any copyright infringement arising from use of this software.</value>
+    </data>
+    <data name="Settings_AboutPage_D4.Text" xml:space="preserve">
+        <value>Thanks for all the services provided to this app</value>
+    </data>
+    <data name="Settings_AboutPage_D5.Text" xml:space="preserve">
+        <value>Libraries used for this application development</value>
+    </data>
+    <data name="Settings_AboutPage_D6.Text" xml:space="preserve">
+        <value>Provide Download Source</value>
+    </data>
+    <data name="Settings_AboutPage__Debug" xml:space="preserve">
+        <value>Debug Edition</value>
+    </data>
+    <data name="Settings_AboutPage__Release" xml:space="preserve">
+        <value>Release Edition</value>
+    </data>
+    <data name="Settings_AccountPage_T1.Text" xml:space="preserve">
+        <value>Accounts</value>
+    </data>
+    <data name="Settings_AccountPage_T2.Text" xml:space="preserve">
+        <value>Account Settings</value>
+    </data>
+    <data name="Settings_AccountPage_H1.Text" xml:space="preserve">
+        <value>Add new account:</value>
+    </data>
+    <data name="Settings_AccountPage_H2.Text" xml:space="preserve">
+        <value>Launch the game with a Demo account:</value>
+    </data>
+    <data name="Settings_AccountPage_H3.Text" xml:space="preserve">
+        <value>Auto refresh account:</value>
+    </data>
+    <data name="Settings_AccountPage_D1.Text" xml:space="preserve">
+        <value>Automatically refresh Token before each launch</value>
+    </data>
+    <data name="Settings_AccountPage_SH1.Text" xml:space="preserve">
+        <value>Last Refresh Time:</value>
+    </data>
+    <data name="Settings_AppearancePage_T1.Text" xml:space="preserve">
+        <value>Language</value>
+    </data>
+    <data name="Settings_AppearancePage_T2.Text" xml:space="preserve">
+        <value>Appearance settings</value>
+    </data>
+    <data name="Settings_AppearancePage_H1.Text" xml:space="preserve">
+        <value>Language Settings</value>
+    </data>
+    <data name="Settings_AppearancePage_H2.Text" xml:space="preserve">
+        <value>Display Theme</value>
+    </data>
+    <data name="Settings_AppearancePage_H3.Text" xml:space="preserve">
+        <value>Background</value>
+    </data>
+    <data name="Settings_AppearancePage_H4.Text" xml:space="preserve">
+        <value>NavigationView Display Mode</value>
+    </data>
+    <data name="Settings_AppearancePage_H5.Text" xml:space="preserve">
+        <value>Use new homepage</value>
+    </data>
+    <data name="Settings_AppearancePage_D1.Text" xml:space="preserve">
+        <value>Dark and light color themes, effective after restarting the app</value>
+    </data>
+    <data name="Settings_AppearancePage_D2.Text" xml:space="preserve">
+        <value>Application background settings, effective after restarting the app</value>
+    </data>
+    <data name="Settings_AppearancePage_D3.Text" xml:space="preserve">
+        <value>NavigationView layout</value>
+    </data>
+    <data name="Settings_AppearancePage__Items1" xml:space="preserve">
+        <value>System;Light;Dark</value>
+    </data>
+    <data name="Settings_AppearancePage__Items2" xml:space="preserve">
+        <value>Mica;Acrylic;Solid;Image</value>
+    </data>
+    <data name="Settings_AppearancePage__Items3" xml:space="preserve">
+        <value>Normal;Minimum</value>
+    </data>
+    <data name="Settings_DownloadPage_T1.Text" xml:space="preserve">
+        <value>Download</value>
+    </data>
+    <data name="Settings_DownloadPage_H1.Text" xml:space="preserve">
+        <value>Current download sources:</value>
+    </data>
+    <data name="Settings_DownloadPage_H2.Text" xml:space="preserve">
+        <value>Maximum number of download threads:</value>
+    </data>
+    <data name="Settings_DownloadPage_H3.Text" xml:space="preserve">
+        <value>Enable fragmented download of large files:</value>
+    </data>
+    <data name="Settings_DownloadPage_D1.Text" xml:space="preserve">
+        <value>Please optimize and adjust according to the actual network environment</value>
+    </data>
+    <data name="Settings_DownloadPage_D2.Text" xml:space="preserve">
+        <value>Can effectively speed up when encountering large files</value>
+    </data>
+    <data name="Settings_LaunchPage_T1.Text" xml:space="preserve">
+        <value>Global launch settings</value>
+    </data>
+    <data name="Settings_LaunchPage_T2.Text" xml:space="preserve">
+        <value>Game specific settings</value>
+    </data>
+    <data name="Settings_LaunchPage_H1.Text" xml:space="preserve">
+        <value>.minecraft Folder</value>
+    </data>
+    <data name="Settings_LaunchPage_H2.Text" xml:space="preserve">
+        <value>Java Runtime</value>
+    </data>
+    <data name="Settings_LaunchPage_H3.Text" xml:space="preserve">
+        <value>Game Settings</value>
+    </data>
+    <data name="Settings_LaunchPage_H4.Header" xml:space="preserve">
+        <value>Edit game specific settings</value>
+    </data>
+    <data name="Settings_LaunchPage_D1.Text" xml:space="preserve">
+        <value>Where to store the core of your game</value>
+    </data>
+    <data name="Settings_LaunchPage_D2.Text" xml:space="preserve">
+        <value>Executable to launch the game</value>
+    </data>
+    <data name="Settings_LaunchPage_D3.Text" xml:space="preserve">
+        <value>Game play settings</value>
+    </data>
+    <data name="Settings_LaunchPage_SH1.Text" xml:space="preserve">
+        <value>Current .minecraft folder:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH2.Text" xml:space="preserve">
+        <value>Open the .minecraft folder:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH3.Text" xml:space="preserve">
+        <value>Remove the current .minecraft folder:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH4.Text" xml:space="preserve">
+        <value>Current Java runtime:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH5.Text" xml:space="preserve">
+        <value>Open the Java runtime:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH6.Text" xml:space="preserve">
+        <value>Remove the current Java runtime:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH7.Text" xml:space="preserve">
+        <value>Automatically select the suitable Java:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH8.Text" xml:space="preserve">
+        <value>JVM memory:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH9.Text" xml:space="preserve">
+        <value>Automatically allocate JVM memory:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH10.Text" xml:space="preserve">
+        <value>Global core independent:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH11.Text" xml:space="preserve">
+        <value>Full screen mode:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH12.Text" xml:space="preserve">
+        <value>Game window resolution:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH13.Text" xml:space="preserve">
+        <value>Server address:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH14.Text" xml:space="preserve">
+        <value>Game window title:</value>
+    </data>
+    <data name="Settings_LaunchPage_SH15.Text" xml:space="preserve">
+        <value>Go to third-party Java download sources:</value>
+    </data>
+    <data name="Settings_NavigationPage_NV_Item_1.Content" xml:space="preserve">
+        <value>Launch</value>
+    </data>
+    <data name="Settings_NavigationPage_NV_Item_2.Content" xml:space="preserve">
+        <value>Account</value>
+    </data>
+    <data name="Settings_NavigationPage_NV_Item_3.Content" xml:space="preserve">
+        <value>Download</value>
+    </data>
+    <data name="Settings_NavigationPage_NV_Item_4.Content" xml:space="preserve">
+        <value>Appearance</value>
+    </data>
+    <data name="Settings_NavigationPage_NV_Item_5.Content" xml:space="preserve">
+        <value>About</value>
+    </data>
 </root>

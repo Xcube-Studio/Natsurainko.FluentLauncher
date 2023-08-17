@@ -3,141 +3,188 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:activities="using:Natsurainko.FluentLauncher.ViewModels.Activities"
-    xmlns:controls="using:Natsurainko.FluentLauncher.UserControls"
+    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+    xmlns:behaviors="using:CommunityToolkit.WinUI.UI.Behaviors"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Activities"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:mvvm="using:Natsurainko.FluentLauncher.Components.Mvvm"
-    d:DataContext="{d:DesignInstance Type=activities:News}"
+    xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI.Controls"
+    d:DataContext="{d:DesignInstance Type=activities:NewsViewModel}"
     Background="Transparent"
-    DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=Activities.News}"
     mc:Ignorable="d">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Default">
+                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="CardBackgroundFillColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="ControlFillColorSecondaryBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="ControlFillColorDisabledBrush" />
+
+                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="TextFillColorPrimaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+
+                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="ControlElevationBorderBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="Light">
+                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="CardBackgroundFillColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="ControlFillColorSecondaryBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="ControlFillColorDisabledBrush" />
+
+                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="TextFillColorPrimaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+
+                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="ControlElevationBorderBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="HighContrast">
+                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="SystemColorButtonFaceColorBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="SystemColorHighlightTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="SystemControlBackgroundBaseLowBrush" />
+
+                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="SystemColorButtonTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="SystemColorHighlightColorBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="SystemControlDisabledBaseMediumLowBrush" />
+
+                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="SystemColorButtonTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="SystemColorHighlightColorBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="SystemControlDisabledTransparentBrush" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
 
     <Grid>
-        <ListView
-            Padding="30,7.5,30,22.5"
+        <GridView
+            Margin="30,0"
+            Padding="0,15"
             Background="Transparent"
-            ItemsSource="{Binding NewsContentDatas}">
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="BorderBrush" Value="Transparent" />
-                    <Setter Property="BorderThickness" Value="0" />
-                    <Setter Property="Background" Value="Transparent" />
-                    <Setter Property="Margin" Value="0,7.5" />
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListViewItem">
-                                <Grid>
-                                    <Border
-                                        Height="{TemplateBinding Height}"
-                                        Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        CornerRadius="5">
-                                        <ContentPresenter
-                                            Height="{TemplateBinding Height}"
-                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                                    </Border>
-                                </Grid>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListView.ItemContainerStyle>
-            <ListView.ItemTemplate>
+            ItemsSource="{Binding NewsDatas}">
+            <GridView.ItemTemplate>
                 <DataTemplate>
-                    <Expander
-                        Padding="0"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Stretch"
-                        IsExpanded="True">
-                        <Expander.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <FontIcon Margin="2,0,0,0" Glyph="&#xed0c;" />
-                                <StackPanel Margin="17,12.5">
-                                    <TextBlock Text="{Binding Title}" />
-                                    <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
-                                        <Run Text="{Binding Tag}" />
-                                        <Run Text="Official News" />
-                                    </TextBlock>
-                                </StackPanel>
-                            </StackPanel>
-                        </Expander.Header>
-                        <Expander.Content>
-                            <StackPanel HorizontalAlignment="Stretch">
-                                <controls:ExpanderContentItem Height="Auto" Margin="0,15">
-                                    <Border
-                                        Margin="0,15"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Stretch"
-                                        BorderBrush="{ThemeResource SystemControlForegroundTransparentBrush}"
-                                        BorderThickness="1"
-                                        CornerRadius="8">
-                                        <Grid>
-                                            <Image Stretch="Uniform">
-                                                <Image.Source>
-                                                    <BitmapImage UriSource="{Binding ImageUrl}" />
-                                                </Image.Source>
-                                            </Image>
-                                        </Grid>
-                                    </Border>
-                                </controls:ExpanderContentItem>
-                                <Border Style="{ThemeResource ExpanderSplitter}" />
-                                <controls:ExpanderContentItem Height="Auto">
-                                    <StackPanel Padding="0,15">
+                    <Border
+                        Background="{ThemeResource SettingsCardBackground}"
+                        BorderBrush="{ThemeResource SettingsCardBorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="{ThemeResource ControlCornerRadius}">
+                        <Grid RequestedTheme="Dark">
+                            <Border CornerRadius="{ThemeResource ControlCornerRadius}">
+                                <Image Stretch="UniformToFill">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="{Binding ImageUrl}" />
+                                    </Image.Source>
+                                </Image>
+                            </Border>
+                            <HyperlinkButton
+                                Margin="5"
+                                Padding="5"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                NavigateUri="{Binding ReadMoreUrl}">
+                                <FontIcon FontSize="12" Glyph="&#xE8A7;" />
+                            </HyperlinkButton>
+                            <Grid
+                                Height="{Binding ElementName=TextAreaGrid, Path=ActualHeight}"
+                                Margin="0,125,0,0"
+                                Padding="15,10,15,15"
+                                VerticalAlignment="Bottom"
+                                BorderBrush="{ThemeResource SettingsCardBorderBrush}"
+                                BorderThickness="0,2,0,0"
+                                CornerRadius="0,0,2,2">
+                                <media:UIElementExtensions.VisualFactory>
+                                    <media:PipelineVisualFactory>
+                                        <media:BlurEffect x:Name="ImageBlurEffect" IsAnimatable="True" />
+                                    </media:PipelineVisualFactory>
+                                </media:UIElementExtensions.VisualFactory>
+                            </Grid>
+                            <StackPanel Margin="0,125,0,0" VerticalAlignment="Bottom">
+                                <Border
+                                    Height="2"
+                                    Margin="-15,0"
+                                    Background="{ThemeResource SettingsCardBorderBrush}"
+                                    BorderThickness="0" />
+                                <Grid x:Name="TextAreaGrid" Padding="15,10,15,15">
+                                    <StackPanel Spacing="10">
                                         <TextBlock
-                                            FontSize="16"
-                                            FontWeight="SemiBold"
-                                            Text="{Binding Title}" />
-                                        <TextBlock
-                                            Margin="0,5"
-                                            FontSize="12"
-                                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                            Text="{Binding Text}"
+                                            FontFamily="{ThemeResource MinecraftTen}"
+                                            Style="{ThemeResource TitleTextBlockStyle}"
+                                            Text="{Binding Title}"
                                             TextWrapping="WrapWholeWords" />
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock FontSize="12" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
-                                                <Run Text="Release Date:" />
-                                                <Run Text="{Binding Date}" />
-                                            </TextBlock>
-                                        </StackPanel>
+                                        <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="{Binding Text}" />
+                                        <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Style="{ThemeResource CaptionTextBlockStyle}">
+                                            <Run Text="{Binding Date}" />
+                                            <Run Text="{Binding Tag}" />
+                                        </TextBlock>
                                     </StackPanel>
-                                </controls:ExpanderContentItem>
-                                <Border Style="{ThemeResource ExpanderSplitter}" />
-                                <controls:ExpanderContentItem Height="42">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="1*" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock
-                                            Grid.Column="0"
-                                            VerticalAlignment="Center"
-                                            Text="Open in browser:" />
-                                        <HyperlinkButton
-                                            Grid.Column="1"
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Center"
-                                            FontSize="12"
-                                            NavigateUri="{Binding ReadMoreUrl}">
-                                            <TextBlock
-                                                FontWeight="SemiBold"
-                                                Text="{Binding ReadMoreUrl}"
-                                                TextTrimming="CharacterEllipsis" />
-                                        </HyperlinkButton>
-                                    </Grid>
-                                </controls:ExpanderContentItem>
+                                </Grid>
                             </StackPanel>
-                        </Expander.Content>
-                    </Expander>
+                        </Grid>
+
+                        <animations:Explicit.Animations>
+                            <animations:AnimationSet x:Name="PointOutBlurAnimation">
+                                <animations:BlurEffectAnimation
+                                    EasingMode="EaseOut"
+                                    EasingType="Linear"
+                                    Target="{Binding ElementName=ImageBlurEffect}"
+                                    From="5"
+                                    To="50"
+                                    Duration="0:0:0.15" />
+                            </animations:AnimationSet>
+                            <animations:AnimationSet x:Name="PointInBlurAnimation">
+                                <animations:BlurEffectAnimation
+                                    EasingMode="EaseIn"
+                                    EasingType="Linear"
+                                    Target="{Binding ElementName=ImageBlurEffect}"
+                                    From="50"
+                                    To="5"
+                                    Duration="0:0:0.15" />
+                            </animations:AnimationSet>
+                        </animations:Explicit.Animations>
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="Loaded">
+                                <behaviors:StartAnimationAction Animation="{Binding ElementName=PointOutBlurAnimation}" />
+                            </core:EventTriggerBehavior>
+                            <core:EventTriggerBehavior EventName="PointerExited">
+                                <behaviors:StartAnimationAction Animation="{Binding ElementName=PointOutBlurAnimation}" />
+                            </core:EventTriggerBehavior>
+                            <core:EventTriggerBehavior EventName="PointerEntered">
+                                <behaviors:StartAnimationAction Animation="{Binding ElementName=PointInBlurAnimation}" />
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    </Border>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </GridView.ItemTemplate>
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ui:StaggeredPanel
+                        HorizontalAlignment="Stretch"
+                        ColumnSpacing="5"
+                        DesiredColumnWidth="250"
+                        RowSpacing="5" />
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+        </GridView>
+
         <ProgressRing
             Width="64"
             Height="64"

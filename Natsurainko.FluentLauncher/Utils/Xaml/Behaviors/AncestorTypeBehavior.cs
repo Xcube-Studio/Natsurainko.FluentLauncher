@@ -35,9 +35,18 @@ public class AncestorBindingBehavior : DependencyObject, IBehavior
         var targetProperty = GetDependencyProperty(AssociatedObject.GetType(), TargetPropertyName);
 
         if (source == null || targetProperty == null) { return; }
-        Binding.Source = source;
 
-        ((FrameworkElement)AssociatedObject).SetBinding(targetProperty, Binding);
+        try
+        {
+            Binding.Source = source;
+
+            ((FrameworkElement)AssociatedObject).SetBinding(targetProperty, Binding);
+        }
+        catch
+        {
+            // TODO: fix the unhandled exception when set Binding.Source
+            // System.Runtime.InteropServices.COMException:“Error HRESULT E_FAIL has been returned from a call to a COM component.”
+        }
     }
 
     public void Detach()

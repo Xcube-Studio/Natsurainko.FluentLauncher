@@ -1,6 +1,26 @@
 name: Build
 
-on: workflow_dispatch
+on: 
+  push:
+  workflow_dispatch:
+    inputs:
+     flag:
+        description:  'Publish?'
+        required: true
+        default: false
+        type: boolean
+     tag1:
+        description: 'Pre/Release?'
+        required: true
+        default: 'beta'
+        type: choice
+        options:
+          - beta
+          - v
+     tag2:
+        description: 'Version?(e.g 2.0.0.6)'
+        required: true
+        type: string
 
 jobs:
 
@@ -47,7 +67,9 @@ jobs:
     - name: Add nuget source
       # if: steps.cache.outputs.cache-hit != 'true'
       run: dotnet nuget add source "https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json"
-
+    - name: Get Natsurainko.FluentCore SubModule
+      run: git submodule update --init --recursive
+      
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore NuGet packages
       # must run
@@ -151,6 +173,9 @@ jobs:
       Artifacts_Path: .artifacts
 
     steps:
+    - name: CheckOut
+      uses: actions/checkout@v3
+      
     - name: Download .msix from artifacts
       uses: actions/download-artifact@v3
       with:
@@ -204,3 +229,144 @@ jobs:
       with:
         name: .msixbundle
         path: ${{ steps.get_package_info.outputs.bundleFileName }}
+        
+  Create-Tag:
+    runs-on: ubuntu-latest
+    name: Create-Tag
+    needs: [build]
+    if: ${{inputs.flag}}
+    outputs: 
+      tag:  'refs/tags/${{inputs.tag1}}${{inputs.tag2}}'
+    steps:
+      - name: CheckOut
+        uses: actions/checkout@v3
+      
+      - name: config Git
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "GitHub-actions[bot]"
+          
+      - name: Create Tag
+        run: |
+          git tag -a ${{inputs.tag1}}${{inputs.tag2}} -m "${{inputs.tag1}}${{inputs.tag2}}"
+          git push origin ${{inputs.tag1}}${{inputs.tag2}}
+          
+  Pre-Publish:
+    runs-on: ubuntu-latest
+    name: Pre-Publish
+    needs: [build,release,Create-Tag]
+    if: ${{ (contains(github.ref,'refs/tags/beta')||(inputs.flag&&contains(needs.Create-Tag.outputs.tag,'beta')))&&!failure() }}
+    env:
+      Artifacts_Path: .artifacts
+    steps:
+      - name: CheckOut
+        uses: actions/checkout@v3
+      
+      - name: CheckTag
+        id: CheckTag
+        run: |
+          if [ "${{inputs.flag}}" ]; then
+            echo "tag=${{needs.Create-Tag.outputs.tag}}" >> "$GITHUB_OUTPUT"
+            echo exit 0
+          else 
+            echo "tag=${{github.ref}}" >> "$GITHUB_OUTPUT"
+            echo exit 0
+          fi
+      
+      - name: Download .msixupload from artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: .msixupload
+          path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
+          
+      - name: Delete arm Pkg
+        run: find "${{ github.workspace }}/${{env.Artifacts_Path}}" -name '*arm*' -exec rm {} \;
+  
+      - name: Pre-Publish MSStore
+        uses: trympet/microsoft-store-flight-action@v1
+        with:
+          tenant-id: ${{ secrets.PARTNER_CENTER_TENANT_ID }}
+          client-id: ${{ secrets.PARTNER_CENTER_CLIENT_ID }}
+          client-secret: ${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}
+          app-id: ${{ secrets.PARTNER_CENTER_APP_ID }}
+          flight-id: ${{ secrets.PARTNER_CENTER_BETA_APP_ID }}
+          package-path: "${{ github.workspace }}/${{env.Artifacts_Path}}/"
+          delete-pending: true
+          delete-packages: true
+          skip-polling: true
+          packages-keep: 9
+      
+      - name: Download .msixbundle from artifacts
+        uses: actions/download-artifact@v3
+        with:
+           name: .msixbundle
+           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
+     
+      - name: Create Pre-Release
+        uses: ncipollo/release-action@v1.12.0
+        with:  
+          artifacts: "${{ github.workspace }}/${{env.Artifacts_Path}}/*.msixbundle"
+          prerelease: true
+          allowUpdates: true
+          generateReleaseNotes: true
+          tag: ${{steps.CheckTag.outputs.tag}}
+          
+          
+  Publish:
+    runs-on: ubuntu-latest
+    name: Publish
+    needs: [build,release,Create-Tag]
+    if: ${{ (contains(github.ref,'v')||(inputs.flag&&contains(needs.Create-Tag.outputs.tag,'v')))&&!failure()  }}
+    env:
+      Artifacts_Path: .artifacts
+    steps:
+      - name: CheckOut
+        uses: actions/checkout@v3
+      
+      - name: CheckTag
+        id: CheckTag
+        run: |
+          if [ "${{inputs.flag}}" ]; then
+            echo "tag=${{needs.Create-Tag.outputs.tag}}" >> "$GITHUB_OUTPUT"
+            echo exit 0
+          else 
+            echo "tag=${{github.ref}}" >> "$GITHUB_OUTPUT"
+            echo exit 0
+          fi
+      
+      - name: Download .msixupload from artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: .msixupload
+          path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
+          
+      - name: Delete arm Pkg
+        run: find "${{ github.workspace }}/${{env.Artifacts_Path}}" -name '*arm*' -exec rm {} \;
+        
+      - name: Publish MSStore
+        uses: isaacrlevin/windows-store-action@1.0
+        with:
+          tenant-id: ${{ secrets.PARTNER_CENTER_TENANT_ID }}
+          client-id: ${{ secrets.PARTNER_CENTER_CLIENT_ID }}
+          client-secret: ${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}
+          app-id: ${{ secrets.PARTNER_CENTER_APP_ID }}
+          package-path: "${{ github.workspace }}/${{env.Artifacts_Path}}/"
+          delete-pending: true
+          delete-packages: true
+          skip-polling: true
+          packages-keep: 9
+      
+      - name: Download .msixbundle from artifacts
+        uses: actions/download-artifact@v3
+        with:
+           name: .msixbundle
+           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
+
+     
+      - name: Create Release
+        uses: ncipollo/release-action@v1.12.0
+        with:  
+          artifacts: "${{ github.workspace }}/${{env.Artifacts_Path}}/*.msixbundle"
+          allowUpdates: true
+          generateReleaseNotes: true
+          tag: ${{steps.CheckTag.outputs.tag}}

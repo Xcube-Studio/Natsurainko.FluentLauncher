@@ -1,0 +1,82 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.AuthenticationWizard.DeviceFlowMicrosoftAuthPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
+    xmlns:authenticationwizard="using:Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Uid="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_Page"
+    d:DataContext="{d:DesignInstance Type=authenticationwizard:DeviceFlowMicrosoftAuthViewModel}"
+    Background="Transparent"
+    Tag="Device Flow Microsoft Authenticate (2/3)"
+    mc:Ignorable="d">
+    <i:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="Unloaded">
+            <actions:ModifiedInvokeCommandAction Command="{Binding UnloadEventCommand}" />
+        </core:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+
+    <StackPanel Spacing="10">
+        <StackPanel Orientation="Horizontal" Spacing="10">
+            <TextBlock VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}">
+                <Run x:Uid="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_L" Text="Device Code:" />
+                <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" />
+            </TextBlock>
+            <Button
+                Padding="15,5"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                FontWeight="SemiBold">
+                <Grid>
+                    <TextBlock Text="{Binding DeviceCode}" />
+                    <ProgressRing
+                        Width="16"
+                        Height="16"
+                        IsActive="{Binding Loading}" />
+                </Grid>
+            </Button>
+        </StackPanel>
+        <RichTextBlock FontWeight="SemiBold">
+            <Paragraph>
+                <Run x:Uid="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_P1" Text="Please complete the next verification steps in your browser, then return to the launcher to continue verification" />
+            </Paragraph>
+            <Paragraph>
+                <Run x:Uid="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_P2" Text="Device flow code is valid for 15 minutes" />
+            </Paragraph>
+        </RichTextBlock>
+        <Grid Height="32">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Command="{Binding CopyCodeCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <FontIcon FontSize="16" Glyph="&#xe8c8;" />
+                    <TextBlock x:Uid="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_B1" Text="Copy Code" />
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="2" Command="{Binding RefreshCodeCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <FontIcon FontSize="16" Glyph="&#xE72C;" />
+                    <TextBlock x:Uid="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_B2" Text="Refresh Code" />
+                </StackPanel>
+            </Button>
+            <HyperlinkButton
+                Grid.Column="4"
+                NavigateUri="https://login.live.com/oauth20_remoteconnect.srf"
+                ToolTipService.ToolTip="Manual Access https://login.live.com/oauth20_remoteconnect.srf">
+                <TextBlock
+                    x:Uid="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_Link"
+                    Style="{ThemeResource BaseTextBlockStyle}"
+                    Text="Manual Access https://login.live.com/oauth20_remoteconnect.srf"
+                    TextTrimming="CharacterEllipsis" />
+            </HyperlinkButton>
+        </Grid>
+    </StackPanel>
+</Page>

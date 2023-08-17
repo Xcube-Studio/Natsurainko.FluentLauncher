@@ -2,16 +2,14 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Natsurainko.FluentCore.Extension.Windows.Service;
-using Natsurainko.FluentLauncher.Components;
-using Natsurainko.FluentLauncher.Components.Mvvm;
-using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.ViewModels.Common;
-using Natsurainko.Toolkits.Values;
+using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,44 +17,50 @@ using Windows.Storage.Pickers;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
-partial class BasicViewModel : SettingsViewModelBase, ISettingsViewModel
+internal partial class BasicViewModel : SettingsViewModelBase, ISettingsViewModel
 {
     #region Settings
 
     [SettingsProvider]
     private readonly SettingsService _settingsService;
 
-    [BindToSetting(Path = nameof(SettingsService.GameFolders))]
-    public ObservableCollection<string> GameFolders { get; private set; }
+    [BindToSetting(Path = nameof(SettingsService.MinecraftFolders))]
+    public ObservableCollection<string> MinecraftFolders { get; private set; }
 
     [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.CurrentGameFolder))]
-    private string currentGameFolder;
+    [BindToSetting(Path = nameof(SettingsService.ActiveMinecraftFolder))]
+    private string activeMinecraftFolder;
 
-    [BindToSetting(Path = nameof(SettingsService.JavaRuntimes))]
-    public ObservableCollection<string> JavaRuntimes { get; private set; }
+    [BindToSetting(Path = nameof(SettingsService.Javas))]
+    public ObservableCollection<string> Javas { get; private set; }
 
     [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.CurrentJavaRuntime))]
-    private string currentJavaRuntime;
+    [BindToSetting(Path = nameof(SettingsService.ActiveJava))]
+    private string activeJava;
 
     #endregion
+
+    private readonly GameService _gameService;
+    private readonly NotificationService _notificationService;
 
     [ObservableProperty]
     private bool dropDownOpen;
 
-
-    public BasicViewModel(SettingsService settingsService)
+    public BasicViewModel(
+        SettingsService settingsService,
+        GameService gameService,
+        NotificationService notificationService)
     {
         _settingsService = settingsService;
+        _gameService = gameService;
+        _notificationService = notificationService;
+
         (this as ISettingsViewModel).InitializeSettings();
     }
 
-    partial void OnCurrentGameFolderChanged(string oldValue, string newValue)
-        => UpdateNavigationStatus();
+    partial void OnActiveMinecraftFolderChanged(string oldValue, string newValue) => UpdateNavigationStatus();
 
-    partial void OnCurrentJavaRuntimeChanged(string oldValue, string newValue)
-        => UpdateNavigationStatus();
+    partial void OnActiveJavaChanged(string oldValue, string newValue) => UpdateNavigationStatus();
 
     /// <summary>
     /// Validate CurrentGameFolder and CurrentJavaRuntime to determine if navigation to the next step is allowed.
@@ -64,10 +68,10 @@ partial class BasicViewModel : SettingsViewModelBase, ISettingsViewModel
     void UpdateNavigationStatus()
     {
         bool canContinue =
-            !string.IsNullOrEmpty(CurrentGameFolder) &&
-            !string.IsNullOrEmpty(CurrentJavaRuntime) &&
-            Directory.Exists(CurrentGameFolder) &&
-            File.Exists(CurrentJavaRuntime);
+            !string.IsNullOrEmpty(ActiveMinecraftFolder) &&
+            !string.IsNullOrEmpty(ActiveJava) &&
+            Directory.Exists(ActiveMinecraftFolder) &&
+            File.Exists(ActiveJava);
 
         WeakReferenceMessenger.Default.Send(new GuideNavigationMessage()
         {
@@ -90,16 +94,14 @@ partial class BasicViewModel : SettingsViewModelBase, ISettingsViewModel
         if (folder != null)
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                if (GameFolders.Contains(folder.Path))
+                if (MinecraftFolders.Contains(folder.Path))
                 {
-                    MessageService.Show("This folder already exists");
+                    _notificationService.NotifyMessage("Failed to add the folder", "This folder already exists", icon: "\uF89A");
                     return;
                 }
 
-                GameFolders.Add(folder.Path);
-                //OnPropertyChanged(nameof(GameFolders));
-
-                CurrentGameFolder = folder.Path;
+                MinecraftFolders.Add(folder.Path);
+                _gameService.ActivateMinecraftFolder(folder.Path);
             });
     });
 
@@ -117,22 +119,25 @@ partial class BasicViewModel : SettingsViewModelBase, ISettingsViewModel
         if (file != null)
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
-                JavaRuntimes.Add(file.Path);
-                OnPropertyChanged(nameof(JavaRuntimes));
+                Javas.Add(file.Path);
+                OnPropertyChanged(nameof(Javas));
 
-                CurrentJavaRuntime = file.Path;
+                ActiveJava = file.Path;
             });
     });
 
     [RelayCommand]
     public void SearchJava()
     {
-        JavaRuntimes.AddNotRepeating(JavaHelper.SearchJavaRuntime());
-        CurrentJavaRuntime = JavaRuntimes.Any() ? JavaRuntimes[0] : null;
+        foreach (var java in JavaUtils.SearchJava())
+            if (!Javas.Contains(java))
+                Javas.Add(java);
 
-        OnPropertyChanged(nameof(JavaRuntimes));
+        ActiveJava = Javas.Any() ? Javas[0] : null;
+
+        OnPropertyChanged(nameof(Javas));
 
         DropDownOpen = true;
-        MessageService.Show("Added the search Java to the runtime list");
+        _notificationService.NotifyWithoutContent("Added the search Java to the runtime list", icon: "\uE73E");
     }
 }

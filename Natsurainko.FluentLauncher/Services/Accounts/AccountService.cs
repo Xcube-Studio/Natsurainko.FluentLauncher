@@ -1,28 +1,26 @@
-﻿using Natsurainko.FluentCore.Interface;
+﻿using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.Storage;
+using Nrk.FluentCore.Classes.Datas.Authenticate;
+using Nrk.FluentCore.Classes.Enums;
+using Nrk.FluentCore.Services.Authenticate;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text.Json;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Natsurainko.FluentCore.Model.Auth;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using Natsurainko.FluentLauncher.Services.Storage;
 using System.IO;
+using System.Linq;
+using System.Text.Json;
 using System.Text.Json.Nodes;
-using Natsurainko.FluentLauncher.Services.Settings;
 
 namespace Natsurainko.FluentLauncher.Services.Accounts;
 
-class AccountService
+internal class AccountService : DefaultAccountService
 {
     #region Accounts
 
-    public ReadOnlyObservableCollection<IAccount> Accounts { get; }
+    public ReadOnlyObservableCollection<Account> Accounts { get; }
 
-    private readonly ObservableCollection<IAccount> _accounts = new();
+    private readonly ObservableCollection<Account> _accounts = new();
 
     public event NotifyCollectionChangedEventHandler AccountsChanged
     {
@@ -37,7 +35,8 @@ class AccountService
     /// <summary>
     /// The active account of Fluent Launcher. The Accounts collection always contains this account. This is null if no account is available.
     /// </summary>
-    public IAccount ActiveAccount { get; private set; }
+
+    //public Account ActiveAccount { get; private set; } 已继承 DefaultAccountService
 
     public event PropertyChangedEventHandler ActiveAccountChanged;
 
@@ -46,9 +45,10 @@ class AccountService
     public readonly string AccountsJsonPath = Path.Combine("settings", "accounts.json");
 
     private readonly LocalStorageService _storageService;
-    private readonly SettingsService _settingsService;
+    private new readonly SettingsService _settingsService;
 
     public AccountService(LocalStorageService storageService, SettingsService settingsService)
+        : base(settingsService)
     {
         _storageService = storageService;
         _settingsService = settingsService;
@@ -56,7 +56,7 @@ class AccountService
         LoadAccountsList();
         if (_settingsService.ActiveAccountUuid is Guid uuid)
         {
-            IAccount activeAccount = _accounts.Where(x => x.Uuid == uuid).FirstOrDefault();
+            Account activeAccount = _accounts.Where(x => x.Uuid == uuid).FirstOrDefault();
             if (activeAccount is not null)
                 ActiveAccount = activeAccount;
             else
@@ -64,7 +64,7 @@ class AccountService
         }
 
         _accounts.CollectionChanged += (_, e) => SaveData(); // Save the account list when the collection is changed
-        Accounts = new ReadOnlyObservableCollection<IAccount>(_accounts);
+        Accounts = new ReadOnlyObservableCollection<Account>(_accounts);
     }
 
     /// <summary>
@@ -72,7 +72,7 @@ class AccountService
     /// </summary>
     /// <param name="account">The account to be activated</param>
     /// <exception cref="ArgumentException">Thrown when the account provided is not managed by the AccountService</exception>
-    public void Activate(IAccount account)
+    public void Activate(Account account)
     {
         if (!_accounts.Contains(account))
             throw new ArgumentException($"{account} is not an account managed by AccountService", nameof(account));
@@ -90,7 +90,7 @@ class AccountService
     /// </summary>
     /// <param name="account">Account to be removed</param>
     /// <returns>Returns true if successful</returns>
-    public bool Remove(IAccount account)
+    public bool Remove(Account account)
     {
         bool result = _accounts.Remove(account);
 
@@ -114,7 +114,7 @@ class AccountService
     }
 
     [Obsolete]
-    public void AddAccount(IAccount account)
+    public void AddAccount(Account account)
     {
         _accounts.Add(account);
     }
@@ -136,8 +136,8 @@ class AccountService
     private void LoadAccountsList()
     {
         // Read settings/accounts.json from local storage service
-        string accountJsonPath = _storageService.GetFile(AccountsJsonPath).FullName;
-        string accountsJson = File.ReadAllText(accountJsonPath);
+        var accountJson = _storageService.GetFile(AccountsJsonPath);
+        string accountsJson = accountJson.Exists ? File.ReadAllText(accountJson.FullName) : "[]";
 
         // Parse accounts.json
         if (JsonNode.Parse(accountsJson) is not JsonNode jsonNode)
@@ -146,7 +146,7 @@ class AccountService
         foreach (var item in jsonNode.AsArray())
         {
             var accountType = (AccountType)(item?["Type"].GetValue<int>());
-            IAccount account = accountType switch
+            Account account = accountType switch
             {
                 AccountType.Offline => item.Deserialize<OfflineAccount>(),
                 AccountType.Microsoft => item.Deserialize<MicrosoftAccount>(),
@@ -181,7 +181,11 @@ class AccountService
 
         // Save to file
         string json = jsonArray.ToJsonString();
-        string path = _storageService.GetFile(AccountsJsonPath).FullName;
-        File.WriteAllText(path, json);
+        var file = _storageService.GetFile(AccountsJsonPath);
+
+        if (!file.Directory.Exists)
+            file.Directory.Create();
+
+        File.WriteAllText(file.FullName, json);
     }
 }

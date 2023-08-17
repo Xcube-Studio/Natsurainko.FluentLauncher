@@ -1,51 +1,21 @@
-﻿using Microsoft.UI.Dispatching;
-using Microsoft.UI.Xaml;
-using Natsurainko.FluentLauncher.Components;
-using Natsurainko.FluentLauncher.Components.CrossProcess;
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using Windows.Storage;
-using Natsurainko.FluentLauncher.Views.Common;
-using Microsoft.Extensions.DependencyInjection;
-using Natsurainko.FluentLauncher.Services;
-using AppSettingsManagement;
+﻿using AppSettingsManagement;
 using AppSettingsManagement.Windows;
-using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.Views;
-using System.Text.Json;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Services.Accounts;
+using Natsurainko.FluentLauncher.Services.Download;
+using Natsurainko.FluentLauncher.Services.Launch;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Natsurainko.FluentLauncher.Views;
+using Natsurainko.FluentLauncher.Views.Common;
+using System;
+using System.Text;
 using Natsurainko.FluentLauncher.Services.UI.Windows;
 
 namespace Natsurainko.FluentLauncher;
-
-public partial class App
-{
-    [DllImport("Microsoft.UI.Xaml.dll")]
-    private static extern void XamlCheckProcessRequirements();
-
-    [STAThread]
-    static int Main(string[] args)
-    {
-        if (args.Length != 0)
-            return WorkingProcessEntryPoint.Main(args);
-
-        XamlCheckProcessRequirements();
-        WinRT.ComWrappersSupport.InitializeComWrappers();
-
-        Microsoft.UI.Xaml.Application.Start((p) =>
-        {
-            SynchronizationContext.SetSynchronizationContext(new DispatcherQueueSynchronizationContext(DispatcherQueue.GetForCurrentThread()));
-            new App();
-        });
-
-        return 0;
-    }
-}
 
 public partial class App : Application
 {
@@ -53,18 +23,18 @@ public partial class App : Application
     public static T GetService<T>() => Services.GetService<T>();
     public static MainWindow MainWindow { get; private set; }
 
-    //public static Configuration Configuration { get; private set; } = Configuration.Load();
-
     public App()
     {
         InitializeComponent();
-        
+
         // Global exception handler
-        UnhandledException += (_, e) => 
+        UnhandledException += (_, e) =>
         {
             e.Handled = true;
             ProcessException(e.Exception);
         };
+
+        App.GetService<AppearanceService>().ApplyDisplayTheme();
     }
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
@@ -77,12 +47,12 @@ public partial class App : Application
             .Build();
 
         App.GetService<MessengerService>().SubscribeEvents();
+
         try
         {
-            //MainWindow = new MainWindow();
-            //MainWindow.Activate();
             activationService.ActivateWindow("MainWindow");
             MainWindow = App.GetService<MainWindow>();
+            App.GetService<AppearanceService>().ApplyBackgroundAtWindowCreated(MainWindow);
         }
         catch (Exception e)
         {
@@ -98,20 +68,35 @@ public partial class App : Application
     {
         var services = new ServiceCollection();
 
-        // Services
-        services.AddSingleton<OfficialNewsService>();
-        services.AddSingleton<CurseForgeModService>();
-        services.AddSingleton<AccountService>();
-        services.AddSingleton<LocalStorageService>();
-        services.AddSingleton<MessengerService>();
-
         // Settings service
         services.AddSingleton<SettingsService>();
         services.AddSingleton<ISettingsStorage, WinRTSettingsStorage>();
 
+        // FluentCore Services
+        services.AddSingleton<GameService>();
+        services.AddSingleton<LaunchService>();
+        services.AddSingleton<AccountService>();
+        services.AddSingleton<DownloadService>();
+
+        // Services
+        //services.AddSingleton<CurseForgeModService>();
+        services.AddSingleton<LocalStorageService>();
+        services.AddSingleton<MessengerService>();
+        services.AddSingleton<AuthenticationService>();
+        services.AddSingleton<NotificationService>();
+        services.AddSingleton<AppearanceService>();
+        services.AddSingleton<SkinCacheService>();
+        services.AddSingleton<InterfaceCacheService>();
+
         //ViewModels
+
+        /// Activities
         services.AddSingleton<ViewModels.Activities.NewsViewModel>();
-        services.AddSingleton<ViewModels.Downloads.CurseForgeViewModel>();
+        services.AddTransient<ViewModels.Activities.LaunchViewModel>();
+        //services.AddTransient<ViewModels.Activities.DownloadViewModel>();
+        //services.AddSingleton<ViewModels.Downloads.CurseForgeViewModel>();
+
+        services.AddTransient<ViewModels.Common.SwitchAccountDialogViewModel>();
 
         services.AddTransient<ViewModels.Settings.AppearanceViewModel>();
         services.AddTransient<ViewModels.Settings.DownloadViewModel>();
@@ -160,8 +145,17 @@ public partial class App : Application
         {
             App.MainWindow.DispatcherQueue?.TryEnqueue(async () =>
             {
-                var dialog = new ExceptionDialog(errorMessage) { XamlRoot = MainWindow.Content.XamlRoot };
-                await dialog.ShowAsync();
+                try
+                {
+                    var dialog = new ExceptionDialog(errorMessage) { XamlRoot = MainWindow.Content.XamlRoot };
+                    await dialog.ShowAsync();
+                }
+                catch
+                {
+                    var window = new Window() { Title = "Fluent Launcher" };
+                    window.Content = new ExceptionPage(errorMessage);
+                    window.Activate();
+                }
             });
         }
         else

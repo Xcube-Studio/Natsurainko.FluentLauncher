@@ -14,14 +14,14 @@
             <RichTextBlock HorizontalAlignment="Left">
                 <Paragraph>
                     <Run
-                        x:Uid="Guide_GetStarted_Title"
+                        x:Uid="OOBE_GetStartedPage_T"
                         FontSize="22"
                         FontWeight="Bold"
                         Text="All Finished" />
                 </Paragraph>
                 <Paragraph>
                     <Run
-                        x:Uid="Guide_GetStarted_Description"
+                        x:Uid="OOBE_GetStartedPage_ST"
                         FontSize="16"
                         FontWeight="SemiBold"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
@@ -30,12 +30,12 @@
             </RichTextBlock>
 
             <Button
-                x:Uid="Guide_GetStarted_Start"
                 Margin="0,20,0,0"
                 Command="{Binding StartCommand}"
-                Content="Let's Get Started"
                 FontWeight="SemiBold"
-                Style="{ThemeResource AccentButtonStyle}" />
+                Style="{ThemeResource AccentButtonStyle}">
+                <TextBlock x:Uid="OOBE_GetStartedPage_B" Text="Let's Get Started" />
+            </Button>
         </StackPanel>
     </Grid>
 </Page>

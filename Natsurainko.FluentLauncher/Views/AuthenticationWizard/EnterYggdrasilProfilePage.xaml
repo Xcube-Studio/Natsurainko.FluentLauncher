@@ -1,0 +1,29 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.AuthenticationWizard.EnterYggdrasilProfilePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Uid="AuthenticationWizard_EnterYggdrasilProfilePage_Page"
+    Background="Transparent"
+    Tag="Enter Yggdrasil Account Profile (2/3)"
+    mc:Ignorable="d">
+
+    <StackPanel Spacing="10">
+        <TextBox
+            x:Uid="AuthenticationWizard_EnterYggdrasilProfilePage_TB1"
+            BorderBrush="{ThemeResource ButtonBorderBrush}"
+            PlaceholderText="Yggdrasil Server Url:"
+            Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox
+            x:Uid="AuthenticationWizard_EnterYggdrasilProfilePage_TB2"
+            BorderBrush="{ThemeResource ButtonBorderBrush}"
+            PlaceholderText="Email:"
+            Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <PasswordBox
+            x:Uid="AuthenticationWizard_EnterYggdrasilProfilePage_TB3"
+            BorderBrush="{ThemeResource ButtonBorderBrush}"
+            Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            PlaceholderText="Password:" />
+    </StackPanel>
+</Page>

@@ -1,0 +1,71 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.AuthenticationWizard.ChooseMicrosoftAuthMethodPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
+    xmlns:authenticationwizard="using:Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard"
+    xmlns:converters="using:Natsurainko.FluentLauncher.Utils.Xaml.Converters"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Uid="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_Page"
+    d:DataContext="{d:DesignInstance Type=authenticationwizard:ChooseMicrosoftAuthMethodViewModel}"
+    Background="Transparent"
+    Tag="Choose Microsoft Authenticate Method (1/3)"
+    mc:Ignorable="d">
+
+    <StackPanel Spacing="10">
+        <RadioButton>
+            <RadioButton.IsChecked>
+                <Binding Mode="OneWay" Path="SelectedMicrosoftAuthMethod">
+                    <Binding.Converter>
+                        <converters:MicrosoftAuthMethodToIsCheckedConverter Method="BuiltInBrowser" />
+                    </Binding.Converter>
+                </Binding>
+            </RadioButton.IsChecked>
+            <i:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="Checked">
+                    <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}" CommandParameter="BuiltInBrowser" />
+                </core:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+            <StackPanel>
+                <TextBlock
+                    x:Uid="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_H1"
+                    Style="{ThemeResource BaseTextBlockStyle}"
+                    Text="Authenticate using the built-in browser" />
+                <TextBlock
+                    x:Uid="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_D1"
+                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                    Style="{ThemeResource CaptionTextBlockStyle}"
+                    Text="The built-in browser can be slow on poor connections" />
+            </StackPanel>
+        </RadioButton>
+        <RadioButton>
+            <RadioButton.IsChecked>
+                <Binding Mode="OneWay" Path="SelectedMicrosoftAuthMethod">
+                    <Binding.Converter>
+                        <converters:MicrosoftAuthMethodToIsCheckedConverter Method="DeviceFlowCode" />
+                    </Binding.Converter>
+                </Binding>
+            </RadioButton.IsChecked>
+            <i:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="Checked">
+                    <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}" CommandParameter="DeviceFlowCode" />
+                </core:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+            <StackPanel>
+                <TextBlock
+                    x:Uid="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_H2"
+                    Style="{ThemeResource BaseTextBlockStyle}"
+                    Text="Authenticate with device flow code" />
+                <TextBlock
+                    x:Uid="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_D2"
+                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                    Style="{ThemeResource CaptionTextBlockStyle}"
+                    Text="Need to enter verification code on external browser" />
+            </StackPanel>
+        </RadioButton>
+    </StackPanel>
+
+</Page>

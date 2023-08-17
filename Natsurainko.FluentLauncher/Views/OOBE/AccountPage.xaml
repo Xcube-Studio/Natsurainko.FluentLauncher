@@ -18,11 +18,11 @@
 
         <StackPanel Grid.Column="2" VerticalAlignment="Center">
             <TextBlock
-                x:Uid="Guide_Account_Title"
+                x:Uid="OOBE_AccountPage_T"
                 Margin="20,0,0,0"
                 FontSize="22"
                 FontWeight="Bold"
-                Text="Account" />
+                Text="Account Settings" />
             <Border
                 Margin="0,20,0,0"
                 Padding="20,0"
@@ -41,7 +41,7 @@
                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                             <FontIcon Glyph="&#xe77b;" />
                             <TextBlock
-                                x:Uid="Guide_Account_Accounts"
+                                x:Uid="OOBE_AccountPage_H"
                                 Margin="17,0"
                                 Text="Accounts:" />
                         </StackPanel>
@@ -75,7 +75,7 @@
                                 Command="{Binding LoginCommand}"
                                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
                                 Style="{ThemeResource AccentButtonStyle}">
-                                <TextBlock x:Uid="Guide_Account_Login" Text="Login Microsoft Account" />
+                                <TextBlock x:Uid="Buttons_SignIn" Text="Sign in" />
                             </Button>
                         </Grid>
                     </Grid>
@@ -88,14 +88,8 @@
                         </Grid.ColumnDefinitions>
                         <HyperlinkButton Grid.Column="2" NavigateUri="https://www.minecraft.net/zh-hans">
                             <TextBlock
-                                x:Uid="Guide_Account_Website"
+                                x:Uid="OOBE_AccountPage_L"
                                 Text="Minecraft Official Website"
-                                TextTrimming="CharacterEllipsis" />
-                        </HyperlinkButton>
-                        <HyperlinkButton Command="{Binding OfflineLoginCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
-                            <TextBlock
-                                x:Uid="Guide_Account_Offline"
-                                Text="Don't have a Microsoft account?"
                                 TextTrimming="CharacterEllipsis" />
                         </HyperlinkButton>
                     </Grid>
@@ -108,13 +102,13 @@
             FontWeight="SemiBold"
             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
             <Paragraph>
-                <Run x:Uid="Guide_Account_Para_1" Text="You need at least one account to start the game" />
+                <Run x:Uid="OOBE_AccountPage_D1" Text="You need at least one account to start the game" />
             </Paragraph>
             <Paragraph>
-                <Run x:Uid="Guide_Account_Para_2" Text="Access to online servers is only possible with a Microsoft account" />
+                <Run x:Uid="OOBE_AccountPage_D2" Text="Access to online servers is only possible with a Microsoft account" />
             </Paragraph>
             <Paragraph Margin="0,25,0,0">
-                <Run x:Uid="Guide_Account_Para_3" Text="Offline accounts will not be verified by the server" />
+                <Run x:Uid="OOBE_AccountPage_D3" Text="Offline accounts will not be verified by the server" />
             </Paragraph>
         </RichTextBlock>
     </Grid>

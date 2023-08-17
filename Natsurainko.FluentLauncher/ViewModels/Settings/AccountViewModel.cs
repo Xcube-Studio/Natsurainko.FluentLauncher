@@ -2,26 +2,21 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Microsoft.UI.Xaml;
-using Natsurainko.FluentCore.Interface;
-using Natsurainko.FluentCore.Model.Auth;
-using Natsurainko.FluentCore.Module.Authenticator;
-using Natsurainko.FluentLauncher.Components;
-using Natsurainko.FluentLauncher.Components.Mvvm;
+using Microsoft.Extensions.DependencyInjection;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.Common;
-using System;
+using Nrk.FluentCore.Classes.Datas.Authenticate;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
+internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
 {
     #region Settings
 
@@ -36,31 +31,31 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
     [BindToSetting(Path = nameof(SettingsService.AutoRefresh))]
     private bool autoRefresh;
 
-    [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.UseDeviceFlowAuth))]
-    private bool useDeviceFlowAuth;
-
     #endregion
 
-
-    public ReadOnlyObservableCollection<IAccount> Accounts { get; init; }
+    public ReadOnlyObservableCollection<Account> Accounts { get; init; }
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsRemoveVisible))]
-    private IAccount activeAccount;
-
-    public bool IsRemoveVisible => ActiveAccount is not null;
+    private Account activeAccount;
 
     private readonly AccountService _accountService;
+    private readonly AuthenticationService _authenticationService;
+    private readonly NotificationService _notificationService;
 
-
-    public AccountViewModel(SettingsService settingsService, AccountService accountService)
+    public AccountViewModel(
+        SettingsService settingsService,
+        AccountService accountService,
+        AuthenticationService authenticationService,
+        NotificationService notificationService)
     {
         _settingsService = settingsService;
         _accountService = accountService;
+        _authenticationService = authenticationService;
+        _notificationService = notificationService;
+
         Accounts = accountService.Accounts;
         ActiveAccount = accountService.ActiveAccount;
-        
+
         WeakReferenceMessenger.Default.Register<ActiveAccountChangedMessage>(this, (r, m) =>
         {
             AccountViewModel vm = r as AccountViewModel;
@@ -69,89 +64,32 @@ partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
         (this as ISettingsViewModel).InitializeSettings();
     }
 
-    partial void OnActiveAccountChanged(IAccount value)
+    partial void OnActiveAccountChanged(Account value)
     {
-        if (value is not null)
-            _accountService.Activate(value);
-    }
-
-
-    [RelayCommand]
-    public void Remove()
-    {
-        _accountService.Remove(ActiveAccount);
+        if (value is not null) _accountService.Activate(value);
     }
 
     [RelayCommand]
-    public Task Login() => Task.Run(() =>
+    public void Login() => _ = new AuthenticationWizardDialog { XamlRoot = Views.ShellPage._XamlRoot }.ShowAsync();
+
+    [RelayCommand]
+    public Task Refresh() => Task.Run(_authenticationService.RefreshCurrentAccount).ContinueWith(task =>
     {
-        App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
-        {
-            var chooseAccountTypeDialog = new Views.Common.ChooseAccountTypeDialog
-            {
-                XamlRoot = Views.ShellPage._XamlRoot,
-                DataContext = new Common.ChooseAccountTypeDialog { SetAccountAction = SetAccount }
-            };
-            await chooseAccountTypeDialog.ShowAsync();
-        });
+        if (task.IsFaulted)
+            _notificationService.NotifyException("_AccountRefreshFailedTitle", task.Exception, "_AccountRefreshFailedDescription");
+        else _notificationService.NotifyMessage(
+            ResourceUtils.GetValue("Notifications", "_AccountRefreshedTitle"),
+            ResourceUtils.GetValue("Notifications", "_AccountRefreshedDescription").Replace("${name}", _accountService.ActiveAccount.Name));
     });
 
     [RelayCommand]
-    public Task Refresh() => Task.Run(async () =>
+    public void Switch()
     {
-        try
+        var switchAccountDialog = new SwitchAccountDialog
         {
-            IAuthenticator authenticator = default;
-            IAccount refreshedAccount = default;
-            if (ActiveAccount.Type.Equals(AccountType.Microsoft))
-            {
-                var account = (MicrosoftAccount)ActiveAccount;
-                authenticator = new MicrosoftAuthenticator(
-                    account.RefreshToken, 
-                    "0844e754-1d2e-4861-8e2b-18059609badb", 
-                    "https://login.live.com/oauth20_desktop.srf",
-                    AuthenticatorMethod.Refresh);
-            }
-            else if (ActiveAccount.Type.Equals(AccountType.Yggdrasil))
-            {
-                var account = (YggdrasilAccount)ActiveAccount;
-                authenticator = new YggdrasilAuthenticator(
-                    AuthenticatorMethod.Refresh,
-                    account.AccessToken,
-                    account.ClientToken,
-                    yggdrasilServerUrl: account.YggdrasilServerUrl);
-            }
-            else if (ActiveAccount.Type.Equals(AccountType.Offline))
-                authenticator = new OfflineAuthenticator(ActiveAccount.Name, ActiveAccount.Uuid);
-
-            refreshedAccount = await authenticator.AuthenticateAsync();
-
-            App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            {
-                _accountService.Remove(ActiveAccount);
-
-#pragma warning disable CS0612 // Type or member is obsolete
-                _accountService.AddAccount(refreshedAccount);
-#pragma warning restore CS0612 // Type or member is obsolete
-                ActiveAccount = refreshedAccount;
-            });
-
-            MessageService.ShowSuccess("Successfully refreshed Account", $"Welcome back, {refreshedAccount.Name}");
-        }
-        catch (Exception ex)
-        {
-            MessageService.ShowException(ex, "Failed to refresh account");
-        }
-    });
-
-    private void SetAccount(IAccount account) => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-    {
-#pragma warning disable CS0612 // Type or member is obsolete
-        _accountService.AddAccount(account);
-#pragma warning restore CS0612 // Type or member is obsolete
-        ActiveAccount = account;
-
-        MessageService.ShowSuccess($"Add {account.Type} Account Successfully", $"Welcome back, {account.Name}");
-    });
-
+            XamlRoot = Views.ShellPage._XamlRoot,
+            DataContext = App.Services.GetService<SwitchAccountDialogViewModel>()
+        };
+        _ = switchAccountDialog.ShowAsync();
+    }
 }

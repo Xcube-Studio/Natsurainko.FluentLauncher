@@ -1,12 +1,11 @@
 ﻿using AppSettingsManagement.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Natsurainko.FluentLauncher.Components.Mvvm;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-partial class DownloadViewModel : SettingsViewModelBase, ISettingsViewModel
+internal partial class DownloadViewModel : SettingsViewModelBase, ISettingsViewModel
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;

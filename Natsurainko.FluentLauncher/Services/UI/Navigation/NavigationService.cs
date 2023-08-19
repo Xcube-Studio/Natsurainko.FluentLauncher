@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Controls;
+using Natsurainko.FluentLauncher.Services.UI.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,13 @@ public class NavigationService : INavigationService
         private set => _navigationProvider = value; 
     }
 
+    private readonly IPageProvider _pageProvider;
+
+    public NavigationService(IPageProvider pageProvider)
+    {
+        _pageProvider = pageProvider;
+    }
+
     private Frame Frame => _navigationProvider?.NavigationControl as Frame ?? 
         throw new InvalidOperationException("NavigationService has not been initialized");
 
@@ -35,7 +43,7 @@ public class NavigationService : INavigationService
 
     public void NavigateTo(string key)
     {
-        throw new NotImplementedException(); // TODO: require IPageService
+        Frame.Content = _pageProvider.GetPage(key);
     }
 
     #endregion

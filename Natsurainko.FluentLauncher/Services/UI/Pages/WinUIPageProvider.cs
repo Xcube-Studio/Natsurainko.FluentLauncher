@@ -12,7 +12,7 @@ public class WinUIPageProvider : PageProvider<Page>
     public static PageProviderBuilder<WinUIPageProvider, Page> GetBuilder(IServiceProvider windowProvider)
     {
         return new PageProviderBuilder<WinUIPageProvider, Page>(windowProvider)
-            .WithServiceFactory((r, p) => new WinUIActivationService(r, p));
+            .WithPageProviderFactory((r, p) => new WinUIPageProvider(r, p));
     }
 
     public WinUIPageProvider(IReadOnlyDictionary<string, PageDescriptor> registeredPages, IServiceProvider pageProvider)

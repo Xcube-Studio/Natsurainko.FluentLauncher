@@ -54,7 +54,7 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
 
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
     {
-        var pageType = _settings.FinishGuide ? typeof(ShellPage) : typeof(OOBE.OOBENavigationPage);
-        // _navService.NavigateTo(pageType); // Not implemented yet
+        var page = _settings.FinishGuide ? "ShellPage" : "OOBENavigationPage";
+        _navService.NavigateTo(page);
     }
 }

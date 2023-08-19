@@ -27,6 +27,8 @@ public partial class App : Application
     public static T GetService<T>() => Services.GetService<T>();
     public static MainWindow MainWindow { get; private set; }
 
+    private static IPageProvider PageProvider;
+
     public App()
     {
         InitializeComponent();
@@ -50,7 +52,7 @@ public partial class App : Application
             //.WithMultiInstanceWindow<LogWindow>("LogWindow")
             .Build();
 
-        var pageService = WinUIPageProvider.GetBuilder(Services)
+        PageProvider = WinUIPageProvider.GetBuilder(Services)
             .WithPage<OOBENavigationPage, OOBENavigationViewModel>("OOBENavigationPage")
             .WithPage<ShellPage>("ShellPage")
             .Build();
@@ -79,6 +81,8 @@ public partial class App : Application
 
         // UI services
         services.AddScoped<INavigationService, NavigationService>();
+        services.AddSingleton<IPageProvider>(_ => PageProvider);
+        services.AddTransient<ShellPage>();
 
         // Settings service
         services.AddSingleton<SettingsService>();

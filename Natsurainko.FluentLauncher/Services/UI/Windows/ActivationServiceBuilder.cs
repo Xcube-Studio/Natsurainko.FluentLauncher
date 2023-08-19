@@ -14,9 +14,9 @@ namespace Natsurainko.FluentLauncher.Services.UI.Windows;
 /// <typeparam name="TWindowBase">Base type of the window managed by the activation service</typeparam>
 class ActivationServiceBuilder<TService, TWindowBase> where TService: ActivationService<TWindowBase>
 {
-    private Dictionary<string, WindowDescriptor> _registeredWindows = new();
+    private readonly Dictionary<string, WindowDescriptor> _registeredWindows = new();
+    private readonly IServiceProvider _windowProvider;
     private Func<IReadOnlyDictionary<string, WindowDescriptor>, IServiceProvider, TService> _serviceFactory;
-    private IServiceProvider _windowProvider;
 
     public ActivationServiceBuilder(IServiceProvider windowProvider)
     {

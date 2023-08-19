@@ -15,6 +15,9 @@ using System;
 using System.Text;
 using Natsurainko.FluentLauncher.Services.UI.Windows;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
+using Natsurainko.FluentLauncher.Services.UI.Pages;
+using Natsurainko.FluentLauncher.Views.OOBE;
+using Natsurainko.FluentLauncher.ViewModels.OOBE;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -45,6 +48,11 @@ public partial class App : Application
             .WithSingleInstanceWindow<MainWindow>("MainWindow")
             //.WithSingleInstanceWindow<OOBEWindow>("OOBEWindow")
             //.WithMultiInstanceWindow<LogWindow>("LogWindow")
+            .Build();
+
+        var pageService = WinUIPageProvider.GetBuilder(Services)
+            .WithPage<OOBENavigationPage, OOBENavigationViewModel>("OOBENavigationPage")
+            .WithPage<ShellPage>("ShellPage")
             .Build();
 
         App.GetService<MessengerService>().SubscribeEvents();

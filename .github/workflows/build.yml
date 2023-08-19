@@ -316,7 +316,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Publish
     needs: [build,release,Create-Tag]
-    if: ${{ (contains(github.ref,'v')||(inputs.flag&&contains(needs.Create-Tag.outputs.tag,'v')))&&!failure()  }}
+    if: ${{ (contains(github.ref,'v2')||(inputs.flag&&contains(needs.Create-Tag.outputs.tag,'v2')))&&!failure()  }}
     env:
       Artifacts_Path: .artifacts
     steps:

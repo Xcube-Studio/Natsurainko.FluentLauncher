@@ -14,6 +14,7 @@ using Natsurainko.FluentLauncher.Views.Common;
 using System;
 using System.Text;
 using Natsurainko.FluentLauncher.Services.UI.Windows;
+using Natsurainko.FluentLauncher.Services.UI.Navigation;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -68,6 +69,9 @@ public partial class App : Application
     {
         var services = new ServiceCollection();
 
+        // UI services
+        services.AddScoped<INavigationService, NavigationService>();
+
         // Settings service
         services.AddSingleton<SettingsService>();
         services.AddSingleton<ISettingsStorage, WinRTSettingsStorage>();
@@ -111,7 +115,7 @@ public partial class App : Application
         services.AddTransient<ViewModels.Cores.CoresViewModel>();
         services.AddTransient<ViewModels.Home.HomeViewModel>();
 
-        services.AddSingleton<MainWindow>();
+        services.AddScoped<MainWindow>();
 
         return services.BuildServiceProvider();
     }

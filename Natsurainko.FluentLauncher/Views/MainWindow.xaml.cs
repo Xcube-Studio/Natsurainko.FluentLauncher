@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using System.IO;
 using Windows.ApplicationModel;
@@ -11,15 +12,19 @@ using WinUIEx;
 
 namespace Natsurainko.FluentLauncher.Views;
 
-public sealed partial class MainWindow : WindowEx
+public sealed partial class MainWindow : WindowEx, INavigationProvider
 {
     public Frame ContentFrame => Frame;
+    object INavigationProvider.NavigationControl => Frame;
 
+    private readonly INavigationService _navService;
     private readonly SettingsService _settings = App.GetService<SettingsService>();
     private readonly NotificationService _notificationService = App.GetService<NotificationService>();
 
-    public MainWindow()
+    public MainWindow(INavigationService navService)
     {
+        _navService = navService;
+
         if (string.IsNullOrEmpty(ApplicationLanguages.PrimaryLanguageOverride))
             ResourceUtils.ApplyLanguage(_settings.CurrentLanguage);
 
@@ -43,6 +48,13 @@ public sealed partial class MainWindow : WindowEx
         (MinWidth, MinHeight) = (516, 328);
         (Width, Height) = (_settings.AppWindowWidth, _settings.AppWindowHeight);
 
+        Activated += MainWindow_Activated;
         Frame.Navigate(_settings.FinishGuide ? typeof(ShellPage) : typeof(OOBE.OOBENavigationPage));
+    }
+
+    private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
+    {
+        var pageType = _settings.FinishGuide ? typeof(ShellPage) : typeof(OOBE.OOBENavigationPage);
+        // _navService.NavigateTo(pageType); // Not implemented yet
     }
 }

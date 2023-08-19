@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ abstract class ActivationService<TWindowBase> : IActivationService
 {
     protected readonly IServiceProvider _windowProvider;
     protected readonly IReadOnlyDictionary<string, WindowDescriptor> _registeredWindows;
+    protected readonly List<TWindowBase> _activeWindows = new(); // TODO: maintain a list of active windows
 
     public IReadOnlyDictionary<string, WindowDescriptor> RegisteredWindows => _registeredWindows;
 
@@ -37,8 +39,16 @@ abstract class ActivationService<TWindowBase> : IActivationService
         Type windowType = RegisteredWindows[key].WindowType; // windowType is guaranteed to be a subclass of TWindowBase when the activation service is built
         TWindowBase window = (TWindowBase)scope.ServiceProvider.GetService(windowType);
 
+        // If the window supports navigation, initialize the navigation service for the window scope
+        // The navigation service may have been instantiated and injected into 'window' already.
+        if (window is INavigationProvider navProvider)
+        {
+            var navService = scope.ServiceProvider.GetRequiredService<INavigationService>();
+            navService.InitializeNavigation(navProvider);
+        }
+
         // Configures the scope to be disposed when the window is closed
-        ConfigureScopeDisposal(window, scope);
+        ConfigureWindowClose(window, scope);
 
         // Activates the window
         return ActivateWindow(window);
@@ -51,9 +61,9 @@ abstract class ActivationService<TWindowBase> : IActivationService
     /// <returns></returns>
     protected abstract IWindowService ActivateWindow(TWindowBase window);
     /// <summary>
-    /// Configure the <paramref name="scope"/> to be disposed when the <paramref name="window"/> is closed.
+    /// Configure the <paramref name="window"/> to dispose the <paramref name="scope"/> and removes itself from ActiveWindows when it is closed.
     /// </summary>
     /// <param name="window"></param>
     /// <param name="scope"></param>
-    protected abstract void ConfigureScopeDisposal(TWindowBase window, IServiceScope scope);
+    protected abstract void ConfigureWindowClose(TWindowBase window, IServiceScope scope);
 }

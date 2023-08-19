@@ -26,7 +26,7 @@ internal class WinUIActivationService : ActivationService<Window>
         return new WindowService(window);
     }
 
-    protected override void ConfigureScopeDisposal(Window window, IServiceScope scope)
+    protected override void ConfigureWindowClose(Window window, IServiceScope scope)
     {
         window.Closed += (_, _) => scope.Dispose();
     }

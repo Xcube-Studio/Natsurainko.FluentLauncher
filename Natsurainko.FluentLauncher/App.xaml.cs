@@ -25,7 +25,7 @@ public partial class App : Application
 {
     public static IServiceProvider Services { get; } = ConfigureServices();
     public static T GetService<T>() => Services.GetService<T>();
-    public static MainWindow MainWindow { get; private set; }
+    public static MainWindow MainWindow { get; set; }
 
     private static IPageProvider PageProvider;
 
@@ -62,8 +62,6 @@ public partial class App : Application
         try
         {
             activationService.ActivateWindow("MainWindow");
-            MainWindow = App.GetService<MainWindow>();
-            App.GetService<AppearanceService>().ApplyBackgroundAtWindowCreated(MainWindow);
         }
         catch (Exception e)
         {

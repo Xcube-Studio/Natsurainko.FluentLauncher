@@ -48,6 +48,9 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
         (MinWidth, MinHeight) = (516, 328);
         (Width, Height) = (_settings.AppWindowWidth, _settings.AppWindowHeight);
 
+        App.GetService<AppearanceService>().ApplyBackgroundAtWindowCreated(this);
+        App.MainWindow = this;
+
         Activated += MainWindow_Activated;
         Frame.Navigate(_settings.FinishGuide ? typeof(ShellPage) : typeof(OOBE.OOBENavigationPage));
     }

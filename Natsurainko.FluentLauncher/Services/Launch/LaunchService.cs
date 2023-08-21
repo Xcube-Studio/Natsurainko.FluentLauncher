@@ -1,4 +1,6 @@
-﻿using Natsurainko.FluentLauncher.Classes.Data.Launch;
+﻿using CommunityToolkit.WinUI.Notifications;
+using Microsoft.UI.Dispatching;
+using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Components.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Download;
@@ -6,6 +8,7 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Classes.Datas.Authenticate;
 using Nrk.FluentCore.Classes.Datas.Launch;
+using Nrk.FluentCore.Classes.Enums;
 using Nrk.FluentCore.DefaultComponents.Launch;
 using Nrk.FluentCore.DefaultComponents.Parse;
 using Nrk.FluentCore.Services.Launch;
@@ -14,12 +17,16 @@ using PInvoke;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
+using Windows.Devices.Display.Core;
+using Windows.UI.StartScreen;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
 
@@ -58,6 +65,70 @@ internal class LaunchService : DefaultLaunchService
 
         Task.Run(process.RunLaunch);
         Views.ShellPage.ContentFrame.Navigate(typeof(Views.Activities.ActivitiesNavigationPage), typeof(Views.Activities.LaunchPage));
+    }
+
+    public void LaunchFromJumpList(string arguments)
+    {
+        var gameInfo = JsonSerializer.Deserialize<GameInfo>(arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64());
+
+        new ToastContentBuilder()
+            .AddHeader(gameInfo.Name, $"正在尝试启动游戏: {gameInfo.Name}", string.Empty)
+            .AddText("这可能需要一点时间，请稍后")
+            .Show();
+
+        var process = CreateLaunchProcess(gameInfo);
+        _launchProcesses.Insert(0, process);
+
+        Task.Run(process.RunLaunch);
+        Views.ShellPage.ContentFrame?.Navigate(typeof(Views.Activities.ActivitiesNavigationPage), typeof(Views.Activities.LaunchPage));
+
+        process.PropertyChanged += (object sender, PropertyChangedEventArgs e) =>
+        {
+            if (e.PropertyName == "DisplayState")
+            {
+                if (!(process.State == LaunchState.GameRunning ||
+                    process.State == LaunchState.Faulted ||
+                    process.State == LaunchState.GameExited ||
+                    process.State == LaunchState.GameCrashed))
+                    return;
+
+                var builder = new ToastContentBuilder();
+
+                switch (process.State)
+                {
+                    case LaunchState.GameRunning:
+                        builder.AddHeader(Guid.NewGuid().ToString(), $"启动游戏成功: {gameInfo.Name}", string.Empty);
+                        break;
+                    case LaunchState.Faulted:
+                        builder.AddHeader(Guid.NewGuid().ToString(), $"启动游戏失败: {gameInfo.Name}", string.Empty);
+                        break;
+                    case LaunchState.GameExited:
+                        builder.AddHeader(Guid.NewGuid().ToString(), $"启动进程消息: {gameInfo.Name}", string.Empty);
+                        break;
+                    case LaunchState.GameCrashed:
+                        builder.AddHeader(Guid.NewGuid().ToString(), $"启动进程消息: {gameInfo.Name}", string.Empty);
+                        break;
+                    default:
+                        break;
+                }
+
+                builder.AddText(ResourceUtils.GetValue("Converters", $"_LaunchState_{process.State}"));
+                builder.Show();
+
+                switch (process.State)
+                {
+                    case LaunchState.Faulted:
+                    case LaunchState.GameExited:
+                        Process.GetCurrentProcess().Kill();
+                        break;
+                    case LaunchState.GameCrashed:
+                        App.DispatcherQueue.TryEnqueue(() => process.LoggerButton());
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
     }
 
     public new LaunchProcess CreateLaunchProcess(GameInfo gameInfo)
@@ -101,8 +172,8 @@ internal class LaunchService : DefaultLaunchService
             .SetCompleteResourcesAction(launchProcess =>
             {
                 var resourcesDownloader = _downloadService.CreateResourcesDownloader(gameInfo, enabledLibraries.Union(enabledNativesLibraries));
-                resourcesDownloader.SingleFileDownloaded += (_, _) => App.MainWindow.DispatcherQueue.TryEnqueue(launchProcess.UpdateDownloadProgress);
-                resourcesDownloader.DownloadElementsPosted += (_, count) => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                resourcesDownloader.SingleFileDownloaded += (_, _) => App.DispatcherQueue.TryEnqueue(launchProcess.UpdateDownloadProgress);
+                resourcesDownloader.DownloadElementsPosted += (_, count) => App.DispatcherQueue.TryEnqueue(() =>
                 {
                     launchProcess.StepItems[2].TaskNumber = count;
                     launchProcess.UpdateLaunchProgress();
@@ -135,8 +206,12 @@ internal class LaunchService : DefaultLaunchService
                 var launchTime = DateTime.Now;
 
                 specialConfig.LastLaunchTime = launchTime;
-                _gameService.GameInfos.Where(x => x.Equals(gameInfo)).FirstOrDefault().LastLaunchTime = launchTime;
-                (gameInfo as ExtendedGameInfo).LastLaunchTime = launchTime;
+                _gameService.GameInfos.Where(x => x.AbsoluteId.Equals(gameInfo.AbsoluteId)).FirstOrDefault().LastLaunchTime = launchTime;
+
+                if (gameInfo is ExtendedGameInfo extendedGameInfo)
+                    extendedGameInfo.LastLaunchTime = launchTime;
+
+                UpdateJumpList(gameInfo);
 
                 return new Process
                 {
@@ -316,5 +391,34 @@ internal class LaunchService : DefaultLaunchService
                 yield return $"--port {port}";
             }
         }
+    }
+
+    private async void UpdateJumpList(GameInfo gameInfo)
+    {
+        var jumpList = await JumpList.LoadCurrentAsync();
+
+        var args = JsonSerializer.Serialize(gameInfo).ConvertToBase64();
+        var latest = jumpList.Items.Where(x => x.GroupName.Equals("Latest")).ToList();
+
+        if (!latest.Where(x => x.DisplayName.Equals(gameInfo.Name)).Any())
+        {
+            var jumpListItem = JumpListItem.CreateWithArguments($"/quick-launch {args}", gameInfo.Name);
+
+            jumpListItem.Logo = new Uri(string.Format("ms-appx:///Assets/Icons/{0}.png", !gameInfo.IsVanilla ? "furnace_front" : gameInfo.Type switch
+            {
+                "release" => "grass_block_side",
+                "snapshot" => "crafting_table_front",
+                "old_beta" => "dirt_path_side",
+                "old_alpha" => "dirt_path_side",
+                _ => "grass_block_side"
+            }), UriKind.RelativeOrAbsolute);
+
+            jumpListItem.GroupName = "Latest";
+
+            jumpList.Items.Add(jumpListItem);
+
+        }
+
+        await jumpList.SaveAsync();
     }
 }

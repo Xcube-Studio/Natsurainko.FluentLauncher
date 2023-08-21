@@ -47,12 +47,12 @@ internal class NotificationService
         }, icon, delay);
     }
 
-    public void NotifyWithoutContent(string title, string icon = "\uE7E7", int delay = 5000) => App.MainWindow.DispatcherQueue.TryEnqueue
+    public void NotifyWithoutContent(string title, string icon = "\uE7E7", int delay = 5000) => App.DispatcherQueue.TryEnqueue
         (() => _itemsContainer.Children.Insert(0, CreateNotifyPresenterWithoutContent(title, icon, delay)));
 
     public void NotifyWithSpecialContent(string title, string contentTemplateKey, object contentDataContext, string icon = "\uE7E7", int delay = 5000)
     {
-        App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+        App.DispatcherQueue.TryEnqueue(() =>
         {
             _itemsContainer.Children.Insert(0, CreateNotifyPresenter(
                 title, contentTemplateKey, contentDataContext, icon, delay));

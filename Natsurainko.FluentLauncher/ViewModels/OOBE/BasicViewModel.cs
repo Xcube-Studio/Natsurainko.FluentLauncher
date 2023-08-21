@@ -92,7 +92,7 @@ internal partial class BasicViewModel : SettingsViewModelBase, ISettingsViewMode
         var folder = await folderPicker.PickSingleFolderAsync();
 
         if (folder != null)
-            App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+            App.DispatcherQueue.TryEnqueue(() =>
             {
                 if (MinecraftFolders.Contains(folder.Path))
                 {
@@ -117,7 +117,7 @@ internal partial class BasicViewModel : SettingsViewModelBase, ISettingsViewMode
         var file = await filePicker.PickSingleFileAsync();
 
         if (file != null)
-            App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+            App.DispatcherQueue.TryEnqueue(() =>
             {
                 Javas.Add(file.Path);
                 OnPropertyChanged(nameof(Javas));

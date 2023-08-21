@@ -46,7 +46,7 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
     [RelayCommand]
     public Task RefreshCode() => Task.Run(() =>
     {
-        App.MainWindow.DispatcherQueue.SynchronousTryEnqueue(() => Loading = true);
+        App.DispatcherQueue.SynchronousTryEnqueue(() => Loading = true);
 
         CancellationTokenSource.Cancel();
         if (DeviceFlowProcess.Status == TaskStatus.Running)
@@ -72,7 +72,7 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
         confirmProfileViewModel = new ConfirmProfileViewModel(() => new Account[]
         {
             _authenticationService.AuthenticateMicrosoft(DeviceFlowAuthResult,
-                progress => App.MainWindow.DispatcherQueue.TryEnqueue(() => confirmProfileViewModel.LoadingProgressText = progress))
+                progress => App.DispatcherQueue.TryEnqueue(() => confirmProfileViewModel.LoadingProgressText = progress))
         });
 
         return confirmProfileViewModel;
@@ -83,7 +83,7 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
         CancellationTokenSource?.Dispose();
 
         DeviceFlowProcess = DefaultMicrosoftAuthenticator.DeviceFlowAuthAsync(AuthenticationService.ClientId,
-            res => App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+            res => App.DispatcherQueue.TryEnqueue(() =>
             {
                 DeviceCode = res.UserCode;
                 Loading = false;
@@ -98,7 +98,7 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
         {
             if (task.IsFaulted || !task.Result.Success || (CancellationTokenSource.IsCancellationRequested && !task.Result.Success))
             {
-                App.MainWindow.DispatcherQueue.SynchronousTryEnqueue(() =>
+                App.DispatcherQueue.SynchronousTryEnqueue(() =>
                 {
                     DeviceCode = "Failed";
                     Loading = false;
@@ -108,7 +108,7 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
             }
 
             if (!Unloaded && task.Result.Success)
-                App.MainWindow.DispatcherQueue.SynchronousTryEnqueue(() => DeviceFlowAuthResult = task.Result);
+                App.DispatcherQueue.SynchronousTryEnqueue(() => DeviceFlowAuthResult = task.Result);
         });
     }
 

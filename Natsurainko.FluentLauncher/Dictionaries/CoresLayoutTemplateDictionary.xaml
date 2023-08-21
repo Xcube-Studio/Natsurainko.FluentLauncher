@@ -5,59 +5,86 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI">
     <DataTemplate x:Key="StackTemplate">
-        <labs:SettingsCard
-            Margin="2"
-            Padding="20,0"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            CommandParameter="{Binding}"
-            IsClickEnabled="True">
-            <i:Interaction.Behaviors>
-                <behaviors:AncestorBindingBehavior
-                    AncestorType="ItemsRepeater"
-                    Binding="{Binding DataContext.OpenCoreManageCommand}"
-                    TargetPropertyName="Command" />
-            </i:Interaction.Behaviors>
-            <labs:SettingsCard.Header>
-                <Grid x:Name="DataGrid" Background="Transparent">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="10" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
-                    <Border
-                        Width="36"
-                        Height="36"
-                        Margin="2,2,0,0"
-                        VerticalAlignment="Center"
-                        BorderBrush="{ThemeResource IconBorder}"
-                        BorderThickness="2"
-                        CornerRadius="4">
-                        <Border CornerRadius="4">
-                            <Image Source="{Binding Converter={ThemeResource IconConverter}}" />
+        <Grid Background="Transparent">
+            <labs:SettingsCard
+                Margin="2"
+                Padding="20,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                CommandParameter="{Binding}"
+                IsClickEnabled="True">
+                <labs:SettingsCard.Header>
+                    <Grid x:Name="DataGrid" Background="Transparent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Border
+                            Width="36"
+                            Height="36"
+                            Margin="2,2,0,0"
+                            VerticalAlignment="Center"
+                            BorderBrush="{ThemeResource IconBorder}"
+                            BorderThickness="2"
+                            CornerRadius="4">
+                            <Border CornerRadius="4">
+                                <Image Source="{Binding Converter={ThemeResource IconConverter}}" />
+                            </Border>
                         </Border>
-                    </Border>
-                    <Grid Grid.Column="2" VerticalAlignment="Center">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <TextBlock
-                            FontWeight="SemiBold"
-                            Text="{Binding Name}"
-                            TextTrimming="CharacterEllipsis"
-                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
-                        <TextBlock
-                            Grid.Row="1"
-                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                            Style="{ThemeResource CaptionTextBlockStyle}"
-                            Text="{Binding Converter={ThemeResource GameCoreTagConverter}}"
-                            TextTrimming="CharacterEllipsis"
-                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                        <Grid Grid.Column="2" VerticalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                FontWeight="SemiBold"
+                                Text="{Binding Name}"
+                                TextTrimming="CharacterEllipsis"
+                                ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                Text="{Binding Converter={ThemeResource GameCoreTagConverter}}"
+                                TextTrimming="CharacterEllipsis"
+                                ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                        </Grid>
                     </Grid>
-                </Grid>
-            </labs:SettingsCard.Header>
-        </labs:SettingsCard>
+                </labs:SettingsCard.Header>
+                <i:Interaction.Behaviors>
+                    <behaviors:AncestorBindingBehavior
+                        AncestorType="ItemsRepeater"
+                        Binding="{Binding DataContext.OpenCoreManageCommand}"
+                        TargetPropertyName="Command" />
+                </i:Interaction.Behaviors>
+            </labs:SettingsCard>
+            <!--
+
+            <Grid
+                x:Name="ControlGrid"
+                Margin="45,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center">
+                <Button Content="Test">
+                    <Button.Flyout>
+                        <MenuFlyout x:Name="MenuFlyout">
+                            <MenuFlyout.Items>
+                                <MenuFlyoutItem />
+                                <MenuFlyoutItem />
+                            </MenuFlyout.Items>
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
+            </Grid>
+            <i:Interaction.Behaviors>
+                <behaviors:PointerOverVisibleBehavior
+                    MenuFlyoutElementName="MenuFlyout"
+                    TargetElementName="ControlGrid"
+                    UseMenuFlyout="True" />
+            </i:Interaction.Behaviors>
+            -->
+        </Grid>
     </DataTemplate>
     <DataTemplate x:Key="CardTemplate">
         <Button

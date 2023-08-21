@@ -72,10 +72,10 @@ internal partial class LoggerViewModel : ObservableObject
 
         foreach (var item in e.NewItems)
             if (item is GameLoggerOutput GameLoggerOutput && enums.Contains(GameLoggerOutput.Level))
-                App.MainWindow.DispatcherQueue.TryEnqueue(() => FilterLoggerItems.Add(new LoggerItem(GameLoggerOutput)));
+                App.DispatcherQueue.TryEnqueue(() => FilterLoggerItems.Add(new LoggerItem(GameLoggerOutput)));
 
         if (EnableAutoScroll)
-            App.MainWindow.DispatcherQueue.TryEnqueue(ScrollToEnd);
+            App.DispatcherQueue.TryEnqueue(ScrollToEnd);
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)

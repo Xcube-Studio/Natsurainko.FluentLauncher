@@ -11,7 +11,7 @@ internal partial class LoggerItem : ObservableObject
 {
     public LoggerItem(GameLoggerOutput output)
     {
-        App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+        App.DispatcherQueue.TryEnqueue(() =>
         {
             var richTextBlock = new RichTextBlock();
             LoggerColorLightLanguage.Formatter.FormatRichTextBlock(output.FullData, new LoggerColorLightLanguage(), richTextBlock);

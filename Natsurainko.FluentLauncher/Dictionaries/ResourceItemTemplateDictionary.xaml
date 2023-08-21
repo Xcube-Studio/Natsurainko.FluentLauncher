@@ -67,6 +67,12 @@
             BorderThickness="1"
             CommandParameter="{Binding}"
             IsClickEnabled="True">
+            <i:Interaction.Behaviors>
+                <behaviors:AncestorBindingBehavior
+                    AncestorType="ScrollViewer"
+                    Binding="{Binding DataContext.NavigateCoreInstallWizardPageCommand}"
+                    TargetPropertyName="Command" />
+            </i:Interaction.Behaviors>
             <labs:SettingsCard.Header>
                 <Grid Background="Transparent">
                     <Grid.ColumnDefinitions>

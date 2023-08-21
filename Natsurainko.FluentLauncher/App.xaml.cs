@@ -1,6 +1,7 @@
 ﻿using AppSettingsManagement;
 using AppSettingsManagement.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Download;
@@ -21,6 +22,7 @@ public partial class App : Application
     public static IServiceProvider Services { get; } = ConfigureServices();
     public static T GetService<T>() => Services.GetService<T>();
     public static MainWindow MainWindow { get; private set; }
+    public static DispatcherQueue DispatcherQueue { get; private set; }
 
     public App()
     {
@@ -33,11 +35,20 @@ public partial class App : Application
             ProcessException(e.Exception);
         };
 
+        DispatcherQueue = DispatcherQueue.GetForCurrentThread();
         App.GetService<AppearanceService>().ApplyDisplayTheme();
     }
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
+        string[] cmdargs = Environment.GetCommandLineArgs();
+
+        if (cmdargs.Length > 1 && cmdargs[1].Equals("/quick-launch"))
+        {
+            App.GetService<LaunchService>().LaunchFromJumpList(cmdargs[2]);
+            return;
+        }
+
         App.GetService<MessengerService>().SubscribeEvents();
 
         try
@@ -133,7 +144,7 @@ public partial class App : Application
     {
         if (App.MainWindow is not null)
         {
-            App.MainWindow.DispatcherQueue?.TryEnqueue(async () =>
+            App.DispatcherQueue?.TryEnqueue(async () =>
             {
                 try
                 {

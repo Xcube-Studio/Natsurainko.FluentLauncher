@@ -51,13 +51,13 @@ internal partial class ConfirmProfileViewModel : WizardViewModelBase
 
         Task.Run(async () =>
         {
-            App.MainWindow.DispatcherQueue.TryEnqueue(() => Loading = Visibility.Visible);
+            App.DispatcherQueue.TryEnqueue(() => Loading = Visibility.Visible);
             var accountsList = new List<Account>(_authenticateAction());
 
             foreach (var account in accountsList)
                 await Task.Run(() => App.GetService<SkinCacheService>().TryCacheSkin(account));
 
-            App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+            App.DispatcherQueue.TryEnqueue(() =>
             {
                 Loading = Visibility.Collapsed;
 
@@ -68,7 +68,7 @@ internal partial class ConfirmProfileViewModel : WizardViewModelBase
         {
             if (task.IsFaulted)
             {
-                App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                App.DispatcherQueue.TryEnqueue(() =>
                 {
                     Loading = Visibility.Collapsed;
                     Faulted = true;

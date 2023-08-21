@@ -28,7 +28,7 @@ internal partial class NotifyPresenterViewModel : ObservableObject
     [RelayCommand]
     public Task Close() => Task.Run(() =>
     {
-        App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
+        App.DispatcherQueue.TryEnqueue(async () =>
         {
             var retractAnimation = CreateRetractAnimationAction();
             await retractAnimation.BeginAsync();

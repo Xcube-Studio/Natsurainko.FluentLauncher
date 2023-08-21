@@ -115,7 +115,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
         var folder = await folderPicker.PickSingleFolderAsync();
 
         if (folder != null)
-            App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+            App.DispatcherQueue.TryEnqueue(() =>
             {
                 if (MinecraftFolders.Contains(folder.Path))
                 {
@@ -139,7 +139,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
         openFileDialog.Filter = "Javaw Executable File|javaw.exe|Java Executable File|java.exe";
 
         if (openFileDialog.ShowDialog().GetValueOrDefault(false))
-            App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+            App.DispatcherQueue.TryEnqueue(() =>
             {
                 Javas.Add(openFileDialog.FileName);
                 ActiveJava = openFileDialog.FileName;

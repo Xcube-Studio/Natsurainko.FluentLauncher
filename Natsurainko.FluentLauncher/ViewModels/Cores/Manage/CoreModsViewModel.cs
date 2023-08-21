@@ -59,7 +59,7 @@ internal partial class CoreModsViewModel : ObservableObject
 
         mods = mods.ToList();
 
-        App.MainWindow.DispatcherQueue.TryEnqueue(() => DisplayMods = mods);
+        App.DispatcherQueue.TryEnqueue(() => DisplayMods = mods);
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)

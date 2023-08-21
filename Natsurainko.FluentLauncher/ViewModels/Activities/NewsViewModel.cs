@@ -16,7 +16,7 @@ internal partial class NewsViewModel : ObservableObject
         {
             var newsDatas = await service.FetchNews();
 
-            App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+            App.DispatcherQueue.TryEnqueue(() =>
             {
                 NewsDatas = newsDatas;
                 Loading = Visibility.Collapsed;

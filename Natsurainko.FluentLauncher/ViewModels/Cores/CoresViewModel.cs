@@ -88,7 +88,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
             ? infos.OrderBy(x => x.Name).ToList()
             : infos.OrderByDescending(x => x.LastLaunchTime).ToList();
 
-        App.MainWindow.DispatcherQueue.TryEnqueue(() => DisplayGameInfos = list);
+        App.DispatcherQueue.TryEnqueue(() => DisplayGameInfos = list);
     }
 
     [RelayCommand]

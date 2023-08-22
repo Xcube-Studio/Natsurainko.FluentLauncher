@@ -61,6 +61,7 @@
     <None Remove="Views\Common\JavaMirrorsDialog.xaml" />
     <None Remove="Views\Common\ResourceDownloadDialog.xaml" />
     <None Remove="Views\Common\SwitchAccountDialog.xaml" />
+    <None Remove="Views\CoreInstallWizard\EnterCoreSettingsPage.xaml" />
     <None Remove="Views\Cores\ManageNavigationPage.xaml" />
     <None Remove="Views\Cores\Manage\CoreModsPage.xaml" />
     <None Remove="Views\Cores\Manage\CoreSettingsPage.xaml" />
@@ -252,6 +253,12 @@
 
   <ItemGroup>
     <Page Update="Views\Common\SwitchAccountDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\CoreInstallWizard\EnterCoreSettingsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

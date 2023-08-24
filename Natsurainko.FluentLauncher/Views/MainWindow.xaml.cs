@@ -17,6 +17,8 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
     public Frame ContentFrame => Frame;
     object INavigationProvider.NavigationControl => Frame;
 
+    public string DefaultPageKey => _settings.FinishGuide ? "ShellPage" : "OOBENavigationPage";
+
     private readonly INavigationService _navService;
     private readonly SettingsService _settings = App.GetService<SettingsService>();
     private readonly NotificationService _notificationService = App.GetService<NotificationService>();
@@ -51,13 +53,6 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
         App.GetService<AppearanceService>().ApplyBackgroundAtWindowCreated(this);
         App.MainWindow = this;
 
-        Activated += MainWindow_Activated;
-        Frame.Navigate(_settings.FinishGuide ? typeof(ShellPage) : typeof(OOBE.OOBENavigationPage));
-    }
-
-    private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
-    {
-        var page = _settings.FinishGuide ? "ShellPage" : "OOBENavigationPage";
-        _navService.NavigateTo(page);
+        //Frame.Navigate(_settings.FinishGuide ? typeof(ShellPage) : typeof(OOBE.OOBENavigationPage));
     }
 }

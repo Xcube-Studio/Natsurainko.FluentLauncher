@@ -45,6 +45,8 @@ abstract class ActivationService<TWindowBase> : IActivationService
         {
             var navService = scope.ServiceProvider.GetRequiredService<INavigationService>();
             navService.InitializeNavigation(navProvider);
+            if(navProvider.DefaultPageKey is not null)
+                navService.NavigateTo(navProvider.DefaultPageKey);
         }
 
         // Configures the scope to be disposed when the window is closed

@@ -14,6 +14,7 @@ public interface IPageProvider
 {
     IReadOnlyDictionary<string, PageDescriptor> RegisteredPages { get; }
     object GetPage(string key);
+    object GetViewModel(string key);
 }
 
 public abstract class PageProvider<TPageBase> : IPageProvider
@@ -44,6 +45,15 @@ public abstract class PageProvider<TPageBase> : IPageProvider
             ConfigureViewModel(page, vm);
             return page;
         }
+    }
+
+    public object? GetViewModel(string key)
+    {
+        var vmType = _registeredPages[key].ViewModelType;
+        if (vmType is null)
+            return null;
+
+        return _pageProvider.GetRequiredService(vmType);
     }
 
     protected abstract void ConfigureViewModel(TPageBase page, object viewModel);

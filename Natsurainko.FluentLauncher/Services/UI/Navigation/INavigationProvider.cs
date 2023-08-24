@@ -15,4 +15,5 @@ public interface INavigationProvider
     /// The UI element that provides navigation
     /// </summary>
     object NavigationControl { get; }
+    string? DefaultPageKey { get; }
 }

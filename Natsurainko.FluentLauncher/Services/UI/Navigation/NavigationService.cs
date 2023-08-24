@@ -43,7 +43,12 @@ public class NavigationService : INavigationService
 
     public void NavigateTo(string key)
     {
-        Frame.Content = _pageProvider.GetPage(key);
+        var pageInfo = _pageProvider.RegisteredPages[key];
+        var vm = _pageProvider.GetViewModel(key);
+        Frame.Navigate(pageInfo.PageType);
+
+        if (Frame.Content is Page page)
+            page.DataContext = vm;
     }
 
     #endregion

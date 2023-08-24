@@ -115,9 +115,6 @@ internal class AppearanceService
                 };
                 break;
         }
-
-        //this.Resources.Add("NavigationViewPaneContentGridMargin", new Thickness(-1, 0, -1, 0));
-        //this.Resources.Add("NavigationViewContentGridCornerRadius", new CornerRadius(0));
     }
 
     public void ApplyBackgroundAtWindowCreated(MainWindow window)

@@ -44,7 +44,7 @@ internal class AuthenticationService
         else if (activeAccount is OfflineAccount offlineAccount)
             refreshedAccount = new DefaultOfflineAuthenticator(activeAccount.Name, activeAccount.Uuid).Authenticate();
 
-        App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+        App.DispatcherQueue.TryEnqueue(() =>
         {
             _accountService.Remove(activeAccount);
 
@@ -77,13 +77,10 @@ internal class AuthenticationService
         else if (account is OfflineAccount offlineAccount)
             refreshedAccount = new DefaultOfflineAuthenticator(account.Name, account.Uuid).Authenticate();
 
-        App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+        App.DispatcherQueue.TryEnqueue(() =>
         {
             _accountService.Remove(account);
-
-#pragma warning disable CS0612 // Type or member is obsolete
             _accountService.AddAccount(refreshedAccount);
-#pragma warning restore CS0612
 
             Task.Run(() => _skinCacheService.TryCacheSkin(refreshedAccount));
         });

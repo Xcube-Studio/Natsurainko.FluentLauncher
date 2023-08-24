@@ -70,7 +70,7 @@ internal partial class ResourcesSearchViewModel : ObservableObject
                 IEnumerable<VersionManifestItem> manifestItems = await _interfaceCacheService.FetchVersionManifest();
                 manifestItems = manifestItems.Where(manifestItem => manifestItem.Id.ToLower().Contains(SearchBoxInput.ToLower()));
 
-                App.MainWindow.DispatcherQueue.TryEnqueue(() => SearchedItems = manifestItems);
+                App.DispatcherQueue.TryEnqueue(() => SearchedItems = manifestItems);
             });
 
             return;
@@ -89,7 +89,7 @@ internal partial class ResourcesSearchViewModel : ObservableObject
                     _ => Nrk.FluentCore.Classes.Enums.CurseResourceType.McMod
                 });
 
-                App.MainWindow.DispatcherQueue.TryEnqueue(() => SearchedItems = resources);
+                App.DispatcherQueue.TryEnqueue(() => SearchedItems = resources);
             });
         }
         else
@@ -103,11 +103,14 @@ internal partial class ResourcesSearchViewModel : ObservableObject
                     _ => Nrk.FluentCore.Classes.Enums.ModrinthResourceType.McMod
                 });
 
-                App.MainWindow.DispatcherQueue.TryEnqueue(() => SearchedItems = resources);
+                App.DispatcherQueue.TryEnqueue(() => SearchedItems = resources);
             });
         }
     }
 
     [RelayCommand]
     public void NavigateResourcePage(object resource) => ShellPage.ContentFrame.Navigate(typeof(ResourceItemPage), resource);
+
+    [RelayCommand]
+    public void NavigateCoreInstallWizardPage(object resource) => ShellPage.ContentFrame.Navigate(typeof(CoreInstallWizardPage), resource);
 }

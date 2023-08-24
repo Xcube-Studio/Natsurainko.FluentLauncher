@@ -95,7 +95,7 @@ internal partial class BrowserMicrosoftAuthViewModel : WizardViewModelBase
         confirmProfileViewModel = new ConfirmProfileViewModel(() => new Account[]
         {
             _authenticationService.AuthenticateMicrosoft(AccessCode,
-                progress => App.MainWindow.DispatcherQueue.TryEnqueue(() => confirmProfileViewModel.LoadingProgressText = progress))
+                progress => App.DispatcherQueue.TryEnqueue(() => confirmProfileViewModel.LoadingProgressText = progress))
         });
 
         return confirmProfileViewModel;

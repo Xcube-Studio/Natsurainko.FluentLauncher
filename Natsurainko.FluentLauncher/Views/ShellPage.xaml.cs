@@ -121,44 +121,6 @@ public sealed partial class ShellPage : Page
         App.MainWindow.AppWindow.TitleBar.SetDragRectangles(new[] { dragRect });
     }
 
-    private void NavigationViewControl_Loaded(object sender, RoutedEventArgs e)
-    {
-        /*
-        var PaneContentGrid = FindChildByName(NavigationViewControl, "PaneContentGrid");
-
-        if (PaneContentGrid != null)
-        {
-            var acrylic = new AcrylicBrush
-            {
-                TintOpacity = 0.25,
-                TintLuminosityOpacity = 0.25,
-                FallbackColor = ActualTheme == ElementTheme.Dark ? Colors.Black : Colors.White,
-                TintColor = ActualTheme == ElementTheme.Dark ? Colors.Black : Colors.White
-            };
-
-            PaneContentGrid.SetValue(Grid.BackgroundProperty, acrylic);
-        }*/
-    }
-
-    private void Page_ActualThemeChanged(FrameworkElement sender, object args)
-    {
-        /*
-        var PaneContentGrid = FindChildByName(NavigationViewControl, "PaneContentGrid");
-
-        if (PaneContentGrid != null)
-        {
-            var acrylic = new AcrylicBrush
-            {
-                TintOpacity = 0.25,
-                TintLuminosityOpacity = 0.25,
-                FallbackColor = ActualTheme == ElementTheme.Dark ? Colors.Black : Colors.White,
-                TintColor = ActualTheme == ElementTheme.Dark ? Colors.Black : Colors.White
-            };
-
-            PaneContentGrid.SetValue(Grid.BackgroundProperty, acrylic);
-        }*/
-    }
-
     internal async void BlurAnimation(int from, int to)
     {
         var sprite = await PipelineBuilder
@@ -168,24 +130,4 @@ public sealed partial class ShellPage : Page
 
         await blurAnimation(sprite.Brush, to, TimeSpan.FromSeconds(0.1));
     }
-
-    /*
-    public static DependencyObject FindChildByName(DependencyObject parant, string ControlName)
-    {
-        int count = VisualTreeHelper.GetChildrenCount(parant);
-
-        for (int i = 0; i < count; i++)
-        {
-            var MyChild = VisualTreeHelper.GetChild(parant, i);
-            if (MyChild is FrameworkElement && ((FrameworkElement)MyChild).Name == ControlName)
-                return MyChild;
-
-            var FindResult = FindChildByName(MyChild, ControlName);
-            if (FindResult != null)
-                return FindResult;
-        }
-
-        return null;
-    }*/
-
 }

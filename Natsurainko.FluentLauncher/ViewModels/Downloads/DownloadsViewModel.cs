@@ -24,7 +24,7 @@ internal partial class DownloadsViewModel : ObservableObject
         {
             var publishDatas = await _interfaceCacheService.FetchMinecraftPublishes();
 
-            App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+            App.DispatcherQueue.TryEnqueue(() =>
             {
                 PrimaryPublishData = publishDatas[0];
                 SecondaryPublishData = publishDatas[1];
@@ -35,7 +35,7 @@ internal partial class DownloadsViewModel : ObservableObject
         {
             _interfaceCacheService.FetchCurseForgeFeaturedResources(out var McMods, out var ModPacks);
 
-            App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+            App.DispatcherQueue.TryEnqueue(() =>
             {
                 CurseMcMods = McMods;
                 CurseModPacks = ModPacks;

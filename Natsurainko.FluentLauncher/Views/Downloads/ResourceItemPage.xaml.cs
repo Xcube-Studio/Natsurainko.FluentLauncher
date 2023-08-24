@@ -43,11 +43,11 @@ public sealed partial class ResourceItemPage : Page
                 markdown = new ReverseMarkdown.Converter().Convert(des);
             }
 
-            App.MainWindow.DispatcherQueue.TryEnqueue(() => markdownTextBlock.Text = markdown);
+            App.DispatcherQueue.TryEnqueue(() => markdownTextBlock.Text = markdown);
         }).ContinueWith(task =>
         {
             if (task.IsFaulted)
-                App.MainWindow.DispatcherQueue.TryEnqueue(() => stackPanel.Children.Remove(descriptionBorder));
+                App.DispatcherQueue.TryEnqueue(() => stackPanel.Children.Remove(descriptionBorder));
         });
     }
 }

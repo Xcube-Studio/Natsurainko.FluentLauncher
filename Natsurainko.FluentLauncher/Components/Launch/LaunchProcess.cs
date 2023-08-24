@@ -32,7 +32,7 @@ internal partial class LaunchProcess : BaseLaunchProcess
     public override LaunchState State
     {
         get => DisplayState;
-        protected set => App.MainWindow.DispatcherQueue.SynchronousTryEnqueue(() => DisplayState = value);
+        protected set => App.DispatcherQueue.SynchronousTryEnqueue(() => DisplayState = value);
     }
 
     public LaunchProcess(GameInfo gameInfo) : base()

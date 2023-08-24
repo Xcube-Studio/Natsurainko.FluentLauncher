@@ -19,6 +19,10 @@ using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Services.UI.Pages;
 using Natsurainko.FluentLauncher.Views.OOBE;
 using Natsurainko.FluentLauncher.ViewModels.OOBE;
+using Natsurainko.FluentLauncher.Views.Home;
+using Natsurainko.FluentLauncher.ViewModels.Home;
+using Natsurainko.FluentLauncher.Views.Cores;
+using Natsurainko.FluentLauncher.ViewModels.Cores;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -48,7 +52,6 @@ public partial class App : Application
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
-
         string[] cmdargs = Environment.GetCommandLineArgs();
 
         if (cmdargs.Length > 1 && cmdargs[1].Equals("/quick-launch"))
@@ -67,6 +70,8 @@ public partial class App : Application
         PageProvider = WinUIPageProvider.GetBuilder(Services)
             .WithPage<OOBENavigationPage, OOBENavigationViewModel>("OOBENavigationPage")
             .WithPage<ShellPage>("ShellPage")
+            .WithPage<HomePage, HomeViewModel>("HomePage")
+            .WithPage<CoresPage, CoresViewModel>("CoresPage")
             .Build();
 
         App.GetService<MessengerService>().SubscribeEvents();
@@ -93,6 +98,7 @@ public partial class App : Application
         services.AddScoped<INavigationService, NavigationService>();
         services.AddSingleton<IPageProvider>(_ => PageProvider);
         services.AddTransient<ShellPage>();
+        services.AddTransient<HomePage>();
 
         // Settings service
         services.AddSingleton<SettingsService>();
@@ -134,8 +140,8 @@ public partial class App : Application
         services.AddTransient<ViewModels.OOBE.AccountViewModel>();
         services.AddTransient<ViewModels.OOBE.GetStartedViewModel>();
 
-        services.AddTransient<ViewModels.Cores.CoresViewModel>();
-        services.AddTransient<ViewModels.Home.HomeViewModel>();
+        services.AddScoped<ViewModels.Cores.CoresViewModel>();
+        services.AddScoped<ViewModels.Home.HomeViewModel>();
 
         services.AddScoped<MainWindow>();
 

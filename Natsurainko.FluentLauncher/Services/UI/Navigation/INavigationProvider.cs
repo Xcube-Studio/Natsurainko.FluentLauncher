@@ -16,4 +16,6 @@ public interface INavigationProvider
     /// </summary>
     object NavigationControl { get; }
     string? DefaultPageKey { get; }
+
+    void Initialize(INavigationService navigationService);
 }

@@ -55,4 +55,6 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
 
         //Frame.Navigate(_settings.FinishGuide ? typeof(ShellPage) : typeof(OOBE.OOBENavigationPage));
     }
+
+    void INavigationProvider.Initialize(INavigationService navigationService) { }
 }

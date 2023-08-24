@@ -4,16 +4,25 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using System;
 using System.Linq;
 using Windows.Graphics;
 
 namespace Natsurainko.FluentLauncher.Views;
 
-public sealed partial class ShellPage : Page
+public sealed partial class ShellPage : Page, INavigationProvider
 {
     public static XamlRoot _XamlRoot { get; private set; }
     public static Frame ContentFrame { get; private set; }
+
+    private INavigationService _navigationService;
+    object INavigationProvider.NavigationControl => contentFrame;
+    string INavigationProvider.DefaultPageKey => "HomePage";
+    void INavigationProvider.Initialize(INavigationService navigationService)
+    {
+        _navigationService = navigationService;
+    }
 
     private readonly SettingsService _settings = App.GetService<SettingsService>();
     private readonly AppearanceService _appearanceService = App.GetService<AppearanceService>();
@@ -45,12 +54,21 @@ public sealed partial class ShellPage : Page
 
     private void NavigationViewControl_ItemInvoked(NavigationView _, NavigationViewItemInvokedEventArgs args)
     {
-        if (((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()
-            .Equals("Natsurainko.FluentLauncher.Views.Home.HomePage"))
+        var pageTag = ((NavigationViewItem)args.InvokedItemContainer).Tag.ToString();
+        // test code: new navigation service
+        if (pageTag == "HomePage" || pageTag == "CoresPage")
+        {
+            _navigationService.NavigateTo(pageTag);
+            return;
+        }
+
+        // Switch old/new home page design
+        if (pageTag.Equals("Natsurainko.FluentLauncher.Views.Home.HomePage"))
         {
             contentFrame.Navigate(App.GetService<AppearanceService>().HomePageType);
             return;
         }
+
 
         contentFrame.Navigate(Type.GetType(((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()));
     }

@@ -71,12 +71,12 @@
                     Content="Home"
                     Icon="{xh:FontIcon Glyph=&#xE80F;}"
                     IsSelected="True"
-                    Tag="Natsurainko.FluentLauncher.Views.Home.HomePage" />
+                    Tag="HomePage" />
                 <NavigationViewItem
                     x:Uid="ShellPage_NV_Item_2"
                     Content="Cores"
                     Icon="{xh:FontIcon Glyph=&#xf158;}"
-                    Tag="Natsurainko.FluentLauncher.Views.Cores.CoresPage" />
+                    Tag="CoresPage" />
                 <NavigationViewItem
                     x:Uid="ShellPage_NV_Item_3"
                     Content="Activities"

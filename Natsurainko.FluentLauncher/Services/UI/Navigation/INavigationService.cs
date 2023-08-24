@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,5 +27,5 @@ public interface INavigationService
     /// Called after the navigation provider is initialized
     /// </summary>
     /// <param name="navigationProvider">The window or page that provides navigation</param>
-    void InitializeNavigation(INavigationProvider navigationProvider);
+    void InitializeNavigation(INavigationProvider navigationProvider, IServiceScope scope);
 }

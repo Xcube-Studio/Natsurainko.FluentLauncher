@@ -78,7 +78,8 @@ public class NavigationService : INavigationService
             else
             {
                 // Configures VM
-                page.DataContext = _pageProvider.GetViewModel(key);
+                if (pageInfo.ViewModelType is not null)
+                    page.DataContext = Scope.ServiceProvider.GetRequiredService(pageInfo.ViewModelType);
             }
         }
     }

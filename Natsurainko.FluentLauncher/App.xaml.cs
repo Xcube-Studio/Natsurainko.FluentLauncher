@@ -23,6 +23,10 @@ using Natsurainko.FluentLauncher.Views.Home;
 using Natsurainko.FluentLauncher.ViewModels.Home;
 using Natsurainko.FluentLauncher.Views.Cores;
 using Natsurainko.FluentLauncher.ViewModels.Cores;
+using Natsurainko.FluentLauncher.Views.Activities;
+using Natsurainko.FluentLauncher.ViewModels.Activities;
+using Windows.UI.ApplicationSettings;
+using Natsurainko.FluentLauncher.Views.Settings;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -71,7 +75,11 @@ public partial class App : Application
             .WithPage<OOBENavigationPage, OOBENavigationViewModel>("OOBENavigationPage")
             .WithPage<ShellPage>("ShellPage")
             .WithPage<HomePage, HomeViewModel>("HomePage")
+            .WithPage<NewHomePage, HomeViewModel>("NewHomePage")
             .WithPage<CoresPage, CoresViewModel>("CoresPage")
+            .WithPage<ActivitiesNavigationPage>("ActivitiesNavigationPage")
+            .WithPage<Views.Activities.DownloadPage, DownloadViewModel>("DownloadsPage")
+            .WithPage<NavigationPage>("SettingsNavigationPage")
             .Build();
 
         App.GetService<MessengerService>().SubscribeEvents();

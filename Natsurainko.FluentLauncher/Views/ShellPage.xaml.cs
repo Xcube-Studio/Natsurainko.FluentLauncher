@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
+using Natsurainko.FluentLauncher.Views.Home;
 using System;
 using System.Linq;
 using Windows.Graphics;
@@ -55,22 +56,17 @@ public sealed partial class ShellPage : Page, INavigationProvider
     private void NavigationViewControl_ItemInvoked(NavigationView _, NavigationViewItemInvokedEventArgs args)
     {
         var pageTag = ((NavigationViewItem)args.InvokedItemContainer).Tag.ToString();
+        bool useNewHomePage = App.GetService<AppearanceService>().HomePageType == typeof(NewHomePage);
+
         // test code: new navigation service
-        if (pageTag == "HomePage" || pageTag == "CoresPage")
+        if (pageTag == "HomePage" && useNewHomePage)
         {
-            _navigationService.NavigateTo(pageTag);
+            _navigationService.NavigateTo("NewHomePage");
             return;
         }
 
-        // Switch old/new home page design
-        if (pageTag.Equals("Natsurainko.FluentLauncher.Views.Home.HomePage"))
-        {
-            contentFrame.Navigate(App.GetService<AppearanceService>().HomePageType);
-            return;
-        }
-
-
-        contentFrame.Navigate(Type.GetType(((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()));
+        _navigationService.NavigateTo(pageTag);
+        // contentFrame.Navigate(Type.GetType(((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()));
     }
 
     private void NavigationViewControl_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)

@@ -1,6 +1,5 @@
 name: Bug report
 description: Report a bug in Fluent Launcher
-title: "[Bug] "
 labels: ["bug"]
 
 body:

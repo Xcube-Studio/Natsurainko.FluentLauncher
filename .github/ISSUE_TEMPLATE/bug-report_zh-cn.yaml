@@ -1,6 +1,5 @@
 name: 问题报告 | zh-CN
 description: 报告 Fluent Launcher 的问题
-title: "[Bug] "
 labels: ["bug"]
 
 body:

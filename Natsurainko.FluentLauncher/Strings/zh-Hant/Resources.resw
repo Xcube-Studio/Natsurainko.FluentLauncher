@@ -330,6 +330,30 @@
     <data name="AuthenticationWizard_EnterYggdrasilProfilePage_TB3.PlaceholderText" xml:space="preserve">
         <value>密碼：</value>
     </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__NeoForge" xml:space="preserve">
+        <value>与 Forge、Fabric、Quilt 不兼容，部分版本与 OptiFine 兼容</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__Forge" xml:space="preserve">
+        <value>与 NeoForge、Fabric、Quilt 不兼容，部分版本与 OptiFine 兼容</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__Fabric" xml:space="preserve">
+        <value>与 NeoForge、Forge、Quilt 不兼容，在有 OptiFabric 情况下与 OptiFine 兼容</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__OptiFine" xml:space="preserve">
+        <value>在无 OptiFabric 情况下与 Fabric、Quilt 不兼容</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__Quilt" xml:space="preserve">
+        <value>与 NeoForge、Forge、Fabric 不兼容</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__Loading" xml:space="preserve">
+        <value>加載中</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__NotSupported" xml:space="preserve">
+        <value>不支持</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage_Page.Tag" xml:space="preserve">
+        <value>模组加載器選項 (1/3)</value>
+    </data>
     <data name="Cores_CoresPage_SearchBox.PlaceholderText" xml:space="preserve">
         <value>搜索核心</value>
     </data>
@@ -428,6 +452,18 @@
     </data>
     <data name="Cores_Manage_CoreSettingsPage_D5.Text" xml:space="preserve">
         <value>會添加到生成的啟動參數中</value>
+    </data>
+    <data name="Downloads_CoreInstallWizardPage_NV_Item1.Text" xml:space="preserve">
+        <value>Mod 加載器選項（可選）</value>
+    </data>
+    <data name="Downloads_CoreInstallWizardPage_NV_Item2.Text" xml:space="preserve">
+        <value>基本核心設置</value>
+    </data>
+    <data name="Downloads_CoreInstallWizardPage_NV_Item3.Text" xml:space="preserve">
+        <value>附加安裝選項（可選）</value>
+    </data>
+    <data name="Downloads_CoreInstallWizardPage__BreadcrumbBar_First" xml:space="preserve">
+        <value>核心安裝嚮導</value>
     </data>
     <data name="Downloads_DownloadsPage_T1.Text" xml:space="preserve">
         <value>Minecraft 本體</value>

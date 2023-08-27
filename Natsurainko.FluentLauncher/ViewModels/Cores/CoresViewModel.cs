@@ -1,10 +1,13 @@
 ﻿using AppSettingsManagement.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Natsurainko.FluentLauncher.Classes.Data.Download;
 using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Cores;
+using Natsurainko.FluentLauncher.Views.Downloads;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -93,4 +96,12 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
 
     [RelayCommand]
     public void OpenCoreManage(GameInfo gameInfo) => Views.ShellPage.ContentFrame.Navigate(typeof(ManageNavigationPage), gameInfo);
+
+    [RelayCommand]
+    public void SearchAllMinecraft()
+        => ShellPage.ContentFrame.Navigate(typeof(ResourcesSearchPage), new ResourceSearchData
+        {
+            SearchInput = string.Empty,
+            ResourceType = 0
+        });
 }

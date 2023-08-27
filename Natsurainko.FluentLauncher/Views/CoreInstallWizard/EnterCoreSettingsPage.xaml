@@ -9,6 +9,7 @@
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     d:DataContext="{d:DesignInstance Type=coreinstallwizard:EnterCoreSettingsViewModel}"
     Background="Transparent"
+    Tag="Basic Core Settings (2/3)"
     mc:Ignorable="d">
 
     <Grid>

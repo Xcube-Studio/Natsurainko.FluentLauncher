@@ -12,6 +12,8 @@ using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Downloads;
 using Nrk.FluentCore.Classes.Datas.Download;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 
@@ -20,12 +22,16 @@ internal partial class CoreInstallWizardViewModel : ObservableObject
     [ObservableProperty]
     private WizardViewModelBase currentFrameDataContext;
 
+    [ObservableProperty]
+    private int navigationViewSelectIndex = 0;
+
     private readonly Stack<WizardViewModelBase> _viewModelStack = new();
 
     private readonly NotificationService _notificationService;
     private readonly VersionManifestItem _manifestItem;
 
     private Frame _contentFrame;
+    private NavigationView _navigationView;
 
     public CoreInstallWizardViewModel(VersionManifestItem manifestItem)
     {
@@ -38,8 +44,9 @@ internal partial class CoreInstallWizardViewModel : ObservableObject
     {
         var grid = args.As<Grid, object>().sender;
         _contentFrame = grid.FindName("contentFrame") as Frame;
+        _navigationView = grid.FindName("NavigationView") as NavigationView;
 
-        CurrentFrameDataContext = new EnterCoreSettingsViewModel(_manifestItem);
+        CurrentFrameDataContext = new ChooseModLoaderViewModel(_manifestItem);
 
         _contentFrame.Navigate(
             CurrentFrameDataContext.XamlPageType,
@@ -68,6 +75,8 @@ internal partial class CoreInstallWizardViewModel : ObservableObject
             CurrentFrameDataContext.XamlPageType,
             null,
             new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+
+        NavigationViewSelectIndex++;
     }
 
     /// <summary>
@@ -84,6 +93,8 @@ internal partial class CoreInstallWizardViewModel : ObservableObject
             CurrentFrameDataContext.XamlPageType,
             null,
             new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+
+        NavigationViewSelectIndex--;
     }
 
     /// <summary>
@@ -95,6 +106,19 @@ internal partial class CoreInstallWizardViewModel : ObservableObject
         SearchInput = _manifestItem.Id,
         ResourceType = 0,
     });
+
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+
+        if (e.PropertyName == nameof(NavigationViewSelectIndex))
+        {
+            var item = _navigationView.MenuItems.Cast<NavigationViewItem>().ToArray()[NavigationViewSelectIndex];
+
+            _navigationView.SelectedItem = item;
+            item.IsSelected = true;
+        }
+    }
 
     private void Finish()
     {

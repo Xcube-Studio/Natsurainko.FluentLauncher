@@ -155,6 +155,9 @@ internal partial class LaunchProcess : BaseLaunchProcess
     [NotifyPropertyChangedFor(nameof(ProgressText))]
     private double progress;
 
+    [ObservableProperty]
+    private string exceptionReason;
+
     public ObservableCollection<GameLoggerOutput> _gameLoggerOutputs = new();
 
     public string ProgressText => Progress.ToString("P1");

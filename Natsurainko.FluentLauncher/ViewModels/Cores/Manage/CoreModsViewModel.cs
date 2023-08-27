@@ -1,6 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Natsurainko.FluentLauncher.Classes.Data.Download;
 using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Views.Downloads;
+using Natsurainko.FluentLauncher.Views;
 using Nrk.FluentCore.Classes.Datas;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.DefaultComponents.Manage;
@@ -62,11 +65,20 @@ internal partial class CoreModsViewModel : ObservableObject
         App.DispatcherQueue.TryEnqueue(() => DisplayMods = mods);
     }
 
-    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-    {
-        base.OnPropertyChanged(e);
+    [RelayCommand]
+    public void SearchAllMinecraft()
+        => ShellPage.ContentFrame.Navigate(typeof(ResourcesSearchPage), new ResourceSearchData
+        {
+            SearchInput = string.Empty,
+            ResourceType = 0
+        });
 
-        if (e.PropertyName == nameof(SearchBoxInput))
-            Task.Run(UpdateDisplayMods);
-    }
+
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+
+            if (e.PropertyName == nameof(SearchBoxInput))
+                Task.Run(UpdateDisplayMods);
+        }
 }

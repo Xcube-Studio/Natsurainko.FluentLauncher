@@ -20,7 +20,7 @@ internal partial class EnterCoreSettingsViewModel : WizardViewModelBase
         }
     }
 
-    public override bool CanPrevious => false;
+    public override bool CanPrevious => true;
 
     private readonly GameService _gameService = App.GetService<GameService>();
 
@@ -41,6 +41,6 @@ internal partial class EnterCoreSettingsViewModel : WizardViewModelBase
 
     public override WizardViewModelBase GetNextViewModel()
     {
-        return base.GetNextViewModel();
+        throw new System.Exception();
     }
 }

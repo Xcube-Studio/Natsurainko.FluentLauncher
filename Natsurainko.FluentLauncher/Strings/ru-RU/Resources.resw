@@ -330,6 +330,30 @@
     <data name="AuthenticationWizard_EnterYggdrasilProfilePage_TB3.PlaceholderText" xml:space="preserve">
         <value>Пароль:</value>
     </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__NeoForge" xml:space="preserve">
+        <value>Несовместимо с Forge, Fabric, Quilt, некоторые версии совместимы с OptiFine.</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__Forge" xml:space="preserve">
+        <value>Несовместимо с NeoForge, Fabric, Quilt, некоторые версии совместимы с OptiFine.</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__Fabric" xml:space="preserve">
+        <value>Несовместим с NeoForge, Forge, Quilt, совместим с OptiFine с OptiFabric.</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__OptiFine" xml:space="preserve">
+        <value>Несовместимость с тканью, одеялом без OptiFabric.</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__Quilt" xml:space="preserve">
+        <value>Несовместимо с NeoForge, Forge, Fabric.</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__Loading" xml:space="preserve">
+        <value>Загрузка</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__NotSupported" xml:space="preserve">
+        <value>Не поддерживается</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage_Page.Tag" xml:space="preserve">
+        <value>Параметры загрузчика модов (1/3)</value>
+    </data>
     <data name="Cores_CoresPage_SearchBox.PlaceholderText" xml:space="preserve">
         <value>Ядро поиска</value>
     </data>
@@ -428,6 +452,18 @@
     </data>
     <data name="Cores_Manage_CoreSettingsPage_D5.Text" xml:space="preserve">
         <value>Они будут добавлены к сгенерированным параметрам запуска.</value>
+    </data>
+    <data name="Downloads_CoreInstallWizardPage_NV_Item1.Text" xml:space="preserve">
+        <value>Параметры загрузчика модов (необязательно)</value>
+    </data>
+    <data name="Downloads_CoreInstallWizardPage_NV_Item2.Text" xml:space="preserve">
+        <value>Основные основные настройки</value>
+    </data>
+    <data name="Downloads_CoreInstallWizardPage_NV_Item3.Text" xml:space="preserve">
+        <value>Дополнительные варианты установки (необязательно)</value>
+    </data>
+    <data name="Downloads_CoreInstallWizardPage__BreadcrumbBar_First" xml:space="preserve">
+        <value>Мастер установки ядра</value>
     </data>
     <data name="Downloads_DownloadsPage_T1.Text" xml:space="preserve">
         <value>Игры Майнкрафт</value>

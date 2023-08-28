@@ -47,6 +47,7 @@
     <None Remove="Assets\Libs\authlib-injector-1.2.3.jar" />
     <None Remove="Assets\MinecraftTen.ttf" />
     <None Remove="Dictionaries\CoresLayoutTemplateDictionary.xaml" />
+    <None Remove="Dictionaries\DownloadProcessTemplateDictionary.xaml" />
     <None Remove="Dictionaries\ResourceItemTemplateDictionary.xaml" />
     <None Remove="Views\AuthenticationWizard\BrowserMicrosoftAuthPage.xaml" />
     <None Remove="Views\AuthenticationWizard\ChooseAccountTypePage.xaml" />
@@ -59,7 +60,7 @@
     <None Remove="Views\Common\AuthenticationWizardDialog.xaml" />
     <None Remove="Views\Common\CopyrightLicenseDialog.xaml" />
     <None Remove="Views\Common\JavaMirrorsDialog.xaml" />
-    <None Remove="Views\Common\ResourceDownloadDialog.xaml" />
+    <None Remove="Views\Common\ResourceItemFilesDialog.xaml" />
     <None Remove="Views\Common\SwitchAccountDialog.xaml" />
     <None Remove="Views\CoreInstallWizard\ChooseModLoaderPage.xaml" />
     <None Remove="Views\CoreInstallWizard\EnterCoreSettingsPage.xaml" />
@@ -109,6 +110,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Dictionaries\DownloadProcessTemplateDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Common\ResourceItemFilesDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
     <Page Update="Views\CoreInstallWizard\ChooseModLoaderPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -116,12 +129,6 @@
 
   <ItemGroup>
     <Page Update="Views\Downloads\CoreInstallWizardPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Update="Views\Common\ResourceDownloadDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

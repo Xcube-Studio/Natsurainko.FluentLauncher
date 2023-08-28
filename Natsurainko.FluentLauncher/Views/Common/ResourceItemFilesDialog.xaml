@@ -1,0 +1,152 @@
+<ContentDialog
+    x:Class="Natsurainko.FluentLauncher.Views.Common.ResourceItemFilesDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
+    xmlns:common="using:Natsurainko.FluentLauncher.ViewModels.Common"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="Dialog"
+    d:DataContext="{d:DesignInstance Type=common:ResourceItemFilesDialogViewModel}"
+    Style="{ThemeResource DefaultContentDialogStyle}"
+    mc:Ignorable="d">
+    <ContentDialog.Resources>
+        <Thickness x:Key="ContentDialogPadding">0</Thickness>
+        <x:Double x:Key="ListViewItemMinHeight">0</x:Double>
+    </ContentDialog.Resources>
+    <ContentDialog.Title>
+        <StackPanel Margin="24,24,24,0">
+            <TextBlock x:Uid="Dialogs_ResourceItemFilesDialog_T" Text="Choose a file to download:" />
+        </StackPanel>
+    </ContentDialog.Title>
+
+    <Grid>
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.ThemeDictionaries>
+                    <ResourceDictionary x:Key="Light">
+                        <StaticResource x:Key="ContentDialogBorderBrush" ResourceKey="ContentDialogDimmingThemeBrush" />
+                    </ResourceDictionary>
+                    <ResourceDictionary x:Key="Dark">
+                        <StaticResource x:Key="ContentDialogBorderBrush" ResourceKey="ContentDialogSeparatorBorderBrush" />
+                    </ResourceDictionary>
+                </ResourceDictionary.ThemeDictionaries>
+
+                <CollectionViewSource x:Key="CollectionViewSource" IsSourceGrouped="True" />
+            </ResourceDictionary>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <i:Interaction.Behaviors>
+            <core:EventTriggerBehavior EventName="Loaded">
+                <actions:ModifiedInvokeCommandAction Command="{Binding LoadEventCommand}" />
+            </core:EventTriggerBehavior>
+        </i:Interaction.Behaviors>
+
+        <Grid
+            Height="Auto"
+            Padding="24,0,24,20"
+            Background="Transparent">
+            <ListView ItemsSource="{Binding Source={StaticResource CollectionViewSource}}" SelectedItem="{Binding SelectedFile, Mode=TwoWay}">
+                <ListView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <Border AutomationProperties.AccessibilityView="Raw">
+                                    <TextBlock
+                                        AutomationProperties.AccessibilityView="Raw"
+                                        FontWeight="SemiBold"
+                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                        Text="{Binding Key}" />
+                                </Border>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ListView.GroupStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <FontIcon
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                Width="32"
+                                Height="32"
+                                Glyph="&#xE8A5;" />
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                FontWeight="SemiBold"
+                                Text="{Binding FileName}"
+                                TextTrimming="CharacterEllipsis" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                HorizontalAlignment="Left"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="WrapWholeWords">
+                                <Run Text="{Binding DisplayDescription}" />
+                            </TextBlock>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+        <Rectangle
+            Grid.Row="1"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Fill="{ThemeResource ContentDialogSmokeFill}" />
+        <Border
+            Grid.Row="1"
+            Padding="24"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Bottom"
+            Background="{ThemeResource ContentDialogBackground}"
+            BorderBrush="{ThemeResource ContentDialogBorderBrush}"
+            BorderThickness="0,1,0,0">
+            <Grid x:Name="CommandSpace" XYFocusKeyboardNavigation="Enabled">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="{ThemeResource ContentDialogButtonSpacing}" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button
+                    Grid.Column="0"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding ConfirmCommand}"
+                    ElementSoundMode="FocusOnly"
+                    IsEnabled="{Binding CanComfirm}"
+                    IsTabStop="False"
+                    Style="{ThemeResource AccentButtonStyle}">
+                    <TextBlock x:Uid="Buttons_Comfirm" Text="Comfirm" />
+                </Button>
+                <Button
+                    Grid.Column="2"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding CancelCommand}"
+                    ElementSoundMode="FocusOnly"
+                    IsTabStop="False">
+                    <TextBlock x:Uid="Buttons_Cancel" Text="Cancel" />
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentDialog>

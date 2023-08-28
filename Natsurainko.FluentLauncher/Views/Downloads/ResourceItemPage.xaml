@@ -90,7 +90,10 @@
                         <TextBlock Text="{Binding Summary}" />
                     </labs:SettingsCard.Description>
                     <StackPanel Orientation="Horizontal" Spacing="10">
-                        <Button Width="125" Style="{ThemeResource AccentButtonStyle}">
+                        <Button
+                            Width="125"
+                            Click="Button_Click"
+                            Style="{ThemeResource AccentButtonStyle}">
                             <TextBlock x:Uid="Buttons_Download" Text="Download" />
                         </Button>
                         <HyperlinkButton Width="125" NavigateUri="{Binding WebLink}">

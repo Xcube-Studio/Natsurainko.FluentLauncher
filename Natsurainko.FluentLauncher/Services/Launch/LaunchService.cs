@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.WinUI.Notifications;
-using Microsoft.UI.Dispatching;
 using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Classes.Exceptions;
 using Natsurainko.FluentLauncher.Components.Launch;
@@ -26,7 +25,6 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
-using Windows.Devices.Display.Core;
 using Windows.UI.StartScreen;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;

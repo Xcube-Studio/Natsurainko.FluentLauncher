@@ -51,6 +51,9 @@
     <data name="Buttons_Download.Text" xml:space="preserve">
         <value>Download</value>
     </data>
+    <data name="Buttons_Comfirm.Text" xml:space="preserve">
+        <value>Confirm</value>
+    </data>
     <data name="Converters__Account" xml:space="preserve">
         <value>Account</value>
     </data>
@@ -114,6 +117,18 @@
     <data name="Converters__LaunchState_GameCrashed" xml:space="preserve">
         <value>The game crashed</value>
     </data>
+    <data name="Converters__ResourceDownloadProcessState_Created" xml:space="preserve">
+        <value>The download task is created</value>
+    </data>
+    <data name="Converters__ResourceDownloadProcessState_Downloading" xml:space="preserve">
+        <value>The download task is in progress</value>
+    </data>
+    <data name="Converters__ResourceDownloadProcessState_Finished" xml:space="preserve">
+        <value>Download completed</value>
+    </data>
+    <data name="Converters__ResourceDownloadProcessState_Faulted" xml:space="preserve">
+        <value>Download failed</value>
+    </data>
     <data name="Dialogs_JavaMirrorsDialog.Title" xml:space="preserve">
         <value>Third-party Java Download Sources</value>
     </data>
@@ -152,6 +167,9 @@
     </data>
     <data name="Dialogs_AuthenticationWizardDialog_T.Text" xml:space="preserve">
         <value>Account Add Wizard:</value>
+    </data>
+    <data name="Dialogs_ResourceItemFilesDialog_T.Text" xml:space="preserve">
+        <value>Choose a File to Download:</value>
     </data>
     <data name="ExceptionPage_Title.Text" xml:space="preserve">
         <value>An error has occurred when starting Fluent Launcher</value>
@@ -203,6 +221,24 @@
     </data>
     <data name="Activities_ActivitiesNavigationPage_NV_Item4.Content" xml:space="preserve">
         <value>Application</value>
+    </data>
+    <data name="Activities_DownloadPage_Tip.Text" xml:space="preserve">
+        <value>No Download Arrangements</value>
+    </data>
+    <data name="Activities_DownloadPage_Hyperlink.Content" xml:space="preserve">
+        <value>Go to ResoucesDownloadPage to create</value>
+    </data>
+    <data name="Activities_DownloadPage_Item_T.Text" xml:space="preserve">
+        <value>Download Task</value>
+    </data>
+    <data name="Activities_DownloadPage_Item_TD.Text" xml:space="preserve">
+        <value>State</value>
+    </data>
+    <data name="Activities_DownloadPage_Item_H1.Text" xml:space="preserve">
+        <value>Progress: </value>
+    </data>
+    <data name="Activities_DownloadPage_Item_H2.Text" xml:space="preserve">
+        <value>Open File Folder:</value>
     </data>
     <data name="Activities_LaunchPage_Tip.Text" xml:space="preserve">
         <value>No Launch Arrangements</value>
@@ -530,6 +566,9 @@
     </data>
     <data name="Downloads_ResourcesSearchPage__Items" xml:space="preserve">
         <value>Minecraft Games;Mods;Modpacks;Resource Packs;Worlds</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage_ST.Text" xml:space="preserve">
+        <value>Mod search options:</value>
     </data>
     <data name="Home_HomePage_NoAccount.Text" xml:space="preserve">
         <value>No Account</value>

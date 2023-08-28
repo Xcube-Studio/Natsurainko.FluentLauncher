@@ -51,6 +51,9 @@
     <data name="Buttons_Download.Text" xml:space="preserve">
         <value>Скачать</value>
     </data>
+    <data name="Buttons_Comfirm.Text" xml:space="preserve">
+        <value>Подтверждать</value>
+    </data>
     <data name="Converters__Account" xml:space="preserve">
         <value>счет</value>
     </data>
@@ -114,6 +117,18 @@
     <data name="Converters__LaunchState_GameCrashed" xml:space="preserve">
         <value>Игра вылетела</value>
     </data>
+    <data name="Converters__ResourceDownloadProcessState_Created" xml:space="preserve">
+        <value>Задача загрузки создана.</value>
+    </data>
+    <data name="Converters__ResourceDownloadProcessState_Downloading" xml:space="preserve">
+        <value>Задача загрузки выполняется.</value>
+    </data>
+    <data name="Converters__ResourceDownloadProcessState_Finished" xml:space="preserve">
+        <value>Загрузка завершена</value>
+    </data>
+    <data name="Converters__ResourceDownloadProcessState_Faulted" xml:space="preserve">
+        <value>Загрузка не удалась</value>
+    </data>
     <data name="Dialogs_JavaMirrorsDialog.Title" xml:space="preserve">
         <value>Сторонние источники загрузки Java</value>
     </data>
@@ -152,6 +167,9 @@
     </data>
     <data name="Dialogs_AuthenticationWizardDialog_T.Text" xml:space="preserve">
         <value>Мастер добавления учетной записи:</value>
+    </data>
+    <data name="Dialogs_ResourceItemFilesDialog_T.Text" xml:space="preserve">
+        <value>Выберите файл для скачивания:</value>
     </data>
     <data name="ExceptionPage_Title.Text" xml:space="preserve">
         <value></value>
@@ -203,6 +221,24 @@
     </data>
     <data name="Activities_ActivitiesNavigationPage_NV_Item4.Content" xml:space="preserve">
         <value>Приложение</value>
+    </data>
+    <data name="Activities_DownloadPage_Tip.Text" xml:space="preserve">
+        <value>Нет механизмов загрузки</value>
+    </data>
+    <data name="Activities_DownloadPage_Hyperlink.Content" xml:space="preserve">
+        <value>Перейдите на ResoucesDownloadPage, чтобы создать</value>
+    </data>
+    <data name="Activities_DownloadPage_Item_T.Text" xml:space="preserve">
+        <value>Загрузить задачу</value>
+    </data>
+    <data name="Activities_DownloadPage_Item_TD.Text" xml:space="preserve">
+        <value>Состояние</value>
+    </data>
+    <data name="Activities_DownloadPage_Item_H1.Text" xml:space="preserve">
+        <value>Прогресс:</value>
+    </data>
+    <data name="Activities_DownloadPage_Item_H2.Text" xml:space="preserve">
+        <value>Открыть папку с файлами:</value>
     </data>
     <data name="Activities_LaunchPage_Tip.Text" xml:space="preserve">
         <value>Нет договоренностей о запуске</value>
@@ -530,6 +566,9 @@
     </data>
     <data name="Downloads_ResourcesSearchPage__Items" xml:space="preserve">
         <value>Игры Minecraft;Моды;Паки модов;Пакеты ресурсов;Миры</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage_ST.Text" xml:space="preserve">
+        <value>Варианты поиска мода:</value>
     </data>
     <data name="Home_HomePage_NoAccount.Text" xml:space="preserve">
         <value>Нет аккаунта</value>

@@ -1,0 +1,73 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml">
+    <DataTemplate x:Key="ResourceDownloadTemplate">
+        <labs:SettingsExpander
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            HeaderIcon="{xh:FontIcon Glyph=&#xE896;}"
+            IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
+
+            <labs:SettingsExpander.Header>
+                <TextBlock TextTrimming="CharacterEllipsis">
+                    <Run
+                        x:Uid="Activities_DownloadPage_Item_T"
+                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                        Text="Download Task" />
+                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
+                    <Run FontWeight="SemiBold" Text="{Binding Title}" />
+                </TextBlock>
+            </labs:SettingsExpander.Header>
+
+            <labs:SettingsExpander.Description>
+                <TextBlock FontSize="13" TextTrimming="CharacterEllipsis">
+                    <Run
+                        x:Uid="Activities_DownloadPage_Item_TD"
+                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                        Text="State" />
+                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
+                    <Run Text="{Binding DisplayState}" />
+                </TextBlock>
+            </labs:SettingsExpander.Description>
+
+            <labs:SettingsExpander.Items>
+                <labs:SettingsCard>
+                    <labs:SettingsCard.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="15" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock HorizontalAlignment="Right">
+                                <Run x:Uid="Activities_DownloadPage_Item_H1" Text="Progress: " />
+                                <Run Text="{Binding ProgressText}" />
+                            </TextBlock>
+                            <ProgressBar
+                                Grid.Column="2"
+                                Width="300"
+                                Maximum="1"
+                                Value="{Binding Progress}" />
+                        </Grid>
+                    </labs:SettingsCard.Header>
+                </labs:SettingsCard>
+
+                <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE838;}">
+                    <labs:SettingsCard.Header>
+                        <TextBlock
+                            x:Uid="Activities_DownloadPage_Item_H2"
+                            Text="Open File Folder:"
+                            TextTrimming="CharacterEllipsis" />
+                    </labs:SettingsCard.Header>
+                    <Button Command="{Binding OpenFolderCommand}">
+                        <TextBlock x:Uid="Buttons_Open" Text="Open" />
+                    </Button>
+                </labs:SettingsCard>
+            </labs:SettingsExpander.Items>
+        </labs:SettingsExpander>
+    </DataTemplate>
+
+</ResourceDictionary>

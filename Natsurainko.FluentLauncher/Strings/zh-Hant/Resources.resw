@@ -51,6 +51,9 @@
     <data name="Buttons_Download.Text" xml:space="preserve">
         <value>下載</value>
     </data>
+    <data name="Buttons_Comfirm.Text" xml:space="preserve">
+        <value>确认</value>
+    </data>
     <data name="Converters__Account" xml:space="preserve">
         <value>賬戶</value>
     </data>
@@ -114,6 +117,18 @@
     <data name="Converters__LaunchState_GameCrashed" xml:space="preserve">
         <value>遊戲崩潰</value>
     </data>
+    <data name="Converters__ResourceDownloadProcessState_Created" xml:space="preserve">
+        <value>下載任務已創建</value>
+    </data>
+    <data name="Converters__ResourceDownloadProcessState_Downloading" xml:space="preserve">
+        <value>下載任務正在進行中</value>
+    </data>
+    <data name="Converters__ResourceDownloadProcessState_Finished" xml:space="preserve">
+        <value>下載完成</value>
+    </data>
+    <data name="Converters__ResourceDownloadProcessState_Faulted" xml:space="preserve">
+        <value>下載失敗</value>
+    </data>
     <data name="Dialogs_JavaMirrorsDialog.Title" xml:space="preserve">
         <value>第三方 Java 下载源</value>
     </data>
@@ -152,6 +167,9 @@
     </data>
     <data name="Dialogs_AuthenticationWizardDialog_T.Text" xml:space="preserve">
         <value>帳戶添加嚮導：</value>
+    </data>
+    <data name="Dialogs_ResourceItemFilesDialog_T.Text" xml:space="preserve">
+        <value>選擇要下載的文件：</value>
     </data>
     <data name="ExceptionPage_Title.Text" xml:space="preserve">
         <value></value>
@@ -203,6 +221,24 @@
     </data>
     <data name="Activities_ActivitiesNavigationPage_NV_Item4.Content" xml:space="preserve">
         <value>應用</value>
+    </data>
+    <data name="Activities_DownloadPage_Tip.Text" xml:space="preserve">
+        <value>無下載任務</value>
+    </data>
+    <data name="Activities_DownloadPage_Hyperlink.Content" xml:space="preserve">
+        <value>進入資源下載頁面進行創建</value>
+    </data>
+    <data name="Activities_DownloadPage_Item_T.Text" xml:space="preserve">
+        <value>下載任務</value>
+    </data>
+    <data name="Activities_DownloadPage_Item_TD.Text" xml:space="preserve">
+        <value>狀態</value>
+    </data>
+    <data name="Activities_DownloadPage_Item_H1.Text" xml:space="preserve">
+        <value>進度：</value>
+    </data>
+    <data name="Activities_DownloadPage_Item_H2.Text" xml:space="preserve">
+        <value>打開文件夾：</value>
     </data>
     <data name="Activities_LaunchPage_Tip.Text" xml:space="preserve">
         <value>無啟動任務</value>
@@ -330,6 +366,30 @@
     <data name="AuthenticationWizard_EnterYggdrasilProfilePage_TB3.PlaceholderText" xml:space="preserve">
         <value>密碼：</value>
     </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__NeoForge" xml:space="preserve">
+        <value>与 Forge、Fabric、Quilt 不兼容，部分版本与 OptiFine 兼容</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__Forge" xml:space="preserve">
+        <value>与 NeoForge、Fabric、Quilt 不兼容，部分版本与 OptiFine 兼容</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__Fabric" xml:space="preserve">
+        <value>与 NeoForge、Forge、Quilt 不兼容，在有 OptiFabric 情况下与 OptiFine 兼容</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__OptiFine" xml:space="preserve">
+        <value>在无 OptiFabric 情况下与 Fabric、Quilt 不兼容</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__Quilt" xml:space="preserve">
+        <value>与 NeoForge、Forge、Fabric 不兼容</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__Loading" xml:space="preserve">
+        <value>加載中</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage__NotSupported" xml:space="preserve">
+        <value>不支持</value>
+    </data>
+    <data name="CoreInstallWizard_ChooseModLoaderPage_Page.Tag" xml:space="preserve">
+        <value>模组加載器選項 (1/3)</value>
+    </data>
     <data name="Cores_CoresPage_SearchBox.PlaceholderText" xml:space="preserve">
         <value>搜索核心</value>
     </data>
@@ -429,6 +489,18 @@
     <data name="Cores_Manage_CoreSettingsPage_D5.Text" xml:space="preserve">
         <value>會添加到生成的啟動參數中</value>
     </data>
+    <data name="Downloads_CoreInstallWizardPage_NV_Item1.Text" xml:space="preserve">
+        <value>Mod 加載器選項（可選）</value>
+    </data>
+    <data name="Downloads_CoreInstallWizardPage_NV_Item2.Text" xml:space="preserve">
+        <value>基本核心設置</value>
+    </data>
+    <data name="Downloads_CoreInstallWizardPage_NV_Item3.Text" xml:space="preserve">
+        <value>附加安裝選項（可選）</value>
+    </data>
+    <data name="Downloads_CoreInstallWizardPage__BreadcrumbBar_First" xml:space="preserve">
+        <value>核心安裝嚮導</value>
+    </data>
     <data name="Downloads_DownloadsPage_T1.Text" xml:space="preserve">
         <value>Minecraft 本體</value>
     </data>
@@ -494,6 +566,9 @@
     </data>
     <data name="Downloads_ResourcesSearchPage__Items" xml:space="preserve">
         <value>遊戲本體;模組;整合包;資源包;地圖</value>
+    </data>
+    <data name="Downloads_ResourcesSearchPage_ST.Text" xml:space="preserve">
+        <value>模組搜索選項：</value>
     </data>
     <data name="Home_HomePage_NoAccount.Text" xml:space="preserve">
         <value>沒有賬戶</value>

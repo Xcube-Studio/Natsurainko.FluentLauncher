@@ -1,6 +1,5 @@
 name: Feature request
 description: Suggest a feature for Fluent Launcher
-title: "[Feature] "
 labels: ["feature"]
 
 body:

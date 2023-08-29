@@ -44,7 +44,7 @@
                         <TextBlock x:Uid="Cores_Manage_CoreModsPage_D" Text="To install a core with mod loader" />
                     </labs:SettingsCard.Description>
 
-                    <Button>
+                    <Button Command="{Binding SearchAllMinecraftCommand}">
                         <TextBlock x:Uid="Buttons_Go" Text="Go" />
                     </Button>
                 </labs:SettingsCard>

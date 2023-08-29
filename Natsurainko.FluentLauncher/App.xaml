@@ -2,8 +2,7 @@
     x:Class="Natsurainko.FluentLauncher.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="using:Natsurainko.FluentLauncher.Utils.Xaml.Converters"
-    xmlns:local="using:Natsurainko.FluentLauncher">
+    xmlns:converters="using:Natsurainko.FluentLauncher.Utils.Xaml.Converters">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -11,6 +10,7 @@
                 <ResourceDictionary Source="Dictionaries/NotifyStyleDictionary" />
                 <ResourceDictionary Source="Dictionaries/CoresLayoutTemplateDictionary" />
                 <ResourceDictionary Source="Dictionaries/ResourceItemTemplateDictionary" />
+                <ResourceDictionary Source="Dictionaries/DownloadProcessTemplateDictionary" />
             </ResourceDictionary.MergedDictionaries>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">

@@ -10,6 +10,7 @@ using Natsurainko.FluentLauncher.Views.Downloads;
 using Nrk.FluentCore.Classes.Datas.Download;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
@@ -74,7 +75,7 @@ internal partial class DownloadsViewModel : ObservableObject
 
     public Visibility ModSearchProperty => ResourceType == 0 ? Visibility.Collapsed : Visibility.Visible;
 
-    public bool ComboBoxEnable => ResourceType == 4 ? false : true;
+    public bool ComboBoxEnable => ResourceType != 4;
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
@@ -108,4 +109,18 @@ internal partial class DownloadsViewModel : ObservableObject
             Source = SelectedSource,
             Version = SelectedVersion,
         });
+
+    [RelayCommand]
+    public void DownloadMinecraft(PublishData resource)
+    {
+        Task.Run(async () =>
+        {
+            IEnumerable<VersionManifestItem> manifestItems = await _interfaceCacheService.FetchVersionManifest();
+            manifestItems = manifestItems.Where(manifestItem => manifestItem.Id.Equals(resource.Version));
+
+            if (manifestItems.Any())
+                App.DispatcherQueue.TryEnqueue(() => ShellPage.ContentFrame.Navigate(typeof(CoreInstallWizardPage), manifestItems.First()));
+        });
+    }
+
 }

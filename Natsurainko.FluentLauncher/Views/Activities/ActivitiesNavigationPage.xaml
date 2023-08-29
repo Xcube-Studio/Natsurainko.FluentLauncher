@@ -28,7 +28,6 @@
                 <NavigationViewItem
                     x:Uid="Activities_ActivitiesNavigationPage_NV_Item2"
                     Content="Download Task"
-                    IsEnabled="False"
                     Tag="Natsurainko.FluentLauncher.Views.Activities.DownloadPage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe896;" />

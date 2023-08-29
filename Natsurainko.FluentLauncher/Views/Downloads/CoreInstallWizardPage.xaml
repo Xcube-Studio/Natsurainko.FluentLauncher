@@ -27,7 +27,10 @@
         </i:Interaction.Behaviors>
 
         <StackPanel Margin="10,20,10,0" Padding="30,0">
-            <BreadcrumbBar x:Name="BreadcrumbBar" Margin="-10,0">
+            <BreadcrumbBar
+                x:Name="BreadcrumbBar"
+                Margin="-10,0"
+                ItemClicked="BreadcrumbBar_ItemClicked">
                 <BreadcrumbBar.ItemTemplate>
                     <DataTemplate>
                         <TextBlock
@@ -42,28 +45,30 @@
             <TextBlock
                 FontSize="24"
                 Style="{ThemeResource BaseTextBlockStyle}"
-                Text="基本核心设置 (1/3)" />
+                Text="{Binding ElementName=contentFrame, Path=Content.Tag}"
+                TextWrapping="WrapWholeWords" />
         </StackPanel>
         <NavigationView
+            x:Name="NavigationView"
             Grid.Row="1"
             IsBackButtonVisible="Collapsed"
             IsBackEnabled="False"
             IsSettingsVisible="False"
             PaneDisplayMode="Top">
             <NavigationView.MenuItems>
-                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xe713;}" IsSelected="True">
+                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xEC7A;}" IsSelected="True">
                     <NavigationViewItem.Content>
-                        <TextBlock Text="基本核心设置" />
+                        <TextBlock x:Uid="Downloads_CoreInstallWizardPage_NV_Item1" Text="Mod Loader Options (Optional)" />
                     </NavigationViewItem.Content>
                 </NavigationViewItem>
-                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xEC7A;}">
+                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xe713;}">
                     <NavigationViewItem.Content>
-                        <TextBlock Text="加载器选项 (可选)" />
+                        <TextBlock x:Uid="Downloads_CoreInstallWizardPage_NV_Item2" Text="Basic Core Settings" />
                     </NavigationViewItem.Content>
                 </NavigationViewItem>
                 <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xED0E;}">
                     <NavigationViewItem.Content>
-                        <TextBlock Text="附属安装选项 (可选)" />
+                        <TextBlock x:Uid="Downloads_CoreInstallWizardPage_NV_Item3" Text="Additional Installation Options (Optional)" />
                     </NavigationViewItem.Content>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
@@ -75,6 +80,12 @@
                 </Frame.ContentTransitions>
             </Frame>
         </NavigationView>
+        <Grid
+            Grid.Row="1"
+            Height="47"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top"
+            Background="Transparent" />
         <Border
             Grid.Row="2"
             Height="1"

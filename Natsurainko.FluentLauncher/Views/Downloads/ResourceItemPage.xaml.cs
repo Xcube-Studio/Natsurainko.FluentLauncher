@@ -1,6 +1,8 @@
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.Storage;
+using Natsurainko.FluentLauncher.ViewModels.Common;
+using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Classes.Datas.Download;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,5 +51,14 @@ public sealed partial class ResourceItemPage : Page
             if (task.IsFaulted)
                 App.DispatcherQueue.TryEnqueue(() => stackPanel.Children.Remove(descriptionBorder));
         });
+    }
+
+    private void Button_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        _ = new ResourceItemFilesDialog()
+        {
+            XamlRoot = XamlRoot,
+            DataContext = new ResourceItemFilesDialogViewModel(this.DataContext)
+        }.ShowAsync();
     }
 }

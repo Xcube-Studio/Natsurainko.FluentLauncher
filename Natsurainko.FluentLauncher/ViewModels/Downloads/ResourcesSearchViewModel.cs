@@ -49,7 +49,7 @@ internal partial class ResourcesSearchViewModel : ObservableObject
 
     public Visibility ModSearchProperty => ResourceType == 0 ? Visibility.Collapsed : Visibility.Visible;
 
-    public bool ComboBoxEnable => ResourceType == 4 ? false : true;
+    public bool ComboBoxEnable => ResourceType != 4;
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {

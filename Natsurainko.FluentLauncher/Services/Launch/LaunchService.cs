@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.WinUI.Notifications;
-using Microsoft.UI.Dispatching;
 using Natsurainko.FluentLauncher.Classes.Data.Launch;
+using Natsurainko.FluentLauncher.Classes.Exceptions;
 using Natsurainko.FluentLauncher.Components.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Download;
@@ -25,7 +25,6 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
-using Windows.Devices.Display.Core;
 using Windows.UI.StartScreen;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
@@ -155,18 +154,25 @@ internal class LaunchService : DefaultLaunchService
             })
             .SetAuthenticateFunc(() =>
             {
-                if (_settingsService.AutoRefresh)
+                try
                 {
-                    if (launchAccount.Equals(_accountService.ActiveAccount))
+                    if (_settingsService.AutoRefresh)
                     {
-                        _authenticationService.RefreshCurrentAccount();
-                        launchAccount = _accountService.ActiveAccount;
+                        if (launchAccount.Equals(_accountService.ActiveAccount))
+                        {
+                            _authenticationService.RefreshCurrentAccount();
+                            launchAccount = _accountService.ActiveAccount;
+                        }
+                        else
+                        {
+                            _authenticationService.RefreshContainedAccount(launchAccount);
+                            launchAccount = GetLaunchAccount(specialConfig);
+                        }
                     }
-                    else
-                    {
-                        _authenticationService.RefreshContainedAccount(launchAccount);
-                        launchAccount = GetLaunchAccount(specialConfig);
-                    }
+                }
+                catch(Exception ex) 
+                {
+                    throw new AuthenticateRefreshAccountException(ex);
                 }
             })
             .SetCompleteResourcesAction(launchProcess =>
@@ -182,7 +188,7 @@ internal class LaunchService : DefaultLaunchService
                 resourcesDownloader.Download();
 
                 if (resourcesDownloader.ErrorDownload.Count > 0)
-                    throw new Exception("ResourcesDownloader.ErrorDownload.Count > 0");
+                    throw new CompleteGameResourcesException(resourcesDownloader);
 
                 UnzipUtils.BatchUnzip(
                     Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId, "natives"),

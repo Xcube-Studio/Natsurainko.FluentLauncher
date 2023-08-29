@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml.Media.Imaging;
 using Nrk.FluentCore.Classes.Datas.Download;
 using Nrk.FluentCore.Classes.Datas.Launch;
+using Nrk.FluentCore.Classes.Enums;
 using System;
 
 namespace Natsurainko.FluentLauncher.Utils.Xaml.Converters;
@@ -31,9 +32,9 @@ public class IconConverter : IValueConverter
                 _ => "grass_block_side"
             }), UriKind.RelativeOrAbsolute));
 
-        /*
+        
         if (value is ModLoaderType modLoaderType)
-            return new BitmapImage(new Uri($"ms-appx:///Assets/Icons/{modLoaderType}Icon.png", UriKind.RelativeOrAbsolute));*/
+            return new BitmapImage(new Uri($"ms-appx:///Assets/Icons/{modLoaderType}Icon.png", UriKind.RelativeOrAbsolute));
 
         return null;
     }

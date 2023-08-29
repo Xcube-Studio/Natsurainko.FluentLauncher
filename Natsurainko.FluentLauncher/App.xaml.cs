@@ -121,7 +121,6 @@ public partial class App : Application
         services.AddSingleton<DownloadService>();
 
         // Services
-        //services.AddSingleton<CurseForgeModService>();
         services.AddSingleton<LocalStorageService>();
         services.AddSingleton<MessengerService>();
         services.AddSingleton<AuthenticationService>();
@@ -132,11 +131,9 @@ public partial class App : Application
 
         //ViewModels
 
-        /// Activities
         services.AddSingleton<ViewModels.Activities.NewsViewModel>();
         services.AddTransient<ViewModels.Activities.LaunchViewModel>();
-        //services.AddTransient<ViewModels.Activities.DownloadViewModel>();
-        //services.AddSingleton<ViewModels.Downloads.CurseForgeViewModel>();
+        services.AddTransient<ViewModels.Activities.DownloadViewModel>();
 
         services.AddTransient<ViewModels.Common.SwitchAccountDialogViewModel>();
 

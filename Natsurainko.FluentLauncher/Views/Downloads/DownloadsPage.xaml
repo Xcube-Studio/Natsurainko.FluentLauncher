@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:downloads="using:Natsurainko.FluentLauncher.ViewModels.Downloads"
@@ -217,7 +218,14 @@
                                         <Button
                                             Grid.Column="2"
                                             HorizontalAlignment="Right"
-                                            VerticalAlignment="Bottom">
+                                            VerticalAlignment="Bottom"
+                                            CommandParameter="{Binding}">
+                                            <i:Interaction.Behaviors>
+                                                <behaviors:AncestorBindingBehavior
+                                                    AncestorType="ScrollViewer"
+                                                    Binding="{Binding DataContext.DownloadMinecraftCommand}"
+                                                    TargetPropertyName="Command" />
+                                            </i:Interaction.Behaviors>
                                             <StackPanel Orientation="Horizontal" Spacing="7.5">
                                                 <FontIcon FontSize="12" Glyph="&#xE72A;" />
                                                 <TextBlock x:Uid="Buttons_Download" Text="Download" />
@@ -290,7 +298,14 @@
                                             <Button
                                                 Grid.Column="2"
                                                 HorizontalAlignment="Right"
-                                                VerticalAlignment="Bottom">
+                                                VerticalAlignment="Bottom"
+                                                CommandParameter="{Binding}">
+                                                <i:Interaction.Behaviors>
+                                                    <behaviors:AncestorBindingBehavior
+                                                        AncestorType="ScrollViewer"
+                                                        Binding="{Binding DataContext.DownloadMinecraftCommand}"
+                                                        TargetPropertyName="Command" />
+                                                </i:Interaction.Behaviors>
                                                 <StackPanel Orientation="Horizontal" Spacing="7.5">
                                                     <FontIcon FontSize="12" Glyph="&#xE72A;" />
                                                     <TextBlock x:Uid="Buttons_Download" Text="Download" />

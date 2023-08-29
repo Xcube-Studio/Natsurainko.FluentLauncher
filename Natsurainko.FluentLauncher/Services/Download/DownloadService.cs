@@ -1,20 +1,27 @@
-﻿using Natsurainko.FluentLauncher.Services.Settings;
+﻿using Natsurainko.FluentLauncher.Classes.Data.UI;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.Classes.Datas.Parse;
 using Nrk.FluentCore.DefaultComponents.Download;
 using Nrk.FluentCore.Services.Download;
 using Nrk.FluentCore.Utils;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Natsurainko.FluentLauncher.Services.Download;
 
-public class DownloadService : DefaultDownloadService
+internal class DownloadService : DefaultDownloadService
 {
     private new readonly SettingsService _settingsService;
+    private readonly ObservableCollection<DownloadProcess> _downloadProcesses = new();
+
+    public ReadOnlyObservableCollection<DownloadProcess> DownloadProcesses { get; init; }
 
     public DownloadService(SettingsService settingsService) : base(settingsService)
     {
         _settingsService = settingsService;
+
+        DownloadProcesses = new(_downloadProcesses);
     }
 
     public DefaultResourcesDownloader CreateResourcesDownloader(GameInfo gameInfo, IEnumerable<LibraryElement> libraryElements = null)
@@ -32,5 +39,13 @@ public class DownloadService : DefaultDownloadService
     {
         HttpUtils.DownloadSetting.EnableLargeFileMultiPartDownload = _settingsService.EnableFragmentDownload;
         HttpUtils.DownloadSetting.MultiThreadsCount = _settingsService.MaxDownloadThreads;
+    }
+
+    public void CreateDownloadProcessFromResourceFile(object file, string filePath)
+    {
+        var process = new ResourceDownloadProcess(file, filePath);
+        _downloadProcesses.Insert(0, process);
+
+        _ = process.Start();
     }
 }

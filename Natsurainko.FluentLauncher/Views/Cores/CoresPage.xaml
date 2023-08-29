@@ -46,7 +46,7 @@
                         </AnimatedIcon>
                     </AutoSuggestBox.QueryIcon>
                 </AutoSuggestBox>
-                <Button Grid.Column="2" IsEnabled="False">
+                <Button Grid.Column="2" Command="{Binding SearchAllMinecraftCommand}">
                     <StackPanel Orientation="Horizontal">
                         <FontIcon FontSize="14" Glyph="&#xE896;" />
                         <TextBlock

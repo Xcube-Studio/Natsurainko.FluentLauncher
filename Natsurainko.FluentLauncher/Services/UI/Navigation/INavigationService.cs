@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Services.UI.Navigation;
 
+#nullable enable
+
 /// <summary>
 /// A service that controls the navigation in a window or page
 /// </summary>
@@ -21,7 +23,7 @@ public interface INavigationService
 
     void GoBack();
     void GoForward();
-    void NavigateTo(string key);
+    void NavigateTo(string key, object? parameter = null);
 
     /// <summary>
     /// Called after the navigation provider is initialized

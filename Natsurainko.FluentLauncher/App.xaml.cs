@@ -27,6 +27,8 @@ using Natsurainko.FluentLauncher.Views.Activities;
 using Natsurainko.FluentLauncher.ViewModels.Activities;
 using Windows.UI.ApplicationSettings;
 using Natsurainko.FluentLauncher.Views.Settings;
+using Natsurainko.FluentLauncher.ViewModels.Downloads;
+using Natsurainko.FluentLauncher.ViewModels;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -73,12 +75,12 @@ public partial class App : Application
 
         PageProvider = WinUIPageProvider.GetBuilder(Services)
             .WithPage<OOBENavigationPage, OOBENavigationViewModel>("OOBENavigationPage")
-            .WithPage<ShellPage>("ShellPage")
+            .WithPage<ShellPage, ShellViewModel>("ShellPage")
             .WithPage<HomePage, HomeViewModel>("HomePage")
             .WithPage<NewHomePage, HomeViewModel>("NewHomePage")
             .WithPage<CoresPage, CoresViewModel>("CoresPage")
             .WithPage<ActivitiesNavigationPage>("ActivitiesNavigationPage")
-            .WithPage<Views.Activities.DownloadPage, DownloadViewModel>("DownloadsPage")
+            .WithPage<Views.Downloads.DownloadsPage, DownloadsViewModel>("DownloadsPage")
             .WithPage<NavigationPage>("SettingsNavigationPage")
             .Build();
 
@@ -150,6 +152,9 @@ public partial class App : Application
 
         services.AddScoped<ViewModels.Cores.CoresViewModel>();
         services.AddScoped<ViewModels.Home.HomeViewModel>();
+
+        services.AddScoped<DownloadsViewModel>();
+        services.AddScoped<ShellViewModel>();
 
         services.AddScoped<MainWindow>();
 

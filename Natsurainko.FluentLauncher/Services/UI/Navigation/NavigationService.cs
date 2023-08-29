@@ -52,8 +52,13 @@ public class NavigationService : INavigationService
     public void GoBack() => Frame.GoBack();
     public void GoForward() => Frame.GoForward();
 
-    public void NavigateTo(string key)
+    public void NavigateTo(string key, object? parameter = null)
     {
+        // Before navigation starts
+        if ((Frame.Content as Page)?.DataContext is INavigationAware vmBefore)
+            vmBefore.OnNavigatedFrom();
+
+        // Navigation
         var pageInfo = _pageProvider.RegisteredPages[key];
         Frame.Navigate(pageInfo.PageType);
 
@@ -81,6 +86,10 @@ public class NavigationService : INavigationService
                 if (pageInfo.ViewModelType is not null)
                     page.DataContext = Scope.ServiceProvider.GetRequiredService(pageInfo.ViewModelType);
             }
+
+            // After navigation
+            if (page.DataContext is INavigationAware vmAfter)
+                vmAfter.OnNavigatedTo(parameter);
         }
     }
 

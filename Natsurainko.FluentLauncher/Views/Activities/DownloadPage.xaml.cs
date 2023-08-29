@@ -8,6 +8,5 @@ public sealed partial class DownloadPage : Page
     public DownloadPage()
     {
         InitializeComponent();
-        this.DataContext = App.GetService<DownloadViewModel>();
     }
 }

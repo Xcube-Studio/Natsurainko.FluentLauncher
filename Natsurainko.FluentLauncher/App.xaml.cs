@@ -19,15 +19,6 @@ using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Services.UI.Pages;
 using Natsurainko.FluentLauncher.Views.OOBE;
 using Natsurainko.FluentLauncher.ViewModels.OOBE;
-using Natsurainko.FluentLauncher.Views.Home;
-using Natsurainko.FluentLauncher.ViewModels.Home;
-using Natsurainko.FluentLauncher.Views.Cores;
-using Natsurainko.FluentLauncher.ViewModels.Cores;
-using Natsurainko.FluentLauncher.Views.Activities;
-using Natsurainko.FluentLauncher.ViewModels.Activities;
-using Windows.UI.ApplicationSettings;
-using Natsurainko.FluentLauncher.Views.Settings;
-using Natsurainko.FluentLauncher.ViewModels.Downloads;
 using Natsurainko.FluentLauncher.ViewModels;
 
 namespace Natsurainko.FluentLauncher;
@@ -38,8 +29,6 @@ public partial class App : Application
     public static T GetService<T>() => Services.GetService<T>();
     public static MainWindow MainWindow { get; set; }
     public static DispatcherQueue DispatcherQueue { get; private set; }
-
-    private static IPageProvider PageProvider;
 
     public App()
     {
@@ -66,29 +55,11 @@ public partial class App : Application
             return;
         }
 
-        // Demo
-        var activationService = WinUIActivationService.GetBuilder(Services)
-            .WithSingleInstanceWindow<MainWindow>("MainWindow")
-            //.WithSingleInstanceWindow<OOBEWindow>("OOBEWindow")
-            //.WithMultiInstanceWindow<LogWindow>("LogWindow")
-            .Build();
-
-        PageProvider = WinUIPageProvider.GetBuilder(Services)
-            .WithPage<OOBENavigationPage, OOBENavigationViewModel>("OOBENavigationPage")
-            .WithPage<ShellPage, ShellViewModel>("ShellPage")
-            .WithPage<HomePage, HomeViewModel>("HomePage")
-            .WithPage<NewHomePage, HomeViewModel>("NewHomePage")
-            .WithPage<CoresPage, CoresViewModel>("CoresPage")
-            .WithPage<ActivitiesNavigationPage>("ActivitiesNavigationPage")
-            .WithPage<Views.Downloads.DownloadsPage, DownloadsViewModel>("DownloadsPage")
-            .WithPage<NavigationPage>("SettingsNavigationPage")
-            .Build();
-
         App.GetService<MessengerService>().SubscribeEvents();
 
         try
         {
-            activationService.ActivateWindow("MainWindow");
+            App.GetService<IActivationService>().ActivateWindow("MainWindow");
         }
         catch (Exception e)
         {
@@ -96,6 +67,44 @@ public partial class App : Application
         }
 
     }
+
+    private static IPageProvider BuildPageProvider(IServiceProvider sp) => WinUIPageProvider.GetBuilder(sp)
+        // OOBE
+        .WithPage<OOBENavigationPage, OOBENavigationViewModel>("OOBENavigationPage")
+
+        // Main
+        .WithPage<ShellPage, ShellViewModel>("ShellPage")
+
+        // Home page
+        .WithPage<Views.Home.HomePage, ViewModels.Home.HomeViewModel>("HomePage")
+        .WithPage<Views.Home.NewHomePage, ViewModels.Home.HomeViewModel>("NewHomePage")
+
+        // Cores page
+        .WithPage<Views.Cores.CoresPage, ViewModels.Cores.CoresViewModel>("CoresPage")
+
+        // Activities page
+        .WithPage<Views.Activities.ActivitiesNavigationPage>("ActivitiesNavigationPage")
+        .WithPage<Views.Activities.LaunchPage, ViewModels.Activities.LaunchViewModel>("LaunchTasksPage")
+        .WithPage<Views.Activities.DownloadPage, ViewModels.Activities.DownloadViewModel>("DownloadTasksPage")
+        .WithPage<Views.Activities.NewsPage, ViewModels.Activities.NewsViewModel>("NewsPage")
+
+        // Resources download page
+        .WithPage<Views.Downloads.DownloadsPage, ViewModels.Downloads.DownloadsViewModel>("ResourcesDownloadPage")
+
+        // Settings
+        .WithPage<Views.Settings.NavigationPage>("SettingsNavigationPage")
+        .WithPage<Views.Settings.LaunchPage, ViewModels.Settings.LaunchViewModel>("LaunchSettingsPage")
+        .WithPage<Views.Settings.AccountPage, ViewModels.Settings.AccountViewModel>("AccountSettingsPage")
+        .WithPage<Views.Settings.DownloadPage, ViewModels.Settings.DownloadViewModel>("DownloadSettingsPage")
+        .WithPage<Views.Settings.AppearancePage, ViewModels.Settings.AppearanceViewModel>("AppearanceSettingsPage")
+        .WithPage<Views.Settings.AboutPage, ViewModels.Settings.AboutViewModel>("AboutPage")
+
+        .Build();
+
+    private static IActivationService BuildActivationService() => WinUIActivationService.GetBuilder(Services)
+        .WithSingleInstanceWindow<MainWindow>("MainWindow")
+        // .WithMultiInstanceWindow<LogWindow>("LogWindow")
+        .Build();
 
     /// <summary>
     /// Configures the services for the application.
@@ -105,10 +114,9 @@ public partial class App : Application
         var services = new ServiceCollection();
 
         // UI services
-        services.AddScoped<INavigationService, NavigationService>();
-        services.AddSingleton<IPageProvider>(_ => PageProvider);
-        services.AddTransient<ShellPage>();
-        services.AddTransient<HomePage>();
+        services.AddSingleton<IPageProvider>(sp => BuildPageProvider(sp));
+        services.AddSingleton<IActivationService>(_ => BuildActivationService());
+        services.AddScoped<INavigationService, NavigationService>(); // A scope is created for each window or page that supports navigation.
 
         // Settings service
         services.AddSingleton<SettingsService>();
@@ -129,8 +137,10 @@ public partial class App : Application
         services.AddSingleton<SkinCacheService>();
         services.AddSingleton<InterfaceCacheService>();
 
-        //ViewModels
+        // Windows
+        services.AddScoped<MainWindow>();
 
+        // ViewModels
         services.AddSingleton<ViewModels.Activities.NewsViewModel>();
         services.AddTransient<ViewModels.Activities.LaunchViewModel>();
         services.AddTransient<ViewModels.Activities.DownloadViewModel>();
@@ -147,13 +157,11 @@ public partial class App : Application
         services.AddTransient<ViewModels.OOBE.AccountViewModel>();
         services.AddTransient<ViewModels.OOBE.GetStartedViewModel>();
 
-        services.AddScoped<ViewModels.Cores.CoresViewModel>();
-        services.AddScoped<ViewModels.Home.HomeViewModel>();
+        services.AddTransient<ViewModels.Cores.CoresViewModel>();
+        services.AddTransient<ViewModels.Home.HomeViewModel>();
 
-        services.AddScoped<DownloadsViewModel>();
-        services.AddScoped<ShellViewModel>();
-
-        services.AddScoped<MainWindow>();
+        services.AddTransient<ViewModels.Downloads.DownloadsViewModel>();
+        services.AddTransient<ViewModels.ShellViewModel>();
 
         return services.BuildServiceProvider();
     }

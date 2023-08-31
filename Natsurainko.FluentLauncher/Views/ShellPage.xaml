@@ -86,7 +86,7 @@
                     x:Uid="ShellPage_NV_Item_4"
                     Content="Mods"
                     Icon="{xh:FontIcon Glyph=&#xe8f1;}"
-                    Tag="DownloadsPage" />
+                    Tag="ResourcesDownloadPage" />
             </NavigationView.MenuItems>
 
             <NavigationView.FooterMenuItems>

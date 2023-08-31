@@ -19,7 +19,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
     private INavigationService _navigationService;
     object INavigationProvider.NavigationControl => contentFrame;
-    string INavigationProvider.DefaultPageKey => "HomePage";
+    string INavigationProvider.DefaultPageKey => App.GetService<SettingsService>().UseNewHomePage ? "NewHomePage" : "HomePage";
     void INavigationProvider.Initialize(INavigationService navigationService)
     {
         _navigationService = navigationService;
@@ -61,8 +61,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
         // test code: new navigation service
         if (pageTag == "HomePage" && useNewHomePage)
         {
-            _navigationService.NavigateTo("NewHomePage");
-            return;
+            pageTag = "NewHomePage";
         }
 
         _navigationService.NavigateTo(pageTag);
@@ -85,8 +84,6 @@ public sealed partial class ShellPage : Page, INavigationProvider
         _XamlRoot = XamlRoot;
 
         App.MainWindow.SetTitleBar(AppTitleBar);
-
-        contentFrame.Navigate(_appearanceService.HomePageType);
 
         if (_settings.BackgroundMode == 3)
         {

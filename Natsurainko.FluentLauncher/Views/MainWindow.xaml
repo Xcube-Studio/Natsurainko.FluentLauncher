@@ -6,6 +6,8 @@
     xmlns:local="using:Natsurainko.FluentLauncher.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:winuiex="using:WinUIEx"
+    Title="Fluent Launcher"
+    ExtendsContentIntoTitleBar="True"
     mc:Ignorable="d">
     <Grid>
         <Grid x:Name="BackgroundGrid" Background="Transparent" />

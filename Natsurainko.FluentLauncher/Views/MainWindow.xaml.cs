@@ -15,9 +15,9 @@ namespace Natsurainko.FluentLauncher.Views;
 public sealed partial class MainWindow : WindowEx, INavigationProvider
 {
     public Frame ContentFrame => Frame;
-    object INavigationProvider.NavigationControl => Frame;
 
-    public string DefaultPageKey => _settings.FinishGuide ? "ShellPage" : "OOBENavigationPage";
+    object INavigationProvider.NavigationControl => Frame;
+    string INavigationProvider.DefaultPageKey => _settings.FinishGuide ? "ShellPage" : "OOBENavigationPage";
 
     private readonly INavigationService _navService;
     private readonly SettingsService _settings = App.GetService<SettingsService>();
@@ -35,9 +35,6 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
         _notificationService.InitContainer(NotifyStackPanel, BackgroundGrid);
 
         AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets/AppIcon.ico"));
-
-        AppWindow.Title = "Fluent Launcher";
-        AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
         AppWindow.TitleBar.ButtonBackgroundColor = AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
         AppWindow.TitleBar.ButtonForegroundColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
         AppWindow.TitleBar.ButtonHoverForegroundColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
@@ -52,9 +49,5 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
 
         App.GetService<AppearanceService>().ApplyBackgroundAtWindowCreated(this);
         App.MainWindow = this;
-
-        //Frame.Navigate(_settings.FinishGuide ? typeof(ShellPage) : typeof(OOBE.OOBENavigationPage));
     }
-
-    void INavigationProvider.Initialize(INavigationService navigationService) { }
 }

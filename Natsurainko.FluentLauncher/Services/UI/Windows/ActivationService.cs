@@ -44,7 +44,7 @@ abstract class ActivationService<TWindowBase> : IActivationService
         if (window is INavigationProvider navProvider)
         {
             var navService = scope.ServiceProvider.GetRequiredService<INavigationService>();
-            navService.InitializeNavigation(navProvider, scope);
+            navService.InitializeNavigation(navProvider, scope, null);
             navProvider.Initialize(navService);
             if(navProvider.DefaultPageKey is not null)
                 navService.NavigateTo(navProvider.DefaultPageKey);

@@ -21,15 +21,14 @@ public class NavigationService : INavigationService
         private set => _navigationProvider = value; 
     }
 
-    private readonly IPageProvider _pageProvider;
-
     private IServiceScope? _scope;
-
     public IServiceScope Scope
     {
         get => _scope ?? throw new InvalidOperationException("NavigationService has not been initialized");
         private set => _scope = value;
     }
+
+    private readonly IPageProvider _pageProvider;
 
     public NavigationService(IPageProvider pageProvider)
     {
@@ -39,14 +38,16 @@ public class NavigationService : INavigationService
     private Frame Frame => _navigationProvider?.NavigationControl as Frame ?? 
         throw new InvalidOperationException("NavigationService has not been initialized");
 
-    public void InitializeNavigation(INavigationProvider navigationProvider, IServiceScope scope)
+    public void InitializeNavigation(INavigationProvider navigationProvider, IServiceScope scope, INavigationService? parent)
     {
         NavigationProvider = navigationProvider;
         Scope = scope;
+        Parent = parent;
     }
 
     #region Navigation
 
+    public INavigationService? Parent { get; private set; }
     public bool CanGoBack => Frame.CanGoBack;
     public bool CanGoForward => Frame.CanGoForward;
     public void GoBack() => Frame.GoBack();
@@ -69,16 +70,16 @@ public class NavigationService : INavigationService
                 // Create subscope
                 var subScope = Scope.ServiceProvider.CreateScope();
 
-                // Configures VM
-                if (pageInfo.ViewModelType is not null)
-                    page.DataContext = subScope.ServiceProvider.GetRequiredService(pageInfo.ViewModelType);
-
                 // Configure sub navigation service
                 INavigationService subNavService = subScope.ServiceProvider.GetRequiredService<INavigationService>();
-                subNavService.InitializeNavigation(navPage, subScope);
+                subNavService.InitializeNavigation(navPage, subScope, this);
                 navPage.Initialize(subNavService);
                 if (navPage.DefaultPageKey is not null)
                     subNavService.NavigateTo(navPage.DefaultPageKey);
+
+                // Configures VM in the subscope (after navigation service is initialized)
+                if (pageInfo.ViewModelType is not null)
+                    page.DataContext = subScope.ServiceProvider.GetRequiredService(pageInfo.ViewModelType);
             }
             else
             {

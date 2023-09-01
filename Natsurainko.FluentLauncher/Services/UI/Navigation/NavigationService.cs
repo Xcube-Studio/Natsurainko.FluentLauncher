@@ -73,7 +73,6 @@ public class NavigationService : INavigationService
                 // Configure sub navigation service
                 INavigationService subNavService = subScope.ServiceProvider.GetRequiredService<INavigationService>();
                 subNavService.InitializeNavigation(navPage, subScope, this);
-                navPage.Initialize(subNavService);
 
                 // Configures VM in the subscope (after navigation service is initialized)
                 if (pageInfo.ViewModelType is not null)

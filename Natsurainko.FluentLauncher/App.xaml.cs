@@ -17,8 +17,6 @@ using System.Text;
 using Natsurainko.FluentLauncher.Services.UI.Windows;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Services.UI.Pages;
-using Natsurainko.FluentLauncher.Views.OOBE;
-using Natsurainko.FluentLauncher.ViewModels.OOBE;
 using Natsurainko.FluentLauncher.ViewModels;
 
 namespace Natsurainko.FluentLauncher;
@@ -70,7 +68,7 @@ public partial class App : Application
 
     private static IPageProvider BuildPageProvider(IServiceProvider sp) => WinUIPageProvider.GetBuilder(sp)
         // OOBE
-        .WithPage<OOBENavigationPage, OOBENavigationViewModel>("OOBENavigationPage")
+        .WithPage<Views.OOBE.OOBENavigationPage, ViewModels.OOBE.OOBENavigationViewModel>("OOBENavigationPage")
 
         // Main
         .WithPage<ShellPage, ShellViewModel>("ShellPage")
@@ -141,8 +139,8 @@ public partial class App : Application
         services.AddScoped<MainWindow>();
 
         // ViewModels
-        services.AddSingleton<ViewModels.Activities.ActivitiesNavigationViewModel>();
-        services.AddSingleton<ViewModels.Activities.NewsViewModel>();
+        services.AddTransient<ViewModels.Activities.ActivitiesNavigationViewModel>();
+        services.AddTransient<ViewModels.Activities.NewsViewModel>();
         services.AddTransient<ViewModels.Activities.LaunchViewModel>();
         services.AddTransient<ViewModels.Activities.DownloadViewModel>();
 

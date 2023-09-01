@@ -19,9 +19,6 @@ public interface INavigationProvider
     object NavigationControl { get; }
 
     [Obsolete]
-    string? DefaultPageKey { get => null; }
-
-    [Obsolete]
     /// <summary>
     /// Allow the navigation provider to get its associated navigation service
     /// </summary>

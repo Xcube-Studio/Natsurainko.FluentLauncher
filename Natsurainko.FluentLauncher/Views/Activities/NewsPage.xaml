@@ -77,7 +77,7 @@
             Margin="30,0"
             Padding="0,15"
             Background="Transparent"
-            ItemsSource="{Binding NewsDatas}">
+            ItemsSource="{Binding NewsData}">
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <Border

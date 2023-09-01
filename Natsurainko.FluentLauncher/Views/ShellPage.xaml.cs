@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
+using Natsurainko.FluentLauncher.ViewModels;
 using Natsurainko.FluentLauncher.Views.Home;
 using System;
 using System.Linq;
@@ -18,13 +19,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
     public static Frame ContentFrame { get; private set; }
 
     object INavigationProvider.NavigationControl => contentFrame;
-    string INavigationProvider.DefaultPageKey => App.GetService<SettingsService>().UseNewHomePage ? "NewHomePage" : "HomePage";
-
-    private INavigationService _navigationService;
-    void INavigationProvider.Initialize(INavigationService navigationService)
-    {
-        _navigationService = navigationService;
-    }
+    private ShellViewModel VM => (ShellViewModel)DataContext;
 
     private readonly SettingsService _settings = App.GetService<SettingsService>();
     private readonly AppearanceService _appearanceService = App.GetService<AppearanceService>();
@@ -57,16 +52,11 @@ public sealed partial class ShellPage : Page, INavigationProvider
     private void NavigationViewControl_ItemInvoked(NavigationView _, NavigationViewItemInvokedEventArgs args)
     {
         var pageTag = ((NavigationViewItem)args.InvokedItemContainer).Tag.ToString();
-        bool useNewHomePage = App.GetService<AppearanceService>().HomePageType == typeof(NewHomePage);
 
-        // test code: new navigation service
-        if (pageTag == "HomePage" && useNewHomePage)
-        {
+        if (pageTag == "HomePage" && _settings.UseNewHomePage)
             pageTag = "NewHomePage";
-        }
 
-        _navigationService.NavigateTo(pageTag);
-        // contentFrame.Navigate(Type.GetType(((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()));
+        VM.NavigateTo(pageTag);
     }
 
     private void NavigationViewControl_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)

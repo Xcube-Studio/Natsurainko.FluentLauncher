@@ -17,7 +17,12 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
     public Frame ContentFrame => Frame;
 
     object INavigationProvider.NavigationControl => Frame;
-    string INavigationProvider.DefaultPageKey => _settings.FinishGuide ? "ShellPage" : "OOBENavigationPage";
+    //string INavigationProvider.DefaultPageKey => _settings.FinishGuide ? "ShellPage" : "OOBENavigationPage";
+
+    void INavigationProvider.Initialize(INavigationService navigationService)
+    {
+        _navService.NavigateTo(_settings.FinishGuide ? "ShellPage" : "OOBENavigationPage");
+    }
 
     private readonly INavigationService _navService;
     private readonly SettingsService _settings = App.GetService<SettingsService>();

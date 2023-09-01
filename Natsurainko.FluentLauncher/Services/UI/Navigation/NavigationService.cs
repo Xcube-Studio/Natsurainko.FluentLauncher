@@ -74,8 +74,6 @@ public class NavigationService : INavigationService
                 INavigationService subNavService = subScope.ServiceProvider.GetRequiredService<INavigationService>();
                 subNavService.InitializeNavigation(navPage, subScope, this);
                 navPage.Initialize(subNavService);
-                if (navPage.DefaultPageKey is not null)
-                    subNavService.NavigateTo(navPage.DefaultPageKey);
 
                 // Configures VM in the subscope (after navigation service is initialized)
                 if (pageInfo.ViewModelType is not null)

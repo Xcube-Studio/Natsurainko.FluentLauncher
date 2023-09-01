@@ -9,6 +9,5 @@ public sealed partial class AccountPage : Page
     public AccountPage()
     {
         InitializeComponent();
-        DataContext = App.Services.GetService<AccountViewModel>();
     }
 }

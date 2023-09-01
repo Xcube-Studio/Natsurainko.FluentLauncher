@@ -17,8 +17,11 @@ public interface INavigationProvider
     /// The UI element that provides navigation
     /// </summary>
     object NavigationControl { get; }
-    string? DefaultPageKey { get; }
 
+    [Obsolete]
+    string? DefaultPageKey { get => null; }
+
+    [Obsolete]
     /// <summary>
     /// Allow the navigation provider to get its associated navigation service
     /// </summary>

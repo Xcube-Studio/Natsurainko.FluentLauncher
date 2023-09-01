@@ -68,7 +68,7 @@ internal partial class HomeViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void Account() => Views.ShellPage.ContentFrame.Navigate(typeof(Views.Settings.NavigationPage), typeof(Views.Settings.AccountPage));
+    public void Account() => _navigationService.NavigateTo("SettingsNavigationPage", "AccountSettingsPage");
 
     [RelayCommand]
     public void Cores() => _navigationService.NavigateTo("CoresPage"); // Views.ShellPage.ContentFrame.Navigate(typeof(Views.Cores.CoresPage));

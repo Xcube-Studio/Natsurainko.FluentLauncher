@@ -17,9 +17,10 @@ public sealed partial class ShellPage : Page, INavigationProvider
     public static XamlRoot _XamlRoot { get; private set; }
     public static Frame ContentFrame { get; private set; }
 
-    private INavigationService _navigationService;
     object INavigationProvider.NavigationControl => contentFrame;
     string INavigationProvider.DefaultPageKey => App.GetService<SettingsService>().UseNewHomePage ? "NewHomePage" : "HomePage";
+
+    private INavigationService _navigationService;
     void INavigationProvider.Initialize(INavigationService navigationService)
     {
         _navigationService = navigationService;

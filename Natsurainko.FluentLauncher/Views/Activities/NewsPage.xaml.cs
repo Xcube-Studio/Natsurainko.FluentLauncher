@@ -9,6 +9,5 @@ public sealed partial class NewsPage : Page
     public NewsPage()
     {
         InitializeComponent();
-        this.DataContext = App.Services.GetService<NewsViewModel>();
     }
 }

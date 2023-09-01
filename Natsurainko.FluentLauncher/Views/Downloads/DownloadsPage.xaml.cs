@@ -8,6 +8,5 @@ public sealed partial class DownloadsPage : Page
     public DownloadsPage()
     {
         this.InitializeComponent();
-        this.DataContext = new DownloadsViewModel();
     }
 }

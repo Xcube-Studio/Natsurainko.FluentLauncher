@@ -83,7 +83,7 @@ public partial class App : Application
         .WithPage<Views.Cores.CoresPage, ViewModels.Cores.CoresViewModel>("CoresPage")
 
         // Activities page
-        .WithPage<Views.Activities.ActivitiesNavigationPage>("ActivitiesNavigationPage")
+        .WithPage<Views.Activities.ActivitiesNavigationPage, ViewModels.Activities.ActivitiesNavigationViewModel>("ActivitiesNavigationPage")
         .WithPage<Views.Activities.LaunchPage, ViewModels.Activities.LaunchViewModel>("LaunchTasksPage")
         .WithPage<Views.Activities.DownloadPage, ViewModels.Activities.DownloadViewModel>("DownloadTasksPage")
         .WithPage<Views.Activities.NewsPage, ViewModels.Activities.NewsViewModel>("NewsPage")
@@ -92,7 +92,7 @@ public partial class App : Application
         .WithPage<Views.Downloads.DownloadsPage, ViewModels.Downloads.DownloadsViewModel>("ResourcesDownloadPage")
 
         // Settings
-        .WithPage<Views.Settings.NavigationPage>("SettingsNavigationPage")
+        .WithPage<Views.Settings.NavigationPage, ViewModels.Settings.SettingsNavigationViewModel>("SettingsNavigationPage")
         .WithPage<Views.Settings.LaunchPage, ViewModels.Settings.LaunchViewModel>("LaunchSettingsPage")
         .WithPage<Views.Settings.AccountPage, ViewModels.Settings.AccountViewModel>("AccountSettingsPage")
         .WithPage<Views.Settings.DownloadPage, ViewModels.Settings.DownloadViewModel>("DownloadSettingsPage")
@@ -141,16 +141,19 @@ public partial class App : Application
         services.AddScoped<MainWindow>();
 
         // ViewModels
+        services.AddSingleton<ViewModels.Activities.ActivitiesNavigationViewModel>();
         services.AddSingleton<ViewModels.Activities.NewsViewModel>();
         services.AddTransient<ViewModels.Activities.LaunchViewModel>();
         services.AddTransient<ViewModels.Activities.DownloadViewModel>();
 
         services.AddTransient<ViewModels.Common.SwitchAccountDialogViewModel>();
 
+        services.AddTransient<ViewModels.Settings.SettingsNavigationViewModel>();
         services.AddTransient<ViewModels.Settings.AppearanceViewModel>();
         services.AddTransient<ViewModels.Settings.DownloadViewModel>();
         services.AddTransient<ViewModels.Settings.AccountViewModel>();
         services.AddTransient<ViewModels.Settings.LaunchViewModel>();
+        services.AddTransient<ViewModels.Settings.AboutViewModel>();
 
         services.AddTransient<ViewModels.OOBE.LanguageViewModel>();
         services.AddTransient<ViewModels.OOBE.BasicViewModel>();

@@ -8,9 +8,6 @@
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     mc:Ignorable="d">
-    <Page.DataContext>
-        <vm:OOBENavigationViewModel />
-    </Page.DataContext>
 
     <Grid>
         <StackPanel
@@ -48,7 +45,7 @@
                 <NavigationViewItem
                     Icon="{xh:FontIcon Glyph=&#xf2b7;}"
                     IsSelected="True"
-                    Tag="Natsurainko.FluentLauncher.Views.OOBE.LanguagePage">
+                    Tag="OOBELanguagePage">
                     <NavigationViewItem.Content>
                         <TextBlock
                             x:Uid="OOBE_OOBENavigationPage_NV_Item1"
@@ -56,7 +53,7 @@
                             Text="Language" />
                     </NavigationViewItem.Content>
                 </NavigationViewItem>
-                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xe713;}" Tag="Natsurainko.FluentLauncher.Views.OOBE.BasicPage">
+                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xe713;}" Tag="OOBEBasicPage">
                     <NavigationViewItem.Content>
                         <TextBlock
                             x:Uid="OOBE_OOBENavigationPage_NV_Item2"
@@ -64,7 +61,7 @@
                             Text="Basic Settings" />
                     </NavigationViewItem.Content>
                 </NavigationViewItem>
-                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xe77b;}" Tag="Natsurainko.FluentLauncher.Views.OOBE.AccountPage">
+                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xe77b;}" Tag="OOBEAccountPage">
                     <NavigationViewItem.Content>
                         <TextBlock
                             x:Uid="OOBE_OOBENavigationPage_NV_Item3"
@@ -74,7 +71,7 @@
                 </NavigationViewItem>
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
-                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xE736;}" Tag="Natsurainko.FluentLauncher.Views.OOBE.GetStartedPage">
+                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xE736;}" Tag="OOBEGetStartedPage">
                     <NavigationViewItem.Content>
                         <TextBlock
                             x:Uid="OOBE_OOBENavigationPage_NV_Item4"
@@ -86,7 +83,9 @@
             <Frame x:Name="contentFrame" Navigated="ContentFrame_Navigated">
                 <Frame.ContentTransitions>
                     <TransitionCollection>
-                        <NavigationThemeTransition />
+                        <NavigationThemeTransition x:Name="navTransition">
+                            <DrillInNavigationTransitionInfo/>
+                        </NavigationThemeTransition>
                     </TransitionCollection>
                 </Frame.ContentTransitions>
             </Frame>

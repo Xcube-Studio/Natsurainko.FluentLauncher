@@ -56,12 +56,6 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
         IsActive = true; // Enable message recipient
 
         (this as ISettingsViewModel).InitializeSettings();
-
-        //WeakReferenceMessenger.Default.Register<GuideNavigationMessage>(this, (r, m) =>
-        //{
-        //    CanNext = m.CanNext;
-        //    NextPage = m.NextPage;
-        //});
     }
 
     #region Navigation

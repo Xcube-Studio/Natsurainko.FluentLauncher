@@ -18,14 +18,20 @@ public sealed partial class OOBENavigationPage : Page, INavigationProvider
     public OOBENavigationPage()
     {
         InitializeComponent();
-        contentFrame.NavigationStopped += ContentFrame_NavigationStopped;
+        contentFrame.Navigated += ContentFrame_Navigated1;
     }
 
     // Change navigation transition effect after the first navigation
-    private void ContentFrame_NavigationStopped(object sender, NavigationEventArgs e)
+    int navigationCount = 0;
+    private void ContentFrame_Navigated1(object sender, NavigationEventArgs e)
     {
-        contentFrame.Navigated -= ContentFrame_NavigationStopped;
-        navTransition.DefaultNavigationTransitionInfo = new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromRight };
+        if (navigationCount == 1)
+        {
+            navTransition.DefaultNavigationTransitionInfo = new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromRight };
+            contentFrame.Navigated -= ContentFrame_Navigated1;
+            return;
+        }
+        navigationCount++;
     }
 
     private void ContentFrame_Navigated(object sender, NavigationEventArgs e)

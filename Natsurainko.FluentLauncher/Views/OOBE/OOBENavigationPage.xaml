@@ -19,19 +19,15 @@
             <Button
                 Width="85"
                 Command="{Binding BackCommand}"
-                CommandParameter="{Binding ElementName=contentFrame}"
-                FontWeight="SemiBold"
-                IsEnabled="{Binding ElementName=contentFrame, Path=CanGoBack}">
+                FontWeight="SemiBold">
                 <TextBlock x:Uid="Buttons_Back" Text="Back" />
             </Button>
             <Button
                 Width="85"
                 Margin="15,0,0,0"
                 Command="{Binding NextCommand}"
-                CommandParameter="{Binding ElementName=contentFrame}"
                 FontWeight="SemiBold"
                 Foreground="White"
-                IsEnabled="{Binding CanNext}"
                 Style="{ThemeResource AccentButtonStyle}">
                 <TextBlock x:Uid="Buttons_Next" Text="Next" />
             </Button>

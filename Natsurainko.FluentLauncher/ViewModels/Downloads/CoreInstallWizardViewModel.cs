@@ -3,9 +3,9 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
 using Natsurainko.FluentLauncher.Classes.Data.Download;
+using Natsurainko.FluentLauncher.Services.Download;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.ViewModels.CoreInstallWizard;
 using Natsurainko.FluentLauncher.Views;
@@ -28,6 +28,8 @@ internal partial class CoreInstallWizardViewModel : ObservableObject
     private readonly Stack<WizardViewModelBase> _viewModelStack = new();
 
     private readonly NotificationService _notificationService;
+    private readonly DownloadService _downloadService;
+
     private readonly VersionManifestItem _manifestItem;
 
     private Frame _contentFrame;
@@ -36,7 +38,9 @@ internal partial class CoreInstallWizardViewModel : ObservableObject
     public CoreInstallWizardViewModel(VersionManifestItem manifestItem)
     {
         _manifestItem = manifestItem;
+
         _notificationService = App.GetService<NotificationService>();
+        _downloadService = App.GetService<DownloadService>();
     }
 
     [RelayCommand]
@@ -60,7 +64,7 @@ internal partial class CoreInstallWizardViewModel : ObservableObject
     [RelayCommand]
     public void Next()
     {
-        if (CurrentFrameDataContext.GetType().Equals(typeof(ConfirmProfileViewModel)))
+        if (CurrentFrameDataContext.GetType().Equals(typeof(AdditionalOptionsViewModel)))
         {
             Finish();
             return;
@@ -120,13 +124,5 @@ internal partial class CoreInstallWizardViewModel : ObservableObject
         }
     }
 
-    private void Finish()
-    {
-        /*
-        _notificationService.NotifyWithSpecialContent(
-            $"Added Successfully",
-            "AuthenticationSuccessfulNotifyTemplate",
-            account, "\uE73E");*/
-    }
-
+    private void Finish() => _downloadService.CreateCoreInstallProcess(((AdditionalOptionsViewModel)this.CurrentFrameDataContext)._coreInstallationInfo);
 }

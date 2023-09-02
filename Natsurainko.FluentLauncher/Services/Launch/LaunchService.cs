@@ -399,7 +399,7 @@ internal class LaunchService : DefaultLaunchService
         }
     }
 
-    private async void UpdateJumpList(GameInfo gameInfo)
+    private static async void UpdateJumpList(GameInfo gameInfo)
     {
         var jumpList = await JumpList.LoadCurrentAsync();
 

@@ -15,6 +15,9 @@ internal class DownloadProcessSelector : DataTemplateSelector
         if (item is ResourceDownloadProcess)
             return ResourceDownload;
 
+        if (item is CoreInstallProcess)
+            return CoreInstall;
+
         return base.SelectTemplateCore(item);
     }
 }

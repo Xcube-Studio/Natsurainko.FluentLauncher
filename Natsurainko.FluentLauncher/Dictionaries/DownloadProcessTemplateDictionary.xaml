@@ -70,4 +70,93 @@
         </labs:SettingsExpander>
     </DataTemplate>
 
+    <DataTemplate x:Key="CoreInstllTemplate">
+        <labs:SettingsExpander
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            HeaderIcon="{xh:FontIcon Glyph=&#xE896;}"
+            IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
+
+            <labs:SettingsExpander.Header>
+                <TextBlock TextTrimming="CharacterEllipsis">
+                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="Download Task" />
+                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
+                    <Run FontWeight="SemiBold" Text="{Binding Title}" />
+                </TextBlock>
+            </labs:SettingsExpander.Header>
+
+            <labs:SettingsExpander.Description>
+                <TextBlock FontSize="13" TextTrimming="CharacterEllipsis">
+                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="State" />
+                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
+                    <Run Text="{Binding DisplayState}" />
+                </TextBlock>
+            </labs:SettingsExpander.Description>
+
+            <labs:SettingsExpander.Items>
+                <labs:SettingsCard>
+                    <labs:SettingsCard.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="15" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock HorizontalAlignment="Right">
+                                <Run Text="Progress: " />
+                                <Run Text="{Binding ProgressText}" />
+                            </TextBlock>
+                            <ProgressBar
+                                Grid.Column="2"
+                                Width="300"
+                                Maximum="1"
+                                Value="{Binding Progress}" />
+                        </Grid>
+                    </labs:SettingsCard.Header>
+                </labs:SettingsCard>
+
+                <labs:SettingsCard Padding="25,15">
+                    <labs:SettingsCard.Header>
+                        <ItemsRepeater ItemsSource="{Binding Progresses}">
+                            <ItemsRepeater.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,3.75">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="10" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="10" />
+                                            <ColumnDefinition Width="1*" />
+                                        </Grid.ColumnDefinitions>
+                                        <ProgressRing
+                                            Width="16"
+                                            Height="16"
+                                            IsActive="{Binding IsRunning}" />
+                                        <FontIcon
+                                            FontSize="16"
+                                            Glyph="{Binding FontIcon}"
+                                            Visibility="{Binding FontIconVisibility}" />
+                                        <TextBlock
+                                            Grid.Column="2"
+                                            HorizontalAlignment="Right"
+                                            FontWeight="{Binding ElementName=textBlock, Path=FontWeight}"
+                                            Foreground="{Binding ElementName=textBlock, Path=Foreground}">
+                                            <Run Text="{Binding Percentage}" />
+                                        </TextBlock>
+                                        <TextBlock
+                                            Name="textBlock"
+                                            Grid.Column="4"
+                                            FontWeight="{Binding FontWeight}"
+                                            Foreground="{Binding FontForeground}"
+                                            Text="{Binding StepName}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsRepeater.ItemTemplate>
+                        </ItemsRepeater>
+                    </labs:SettingsCard.Header>
+                </labs:SettingsCard>
+            </labs:SettingsExpander.Items>
+        </labs:SettingsExpander>
+    </DataTemplate>
 </ResourceDictionary>

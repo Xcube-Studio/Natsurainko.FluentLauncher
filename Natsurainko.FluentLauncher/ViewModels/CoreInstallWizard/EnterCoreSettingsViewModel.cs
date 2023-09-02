@@ -1,36 +1,33 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Natsurainko.FluentLauncher.Classes.Data.Download;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.CoreInstallWizard;
-using Nrk.FluentCore.Classes.Datas.Download;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels.CoreInstallWizard;
 
 internal partial class EnterCoreSettingsViewModel : WizardViewModelBase
 {
-    public override bool CanNext
-    {
-        get
-        {
-            if ((!_gameService.GameInfos.Select(x => x.AbsoluteId)?.ToList().Contains(AbsoluteId)).GetValueOrDefault())
-                return true;
-
-            return false;
-        }
-    }
+    public override bool CanNext => CheckAbsoluteId();
 
     public override bool CanPrevious => true;
 
     private readonly GameService _gameService = App.GetService<GameService>();
 
-    public EnterCoreSettingsViewModel(VersionManifestItem manifestItem)
+    public readonly CoreInstallationInfo _coreInstallationInfo;
+
+    public EnterCoreSettingsViewModel(CoreInstallationInfo coreInstallationInfo)
     {
         XamlPageType = typeof(EnterCoreSettingsPage);
-        AbsoluteId = manifestItem.Id;
+        _coreInstallationInfo = coreInstallationInfo;
+
+        AbsoluteId = GetDefaultId();
     }
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanNext))]
     public string absoluteId;
 
     [ObservableProperty]
@@ -39,8 +36,37 @@ internal partial class EnterCoreSettingsViewModel : WizardViewModelBase
     [ObservableProperty]
     public bool enableIndependencyCore;
 
+    private string GetDefaultId()
+    {
+        if (_coreInstallationInfo.PrimaryLoader == null)
+            return _coreInstallationInfo.ManifestItem.Id;
+
+        var tags = new List<string>
+        {
+            _coreInstallationInfo.ManifestItem.Id,
+            _coreInstallationInfo.PrimaryLoader.Type.ToString() + "_" + _coreInstallationInfo.PrimaryLoader.SelectedItem.DisplayText
+        };
+
+        if (_coreInstallationInfo.SecondaryLoader != null)
+            tags.Add(_coreInstallationInfo.SecondaryLoader.Type.ToString() + "_" + _coreInstallationInfo.SecondaryLoader.SelectedItem.DisplayText);
+
+        return string.Join("-", tags);
+    }
+
+    public bool CheckAbsoluteId()
+    {
+        if (string.IsNullOrEmpty(AbsoluteId) || _gameService.GameInfos.Where(x => x.AbsoluteId.Equals(AbsoluteId)).Any())
+            return false;
+
+        return true;
+    }
+
     public override WizardViewModelBase GetNextViewModel()
     {
-        throw new System.Exception();
+        _coreInstallationInfo.AbsoluteId = AbsoluteId;
+        _coreInstallationInfo.NickName = NickName;
+        _coreInstallationInfo.EnableIndependencyCore = EnableIndependencyCore;
+
+        return new AdditionalOptionsViewModel(_coreInstallationInfo);
     }
 }

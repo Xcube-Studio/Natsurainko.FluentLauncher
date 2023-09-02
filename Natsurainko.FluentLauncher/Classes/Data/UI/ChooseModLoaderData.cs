@@ -33,7 +33,7 @@ internal partial class ChooseModLoaderData : ObservableObject
 
     public bool IsEnable => IsSupported && IsCompatible;
 
-    private readonly VersionManifestItem _manifestItem;
+    public readonly VersionManifestItem _manifestItem;
     private readonly List<ChooseModLoaderData> _chooseModLoaders;
 
     public ChooseModLoaderData(ModLoaderType type, VersionManifestItem manifestItem, List<ChooseModLoaderData> chooseModLoaders) 
@@ -48,16 +48,16 @@ internal partial class ChooseModLoaderData : ObservableObject
     }
 
     [ObservableProperty]
+    private string description;
+
+    [ObservableProperty]
     private string displayText = ResourceUtils.GetValue("CoreInstallWizard", "ChooseModLoaderPage", "_Loading");
 
     [ObservableProperty]
-    private IEnumerable<object> items;
+    private IEnumerable<LoaderBuildData> items;
 
     [ObservableProperty]
-    private object selectedItem;
-
-    [ObservableProperty]
-    private object description;
+    private LoaderBuildData selectedItem;
 
     private void Init() => Task.Run(() =>
     {
@@ -74,7 +74,7 @@ internal partial class ChooseModLoaderData : ObservableObject
         responseMessage.EnsureSuccessStatusCode();
 
         var array = JsonNode.Parse(responseMessage.Content.ReadAsString()).AsArray();
-        IEnumerable<object> loaders = default;
+        IEnumerable<LoaderBuildData> loaders = default;
 
         if (array.Any())
         {
@@ -82,13 +82,13 @@ internal partial class ChooseModLoaderData : ObservableObject
             {
                 case ModLoaderType.Forge:
 
-                    var forge = array.Select(x => new
+                    var forge = array.Select(x => new LoaderBuildData
                     {
                         DisplayText = x["version"].GetValue<string>(),
-                        Build = x["build"].GetValue<int>()
+                        Metadata = x["build"]
                     }).ToList();
 
-                    forge.Sort((a, b) => a.Build.CompareTo(b.Build));
+                    forge.Sort((a, b) => a.Metadata.GetValue<int>().CompareTo(b.Metadata.GetValue<int>()));
                     forge.Reverse();
 
                     loaders = forge;
@@ -96,13 +96,13 @@ internal partial class ChooseModLoaderData : ObservableObject
                     break;
                 case ModLoaderType.Fabric:
 
-                    var fabric = array.Select(x => new
+                    var fabric = array.Select(x => new LoaderBuildData
                     {
                         DisplayText = x["loader"]["version"].GetValue<string>(),
-                        Build = x["loader"]["version"].GetValue<string>()
+                        Metadata = x["loader"]["version"]
                     }).ToList();
 
-                    fabric.Sort((a, b) => a.Build.CompareTo(b.Build));
+                    fabric.Sort((a, b) => a.DisplayText.CompareTo(b.DisplayText));
                     fabric.Reverse();
 
                     loaders = fabric;
@@ -110,11 +110,10 @@ internal partial class ChooseModLoaderData : ObservableObject
                     break;
                 case ModLoaderType.OptiFine:
 
-                    var optifine = array.Select(x => new
+                    var optifine = array.Select(x => new LoaderBuildData
                     {
                         DisplayText = $"{x["type"].GetValue<string>()}_{x["patch"].GetValue<string>()}",
-                        Type = x["type"].GetValue<string>(),
-                        Patch = x["patch"].GetValue<string>()
+                        Metadata = x
                     }).ToList();
 
                     loaders = optifine;
@@ -122,13 +121,13 @@ internal partial class ChooseModLoaderData : ObservableObject
                     break;
                 case ModLoaderType.Quilt:
 
-                    var quilt = array.Select(x => new
+                    var quilt = array.Select(x => new LoaderBuildData
                     {
                         DisplayText = x["loader"]["version"].GetValue<string>(),
-                        Build = x["loader"]["version"].GetValue<string>()
+                        Metadata = x
                     }).ToList();
 
-                    quilt.Sort((a, b) => a.Build.CompareTo(b.Build));
+                    quilt.Sort((a, b) => a.DisplayText.CompareTo(b.DisplayText));
                     quilt.Reverse();
 
                     loaders = quilt;
@@ -136,13 +135,13 @@ internal partial class ChooseModLoaderData : ObservableObject
                     break;
                 case ModLoaderType.NeoForge:
 
-                    var neoForge = array.Select(x => new
+                    var neoForge = array.Select(x => new LoaderBuildData
                     {
                         DisplayText = x["version"].GetValue<string>(),
-                        Build = x["version"].GetValue<string>()
+                        Metadata = x["version"]
                     }).ToList();
 
-                    neoForge.Sort((a, b) => a.Build.CompareTo(b.Build));
+                    neoForge.Sort((a, b) => a.DisplayText.CompareTo(b.DisplayText));
                     neoForge.Reverse();
 
                     loaders = neoForge; 
@@ -215,5 +214,12 @@ internal partial class ChooseModLoaderData : ObservableObject
 
         if (e.PropertyName == nameof(IsChecked))
             _chooseModLoaders.ForEach(x => x.HandleCompatible());
+    }
+
+    public class LoaderBuildData
+    {
+        public string DisplayText { get; set; }
+
+        public JsonNode Metadata { get; set; }
     }
 }

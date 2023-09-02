@@ -71,29 +71,29 @@
                     Content="Home"
                     Icon="{xh:FontIcon Glyph=&#xE80F;}"
                     IsSelected="True"
-                    Tag="Natsurainko.FluentLauncher.Views.Home.HomePage" />
+                    Tag="HomePage" />
                 <NavigationViewItem
                     x:Uid="ShellPage_NV_Item_2"
                     Content="Cores"
                     Icon="{xh:FontIcon Glyph=&#xf158;}"
-                    Tag="Natsurainko.FluentLauncher.Views.Cores.CoresPage" />
+                    Tag="CoresPage" />
                 <NavigationViewItem
                     x:Uid="ShellPage_NV_Item_3"
                     Content="Activities"
                     Icon="{xh:FontIcon Glyph=&#xE945;}"
-                    Tag="Natsurainko.FluentLauncher.Views.Activities.ActivitiesNavigationPage" />
+                    Tag="ActivitiesNavigationPage" />
                 <NavigationViewItem
                     x:Uid="ShellPage_NV_Item_4"
                     Content="Mods"
                     Icon="{xh:FontIcon Glyph=&#xe8f1;}"
-                    Tag="Natsurainko.FluentLauncher.Views.Downloads.DownloadsPage" />
+                    Tag="ResourcesDownloadPage" />
             </NavigationView.MenuItems>
 
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem
                     x:Uid="ShellPage_NV_Item_5"
                     Content="Settings"
-                    Tag="Natsurainko.FluentLauncher.Views.Settings.NavigationPage">
+                    Tag="SettingsNavigationPage">
                     <NavigationViewItem.Icon>
                         <AnimatedIcon>
                             <AnimatedIcon.FallbackIconSource>

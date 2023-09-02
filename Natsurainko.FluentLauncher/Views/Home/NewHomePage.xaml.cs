@@ -8,7 +8,6 @@ public sealed partial class NewHomePage : Page
     public NewHomePage()
     {
         this.InitializeComponent();
-        DataContext = App.GetService<HomeViewModel>();
     }
 
     private void Button_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

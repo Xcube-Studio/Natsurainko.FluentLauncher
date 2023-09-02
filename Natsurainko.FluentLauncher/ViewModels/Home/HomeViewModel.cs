@@ -6,6 +6,7 @@ using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Classes.Datas.Authenticate;
 using System.Collections.ObjectModel;
@@ -30,14 +31,16 @@ internal partial class HomeViewModel : ObservableObject
     private readonly GameService _gameService;
     private readonly AccountService _accountService;
     private readonly LaunchService _launchService;
+    private readonly INavigationService _navigationService;
 
     private string _coreNotSelected = ResourceUtils.GetValue("Home", "HomePage", "_NoCore");
 
-    public HomeViewModel(GameService gameService, AccountService accountService, LaunchService launchService)
+    public HomeViewModel(GameService gameService, AccountService accountService, LaunchService launchService, INavigationService navigationService)
     {
         _accountService = accountService;
         _gameService = gameService;
         _launchService = launchService;
+        _navigationService = navigationService;
 
         Accounts = accountService.Accounts;
         ActiveAccount = accountService.ActiveAccount;
@@ -65,10 +68,10 @@ internal partial class HomeViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void Account() => Views.ShellPage.ContentFrame.Navigate(typeof(Views.Settings.NavigationPage), typeof(Views.Settings.AccountPage));
+    public void Account() => _navigationService.NavigateTo("SettingsNavigationPage", "AccountSettingsPage");
 
     [RelayCommand]
-    public void Cores() => Views.ShellPage.ContentFrame.Navigate(typeof(Views.Cores.CoresPage));
+    public void Cores() => _navigationService.NavigateTo("CoresPage"); // Views.ShellPage.ContentFrame.Navigate(typeof(Views.Cores.CoresPage));
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {

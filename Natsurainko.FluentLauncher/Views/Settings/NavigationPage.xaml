@@ -20,7 +20,7 @@
                     x:Uid="Settings_NavigationPage_NV_Item_1"
                     Content="Launch"
                     IsSelected="True"
-                    Tag="Natsurainko.FluentLauncher.Views.Settings.LaunchPage">
+                    Tag="LaunchSettingsPage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe945;" />
                     </NavigationViewItem.Icon>
@@ -28,7 +28,7 @@
                 <NavigationViewItem
                     x:Uid="Settings_NavigationPage_NV_Item_2"
                     Content="Account"
-                    Tag="Natsurainko.FluentLauncher.Views.Settings.AccountPage">
+                    Tag="AccountSettingsPage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe77b;" />
                     </NavigationViewItem.Icon>
@@ -36,7 +36,7 @@
                 <NavigationViewItem
                     x:Uid="Settings_NavigationPage_NV_Item_3"
                     Content="Download"
-                    Tag="Natsurainko.FluentLauncher.Views.Settings.DownloadPage">
+                    Tag="DownloadSettingsPage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe896;" />
                     </NavigationViewItem.Icon>
@@ -44,7 +44,7 @@
                 <NavigationViewItem
                     x:Uid="Settings_NavigationPage_NV_Item_4"
                     Content="Appearance"
-                    Tag="Natsurainko.FluentLauncher.Views.Settings.AppearancePage">
+                    Tag="AppearanceSettingsPage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE790;" />
                     </NavigationViewItem.Icon>
@@ -54,7 +54,7 @@
                 <NavigationViewItem
                     x:Uid="Settings_NavigationPage_NV_Item_5"
                     Content="About"
-                    Tag="Natsurainko.FluentLauncher.Views.Settings.AboutPage">
+                    Tag="AboutPage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE736;" />
                     </NavigationViewItem.Icon>

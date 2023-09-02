@@ -8,6 +8,5 @@ public sealed partial class CoresPage : Page
     public CoresPage()
     {
         this.InitializeComponent();
-        DataContext = App.GetService<CoresViewModel>();
     }
 }

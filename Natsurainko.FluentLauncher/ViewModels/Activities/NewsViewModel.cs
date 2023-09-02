@@ -10,27 +10,34 @@ namespace Natsurainko.FluentLauncher.ViewModels.Activities;
 
 internal partial class NewsViewModel : ObservableObject
 {
+    // Singleton data
+    // TODO: create news service
+    private static IReadOnlyList<NewsData> _newsData;
+    private static bool _isLoaded = false;
+
     public NewsViewModel(InterfaceCacheService service)
     {
-        Task.Run(async () =>
-        {
-            var newsDatas = await service.FetchNews();
-
-            App.DispatcherQueue.TryEnqueue(() =>
+        if (!_isLoaded)
+            LoadNews(service).ContinueWith((_) =>
             {
-                NewsDatas = newsDatas;
-                Loading = Visibility.Collapsed;
+                App.DispatcherQueue.TryEnqueue(() =>
+                {
+                    NewsData = _newsData;
+                    Loading = _isLoaded ? Visibility.Collapsed : Visibility.Visible;
+                });
             });
-        }).ContinueWith(task =>
-        {
-            if (task.IsFaulted)
-                ;
-        });
+    }
+
+    private async Task LoadNews(InterfaceCacheService service)
+    {
+        var newsData = await service.FetchNews().ConfigureAwait(true);
+        _newsData = newsData;
+        _isLoaded = true;
     }
 
     [ObservableProperty]
-    private IReadOnlyList<NewsData> newsDatas;
+    private IReadOnlyList<NewsData> newsData;
 
     [ObservableProperty]
-    private Visibility loading = Visibility.Visible;
+    private Visibility loading;
 }

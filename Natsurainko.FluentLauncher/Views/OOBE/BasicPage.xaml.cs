@@ -9,6 +9,5 @@ public sealed partial class BasicPage : Page
     public BasicPage()
     {
         InitializeComponent();
-        DataContext = App.Services.GetService<BasicViewModel>();
     }
 }

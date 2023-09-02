@@ -8,6 +8,5 @@ public sealed partial class GetStartedPage : Page
     public GetStartedPage()
     {
         InitializeComponent();
-        DataContext = App.GetService<GetStartedViewModel>();
     }
 }

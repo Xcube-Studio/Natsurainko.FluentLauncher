@@ -9,6 +9,5 @@ public sealed partial class DownloadPage : Page
     public DownloadPage()
     {
         InitializeComponent();
-        DataContext = App.Services.GetService<DownloadViewModel>();
     }
 }

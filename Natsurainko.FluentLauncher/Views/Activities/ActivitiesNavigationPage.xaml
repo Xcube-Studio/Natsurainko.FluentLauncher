@@ -20,7 +20,7 @@
                     x:Uid="Activities_ActivitiesNavigationPage_NV_Item1"
                     Content="Launch Task"
                     IsSelected="True"
-                    Tag="Natsurainko.FluentLauncher.Views.Activities.LaunchPage">
+                    Tag="LaunchTasksPage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe945;" />
                     </NavigationViewItem.Icon>
@@ -28,7 +28,7 @@
                 <NavigationViewItem
                     x:Uid="Activities_ActivitiesNavigationPage_NV_Item2"
                     Content="Download Task"
-                    Tag="Natsurainko.FluentLauncher.Views.Activities.DownloadPage">
+                    Tag="DownloadTasksPage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe896;" />
                     </NavigationViewItem.Icon>
@@ -36,7 +36,7 @@
                 <NavigationViewItem
                     x:Uid="Activities_ActivitiesNavigationPage_NV_Item3"
                     Content="News"
-                    Tag="Natsurainko.FluentLauncher.Views.Activities.NewsPage">
+                    Tag="NewsPage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xed0c;" />
                     </NavigationViewItem.Icon>

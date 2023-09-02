@@ -9,6 +9,5 @@ public sealed partial class AppearancePage : Page
     public AppearancePage()
     {
         InitializeComponent();
-        DataContext = App.Services.GetService<AppearanceViewModel>();
     }
 }

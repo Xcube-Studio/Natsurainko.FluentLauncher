@@ -9,6 +9,5 @@ public sealed partial class LaunchPage : Page
     public LaunchPage()
     {
         InitializeComponent();
-        DataContext = App.Services.GetService<LaunchViewModel>();
     }
 }

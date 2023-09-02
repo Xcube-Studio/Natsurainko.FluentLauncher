@@ -2,6 +2,7 @@
     x:Class="Natsurainko.FluentLauncher.Views.CoreInstallWizard.EnterCoreSettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:Natsurainko.FluentLauncher.Utils.Xaml.Converters"
     xmlns:coreinstallwizard="using:Natsurainko.FluentLauncher.ViewModels.CoreInstallWizard"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
@@ -25,7 +26,18 @@
                             <TextBlock Text="The name of the versions/{version} directory, the name cannot be repeated" />
                         </labs:SettingsCard.Description>
 
-                        <TextBox Width="150" Text="{Binding AbsoluteId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <StackPanel Spacing="4">
+                            <TextBox Width="150" Text="{Binding AbsoluteId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="Id not available">
+                                <TextBlock.Visibility>
+                                    <Binding Path="CanNext">
+                                        <Binding.Converter>
+                                            <converters:BoolToVisibilityConverter Inverted="True" />
+                                        </Binding.Converter>
+                                    </Binding>
+                                </TextBlock.Visibility>
+                            </TextBlock>
+                        </StackPanel>
                     </labs:SettingsCard>
 
                     <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE8AC;}">

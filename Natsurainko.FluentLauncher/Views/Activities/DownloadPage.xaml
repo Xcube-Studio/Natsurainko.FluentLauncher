@@ -16,7 +16,7 @@
                 Background="Transparent"
                 ItemsSource="{Binding DownloadProcesses}">
                 <ItemsRepeater.ItemTemplate>
-                    <selectors:DownloadProcessSelector ResourceDownload="{StaticResource ResourceDownloadTemplate}" />
+                    <selectors:DownloadProcessSelector CoreInstall="{StaticResource CoreInstllTemplate}" ResourceDownload="{StaticResource ResourceDownloadTemplate}" />
                 </ItemsRepeater.ItemTemplate>
                 <ItemsRepeater.Layout>
                     <StackLayout Spacing="4" />

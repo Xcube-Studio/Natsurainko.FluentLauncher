@@ -47,6 +47,8 @@ internal class GameService : DefaultGameService
         }
     }
 
+    public void RefreshCurrentFolder() => InitFolder();
+
     protected override void InitFolder()
     {
         //_versionsFolderWatcher?.Dispose();
@@ -74,7 +76,7 @@ internal class GameService : DefaultGameService
         }
         else _settingsService.ActiveGameInfo = null;
 
-        if (_settingsService.ActiveGameInfo == null)
+        if (_gameInfos.Any() && _settingsService.ActiveGameInfo == null)
             ActivateGameInfo(_gameInfos.First());
     }
 

@@ -99,23 +99,10 @@
                                         </Binding>
                                     </labs:SettingsCard.Visibility>
                                     <labs:SettingsCard.Header>
-                                        <ListBox Background="Transparent" ItemsSource="{Binding StepItems}">
-                                            <ListBox.ItemContainerStyle>
-                                                <Style TargetType="ListBoxItem">
-                                                    <Style.Setters>
-                                                        <Setter Property="Template">
-                                                            <Setter.Value>
-                                                                <ControlTemplate>
-                                                                    <ContentPresenter Margin="0,3.75" />
-                                                                </ControlTemplate>
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                    </Style.Setters>
-                                                </Style>
-                                            </ListBox.ItemContainerStyle>
-                                            <ListBox.ItemTemplate>
+                                        <ItemsRepeater ItemsSource="{Binding StepItems}">
+                                            <ItemsRepeater.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Grid>
+                                                    <Grid Margin="0,3.75">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="Auto" />
                                                             <ColumnDefinition Width="10" />
@@ -182,8 +169,8 @@
                                                         </TextBlock>
                                                     </Grid>
                                                 </DataTemplate>
-                                            </ListBox.ItemTemplate>
-                                        </ListBox>
+                                            </ItemsRepeater.ItemTemplate>
+                                        </ItemsRepeater>
                                     </labs:SettingsCard.Header>
                                 </labs:SettingsCard>
 

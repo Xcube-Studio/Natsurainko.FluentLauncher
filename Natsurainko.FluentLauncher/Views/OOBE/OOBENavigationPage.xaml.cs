@@ -13,7 +13,7 @@ namespace Natsurainko.FluentLauncher.Views.OOBE;
 public sealed partial class OOBENavigationPage : Page, INavigationProvider
 {
     object INavigationProvider.NavigationControl => contentFrame;
-    private OOBENavigationViewModel VM => (OOBENavigationViewModel)DataContext;
+    private OOBEViewModel VM => (OOBEViewModel)DataContext;
 
     public OOBENavigationPage()
     {

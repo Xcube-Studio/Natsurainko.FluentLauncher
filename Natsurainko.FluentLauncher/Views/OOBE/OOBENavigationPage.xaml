@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
+    d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
     mc:Ignorable="d">
 
     <Grid>
@@ -84,7 +85,7 @@
                 <Frame.ContentTransitions>
                     <TransitionCollection>
                         <NavigationThemeTransition x:Name="navTransition">
-                            <DrillInNavigationTransitionInfo/>
+                            <DrillInNavigationTransitionInfo />
                         </NavigationThemeTransition>
                     </TransitionCollection>
                 </Frame.ContentTransitions>

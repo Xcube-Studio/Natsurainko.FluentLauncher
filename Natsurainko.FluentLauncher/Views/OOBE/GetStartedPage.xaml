@@ -6,7 +6,7 @@
     xmlns:local="using:Natsurainko.FluentLauncher.Views.OOBE"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
-    d:DataContext="{d:DesignInstance vm:GetStartedViewModel}"
+    d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
     mc:Ignorable="d">
 
     <Grid Padding="75,0">

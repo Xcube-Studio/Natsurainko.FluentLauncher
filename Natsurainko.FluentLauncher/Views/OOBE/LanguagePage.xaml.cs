@@ -9,6 +9,5 @@ public sealed partial class LanguagePage : Page
     public LanguagePage()
     {
         InitializeComponent();
-        DataContext = App.Services.GetService<LanguageViewModel>();
     }
 }

@@ -68,11 +68,11 @@ public partial class App : Application
 
     private static IPageProvider BuildPageProvider(IServiceProvider sp) => WinUIPageProvider.GetBuilder(sp)
         // OOBE
-        .WithPage<Views.OOBE.OOBENavigationPage, ViewModels.OOBE.OOBENavigationViewModel>("OOBENavigationPage")
-        .WithPage<Views.OOBE.AccountPage, ViewModels.OOBE.AccountViewModel>("OOBEAccountPage")
-        .WithPage<Views.OOBE.BasicPage, ViewModels.OOBE.BasicViewModel>("OOBEBasicPage")
-        .WithPage<Views.OOBE.GetStartedPage, ViewModels.OOBE.GetStartedViewModel>("OOBEGetStartedPage")
-        .WithPage<Views.OOBE.LanguagePage, ViewModels.OOBE.LanguageViewModel>("OOBELanguagePage")
+        .WithPage<Views.OOBE.OOBENavigationPage, ViewModels.OOBE.OOBEViewModel>("OOBENavigationPage")
+        .WithPage<Views.OOBE.AccountPage>("OOBEAccountPage")
+        .WithPage<Views.OOBE.BasicPage>("OOBEBasicPage")
+        .WithPage<Views.OOBE.GetStartedPage>("OOBEGetStartedPage")
+        .WithPage<Views.OOBE.LanguagePage>("OOBELanguagePage")
 
         // Main
         .WithPage<ShellPage, ShellViewModel>("ShellPage")
@@ -143,7 +143,7 @@ public partial class App : Application
         services.AddScoped<MainWindow>();
 
         // ViewModels
-        services.AddTransient<ViewModels.OOBE.OOBENavigationViewModel>();
+        services.AddTransient<ViewModels.OOBE.OOBEViewModel>();
         services.AddTransient<ViewModels.OOBE.AccountViewModel>();
         services.AddTransient<ViewModels.OOBE.BasicViewModel>();
         services.AddTransient<ViewModels.OOBE.GetStartedViewModel>();

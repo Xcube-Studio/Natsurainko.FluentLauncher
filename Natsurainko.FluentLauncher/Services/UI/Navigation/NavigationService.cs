@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.UI.Pages;
 using System;
@@ -86,7 +87,9 @@ public class NavigationService : INavigationService
             }
 
             // After navigation
-            if (page.DataContext is INavigationAware vmAfter)
+            
+            if (page.ReadLocalValue(Page.DataContextProperty) != DependencyProperty.UnsetValue && // Requires VM set for the page, rather than inherited
+                page.DataContext is INavigationAware vmAfter)
                 vmAfter.OnNavigatedTo(parameter);
         }
     }

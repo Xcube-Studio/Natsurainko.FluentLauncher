@@ -2,11 +2,14 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.UI.Pages;
+using Nrk.FluentCore.Classes.Datas.Launch;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.Services.Maps;
 
 #nullable enable
@@ -51,8 +54,28 @@ public class NavigationService : INavigationService
     public INavigationService? Parent { get; private set; }
     public bool CanGoBack => Frame.CanGoBack;
     public bool CanGoForward => Frame.CanGoForward;
-    public void GoBack() => Frame.GoBack();
-    public void GoForward() => Frame.GoForward();
+
+    Stack<(string key, object? param)> _backStack = new();
+    (string key, object? param) _current;
+    Stack<(string key, object? param)> _forwardStack = new();
+
+    public void GoBack()
+    {
+        Frame.GoBack();
+        _forwardStack.Push(_current);
+        _current = _backStack.Pop();
+
+        ConfigureFrameContent(_current.key, _current.param);
+    }
+
+    public void GoForward()
+    {
+        Frame.GoForward();
+        _backStack.Push(_current);
+        _current = _forwardStack.Pop();
+
+        ConfigureFrameContent(_current.key, _current.param);
+    }
 
     public void NavigateTo(string key, object? parameter = null)
     {
@@ -63,6 +86,16 @@ public class NavigationService : INavigationService
         // Navigation
         var pageInfo = _pageProvider.RegisteredPages[key];
         Frame.Navigate(pageInfo.PageType);
+        _backStack.Push(_current);
+        _forwardStack.Clear();
+        _current = (key, parameter);
+
+        ConfigureFrameContent(key, parameter);
+    }
+
+    private void ConfigureFrameContent(string key, object? parameter)
+    {
+        var pageInfo = _pageProvider.RegisteredPages[key];
 
         if (Frame.Content is Page page)
         {
@@ -87,7 +120,6 @@ public class NavigationService : INavigationService
             }
 
             // After navigation
-            
             if (page.ReadLocalValue(Page.DataContextProperty) != DependencyProperty.UnsetValue && // Requires VM set for the page, rather than inherited
                 page.DataContext is INavigationAware vmAfter)
                 vmAfter.OnNavigatedTo(parameter);

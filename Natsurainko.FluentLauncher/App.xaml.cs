@@ -144,10 +144,6 @@ public partial class App : Application
 
         // ViewModels
         services.AddTransient<ViewModels.OOBE.OOBEViewModel>();
-        services.AddTransient<ViewModels.OOBE.AccountViewModel>();
-        services.AddTransient<ViewModels.OOBE.BasicViewModel>();
-        services.AddTransient<ViewModels.OOBE.GetStartedViewModel>();
-        services.AddTransient<ViewModels.OOBE.LanguageViewModel>();
 
         services.AddTransient<ViewModels.Activities.ActivitiesNavigationViewModel>();
         services.AddTransient<ViewModels.Activities.NewsViewModel>();
@@ -162,11 +158,6 @@ public partial class App : Application
         services.AddTransient<ViewModels.Settings.AccountViewModel>();
         services.AddTransient<ViewModels.Settings.LaunchViewModel>();
         services.AddTransient<ViewModels.Settings.AboutViewModel>();
-
-        services.AddTransient<ViewModels.OOBE.LanguageViewModel>();
-        services.AddTransient<ViewModels.OOBE.BasicViewModel>();
-        services.AddTransient<ViewModels.OOBE.AccountViewModel>();
-        services.AddTransient<ViewModels.OOBE.GetStartedViewModel>();
 
         services.AddTransient<ViewModels.Cores.CoresViewModel>();
         services.AddTransient<ViewModels.Home.HomeViewModel>();

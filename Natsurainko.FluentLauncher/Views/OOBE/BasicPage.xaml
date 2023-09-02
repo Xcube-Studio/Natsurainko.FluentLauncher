@@ -101,7 +101,7 @@
                             </Grid.ColumnDefinitions>
                             <ComboBox
                                 HorizontalAlignment="Stretch"
-                                IsDropDownOpen="{Binding DropDownOpen, Mode=TwoWay}"
+                                IsDropDownOpen="{Binding JavaDropDownOpen, Mode=TwoWay}"
                                 ItemsSource="{Binding Javas}"
                                 SelectedItem="{Binding ActiveJava, Mode=TwoWay}">
                                 <ComboBox.ItemTemplate>

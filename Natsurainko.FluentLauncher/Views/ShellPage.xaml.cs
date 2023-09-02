@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
+using Natsurainko.FluentLauncher.Services.UI.Pages;
 using Natsurainko.FluentLauncher.ViewModels;
 using Natsurainko.FluentLauncher.Views.Home;
 using System;
@@ -56,11 +57,11 @@ public sealed partial class ShellPage : Page, INavigationProvider
         if (pageTag == "HomePage" && _settings.UseNewHomePage)
             pageTag = "NewHomePage";
 
-        VM.NavigateTo(pageTag);
+        VM.NavigationService.NavigateTo(pageTag);
     }
 
     private void NavigationViewControl_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
-        => contentFrame.GoBack();
+        => VM.NavigationService.GoBack();
 
     private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
     {
@@ -101,7 +102,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
     {
         foreach (NavigationViewItem item in NavigationViewControl.MenuItems.Union(NavigationViewControl.FooterMenuItems).Cast<NavigationViewItem>())
         {
-            if (Type.GetType((string)item.Tag) == e.SourcePageType)
+            if (App.GetService<IPageProvider>().RegisteredPages[item.Tag.ToString()].PageType == e.SourcePageType)
             {
                 NavigationViewControl.SelectedItem = item;
                 item.IsSelected = true;

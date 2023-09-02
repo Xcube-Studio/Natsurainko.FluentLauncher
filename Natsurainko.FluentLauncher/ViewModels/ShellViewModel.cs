@@ -11,6 +11,8 @@ namespace Natsurainko.FluentLauncher.ViewModels;
 
 class ShellViewModel : INavigationAware
 {
+    public INavigationService NavigationService => _shellNavigationService;
+
     private readonly INavigationService _shellNavigationService;
     private readonly SettingsService _settings;
 
@@ -20,16 +22,9 @@ class ShellViewModel : INavigationAware
         _settings = settings;
     }
 
-    #region Navigation
-
     void INavigationAware.OnNavigatedTo(object parameter)
     {
         _shellNavigationService.NavigateTo(_settings.UseNewHomePage ? "NewHomePage" : "HomePage");
     }
-
-    public void NavigateTo(string pageKey, object? parameter = null)
-        => _shellNavigationService.NavigateTo(pageKey, parameter);
-
-    #endregion
 
 }

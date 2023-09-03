@@ -83,6 +83,9 @@ public partial class App : Application
 
         // Cores page
         .WithPage<Views.Cores.CoresPage, ViewModels.Cores.CoresViewModel>("CoresPage")
+        .WithPage<Views.Cores.ManageNavigationPage, ViewModels.Cores.ManageNavigationViewModel>("CoresManageNavigationPage")
+        .WithPage<Views.Cores.Manage.CoreSettingsPage, ViewModels.Cores.Manage.CoreSettingsViewModel>("CoreSettingsPage")
+        .WithPage<Views.Cores.Manage.CoreModsPage, ViewModels.Cores.Manage.CoreModsViewModel>("CoreModsPage")
 
         // Activities page
         .WithPage<Views.Activities.ActivitiesNavigationPage, ViewModels.Activities.ActivitiesNavigationViewModel>("ActivitiesNavigationPage")
@@ -92,6 +95,7 @@ public partial class App : Application
 
         // Resources download page
         .WithPage<Views.Downloads.DownloadsPage, ViewModels.Downloads.DownloadsViewModel>("ResourcesDownloadPage")
+        .WithPage<Views.Downloads.ResourcesSearchPage, ViewModels.Downloads.ResourcesSearchViewModel>("ResourcesSearchPage")
 
         // Settings
         .WithPage<Views.Settings.NavigationPage, ViewModels.Settings.SettingsNavigationViewModel>("SettingsNavigationPage")
@@ -160,9 +164,15 @@ public partial class App : Application
         services.AddTransient<ViewModels.Settings.AboutViewModel>();
 
         services.AddTransient<ViewModels.Cores.CoresViewModel>();
+        services.AddTransient<ViewModels.Cores.ManageNavigationViewModel>();
+        services.AddTransient<ViewModels.Cores.Manage.CoreModsViewModel>();
+        services.AddTransient<ViewModels.Cores.Manage.CoreSettingsViewModel>();
+
         services.AddTransient<ViewModels.Home.HomeViewModel>();
 
         services.AddTransient<ViewModels.Downloads.DownloadsViewModel>();
+        services.AddTransient<ViewModels.Downloads.ResourcesSearchViewModel>();
+
         services.AddTransient<ViewModels.ShellViewModel>();
 
         return services.BuildServiceProvider();

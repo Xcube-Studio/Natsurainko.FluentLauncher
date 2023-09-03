@@ -5,9 +5,8 @@ using Natsurainko.FluentLauncher.Classes.Data.Download;
 using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.Views;
+using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Views.Cores;
-using Natsurainko.FluentLauncher.Views.Downloads;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,11 +23,13 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
 
     [SettingsProvider]
     private readonly SettingsService _settingsService;
+    private readonly INavigationService _navigationService;
 
-    public CoresViewModel(GameService gameService, SettingsService settingsService)
+    public CoresViewModel(GameService gameService, SettingsService settingsService, INavigationService navigationService)
     {
         _gameService = gameService;
         _settingsService = settingsService;
+        _navigationService = navigationService;
 
         GameInfos = _gameService.GameInfos;
 
@@ -95,11 +96,12 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     }
 
     [RelayCommand]
-    public void OpenCoreManage(GameInfo gameInfo) => Views.ShellPage.ContentFrame.Navigate(typeof(ManageNavigationPage), gameInfo);
+    public void OpenCoreManage(GameInfo gameInfo) 
+        => _navigationService.NavigateTo("CoresManageNavigationPage", gameInfo);
 
     [RelayCommand]
     public void SearchAllMinecraft()
-        => ShellPage.ContentFrame.Navigate(typeof(ResourcesSearchPage), new ResourceSearchData
+        => _navigationService.NavigateTo("ResourcesSearchPage", new ResourceSearchData
         {
             SearchInput = string.Empty,
             ResourceType = 0

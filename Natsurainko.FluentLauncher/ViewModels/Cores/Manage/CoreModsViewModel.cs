@@ -1,9 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Natsurainko.FluentLauncher.Classes.Data.Download;
+using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.Views.Downloads;
-using Natsurainko.FluentLauncher.Views;
 using Nrk.FluentCore.Classes.Datas;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.DefaultComponents.Manage;
@@ -16,12 +15,32 @@ using Windows.System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
 
-internal partial class CoreModsViewModel : ObservableObject
+internal partial class CoreModsViewModel : ObservableObject, INavigationAware
 {
-    public readonly DefaultModsManager modsManager;
+    public DefaultModsManager modsManager;
+    private readonly INavigationService _navigationService;
 
-    public CoreModsViewModel(GameInfo gameInfo)
+    public CoreModsViewModel(INavigationService navigationService)
     {
+        _navigationService = navigationService;
+    }
+
+    public bool SupportMod { get; private set; }
+
+    public string ModsFolder { get; private set; }
+
+    private IReadOnlyList<ModInfo> Mods { get; set; }
+
+    [ObservableProperty]
+    private IEnumerable<ModInfo> displayMods;
+
+    [ObservableProperty]
+    private string searchBoxInput;
+
+    void INavigationAware.OnNavigatedTo(object parameter)
+    {
+        var gameInfo = parameter as GameInfo;
+
         SupportMod = gameInfo.IsSupportMod();
 
         if (SupportMod)
@@ -37,18 +56,6 @@ internal partial class CoreModsViewModel : ObservableObject
             });
         }
     }
-
-    public bool SupportMod { get; init; }
-
-    public string ModsFolder { get; init; }
-
-    private IReadOnlyList<ModInfo> Mods { get; set; }
-
-    [ObservableProperty]
-    private IEnumerable<ModInfo> displayMods;
-
-    [ObservableProperty]
-    private string searchBoxInput;
 
     [RelayCommand]
     public void OpenFolder() => _ = Launcher.LaunchFolderPathAsync(ModsFolder);
@@ -67,7 +74,7 @@ internal partial class CoreModsViewModel : ObservableObject
 
     [RelayCommand]
     public void SearchAllMinecraft()
-        => ShellPage.ContentFrame.Navigate(typeof(ResourcesSearchPage), new ResourceSearchData
+        => _navigationService.Parent.NavigateTo("ResourcesSearchPage", new ResourceSearchData
         {
             SearchInput = string.Empty,
             ResourceType = 0

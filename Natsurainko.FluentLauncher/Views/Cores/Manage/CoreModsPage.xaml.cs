@@ -1,6 +1,4 @@
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Navigation;
-using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
 using Nrk.FluentCore.Classes.Datas;
 
@@ -11,12 +9,6 @@ public sealed partial class CoreModsPage : Page
     public CoreModsPage()
     {
         this.InitializeComponent();
-    }
-
-    protected override void OnNavigatedTo(NavigationEventArgs e)
-    {
-        base.OnNavigatedTo(e);
-        this.DataContext = new CoreModsViewModel(e.Parameter as ExtendedGameInfo);
     }
 
     private void toggleSwitch_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

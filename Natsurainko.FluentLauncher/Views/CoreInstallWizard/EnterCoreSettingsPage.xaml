@@ -8,6 +8,7 @@
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
+    x:Uid="CoreInstallWizard_EnterCoreSettingsPage_Page"
     d:DataContext="{d:DesignInstance Type=coreinstallwizard:EnterCoreSettingsViewModel}"
     Background="Transparent"
     Tag="Basic Core Settings (2/3)"
@@ -20,15 +21,18 @@
                 <StackPanel MaxWidth="1000" Spacing="4">
                     <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xF158;}">
                         <labs:SettingsCard.Header>
-                            <TextBlock Text="Core Absolute Id:" />
+                            <TextBlock x:Uid="CoreInstallWizard_EnterCoreSettingsPage_H1" Text="Core Absolute Id:" />
                         </labs:SettingsCard.Header>
                         <labs:SettingsCard.Description>
-                            <TextBlock Text="The name of the versions/{version} directory, the name cannot be repeated" />
+                            <TextBlock x:Uid="CoreInstallWizard_EnterCoreSettingsPage_D1" Text="The name of the versions/{version} directory, the name cannot be repeated" />
                         </labs:SettingsCard.Description>
 
                         <StackPanel Spacing="4">
                             <TextBox Width="150" Text="{Binding AbsoluteId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="Id not available">
+                            <TextBlock
+                                x:Uid="CoreInstallWizard_EnterCoreSettingsPage_NotAvailableText"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                Text="Id not available">
                                 <TextBlock.Visibility>
                                     <Binding Path="CanNext">
                                         <Binding.Converter>
@@ -42,10 +46,10 @@
 
                     <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE8AC;}">
                         <labs:SettingsCard.Header>
-                            <TextBlock Text="Core Nickname:" />
+                            <TextBlock x:Uid="CoreInstallWizard_EnterCoreSettingsPage_H2" Text="Core Nickname:" />
                         </labs:SettingsCard.Header>
                         <labs:SettingsCard.Description>
-                            <TextBlock Text="Only as a display name, the actual Id will not be modified" />
+                            <TextBlock x:Uid="CoreInstallWizard_EnterCoreSettingsPage_D2" Text="Only as a display name, the actual Id will not be modified" />
                         </labs:SettingsCard.Description>
 
                         <TextBox Width="150" Text="{Binding NickName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -53,10 +57,10 @@
 
                     <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
                         <labs:SettingsCard.Header>
-                            <TextBlock Text="Core independent" />
+                            <TextBlock x:Uid="CoreInstallWizard_EnterCoreSettingsPage_H3" Text="Core independent" />
                         </labs:SettingsCard.Header>
                         <labs:SettingsCard.Description>
-                            <TextBlock Text="The game will run at versions\${version} directory" />
+                            <TextBlock x:Uid="CoreInstallWizard_EnterCoreSettingsPage_D3" Text="The game will run at versions\${version} directory" />
                         </labs:SettingsCard.Description>
                         <ToggleSwitch IsOn="{Binding EnableIndependencyCore, Mode=TwoWay}" />
                     </labs:SettingsCard>

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
+using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views;
@@ -15,15 +16,15 @@ using System.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
 
-internal partial class CoreSettingsViewModel : ObservableObject
+internal partial class CoreSettingsViewModel : ObservableObject, INavigationAware
 {
-    private readonly GameService _gameService = App.GetService<GameService>();
-    private readonly AccountService _accountService = App.GetService<AccountService>();
+    private readonly GameService _gameService;
+    private readonly AccountService _accountService;
 
-    private readonly ExtendedGameInfo _gameInfo;
+    private ExtendedGameInfo _gameInfo;
     private bool inited = false;
 
-    public ReadOnlyObservableCollection<Account> Accounts { get; }
+    public ReadOnlyObservableCollection<Account> Accounts { get; private set; }
 
     [ObservableProperty]
     private Account targetedAccount;
@@ -32,9 +33,15 @@ internal partial class CoreSettingsViewModel : ObservableObject
 
     public ObservableCollection<string> VmArguments { get; set; }
 
-    public CoreSettingsViewModel(ExtendedGameInfo gameInfo)
+    public CoreSettingsViewModel(GameService gameService, AccountService accountService)
     {
-        _gameInfo = gameInfo;
+        _gameService = gameService;
+        _accountService = accountService;
+    }
+
+    void INavigationAware.OnNavigatedTo(object parameter)
+    {
+        _gameInfo = parameter as ExtendedGameInfo;
         GameSpecialConfig = _gameInfo.GetSpecialConfig();
 
         Accounts = _accountService.Accounts;

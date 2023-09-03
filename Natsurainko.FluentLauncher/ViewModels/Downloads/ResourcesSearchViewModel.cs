@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Classes.Data.Download;
 using Natsurainko.FluentLauncher.Services.Storage;
+using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Downloads;
 using Nrk.FluentCore.Classes.Datas.Download;
@@ -13,18 +14,15 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 
-internal partial class ResourcesSearchViewModel : ObservableObject
+internal partial class ResourcesSearchViewModel : ObservableObject, INavigationAware
 {
-    private readonly InterfaceCacheService _interfaceCacheService = App.GetService<InterfaceCacheService>();
+    private readonly InterfaceCacheService _interfaceCacheService;
+    private readonly INavigationService _navigationService;
 
-    public ResourcesSearchViewModel(ResourceSearchData searchData)
+    public ResourcesSearchViewModel(InterfaceCacheService interfaceCacheServicel, INavigationService navigationService)
     {
-        SearchBoxInput = searchData.SearchInput;
-        ResourceType = searchData.ResourceType;
-        SelectedSource = searchData.Source;
-        SelectedVersion = searchData.Version;
-
-        Search();
+        _interfaceCacheService = interfaceCacheServicel;
+        _navigationService = navigationService;
     }
 
     [ObservableProperty]
@@ -50,6 +48,18 @@ internal partial class ResourcesSearchViewModel : ObservableObject
     public Visibility ModSearchProperty => ResourceType == 0 ? Visibility.Collapsed : Visibility.Visible;
 
     public bool ComboBoxEnable => ResourceType != 4;
+
+    void INavigationAware.OnNavigatedTo(object parameter)
+    {
+        var searchData = parameter as ResourceSearchData;
+
+        SearchBoxInput = searchData.SearchInput;
+        ResourceType = searchData.ResourceType;
+        SelectedSource = searchData.Source;
+        SelectedVersion = searchData.Version;
+
+        Search();
+    }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {

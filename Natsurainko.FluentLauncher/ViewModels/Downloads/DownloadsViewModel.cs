@@ -4,7 +4,7 @@ using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Classes.Data.Download;
 using Natsurainko.FluentLauncher.Classes.Data.UI;
 using Natsurainko.FluentLauncher.Services.Storage;
-using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Downloads;
 using Nrk.FluentCore.Classes.Datas.Download;
@@ -17,10 +17,14 @@ namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 
 internal partial class DownloadsViewModel : ObservableObject
 {
-    private readonly InterfaceCacheService _interfaceCacheService = App.GetService<InterfaceCacheService>();
+    private readonly InterfaceCacheService _interfaceCacheService;
+    private readonly INavigationService _navigationService;
 
-    public DownloadsViewModel()
+    public DownloadsViewModel(InterfaceCacheService interfaceCacheService, INavigationService navigationService)
     {
+        _interfaceCacheService = interfaceCacheService;
+        _navigationService = navigationService;
+
         Task.Run(async () =>
         {
             var publishDatas = await _interfaceCacheService.FetchMinecraftPublishes();
@@ -92,7 +96,7 @@ internal partial class DownloadsViewModel : ObservableObject
 
     [RelayCommand]
     public void SearchAllMinecraft()
-        => ShellPage.ContentFrame.Navigate(typeof(ResourcesSearchPage), new ResourceSearchData
+        => _navigationService.NavigateTo("ResourcesSearchPage", new ResourceSearchData
         {
             SearchInput = string.Empty,
             ResourceType = 0,
@@ -102,7 +106,7 @@ internal partial class DownloadsViewModel : ObservableObject
 
     [RelayCommand]
     public void Search()
-        => ShellPage.ContentFrame.Navigate(typeof(ResourcesSearchPage), new ResourceSearchData
+        => _navigationService.NavigateTo("ResourcesSearchPage", new ResourceSearchData
         {
             SearchInput = SearchBoxInput,
             ResourceType = ResourceType,

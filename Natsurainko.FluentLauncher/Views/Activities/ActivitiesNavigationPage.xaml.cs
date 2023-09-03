@@ -3,7 +3,6 @@ using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Services.UI.Pages;
 using Natsurainko.FluentLauncher.ViewModels.Activities;
-using System;
 using System.Linq;
 
 namespace Natsurainko.FluentLauncher.Views.Activities;

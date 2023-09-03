@@ -390,6 +390,30 @@
     <data name="CoreInstallWizard_ChooseModLoaderPage_Page.Tag" xml:space="preserve">
         <value>Параметры загрузчика модов (1/3)</value>
     </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_Page.Tag" xml:space="preserve">
+        <value>Основные основные настройки (2/3)</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_H1.Text" xml:space="preserve">
+        <value>Основной абсолютный идентификатор:</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_H2.Text" xml:space="preserve">
+        <value>Основной псевдоним:</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_H3.Text" xml:space="preserve">
+        <value>Ядро независимое</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_D1.Text" xml:space="preserve">
+        <value>Имя каталога version/{version}, имя не может повторяться</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_D2.Text" xml:space="preserve">
+        <value>Только в качестве отображаемого имени, фактический идентификатор не будет изменен.</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_D3.Text" xml:space="preserve">
+        <value>Игра будет запускаться в каталогеversions\${version}.</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_NotAvailableText.Text" xml:space="preserve">
+        <value>Я недоступен</value>
+    </data>
     <data name="Cores_CoresPage_SearchBox.PlaceholderText" xml:space="preserve">
         <value>Ядро поиска</value>
     </data>

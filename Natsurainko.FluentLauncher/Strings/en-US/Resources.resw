@@ -390,6 +390,30 @@
     <data name="CoreInstallWizard_ChooseModLoaderPage_Page.Tag" xml:space="preserve">
         <value>Mod Loader Options (1/3)</value>
     </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_Page.Tag" xml:space="preserve">
+        <value>Basic Core Settings (2/3)</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_H1.Text" xml:space="preserve">
+        <value>Core Absolute Id:</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_H2.Text" xml:space="preserve">
+        <value>Core Nickname:</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_H3.Text" xml:space="preserve">
+        <value>Core independent</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_D1.Text" xml:space="preserve">
+        <value>The name of the versions/{version} directory, the name cannot be repeated</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_D2.Text" xml:space="preserve">
+        <value>Only as a display name, the actual Id will not be modified</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_D3.Text" xml:space="preserve">
+        <value>The game will run at versions\${version} directory</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_NotAvailableText.Text" xml:space="preserve">
+        <value>Id not available</value>
+    </data>
     <data name="Cores_CoresPage_SearchBox.PlaceholderText" xml:space="preserve">
         <value>Search Core</value>
     </data>

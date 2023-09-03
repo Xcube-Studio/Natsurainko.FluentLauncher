@@ -390,6 +390,30 @@
     <data name="CoreInstallWizard_ChooseModLoaderPage_Page.Tag" xml:space="preserve">
         <value>模组加载器选项 (1/3)</value>
     </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_Page.Tag" xml:space="preserve">
+        <value>基本核心设置 (2/3)</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_H1.Text" xml:space="preserve">
+        <value>核心实际 Id：</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_H2.Text" xml:space="preserve">
+        <value>核心的昵称：</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_H3.Text" xml:space="preserve">
+        <value>版本独立</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_D1.Text" xml:space="preserve">
+        <value>目录 versions/{version} 的名称，改名称不能重复</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_D2.Text" xml:space="preserve">
+        <value>仅作为显示名称，实际 Id 不会被修改</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_D3.Text" xml:space="preserve">
+        <value>游戏将运行在 versions\${version} 目录下</value>
+    </data>
+    <data name="CoreInstallWizard_EnterCoreSettingsPage_NotAvailableText.Text" xml:space="preserve">
+        <value>该 Id 不可用</value>
+    </data>
     <data name="Cores_CoresPage_SearchBox.PlaceholderText" xml:space="preserve">
         <value>搜索核心</value>
     </data>

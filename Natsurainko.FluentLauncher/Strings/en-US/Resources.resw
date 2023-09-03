@@ -129,6 +129,33 @@
     <data name="Converters__ResourceDownloadProcessState_Faulted" xml:space="preserve">
         <value>Download failed</value>
     </data>
+    <data name="Converters__CoreInstallProcessState_Created" xml:space="preserve">
+        <value>The install task is created</value>
+    </data>
+    <data name="Converters__CoreInstallProcessState_Installing" xml:space="preserve">
+        <value>The install task is in progress</value>
+    </data>
+    <data name="Converters__CoreInstallProcessState_Finished" xml:space="preserve">
+        <value>Install completed</value>
+    </data>
+    <data name="Converters__CoreInstallProcessState_Faulted" xml:space="preserve">
+        <value>Install failed</value>
+    </data>
+    <data name="Converters__ProgressItem_InstallVanilla" xml:space="preserve">
+        <value>Install vanilla game ${id}</value>
+    </data>
+    <data name="Converters__ProgressItem_CompleteResources" xml:space="preserve">
+        <value>Complete the game resources</value>
+    </data>
+    <data name="Converters__ProgressItem_RunExecutor" xml:space="preserve">
+        <value>Run ${type} install executor</value>
+    </data>
+    <data name="Converters__ProgressItem_DownloadPackage" xml:space="preserve">
+        <value>Download ${loader} installer package</value>
+    </data>
+    <data name="Converters__ProgressItem_ApplySettings" xml:space="preserve">
+        <value>Apply core settings</value>
+    </data>
     <data name="Dialogs_JavaMirrorsDialog.Title" xml:space="preserve">
         <value>Third-party Java Download Sources</value>
     </data>

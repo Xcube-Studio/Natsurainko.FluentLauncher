@@ -80,7 +80,10 @@
 
             <labs:SettingsExpander.Header>
                 <TextBlock TextTrimming="CharacterEllipsis">
-                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="Download Task" />
+                    <Run
+                        x:Uid="Activities_DownloadPage_Item_T"
+                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                        Text="Download Task" />
                     <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
                     <Run FontWeight="SemiBold" Text="{Binding Title}" />
                 </TextBlock>
@@ -88,7 +91,10 @@
 
             <labs:SettingsExpander.Description>
                 <TextBlock FontSize="13" TextTrimming="CharacterEllipsis">
-                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="State" />
+                    <Run
+                        x:Uid="Activities_DownloadPage_Item_TD"
+                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                        Text="State" />
                     <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
                     <Run Text="{Binding DisplayState}" />
                 </TextBlock>
@@ -104,7 +110,7 @@
                                 <ColumnDefinition Width="1*" />
                             </Grid.ColumnDefinitions>
                             <TextBlock HorizontalAlignment="Right">
-                                <Run Text="Progress: " />
+                                <Run x:Uid="Activities_DownloadPage_Item_H1" Text="Progress: " />
                                 <Run Text="{Binding ProgressText}" />
                             </TextBlock>
                             <ProgressBar

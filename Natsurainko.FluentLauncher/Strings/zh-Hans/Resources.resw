@@ -129,6 +129,33 @@
     <data name="Converters__ResourceDownloadProcessState_Faulted" xml:space="preserve">
         <value>下载失败</value>
     </data>
+    <data name="Converters__CoreInstallProcessState_Created" xml:space="preserve">
+        <value>安装任务已创建</value>
+    </data>
+    <data name="Converters__CoreInstallProcessState_Installing" xml:space="preserve">
+        <value>安装任务正在进行中</value>
+    </data>
+    <data name="Converters__CoreInstallProcessState_Finished" xml:space="preserve">
+        <value>安装完成</value>
+    </data>
+    <data name="Converters__CoreInstallProcessState_Faulted" xml:space="preserve">
+        <value>安装失败</value>
+    </data>
+    <data name="Converters__ProgressItem_InstallVanilla" xml:space="preserve">
+        <value>安装原版游戏 ${id}</value>
+    </data>
+    <data name="Converters__ProgressItem_CompleteResources" xml:space="preserve">
+        <value>补全游戏资源</value>
+    </data>
+    <data name="Converters__ProgressItem_RunExecutor" xml:space="preserve">
+        <value>运行 ${type} 安装执行器</value>
+    </data>
+    <data name="Converters__ProgressItem_DownloadPackage" xml:space="preserve">
+        <value>下载 ${loader} 安装包</value>
+    </data>
+    <data name="Converters__ProgressItem_ApplySettings" xml:space="preserve">
+        <value>应用核心设置</value>
+    </data>
     <data name="Dialogs_JavaMirrorsDialog.Title" xml:space="preserve">
         <value>第三方 Java 下载源</value>
     </data>

@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Classes.Enums;
-using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Xaml;
@@ -24,7 +23,7 @@ internal partial class DownloadProcess : ObservableObject
 {
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ProgressText))]
-    private double progress;
+    private double progress = 0;
 
     [ObservableProperty]
     private string title;
@@ -103,26 +102,28 @@ internal partial class CoreInstallProcess : DownloadProcess
 
     private Action<CoreInstallProcess> _action;
 
+    public CoreInstallProcess()
+    {
+        DisplayState = ResourceUtils.GetValue("Converters", "_CoreInstallProcessState_Created");
+    }
+
     public void SetStartAction(Action<CoreInstallProcess> action) => _action = action;
 
     public void Start() 
     {
-        DisplayState = "Task in progress";
+        DisplayState = ResourceUtils.GetValue("Converters", "_CoreInstallProcessState_Installing");
         Task.Run(() => _action(this));
     }
 
     private void UpdateState()
     {
         if (Progresses.Count == Progresses.Where(x => x.IsFinished && !x.IsFaulted).Count())
-        {
-            DisplayState = "Task Completed";
-            App.GetService<GameService>().RefreshCurrentFolder();
-        }
+            DisplayState = ResourceUtils.GetValue("Converters", "_CoreInstallProcessState_Finished");
 
         Progress = Progresses.Select(x => x.ProgressValue).Sum() / Progresses.Count;
     }
 
-    private void SetFailed() => DisplayState = "Task Failed";
+    private void SetFailed() => DisplayState = ResourceUtils.GetValue("Converters", "_CoreInstallProcessState_Faulted");
 
     internal partial class ProgressItem : ObservableObject
     {

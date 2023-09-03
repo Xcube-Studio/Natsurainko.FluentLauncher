@@ -129,6 +129,33 @@
     <data name="Converters__ResourceDownloadProcessState_Faulted" xml:space="preserve">
         <value>Загрузка не удалась</value>
     </data>
+    <data name="Converters__CoreInstallProcessState_Created" xml:space="preserve">
+        <value>Задача установки создана.</value>
+    </data>
+    <data name="Converters__CoreInstallProcessState_Installing" xml:space="preserve">
+        <value>Задача установки находится в процессе</value>
+    </data>
+    <data name="Converters__CoreInstallProcessState_Finished" xml:space="preserve">
+        <value>Установка завершена</value>
+    </data>
+    <data name="Converters__CoreInstallProcessState_Faulted" xml:space="preserve">
+        <value>Установка не удалась</value>
+    </data>
+    <data name="Converters__ProgressItem_InstallVanilla" xml:space="preserve">
+        <value>Установите ванильную игру ${id}</value>
+    </data>
+    <data name="Converters__ProgressItem_CompleteResources" xml:space="preserve">
+        <value>Заполните игровые ресурсы</value>
+    </data>
+    <data name="Converters__ProgressItem_RunExecutor" xml:space="preserve">
+        <value>Запустите программу установки ${type}.</value>
+    </data>
+    <data name="Converters__ProgressItem_DownloadPackage" xml:space="preserve">
+        <value>Загрузите установочный пакет ${loader}</value>
+    </data>
+    <data name="Converters__ProgressItem_ApplySettings" xml:space="preserve">
+        <value>Применить основные настройки</value>
+    </data>
     <data name="Dialogs_JavaMirrorsDialog.Title" xml:space="preserve">
         <value>Сторонние источники загрузки Java</value>
     </data>

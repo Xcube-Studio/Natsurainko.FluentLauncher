@@ -3,6 +3,8 @@ using Natsurainko.FluentLauncher.Classes.Data.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
+using Natsurainko.FluentLauncher.Services.UI.Navigation;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Xaml;
 using Nrk.FluentCore.Classes.Datas.Download;
 using Nrk.FluentCore.Classes.Datas.Install;
@@ -17,25 +19,29 @@ using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
+using Tomlyn;
 
 namespace Natsurainko.FluentLauncher.Services.Download;
 
 internal class DownloadService : DefaultDownloadService
 {
     private new readonly SettingsService _settingsService;
+    private readonly GameService _gameService;
+    private readonly INavigationService _navigationService;
     private readonly ObservableCollection<DownloadProcess> _downloadProcesses = new();
 
     public ReadOnlyObservableCollection<DownloadProcess> DownloadProcesses { get; init; }
 
-    public DownloadService(SettingsService settingsService) : base(settingsService)
+    public DownloadService(SettingsService settingsService, GameService gameService, INavigationService navigationService) : base(settingsService)
     {
         _settingsService = settingsService;
+        _navigationService = navigationService;
+        _gameService = gameService;
 
         DownloadProcesses = new(_downloadProcesses);
     }
@@ -91,7 +97,7 @@ internal class DownloadService : DefaultDownloadService
 
         string GetTitle()
         {
-            var title = $"Install {info.ManifestItem.Id}";
+            var title = info.ManifestItem.Id;
 
             if (info.PrimaryLoader != null)
                 title += $", {info.PrimaryLoader.Type} {info.PrimaryLoader.SelectedItem.DisplayText}";
@@ -102,19 +108,16 @@ internal class DownloadService : DefaultDownloadService
             return title;
         }
 
-        var gameService = App.GetService<GameService>();
-        var settingsService = App.GetService<SettingsService>();
-            
-        var installProcess = new CoreInstallProcess() { Title = GetTitle(), DisplayState = "Has not started" };
+        var installProcess = new CoreInstallProcess() { Title = GetTitle() };
         var firstToStart = new List<CoreInstallProcess.ProgressItem>();
 
-        GameInfo inheritsFrom = gameService.GameInfos.FirstOrDefault(x => x.AbsoluteId.Equals(info.ManifestItem.Id));
+        GameInfo inheritsFrom = _gameService.GameInfos.FirstOrDefault(x => x.AbsoluteId.Equals(info.ManifestItem.Id));
 
         var installVanillaGame = new CoreInstallProcess.ProgressItem(@this =>
         {
             var downloadTask = HttpUtils.DownloadElementAsync(new DownloadElement
             {
-                AbsolutePath = Path.Combine(gameService.ActiveMinecraftFolder, "versions", info.ManifestItem.Id, $"{info.ManifestItem.Id}.json"),
+                AbsolutePath = Path.Combine(_gameService.ActiveMinecraftFolder, "versions", info.ManifestItem.Id, $"{info.ManifestItem.Id}.json"),
                 Url = info.ManifestItem.Url
             },
             downloadSetting: new DownloadSetting
@@ -125,10 +128,10 @@ internal class DownloadService : DefaultDownloadService
 
             downloadTask.Wait();
 
-            App.DispatcherQueue.SynchronousTryEnqueue(() => gameService.RefreshCurrentFolder());
-            inheritsFrom = gameService.GameInfos.FirstOrDefault(x => x.AbsoluteId.Equals(info.ManifestItem.Id));
+            App.DispatcherQueue.SynchronousTryEnqueue(() => _gameService.RefreshCurrentFolder());
+            inheritsFrom = _gameService.GameInfos.FirstOrDefault(x => x.AbsoluteId.Equals(info.ManifestItem.Id));
 
-        }, $"Install Vanilla Game {info.ManifestItem.Id}", installProcess);
+        }, ResourceUtils.GetValue("Converters", "_ProgressItem_InstallVanilla").Replace("${id}", info.ManifestItem.Id), installProcess);
         var completeResources = new CoreInstallProcess.ProgressItem(@this =>
         {
             int finished = 0;
@@ -144,12 +147,25 @@ internal class DownloadService : DefaultDownloadService
             resourcesDownloader.DownloadElementsPosted += (_, count) => App.DispatcherQueue.TryEnqueue(() =>
             {
                 total = count;
-                @this.OnProgressChanged((double)finished / total);
+                @this.OnProgressChanged(total != 0 ? (double)finished / total : 1);
             });
 
             resourcesDownloader.Download();
 
-        }, "Complete Resources", installProcess);
+        }, ResourceUtils.GetValue("Converters", "_ProgressItem_CompleteResources"), installProcess);
+        var setCoreConfig = new CoreInstallProcess.ProgressItem(@this =>
+        {
+            App.DispatcherQueue.SynchronousTryEnqueue(() => _gameService.RefreshCurrentFolder());
+
+            var gameInfo = _gameService.GameInfos.First(x => x.AbsoluteId.Equals(info.AbsoluteId));
+            var specialConfig = gameInfo.GetSpecialConfig();
+
+            specialConfig.EnableIndependencyCore = info.EnableIndependencyCore;
+            specialConfig.NickName = info.NickName;
+
+            @this.OnProgressChanged(1);
+
+        }, ResourceUtils.GetValue("Converters", "_ProgressItem_ApplySettings"), installProcess);
 
         firstToStart.Add(installVanillaGame);
         installProcess.Progresses.Add(installVanillaGame);
@@ -172,28 +188,28 @@ internal class DownloadService : DefaultDownloadService
                     {
                         AbsoluteId = info.AbsoluteId,
                         InheritedFrom = inheritsFrom,
-                        JavaPath = settingsService.ActiveJava,
+                        JavaPath = _settingsService.ActiveJava,
                         PackageFilePath = primaryLoaderFile
                     },
                     ModLoaderType.NeoForge => new ForgeInstallExecutor
                     {
                         AbsoluteId = info.AbsoluteId,
                         InheritedFrom = inheritsFrom,
-                        JavaPath = settingsService.ActiveJava,
+                        JavaPath = _settingsService.ActiveJava,
                         PackageFilePath = primaryLoaderFile
                     },
                     ModLoaderType.OptiFine => new OptiFineInstallExecutor
                     {
                         AbsoluteId = info.AbsoluteId,
                         InheritedFrom = inheritsFrom,
-                        JavaPath = settingsService.ActiveJava,
+                        JavaPath = _settingsService.ActiveJava,
                         PackageFilePath = primaryLoaderFile
                     },
                     ModLoaderType.Fabric => new FabricInstallExecutor
                     {
                         AbsoluteId = info.AbsoluteId,
                         InheritedFrom = inheritsFrom,
-                        JavaPath = settingsService.ActiveJava,
+                        JavaPath = _settingsService.ActiveJava,
                         PackageFilePath = primaryLoaderFile
                     },
                     ModLoaderType.Quilt => new QuiltInstallExecutor
@@ -207,7 +223,7 @@ internal class DownloadService : DefaultDownloadService
                 executor.ProgressChanged += (_, e) => @this.OnProgressChanged(e);
                 var task = executor.ExecuteAsync();
                 task.Wait();
-            }, "Run Install Executor", installProcess);
+            }, ResourceUtils.GetValue("Converters", "_ProgressItem_RunExecutor").Replace("${type}", info.PrimaryLoader.Type.ToString()), installProcess);
 
             if (info.PrimaryLoader.Type != ModLoaderType.Quilt)
             {
@@ -226,7 +242,7 @@ internal class DownloadService : DefaultDownloadService
 
                     downloadTask.Wait();
 
-                }, $"Download {loaderFullName} Installer Package", installProcess);
+                }, ResourceUtils.GetValue("Converters", "_ProgressItem_DownloadPackage").Replace("${loader}", loaderFullName), installProcess);
 
                 installProcess.Progresses.Add(downloadInstallerPackage);
 
@@ -235,16 +251,20 @@ internal class DownloadService : DefaultDownloadService
             }
             else completeResources.SetNext(runInstallExecutor);
 
+            runInstallExecutor.SetNext(setCoreConfig);
             installProcess.Progresses.Add(runInstallExecutor);
         }
+        else completeResources.SetNext(setCoreConfig);
+
+        installProcess.Progresses.Add(setCoreConfig);
 
         if (info.SecondaryLoader != null)
         {
             var loaderFullName = $"{info.SecondaryLoader.Type}_{info.SecondaryLoader.SelectedItem.DisplayText}";
 
             var secondaryLoaderFile = info.EnableIndependencyCore 
-                ? Path.Combine(gameService.ActiveMinecraftFolder, "versions", info.AbsoluteId, "mods", $"{loaderFullName}.jar")
-                : Path.Combine(gameService.ActiveMinecraftFolder, "mods", $"{loaderFullName}.jar");
+                ? Path.Combine(_gameService.ActiveMinecraftFolder, "versions", info.AbsoluteId, "mods", $"{loaderFullName}.jar")
+                : Path.Combine(_gameService.ActiveMinecraftFolder, "mods", $"{loaderFullName}.jar");
 
             var downloadInstallerPackage = new CoreInstallProcess.ProgressItem(@this =>
             {
@@ -260,7 +280,7 @@ internal class DownloadService : DefaultDownloadService
                 perSecondProgressChangedAction: @this.OnProgressChanged);
 
                 downloadTask.Wait();
-            }, $"Download {loaderFullName} Installer Package", installProcess);
+            }, ResourceUtils.GetValue("Converters", "_ProgressItem_DownloadPackage").Replace("${loader}", loaderFullName), installProcess);
 
             installProcess.Progresses.Add(downloadInstallerPackage);
             firstToStart.Add(downloadInstallerPackage);
@@ -277,6 +297,6 @@ internal class DownloadService : DefaultDownloadService
         _downloadProcesses.Insert(0, installProcess);
         installProcess.Start();
 
-        Views.ShellPage.ContentFrame.Navigate(typeof(Views.Activities.ActivitiesNavigationPage), typeof(Views.Activities.DownloadPage));
+        //_navigationService.NavigateTo("ActivitiesNavigationPage", "DownloadTasksPage");
     }
 }

@@ -108,6 +108,12 @@ public sealed partial class ShellPage : Page, INavigationProvider
                 item.IsSelected = true;
                 return;
             }
+            if (e.SourcePageType == typeof(NewHomePage) && item.Tag.ToString() == "HomePage")
+            {
+                NavigationViewControl.SelectedItem = item;
+                item.IsSelected = true;
+                return;
+            }
         }
     }
 

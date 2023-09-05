@@ -3,6 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Classes.Data.UI;
 using Natsurainko.FluentLauncher.Services.Download;
+using Natsurainko.FluentLauncher.Services.UI.Navigation;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -15,14 +17,18 @@ internal partial class DownloadViewModel : ObservableObject
     [ObservableProperty]
     private Visibility tipVisibility;
 
-    public DownloadViewModel(DownloadService downloadService)
+    private readonly INavigationService _shellNavigationService;
+
+    public DownloadViewModel(DownloadService downloadService, INavigationService navigationService)
     {
         DownloadProcesses = downloadService.DownloadProcesses;
         TipVisibility = DownloadProcesses.Any()
             ? Visibility.Collapsed
             : Visibility.Visible;
+
+        _shellNavigationService = navigationService.Parent ?? throw new InvalidOperationException("Cannot obtain the shell navigaiton service");
     }
 
     [RelayCommand]
-    public void Resource() => Views.ShellPage.ContentFrame.Navigate(typeof(Views.Downloads.DownloadsPage));
+    public void Resource() => _shellNavigationService.NavigateTo("ResourcesDownloadPage");
 }

@@ -85,7 +85,7 @@ public class NavigationService : INavigationService
 
         // Navigation
         var pageInfo = _pageProvider.RegisteredPages[key];
-        Frame.Navigate(pageInfo.PageType);
+        Frame.Navigate(pageInfo.PageType, parameter); // Also forward navigation param to the Page to support the built-in navigation mechanism
         _backStack.Push(_current);
         _forwardStack.Clear();
         _current = (key, parameter);

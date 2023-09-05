@@ -92,7 +92,7 @@ internal partial class DownloadsViewModel : ObservableObject
 
     [RelayCommand]
     public void NavigateResourcePage(object resource)
-        => ShellPage.ContentFrame.Navigate(typeof(ResourceItemPage), resource);
+        => _navigationService.NavigateTo("ResourceItemPage", resource);
 
     [RelayCommand]
     public void SearchAllMinecraft()

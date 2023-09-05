@@ -119,8 +119,8 @@ internal partial class ResourcesSearchViewModel : ObservableObject, INavigationA
     }
 
     [RelayCommand]
-    public void NavigateResourcePage(object resource) => ShellPage.ContentFrame.Navigate(typeof(ResourceItemPage), resource);
+    public void NavigateResourcePage(object resource) => _navigationService.NavigateTo("ResourceItemPage", resource);
 
     [RelayCommand]
-    public void NavigateCoreInstallWizardPage(object resource) => ShellPage.ContentFrame.Navigate(typeof(CoreInstallWizardPage), resource);
+    public void NavigateCoreInstallWizardPage(object resource) => _navigationService.NavigateTo("CoreInstallWizardPage", resource);
 }

@@ -10,21 +10,7 @@ public sealed partial class CoreInstallWizardPage : Page
 {
     public CoreInstallWizardPage()
     {
-        this.InitializeComponent();
-    }
-
-    protected override void OnNavigatedTo(NavigationEventArgs e)
-    {
-        base.OnNavigatedTo(e);
-        var manifestItem = e.Parameter as VersionManifestItem;
-
-        BreadcrumbBar.ItemsSource = new string[]
-        {
-            ResourceUtils.GetValue("Downloads", "CoreInstallWizardPage", "_BreadcrumbBar_First"),
-            manifestItem.Id
-        };
-
-        this.DataContext = new CoreInstallWizardViewModel(manifestItem);
+        InitializeComponent();
     }
 
     private void BreadcrumbBar_ItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)

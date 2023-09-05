@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Media.Animation;
 using Natsurainko.FluentLauncher.Classes.Data.Download;
 using Natsurainko.FluentLauncher.Services.Download;
 using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.ViewModels.CoreInstallWizard;
@@ -17,7 +18,7 @@ using System.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 
-internal partial class CoreInstallWizardViewModel : ObservableObject
+internal partial class CoreInstallWizardViewModel : ObservableObject, INavigationAware
 {
     [ObservableProperty]
     private WizardViewModelBase currentFrameDataContext;
@@ -25,22 +26,35 @@ internal partial class CoreInstallWizardViewModel : ObservableObject
     [ObservableProperty]
     private int navigationViewSelectIndex = 0;
 
+    public string[] PathItems { get; private set; }
+
     private readonly Stack<WizardViewModelBase> _viewModelStack = new();
 
     private readonly NotificationService _notificationService;
     private readonly DownloadService _downloadService;
+    private readonly INavigationService _navigationService;
 
-    private readonly VersionManifestItem _manifestItem;
+    private VersionManifestItem _manifestItem;
 
     private Frame _contentFrame;
     private NavigationView _navigationView;
 
-    public CoreInstallWizardViewModel(VersionManifestItem manifestItem)
-    {
-        _manifestItem = manifestItem;
 
-        _notificationService = App.GetService<NotificationService>();
-        _downloadService = App.GetService<DownloadService>();
+    public CoreInstallWizardViewModel(INavigationService navigationService, NotificationService notificationService, DownloadService downloadService)
+    {
+        _notificationService = notificationService;
+        _downloadService = downloadService;
+        _navigationService = navigationService;
+    }
+
+    void INavigationAware.OnNavigatedTo(object parameter)
+    {
+        _manifestItem = (VersionManifestItem)parameter;
+        PathItems = new string[]
+        {
+            ResourceUtils.GetValue("Downloads", "CoreInstallWizardPage", "_BreadcrumbBar_First"),
+            _manifestItem.Id
+        };
     }
 
     [RelayCommand]
@@ -105,11 +119,7 @@ internal partial class CoreInstallWizardViewModel : ObservableObject
     /// Cancel Button Command
     /// </summary>
     [RelayCommand]
-    public void Cancel() => ShellPage.ContentFrame.Navigate(typeof(ResourcesSearchPage), new ResourceSearchData
-    {
-        SearchInput = _manifestItem.Id,
-        ResourceType = 0,
-    });
+    public void Cancel() => _navigationService.GoBack();
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {

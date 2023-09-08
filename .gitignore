@@ -36,3 +36,4 @@ AppPackages
 *.cache
 .editorconfig
 *.pfx
+*.resw

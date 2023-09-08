@@ -19,5 +19,5 @@ internal record CoreInstallationInfo
 
     public VersionManifestItem ManifestItem { get; set; }
 
-    public List<ProgressItem> AdditionalOptions { get; set; }
+    public List<ProgressItem> AdditionalOptions { get; set; } = new();
 }

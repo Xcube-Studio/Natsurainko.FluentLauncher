@@ -151,6 +151,7 @@ internal class DownloadService : DefaultDownloadService
             var gameInfo = _gameService.GameInfos.First(x => x.AbsoluteId.Equals(info.AbsoluteId));
             var specialConfig = gameInfo.GetSpecialConfig();
 
+            specialConfig.EnableSpecialSetting = info.EnableIndependencyCore || !string.IsNullOrEmpty(info.NickName);
             specialConfig.EnableIndependencyCore = info.EnableIndependencyCore;
             specialConfig.NickName = info.NickName;
 
@@ -277,6 +278,13 @@ internal class DownloadService : DefaultDownloadService
         }
 
         installVanillaGame.SetNext(completeResources);
+
+        foreach (var item in info.AdditionalOptions)
+        {
+            item.SetCoreInstallProcess(installProcess);
+            installProcess.Progresses.Add(item);
+            firstToStart.Add(item);
+        }
 
         installProcess.SetStartAction(@this =>
         {

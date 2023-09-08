@@ -44,6 +44,7 @@
   </Target>
   -->
   <ItemGroup>
+    <None Remove="Assets\Icons\OptiFabricIcon.png" />
     <None Remove="Assets\Libs\authlib-injector-1.2.3.jar" />
     <None Remove="Assets\MinecraftTen.ttf" />
     <None Remove="Dictionaries\CoresLayoutTemplateDictionary.xaml" />

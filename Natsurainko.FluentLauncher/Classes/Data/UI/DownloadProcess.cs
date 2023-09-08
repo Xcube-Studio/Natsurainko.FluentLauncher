@@ -162,10 +162,17 @@ internal partial class CoreInstallProcess : DownloadProcess
         public string Percentage => ProgressValue.ToString("P1");
 
         private readonly Action<ProgressItem> _action;
-        private readonly CoreInstallProcess _installProcess;
+        private CoreInstallProcess _installProcess;
         private readonly bool _necessary;
 
         private ProgressItem _next;
+
+        public ProgressItem(Action<ProgressItem> action, string stepName)
+        {
+            _action = action;
+
+            StepName = stepName;
+        }
 
         public ProgressItem(Action<ProgressItem> action, string stepName, CoreInstallProcess installProcess, bool necessary = true) 
         {
@@ -177,6 +184,8 @@ internal partial class CoreInstallProcess : DownloadProcess
         }
 
         public void SetNext(ProgressItem progressItem) => _next = progressItem;
+
+        public void SetCoreInstallProcess(CoreInstallProcess coreInstallProcess) => _installProcess = coreInstallProcess;
 
         public Task Start()
         {
@@ -205,7 +214,7 @@ internal partial class CoreInstallProcess : DownloadProcess
             if (_necessary && IsFaulted)
                 _installProcess.SetFailed();
 
-            _installProcess.UpdateState();
+            _installProcess?.UpdateState();
         }
     }
 }

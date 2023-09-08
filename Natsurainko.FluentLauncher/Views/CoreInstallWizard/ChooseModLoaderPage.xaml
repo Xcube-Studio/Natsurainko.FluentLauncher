@@ -7,7 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
+    xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     x:Uid="CoreInstallWizard_ChooseModLoaderPage_Page"
     d:DataContext="{d:DesignInstance Type=coreinstallwizard:ChooseModLoaderViewModel}"
     Tag="Mod Loader Options (1/3)"
@@ -18,11 +18,11 @@
             <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
             <Border Margin="0,10">
                 <StackPanel MaxWidth="1000" Spacing="4">
-                    <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xF158;}" Visibility="Collapsed">
-                        <labs:SettingsCard.Header>
-                            <TextBlock Text="未选中加载器，将跳过安装加载器步骤" />
-                        </labs:SettingsCard.Header>
-                    </labs:SettingsCard>
+
+                    <win:StackPanel.ChildrenTransitions>
+                        <win:EntranceThemeTransition FromVerticalOffset="50" />
+                        <win:RepositionThemeTransition IsStaggeringEnabled="False" />
+                    </win:StackPanel.ChildrenTransitions>
 
                     <ListView ItemsSource="{Binding ModLoaderDatas}" SelectionMode="None">
                         <ListView.ItemTemplate>
@@ -97,6 +97,5 @@
 
             </Border>
         </ScrollViewer>
-
     </Grid>
 </Page>

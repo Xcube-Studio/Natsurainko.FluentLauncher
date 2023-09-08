@@ -3,14 +3,18 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
 using Natsurainko.FluentLauncher.Services.Download;
+using Natsurainko.FluentLauncher.Services.Launch;
+using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.ViewModels.CoreInstallWizard;
 using Nrk.FluentCore.Classes.Datas.Download;
+using Nrk.FluentCore.Utils;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
@@ -31,7 +35,8 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
     private readonly NotificationService _notificationService;
     private readonly DownloadService _downloadService;
     private readonly INavigationService _navigationService;
-
+    private readonly GameService _gameService;
+    private readonly InterfaceCacheService _interfaceCacheService;
     private VersionManifestItem _manifestItem;
 
     private Frame _contentFrame;
@@ -41,11 +46,15 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
     public CoreInstallWizardViewModel(
         INavigationService navigationService, 
         NotificationService notificationService, 
-        DownloadService downloadService)
+        DownloadService downloadService,
+        GameService gameService,
+        InterfaceCacheService interfaceCacheService)
     {
         _notificationService = notificationService;
         _downloadService = downloadService;
         _navigationService = navigationService;
+        _gameService = gameService;
+        _interfaceCacheService = interfaceCacheService;
     }
 
     void INavigationAware.OnNavigatedTo(object parameter)
@@ -147,7 +156,56 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
 
     private void Finish()
     {
-        var installInfo = ((AdditionalOptionsViewModel)this.CurrentFrameDataContext)._coreInstallationInfo;
+        var vm = (AdditionalOptionsViewModel)this.CurrentFrameDataContext;
+        var installInfo = vm._coreInstallationInfo;
+        var stepInstallMod = ResourceUtils.GetValue("Converters", "_ProgressItem_InstallMod");
+
+        if (vm.EnabledFabricApi)
+        {
+            var file = installInfo.EnableIndependencyCore
+                ? Path.Combine(_gameService.ActiveMinecraftFolder, "versions", installInfo.AbsoluteId, "mods", vm.FabricApi.FileName)
+                : Path.Combine(_gameService.ActiveMinecraftFolder, "mods", vm.FabricApi.FileName);
+
+            installInfo.AdditionalOptions.Add(new(@this =>
+            {
+                var downloadTask = HttpUtils.DownloadElementAsync(new DownloadElement
+                {
+                    AbsolutePath = file,
+                    Url = vm.FabricApi.Url
+                },
+                downloadSetting: new DownloadSetting
+                {
+                    EnableLargeFileMultiPartDownload = false
+                },
+                perSecondProgressChangedAction: @this.OnProgressChanged);
+
+                downloadTask.Wait();
+            }, stepInstallMod.Replace("${file}", vm.FabricApi.FileName)));
+        }
+
+        if (vm.EnabledOptiFabric)
+        {
+            var file = installInfo.EnableIndependencyCore
+                ? Path.Combine(_gameService.ActiveMinecraftFolder, "versions", installInfo.AbsoluteId, "mods", vm.OptiFabric.FileName)
+                : Path.Combine(_gameService.ActiveMinecraftFolder, "mods", vm.OptiFabric.FileName);
+
+            installInfo.AdditionalOptions.Add(new(@this =>
+            {
+                var downloadTask = HttpUtils.DownloadElementAsync(new DownloadElement
+                {
+                    AbsolutePath = file,
+                    Url = _interfaceCacheService.CurseForgeClient.GetCurseFileDownloadUrl(vm.OptiFabric)
+                },
+                downloadSetting: new DownloadSetting
+                {
+                    EnableLargeFileMultiPartDownload = false
+                },
+                perSecondProgressChangedAction: @this.OnProgressChanged);
+
+                downloadTask.Wait();
+            }, stepInstallMod.Replace("${file}", vm.OptiFabric.FileName)));
+        }
+
         _downloadService.InstallCore(installInfo);
         _navigationService.NavigateTo("ActivitiesNavigationPage", "DownloadTasksPage");
     }

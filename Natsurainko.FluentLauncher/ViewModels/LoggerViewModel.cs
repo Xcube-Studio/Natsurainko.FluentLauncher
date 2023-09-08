@@ -114,8 +114,14 @@ internal partial class LoggerViewModel : ObservableObject
 
     private void ScrollToEnd()
     {
-        View.ListView.SelectedIndex = View.ListView.Items.Count - 1;
-
-        try { View.ListView.ScrollIntoView(View.ListView.Items.Last()); } catch { }
+        App.DispatcherQueue.TryEnqueue(() =>
+        {
+            try
+            {
+                View.ListView.SelectedIndex = View.ListView.Items.Count - 1;
+                View.ListView.ScrollIntoView(View.ListView.Items.Last());
+            }
+            catch { }
+        });
     }
 }

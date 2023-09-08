@@ -7,7 +7,7 @@ if not exist %LOCALIZER% (
     exit
 )
 
-cd ..\FluentLauncher.LocalizationPoroject
+cd .\FluentLauncher.LocalizationPoroject
 call build.bat < nul
 
 SET SOURCE=%cd%\Strings

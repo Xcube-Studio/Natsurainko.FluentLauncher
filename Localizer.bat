@@ -1,13 +1,13 @@
 @echo off
 
-SET LOCALIZER=..\FluentLauncher.LocalizationPoroject\build.bat
+SET LOCALIZER=.\FluentLauncher.LocalizationPoroject\build.bat
 
 if not exist %LOCALIZER% (
     echo LOCALIZER NOT FOUND
     exit
 )
 
-cd ..\FluentLauncher.LocalizationPoroject
+cd .\FluentLauncher.LocalizationPoroject
 call build.bat < nul
 
 SET SOURCE=%cd%\Strings

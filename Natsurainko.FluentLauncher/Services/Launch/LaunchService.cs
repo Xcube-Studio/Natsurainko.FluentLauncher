@@ -5,6 +5,7 @@ using Natsurainko.FluentLauncher.Components.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Download;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Classes.Datas.Authenticate;
 using Nrk.FluentCore.Classes.Datas.Launch;
@@ -35,9 +36,8 @@ internal class LaunchService : DefaultLaunchService
     private readonly new SettingsService _settingsService;
     private readonly new AccountService _accountService;
     private readonly new GameService _gameService;
-    private readonly ObservableCollection<LaunchProcess> _launchProcesses = new();
     private readonly DownloadService _downloadService;
-
+    private readonly ObservableCollection<LaunchProcess> _launchProcesses = new();
     public ReadOnlyObservableCollection<LaunchProcess> LaunchProcesses { get; init; }
 
     public LaunchService(
@@ -57,13 +57,12 @@ internal class LaunchService : DefaultLaunchService
         LaunchProcesses = new(_launchProcesses);
     }
 
-    public void LaunchNewGame(GameInfo gameInfo)
+    public void LaunchGame(GameInfo gameInfo)
     {
         var process = CreateLaunchProcess(gameInfo);
         _launchProcesses.Insert(0, process);
 
         Task.Run(process.RunLaunch);
-        Views.ShellPage.ContentFrame.Navigate(typeof(Views.Activities.ActivitiesNavigationPage), typeof(Views.Activities.LaunchPage));
     }
 
     public void LaunchFromJumpList(string arguments)
@@ -79,7 +78,6 @@ internal class LaunchService : DefaultLaunchService
         _launchProcesses.Insert(0, process);
 
         Task.Run(process.RunLaunch);
-        Views.ShellPage.ContentFrame?.Navigate(typeof(Views.Activities.ActivitiesNavigationPage), typeof(Views.Activities.LaunchPage));
 
         process.PropertyChanged += (object sender, PropertyChangedEventArgs e) =>
         {

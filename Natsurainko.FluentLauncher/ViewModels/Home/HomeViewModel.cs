@@ -33,7 +33,7 @@ internal partial class HomeViewModel : ObservableObject
     private readonly LaunchService _launchService;
     private readonly INavigationService _navigationService;
 
-    private string _coreNotSelected = ResourceUtils.GetValue("Home", "HomePage", "_NoCore");
+    private readonly string _coreNotSelected = ResourceUtils.GetValue("Home", "HomePage", "_NoCore");
 
     public HomeViewModel(GameService gameService, AccountService accountService, LaunchService launchService, INavigationService navigationService)
     {
@@ -64,14 +64,15 @@ internal partial class HomeViewModel : ObservableObject
     [RelayCommand]
     public void Launch()
     {
-        _launchService.LaunchNewGame(ActiveGameInfo);
+        _launchService.LaunchGame(ActiveGameInfo);
+        _navigationService.NavigateTo("ActivitiesNavigationPage", "LaunchTasksPage");
     }
 
     [RelayCommand]
     public void Account() => _navigationService.NavigateTo("SettingsNavigationPage", "AccountSettingsPage");
 
     [RelayCommand]
-    public void Cores() => _navigationService.NavigateTo("CoresPage"); // Views.ShellPage.ContentFrame.Navigate(typeof(Views.Cores.CoresPage));
+    public void Cores() => _navigationService.NavigateTo("CoresPage");
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {

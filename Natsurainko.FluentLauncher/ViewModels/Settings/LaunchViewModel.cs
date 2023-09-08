@@ -5,6 +5,7 @@ using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
@@ -24,6 +25,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     private readonly SettingsService _settingsService;
     private readonly GameService _gameService;
     private readonly NotificationService _notificationService;
+    private readonly INavigationService _navigationService;
 
     #region Settings
 
@@ -86,13 +88,16 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     public LaunchViewModel(
         SettingsService settingsService,
         GameService gameService,
-        NotificationService notificationService)
+        NotificationService notificationService,
+        INavigationService navigationService)
     {
         _settingsService = settingsService;
         _gameService = gameService;
         _notificationService = notificationService;
+        _navigationService = navigationService;
 
         (this as ISettingsViewModel).InitializeSettings();
+        _navigationService = navigationService;
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -181,7 +186,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     }
 
     [RelayCommand]
-    public void ActivateCoresPage() => Views.ShellPage.ContentFrame.Navigate(typeof(Views.Cores.CoresPage));
+    public void ActivateCoresPage() => _navigationService.NavigateTo("CoresPage");
 
     [RelayCommand]
     public void OpenJavaMirrorsDialog()

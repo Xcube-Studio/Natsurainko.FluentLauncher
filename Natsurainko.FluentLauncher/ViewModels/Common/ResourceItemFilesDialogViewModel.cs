@@ -7,6 +7,7 @@ using Natsurainko.FluentLauncher.Classes.Data.UI;
 using Natsurainko.FluentLauncher.Services.Download;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Storage;
+using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Classes.Datas.Download;
 using System.Collections.Generic;
@@ -27,6 +28,7 @@ internal partial class ResourceItemFilesDialogViewModel : ObservableObject
     private readonly InterfaceCacheService _interfaceCacheService = App.GetService<InterfaceCacheService>();
     private readonly DownloadService _downloadService = App.GetService<DownloadService>();
     private readonly GameService _gameService = App.GetService<GameService>();
+    private readonly INavigationService _navigationService = App.GetService<INavigationService>();
 
     public bool CanComfirm => SelectedFile != null;
 
@@ -84,8 +86,10 @@ internal partial class ResourceItemFilesDialogViewModel : ObservableObject
 
         if (saveFileDialog.ShowDialog().GetValueOrDefault())
         {
-            _downloadService.CreateDownloadProcessFromResourceFile(SelectedFile, saveFileDialog.FileName);
+            _downloadService.DownloadResourceFile(SelectedFile, saveFileDialog.FileName);
             _dialog.Hide();
+
+            _navigationService.NavigateTo("ActivitiesNavigationPage", "DownloadTasksPage");
         }
     }
 }

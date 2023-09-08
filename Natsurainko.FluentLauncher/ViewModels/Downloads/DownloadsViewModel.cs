@@ -92,7 +92,7 @@ internal partial class DownloadsViewModel : ObservableObject
 
     [RelayCommand]
     public void NavigateResourcePage(object resource)
-        => ShellPage.ContentFrame.Navigate(typeof(ResourceItemPage), resource);
+        => _navigationService.NavigateTo("ResourceItemPage", resource);
 
     [RelayCommand]
     public void SearchAllMinecraft()
@@ -115,16 +115,13 @@ internal partial class DownloadsViewModel : ObservableObject
         });
 
     [RelayCommand]
-    public void DownloadMinecraft(PublishData resource)
+    public async Task DownloadMinecraft(PublishData resource)
     {
-        Task.Run(async () =>
-        {
-            IEnumerable<VersionManifestItem> manifestItems = await _interfaceCacheService.FetchVersionManifest();
-            manifestItems = manifestItems.Where(manifestItem => manifestItem.Id.Equals(resource.Version));
+        IEnumerable<VersionManifestItem> manifestItems = (await _interfaceCacheService.FetchVersionManifest())
+            .Where(manifestItem => manifestItem.Id.Equals(resource.Version));
 
-            if (manifestItems.Any())
-                App.DispatcherQueue.TryEnqueue(() => ShellPage.ContentFrame.Navigate(typeof(CoreInstallWizardPage), manifestItems.First()));
-        });
+        if (manifestItems.Any())
+            _navigationService.NavigateTo("CoreInstallWizardPage", manifestItems.First());
     }
 
 }

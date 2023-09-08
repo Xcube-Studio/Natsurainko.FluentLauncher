@@ -7,6 +7,6 @@ public sealed partial class DownloadsPage : Page
 {
     public DownloadsPage()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 }

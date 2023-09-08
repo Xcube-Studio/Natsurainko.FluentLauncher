@@ -3,7 +3,10 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Components.Launch;
 using Natsurainko.FluentLauncher.Services.Launch;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Services.UI.Navigation;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -13,9 +16,15 @@ internal partial class LaunchViewModel : ObservableObject
 {
     public ReadOnlyObservableCollection<LaunchProcess> LaunchProcesses { get; init; }
 
-    public LaunchViewModel(LaunchService launchService)
+    private readonly INavigationService _shellNavigationService;
+    private readonly SettingsService _settings;
+
+    public LaunchViewModel(LaunchService launchService, INavigationService navigationService, SettingsService settingsService)
     {
         LaunchProcesses = launchService.LaunchProcesses;
+        _shellNavigationService = navigationService.Parent ?? throw new InvalidOperationException("Cannot obtain the shell navigaiton service");
+        _settings = settingsService;
+
         TipVisibility = LaunchProcesses.Any()
             ? Visibility.Collapsed
             : Visibility.Visible;
@@ -25,5 +34,5 @@ internal partial class LaunchViewModel : ObservableObject
     private Visibility tipVisibility;
 
     [RelayCommand]
-    public void Home() => Views.ShellPage.ContentFrame.Navigate(App.GetService<AppearanceService>().HomePageType);
+    public void Home() => _shellNavigationService.NavigateTo(_settings.UseNewHomePage ? "NewHomePage" : "HomePage");
 }

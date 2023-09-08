@@ -24,7 +24,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
-using Tomlyn;
 
 namespace Natsurainko.FluentLauncher.Services.Download;
 
@@ -63,14 +62,14 @@ internal class DownloadService : DefaultDownloadService
         HttpUtils.DownloadSetting.MultiThreadsCount = _settingsService.MaxDownloadThreads;
     }
 
-    public void CreateDownloadProcessFromResourceFile(object file, string filePath)
+    public void DownloadResourceFile(object file, string filePath)
     {
         var process = new ResourceDownloadProcess(file, filePath);
         _downloadProcesses.Insert(0, process);
         _ = process.Start();
     }
 
-    public void CreateCoreInstallProcess(CoreInstallationInfo info)
+    public void InstallCore(CoreInstallationInfo info)
     {
         string GetFabricInstallerPackage()
         {
@@ -296,7 +295,5 @@ internal class DownloadService : DefaultDownloadService
 
         _downloadProcesses.Insert(0, installProcess);
         installProcess.Start();
-
-        //_navigationService.NavigateTo("ActivitiesNavigationPage", "DownloadTasksPage");
     }
 }

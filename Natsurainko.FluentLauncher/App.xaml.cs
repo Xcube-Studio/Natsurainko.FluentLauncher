@@ -96,6 +96,8 @@ public partial class App : Application
         // Resources download page
         .WithPage<Views.Downloads.DownloadsPage, ViewModels.Downloads.DownloadsViewModel>("ResourcesDownloadPage")
         .WithPage<Views.Downloads.ResourcesSearchPage, ViewModels.Downloads.ResourcesSearchViewModel>("ResourcesSearchPage")
+        .WithPage<Views.Downloads.CoreInstallWizardPage, ViewModels.Downloads.CoreInstallWizardViewModel>("CoreInstallWizardPage")
+        .WithPage<Views.Downloads.ResourceItemPage>("ResourceItemPage") // Configures VM for itself
 
         // Settings
         .WithPage<Views.Settings.NavigationPage, ViewModels.Settings.SettingsNavigationViewModel>("SettingsNavigationPage")
@@ -172,6 +174,7 @@ public partial class App : Application
 
         services.AddTransient<ViewModels.Downloads.DownloadsViewModel>();
         services.AddTransient<ViewModels.Downloads.ResourcesSearchViewModel>();
+        services.AddTransient<ViewModels.Downloads.CoreInstallWizardViewModel>();
 
         services.AddTransient<ViewModels.ShellViewModel>();
 

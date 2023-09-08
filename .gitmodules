@@ -1,3 +1,6 @@
 [submodule "Natsurainko.FluentCore"]
 	path = Natsurainko.FluentCore
 	url = https://github.com/Xcube-Studio/Natsurainko.FluentCore.git
+[submodule "FluentLauncher.LocalizationPoroject"]
+	path = FluentLauncher.LocalizationPoroject
+	url = https://github.com/Xcube-Studio/FluentLauncher.LocalizationPoroject.git

@@ -1,6 +1,6 @@
 @echo off
 
-SET LOCALIZER=..\FluentLauncher.LocalizationPoroject\build.bat
+SET LOCALIZER=.\FluentLauncher.LocalizationPoroject\build.bat
 
 if not exist %LOCALIZER% (
     echo LOCALIZER NOT FOUND

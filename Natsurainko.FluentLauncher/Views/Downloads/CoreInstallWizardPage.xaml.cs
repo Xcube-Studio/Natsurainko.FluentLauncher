@@ -1,13 +1,12 @@
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Navigation;
-using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.ViewModels.Downloads;
-using Nrk.FluentCore.Classes.Datas.Download;
+using Natsurainko.FluentLauncher.Services.UI.Navigation;
 
 namespace Natsurainko.FluentLauncher.Views.Downloads;
 
 public sealed partial class CoreInstallWizardPage : Page
 {
+    private readonly INavigationService _navigationService = App.GetService<INavigationService>();
+
     public CoreInstallWizardPage()
     {
         InitializeComponent();
@@ -15,7 +14,6 @@ public sealed partial class CoreInstallWizardPage : Page
 
     private void BreadcrumbBar_ItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
     {
-        if (args.Index.Equals(0))
-            ShellPage.ContentFrame.GoBack();
+        if (args.Index.Equals(0)) _navigationService.GoBack();
     }
 }

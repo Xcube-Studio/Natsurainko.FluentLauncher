@@ -222,28 +222,31 @@ internal partial class LaunchProcess : BaseLaunchProcess
     [RelayCommand]
     public void LoggerButton()
     {
-        var window = new WindowEx();
+        App.DispatcherQueue.TryEnqueue(() =>
+        {
+            var window = new WindowEx();
 
-        window.Title = $"Logger - {GameInfo.AbsoluteId}";
+            window.Title = $"Logger - {GameInfo.AbsoluteId}";
 
-        window.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets/AppIcon.ico"));
-        window.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
-        window.AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
-        window.AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-        window.SystemBackdrop = Environment.OSVersion.Version.Build >= 22000
-           ? new MicaBackdrop() { Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt }
-           : new DesktopAcrylicBackdrop();
+            window.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets/AppIcon.ico"));
+            window.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
+            window.AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
+            window.AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            window.SystemBackdrop = Environment.OSVersion.Version.Build >= 22000
+               ? new MicaBackdrop() { Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt }
+               : new DesktopAcrylicBackdrop();
 
-        (window.MinWidth, window.MinHeight) = (516, 328);
-        (window.Width, window.Height) = (873, 612);
+            (window.MinWidth, window.MinHeight) = (516, 328);
+            (window.Width, window.Height) = (873, 612);
 
-        var view = new Views.LoggerPage();
-        var viewModel = new ViewModels.Pages.LoggerViewModel(this, view);
-        viewModel.Title = window.Title;
-        view.DataContext = viewModel;
+            var view = new Views.LoggerPage();
+            var viewModel = new ViewModels.Pages.LoggerViewModel(this, view);
+            viewModel.Title = window.Title;
+            view.DataContext = viewModel;
 
-        window.Content = view;
-        window.Show();
+            window.Content = view;
+            window.Show();
+        });
     }
 
     #endregion

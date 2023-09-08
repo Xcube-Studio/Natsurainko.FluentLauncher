@@ -5,7 +5,6 @@ using Natsurainko.FluentLauncher.Components.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Download;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Classes.Datas.Authenticate;
 using Nrk.FluentCore.Classes.Datas.Launch;

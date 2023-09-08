@@ -27,10 +27,12 @@
         </i:Interaction.Behaviors>
 
         <StackPanel Margin="10,20,10,0" Padding="30,0">
-            <BreadcrumbBar
-                x:Name="BreadcrumbBar"
-                Margin="-10,0"
-                ItemClicked="BreadcrumbBar_ItemClicked">
+            <BreadcrumbBar Margin="-10,0" ItemsSource="{Binding BreadcrumbBarItemsSource}">
+                <i:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="ItemClicked">
+                        <actions:ModifiedInvokeCommandAction Command="{Binding BreadcrumbBarClickedCommand}" />
+                    </core:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
                 <BreadcrumbBar.ItemTemplate>
                     <DataTemplate>
                         <TextBlock

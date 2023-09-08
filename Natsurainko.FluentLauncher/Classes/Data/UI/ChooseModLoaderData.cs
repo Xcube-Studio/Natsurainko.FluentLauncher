@@ -99,7 +99,7 @@ internal partial class ChooseModLoaderData : ObservableObject
                     var fabric = array.Select(x => new LoaderBuildData
                     {
                         DisplayText = x["loader"]["version"].GetValue<string>(),
-                        Metadata = x["loader"]["version"]
+                        Metadata = x
                     }).ToList();
 
                     fabric.Sort((a, b) => a.DisplayText.CompareTo(b.DisplayText));

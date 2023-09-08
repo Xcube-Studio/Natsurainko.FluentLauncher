@@ -24,6 +24,7 @@ internal partial class EnterCoreSettingsViewModel : WizardViewModelBase
         _coreInstallationInfo = coreInstallationInfo;
 
         AbsoluteId = GetDefaultId();
+        EnableIndependencyCore = _coreInstallationInfo.PrimaryLoader != null && _coreInstallationInfo.SecondaryLoader != null;
     }
 
     [ObservableProperty]

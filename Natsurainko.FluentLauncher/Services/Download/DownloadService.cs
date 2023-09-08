@@ -22,7 +22,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Threading;
 
 namespace Natsurainko.FluentLauncher.Services.Download;
@@ -71,23 +70,16 @@ internal class DownloadService : DefaultDownloadService
 
     public void InstallCore(CoreInstallationInfo info)
     {
-        string GetFabricInstallerPackage()
-        {
-            var httpResponseMessage = HttpUtils.HttpGet("https://meta.fabricmc.net/v2/versions/installer");
-            return JsonNode.Parse(httpResponseMessage.Content.ReadAsString()).AsArray()[0]["url"].GetValue<string>();
-        }
-
         string GetModLoaderPackageDownloadUrl(ChooseModLoaderData loaderData)
         {
             var downloadUrl = DownloadMirrors.Bmclapi.Domain;
             var metadata = loaderData.SelectedItem.Metadata;
 
-            downloadUrl += loaderData.Type switch
+            downloadUrl = loaderData.Type switch
             {
-                ModLoaderType.Forge => $"/forge/download/{metadata.GetValue<int>().ToString()}",
-                ModLoaderType.NeoForge => $"/neoforge/version/{loaderData._manifestItem.Id}/download/{metadata.GetValue<string>()}",
-                ModLoaderType.OptiFine => $"/optifine/{metadata["mcversion"].GetValue<string>()}/{metadata["type"].GetValue<string>()}/{metadata["patch"].GetValue<string>()}",
-                ModLoaderType.Fabric => GetFabricInstallerPackage(),
+                ModLoaderType.Forge => $"{downloadUrl}/forge/download/{metadata.GetValue<int>()}",
+                ModLoaderType.NeoForge => $"{downloadUrl}/neoforge/version/{metadata.GetValue<string>()}/download/installer.jar",
+                ModLoaderType.OptiFine => $"{downloadUrl}/optifine/{metadata["mcversion"].GetValue<string>()}/{metadata["type"].GetValue<string>()}/{metadata["patch"].GetValue<string>()}",
                 _ => throw new NotImplementedException()
             };
 
@@ -208,8 +200,7 @@ internal class DownloadService : DefaultDownloadService
                     {
                         AbsoluteId = info.AbsoluteId,
                         InheritedFrom = inheritsFrom,
-                        JavaPath = _settingsService.ActiveJava,
-                        PackageFilePath = primaryLoaderFile
+                        FabricBuild = info.PrimaryLoader.SelectedItem.Metadata.Deserialize<FabricInstallBuild>()
                     },
                     ModLoaderType.Quilt => new QuiltInstallExecutor
                     {
@@ -224,7 +215,7 @@ internal class DownloadService : DefaultDownloadService
                 task.Wait();
             }, ResourceUtils.GetValue("Converters", "_ProgressItem_RunExecutor").Replace("${type}", info.PrimaryLoader.Type.ToString()), installProcess);
 
-            if (info.PrimaryLoader.Type != ModLoaderType.Quilt)
+            if (!(info.PrimaryLoader.Type == ModLoaderType.Fabric || info.PrimaryLoader.Type == ModLoaderType.Quilt))
             {
                 var downloadInstallerPackage = new CoreInstallProcess.ProgressItem(@this =>
                 {

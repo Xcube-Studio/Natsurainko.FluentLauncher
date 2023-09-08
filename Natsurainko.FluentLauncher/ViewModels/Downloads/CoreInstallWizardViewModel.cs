@@ -23,7 +23,8 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
     [ObservableProperty]
     private int navigationViewSelectIndex = 0;
 
-    public string[] PathItems { get; private set; }
+    [ObservableProperty]
+    private string[] breadcrumbBarItemsSource;
 
     private readonly Stack<WizardViewModelBase> _viewModelStack = new();
 
@@ -50,11 +51,6 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
     void INavigationAware.OnNavigatedTo(object parameter)
     {
         _manifestItem = (VersionManifestItem)parameter;
-        PathItems = new string[]
-        {
-            ResourceUtils.GetValue("Downloads", "CoreInstallWizardPage", "_BreadcrumbBar_First"),
-            _manifestItem.Id
-        };
     }
 
     [RelayCommand]
@@ -63,6 +59,12 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
         var grid = args.As<Grid, object>().sender;
         _contentFrame = grid.FindName("contentFrame") as Frame;
         _navigationView = grid.FindName("NavigationView") as NavigationView;
+
+        BreadcrumbBarItemsSource = new string[]
+        {
+            ResourceUtils.GetValue("Downloads", "CoreInstallWizardPage", "_BreadcrumbBar_First"),
+            _manifestItem.Id
+        };
 
         CurrentFrameDataContext = new ChooseModLoaderViewModel(_manifestItem);
 
@@ -120,6 +122,15 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
     /// </summary>
     [RelayCommand]
     public void Cancel() => _navigationService.GoBack();
+
+    [RelayCommand]
+    void BreadcrumbBarClicked(object args)
+    {
+        var e = args.As<BreadcrumbBar, BreadcrumbBarItemClickedEventArgs>();
+
+        if (e.args.Index.Equals(0))
+            _navigationService.GoBack();
+    }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {

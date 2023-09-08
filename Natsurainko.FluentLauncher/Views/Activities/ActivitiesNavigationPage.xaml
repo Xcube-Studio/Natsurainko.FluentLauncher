@@ -18,7 +18,7 @@
             <NavigationView.MenuItems>
                 <NavigationViewItem
                     x:Uid="Activities_ActivitiesNavigationPage_NV_Item1"
-                    Content="Launch Task"
+                    Content="Launch Tasks"
                     IsSelected="True"
                     Tag="LaunchTasksPage">
                     <NavigationViewItem.Icon>
@@ -27,7 +27,7 @@
                 </NavigationViewItem>
                 <NavigationViewItem
                     x:Uid="Activities_ActivitiesNavigationPage_NV_Item2"
-                    Content="Download Task"
+                    Content="Download Tasks"
                     Tag="DownloadTasksPage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xe896;" />

@@ -84,7 +84,7 @@
                     Tag="ActivitiesNavigationPage" />
                 <NavigationViewItem
                     x:Uid="ShellPage_NV_Item_4"
-                    Content="Mods"
+                    Content="Download resources"
                     Icon="{xh:FontIcon Glyph=&#xe8f1;}"
                     Tag="ResourcesDownloadPage" />
             </NavigationView.MenuItems>

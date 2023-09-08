@@ -190,7 +190,7 @@
                                         <TextBlock Style="{ThemeResource BaseTextBlockStyle}" TextTrimming="CharacterEllipsis">
                                             <Run Text="{Binding ProcessStartTime}" />
                                             <Run Text=":" />
-                                            <Run x:Uid="Activities_LaunchPage_Item_H2" Text="The game has been launched successfully" />
+                                            <Run x:Uid="Activities_LaunchPage_Item_H2" Text="Game launched successfully" />
                                         </TextBlock>
                                     </labs:SettingsCard.Header>
                                 </labs:SettingsCard>
@@ -242,7 +242,7 @@
                                     </labs:SettingsCard.Visibility>
 
                                     <labs:SettingsCard.Header>
-                                        <TextBlock x:Uid="Activities_LaunchPage_Item_H3" Text="Game progress management" />
+                                        <TextBlock x:Uid="Activities_LaunchPage_Item_H3" Text="Game process management" />
                                     </labs:SettingsCard.Header>
 
                                     <StackPanel Orientation="Horizontal" Spacing="10">
@@ -325,13 +325,13 @@
                 FontSize="26"
                 FontWeight="SemiBold"
                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                Text="No Launch Arrangements" />
+                Text="No Launch Tasks" />
             <HyperlinkButton
                 x:Uid="Activities_LaunchPage_Hyperlink"
                 Padding="0"
                 HorizontalAlignment="Center"
                 Command="{Binding HomeCommand}"
-                Content="Go to HomePage to create"
+                Content="Launch a game at Home"
                 FontSize="16"
                 FontWeight="SemiBold"
                 Opacity="0.75" />

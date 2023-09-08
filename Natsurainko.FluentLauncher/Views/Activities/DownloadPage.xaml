@@ -34,13 +34,13 @@
                 FontSize="26"
                 FontWeight="SemiBold"
                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                Text="No Download Arrangements" />
+                Text="No Download Tasks" />
             <HyperlinkButton
                 x:Uid="Activities_DownloadPage_Hyperlink"
                 Padding="0"
                 HorizontalAlignment="Center"
                 Command="{Binding ResourceCommand}"
-                Content="Go to HomePage to create"
+                Content="Download resources"
                 FontSize="16"
                 FontWeight="SemiBold"
                 Opacity="0.75" />

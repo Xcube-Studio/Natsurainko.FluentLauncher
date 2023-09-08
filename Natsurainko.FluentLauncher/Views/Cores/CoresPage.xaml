@@ -33,7 +33,7 @@
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Center"
                     VerticalContentAlignment="Center"
-                    PlaceholderText="Search Core"
+                    PlaceholderText="Search Cores"
                     Text="{Binding SearchBoxInput, Mode=TwoWay}">
                     <AutoSuggestBox.QueryIcon>
                         <AnimatedIcon Width="14" Height="14">
@@ -53,7 +53,7 @@
                             x:Uid="Cores_CoresPage_InstallButton"
                             Margin="7.5,0,0,0"
                             Style="{ThemeResource BodyTextBlockStyle}"
-                            Text="Install Cores" />
+                            Text="Install cores" />
                     </StackPanel>
                 </Button>
                 <labs:Segmented
@@ -94,7 +94,7 @@
                         Margin="10,0,0,0"
                         VerticalAlignment="Center"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                        Text="Filter criteria: " />
+                        Text="Filter: " />
                     <ComboBox
                         MinWidth="110"
                         Margin="5,0,0,0"

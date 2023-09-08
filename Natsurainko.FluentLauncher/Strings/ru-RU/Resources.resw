@@ -129,33 +129,6 @@
     <data name="Converters__ResourceDownloadProcessState_Faulted" xml:space="preserve">
         <value>Загрузка не удалась</value>
     </data>
-    <data name="Converters__CoreInstallProcessState_Created" xml:space="preserve">
-        <value>Задача установки создана.</value>
-    </data>
-    <data name="Converters__CoreInstallProcessState_Installing" xml:space="preserve">
-        <value>Задача установки находится в процессе</value>
-    </data>
-    <data name="Converters__CoreInstallProcessState_Finished" xml:space="preserve">
-        <value>Установка завершена</value>
-    </data>
-    <data name="Converters__CoreInstallProcessState_Faulted" xml:space="preserve">
-        <value>Установка не удалась</value>
-    </data>
-    <data name="Converters__ProgressItem_InstallVanilla" xml:space="preserve">
-        <value>Установите ванильную игру ${id}</value>
-    </data>
-    <data name="Converters__ProgressItem_CompleteResources" xml:space="preserve">
-        <value>Заполните игровые ресурсы</value>
-    </data>
-    <data name="Converters__ProgressItem_RunExecutor" xml:space="preserve">
-        <value>Запустите программу установки ${type}.</value>
-    </data>
-    <data name="Converters__ProgressItem_DownloadPackage" xml:space="preserve">
-        <value>Загрузите установочный пакет ${loader}</value>
-    </data>
-    <data name="Converters__ProgressItem_ApplySettings" xml:space="preserve">
-        <value>Применить основные настройки</value>
-    </data>
     <data name="Dialogs_JavaMirrorsDialog.Title" xml:space="preserve">
         <value>Сторонние источники загрузки Java</value>
     </data>
@@ -229,7 +202,7 @@
         <value>Ядра Управление</value>
     </data>
     <data name="ShellPage_NV_Item_3.Content" xml:space="preserve">
-        <value>Задачи Управление</value>
+        <value></value>
     </data>
     <data name="ShellPage_NV_Item_4.Content" xml:space="preserve">
         <value>Загрузка ресурсов</value>
@@ -253,7 +226,7 @@
         <value>Нет механизмов загрузки</value>
     </data>
     <data name="Activities_DownloadPage_Hyperlink.Content" xml:space="preserve">
-        <value>Перейдите на ResoucesDownloadPage, чтобы создать</value>
+        <value></value>
     </data>
     <data name="Activities_DownloadPage_Item_T.Text" xml:space="preserve">
         <value>Загрузить задачу</value>
@@ -271,7 +244,7 @@
         <value>Нет договоренностей о запуске</value>
     </data>
     <data name="Activities_LaunchPage_Hyperlink.Content" xml:space="preserve">
-        <value>Перейдите на главную страницу, чтобы создать</value>
+        <value></value>
     </data>
     <data name="Activities_LaunchPage_Item_T.Text" xml:space="preserve">
         <value>Запустить задачу</value>
@@ -416,30 +389,6 @@
     </data>
     <data name="CoreInstallWizard_ChooseModLoaderPage_Page.Tag" xml:space="preserve">
         <value>Параметры загрузчика модов (1/3)</value>
-    </data>
-    <data name="CoreInstallWizard_EnterCoreSettingsPage_Page.Tag" xml:space="preserve">
-        <value>Основные основные настройки (2/3)</value>
-    </data>
-    <data name="CoreInstallWizard_EnterCoreSettingsPage_H1.Text" xml:space="preserve">
-        <value>Основной абсолютный идентификатор:</value>
-    </data>
-    <data name="CoreInstallWizard_EnterCoreSettingsPage_H2.Text" xml:space="preserve">
-        <value>Основной псевдоним:</value>
-    </data>
-    <data name="CoreInstallWizard_EnterCoreSettingsPage_H3.Text" xml:space="preserve">
-        <value>Ядро независимое</value>
-    </data>
-    <data name="CoreInstallWizard_EnterCoreSettingsPage_D1.Text" xml:space="preserve">
-        <value>Имя каталога version/{version}, имя не может повторяться</value>
-    </data>
-    <data name="CoreInstallWizard_EnterCoreSettingsPage_D2.Text" xml:space="preserve">
-        <value>Только в качестве отображаемого имени, фактический идентификатор не будет изменен.</value>
-    </data>
-    <data name="CoreInstallWizard_EnterCoreSettingsPage_D3.Text" xml:space="preserve">
-        <value>Игра будет запускаться в каталогеversions\${version}.</value>
-    </data>
-    <data name="CoreInstallWizard_EnterCoreSettingsPage_NotAvailableText.Text" xml:space="preserve">
-        <value>Я недоступен</value>
     </data>
     <data name="Cores_CoresPage_SearchBox.PlaceholderText" xml:space="preserve">
         <value>Ядро поиска</value>
@@ -640,7 +589,7 @@
         <value>текущее выбранное ядро</value>
     </data>
     <data name="Home_HomePage_Hyperlink.Text" xml:space="preserve">
-        <value>Перейти на главную страницу</value>
+        <value></value>
     </data>
     <data name="OOBE_AccountPage_T.Text" xml:space="preserve">
         <value>Настройки учетной записи</value>

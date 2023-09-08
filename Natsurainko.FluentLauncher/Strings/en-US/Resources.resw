@@ -129,33 +129,6 @@
     <data name="Converters__ResourceDownloadProcessState_Faulted" xml:space="preserve">
         <value>Download failed</value>
     </data>
-    <data name="Converters__CoreInstallProcessState_Created" xml:space="preserve">
-        <value>The install task is created</value>
-    </data>
-    <data name="Converters__CoreInstallProcessState_Installing" xml:space="preserve">
-        <value>The install task is in progress</value>
-    </data>
-    <data name="Converters__CoreInstallProcessState_Finished" xml:space="preserve">
-        <value>Install completed</value>
-    </data>
-    <data name="Converters__CoreInstallProcessState_Faulted" xml:space="preserve">
-        <value>Install failed</value>
-    </data>
-    <data name="Converters__ProgressItem_InstallVanilla" xml:space="preserve">
-        <value>Install vanilla game ${id}</value>
-    </data>
-    <data name="Converters__ProgressItem_CompleteResources" xml:space="preserve">
-        <value>Complete the game resources</value>
-    </data>
-    <data name="Converters__ProgressItem_RunExecutor" xml:space="preserve">
-        <value>Run ${type} install executor</value>
-    </data>
-    <data name="Converters__ProgressItem_DownloadPackage" xml:space="preserve">
-        <value>Download ${loader} installer package</value>
-    </data>
-    <data name="Converters__ProgressItem_ApplySettings" xml:space="preserve">
-        <value>Apply core settings</value>
-    </data>
     <data name="Dialogs_JavaMirrorsDialog.Title" xml:space="preserve">
         <value>Third-party Java Download Sources</value>
     </data>
@@ -226,22 +199,22 @@
         <value>Home</value>
     </data>
     <data name="ShellPage_NV_Item_2.Content" xml:space="preserve">
-        <value>Cores Manage</value>
+        <value>Cores</value>
     </data>
     <data name="ShellPage_NV_Item_3.Content" xml:space="preserve">
-        <value>Tasks Manage</value>
+        <value>Activities</value>
     </data>
     <data name="ShellPage_NV_Item_4.Content" xml:space="preserve">
-        <value>Resources Download</value>
+        <value>Download resources</value>
     </data>
     <data name="ShellPage_NV_Item_5.Content" xml:space="preserve">
         <value>Settings</value>
     </data>
     <data name="Activities_ActivitiesNavigationPage_NV_Item1.Content" xml:space="preserve">
-        <value>Launch Task</value>
+        <value>Launch Tasks</value>
     </data>
     <data name="Activities_ActivitiesNavigationPage_NV_Item2.Content" xml:space="preserve">
-        <value>Download Task</value>
+        <value>Download Tasks</value>
     </data>
     <data name="Activities_ActivitiesNavigationPage_NV_Item3.Content" xml:space="preserve">
         <value>News</value>
@@ -250,10 +223,10 @@
         <value>Application</value>
     </data>
     <data name="Activities_DownloadPage_Tip.Text" xml:space="preserve">
-        <value>No Download Arrangements</value>
+        <value>No Download Tasks</value>
     </data>
     <data name="Activities_DownloadPage_Hyperlink.Content" xml:space="preserve">
-        <value>Go to ResoucesDownloadPage to create</value>
+        <value>Download resources</value>
     </data>
     <data name="Activities_DownloadPage_Item_T.Text" xml:space="preserve">
         <value>Download Task</value>
@@ -268,13 +241,13 @@
         <value>Open File Folder:</value>
     </data>
     <data name="Activities_LaunchPage_Tip.Text" xml:space="preserve">
-        <value>No Launch Arrangements</value>
+        <value>No Launch Tasks</value>
     </data>
     <data name="Activities_LaunchPage_Hyperlink.Content" xml:space="preserve">
-        <value>Go to HomePage to create</value>
+        <value>Launch a game at Home</value>
     </data>
     <data name="Activities_LaunchPage_Item_T.Text" xml:space="preserve">
-        <value>Launch Task</value>
+        <value>Launch Tasks</value>
     </data>
     <data name="Activities_LaunchPage_Item_TD.Text" xml:space="preserve">
         <value>State</value>
@@ -283,10 +256,10 @@
         <value>Progress: </value>
     </data>
     <data name="Activities_LaunchPage_Item_H2.Text" xml:space="preserve">
-        <value>The game has been launched successfully</value>
+        <value>Game launched successfully</value>
     </data>
     <data name="Activities_LaunchPage_Item_H3.Text" xml:space="preserve">
-        <value>Game progress management</value>
+        <value>Game process management</value>
     </data>
     <data name="Activities_LaunchPage_Item_H4.Text" xml:space="preserve">
         <value>Crash analysis report</value>
@@ -417,35 +390,11 @@
     <data name="CoreInstallWizard_ChooseModLoaderPage_Page.Tag" xml:space="preserve">
         <value>Mod Loader Options (1/3)</value>
     </data>
-    <data name="CoreInstallWizard_EnterCoreSettingsPage_Page.Tag" xml:space="preserve">
-        <value>Basic Core Settings (2/3)</value>
-    </data>
-    <data name="CoreInstallWizard_EnterCoreSettingsPage_H1.Text" xml:space="preserve">
-        <value>Core Absolute Id:</value>
-    </data>
-    <data name="CoreInstallWizard_EnterCoreSettingsPage_H2.Text" xml:space="preserve">
-        <value>Core Nickname:</value>
-    </data>
-    <data name="CoreInstallWizard_EnterCoreSettingsPage_H3.Text" xml:space="preserve">
-        <value>Core independent</value>
-    </data>
-    <data name="CoreInstallWizard_EnterCoreSettingsPage_D1.Text" xml:space="preserve">
-        <value>The name of the versions/{version} directory, the name cannot be repeated</value>
-    </data>
-    <data name="CoreInstallWizard_EnterCoreSettingsPage_D2.Text" xml:space="preserve">
-        <value>Only as a display name, the actual Id will not be modified</value>
-    </data>
-    <data name="CoreInstallWizard_EnterCoreSettingsPage_D3.Text" xml:space="preserve">
-        <value>The game will run at versions\${version} directory</value>
-    </data>
-    <data name="CoreInstallWizard_EnterCoreSettingsPage_NotAvailableText.Text" xml:space="preserve">
-        <value>Id not available</value>
-    </data>
     <data name="Cores_CoresPage_SearchBox.PlaceholderText" xml:space="preserve">
-        <value>Search Core</value>
+        <value>Search cores</value>
     </data>
     <data name="Cores_CoresPage_Text1.Text" xml:space="preserve">
-        <value>Filter criteria: </value>
+        <value>Filter: </value>
     </data>
     <data name="Cores_CoresPage_Text2.Text" xml:space="preserve">
         <value>Sort by: </value>
@@ -457,7 +406,7 @@
         <value>Name;Launch Date</value>
     </data>
     <data name="Cores_CoresPage_InstallButton.Text" xml:space="preserve">
-        <value>Install Cores</value>
+        <value>Install cores</value>
     </data>
     <data name="Cores_ManageNavigationPage_NV_Item_1.Content" xml:space="preserve">
         <value>Cores Settings</value>
@@ -640,7 +589,7 @@
         <value>the currently selected core</value>
     </data>
     <data name="Home_HomePage_Hyperlink.Text" xml:space="preserve">
-        <value>Go to the CoresPage</value>
+        <value>Manage cores</value>
     </data>
     <data name="OOBE_AccountPage_T.Text" xml:space="preserve">
         <value>Account Settings</value>

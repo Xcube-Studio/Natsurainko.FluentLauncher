@@ -160,7 +160,7 @@
                         <TextBlock
                             x:Uid="Home_HomePage_Hyperlink"
                             Style="{ThemeResource BaseTextBlockStyle}"
-                            Text="Go to the CoresPage" />
+                            Text="Manage cores" />
                     </HyperlinkButton>
                     <ListView
                         x:Name="listView"

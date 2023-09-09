@@ -274,12 +274,20 @@
                                         <TextBlock x:Uid="Activities_LaunchPage_Item_H4" Text="Crash analysis report" />
                                     </labs:SettingsCard.Header>
 
-                                    <Button>
-                                        <StackPanel Orientation="Horizontal" Spacing="5">
-                                            <FontIcon FontSize="14" Glyph="&#xf000;" />
-                                            <TextBlock x:Uid="Activities_LaunchPage_B3" Text="Open Report" />
-                                        </StackPanel>
-                                    </Button>
+                                    <StackPanel Orientation="Horizontal" Spacing="10">
+                                        <Button Command="{Binding LoggerButtonCommand}">
+                                            <StackPanel Orientation="Horizontal" Spacing="5">
+                                                <FontIcon FontSize="14" Glyph="&#xf000;" />
+                                                <TextBlock x:Uid="Activities_LaunchPage_B1" Text="Open Log" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button IsEnabled="False">
+                                            <StackPanel Orientation="Horizontal" Spacing="5">
+                                                <FontIcon FontSize="14" Glyph="&#xf000;" />
+                                                <TextBlock x:Uid="Activities_LaunchPage_B3" Text="Open Report" />
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
                                 </labs:SettingsCard>
 
                                 <labs:SettingsCard>
@@ -292,9 +300,9 @@
                                     </labs:SettingsCard.Visibility>
 
                                     <labs:SettingsCard.Header>
-                                        <TextBlock>
+                                        <TextBlock TextWrapping="WrapWholeWords">
                                             <Run x:Uid="Activities_LaunchPage_Item_H5" Text="Reason:" />
-                                            <Run Text=" " />
+                                            <Run Text="{Binding ExceptionReason}" />
                                         </TextBlock>
                                     </labs:SettingsCard.Header>
 
@@ -303,6 +311,39 @@
                                             <FontIcon FontSize="14" Glyph="&#xf000;" />
                                             <TextBlock x:Uid="Activities_LaunchPage_B4" Text="Show Details" />
                                         </StackPanel>
+                                        <Button.Flyout>
+                                            <Flyout Placement="Left">
+                                                <RichTextBlock
+                                                    MaxWidth="400"
+                                                    DataContext="{Binding Exception}"
+                                                    FontWeight="SemiBold">
+                                                    <Paragraph>
+                                                        <Run Text="Message:" />
+                                                        <Run Text="{Binding Message}" />
+                                                    </Paragraph>
+                                                    <Paragraph>
+                                                        <Run Text="HelpLink:" />
+                                                        <Run Text="{Binding HelpLink}" />
+                                                    </Paragraph>
+                                                    <Paragraph>
+                                                        <Run Text="========================================" />
+
+                                                        <Run Text="InnerException:" />
+                                                        <Run Text="{Binding InnerException}" />
+
+                                                        <Run Text="========================================" />
+                                                    </Paragraph>
+                                                    <Paragraph>
+                                                        <Run Text="Source:" />
+                                                        <Run Text="{Binding Source}" />
+                                                    </Paragraph>
+                                                    <Paragraph>
+                                                        <Run Text="StackTrace:" />
+                                                        <Run Text="{Binding StackTrace}" />
+                                                    </Paragraph>
+                                                </RichTextBlock>
+                                            </Flyout>
+                                        </Button.Flyout>
                                     </Button>
                                 </labs:SettingsCard>
                             </labs:SettingsExpander.Items>

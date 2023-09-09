@@ -37,7 +37,7 @@ internal partial class ChooseModLoaderViewModel : WizardViewModelBase
         modLoaderDatas.Add(new(ModLoaderType.Quilt, _manifestItem, modLoaderDatas));
     }
 
-    public override WizardViewModelBase GetNextViewModel() 
+    public override WizardViewModelBase GetNextViewModel()
     {
         var selected = ModLoaderDatas.Where(x => x.IsChecked).ToList();
 

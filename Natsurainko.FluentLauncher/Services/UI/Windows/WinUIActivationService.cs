@@ -2,9 +2,6 @@
 using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Services.UI.Windows;
 
@@ -17,7 +14,7 @@ internal class WinUIActivationService : ActivationService<Window>
             .WithServiceFactory((r, p) => new WinUIActivationService(r, p));
     }
 
-    private WinUIActivationService(IReadOnlyDictionary<string, WindowDescriptor> registeredWindows, IServiceProvider windowProvier) 
+    private WinUIActivationService(IReadOnlyDictionary<string, WindowDescriptor> registeredWindows, IServiceProvider windowProvier)
         : base(registeredWindows, windowProvier) { }
 
     protected override IWindowService ActivateWindow(Window window)

@@ -1,5 +1,4 @@
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.ViewModels.Home;
 
 namespace Natsurainko.FluentLauncher.Views.Home;
 

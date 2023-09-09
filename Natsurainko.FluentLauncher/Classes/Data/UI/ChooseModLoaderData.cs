@@ -36,7 +36,7 @@ internal partial class ChooseModLoaderData : ObservableObject
     public readonly VersionManifestItem _manifestItem;
     private readonly List<ChooseModLoaderData> _chooseModLoaders;
 
-    public ChooseModLoaderData(ModLoaderType type, VersionManifestItem manifestItem, List<ChooseModLoaderData> chooseModLoaders) 
+    public ChooseModLoaderData(ModLoaderType type, VersionManifestItem manifestItem, List<ChooseModLoaderData> chooseModLoaders)
     {
         Type = type;
         Description = ResourceUtils.GetValue("CoreInstallWizard", "ChooseModLoaderPage", $"_{Type}");
@@ -144,7 +144,7 @@ internal partial class ChooseModLoaderData : ObservableObject
                     neoForge.Sort((a, b) => a.DisplayText.CompareTo(b.DisplayText));
                     neoForge.Reverse();
 
-                    loaders = neoForge; 
+                    loaders = neoForge;
 
                     break;
             }

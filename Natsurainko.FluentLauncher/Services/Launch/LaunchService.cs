@@ -141,11 +141,14 @@ internal class LaunchService : DefaultLaunchService
         var launchProcess = new LaunchProcessBuilder(gameInfo)
             .SetInspectAction(() =>
             {
-                if (_settingsService.ActiveJava == null) return false;
-                if (launchAccount == null) return false;
+                if (string.IsNullOrEmpty(_settingsService.ActiveJava))
+                    throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoActiveJava"));
+                if (launchAccount == null)
+                    throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
 
                 suitableJava = GetSuitableJava(gameInfo);
-                if (suitableJava == null) return false;
+                if (suitableJava == null)
+                    throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoSuitableJava").Replace("${version}", gameInfo.GetSuitableJavaVersion()));
 
                 return true;
             })
@@ -167,7 +170,7 @@ internal class LaunchService : DefaultLaunchService
                         }
                     }
                 }
-                catch(Exception ex) 
+                catch (Exception ex)
                 {
                     throw new AuthenticateRefreshAccountException(ex);
                 }

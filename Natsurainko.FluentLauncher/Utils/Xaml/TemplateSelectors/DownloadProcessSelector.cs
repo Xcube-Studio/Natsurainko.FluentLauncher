@@ -10,7 +10,7 @@ internal class DownloadProcessSelector : DataTemplateSelector
 
     public DataTemplate CoreInstall { get; set; }
 
-    protected override DataTemplate SelectTemplateCore(object item) 
+    protected override DataTemplate SelectTemplateCore(object item)
     {
         if (item is ResourceDownloadProcess)
             return ResourceDownload;

@@ -3,9 +3,7 @@ using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Services.UI.Pages;
-using Natsurainko.FluentLauncher.ViewModels;
 using Natsurainko.FluentLauncher.ViewModels.OOBE;
-using System;
 using System.Linq;
 
 namespace Natsurainko.FluentLauncher.Views.OOBE;

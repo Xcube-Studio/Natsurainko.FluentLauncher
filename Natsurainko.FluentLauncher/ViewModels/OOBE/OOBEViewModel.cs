@@ -252,7 +252,7 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     }
 
     [RelayCommand]
-    public void Login(Button parameter) 
+    public void Login(Button parameter)
         => _ = new AuthenticationWizardDialog { XamlRoot = parameter.XamlRoot }.ShowAsync();
 
     #endregion

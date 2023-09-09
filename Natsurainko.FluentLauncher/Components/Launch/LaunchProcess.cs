@@ -4,7 +4,6 @@ using Microsoft.UI;
 using Microsoft.UI.Xaml.Media;
 using Natsurainko.FluentLauncher.Classes.Data.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
-using Natsurainko.FluentLauncher.Utils.Xaml;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.Classes.Enums;
 using Nrk.FluentCore.Components.Launch;
@@ -23,7 +22,6 @@ namespace Natsurainko.FluentLauncher.Components.Launch;
 internal partial class LaunchProcess : BaseLaunchProcess
 {
     private bool isKilled;
-    private Exception Exception;
 
     private readonly LaunchService _launchService;
 
@@ -32,7 +30,7 @@ internal partial class LaunchProcess : BaseLaunchProcess
     public override LaunchState State
     {
         get => DisplayState;
-        protected set => App.DispatcherQueue.SynchronousTryEnqueue(() => DisplayState = value);
+        protected set => App.DispatcherQueue.TryEnqueue(() => DisplayState = value);
     }
 
     public LaunchProcess(GameInfo gameInfo) : base()
@@ -97,7 +95,12 @@ internal partial class LaunchProcess : BaseLaunchProcess
         {
             State = LaunchState.Faulted;
             McProcess?.Dispose();
-            Exception = ex.InnerException;
+
+            App.DispatcherQueue.TryEnqueue(() =>
+            {
+                Exception = ex;
+                ExceptionReason = Exception.Message;
+            });
 
             throw;
         }
@@ -154,6 +157,9 @@ internal partial class LaunchProcess : BaseLaunchProcess
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ProgressText))]
     private double progress;
+
+    [ObservableProperty]
+    private Exception exception;
 
     [ObservableProperty]
     private string exceptionReason;

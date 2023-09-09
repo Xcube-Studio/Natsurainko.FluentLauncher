@@ -44,8 +44,8 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
 
 
     public CoreInstallWizardViewModel(
-        INavigationService navigationService, 
-        NotificationService notificationService, 
+        INavigationService navigationService,
+        NotificationService notificationService,
         DownloadService downloadService,
         GameService gameService,
         InterfaceCacheService interfaceCacheService)

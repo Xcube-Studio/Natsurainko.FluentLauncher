@@ -10,14 +10,14 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Natsurainko.FluentLauncher.Services.UI.Navigation;
+using Natsurainko.FluentLauncher.Services.UI.Pages;
+using Natsurainko.FluentLauncher.Services.UI.Windows;
+using Natsurainko.FluentLauncher.ViewModels;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
 using System;
 using System.Text;
-using Natsurainko.FluentLauncher.Services.UI.Windows;
-using Natsurainko.FluentLauncher.Services.UI.Navigation;
-using Natsurainko.FluentLauncher.Services.UI.Pages;
-using Natsurainko.FluentLauncher.ViewModels;
 
 namespace Natsurainko.FluentLauncher;
 

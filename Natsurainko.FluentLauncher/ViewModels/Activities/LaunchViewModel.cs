@@ -4,7 +4,6 @@ using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Components.Launch;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using System;
 using System.Collections.ObjectModel;

@@ -1,11 +1,5 @@
 ﻿using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Navigation;
 
 namespace Natsurainko.FluentLauncher.ViewModels;
 

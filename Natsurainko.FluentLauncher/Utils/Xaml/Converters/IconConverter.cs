@@ -32,7 +32,7 @@ public class IconConverter : IValueConverter
                 _ => "grass_block_side"
             }), UriKind.RelativeOrAbsolute));
 
-        
+
         if (value is ModLoaderType modLoaderType)
             return new BitmapImage(new Uri($"ms-appx:///Assets/Icons/{modLoaderType}Icon.png", UriKind.RelativeOrAbsolute));
 

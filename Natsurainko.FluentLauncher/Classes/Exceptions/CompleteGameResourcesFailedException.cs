@@ -7,7 +7,7 @@ namespace Natsurainko.FluentLauncher.Classes.Exceptions;
 
 public class CompleteGameResourcesException : Exception
 {
-    public CompleteGameResourcesException(DefaultResourcesDownloader resourcesDownloader) 
+    public CompleteGameResourcesException(DefaultResourcesDownloader resourcesDownloader)
         : base("补全游戏依赖资源失败")
     {
         var @string = new StringBuilder();

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Services.UI.Windows;
 
@@ -12,7 +9,7 @@ namespace Natsurainko.FluentLauncher.Services.UI.Windows;
 /// </summary>
 /// <typeparam name="TService">Type of the activation service</typeparam>
 /// <typeparam name="TWindowBase">Base type of the window managed by the activation service</typeparam>
-class ActivationServiceBuilder<TService, TWindowBase> where TService: ActivationService<TWindowBase>
+class ActivationServiceBuilder<TService, TWindowBase> where TService : ActivationService<TWindowBase>
 {
     private readonly Dictionary<string, WindowDescriptor> _registeredWindows = new();
     private readonly IServiceProvider _windowProvider;

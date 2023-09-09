@@ -85,7 +85,7 @@ internal partial class ResourceDownloadProcess : DownloadProcess
     {
         base.OnPropertyChanged(e);
 
-        if (e.PropertyName ==  nameof(State))
+        if (e.PropertyName == nameof(State))
             DisplayState = ResourceUtils.GetValue("Converters", $"_ResourceDownloadProcessState_{State}");
     }
 
@@ -109,7 +109,7 @@ internal partial class CoreInstallProcess : DownloadProcess
 
     public void SetStartAction(Action<CoreInstallProcess> action) => _action = action;
 
-    public void Start() 
+    public void Start()
     {
         DisplayState = ResourceUtils.GetValue("Converters", "_CoreInstallProcessState_Installing");
         Task.Run(() => _action(this));
@@ -174,7 +174,7 @@ internal partial class CoreInstallProcess : DownloadProcess
             StepName = stepName;
         }
 
-        public ProgressItem(Action<ProgressItem> action, string stepName, CoreInstallProcess installProcess, bool necessary = true) 
+        public ProgressItem(Action<ProgressItem> action, string stepName, CoreInstallProcess installProcess, bool necessary = true)
         {
             _action = action;
             _installProcess = installProcess;
@@ -193,7 +193,7 @@ internal partial class CoreInstallProcess : DownloadProcess
 
             return Task.Run(() => _action(this)).ContinueWith(task =>
             {
-                App.DispatcherQueue.TryEnqueue(() => 
+                App.DispatcherQueue.TryEnqueue(() =>
                 {
                     IsRunning = false;
                     IsFinished = true;

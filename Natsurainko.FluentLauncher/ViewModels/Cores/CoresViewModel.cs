@@ -6,7 +6,6 @@ using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
-using Natsurainko.FluentLauncher.Views.Cores;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -96,7 +95,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     }
 
     [RelayCommand]
-    public void OpenCoreManage(GameInfo gameInfo) 
+    public void OpenCoreManage(GameInfo gameInfo)
         => _navigationService.NavigateTo("CoresManageNavigationPage", gameInfo);
 
     [RelayCommand]

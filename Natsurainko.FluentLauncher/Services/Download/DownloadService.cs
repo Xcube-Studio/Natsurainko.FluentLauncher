@@ -130,7 +130,7 @@ internal class DownloadService : DefaultDownloadService
 
             var resourcesDownloader = CreateResourcesDownloader(inheritsFrom);
 
-            resourcesDownloader.SingleFileDownloaded += (_, _) => 
+            resourcesDownloader.SingleFileDownloaded += (_, _) =>
             {
                 Interlocked.Increment(ref finished);
                 @this.OnProgressChanged((double)finished / total);
@@ -168,8 +168,8 @@ internal class DownloadService : DefaultDownloadService
             var loaderFullName = $"{info.PrimaryLoader.Type}_{info.PrimaryLoader.SelectedItem.DisplayText}";
 
             var primaryLoaderFile = Path.Combine(
-                LocalStorageService.LocalFolderPath, 
-                "cache-downloads", 
+                LocalStorageService.LocalFolderPath,
+                "cache-downloads",
                 $"{loaderFullName}.jar");
 
             var runInstallExecutor = new CoreInstallProcess.ProgressItem(@this =>
@@ -253,7 +253,7 @@ internal class DownloadService : DefaultDownloadService
         {
             var loaderFullName = $"{info.SecondaryLoader.Type}_{info.SecondaryLoader.SelectedItem.DisplayText}";
 
-            var secondaryLoaderFile = info.EnableIndependencyCore 
+            var secondaryLoaderFile = info.EnableIndependencyCore
                 ? Path.Combine(_gameService.ActiveMinecraftFolder, "versions", info.AbsoluteId, "mods", $"{loaderFullName}.jar")
                 : Path.Combine(_gameService.ActiveMinecraftFolder, "mods", $"{loaderFullName}.jar");
 

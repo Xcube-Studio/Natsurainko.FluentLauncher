@@ -1,5 +1,4 @@
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.ViewModels.Downloads;
 
 namespace Natsurainko.FluentLauncher.Views.Downloads;
 

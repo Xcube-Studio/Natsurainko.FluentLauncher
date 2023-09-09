@@ -18,7 +18,7 @@ internal partial class AdditionalOptionsViewModel : WizardViewModelBase
     public readonly CoreInstallationInfo _coreInstallationInfo;
     private readonly InterfaceCacheService _interfaceCacheService = App.GetService<InterfaceCacheService>();
 
-    public AdditionalOptionsViewModel(CoreInstallationInfo coreInstallationInfo) 
+    public AdditionalOptionsViewModel(CoreInstallationInfo coreInstallationInfo)
     {
         XamlPageType = typeof(AdditionalOptionsPage);
 

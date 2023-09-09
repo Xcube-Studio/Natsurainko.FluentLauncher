@@ -2,15 +2,8 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.UI.Pages;
-using Nrk.FluentCore.Classes.Datas.Launch;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Windows.Services.Maps;
 
 #nullable enable
 
@@ -19,10 +12,10 @@ namespace Natsurainko.FluentLauncher.Services.UI.Navigation;
 public class NavigationService : INavigationService
 {
     private INavigationProvider? _navigationProvider;
-    public INavigationProvider NavigationProvider 
+    public INavigationProvider NavigationProvider
     {
-        get => _navigationProvider ?? throw new InvalidOperationException("NavigationService has not been initialized"); 
-        private set => _navigationProvider = value; 
+        get => _navigationProvider ?? throw new InvalidOperationException("NavigationService has not been initialized");
+        private set => _navigationProvider = value;
     }
 
     private IServiceScope? _scope;
@@ -39,7 +32,7 @@ public class NavigationService : INavigationService
         _pageProvider = pageProvider;
     }
 
-    private Frame Frame => _navigationProvider?.NavigationControl as Frame ?? 
+    private Frame Frame => _navigationProvider?.NavigationControl as Frame ??
         throw new InvalidOperationException("NavigationService has not been initialized");
 
     public void InitializeNavigation(INavigationProvider navigationProvider, IServiceScope scope, INavigationService? parent)

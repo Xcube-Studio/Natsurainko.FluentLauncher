@@ -4,8 +4,6 @@ using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Classes.Data.Download;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
-using Natsurainko.FluentLauncher.Views;
-using Natsurainko.FluentLauncher.Views.Downloads;
 using Nrk.FluentCore.Classes.Datas.Download;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -1,6 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.ViewModels.Settings;
 
 namespace Natsurainko.FluentLauncher.Views.Settings;
 

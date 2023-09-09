@@ -1,6 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.ViewModels.OOBE;
 
 namespace Natsurainko.FluentLauncher.Views.OOBE;
 

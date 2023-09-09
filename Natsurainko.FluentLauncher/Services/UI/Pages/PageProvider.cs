@@ -1,10 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Natsurainko.FluentLauncher.Services.UI.Windows;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Services.UI.Pages;
 

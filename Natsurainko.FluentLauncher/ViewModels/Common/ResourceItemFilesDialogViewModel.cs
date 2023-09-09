@@ -40,7 +40,7 @@ internal partial class ResourceItemFilesDialogViewModel : ObservableObject
     [RelayCommand]
     public Task LoadEvent(object args) => Task.Run(() =>
     {
-        App.DispatcherQueue.TryEnqueue(() => 
+        App.DispatcherQueue.TryEnqueue(() =>
         {
             var grid = args.As<Grid, object>().sender;
             _dialog = grid.FindName("Dialog") as ContentDialog;

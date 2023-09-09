@@ -82,10 +82,10 @@ internal partial class CoreModsViewModel : ObservableObject, INavigationAware
 
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-        {
-            base.OnPropertyChanged(e);
+    {
+        base.OnPropertyChanged(e);
 
-            if (e.PropertyName == nameof(SearchBoxInput))
-                Task.Run(UpdateDisplayMods);
-        }
+        if (e.PropertyName == nameof(SearchBoxInput))
+            Task.Run(UpdateDisplayMods);
+    }
 }

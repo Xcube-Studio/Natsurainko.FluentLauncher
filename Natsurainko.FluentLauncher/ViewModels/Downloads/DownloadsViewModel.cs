@@ -6,6 +6,7 @@ using Natsurainko.FluentLauncher.Classes.Data.UI;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Nrk.FluentCore.Classes.Datas.Download;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;

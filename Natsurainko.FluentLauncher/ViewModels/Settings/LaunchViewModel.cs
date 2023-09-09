@@ -186,7 +186,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     }
 
     [RelayCommand]
-    public void ActivateCoresPage() => _navigationService.NavigateTo("CoresPage");
+    public void ActivateCoresPage() => _navigationService.Parent.NavigateTo("CoresPage");
 
     [RelayCommand]
     public void OpenJavaMirrorsDialog()

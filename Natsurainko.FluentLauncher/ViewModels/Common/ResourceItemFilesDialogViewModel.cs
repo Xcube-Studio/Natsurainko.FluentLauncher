@@ -28,13 +28,14 @@ internal partial class ResourceItemFilesDialogViewModel : ObservableObject
     private readonly InterfaceCacheService _interfaceCacheService = App.GetService<InterfaceCacheService>();
     private readonly DownloadService _downloadService = App.GetService<DownloadService>();
     private readonly GameService _gameService = App.GetService<GameService>();
-    private readonly INavigationService _navigationService = App.GetService<INavigationService>();
+    private readonly INavigationService _navigationService;
 
     public bool CanComfirm => SelectedFile != null;
 
-    public ResourceItemFilesDialogViewModel(object resource)
+    public ResourceItemFilesDialogViewModel(object resource, INavigationService navigationService)
     {
         _resource = resource;
+        _navigationService = navigationService;
     }
 
     [RelayCommand]

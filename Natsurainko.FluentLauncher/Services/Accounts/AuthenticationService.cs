@@ -46,12 +46,12 @@ internal class AuthenticationService
 
         App.DispatcherQueue.TryEnqueue(() =>
         {
-            _accountService.Remove(activeAccount);
-
 #pragma warning disable CS0612 // Type or member is obsolete
             _accountService.AddAccount(refreshedAccount);
 #pragma warning restore CS0612 // Type or member is obsolete
             _accountService.Activate(refreshedAccount);
+
+            _accountService.Remove(activeAccount);
 
             Task.Run(() => _skinCacheService.TryCacheSkin(refreshedAccount));
         });

@@ -12,22 +12,20 @@
     mc:Ignorable="d">
 
     <StackPanel Spacing="10">
-        <ScrollViewer
-            Height="300"
-            CornerRadius="4"
-            VerticalScrollBarVisibility="Visible">
-            <ScrollViewer.Visibility>
-                <Binding Path="NeedRefresh">
-                    <Binding.Converter>
-                        <converters:BoolToVisibilityConverter Inverted="True" />
-                    </Binding.Converter>
-                </Binding>
-            </ScrollViewer.Visibility>
+        <Border CornerRadius="4">
             <WebView2
-                Height="500"
+                Height="300"
                 HorizontalAlignment="Stretch"
-                Source="{Binding Source, Mode=TwoWay}" />
-        </ScrollViewer>
+                Source="{Binding Source, Mode=TwoWay}">
+                <WebView2.Visibility>
+                    <Binding Path="NeedRefresh">
+                        <Binding.Converter>
+                            <converters:BoolToVisibilityConverter Inverted="True" />
+                        </Binding.Converter>
+                    </Binding>
+                </WebView2.Visibility>
+            </WebView2>
+        </Border>
         <Grid>
             <Grid.Visibility>
                 <Binding Path="NeedRefresh">

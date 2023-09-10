@@ -55,8 +55,10 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
     private bool _firstActivated = true;
     private void WindowEx_Activated(object sender, WindowActivatedEventArgs args)
     {
+
         if (_firstActivated)
-            _navService.NavigateTo(_settings.FinishGuide ? "ShellPage" : "OOBENavigationPage");
+            //_navService.NavigateTo(_settings.FinishGuide ? "ShellPage" : "OOBENavigationPage");
+            _navService.NavigateTo("OOBENavigationPage");
 
         _firstActivated = false;
     }

@@ -11,30 +11,15 @@
     mc:Ignorable="d">
 
     <Grid>
-        <StackPanel
-            Margin="35"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Orientation="Horizontal">
-            <Button
-                Width="85"
-                Command="{Binding BackCommand}"
-                FontWeight="SemiBold">
-                <TextBlock x:Uid="Buttons_Back" Text="Back" />
-            </Button>
-            <Button
-                Width="85"
-                Margin="15,0,0,0"
-                Command="{Binding NextCommand}"
-                FontWeight="SemiBold"
-                Foreground="White"
-                Style="{ThemeResource AccentButtonStyle}">
-                <TextBlock x:Uid="Buttons_Next" Text="Next" />
-            </Button>
-        </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" /> 
+            <!--  Title bar  -->
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
         <NavigationView
             x:Name="NavigationView"
-            Margin="0,50,0,100"
+            Grid.Row="1"
             IsBackButtonVisible="Collapsed"
             IsSettingsVisible="False"
             PaneDisplayMode="Top">
@@ -87,12 +72,25 @@
                 </Frame.ContentTransitions>
             </Frame>
         </NavigationView>
-
-        <Grid
-            Height="48"
-            Margin="0,50,0,0"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Top"
-            Background="Transparent" />
+        <StackPanel
+            Grid.Row="2"
+            Margin="24"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal"
+            Spacing="16">
+            <Button
+                MinWidth="85"
+                Command="{Binding BackCommand}"
+                FontWeight="SemiBold">
+                <TextBlock x:Uid="Buttons_Back" Text="Back" />
+            </Button>
+            <Button
+                MinWidth="85"
+                Command="{Binding NextCommand}"
+                FontWeight="SemiBold"
+                Style="{ThemeResource AccentButtonStyle}">
+                <TextBlock x:Uid="Buttons_Next" Text="Next" />
+            </Button>
+        </StackPanel>
     </Grid>
 </Page>

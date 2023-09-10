@@ -67,7 +67,8 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     private static readonly string[] OOBEPageKeys =
     {
         "OOBELanguagePage",
-        "OOBEBasicPage",
+        "OOBEMinecraftFolderPage",
+        "OOBEJavaPage",
         "OOBEAccountPage",
         "OOBEGetStartedPage"
     };
@@ -90,15 +91,17 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     {
         // Language page
         0 => Languages.Contains(CurrentLanguage),
-        // Basic page
+        // Minecraft folder page
         1 => !string.IsNullOrEmpty(ActiveMinecraftFolder) &&
                                     !string.IsNullOrEmpty(ActiveJava) &&
                                     Directory.Exists(ActiveMinecraftFolder) &&
                                     File.Exists(ActiveJava),
+        // Java page
+        2 => true, // TODO:
         // Account page
-        2 => ActiveAccount is not null,
+        3 => ActiveAccount is not null,
         // Get started page
-        3 => false,
+        4 => false,
         // Default
         _ => false,
     };

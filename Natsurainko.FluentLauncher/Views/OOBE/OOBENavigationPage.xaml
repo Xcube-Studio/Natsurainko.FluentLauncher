@@ -12,7 +12,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" /> 
+            <RowDefinition Height="50" />
             <!--  Title bar  -->
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -35,12 +35,20 @@
                             Text="Language" />
                     </NavigationViewItem.Content>
                 </NavigationViewItem>
-                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xe713;}" Tag="OOBEBasicPage">
+                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xe713;}" Tag="OOBEMinecraftFolderPage">
                     <NavigationViewItem.Content>
                         <TextBlock
                             x:Uid="OOBE_OOBENavigationPage_NV_Item2"
                             FontWeight="SemiBold"
-                            Text="Basic Settings" />
+                            Text="Minecraft Folder" />
+                    </NavigationViewItem.Content>
+                </NavigationViewItem>
+                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xe713;}" Tag="OOBEJavaPage">
+                    <NavigationViewItem.Content>
+                        <TextBlock
+                            x:Uid="OOBE_OOBENavigationPage_NV_Item5"
+                            FontWeight="SemiBold"
+                            Text="Java" />
                     </NavigationViewItem.Content>
                 </NavigationViewItem>
                 <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xe77b;}" Tag="OOBEAccountPage">

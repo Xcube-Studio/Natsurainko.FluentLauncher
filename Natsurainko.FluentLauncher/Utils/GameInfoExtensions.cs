@@ -87,6 +87,7 @@ internal static class GameInfoExtensions
 
         if (!(loaders.Contains(ModLoaderType.Forge) ||
             loaders.Contains(ModLoaderType.Fabric) ||
+            loaders.Contains(ModLoaderType.NeoForge) ||
             loaders.Contains(ModLoaderType.Quilt) ||
             loaders.Contains(ModLoaderType.LiteLoader)))
             return false;

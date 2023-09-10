@@ -399,32 +399,41 @@ internal class LaunchService : DefaultLaunchService
         }
     }
 
-    private static async void UpdateJumpList(GameInfo gameInfo)
+    private static void UpdateJumpList(GameInfo gameInfo) => Task.Run(async () =>
     {
         var jumpList = await JumpList.LoadCurrentAsync();
 
         var args = JsonSerializer.Serialize(gameInfo).ConvertToBase64();
-        var latest = jumpList.Items.Where(x => x.GroupName.Equals("Latest")).ToList();
-
-        if (!latest.Where(x => x.DisplayName.Equals(gameInfo.Name)).Any())
+        var latest = jumpList.Items.Where(x =>
         {
-            var jumpListItem = JumpListItem.CreateWithArguments($"/quick-launch {args}", gameInfo.Name);
+            var gameInfo = JsonSerializer.Deserialize<GameInfo>(x.Arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64());
 
-            jumpListItem.Logo = new Uri(string.Format("ms-appx:///Assets/Icons/{0}.png", !gameInfo.IsVanilla ? "furnace_front" : gameInfo.Type switch
-            {
-                "release" => "grass_block_side",
-                "snapshot" => "crafting_table_front",
-                "old_beta" => "dirt_path_side",
-                "old_alpha" => "dirt_path_side",
-                _ => "grass_block_side"
-            }), UriKind.RelativeOrAbsolute);
+            return x.GroupName.Equals("Latest") &&
+            Path.Exists(Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId, $"{gameInfo.AbsoluteId}.json"));
+        }).Take(6).ToList();
 
-            jumpListItem.GroupName = "Latest";
+        var jumpListItem = JumpListItem.CreateWithArguments($"/quick-launch {args}", gameInfo.Name);
 
-            jumpList.Items.Add(jumpListItem);
+        jumpListItem.Logo = new Uri(string.Format("ms-appx:///Assets/Icons/{0}.png", !gameInfo.IsVanilla ? "furnace_front" : gameInfo.Type switch
+        {
+            "release" => "grass_block_side",
+            "snapshot" => "crafting_table_front",
+            "old_beta" => "dirt_path_side",
+            "old_alpha" => "dirt_path_side",
+            _ => "grass_block_side"
+        }), UriKind.RelativeOrAbsolute);
 
-        }
+        jumpListItem.GroupName = "Latest";
+
+        if (latest.Where(x => x.DisplayName.Equals(gameInfo.Name)).FirstOrDefault() is JumpListItem equalsItem)
+            latest.Remove(equalsItem);
+
+        latest.Insert(0, jumpListItem);
+        jumpList.Items.Clear();
+
+        foreach (var item in latest)
+            jumpList.Items.Add(item);
 
         await jumpList.SaveAsync();
-    }
+    });
 }

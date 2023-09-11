@@ -27,8 +27,12 @@ public sealed partial class OOBENavigationPage : Page, INavigationProvider
     }
 
     // Explicitly set transition effect at each navigation
+    bool bypassTransitionUpdate = false; // Bypass transition update if NavigationViewItem is updated in ContentFrame_Navigated
     private void NavigationViewControl_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
     {
+        if (bypassTransitionUpdate)
+            return;
+
         int sourcePageIndex = VM.CurrentPageIndex;
         
         var navigationViewItems = sender.MenuItems.Union(sender.FooterMenuItems).Cast<NavigationViewItem>().Select(item => item.Tag).Cast<string>().ToList();
@@ -63,7 +67,10 @@ public sealed partial class OOBENavigationPage : Page, INavigationProvider
         {
             if (App.GetService<IPageProvider>().RegisteredPages[item.Tag.ToString()].PageType == e.SourcePageType)
             {
+                bypassTransitionUpdate = true;
                 NavigationView.SelectedItem = item;
+                bypassTransitionUpdate = false;
+
                 item.IsSelected = true;
                 item.IsEnabled = true;
                 return;

@@ -22,6 +22,7 @@
             Grid.Row="1"
             IsBackButtonVisible="Collapsed"
             IsSettingsVisible="False"
+            ItemInvoked="NavigationViewControl_ItemInvoked"
             PaneDisplayMode="Top">
             <NavigationView.MenuItems>
                 <NavigationViewItem
@@ -35,7 +36,10 @@
                             Text="Language" />
                     </NavigationViewItem.Content>
                 </NavigationViewItem>
-                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xe713;}" Tag="OOBEMinecraftFolderPage">
+                <NavigationViewItem
+                    Icon="{xh:FontIcon Glyph=&#xe713;}"
+                    IsEnabled="False"
+                    Tag="OOBEMinecraftFolderPage">
                     <NavigationViewItem.Content>
                         <TextBlock
                             x:Uid="OOBE_OOBENavigationPage_NV_Item2"
@@ -43,7 +47,10 @@
                             Text="Minecraft Folder" />
                     </NavigationViewItem.Content>
                 </NavigationViewItem>
-                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xe713;}" Tag="OOBEJavaPage">
+                <NavigationViewItem
+                    Icon="{xh:FontIcon Glyph=&#xe713;}"
+                    IsEnabled="False"
+                    Tag="OOBEJavaPage">
                     <NavigationViewItem.Content>
                         <TextBlock
                             x:Uid="OOBE_OOBENavigationPage_NV_Item5"
@@ -51,7 +58,10 @@
                             Text="Java" />
                     </NavigationViewItem.Content>
                 </NavigationViewItem>
-                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xe77b;}" Tag="OOBEAccountPage">
+                <NavigationViewItem
+                    Icon="{xh:FontIcon Glyph=&#xe77b;}"
+                    IsEnabled="False"
+                    Tag="OOBEAccountPage">
                     <NavigationViewItem.Content>
                         <TextBlock
                             x:Uid="OOBE_OOBENavigationPage_NV_Item3"
@@ -61,7 +71,10 @@
                 </NavigationViewItem>
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
-                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xE736;}" Tag="OOBEGetStartedPage">
+                <NavigationViewItem
+                    Icon="{xh:FontIcon Glyph=&#xE736;}"
+                    IsEnabled="False"
+                    Tag="OOBEGetStartedPage">
                     <NavigationViewItem.Content>
                         <TextBlock
                             x:Uid="OOBE_OOBENavigationPage_NV_Item4"
@@ -89,14 +102,14 @@
             <Button
                 MinWidth="85"
                 Command="{Binding BackCommand}"
-                FontWeight="SemiBold">
+                FontWeight="SemiBold" Click="BackButton_Click">
                 <TextBlock x:Uid="Buttons_Back" Text="Back" />
             </Button>
             <Button
                 MinWidth="85"
                 Command="{Binding NextCommand}"
                 FontWeight="SemiBold"
-                Style="{ThemeResource AccentButtonStyle}">
+                Style="{ThemeResource AccentButtonStyle}" Click="NextButton_Click">
                 <TextBlock x:Uid="Buttons_Next" Text="Next" />
             </Button>
         </StackPanel>

@@ -1,9 +1,11 @@
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Services.UI.Pages;
 using Natsurainko.FluentLauncher.ViewModels.OOBE;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Natsurainko.FluentLauncher.Views.OOBE;
@@ -13,25 +15,48 @@ public sealed partial class OOBENavigationPage : Page, INavigationProvider
     object INavigationProvider.NavigationControl => contentFrame;
     private OOBEViewModel VM => (OOBEViewModel)DataContext;
 
+    public NavigationTransitionInfo TransitionInfo
+    { 
+        get => navTransition.DefaultNavigationTransitionInfo;
+        set => navTransition.DefaultNavigationTransitionInfo = value;
+    }
+
     public OOBENavigationPage()
     {
         InitializeComponent();
-        contentFrame.Navigated += ContentFrame_Navigated1;
     }
 
-    // Change navigation transition effect after the first navigation
-    int navigationCount = 0;
-    private void ContentFrame_Navigated1(object sender, NavigationEventArgs e)
+    // Explicitly set transition effect at each navigation
+    private void NavigationViewControl_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
     {
-        if (navigationCount == 1)
-        {
-            navTransition.DefaultNavigationTransitionInfo = new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromRight };
-            contentFrame.Navigated -= ContentFrame_Navigated1;
-            return;
-        }
-        navigationCount++;
+        int sourcePageIndex = VM.CurrentPageIndex;
+        
+        var navigationViewItems = sender.MenuItems.Union(sender.FooterMenuItems).Cast<NavigationViewItem>().Select(item => item.Tag).Cast<string>().ToList();
+        string pageTag = ((NavigationViewItem)args.InvokedItemContainer).Tag.ToString();
+        int targetPageIndex = navigationViewItems.IndexOf(pageTag);
+
+        // Set transition direction
+        if (targetPageIndex > sourcePageIndex)
+            TransitionInfo = new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromRight };
+        else if (targetPageIndex < sourcePageIndex)
+            TransitionInfo = new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromLeft };
+        else
+            TransitionInfo = new EntranceNavigationTransitionInfo();
+
+        VM.NavigateTo(targetPageIndex);
     }
 
+    private void BackButton_Click(object sender, RoutedEventArgs e)
+    {
+        TransitionInfo = new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromLeft };
+    }
+
+    private void NextButton_Click(object sender, RoutedEventArgs e)
+    {
+        TransitionInfo = new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromRight };
+    }
+
+    // Update NavigationViewItem selection
     private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
     {
         foreach (NavigationViewItem item in NavigationView.MenuItems.Union(NavigationView.FooterMenuItems).Cast<NavigationViewItem>())
@@ -40,9 +65,9 @@ public sealed partial class OOBENavigationPage : Page, INavigationProvider
             {
                 NavigationView.SelectedItem = item;
                 item.IsSelected = true;
+                item.IsEnabled = true;
                 return;
             }
         }
     }
-
 }

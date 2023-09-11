@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Animation;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
@@ -109,8 +110,8 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     [RelayCommand(CanExecute = nameof(CanBack))]
     public void Back()
     {
-        _navigationService.GoBack();
         CurrentPageIndex--;
+        _navigationService.NavigateTo(OOBEPageKeys[CurrentPageIndex]);
         BackCommand.NotifyCanExecuteChanged();
         NextCommand.NotifyCanExecuteChanged();
     }
@@ -122,6 +123,14 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
             return false;
 
         return true;
+    }
+
+    public void NavigateTo(int pageIndex)
+    {
+        CurrentPageIndex = pageIndex;
+        _navigationService.NavigateTo(OOBEPageKeys[pageIndex]);
+        BackCommand.NotifyCanExecuteChanged();
+        NextCommand.NotifyCanExecuteChanged();
     }
 
     #endregion

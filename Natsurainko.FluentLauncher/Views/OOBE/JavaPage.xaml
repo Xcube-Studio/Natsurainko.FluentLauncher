@@ -12,9 +12,12 @@
 
     <Grid MaxWidth="1000" Padding="16">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" MaxWidth="500" />
+            <ColumnDefinition
+                Width="*"
+                MinWidth="400"
+                MaxWidth="500" />
             <ColumnDefinition Width="32" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <Border

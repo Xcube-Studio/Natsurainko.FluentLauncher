@@ -13,7 +13,7 @@
 
     <Grid MaxWidth="1000" Padding="16">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" MaxWidth="300" />
+            <ColumnDefinition Width="*" MaxWidth="300" MinWidth="250" />
             <ColumnDefinition Width="32" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>

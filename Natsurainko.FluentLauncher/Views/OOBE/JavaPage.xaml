@@ -57,8 +57,8 @@
                                 Orientation="Horizontal"
                                 Spacing="4">
                                 <FontIcon
-                                    Margin="0,4,0,0"
-                                    FontSize="16"
+                                    Margin="0,2,0,0"
+                                    FontSize="14"
                                     Foreground="White"
                                     Glyph="&#xE721;" />
                                 <TextBlock x:Uid="OOBE_JavaPage_B1" Text="Detect" />
@@ -75,8 +75,8 @@
                                 Orientation="Horizontal"
                                 Spacing="4">
                                 <FontIcon
-                                    Margin="0,4,0,0"
-                                    FontSize="16"
+                                    Margin="0,2,0,0"
+                                    FontSize="14"
                                     Foreground="White"
                                     Glyph="&#xE710;" />
                                 <TextBlock x:Uid="OOBE_JavaPage_B2" Text="Add" />

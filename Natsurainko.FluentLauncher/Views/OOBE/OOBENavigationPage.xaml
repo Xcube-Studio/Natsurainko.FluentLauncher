@@ -80,14 +80,14 @@
             Orientation="Horizontal"
             Spacing="16">
             <Button
-                MinWidth="85"
+                MinWidth="95"
                 Click="BackButton_Click"
                 Command="{Binding BackCommand}"
                 FontWeight="SemiBold">
                 <TextBlock x:Uid="Buttons_Back" Text="Back" />
             </Button>
             <Button
-                MinWidth="85"
+                MinWidth="95"
                 Click="NextButton_Click"
                 Command="{Binding NextCommand}"
                 Content="{Binding NextText}"

@@ -193,6 +193,33 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
             });
     });
 
+
+    private readonly string OfficialLauncherPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\.minecraft";
+
+    [RelayCommand]
+    public void DetectOfficialMinecraftFolder()
+    {
+        // Official launcher .minecraft folder not exist
+        if (!Directory.Exists(OfficialLauncherPath))
+        {
+            _notificationService.NotifyMessage("Cannot add the official Minecraft Launcher data folder", $"{OfficialLauncherPath} does not exist.", icon: "\uF89A");
+            return;
+        }
+
+        // Already added
+        if (MinecraftFolders.Contains(OfficialLauncherPath))
+        {
+            _notificationService.NotifyMessage("Already added the official Minecraft Launcher data folder", $"{OfficialLauncherPath} has already been added.", icon: "\uF89A");
+            return;
+        }
+
+        // Add to list
+        MinecraftFolders.Add(OfficialLauncherPath);
+        _gameService.ActivateMinecraftFolder(OfficialLauncherPath);
+        ActiveMinecraftFolder = OfficialLauncherPath;
+        _notificationService.NotifyMessage("Official Minecraft Launcher data folder added", $"{OfficialLauncherPath} has been added to Fluent Launcher.", icon: "\uE73E");
+    }
+
     #endregion
 
     #region Java
@@ -204,9 +231,6 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     [BindToSetting(Path = nameof(SettingsService.ActiveJava))]
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
     private string activeJavaRuntime;
-
-    [ObservableProperty]
-    private bool javaDropDownOpen;
 
     [RelayCommand]
     public Task BrowseJava() => Task.Run(async () =>
@@ -240,7 +264,6 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
 
         OnPropertyChanged(nameof(JavaRuntimes));
 
-        JavaDropDownOpen = true;
         _notificationService.NotifyWithoutContent("Added the search Java to the runtime list", icon: "\uE73E");
     }
 

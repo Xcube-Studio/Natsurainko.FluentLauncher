@@ -49,6 +49,7 @@
                         <Button
                             x:Uid="OOBE_MinecraftFolderPage_DetectBtn"
                             Height="32"
+                            Command="{Binding DetectOfficialMinecraftFolderCommand}"
                             Style="{ThemeResource AccentButtonStyle}">
                             <StackPanel
                                 Margin="-4,0,0,0"

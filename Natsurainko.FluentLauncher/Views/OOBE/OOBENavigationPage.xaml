@@ -24,64 +24,44 @@
             IsSettingsVisible="False"
             ItemInvoked="NavigationViewControl_ItemInvoked"
             PaneDisplayMode="Top">
+            <NavigationView.Resources>
+                <Style TargetType="NavigationViewItem">
+                    <Setter Property="FontWeight" Value="SemiBold" />
+                </Style>
+            </NavigationView.Resources>
             <NavigationView.MenuItems>
                 <NavigationViewItem
+                    x:Uid="OOBE_OOBENavigationPage_NV_Item1"
+                    Content="Language"
                     Icon="{xh:FontIcon Glyph=&#xf2b7;}"
                     IsSelected="True"
-                    Tag="OOBELanguagePage">
-                    <NavigationViewItem.Content>
-                        <TextBlock
-                            x:Uid="OOBE_OOBENavigationPage_NV_Item1"
-                            FontWeight="SemiBold"
-                            Text="Language" />
-                    </NavigationViewItem.Content>
-                </NavigationViewItem>
+                    Tag="OOBELanguagePage" />
                 <NavigationViewItem
+                    x:Uid="OOBE_OOBENavigationPage_NV_Item2"
+                    Content="Minecraft Folder"
                     Icon="{xh:FontIcon Glyph=&#xE8B7;}"
                     IsEnabled="False"
-                    Tag="OOBEMinecraftFolderPage">
-                    <NavigationViewItem.Content>
-                        <TextBlock
-                            x:Uid="OOBE_OOBENavigationPage_NV_Item2"
-                            FontWeight="SemiBold"
-                            Text="Minecraft Folder" />
-                    </NavigationViewItem.Content>
-                </NavigationViewItem>
+                    Tag="OOBEMinecraftFolderPage" />
                 <NavigationViewItem
+                    x:Uid="OOBE_OOBENavigationPage_NV_Item3"
+                    Content="Java"
                     Icon="{xh:FontIcon Glyph=&#xE8F1;}"
                     IsEnabled="False"
-                    Tag="OOBEJavaPage">
-                    <NavigationViewItem.Content>
-                        <TextBlock
-                            x:Uid="OOBE_OOBENavigationPage_NV_Item5"
-                            FontWeight="SemiBold"
-                            Text="Java" />
-                    </NavigationViewItem.Content>
-                </NavigationViewItem>
+                    Tag="OOBEJavaPage" />
                 <NavigationViewItem
+                    x:Uid="OOBE_OOBENavigationPage_NV_Item4"
+                    Content="Account"
                     Icon="{xh:FontIcon Glyph=&#xe77b;}"
                     IsEnabled="False"
-                    Tag="OOBEAccountPage">
-                    <NavigationViewItem.Content>
-                        <TextBlock
-                            x:Uid="OOBE_OOBENavigationPage_NV_Item3"
-                            FontWeight="SemiBold"
-                            Text="Account" />
-                    </NavigationViewItem.Content>
-                </NavigationViewItem>
+                    Tag="OOBEAccountPage" />
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem
+                    x:Uid="OOBE_OOBENavigationPage_NV_Item5"
+                    Content="Get Started"
                     Icon="{xh:FontIcon Glyph=&#xE736;}"
                     IsEnabled="False"
-                    Tag="OOBEGetStartedPage">
-                    <NavigationViewItem.Content>
-                        <TextBlock
-                            x:Uid="OOBE_OOBENavigationPage_NV_Item4"
-                            FontWeight="SemiBold"
-                            Text="Get Started" />
-                    </NavigationViewItem.Content>
-                </NavigationViewItem>
+                    Tag="OOBEGetStartedPage" />
             </NavigationView.FooterMenuItems>
             <Frame x:Name="contentFrame" Navigated="ContentFrame_Navigated">
                 <Frame.ContentTransitions>

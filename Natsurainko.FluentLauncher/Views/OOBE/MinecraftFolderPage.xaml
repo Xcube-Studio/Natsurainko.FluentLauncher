@@ -94,9 +94,17 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                <TextBlock VerticalAlignment="Center" Text="{Binding}" />
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding}" />
                                 <Button
                                     x:Name="removeBtn"
+                                    Grid.Column="1"
                                     Width="16"
                                     Height="16"
                                     HorizontalAlignment="Right"

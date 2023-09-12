@@ -13,7 +13,7 @@
     d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
     mc:Ignorable="d">
 
-    <Grid Padding="75,0" VerticalAlignment="Center">
+    <Grid VerticalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition Height="36" />
             <RowDefinition Height="*" />
@@ -23,6 +23,7 @@
 
         <StackPanel
             Grid.Row="1"
+            Margin="16"
             HorizontalAlignment="Center"
             Orientation="Horizontal"
             Spacing="32">
@@ -73,6 +74,7 @@
         <labs:SettingsCard
             Grid.Row="3"
             MaxWidth="1000"
+            Margin="75,0"
             Description="Please choose your language before we start setting up Fluent Launcher."
             Header="Language"
             HeaderIcon="{xh:FontIcon Glyph=&#xf2b7;}"

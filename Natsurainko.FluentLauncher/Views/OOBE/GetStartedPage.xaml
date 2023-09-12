@@ -28,14 +28,6 @@
                         Text="You have all the basic settings done" />
                 </Paragraph>
             </RichTextBlock>
-
-            <Button
-                Margin="0,20,0,0"
-                Command="{Binding StartCommand}"
-                FontWeight="SemiBold"
-                Style="{ThemeResource AccentButtonStyle}">
-                <TextBlock x:Uid="OOBE_GetStartedPage_B" Text="Let's Get Started" />
-            </Button>
         </StackPanel>
     </Grid>
 </Page>

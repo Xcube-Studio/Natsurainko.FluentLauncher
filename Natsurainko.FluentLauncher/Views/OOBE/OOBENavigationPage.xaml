@@ -90,10 +90,9 @@
                 MinWidth="85"
                 Click="NextButton_Click"
                 Command="{Binding NextCommand}"
+                Content="{Binding NextText}"
                 FontWeight="SemiBold"
-                Style="{ThemeResource AccentButtonStyle}">
-                <TextBlock x:Uid="Buttons_Next" Text="Next" />
-            </Button>
+                Style="{ThemeResource AccentButtonStyle}" />
         </StackPanel>
     </Grid>
 </Page>

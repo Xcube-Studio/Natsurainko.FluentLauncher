@@ -63,6 +63,7 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(BackCommand))]
+    [NotifyPropertyChangedFor(nameof(NextText))]
     int currentPageIndex;
 
     private static readonly string[] OOBEPageKeys =
@@ -82,6 +83,12 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     [RelayCommand(CanExecute = nameof(CanNext))]
     public void Next()
     {
+        if (CurrentPageIndex == OOBEPageKeys.Length - 1)
+        {
+            Start();
+            return;
+        }
+
         CurrentPageIndex++;
         _navigationService.NavigateTo(OOBEPageKeys[CurrentPageIndex]);
         BackCommand.NotifyCanExecuteChanged();
@@ -101,7 +108,7 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
         // Account page
         3 => ActiveAccount is not null,
         // Get started page
-        4 => false,
+        4 => true,
         // Default
         _ => false,
     };
@@ -267,6 +274,17 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
         => _ = new AuthenticationWizardDialog { XamlRoot = parameter.XamlRoot }.ShowAsync();
 
     #endregion
+
+    public string NextText
+    {
+        get
+        {
+            if (CurrentPageIndex == OOBEPageKeys.Length - 1)
+                return ResourceUtils.GetValue("OOBE_OOBEViewModel__ButtonGetStarted");
+            else
+                return ResourceUtils.GetValue("OOBE_OOBEViewModel__ButtonNext");
+        }
+    }
 
     [RelayCommand]
     public void Start()

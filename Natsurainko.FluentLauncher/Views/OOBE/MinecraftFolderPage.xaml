@@ -97,18 +97,23 @@
                     SelectedItem="{Binding ActiveMinecraftFolder, Mode=TwoWay}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
+                            <Grid ColumnSpacing="8">
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
+                                <FontIcon
+                                    VerticalAlignment="Center"
+                                    FontSize="14"
+                                    Glyph="&#xe8b7;" />
                                 <TextBlock
-                                    Grid.Column="0"
+                                    Grid.Column="1"
                                     VerticalAlignment="Center"
                                     Text="{Binding}" />
                                 <Button
                                     x:Name="removeBtn"
-                                    Grid.Column="1"
+                                    Grid.Column="2"
                                     Width="16"
                                     Height="16"
                                     HorizontalAlignment="Right"

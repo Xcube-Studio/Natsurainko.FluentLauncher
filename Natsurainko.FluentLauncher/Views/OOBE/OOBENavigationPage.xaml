@@ -37,7 +37,7 @@
                     </NavigationViewItem.Content>
                 </NavigationViewItem>
                 <NavigationViewItem
-                    Icon="{xh:FontIcon Glyph=&#xe713;}"
+                    Icon="{xh:FontIcon Glyph=&#xE8B7;}"
                     IsEnabled="False"
                     Tag="OOBEMinecraftFolderPage">
                     <NavigationViewItem.Content>
@@ -48,7 +48,7 @@
                     </NavigationViewItem.Content>
                 </NavigationViewItem>
                 <NavigationViewItem
-                    Icon="{xh:FontIcon Glyph=&#xe713;}"
+                    Icon="{xh:FontIcon Glyph=&#xE8F1;}"
                     IsEnabled="False"
                     Tag="OOBEJavaPage">
                     <NavigationViewItem.Content>
@@ -101,15 +101,17 @@
             Spacing="16">
             <Button
                 MinWidth="85"
+                Click="BackButton_Click"
                 Command="{Binding BackCommand}"
-                FontWeight="SemiBold" Click="BackButton_Click">
+                FontWeight="SemiBold">
                 <TextBlock x:Uid="Buttons_Back" Text="Back" />
             </Button>
             <Button
                 MinWidth="85"
+                Click="NextButton_Click"
                 Command="{Binding NextCommand}"
                 FontWeight="SemiBold"
-                Style="{ThemeResource AccentButtonStyle}" Click="NextButton_Click">
+                Style="{ThemeResource AccentButtonStyle}">
                 <TextBlock x:Uid="Buttons_Next" Text="Next" />
             </Button>
         </StackPanel>

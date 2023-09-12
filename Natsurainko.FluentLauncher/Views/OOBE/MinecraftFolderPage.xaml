@@ -34,31 +34,51 @@
                     <StackPanel
                         HorizontalAlignment="Left"
                         Orientation="Horizontal"
-                        Spacing="16">
+                        Spacing="14">
                         <FontIcon FontSize="20" Glyph="&#xe8b7;" />
                         <TextBlock
                             x:Uid="OOBE_BasicPage_T"
                             Margin="0,2,0,0"
                             Style="{ThemeResource SubtitleTextBlockStyle}"
-                            Text="Minecraft data folders" />
+                            Text="Minecraft Data Folders" />
                     </StackPanel>
-                    <Button
-                        Height="32"
+                    <StackPanel
                         HorizontalAlignment="Right"
-                        Command="{Binding BrowserFolderCommand}"
-                        Style="{ThemeResource AccentButtonStyle}">
-                        <StackPanel
-                            Margin="-4,0,0,0"
-                            Orientation="Horizontal"
-                            Spacing="4">
-                            <FontIcon
-                                Margin="0,4,0,0"
-                                FontSize="16"
-                                Foreground="White"
-                                Glyph="&#xE710;" />
-                            <TextBlock Text="Add" />
-                        </StackPanel>
-                    </Button>
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <Button
+                            Height="32"
+                            Style="{ThemeResource AccentButtonStyle}">
+                            <StackPanel
+                                Margin="-4,0,0,0"
+                                Orientation="Horizontal"
+                                Spacing="4">
+                                <FontIcon
+                                    Margin="0,4,0,0"
+                                    FontSize="16"
+                                    Foreground="White"
+                                    Glyph="&#xE721;" />
+                                <TextBlock Text="Detect" />
+                            </StackPanel>
+                        </Button>
+                        <Button
+                            Height="32"
+                            Command="{Binding BrowseFolderCommand}"
+                            Style="{ThemeResource AccentButtonStyle}">
+                            <StackPanel
+                                Margin="-4,0,0,0"
+                                Orientation="Horizontal"
+                                Spacing="4">
+                                <FontIcon
+                                    Margin="0,4,0,0"
+                                    FontSize="16"
+                                    Foreground="White"
+                                    Glyph="&#xE710;" />
+                                <TextBlock Text="Add" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
                 </Grid>
                 <Border
                     Grid.Row="1"

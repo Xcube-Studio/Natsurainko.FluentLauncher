@@ -93,12 +93,11 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
         // Language page
         0 => Languages.Contains(CurrentLanguage),
         // Minecraft folder page
-        1 => !string.IsNullOrEmpty(ActiveMinecraftFolder) &&
-                                    !string.IsNullOrEmpty(ActiveJava) &&
-                                    Directory.Exists(ActiveMinecraftFolder) &&
-                                    File.Exists(ActiveJava),
+        1 => !string.IsNullOrEmpty(ActiveMinecraftFolder),
         // Java page
-        2 => true, // TODO:
+        2 => !string.IsNullOrEmpty(ActiveJavaRuntime) &&
+                Directory.Exists(ActiveMinecraftFolder) &&
+                File.Exists(ActiveJavaRuntime),
         // Account page
         3 => ActiveAccount is not null,
         // Get started page
@@ -163,7 +162,7 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     private string activeMinecraftFolder;
 
     [RelayCommand]
-    public Task BrowserFolder() => Task.Run(async () =>
+    public Task BrowseFolder() => Task.Run(async () =>
     {
         var folderPicker = new FolderPicker();
 
@@ -192,18 +191,18 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     #region Java
 
     [BindToSetting(Path = nameof(SettingsService.Javas))]
-    public ObservableCollection<string> Javas { get; private set; }
+    public ObservableCollection<string> JavaRuntimes { get; private set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.ActiveJava))]
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
-    private string activeJava;
+    private string activeJavaRuntime;
 
     [ObservableProperty]
     private bool javaDropDownOpen;
 
     [RelayCommand]
-    public Task BrowserJava() => Task.Run(async () =>
+    public Task BrowseJava() => Task.Run(async () =>
     {
         var filePicker = new FileOpenPicker();
 
@@ -216,10 +215,10 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
         if (file != null)
             App.DispatcherQueue.TryEnqueue(() =>
             {
-                Javas.Add(file.Path);
-                OnPropertyChanged(nameof(Javas));
+                JavaRuntimes.Add(file.Path);
+                OnPropertyChanged(nameof(JavaRuntimes));
 
-                ActiveJava = file.Path;
+                ActiveJavaRuntime = file.Path;
             });
     });
 
@@ -227,12 +226,12 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     public void SearchJava()
     {
         foreach (var java in JavaUtils.SearchJava())
-            if (!Javas.Contains(java))
-                Javas.Add(java);
+            if (!JavaRuntimes.Contains(java))
+                JavaRuntimes.Add(java);
 
-        ActiveJava = Javas.Any() ? Javas[0] : null;
+        ActiveJavaRuntime = JavaRuntimes.Any() ? JavaRuntimes[0] : null;
 
-        OnPropertyChanged(nameof(Javas));
+        OnPropertyChanged(nameof(JavaRuntimes));
 
         JavaDropDownOpen = true;
         _notificationService.NotifyWithoutContent("Added the search Java to the runtime list", icon: "\uE73E");

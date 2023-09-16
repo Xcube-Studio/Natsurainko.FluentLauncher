@@ -47,10 +47,7 @@
                         CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
                         Style="{ThemeResource AccentButtonStyle}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
-                            <FontIcon
-                                FontSize="16"
-                                Foreground="White"
-                                Glyph="&#xE8FA;" />
+                            <FontIcon FontSize="16" Glyph="&#xE8FA;" />
                             <TextBlock x:Uid="Buttons_SignIn" Text="Sign in" />
                         </StackPanel>
                     </Button>

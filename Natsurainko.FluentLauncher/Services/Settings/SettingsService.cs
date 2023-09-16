@@ -48,9 +48,9 @@ public partial class SettingsService : SettingsContainer, IFluentCoreSettingsSer
 
     [SettingItem(typeof(string), "CurrentLanguage", Default = "en-US, English", Converter = typeof(JsonStringConverter<string>))] // TODO: remove default value; set to system language if null
     [SettingItem(typeof(int), "NavigationViewDisplayMode", Default = 0, Converter = typeof(JsonStringConverter<int>))]
-    [SettingItem(typeof(int), "DisplayTheme", Default = 0, Converter = typeof(JsonStringConverter<int>))]
+    [SettingItem(typeof(int), "DisplayTheme", Default = 1, Converter = typeof(JsonStringConverter<int>))]
     [SettingItem(typeof(int), "BackgroundMode", Default = 0, Converter = typeof(JsonStringConverter<int>))]
-    [SettingItem(typeof(bool), "UseNewHomePage", Default = false, Converter = typeof(JsonStringConverter<bool>))]
+    [SettingItem(typeof(bool), "UseNewHomePage", Default = true, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(double), "TintLuminosityOpacity", Default = 0.64, Converter = typeof(JsonStringConverter<double>))]
     [SettingItem(typeof(double), "TintOpacity", Default = 0, Converter = typeof(JsonStringConverter<double>))]
     [SettingItem(typeof(bool), "EnableDefaultAcrylicBrush", Default = true, Converter = typeof(JsonStringConverter<bool>))]

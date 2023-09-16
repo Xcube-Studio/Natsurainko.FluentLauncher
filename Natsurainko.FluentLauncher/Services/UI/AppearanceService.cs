@@ -71,7 +71,7 @@ internal class AppearanceService
                 if (File.Exists(_settingsService.ImageFilePath))
                 {
                     page.Resources.Add("NavigationViewContentBackground", new SolidColorBrush(Colors.Transparent));
-                    page.Resources.Add("NavigationViewContentGridCornerRadius", new CornerRadius(0));
+                    //page.Resources.Add("NavigationViewContentGridCornerRadius", new CornerRadius(0));
                     page.Resources.Add("NavigationViewContentGridBorderThickness", new Thickness(0));
 
                     using var fileStream = File.OpenRead(_settingsService.ImageFilePath);

@@ -13,79 +13,70 @@
     d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
     mc:Ignorable="d">
 
-    <Grid VerticalAlignment="Center">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="36" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="36" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
-        <StackPanel
-            Grid.Row="1"
-            Margin="16"
-            HorizontalAlignment="Center"
-            Orientation="Horizontal"
-            Spacing="32">
-            <TextBlock
-                HorizontalAlignment="Center"
+    <Grid HorizontalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="75" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Border
+                Grid.Column="0"
+                Width="75"
+                Height="75"
                 VerticalAlignment="Center"
-                FontSize="36"
-                FontWeight="Bold"
-                Text="Welcome to use" />
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Border
-                    Grid.Column="0"
-                    Width="75"
-                    Height="75"
-                    VerticalAlignment="Center"
-                    BorderBrush="{ThemeResource IconBorder}"
-                    BorderThickness="2"
-                    CornerRadius="8">
-                    <Border CornerRadius="8">
-                        <Image>
-                            <Image.Source>
-                                <BitmapImage UriSource="ms-appx:/Assets/AppIcon.png" />
-                            </Image.Source>
-                        </Image>
-                    </Border>
+                BorderBrush="{ThemeResource IconBorder}"
+                BorderThickness="3"
+                CornerRadius="8">
+                <Border CornerRadius="8">
+                    <Image>
+                        <Image.Source>
+                            <BitmapImage UriSource="ms-appx:/Assets/AppIcon.png" />
+                        </Image.Source>
+                    </Image>
                 </Border>
-                <StackPanel
-                    Grid.Column="1"
-                    Margin="16,0,0,0"
-                    VerticalAlignment="Center">
-                    <TextBlock
-                        Margin="0,-8,0,0"
-                        FontSize="36"
-                        FontWeight="Bold"
-                        Text="Fluent Launcher" />
-                    <TextBlock
-                        FontSize="20"
-                        FontWeight="Bold"
-                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                        Text="by Natsurainko" />
-                </StackPanel>
-            </Grid>
-        </StackPanel>
-        <labs:SettingsCard
-            Grid.Row="3"
-            MaxWidth="1000"
-            Margin="75,0"
-            Description="Please choose your language before we start setting up Fluent Launcher."
-            Header="Language"
-            HeaderIcon="{xh:FontIcon Glyph=&#xf2b7;}"
-            RelativePanel.Below="welcomeText">
+            </Border>
+            <StackPanel
+                Grid.Column="1"
+                Margin="16,0,0,0"
+                VerticalAlignment="Center">
+                <TextBlock
+                    FontSize="18"
+                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                    Text="Release 2.1.20.0" />
+                <TextBlock
+                    Margin="0,-7.5,0,0"
+                    FontSize="36"
+                    FontWeight="SemiBold"
+                    Text="Fluent Launcher" />
+            </StackPanel>
+        </Grid>
+        <Grid
+            Grid.Column="2"
+            MaxWidth="300"
+            VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Language" />
+            <TextBlock
+                Grid.Row="1"
+                FontSize="16"
+                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                Text="Please choose your language before we start setting up Fluent Launcher."
+                TextWrapping="WrapWholeWords" />
 
-            <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}">
-                <i:Interaction.Behaviors>
-                    <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
-                    <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
-                </i:Interaction.Behaviors>
-            </ComboBox>
-        </labs:SettingsCard>
+            <ComboBox
+                Grid.Row="3"
+                ItemsSource="{Binding Languages}"
+                SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}" />
+        </Grid>
     </Grid>
 </Page>

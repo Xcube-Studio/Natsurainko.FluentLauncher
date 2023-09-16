@@ -11,151 +11,126 @@
     d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
     mc:Ignorable="d">
 
-    <Grid MaxWidth="1000" Padding="16">
+    <Grid HorizontalAlignment="Center">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" MaxWidth="300" MinWidth="250" />
-            <ColumnDefinition Width="32" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="75" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <Border
-            Grid.Column="0"
-            HorizontalAlignment="Stretch"
-            Background="{ThemeResource CardBackgroundFillColorDefault}"
-            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-            BorderThickness="1"
-            CornerRadius="8">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="16" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0" Margin="16,12,12,0">
-                    <StackPanel
-                        HorizontalAlignment="Left"
-                        Orientation="Horizontal"
-                        Spacing="14">
-                        <FontIcon FontSize="20" Glyph="&#xE77B;" />
-                        <TextBlock
-                            x:Uid="OOBE_AccountPage_T"
-                            VerticalAlignment="Center"
-                            Style="{ThemeResource SubtitleTextBlockStyle}"
-                            Text="Accounts" />
-                    </StackPanel>
-                    <StackPanel
-                        HorizontalAlignment="Right"
-                        Orientation="Horizontal"
-                        Spacing="8">
-                        <Button
-                            Height="32"
-                            Command="{Binding LoginCommand}"
-                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
-                            Style="{ThemeResource AccentButtonStyle}">
-                            <StackPanel
-                                Margin="-4,0,0,0"
-                                Orientation="Horizontal"
-                                Spacing="4">
-                                <FontIcon
-                                    Margin="0,2,0,0"
-                                    FontSize="14"
-                                    Foreground="White"
-                                    Glyph="&#xE8FA;" />
-                                <TextBlock x:Uid="Buttons_SignIn" Text="Sign in" />
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
+        <Grid MaxWidth="325" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Accounts" />
+            <TextBlock
+                Grid.Row="1"
+                FontSize="16"
+                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                TextWrapping="WrapWholeWords">
+                <Run Text="You need at least one account to start the game" />
+                <LineBreak />
+                <Run Text="Access to online servers is only possible with a Microsoft account" />
+                <LineBreak />
+                <Run Text="Offline accounts will not be verified by the server" />
+            </TextBlock>
 
-                </Grid>
-                <Border
-                    Grid.Row="1"
-                    Margin="0,4,0,0"
-                    Style="{ThemeResource ExpanderSplitter}" />
-                <ListView
-                    Grid.Row="2"
-                    CornerRadius="8"
-                    ItemsSource="{Binding Accounts}"
-                    SelectedItem="{Binding ActiveAccount, Mode=TwoWay}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="0,8">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="8" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
+            <StackPanel Grid.Row="4" Spacing="10">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button
+                        Height="32"
+                        Command="{Binding LoginCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                        Style="{ThemeResource AccentButtonStyle}">
+                        <StackPanel
+                            Margin="-4,0,0,0"
+                            Orientation="Horizontal"
+                            Spacing="4">
+                            <FontIcon
+                                Margin="0,2,0,0"
+                                FontSize="14"
+                                Foreground="White"
+                                Glyph="&#xE8FA;" />
+                            <TextBlock x:Uid="Buttons_SignIn" Text="Sign in" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <HyperlinkButton
+                    x:Uid="OOBE_AccountPage_L"
+                    Content="Minecraft Official Website"
+                    NavigateUri="https://www.minecraft.net/en-us" />
+            </StackPanel>
+        </Grid>
 
-                                <Border
-                                    Grid.RowSpan="2"
-                                    Grid.Column="0"
-                                    Width="32"
-                                    Height="32"
-                                    VerticalAlignment="Center"
-                                    CornerRadius="4">
+        <Grid
+            Grid.Column="2"
+            Width="300"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <ListView ItemsSource="{Binding Accounts}" SelectedItem="{Binding ActiveAccount, Mode=TwoWay}">
+                <ListView.Header>
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        Style="{ThemeResource BaseTextBlockStyle}"
+                        Text="Existing:" />
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="0,7.5" Background="Transparent">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                Width="36"
+                                Height="36"
+                                VerticalAlignment="Center"
+                                BorderBrush="{ThemeResource IconBorder}"
+                                BorderThickness="2"
+                                CornerRadius="4">
+                                <Border CornerRadius="4">
                                     <i:Interaction.Behaviors>
                                         <behaviors:SkinHeadControlBehavior Account="{Binding}" />
                                     </i:Interaction.Behaviors>
                                 </Border>
+                            </Border>
+                            <StackPanel Grid.Column="2">
                                 <TextBlock
-                                    Grid.Row="0"
-                                    Grid.Column="2"
                                     FontWeight="SemiBold"
                                     Text="{Binding Name}"
                                     TextTrimming="CharacterEllipsis" />
                                 <TextBlock
-                                    Grid.Row="1"
-                                    Grid.Column="2"
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
                                     Text="{Binding Type}"
-                                    TextTrimming="CharacterEllipsis" />
-                                <Button
-                                    x:Name="removeBtn"
-                                    Grid.RowSpan="2"
-                                    Grid.Column="3"
-                                    Width="20"
-                                    Height="20"
-                                    Margin="0,0,4,0"
-                                    HorizontalAlignment="Right"
-                                    Background="Transparent"
-                                    BorderThickness="0"
-                                    Foreground="Red">
-                                    <FontIcon
-                                        Margin="-18,-14,-16,-16"
-                                        FontSize="16"
-                                        Glyph="&#xE711;" />
-                                </Button>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
-        </Border>
-
-        <StackPanel Grid.Column="2" VerticalAlignment="Center">
-            <RichTextBlock
-                Grid.Column="2"
-                FontWeight="SemiBold"
-                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
-                <Paragraph>
-                    <Run x:Uid="OOBE_AccountPage_D1" Text="You need at least one account to start the game" />
-                </Paragraph>
-                <Paragraph>
-                    <Run x:Uid="OOBE_AccountPage_D2" Text="Access to online servers is only possible with a Microsoft account" />
-                </Paragraph>
-                <Paragraph Margin="0,25,0,0">
-                    <Run x:Uid="OOBE_AccountPage_D3" Text="Offline accounts will not be verified by the server" />
-                </Paragraph>
-            </RichTextBlock>
-            <HyperlinkButton
-                x:Uid="OOBE_AccountPage_L"
-                Margin="-12,8,0,0"
-                Content="Minecraft Official Website"
-                NavigateUri="https://www.minecraft.net/en-us" />
-        </StackPanel>
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
+                            </StackPanel>
+                            <Button
+                                x:Name="DeleteButton"
+                                Grid.Column="3"
+                                Width="28"
+                                Height="24"
+                                Padding="0"
+                                HorizontalAlignment="Right"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Visibility="Collapsed">
+                                <FontIcon FontSize="14" Glyph="&#xE711;" />
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
     </Grid>
+
 </Page>

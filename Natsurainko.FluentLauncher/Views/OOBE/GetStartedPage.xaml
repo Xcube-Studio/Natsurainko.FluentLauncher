@@ -9,25 +9,20 @@
     d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
     mc:Ignorable="d">
 
-    <Grid Padding="75,0">
-        <StackPanel VerticalAlignment="Center">
-            <RichTextBlock HorizontalAlignment="Left">
-                <Paragraph>
-                    <Run
-                        x:Uid="OOBE_GetStartedPage_T"
-                        FontSize="22"
-                        FontWeight="Bold"
-                        Text="All Finished" />
-                </Paragraph>
-                <Paragraph>
-                    <Run
-                        x:Uid="OOBE_GetStartedPage_ST"
-                        FontSize="16"
-                        FontWeight="SemiBold"
-                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                        Text="You have all the basic settings done" />
-                </Paragraph>
-            </RichTextBlock>
+    <Grid>
+        <StackPanel
+            Margin="125,0"
+            HorizontalAlignment="Left"
+            Orientation="Horizontal"
+            Spacing="20">
+            <FontIcon FontSize="64" Glyph="&#xE73E;" />
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="All Finished" />
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    FontSize="18"
+                    Text="You have all the basic settings done" />
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

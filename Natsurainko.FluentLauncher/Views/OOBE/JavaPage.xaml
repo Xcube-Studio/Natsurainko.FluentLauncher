@@ -2,6 +2,7 @@
     x:Class="Natsurainko.FluentLauncher.Views.OOBE.JavaPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.OOBE"
@@ -10,160 +11,121 @@
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     mc:Ignorable="d">
 
-    <Grid MaxWidth="1000" Padding="16">
+    <Grid HorizontalAlignment="Center">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition
-                Width="*"
-                MinWidth="400"
-                MaxWidth="500" />
-            <ColumnDefinition Width="32" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="75" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <Border
-            Grid.Column="0"
-            HorizontalAlignment="Stretch"
-            Background="{ThemeResource CardBackgroundFillColorDefault}"
-            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-            BorderThickness="1"
-            CornerRadius="8">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="16" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0" Margin="16,12,12,0">
-                    <StackPanel
-                        HorizontalAlignment="Left"
-                        Orientation="Horizontal"
-                        Spacing="14">
-                        <FontIcon FontSize="20" Glyph="&#xE8F1;" />
-                        <TextBlock
-                            x:Uid="OOBE_JavaPage_T"
-                            VerticalAlignment="Center"
-                            Style="{ThemeResource SubtitleTextBlockStyle}"
-                            Text="Java Runtimes" />
-                    </StackPanel>
-                    <StackPanel
-                        HorizontalAlignment="Right"
-                        Orientation="Horizontal"
-                        Spacing="8">
-                        <Button
-                            x:Uid="OOBE_JavaPage_DetectBtn"
-                            Height="32"
-                            Command="{Binding SearchJavaCommand}"
-                            Style="{ThemeResource AccentButtonStyle}"
-                            ToolTipService.ToolTip="Detect Java runtimes installed">
-                            <StackPanel
-                                Margin="-4,0,0,0"
-                                Orientation="Horizontal"
-                                Spacing="4">
-                                <FontIcon
-                                    Margin="0,2,0,0"
-                                    FontSize="14"
-                                    Foreground="White"
-                                    Glyph="&#xE721;" />
-                                <TextBlock x:Uid="OOBE_JavaPage_B1" Text="Detect" />
-                            </StackPanel>
-                        </Button>
-                        <Button
-                            x:Uid="OOBE_JavaPage_AddBtn"
-                            Height="32"
-                            Command="{Binding BrowseJavaCommand}"
-                            Style="{ThemeResource AccentButtonStyle}"
-                            ToolTipService.ToolTip="Add a javaw.exe manually">
-                            <StackPanel
-                                Margin="-4,0,0,0"
-                                Orientation="Horizontal"
-                                Spacing="4">
-                                <FontIcon
-                                    Margin="0,2,0,0"
-                                    FontSize="14"
-                                    Foreground="White"
-                                    Glyph="&#xE710;" />
-                                <TextBlock x:Uid="OOBE_JavaPage_B2" Text="Add" />
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
+        <Grid MaxWidth="325" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Java Runtimes" />
+            <TextBlock
+                Grid.Row="1"
+                FontSize="16"
+                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                TextWrapping="WrapWholeWords">
+                <Run Text="You need at least a Java Runtime to start your game core" />
+                <LineBreak />
+                <Run Text="Once done, you can also modify these settings in the global game settings" />
+            </TextBlock>
 
-                </Grid>
-                <Border
-                    Grid.Row="1"
-                    Margin="0,4,0,0"
-                    Style="{ThemeResource ExpanderSplitter}" />
-                <ListView
-                    Grid.Row="2"
-                    CornerRadius="8"
-                    ItemsSource="{Binding JavaRuntimes}"
-                    SelectedItem="{Binding ActiveJavaRuntime, Mode=TwoWay}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="0,8">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="8" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
+            <StackPanel Grid.Row="4" Spacing="10">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button
+                        Height="32"
+                        Command="{Binding SearchJavaCommand}"
+                        Style="{ThemeResource AccentButtonStyle}">
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <AnimatedIcon Height="21.5">
+                                <AnimatedIcon.Source>
+                                    <animatedvisuals:AnimatedFindVisualSource />
+                                </AnimatedIcon.Source>
+                                <AnimatedIcon.FallbackIconSource>
+                                    <SymbolIconSource Symbol="Find" />
+                                </AnimatedIcon.FallbackIconSource>
+                            </AnimatedIcon>
+                            <TextBlock Text="Search" />
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding BrowseJavaCommand}" Style="{ThemeResource AccentButtonStyle}">
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <FontIcon FontSize="16" Glyph="&#xe838;" />
+                            <TextBlock Text="Add" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <HyperlinkButton Content="Third-party Java Download Sources" />
+            </StackPanel>
+        </Grid>
 
-                                <Image
-                                    Grid.RowSpan="2"
-                                    Grid.Column="0"
-                                    Width="32"
-                                    Height="32"
-                                    VerticalAlignment="Center"
-                                    Source="/Assets/Icons/java_logo.png" />
+        <Grid
+            Grid.Column="2"
+            Width="300"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <ListView ItemsSource="{Binding JavaRuntimes}" SelectedItem="{Binding ActiveJavaRuntime, Mode=TwoWay}">
+                <ListView.Header>
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        Style="{ThemeResource BaseTextBlockStyle}"
+                        Text="Existing:" />
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid
+                            Padding="0,7.5"
+                            Background="Transparent"
+                            PointerEntered="Grid_PointerEntered"
+                            PointerExited="Grid_PointerExited">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="7.5" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Image
+                                Grid.Column="0"
+                                Width="32"
+                                Height="32"
+                                VerticalAlignment="Center"
+                                Source="/Assets/Icons/java_logo.png" />
+                            <StackPanel Grid.Column="2">
                                 <TextBlock
-                                    Grid.Row="0"
-                                    Grid.Column="2"
                                     FontWeight="SemiBold"
                                     Text="{Binding Converter={ThemeResource JavaInfoConverter}}"
                                     TextTrimming="CharacterEllipsis" />
                                 <TextBlock
-                                    Grid.Row="1"
-                                    Grid.Column="2"
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
                                     Text="{Binding}"
-                                    TextTrimming="CharacterEllipsis" />
-                                <Button
-                                    x:Name="removeBtn"
-                                    Grid.RowSpan="2"
-                                    Grid.Column="3"
-                                    Width="20"
-                                    Height="20"
-                                    Margin="0,0,4,0"
-                                    HorizontalAlignment="Right"
-                                    Background="Transparent"
-                                    BorderThickness="0"
-                                    Foreground="Red">
-                                    <FontIcon
-                                        Margin="-18,-14,-16,-16"
-                                        FontSize="16"
-                                        Glyph="&#xE711;" />
-                                </Button>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
-        </Border>
-
-        <RichTextBlock
-            Grid.Column="2"
-            VerticalAlignment="Center"
-            FontWeight="SemiBold"
-            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
-            <Paragraph>
-                <Run x:Uid="OOBE_BasicPage_D2" Text="You need at least a Java Runtime to start your game core" />
-            </Paragraph>
-            <Paragraph Margin="0,25,0,0">
-                <Run x:Uid="OOBE_BasicPage_D3" Text="Once done, you can also modify these settings in the global game settings" />
-            </Paragraph>
-        </RichTextBlock>
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
+                            </StackPanel>
+                            <Button
+                                x:Name="DeleteButton"
+                                Grid.Column="3"
+                                Width="28"
+                                Height="24"
+                                Padding="0"
+                                HorizontalAlignment="Right"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Visibility="Collapsed">
+                                <FontIcon FontSize="14" Glyph="&#xE711;" />
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
     </Grid>
+
 </Page>

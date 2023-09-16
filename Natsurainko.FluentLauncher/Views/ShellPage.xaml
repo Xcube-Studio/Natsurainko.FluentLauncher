@@ -11,6 +11,9 @@
     Loaded="Page_Loaded"
     SizeChanged="Page_SizeChanged"
     mc:Ignorable="d">
+    <Page.Resources>
+        <CornerRadius x:Key="NavigationViewContentGridCornerRadius">0</CornerRadius>
+    </Page.Resources>
 
     <Grid x:Name="MainGrid">
         <Border

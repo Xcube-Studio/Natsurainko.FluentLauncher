@@ -9,17 +9,28 @@
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
     mc:Ignorable="d">
+    <Page.Resources>
+        <Thickness x:Key="TopNavigationViewContentGridBorderThickness">0</Thickness>
+    </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
             <!--  Title bar  -->
+            <RowDefinition Height="67.5" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="67.5" />
         </Grid.RowDefinitions>
+
+        <Grid
+            Grid.Row="1"
+            Background="{ThemeResource CardBackgroundFillColorDefault}"
+            BorderBrush="{ThemeResource NavigationViewItemSeparatorForeground}"
+            BorderThickness="0,1,0,1" />
         <NavigationView
             x:Name="NavigationView"
-            Grid.Row="1"
+            Grid.Row="0"
+            Margin="35,7.5,150,0"
+            VerticalAlignment="Center"
             IsBackButtonVisible="Collapsed"
             IsSettingsVisible="False"
             ItemInvoked="NavigationViewControl_ItemInvoked"
@@ -63,36 +74,34 @@
                     IsEnabled="False"
                     Tag="OOBEGetStartedPage" />
             </NavigationView.FooterMenuItems>
-            <Frame x:Name="contentFrame" Navigated="ContentFrame_Navigated">
-                <Frame.ContentTransitions>
-                    <TransitionCollection>
-                        <NavigationThemeTransition x:Name="navTransition">
-                            <DrillInNavigationTransitionInfo />
-                        </NavigationThemeTransition>
-                    </TransitionCollection>
-                </Frame.ContentTransitions>
-            </Frame>
         </NavigationView>
-        <StackPanel
-            Grid.Row="2"
-            Margin="24"
-            HorizontalAlignment="Right"
-            Orientation="Horizontal"
-            Spacing="16">
+        <Frame
+            x:Name="contentFrame"
+            Grid.Row="1"
+            Navigated="ContentFrame_Navigated">
+            <Frame.ContentTransitions>
+                <TransitionCollection>
+                    <NavigationThemeTransition x:Name="navTransition">
+                        <DrillInNavigationTransitionInfo />
+                    </NavigationThemeTransition>
+                </TransitionCollection>
+            </Frame.ContentTransitions>
+        </Frame>
+        <Grid Grid.Row="2" Padding="52.5,0">
             <Button
-                MinWidth="95"
+                MinWidth="120"
+                HorizontalAlignment="Left"
                 Click="BackButton_Click"
-                Command="{Binding BackCommand}"
-                FontWeight="SemiBold">
+                Command="{Binding BackCommand}">
                 <TextBlock x:Uid="Buttons_Back" Text="Back" />
             </Button>
             <Button
-                MinWidth="95"
+                MinWidth="120"
+                HorizontalAlignment="Right"
                 Click="NextButton_Click"
                 Command="{Binding NextCommand}"
                 Content="{Binding NextText}"
-                FontWeight="SemiBold"
                 Style="{ThemeResource AccentButtonStyle}" />
-        </StackPanel>
+        </Grid>
     </Grid>
 </Page>

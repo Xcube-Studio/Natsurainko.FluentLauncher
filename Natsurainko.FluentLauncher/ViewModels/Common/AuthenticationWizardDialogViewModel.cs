@@ -106,7 +106,7 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
         _dialog.Hide();
 
         _notificationService.NotifyWithSpecialContent(
-            $"Added Successfully",
+            ResourceUtils.GetValue("Notifications", "_AccountAddSuccessful"),
             "AuthenticationSuccessfulNotifyTemplate",
             account, "\uE73E");
     }

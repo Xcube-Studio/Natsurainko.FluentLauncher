@@ -4,11 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.OOBE"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
-    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Center">
@@ -25,15 +21,18 @@
                 <RowDefinition Height="25" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Minecraft Folders" />
+            <TextBlock
+                x:Uid="OOBE_MinecraftFolderPage_T"
+                Style="{ThemeResource TitleTextBlockStyle}"
+                Text="Minecraft Folders" />
             <TextBlock
                 Grid.Row="1"
                 FontSize="16"
                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                 TextWrapping="WrapWholeWords">
-                <Run Text="You need at least a .minecraft directory to store your game cores" />
+                <Run x:Uid="OOBE_MinecraftFolderPage_D1" Text="You need at least a .minecraft directory to store your game cores" />
                 <LineBreak />
-                <Run Text="Once done, you can also modify these settings in the global game settings" />
+                <Run x:Uid="OOBE_MinecraftFolderPage_D2" Text="Once done, you can also modify these settings in the global game settings" />
             </TextBlock>
 
             <StackPanel
@@ -41,6 +40,7 @@
                 Orientation="Horizontal"
                 Spacing="10">
                 <Button
+                    x:Uid="OOBE_MinecraftFolderPage_DetectBtn"
                     Height="32"
                     Command="{Binding DetectOfficialMinecraftFolderCommand}"
                     Style="{ThemeResource AccentButtonStyle}">
@@ -53,13 +53,16 @@
                                 <SymbolIconSource Symbol="Find" />
                             </AnimatedIcon.FallbackIconSource>
                         </AnimatedIcon>
-                        <TextBlock Text="Detect" />
+                        <TextBlock x:Uid="Buttons_Detect" Text="Detect" />
                     </StackPanel>
                 </Button>
-                <Button Command="{Binding BrowseFolderCommand}" Style="{ThemeResource AccentButtonStyle}">
+                <Button
+                    x:Uid="OOBE_MinecraftFolderPage_AddBtn"
+                    Command="{Binding BrowseFolderCommand}"
+                    Style="{ThemeResource AccentButtonStyle}">
                     <StackPanel Orientation="Horizontal" Spacing="5">
                         <FontIcon FontSize="16" Glyph="&#xe838;" />
-                        <TextBlock Text="Add" />
+                        <TextBlock x:Uid="Buttons_Add" Text="Add" />
                     </StackPanel>
                 </Button>
             </StackPanel>
@@ -73,6 +76,7 @@
             <ListView ItemsSource="{Binding MinecraftFolders}" SelectedItem="{Binding ActiveMinecraftFolder, Mode=TwoWay}">
                 <ListView.Header>
                     <TextBlock
+                        x:Uid="OOBE_MinecraftFolderPage_H"
                         Margin="0,0,0,5"
                         Style="{ThemeResource BaseTextBlockStyle}"
                         Text="Existing:" />

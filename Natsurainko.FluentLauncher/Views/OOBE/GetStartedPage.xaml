@@ -17,8 +17,12 @@
             Spacing="20">
             <FontIcon FontSize="64" Glyph="&#xE73E;" />
             <StackPanel VerticalAlignment="Center">
-                <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="All Finished" />
                 <TextBlock
+                    x:Uid="OOBE_GetStartedPage_T"
+                    Style="{ThemeResource TitleTextBlockStyle}"
+                    Text="All Finished" />
+                <TextBlock
+                    x:Uid="OOBE_GetStartedPage_ST"
                     HorizontalAlignment="Left"
                     FontSize="18"
                     Text="You have all the basic settings done" />

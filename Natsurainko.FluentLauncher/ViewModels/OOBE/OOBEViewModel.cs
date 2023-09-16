@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Animation;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
@@ -20,6 +19,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.Storage.Pickers;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
@@ -150,6 +150,18 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
 
     public List<string> Languages { get; } = ResourceUtils.Languages;
 
+    public string Version { get; } = string.Format("{0}.{1}.{2}.{3}",
+            Package.Current.Id.Version.Major,
+            Package.Current.Id.Version.Minor,
+            Package.Current.Id.Version.Build,
+            Package.Current.Id.Version.Revision);
+
+#if DEBUG 
+    public string Edition { get; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Debug");
+#else 
+    public string Edition { get; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Release");
+#endif
+
     partial void OnCurrentLanguageChanged(string oldValue, string newValue)
     {
         if (Languages.Contains(CurrentLanguage) && oldValue is not null) // oldValue is null at startup
@@ -184,7 +196,11 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
             {
                 if (MinecraftFolders.Contains(folder.Path))
                 {
-                    _notificationService.NotifyMessage("Failed to add the folder", "This folder already exists", icon: "\uF89A");
+                    _notificationService.NotifyMessage(
+                        ResourceUtils.GetValue("Notifications", "_AddFolderExistedT"),
+                        ResourceUtils.GetValue("Notifications", "_AddFolderExistedD"),
+                        icon: "\uF89A");
+
                     return;
                 }
 
@@ -202,14 +218,22 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
         // Official launcher .minecraft folder not exist
         if (!Directory.Exists(OfficialLauncherPath))
         {
-            _notificationService.NotifyMessage("Cannot add the official Minecraft Launcher data folder", $"{OfficialLauncherPath} does not exist.", icon: "\uF89A");
+            _notificationService.NotifyMessage(
+                ResourceUtils.GetValue("Notifications", "_AddOfficialFolderNotExistT"),
+                ResourceUtils.GetValue("Notifications", "_AddOfficialFolderNotExistD").Replace("${path}", OfficialLauncherPath), 
+                icon: "\uF89A");
+
             return;
         }
 
         // Already added
         if (MinecraftFolders.Contains(OfficialLauncherPath))
         {
-            _notificationService.NotifyMessage("Already added the official Minecraft Launcher data folder", $"{OfficialLauncherPath} has already been added.", icon: "\uF89A");
+            _notificationService.NotifyMessage(
+                ResourceUtils.GetValue("Notifications", "_AddOfficiaFolderExistedT"),
+                ResourceUtils.GetValue("Notifications", "_AddOfficiaFolderExistedD").Replace("${path}", OfficialLauncherPath),
+                icon: "\uF89A");
+
             return;
         }
 
@@ -217,7 +241,11 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
         MinecraftFolders.Add(OfficialLauncherPath);
         _gameService.ActivateMinecraftFolder(OfficialLauncherPath);
         ActiveMinecraftFolder = OfficialLauncherPath;
-        _notificationService.NotifyMessage("Official Minecraft Launcher data folder added", $"{OfficialLauncherPath} has been added to Fluent Launcher.", icon: "\uE73E");
+
+        _notificationService.NotifyMessage(
+            ResourceUtils.GetValue("Notifications", "_AddOfficiaFolderAddedT"),
+            ResourceUtils.GetValue("Notifications", "_AddOfficiaFolderAddedD").Replace("${path}", OfficialLauncherPath),
+            icon: "\uE73E");
     }
 
     #endregion
@@ -264,8 +292,14 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
 
         OnPropertyChanged(nameof(JavaRuntimes));
 
-        _notificationService.NotifyWithoutContent("Added the search Java to the runtime list", icon: "\uE73E");
+        _notificationService.NotifyWithoutContent(
+            ResourceUtils.GetValue("Notifications", "_AddSearchedJavaT"), 
+            icon: "\uE73E");
     }
+
+    [RelayCommand]
+    public void OpenJavaMirrorsDialog(HyperlinkButton parameter)
+        => _ = new JavaMirrorsDialog { XamlRoot = parameter.XamlRoot }.ShowAsync();
 
     #endregion
 

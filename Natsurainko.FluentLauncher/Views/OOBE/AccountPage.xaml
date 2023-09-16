@@ -5,7 +5,6 @@
     xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.OOBE"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
     d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
@@ -25,33 +24,31 @@
                 <RowDefinition Height="25" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Accounts" />
+            <TextBlock
+                x:Uid="OOBE_AccountPage_T"
+                Style="{ThemeResource TitleTextBlockStyle}"
+                Text="Accounts" />
             <TextBlock
                 Grid.Row="1"
                 FontSize="16"
                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                 TextWrapping="WrapWholeWords">
-                <Run Text="You need at least one account to start the game" />
+                <Run x:Uid="OOBE_AccountPage_D1" Text="You need at least one account to start the game" />
                 <LineBreak />
-                <Run Text="Access to online servers is only possible with a Microsoft account" />
+                <Run x:Uid="OOBE_AccountPage_D2" Text="Access to online servers is only possible with a Microsoft account" />
                 <LineBreak />
-                <Run Text="Offline accounts will not be verified by the server" />
+                <Run x:Uid="OOBE_AccountPage_D3" Text="Offline accounts will not be verified by the server" />
             </TextBlock>
 
             <StackPanel Grid.Row="4" Spacing="10">
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <Button
-                        Height="32"
                         Command="{Binding LoginCommand}"
                         CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
                         Style="{ThemeResource AccentButtonStyle}">
-                        <StackPanel
-                            Margin="-4,0,0,0"
-                            Orientation="Horizontal"
-                            Spacing="4">
+                        <StackPanel Orientation="Horizontal" Spacing="5">
                             <FontIcon
-                                Margin="0,2,0,0"
-                                FontSize="14"
+                                FontSize="16"
                                 Foreground="White"
                                 Glyph="&#xE8FA;" />
                             <TextBlock x:Uid="Buttons_SignIn" Text="Sign in" />
@@ -73,6 +70,7 @@
             <ListView ItemsSource="{Binding Accounts}" SelectedItem="{Binding ActiveAccount, Mode=TwoWay}">
                 <ListView.Header>
                     <TextBlock
+                        x:Uid="OOBE_AccountPage_H"
                         Margin="0,0,0,5"
                         Style="{ThemeResource BaseTextBlockStyle}"
                         Text="Existing:" />
@@ -110,7 +108,7 @@
                                 <TextBlock
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="{Binding Type}"
+                                    Text="{Binding Type, Converter={ThemeResource AccountInfoConverter}}"
                                     TextTrimming="CharacterEllipsis"
                                     TextWrapping="NoWrap" />
                             </StackPanel>

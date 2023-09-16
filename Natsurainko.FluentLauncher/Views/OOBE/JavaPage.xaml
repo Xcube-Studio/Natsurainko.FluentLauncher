@@ -4,11 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.OOBE"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
-    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Center">
@@ -25,20 +21,24 @@
                 <RowDefinition Height="25" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Java Runtimes" />
+            <TextBlock
+                x:Uid="OOBE_JavaPage_T"
+                Style="{ThemeResource TitleTextBlockStyle}"
+                Text="Java Runtimes" />
             <TextBlock
                 Grid.Row="1"
                 FontSize="16"
                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                 TextWrapping="WrapWholeWords">
-                <Run Text="You need at least a Java Runtime to start your game core" />
+                <Run x:Uid="OOBE_JavaPage_D1" Text="You need at least a Java Runtime to start your game core" />
                 <LineBreak />
-                <Run Text="Once done, you can also modify these settings in the global game settings" />
+                <Run x:Uid="OOBE_JavaPage_D2" Text="Once done, you can also modify these settings in the global game settings" />
             </TextBlock>
 
             <StackPanel Grid.Row="4" Spacing="10">
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <Button
+                        x:Uid="OOBE_JavaPage_SearchBtn"
                         Height="32"
                         Command="{Binding SearchJavaCommand}"
                         Style="{ThemeResource AccentButtonStyle}">
@@ -51,17 +51,24 @@
                                     <SymbolIconSource Symbol="Find" />
                                 </AnimatedIcon.FallbackIconSource>
                             </AnimatedIcon>
-                            <TextBlock Text="Search" />
+                            <TextBlock x:Uid="Buttons_Search" Text="Search" />
                         </StackPanel>
                     </Button>
-                    <Button Command="{Binding BrowseJavaCommand}" Style="{ThemeResource AccentButtonStyle}">
+                    <Button
+                        x:Uid="OOBE_JavaPage_AddBtn"
+                        Command="{Binding BrowseJavaCommand}"
+                        Style="{ThemeResource AccentButtonStyle}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <FontIcon FontSize="16" Glyph="&#xe838;" />
-                            <TextBlock Text="Add" />
+                            <TextBlock x:Uid="Buttons_Add" Text="Add" />
                         </StackPanel>
                     </Button>
                 </StackPanel>
-                <HyperlinkButton Content="Third-party Java Download Sources" />
+                <HyperlinkButton
+                    x:Uid="OOBE_JavaPage_Hyplink"
+                    Command="{Binding OpenJavaMirrorsDialogCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                    Content="Third-party Java Download Sources" />
             </StackPanel>
         </Grid>
 
@@ -73,6 +80,7 @@
             <ListView ItemsSource="{Binding JavaRuntimes}" SelectedItem="{Binding ActiveJavaRuntime, Mode=TwoWay}">
                 <ListView.Header>
                     <TextBlock
+                        x:Uid="OOBE_JavaPage_H"
                         Margin="0,0,0,5"
                         Style="{ThemeResource BaseTextBlockStyle}"
                         Text="Existing:" />

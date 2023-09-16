@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.OOBE"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
@@ -29,7 +28,7 @@
         <NavigationView
             x:Name="NavigationView"
             Grid.Row="0"
-            Margin="35,7.5,150,0"
+            Margin="35,7.5,35,0"
             VerticalAlignment="Center"
             IsBackButtonVisible="Collapsed"
             IsSettingsVisible="False"
@@ -65,15 +64,13 @@
                     Icon="{xh:FontIcon Glyph=&#xe77b;}"
                     IsEnabled="False"
                     Tag="OOBEAccountPage" />
-            </NavigationView.MenuItems>
-            <NavigationView.FooterMenuItems>
                 <NavigationViewItem
                     x:Uid="OOBE_OOBENavigationPage_NV_Item5"
                     Content="Get Started"
                     Icon="{xh:FontIcon Glyph=&#xE736;}"
                     IsEnabled="False"
                     Tag="OOBEGetStartedPage" />
-            </NavigationView.FooterMenuItems>
+            </NavigationView.MenuItems>
         </NavigationView>
         <Frame
             x:Name="contentFrame"

@@ -6,6 +6,7 @@ using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
@@ -124,7 +125,11 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
             {
                 if (MinecraftFolders.Contains(folder.Path))
                 {
-                    _notificationService.NotifyMessage("Failed to add the folder", "This folder already exists", icon: "\uF89A");
+                    _notificationService.NotifyMessage(
+                        ResourceUtils.GetValue("Notifications", "_AddFolderExistedT"),
+                        ResourceUtils.GetValue("Notifications", "_AddFolderExistedD"),
+                        icon: "\uF89A");
+
                     return;
                 }
 
@@ -164,7 +169,9 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
 
         OnPropertyChanged(nameof(Javas));
 
-        _notificationService.NotifyWithoutContent("Added the search Java to the runtime list", icon: "\uE73E");
+        _notificationService.NotifyWithoutContent(
+            ResourceUtils.GetValue("Notifications", "_AddSearchedJavaT"),
+            icon: "\uE73E");
     }
 
     [RelayCommand]

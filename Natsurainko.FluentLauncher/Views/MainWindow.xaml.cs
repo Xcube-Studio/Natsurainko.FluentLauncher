@@ -45,7 +45,7 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
 
         AppWindow.TitleBar.ButtonHoverBackgroundColor = hoverColor;
 
-        (MinWidth, MinHeight) = (516, 328);
+        (MinWidth, MinHeight) = _settings.FinishGuide ? (516, 328) : (_settings.AppWindowWidth, _settings.AppWindowHeight);
         (Width, Height) = (_settings.AppWindowWidth, _settings.AppWindowHeight);
 
         App.GetService<AppearanceService>().ApplyBackgroundAtWindowCreated(this);
@@ -55,10 +55,9 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
     private bool _firstActivated = true;
     private void WindowEx_Activated(object sender, WindowActivatedEventArgs args)
     {
-
         if (_firstActivated)
-            //_navService.NavigateTo(_settings.FinishGuide ? "ShellPage" : "OOBENavigationPage");
-            _navService.NavigateTo("OOBENavigationPage");
+            _navService.NavigateTo(_settings.FinishGuide ? "ShellPage" : "OOBENavigationPage");
+        //_navService.NavigateTo("OOBENavigationPage");
 
         _firstActivated = false;
     }

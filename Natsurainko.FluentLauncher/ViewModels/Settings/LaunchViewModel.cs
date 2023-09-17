@@ -106,7 +106,10 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
         base.OnPropertyChanged(e);
 
         if (e.PropertyName == nameof(ActiveMinecraftFolder))
-            _gameService.ActivateMinecraftFolder(ActiveMinecraftFolder);
+        {
+            if (!string.IsNullOrEmpty(ActiveMinecraftFolder))
+                _gameService.ActivateMinecraftFolder(ActiveMinecraftFolder);
+        }
     }
 
     [RelayCommand]
@@ -133,9 +136,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
                     return;
                 }
 
-                MinecraftFolders.Add(folder.Path);
-                _gameService.ActivateMinecraftFolder(folder.Path);
-
+                _gameService.AddMinecraftFolder(folder.Path);
                 OnPropertyChanged(nameof(IsMinecraftFoldersEmpty));
             });
 
@@ -177,9 +178,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     [RelayCommand]
     public void RemoveFolder()
     {
-        MinecraftFolders.Remove(ActiveMinecraftFolder);
-        ActiveMinecraftFolder = MinecraftFolders.Any() ? MinecraftFolders[0] : null;
-
+        _gameService.RemoveMinecraftFolder(ActiveMinecraftFolder);
         OnPropertyChanged(nameof(IsMinecraftFoldersEmpty));
     }
 

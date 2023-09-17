@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading.Tasks; 
 using Windows.ApplicationModel;
 using Windows.Storage.Pickers;
 
@@ -204,11 +204,9 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
                     return;
                 }
 
-                MinecraftFolders.Add(folder.Path);
-                _gameService.ActivateMinecraftFolder(folder.Path);
+                _gameService.AddMinecraftFolder(folder.Path);
             });
     });
-
 
     private readonly string OfficialLauncherPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\.minecraft";
 
@@ -238,15 +236,17 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
         }
 
         // Add to list
-        MinecraftFolders.Add(OfficialLauncherPath);
-        _gameService.ActivateMinecraftFolder(OfficialLauncherPath);
-        ActiveMinecraftFolder = OfficialLauncherPath;
+
+        _gameService.AddMinecraftFolder(OfficialLauncherPath);
 
         _notificationService.NotifyMessage(
             ResourceUtils.GetValue("Notifications", "_AddOfficiaFolderAddedT"),
             ResourceUtils.GetValue("Notifications", "_AddOfficiaFolderAddedD").Replace("${path}", OfficialLauncherPath),
             icon: "\uE73E");
     }
+
+    [RelayCommand]
+    public void RemoveFolder(string folder) => _gameService.RemoveMinecraftFolder(folder);
 
     #endregion
 
@@ -347,6 +347,8 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     public void Start()
     {
         _navigationService.Parent?.NavigateTo("ShellPage");
+        (App.MainWindow.MinWidth, App.MainWindow.MinHeight) = (516, 328);
+
         _settings.FinishGuide = true;
     }
 

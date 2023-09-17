@@ -47,7 +47,39 @@ internal class GameService : DefaultGameService
         }
     }
 
-    public void RefreshCurrentFolder() => InitFolder();
+    public void AddMinecraftFolder(string folder) 
+    {
+        _minecraftFolders.Add(folder);
+        ActivateMinecraftFolder(folder);
+    }
+
+    public void RemoveMinecraftFolder(string folder)
+    {
+        _minecraftFolders.Remove(folder);
+
+        if (ActiveMinecraftFolder == folder)
+        {
+            ActiveMinecraftFolder = null;
+
+            if (MinecraftFolders.Any())
+            {
+                ActivateMinecraftFolder(MinecraftFolders.First());
+            }
+        }
+
+        RefreshCurrentFolder();
+    }
+
+    public void RefreshCurrentFolder()
+    {
+        if (!MinecraftFolders.Any())
+        {
+            _gameInfos.Clear();
+            return;
+        }
+
+        InitFolder();
+    }
 
     protected override void InitFolder()
     {

@@ -3,8 +3,11 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Classes.Data.Download;
 using Natsurainko.FluentLauncher.Classes.Data.UI;
+using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Storage;
+using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
+using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Classes.Datas.Download;
 using System;
 using System.Collections.Generic;
@@ -18,11 +21,19 @@ internal partial class DownloadsViewModel : ObservableObject
 {
     private readonly InterfaceCacheService _interfaceCacheService;
     private readonly INavigationService _navigationService;
+    private readonly GameService _gameService;
+    private readonly NotificationService _notificationService;
 
-    public DownloadsViewModel(InterfaceCacheService interfaceCacheService, INavigationService navigationService)
+    public DownloadsViewModel(
+        InterfaceCacheService interfaceCacheService,
+        INavigationService navigationService,
+        GameService gameService,
+        NotificationService notificationService)
     {
         _interfaceCacheService = interfaceCacheService;
         _navigationService = navigationService;
+        _gameService = gameService;
+        _notificationService = notificationService;
 
         Task.Run(async () =>
         {
@@ -120,7 +131,25 @@ internal partial class DownloadsViewModel : ObservableObject
             .Where(manifestItem => manifestItem.Id.Equals(resource.Version));
 
         if (manifestItems.Any())
+        {
+            if (string.IsNullOrEmpty(_gameService.ActiveMinecraftFolder))
+            {
+                _notificationService.NotifyWithSpecialContent(
+                    ResourceUtils.GetValue("Notifications", "_NoMinecraftFolder"),
+                    "NoMinecraftFolderNotifyTemplate",
+                    GoToSettingsCommand, "\uE711");
+
+                return;
+            }
+
             _navigationService.NavigateTo("CoreInstallWizardPage", manifestItems.First());
+        }
+        else _notificationService.NotifyWithoutContent(
+            ResourceUtils.GetValue("Notifications", "_CoreNotInSourceList"),
+            icon: "\uE9CE");
     }
+
+    [RelayCommand]
+    public void GoToSettings() => _navigationService.NavigateTo("SettingsNavigationPage", "LaunchSettingsPage");
 
 }

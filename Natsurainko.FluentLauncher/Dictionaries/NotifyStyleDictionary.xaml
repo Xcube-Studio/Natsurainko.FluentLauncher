@@ -9,15 +9,10 @@
             MinWidth="100"
             MinHeight="75"
             MaxWidth="500"
-            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            Background="{ThemeResource SolidBackgroundFillColorTertiaryBrush}"
+            BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
             BorderThickness="1"
             CornerRadius="8">
-            <Border.Background>
-                <AcrylicBrush
-                    TintColor="{ThemeResource AcrylicTintColor}"
-                    TintLuminosityOpacity="0.25"
-                    TintOpacity="0.25" />
-            </Border.Background>
             <Grid Padding="0,15">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -70,15 +65,10 @@
         <Border
             MinWidth="100"
             MaxWidth="500"
-            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            Background="{ThemeResource SolidBackgroundFillColorTertiaryBrush}"
+            BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
             BorderThickness="1"
             CornerRadius="8">
-            <Border.Background>
-                <AcrylicBrush
-                    TintColor="{ThemeResource AcrylicTintColor}"
-                    TintLuminosityOpacity="0.25"
-                    TintOpacity="0.25" />
-            </Border.Background>
             <Grid Margin="15">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
@@ -115,11 +105,12 @@
     <DataTemplate x:Key="NormalMessageNotifyTemplate">
         <ScrollViewer>
             <StackPanel Padding="20,0" Spacing="5">
-                <TextBlock Text="{Binding Text}" />
+                <TextBlock Text="{Binding Text}" TextWrapping="WrapWholeWords" />
                 <TextBlock
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                     Style="{ThemeResource CaptionTextBlockStyle}"
-                    Text="{Binding Description}" />
+                    Text="{Binding Description}"
+                    TextWrapping="WrapWholeWords" />
             </StackPanel>
         </ScrollViewer>
     </DataTemplate>
@@ -151,7 +142,7 @@
     <DataTemplate x:Key="AuthenticationSuccessfulNotifyTemplate">
         <StackPanel Padding="20,0" Spacing="5">
             <TextBlock FontWeight="SemiBold">
-                <Run Text="Welcome Back," />
+                <Run x:Uid="Notifications_AccountAddWelcome" Text="Welcome Back," />
                 <Run Text="{Binding Name}" />
             </TextBlock>
             <ListViewItem Margin="-10,0" Padding="20,10">
@@ -195,4 +186,14 @@
             </ListViewItem>
         </StackPanel>
     </DataTemplate>
+
+    <DataTemplate x:Key="NoMinecraftFolderNotifyTemplate">
+        <StackPanel Padding="20,0" Spacing="5">
+            <HyperlinkButton
+                x:Uid="Notifications_NavigateMinecraftFolder"
+                Command="{Binding}"
+                Content="Go To Settings" />
+        </StackPanel>
+    </DataTemplate>
+
 </ResourceDictionary>

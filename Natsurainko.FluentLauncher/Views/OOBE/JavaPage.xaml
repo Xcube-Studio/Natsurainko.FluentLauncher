@@ -1,13 +1,12 @@
 <Page
-    x:Class="Natsurainko.FluentLauncher.Views.OOBE.AccountPage"
+    x:Class="Natsurainko.FluentLauncher.Views.OOBE.JavaPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
-    d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
     mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Center">
@@ -25,37 +24,53 @@
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <TextBlock
-                x:Uid="OOBE_AccountPage_T"
+                x:Uid="OOBE_JavaPage_T"
                 Style="{ThemeResource TitleTextBlockStyle}"
-                Text="Accounts" />
+                Text="Java Runtimes" />
             <TextBlock
                 Grid.Row="1"
                 FontSize="16"
                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                 TextWrapping="WrapWholeWords">
-                <Run x:Uid="OOBE_AccountPage_D1" Text="You need at least one account to start the game" />
+                <Run x:Uid="OOBE_JavaPage_D1" Text="You need at least a Java Runtime to start your game core" />
                 <LineBreak />
-                <Run x:Uid="OOBE_AccountPage_D2" Text="Access to online servers is only possible with a Microsoft account" />
-                <LineBreak />
-                <Run x:Uid="OOBE_AccountPage_D3" Text="Offline accounts will not be verified by the server" />
+                <Run x:Uid="OOBE_JavaPage_D2" Text="Once done, you can also modify these settings in the global game settings" />
             </TextBlock>
 
             <StackPanel Grid.Row="4" Spacing="10">
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <Button
-                        Command="{Binding LoginCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                        x:Uid="OOBE_JavaPage_SearchBtn"
+                        Height="32"
+                        Command="{Binding SearchJavaCommand}"
                         Style="{ThemeResource AccentButtonStyle}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
-                            <FontIcon FontSize="16" Glyph="&#xE8FA;" />
-                            <TextBlock x:Uid="Buttons_SignIn" Text="Sign in" />
+                            <AnimatedIcon Height="21.5">
+                                <AnimatedIcon.Source>
+                                    <animatedvisuals:AnimatedFindVisualSource />
+                                </AnimatedIcon.Source>
+                                <AnimatedIcon.FallbackIconSource>
+                                    <SymbolIconSource Symbol="Find" />
+                                </AnimatedIcon.FallbackIconSource>
+                            </AnimatedIcon>
+                            <TextBlock x:Uid="Buttons_Search" Text="Search" />
+                        </StackPanel>
+                    </Button>
+                    <Button
+                        x:Uid="OOBE_JavaPage_AddBtn"
+                        Command="{Binding BrowseJavaCommand}"
+                        Style="{ThemeResource AccentButtonStyle}">
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <FontIcon FontSize="16" Glyph="&#xe838;" />
+                            <TextBlock x:Uid="Buttons_Add" Text="Add" />
                         </StackPanel>
                     </Button>
                 </StackPanel>
                 <HyperlinkButton
-                    x:Uid="OOBE_AccountPage_L"
-                    Content="Minecraft Official Website"
-                    NavigateUri="https://www.minecraft.net/en-us" />
+                    x:Uid="OOBE_JavaPage_Hyplink"
+                    Command="{Binding OpenJavaMirrorsDialogCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                    Content="Third-party Java Download Sources" />
             </StackPanel>
         </Grid>
 
@@ -64,48 +79,43 @@
             Width="300"
             HorizontalAlignment="Center"
             VerticalAlignment="Center">
-            <ListView ItemsSource="{Binding Accounts}" SelectedItem="{Binding ActiveAccount, Mode=TwoWay}">
+            <ListView ItemsSource="{Binding JavaRuntimes}" SelectedItem="{Binding ActiveJavaRuntime, Mode=TwoWay}">
                 <ListView.Header>
                     <TextBlock
-                        x:Uid="OOBE_AccountPage_H"
+                        x:Uid="OOBE_JavaPage_H"
                         Margin="0,0,0,5"
                         Style="{ThemeResource BaseTextBlockStyle}"
                         Text="Existing:" />
                 </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Padding="0,7.5" Background="Transparent">
+                        <Grid
+                            Padding="0,7.5"
+                            Background="Transparent"
+                            PointerEntered="Grid_PointerEntered"
+                            PointerExited="Grid_PointerExited">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="7.5" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <Border
-                                Grid.RowSpan="2"
+                            <Image
                                 Grid.Column="0"
-                                Width="36"
-                                Height="36"
+                                Width="32"
+                                Height="32"
                                 VerticalAlignment="Center"
-                                BorderBrush="{ThemeResource IconBorder}"
-                                BorderThickness="2"
-                                CornerRadius="4">
-                                <Border CornerRadius="4">
-                                    <i:Interaction.Behaviors>
-                                        <behaviors:SkinHeadControlBehavior Account="{Binding}" />
-                                    </i:Interaction.Behaviors>
-                                </Border>
-                            </Border>
+                                Source="/Assets/Icons/java_logo.png" />
                             <StackPanel Grid.Column="2">
                                 <TextBlock
                                     FontWeight="SemiBold"
-                                    Text="{Binding Name}"
+                                    Text="{Binding Converter={ThemeResource JavaInfoConverter}}"
                                     TextTrimming="CharacterEllipsis" />
                                 <TextBlock
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="{Binding Type, Converter={ThemeResource AccountInfoConverter}}"
+                                    Text="{Binding}"
                                     TextTrimming="CharacterEllipsis"
                                     TextWrapping="NoWrap" />
                             </StackPanel>
@@ -124,7 +134,7 @@
                                 <i:Interaction.Behaviors>
                                     <behaviors:AncestorBindingBehavior
                                         AncestorType="ListView"
-                                        Binding="{Binding DataContext.RemoveAccountCommand}"
+                                        Binding="{Binding DataContext.RemoveJavaCommand}"
                                         TargetPropertyName="Command" />
                                 </i:Interaction.Behaviors>
                             </Button>

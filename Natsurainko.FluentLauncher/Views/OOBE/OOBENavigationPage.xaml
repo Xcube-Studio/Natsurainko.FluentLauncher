@@ -3,96 +3,102 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.OOBE"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
     mc:Ignorable="d">
+    <Page.Resources>
+        <Thickness x:Key="TopNavigationViewContentGridBorderThickness">0</Thickness>
+    </Page.Resources>
 
     <Grid>
-        <StackPanel
-            Margin="35"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Orientation="Horizontal">
+        <Grid.RowDefinitions>
+            <!--  Title bar  -->
+            <RowDefinition Height="67.5" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="67.5" />
+        </Grid.RowDefinitions>
+
+        <Grid
+            Grid.Row="1"
+            Background="{ThemeResource CardBackgroundFillColorDefault}"
+            BorderBrush="{ThemeResource NavigationViewItemSeparatorForeground}"
+            BorderThickness="0,1,0,1" />
+        <NavigationView
+            x:Name="NavigationView"
+            Grid.Row="0"
+            Margin="35,7.5,35,0"
+            VerticalAlignment="Center"
+            IsBackButtonVisible="Collapsed"
+            IsSettingsVisible="False"
+            ItemInvoked="NavigationViewControl_ItemInvoked"
+            PaneDisplayMode="Top">
+            <NavigationView.Resources>
+                <Style TargetType="NavigationViewItem">
+                    <Setter Property="FontWeight" Value="SemiBold" />
+                </Style>
+            </NavigationView.Resources>
+            <NavigationView.MenuItems>
+                <NavigationViewItem
+                    x:Uid="OOBE_OOBENavigationPage_NV_Item1"
+                    Content="Language"
+                    Icon="{xh:FontIcon Glyph=&#xf2b7;}"
+                    IsSelected="True"
+                    Tag="OOBELanguagePage" />
+                <NavigationViewItem
+                    x:Uid="OOBE_OOBENavigationPage_NV_Item2"
+                    Content="Minecraft Folder"
+                    Icon="{xh:FontIcon Glyph=&#xE8B7;}"
+                    IsEnabled="False"
+                    Tag="OOBEMinecraftFolderPage" />
+                <NavigationViewItem
+                    x:Uid="OOBE_OOBENavigationPage_NV_Item3"
+                    Content="Java"
+                    Icon="{xh:FontIcon Glyph=&#xE8F1;}"
+                    IsEnabled="False"
+                    Tag="OOBEJavaPage" />
+                <NavigationViewItem
+                    x:Uid="OOBE_OOBENavigationPage_NV_Item4"
+                    Content="Account"
+                    Icon="{xh:FontIcon Glyph=&#xe77b;}"
+                    IsEnabled="False"
+                    Tag="OOBEAccountPage" />
+                <NavigationViewItem
+                    x:Uid="OOBE_OOBENavigationPage_NV_Item5"
+                    Content="Get Started"
+                    Icon="{xh:FontIcon Glyph=&#xE736;}"
+                    IsEnabled="False"
+                    Tag="OOBEGetStartedPage" />
+            </NavigationView.MenuItems>
+        </NavigationView>
+        <Frame
+            x:Name="contentFrame"
+            Grid.Row="1"
+            Navigated="ContentFrame_Navigated">
+            <Frame.ContentTransitions>
+                <TransitionCollection>
+                    <NavigationThemeTransition x:Name="navTransition">
+                        <DrillInNavigationTransitionInfo />
+                    </NavigationThemeTransition>
+                </TransitionCollection>
+            </Frame.ContentTransitions>
+        </Frame>
+        <Grid Grid.Row="2" Padding="52.5,0">
             <Button
-                Width="85"
-                Command="{Binding BackCommand}"
-                FontWeight="SemiBold">
+                MinWidth="120"
+                HorizontalAlignment="Left"
+                Click="BackButton_Click"
+                Command="{Binding BackCommand}">
                 <TextBlock x:Uid="Buttons_Back" Text="Back" />
             </Button>
             <Button
-                Width="85"
-                Margin="15,0,0,0"
+                MinWidth="120"
+                HorizontalAlignment="Right"
+                Click="NextButton_Click"
                 Command="{Binding NextCommand}"
-                FontWeight="SemiBold"
-                Foreground="White"
-                Style="{ThemeResource AccentButtonStyle}">
-                <TextBlock x:Uid="Buttons_Next" Text="Next" />
-            </Button>
-        </StackPanel>
-        <NavigationView
-            x:Name="NavigationView"
-            Margin="0,50,0,100"
-            IsBackButtonVisible="Collapsed"
-            IsSettingsVisible="False"
-            PaneDisplayMode="Top">
-            <NavigationView.MenuItems>
-                <NavigationViewItem
-                    Icon="{xh:FontIcon Glyph=&#xf2b7;}"
-                    IsSelected="True"
-                    Tag="OOBELanguagePage">
-                    <NavigationViewItem.Content>
-                        <TextBlock
-                            x:Uid="OOBE_OOBENavigationPage_NV_Item1"
-                            FontWeight="SemiBold"
-                            Text="Language" />
-                    </NavigationViewItem.Content>
-                </NavigationViewItem>
-                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xe713;}" Tag="OOBEBasicPage">
-                    <NavigationViewItem.Content>
-                        <TextBlock
-                            x:Uid="OOBE_OOBENavigationPage_NV_Item2"
-                            FontWeight="SemiBold"
-                            Text="Basic Settings" />
-                    </NavigationViewItem.Content>
-                </NavigationViewItem>
-                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xe77b;}" Tag="OOBEAccountPage">
-                    <NavigationViewItem.Content>
-                        <TextBlock
-                            x:Uid="OOBE_OOBENavigationPage_NV_Item3"
-                            FontWeight="SemiBold"
-                            Text="Account" />
-                    </NavigationViewItem.Content>
-                </NavigationViewItem>
-            </NavigationView.MenuItems>
-            <NavigationView.FooterMenuItems>
-                <NavigationViewItem Icon="{xh:FontIcon Glyph=&#xE736;}" Tag="OOBEGetStartedPage">
-                    <NavigationViewItem.Content>
-                        <TextBlock
-                            x:Uid="OOBE_OOBENavigationPage_NV_Item4"
-                            FontWeight="SemiBold"
-                            Text="Get Started" />
-                    </NavigationViewItem.Content>
-                </NavigationViewItem>
-            </NavigationView.FooterMenuItems>
-            <Frame x:Name="contentFrame" Navigated="ContentFrame_Navigated">
-                <Frame.ContentTransitions>
-                    <TransitionCollection>
-                        <NavigationThemeTransition x:Name="navTransition">
-                            <DrillInNavigationTransitionInfo />
-                        </NavigationThemeTransition>
-                    </TransitionCollection>
-                </Frame.ContentTransitions>
-            </Frame>
-        </NavigationView>
-
-        <Grid
-            Height="48"
-            Margin="0,50,0,0"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Top"
-            Background="Transparent" />
+                Content="{Binding NextText}"
+                Style="{ThemeResource AccentButtonStyle}" />
+        </Grid>
     </Grid>
 </Page>

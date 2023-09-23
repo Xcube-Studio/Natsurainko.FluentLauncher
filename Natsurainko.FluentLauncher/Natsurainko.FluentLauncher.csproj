@@ -75,6 +75,7 @@
     <None Remove="Views\Downloads\ResourcesSearchPage.xaml" />
     <None Remove="Views\Home\NewHomePage.xaml" />
     <None Remove="Views\NotifyStyleDictionary.xaml" />
+    <None Remove="Views\OOBE\JavaPage.xaml" />
   </ItemGroup>
 
   <!-- NuGet Packages -->
@@ -282,6 +283,9 @@
   <ItemGroup>
     <Page Update="Views\CoreInstallWizard\EnterCoreSettingsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\OOBE\JavaPage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
   </ItemGroup>
 

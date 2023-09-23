@@ -70,7 +70,8 @@ public partial class App : Application
         // OOBE
         .WithPage<Views.OOBE.OOBENavigationPage, ViewModels.OOBE.OOBEViewModel>("OOBENavigationPage")
         .WithPage<Views.OOBE.AccountPage>("OOBEAccountPage")
-        .WithPage<Views.OOBE.BasicPage>("OOBEBasicPage")
+        .WithPage<Views.OOBE.MinecraftFolderPage>("OOBEMinecraftFolderPage")
+        .WithPage<Views.OOBE.JavaPage>("OOBEJavaPage")
         .WithPage<Views.OOBE.GetStartedPage>("OOBEGetStartedPage")
         .WithPage<Views.OOBE.LanguagePage>("OOBELanguagePage")
 

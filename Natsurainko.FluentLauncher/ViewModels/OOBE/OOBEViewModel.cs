@@ -19,6 +19,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.Storage.Pickers;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
@@ -62,12 +63,14 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(BackCommand))]
+    [NotifyPropertyChangedFor(nameof(NextText))]
     int currentPageIndex;
 
     private static readonly string[] OOBEPageKeys =
     {
         "OOBELanguagePage",
-        "OOBEBasicPage",
+        "OOBEMinecraftFolderPage",
+        "OOBEJavaPage",
         "OOBEAccountPage",
         "OOBEGetStartedPage"
     };
@@ -80,6 +83,12 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     [RelayCommand(CanExecute = nameof(CanNext))]
     public void Next()
     {
+        if (CurrentPageIndex == OOBEPageKeys.Length - 1)
+        {
+            Start();
+            return;
+        }
+
         CurrentPageIndex++;
         _navigationService.NavigateTo(OOBEPageKeys[CurrentPageIndex]);
         BackCommand.NotifyCanExecuteChanged();
@@ -90,15 +99,16 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     {
         // Language page
         0 => Languages.Contains(CurrentLanguage),
-        // Basic page
-        1 => !string.IsNullOrEmpty(ActiveMinecraftFolder) &&
-                                    !string.IsNullOrEmpty(ActiveJava) &&
-                                    Directory.Exists(ActiveMinecraftFolder) &&
-                                    File.Exists(ActiveJava),
+        // Minecraft folder page
+        1 => !string.IsNullOrEmpty(ActiveMinecraftFolder),
+        // Java page
+        2 => !string.IsNullOrEmpty(ActiveJavaRuntime) &&
+                Directory.Exists(ActiveMinecraftFolder) &&
+                File.Exists(ActiveJavaRuntime),
         // Account page
-        2 => ActiveAccount is not null,
+        3 => ActiveAccount is not null,
         // Get started page
-        3 => false,
+        4 => true,
         // Default
         _ => false,
     };
@@ -106,8 +116,8 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     [RelayCommand(CanExecute = nameof(CanBack))]
     public void Back()
     {
-        _navigationService.GoBack();
         CurrentPageIndex--;
+        _navigationService.NavigateTo(OOBEPageKeys[CurrentPageIndex]);
         BackCommand.NotifyCanExecuteChanged();
         NextCommand.NotifyCanExecuteChanged();
     }
@@ -121,6 +131,14 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
         return true;
     }
 
+    public void NavigateTo(int pageIndex)
+    {
+        CurrentPageIndex = pageIndex;
+        _navigationService.NavigateTo(OOBEPageKeys[pageIndex]);
+        BackCommand.NotifyCanExecuteChanged();
+        NextCommand.NotifyCanExecuteChanged();
+    }
+
     #endregion
 
     #region Language
@@ -131,6 +149,18 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     private string currentLanguage;
 
     public List<string> Languages { get; } = ResourceUtils.Languages;
+
+    public string Version { get; } = string.Format("{0}.{1}.{2}.{3}",
+            Package.Current.Id.Version.Major,
+            Package.Current.Id.Version.Minor,
+            Package.Current.Id.Version.Build,
+            Package.Current.Id.Version.Revision);
+
+#if DEBUG 
+    public string Edition { get; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Debug");
+#else 
+    public string Edition { get; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Release");
+#endif
 
     partial void OnCurrentLanguageChanged(string oldValue, string newValue)
     {
@@ -151,7 +181,7 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     private string activeMinecraftFolder;
 
     [RelayCommand]
-    public Task BrowserFolder() => Task.Run(async () =>
+    public Task BrowseFolder() => Task.Run(async () =>
     {
         var folderPicker = new FolderPicker();
 
@@ -166,32 +196,72 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
             {
                 if (MinecraftFolders.Contains(folder.Path))
                 {
-                    _notificationService.NotifyMessage("Failed to add the folder", "This folder already exists", icon: "\uF89A");
+                    _notificationService.NotifyMessage(
+                        ResourceUtils.GetValue("Notifications", "_AddFolderExistedT"),
+                        ResourceUtils.GetValue("Notifications", "_AddFolderExistedD"),
+                        icon: "\uF89A");
+
                     return;
                 }
 
-                MinecraftFolders.Add(folder.Path);
-                _gameService.ActivateMinecraftFolder(folder.Path);
+                _gameService.AddMinecraftFolder(folder.Path);
             });
     });
+
+    private readonly string OfficialLauncherPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\.minecraft";
+
+    [RelayCommand]
+    public void DetectOfficialMinecraftFolder()
+    {
+        // Official launcher .minecraft folder not exist
+        if (!Directory.Exists(OfficialLauncherPath))
+        {
+            _notificationService.NotifyMessage(
+                ResourceUtils.GetValue("Notifications", "_AddOfficialFolderNotExistT"),
+                ResourceUtils.GetValue("Notifications", "_AddOfficialFolderNotExistD").Replace("${path}", OfficialLauncherPath),
+                icon: "\uF89A");
+
+            return;
+        }
+
+        // Already added
+        if (MinecraftFolders.Contains(OfficialLauncherPath))
+        {
+            _notificationService.NotifyMessage(
+                ResourceUtils.GetValue("Notifications", "_AddOfficiaFolderExistedT"),
+                ResourceUtils.GetValue("Notifications", "_AddOfficiaFolderExistedD").Replace("${path}", OfficialLauncherPath),
+                icon: "\uF89A");
+
+            return;
+        }
+
+        // Add to list
+
+        _gameService.AddMinecraftFolder(OfficialLauncherPath);
+
+        _notificationService.NotifyMessage(
+            ResourceUtils.GetValue("Notifications", "_AddOfficiaFolderAddedT"),
+            ResourceUtils.GetValue("Notifications", "_AddOfficiaFolderAddedD").Replace("${path}", OfficialLauncherPath),
+            icon: "\uE73E");
+    }
+
+    [RelayCommand]
+    public void RemoveFolder(string folder) => _gameService.RemoveMinecraftFolder(folder);
 
     #endregion
 
     #region Java
 
     [BindToSetting(Path = nameof(SettingsService.Javas))]
-    public ObservableCollection<string> Javas { get; private set; }
+    public ObservableCollection<string> JavaRuntimes { get; private set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.ActiveJava))]
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
-    private string activeJava;
-
-    [ObservableProperty]
-    private bool javaDropDownOpen;
+    private string activeJavaRuntime;
 
     [RelayCommand]
-    public Task BrowserJava() => Task.Run(async () =>
+    public Task BrowseJava() => Task.Run(async () =>
     {
         var filePicker = new FileOpenPicker();
 
@@ -204,10 +274,10 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
         if (file != null)
             App.DispatcherQueue.TryEnqueue(() =>
             {
-                Javas.Add(file.Path);
-                OnPropertyChanged(nameof(Javas));
+                JavaRuntimes.Add(file.Path);
+                OnPropertyChanged(nameof(JavaRuntimes));
 
-                ActiveJava = file.Path;
+                ActiveJavaRuntime = file.Path;
             });
     });
 
@@ -215,16 +285,28 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     public void SearchJava()
     {
         foreach (var java in JavaUtils.SearchJava())
-            if (!Javas.Contains(java))
-                Javas.Add(java);
+            if (!JavaRuntimes.Contains(java))
+                JavaRuntimes.Add(java);
 
-        ActiveJava = Javas.Any() ? Javas[0] : null;
+        ActiveJavaRuntime = JavaRuntimes.Any() ? JavaRuntimes[0] : null;
 
-        OnPropertyChanged(nameof(Javas));
+        OnPropertyChanged(nameof(JavaRuntimes));
 
-        JavaDropDownOpen = true;
-        _notificationService.NotifyWithoutContent("Added the search Java to the runtime list", icon: "\uE73E");
+        _notificationService.NotifyWithoutContent(
+            ResourceUtils.GetValue("Notifications", "_AddSearchedJavaT"),
+            icon: "\uE73E");
     }
+
+    [RelayCommand]
+    public void RemoveJava(string java)
+    {
+        JavaRuntimes.Remove(java);
+        ActiveJavaRuntime = JavaRuntimes.Any() ? JavaRuntimes[0] : null;
+    }
+
+    [RelayCommand]
+    public void OpenJavaMirrorsDialog(HyperlinkButton parameter)
+        => _ = new JavaMirrorsDialog { XamlRoot = parameter.XamlRoot }.ShowAsync();
 
     #endregion
 
@@ -248,19 +330,40 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     partial void OnActiveAccountChanged(Account value)
     {
         if (!processingActiveAccountChangedMessage)
-            _accountService.Activate(value);
+        {
+            if (value is not null)
+                _accountService.Activate(value);
+        }
     }
 
     [RelayCommand]
     public void Login(Button parameter)
         => _ = new AuthenticationWizardDialog { XamlRoot = parameter.XamlRoot }.ShowAsync();
 
+    [RelayCommand]
+    public void RemoveAccount(Account account)
+    {
+        _accountService.Remove(account);
+    }
     #endregion
+
+    public string NextText
+    {
+        get
+        {
+            if (CurrentPageIndex == OOBEPageKeys.Length - 1)
+                return ResourceUtils.GetValue("OOBE_OOBEViewModel__ButtonGetStarted");
+            else
+                return ResourceUtils.GetValue("OOBE_OOBEViewModel__ButtonNext");
+        }
+    }
 
     [RelayCommand]
     public void Start()
     {
         _navigationService.Parent?.NavigateTo("ShellPage");
+        (App.MainWindow.MinWidth, App.MainWindow.MinHeight) = (516, 328);
+
         _settings.FinishGuide = true;
     }
 

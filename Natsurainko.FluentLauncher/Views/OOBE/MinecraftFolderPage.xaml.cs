@@ -2,9 +2,9 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace Natsurainko.FluentLauncher.Views.OOBE;
 
-public sealed partial class AccountPage : Page
+public sealed partial class MinecraftFolderPage : Page
 {
-    public AccountPage()
+    public MinecraftFolderPage()
     {
         InitializeComponent();
     }

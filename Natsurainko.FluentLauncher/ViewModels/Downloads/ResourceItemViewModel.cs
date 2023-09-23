@@ -44,7 +44,7 @@ internal partial class ResourceItemViewModel : ObservableObject, INavigationAwar
         var urls = isCurse ? ((CurseResource)parameter).ScreenshotUrls : ((ModrinthResource)parameter).ScreenshotUrls;
         object id = isCurse ? ((CurseResource)parameter).Id : ((ModrinthResource)parameter).Id;
 
-        if (urls.Any()) 
+        if (urls.Any())
             ScreenshotsBorderVisbility = Visibility.Visible;
 
         Task.Run(() =>

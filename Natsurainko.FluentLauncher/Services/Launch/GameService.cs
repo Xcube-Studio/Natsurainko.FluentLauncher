@@ -47,7 +47,7 @@ internal class GameService : DefaultGameService
         }
     }
 
-    public void AddMinecraftFolder(string folder) 
+    public void AddMinecraftFolder(string folder)
     {
         _minecraftFolders.Add(folder);
         ActivateMinecraftFolder(folder);
@@ -75,6 +75,8 @@ internal class GameService : DefaultGameService
         if (!MinecraftFolders.Any())
         {
             _gameInfos.Clear();
+            ActiveGameInfo = null;
+
             return;
         }
 

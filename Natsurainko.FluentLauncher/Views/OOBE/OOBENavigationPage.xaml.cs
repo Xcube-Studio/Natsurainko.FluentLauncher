@@ -1,13 +1,10 @@
-using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Services.UI.Pages;
 using Natsurainko.FluentLauncher.ViewModels.OOBE;
-using System.ComponentModel;
 using System.Linq;
 
 namespace Natsurainko.FluentLauncher.Views.OOBE;
@@ -18,7 +15,7 @@ public sealed partial class OOBENavigationPage : Page, INavigationProvider
     private OOBEViewModel VM => (OOBEViewModel)DataContext;
 
     public NavigationTransitionInfo TransitionInfo
-    { 
+    {
         get => navTransition.DefaultNavigationTransitionInfo;
         set => navTransition.DefaultNavigationTransitionInfo = value;
     }
@@ -36,7 +33,7 @@ public sealed partial class OOBENavigationPage : Page, INavigationProvider
             return;
 
         int sourcePageIndex = VM.CurrentPageIndex;
-        
+
         var navigationViewItems = sender.MenuItems.Union(sender.FooterMenuItems).Cast<NavigationViewItem>().Select(item => item.Tag).Cast<string>().ToList();
         string pageTag = ((NavigationViewItem)args.InvokedItemContainer).Tag.ToString();
         int targetPageIndex = navigationViewItems.IndexOf(pageTag);

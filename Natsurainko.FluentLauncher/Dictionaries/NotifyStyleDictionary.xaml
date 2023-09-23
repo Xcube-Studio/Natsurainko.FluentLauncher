@@ -186,4 +186,14 @@
             </ListViewItem>
         </StackPanel>
     </DataTemplate>
+
+    <DataTemplate x:Key="NoMinecraftFolderNotifyTemplate">
+        <StackPanel Padding="20,0" Spacing="5">
+            <HyperlinkButton
+                x:Uid="Notifications_NavigateMinecraftFolder"
+                Command="{Binding}"
+                Content="Go To Settings" />
+        </StackPanel>
+    </DataTemplate>
+
 </ResourceDictionary>

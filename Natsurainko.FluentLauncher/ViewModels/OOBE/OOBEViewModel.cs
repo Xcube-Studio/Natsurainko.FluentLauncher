@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks; 
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Storage.Pickers;
 
@@ -218,7 +218,7 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
         {
             _notificationService.NotifyMessage(
                 ResourceUtils.GetValue("Notifications", "_AddOfficialFolderNotExistT"),
-                ResourceUtils.GetValue("Notifications", "_AddOfficialFolderNotExistD").Replace("${path}", OfficialLauncherPath), 
+                ResourceUtils.GetValue("Notifications", "_AddOfficialFolderNotExistD").Replace("${path}", OfficialLauncherPath),
                 icon: "\uF89A");
 
             return;
@@ -293,8 +293,15 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
         OnPropertyChanged(nameof(JavaRuntimes));
 
         _notificationService.NotifyWithoutContent(
-            ResourceUtils.GetValue("Notifications", "_AddSearchedJavaT"), 
+            ResourceUtils.GetValue("Notifications", "_AddSearchedJavaT"),
             icon: "\uE73E");
+    }
+
+    [RelayCommand]
+    public void RemoveJava(string java)
+    {
+        JavaRuntimes.Remove(java);
+        ActiveJavaRuntime = JavaRuntimes.Any() ? JavaRuntimes[0] : null;
     }
 
     [RelayCommand]
@@ -323,13 +330,21 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     partial void OnActiveAccountChanged(Account value)
     {
         if (!processingActiveAccountChangedMessage)
-            _accountService.Activate(value);
+        {
+            if (value is not null)
+                _accountService.Activate(value);
+        }
     }
 
     [RelayCommand]
     public void Login(Button parameter)
         => _ = new AuthenticationWizardDialog { XamlRoot = parameter.XamlRoot }.ShowAsync();
 
+    [RelayCommand]
+    public void RemoveAccount(Account account)
+    {
+        _accountService.Remove(account);
+    }
     #endregion
 
     public string NextText

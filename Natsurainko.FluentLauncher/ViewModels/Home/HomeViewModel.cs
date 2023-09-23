@@ -61,7 +61,7 @@ internal partial class HomeViewModel : ObservableObject
 
     public Visibility AccountTag => ActiveAccount is null ? Visibility.Collapsed : Visibility.Visible;
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanExecuteLaunch))]
     public void Launch()
     {
         _launchService.LaunchGame(ActiveGameInfo);
@@ -84,4 +84,6 @@ internal partial class HomeViewModel : ObservableObject
         if (e.PropertyName == nameof(ActiveGameInfo) && ActiveGameInfo is not null)
             _gameService.ActivateGameInfo(ActiveGameInfo);
     }
+
+    private bool CanExecuteLaunch() => ActiveGameInfo is not null;
 }

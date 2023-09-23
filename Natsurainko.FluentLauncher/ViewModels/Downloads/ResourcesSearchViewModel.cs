@@ -2,8 +2,11 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Classes.Data.Download;
+using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Storage;
+using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
+using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Classes.Datas.Download;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,11 +19,19 @@ internal partial class ResourcesSearchViewModel : ObservableObject, INavigationA
 {
     private readonly InterfaceCacheService _interfaceCacheService;
     private readonly INavigationService _navigationService;
+    private readonly GameService _gameService;
+    private readonly NotificationService _notificationService;
 
-    public ResourcesSearchViewModel(InterfaceCacheService interfaceCacheServicel, INavigationService navigationService)
+    public ResourcesSearchViewModel(
+        InterfaceCacheService interfaceCacheServicel,
+        INavigationService navigationService,
+        GameService gameService,
+        NotificationService notificationService)
     {
         _interfaceCacheService = interfaceCacheServicel;
         _navigationService = navigationService;
+        _gameService = gameService;
+        _notificationService = notificationService;
     }
 
     [ObservableProperty]
@@ -120,5 +131,21 @@ internal partial class ResourcesSearchViewModel : ObservableObject, INavigationA
     public void NavigateResourcePage(object resource) => _navigationService.NavigateTo("ResourceItemPage", resource);
 
     [RelayCommand]
-    public void NavigateCoreInstallWizardPage(object resource) => _navigationService.NavigateTo("CoreInstallWizardPage", resource);
+    public void NavigateCoreInstallWizardPage(object resource)
+    {
+        if (string.IsNullOrEmpty(_gameService.ActiveMinecraftFolder))
+        {
+            _notificationService.NotifyWithSpecialContent(
+                ResourceUtils.GetValue("Notifications", "_NoMinecraftFolder"),
+                "NoMinecraftFolderNotifyTemplate",
+                GoToSettingsCommand, "\uE711");
+
+            return;
+        }
+
+        _navigationService.NavigateTo("CoreInstallWizardPage", resource);
+    }
+
+    [RelayCommand]
+    public void GoToSettings() => _navigationService.NavigateTo("SettingsNavigationPage", "LaunchSettingsPage");
 }

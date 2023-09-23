@@ -118,8 +118,15 @@
                                 HorizontalAlignment="Right"
                                 Background="Transparent"
                                 BorderThickness="0"
+                                CommandParameter="{Binding}"
                                 Visibility="Collapsed">
                                 <FontIcon FontSize="14" Glyph="&#xE711;" />
+                                <i:Interaction.Behaviors>
+                                    <behaviors:AncestorBindingBehavior
+                                        AncestorType="ListView"
+                                        Binding="{Binding DataContext.RemoveAccountCommand}"
+                                        TargetPropertyName="Command" />
+                                </i:Interaction.Behaviors>
                             </Button>
                         </Grid>
                     </DataTemplate>

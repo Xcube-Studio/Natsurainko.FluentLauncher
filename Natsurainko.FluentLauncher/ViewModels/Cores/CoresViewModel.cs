@@ -5,7 +5,9 @@ using Natsurainko.FluentLauncher.Classes.Data.Download;
 using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
+using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,18 +19,24 @@ namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
 internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
 {
-    private readonly GameService _gameService;
     private bool initSettings = false;
 
     [SettingsProvider]
     private readonly SettingsService _settingsService;
     private readonly INavigationService _navigationService;
+    private readonly GameService _gameService;
+    private readonly NotificationService _notificationService;
 
-    public CoresViewModel(GameService gameService, SettingsService settingsService, INavigationService navigationService)
+    public CoresViewModel(
+        GameService gameService,
+        SettingsService settingsService,
+        INavigationService navigationService,
+        NotificationService notificationService)
     {
         _gameService = gameService;
         _settingsService = settingsService;
         _navigationService = navigationService;
+        _notificationService = notificationService;
 
         GameInfos = _gameService.GameInfos;
 
@@ -100,9 +108,25 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
 
     [RelayCommand]
     public void SearchAllMinecraft()
-        => _navigationService.NavigateTo("ResourcesSearchPage", new ResourceSearchData
+    {
+        if (string.IsNullOrEmpty(_gameService.ActiveMinecraftFolder))
+        {
+            _notificationService.NotifyWithSpecialContent(
+                ResourceUtils.GetValue("Notifications", "_NoMinecraftFolder"),
+                "NoMinecraftFolderNotifyTemplate",
+                GoToSettingsCommand, "\uE711");
+
+            return;
+        }
+
+        _navigationService.NavigateTo("ResourcesSearchPage", new ResourceSearchData
         {
             SearchInput = string.Empty,
             ResourceType = 0
         });
+    }
+
+    [RelayCommand]
+    public void GoToSettings() => _navigationService.NavigateTo("SettingsNavigationPage", "LaunchSettingsPage");
+
 }

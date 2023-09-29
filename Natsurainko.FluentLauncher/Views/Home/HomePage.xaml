@@ -7,6 +7,7 @@
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Home"
     d:DataContext="{d:DesignInstance vm:HomeViewModel}"
     Background="Transparent"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
 
     <Grid>
@@ -77,12 +78,16 @@
                 <ColumnDefinition Width="1*" MaxWidth="250" />
             </Grid.ColumnDefinitions>
             <Button
+                x:Name="LaunchButton"
                 Grid.Column="2"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 Command="{Binding LaunchCommand}"
                 FontSize="16"
                 Style="{ThemeResource AccentButtonStyle}">
+                <ToolTipService.ToolTip>
+                    <TextBlock x:Uid="Home_HomePage_LaunchButton" />
+                </ToolTipService.ToolTip>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />

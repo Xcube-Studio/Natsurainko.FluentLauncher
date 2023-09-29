@@ -8,4 +8,9 @@ public sealed partial class HomePage : Page
     {
         InitializeComponent();
     }
+
+    private void Page_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        LaunchButton.Focus(Microsoft.UI.Xaml.FocusState.Programmatic);
+    }
 }

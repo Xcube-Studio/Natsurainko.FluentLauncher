@@ -67,9 +67,16 @@
                     </HyperlinkButton>
                 </StackPanel>
                 <Button
+                    x:Name="LaunchButton"
                     Grid.Column="4"
                     Command="{Binding LaunchCommand}"
                     Style="{ThemeResource AccentButtonStyle}">
+                    <ToolTipService.ToolTip>
+                        <TextBlock x:Uid="Home_HomePage_LaunchButton" />
+                    </ToolTipService.ToolTip>
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="Enter" />
+                    </Button.KeyboardAccelerators>
                     <Grid Margin="10,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />

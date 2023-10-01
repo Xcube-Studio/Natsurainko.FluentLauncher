@@ -50,6 +50,20 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
 
         App.GetService<AppearanceService>().ApplyBackgroundAtWindowCreated(this);
         App.MainWindow = this;
+
+        ((FrameworkElement)this.Content).ActualThemeChanged += MainWindow_ActualThemeChanged;
+    }
+
+    private void MainWindow_ActualThemeChanged(FrameworkElement sender, object args)
+    {
+        AppWindow.TitleBar.ButtonBackgroundColor = AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+        AppWindow.TitleBar.ButtonForegroundColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
+        AppWindow.TitleBar.ButtonHoverForegroundColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
+
+        var hoverColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
+        hoverColor.A = 35;
+
+        AppWindow.TitleBar.ButtonHoverBackgroundColor = hoverColor;
     }
 
     private bool _firstActivated = true;
@@ -61,4 +75,6 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
 
         _firstActivated = false;
     }
+
+
 }

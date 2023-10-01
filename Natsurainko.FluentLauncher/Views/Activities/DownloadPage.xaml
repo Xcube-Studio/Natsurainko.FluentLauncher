@@ -10,7 +10,7 @@
     mc:Ignorable="d">
 
     <Grid>
-        <ScrollViewer Padding="30,7.5,30,0" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Padding="30,15,30,0" VerticalScrollBarVisibility="Auto">
             <ItemsRepeater
                 Margin="0,0,0,20"
                 Background="Transparent"

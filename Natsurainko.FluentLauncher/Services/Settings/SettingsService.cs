@@ -53,10 +53,12 @@ public partial class SettingsService : SettingsContainer, IFluentCoreSettingsSer
     [SettingItem(typeof(bool), "UseNewHomePage", Default = true, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(double), "TintLuminosityOpacity", Default = 0.64, Converter = typeof(JsonStringConverter<double>))]
     [SettingItem(typeof(double), "TintOpacity", Default = 0, Converter = typeof(JsonStringConverter<double>))]
-    [SettingItem(typeof(bool), "EnableDefaultAcrylicBrush", Default = true, Converter = typeof(JsonStringConverter<bool>))]
+    [SettingItem(typeof(bool), "EnableDefaultAcrylicBrush", Default = false, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(string), "ImageFilePath", Default = "", Converter = typeof(JsonStringConverter<string>))]
     [SettingItem(typeof(int), "SolidSelectedIndex", Default = 0, Converter = typeof(JsonStringConverter<int>))]
     [SettingItem(typeof(Windows.UI.Color), "SolidCustomColor", Converter = typeof(JsonStringConverter<Windows.UI.Color>))]
+    [SettingItem(typeof(Windows.UI.Color), "ThemeCustomColor", Converter = typeof(JsonStringConverter<Windows.UI.Color>))]
+    [SettingItem(typeof(bool), "UseSystemAccentColor", Default = true, Converter = typeof(JsonStringConverter<bool>))]
 
     [SettingItem(typeof(double), "AppWindowHeight", Default = 500, Converter = typeof(JsonStringConverter<double>))]
     [SettingItem(typeof(double), "AppWindowWidth", Default = 950, Converter = typeof(JsonStringConverter<double>))]

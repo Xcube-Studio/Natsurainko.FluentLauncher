@@ -22,7 +22,7 @@ internal partial class ResourceItemFilesDialogViewModel : ObservableObject
     private ContentDialog _dialog;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CanComfirm))]
+    [NotifyPropertyChangedFor(nameof(CanConfirm))]
     private object selectedFile;
 
     private readonly InterfaceCacheService _interfaceCacheService = App.GetService<InterfaceCacheService>();
@@ -30,7 +30,7 @@ internal partial class ResourceItemFilesDialogViewModel : ObservableObject
     private readonly GameService _gameService = App.GetService<GameService>();
     private readonly INavigationService _navigationService;
 
-    public bool CanComfirm => SelectedFile != null;
+    public bool CanConfirm => SelectedFile != null;
 
     public ResourceItemFilesDialogViewModel(object resource, INavigationService navigationService)
     {

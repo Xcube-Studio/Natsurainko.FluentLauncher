@@ -1,6 +1,7 @@
 ﻿using AppSettingsManagement.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.WinUI.Helpers;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
@@ -37,6 +38,12 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     private bool useNewHomePage;
 
     [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.UseSystemAccentColor))]
+    [NotifyPropertyChangedFor(nameof(CurrentThemeColor))]
+    [NotifyPropertyChangedFor(nameof(CurrentThemeColorString))] 
+    private bool useSystemAccentColor;
+
+    [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.EnableDefaultAcrylicBrush))]
     private bool enableDefaultAcrylicBrush;
 
@@ -60,8 +67,30 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     [BindToSetting(Path = nameof(SettingsService.SolidCustomColor))]
     private Color? solidCustomColor;
 
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.ThemeCustomColor))]
+    [NotifyPropertyChangedFor(nameof(ThemeCustomColorString))]
+    [NotifyPropertyChangedFor(nameof(CurrentThemeColor))]
+    [NotifyPropertyChangedFor(nameof(CurrentThemeColorString))]
+    private Color? themeCustomColor;
+
+    public string ThemeCustomColorString => System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.FromArgb(ColorHelper.ToInt(ThemeCustomColor.GetValueOrDefault())));
+
+    public string CurrentThemeColorString 
+    { 
+        get 
+        {
+            int value = ColorHelper.ToInt(CurrentThemeColor);
+            return System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.FromArgb(value));
+        } 
+    }
+
+    public Color CurrentThemeColor => UseSystemAccentColor ? (Color)App.Current.Resources["RawSystemAccentColor"] : ThemeCustomColor.GetValueOrDefault();
+
     public List<string> SupportedLanguages => ResourceUtils.Languages;
-    private Flyout ColorFlyout;
+
+    private Flyout backgroundColorFlyout;
+    private Flyout themeColorFlyout;
 
     public AppearanceViewModel(SettingsService settingsService)
     {
@@ -78,12 +107,20 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     }
 
     [RelayCommand]
-    private void SelectColorConfirm() => ColorFlyout.Hide();
+    private void SelectColorConfirm(Button button)
+    {
+        if (button.Tag.ToString() == "backgroundColor")
+            backgroundColorFlyout.Hide();
+        else themeColorFlyout.Hide();
+    }
 
     [RelayCommand]
     private void Loaded(object args)
     {
         var button = args.As<Button, object>().sender;
-        ColorFlyout = button.Flyout as Flyout;
+
+        if (button.Tag.ToString() == "backgroundColor")
+            backgroundColorFlyout = button.Flyout as Flyout;
+        else themeColorFlyout = button.Flyout as Flyout;
     }
 }

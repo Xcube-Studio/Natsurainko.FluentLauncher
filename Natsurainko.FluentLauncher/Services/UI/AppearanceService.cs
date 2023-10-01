@@ -86,6 +86,23 @@ internal class AppearanceService
         }
     }
 
+    public void ApplyThemeColorBeforePageInit(ShellPage page)
+    {
+        if (!_settingsService.UseSystemAccentColor)
+        {
+            App.Current.Resources["SystemAccentColorLight1"] = _settingsService.ThemeCustomColor.GetValueOrDefault();
+            App.Current.Resources["SystemAccentColorLight2"] = _settingsService.ThemeCustomColor.GetValueOrDefault();
+            App.Current.Resources["SystemAccentColorLight3"] = _settingsService.ThemeCustomColor.GetValueOrDefault();
+            App.Current.Resources["SystemAccentColorDark1"] = _settingsService.ThemeCustomColor.GetValueOrDefault();
+            App.Current.Resources["SystemAccentColorDark2"] = _settingsService.ThemeCustomColor.GetValueOrDefault();
+            App.Current.Resources["SystemAccentColorDark3"] = _settingsService.ThemeCustomColor.GetValueOrDefault();
+
+            App.Current.Resources.Add("RawSystemAccentColor", App.Current.Resources["SystemAccentColor"]);
+            App.Current.Resources["SystemAccentColor"] = _settingsService.ThemeCustomColor.GetValueOrDefault();
+        }
+        else App.Current.Resources.Add("RawSystemAccentColor", App.Current.Resources["SystemAccentColor"]);
+    }
+
     public void ApplyBackgroundAfterPageInit(ShellPage page)
     {
         switch (_settingsService.BackgroundMode)
@@ -144,6 +161,12 @@ internal class AppearanceService
                 {
                     m_backdropController.TintOpacity = (float)_settingsService.TintOpacity;
                     m_backdropController.LuminosityOpacity = (float)_settingsService.TintLuminosityOpacity;
+                    m_backdropController.TintColor = ((FrameworkElement)window.Content).ActualTheme switch
+                    {
+                        ElementTheme.Dark => Colors.Black,
+                        ElementTheme.Light => Colors.White,
+                        _ => Colors.White
+                    };
                 }
 
                 m_backdropController.AddSystemBackdropTarget(window.As<ICompositionSupportsSystemBackdrop>());
@@ -173,7 +196,10 @@ internal class AppearanceService
         void Window_ThemeChanged(FrameworkElement sender, object args)
         {
             if (m_configurationSource != null)
+            {
                 SetConfigurationSourceTheme();
+                TrySetAcrylicBackdrop(window);
+            }
         }
 
         void SetConfigurationSourceTheme()

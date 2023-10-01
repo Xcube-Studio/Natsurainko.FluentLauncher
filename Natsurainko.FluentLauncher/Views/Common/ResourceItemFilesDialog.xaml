@@ -133,10 +133,10 @@
                     HorizontalAlignment="Stretch"
                     Command="{Binding ConfirmCommand}"
                     ElementSoundMode="FocusOnly"
-                    IsEnabled="{Binding CanComfirm}"
+                    IsEnabled="{Binding CanConfirm}"
                     IsTabStop="False"
                     Style="{ThemeResource AccentButtonStyle}">
-                    <TextBlock x:Uid="Buttons_Comfirm" Text="Comfirm" />
+                    <TextBlock x:Uid="Buttons_Confirm" Text="Confirm" />
                 </Button>
                 <Button
                     Grid.Column="2"

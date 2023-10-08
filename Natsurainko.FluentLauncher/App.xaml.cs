@@ -87,6 +87,7 @@ public partial class App : Application
         .WithPage<Views.Cores.ManageNavigationPage, ViewModels.Cores.ManageNavigationViewModel>("CoresManageNavigationPage")
         .WithPage<Views.Cores.Manage.CoreSettingsPage, ViewModels.Cores.Manage.CoreSettingsViewModel>("CoreSettingsPage")
         .WithPage<Views.Cores.Manage.CoreModsPage, ViewModels.Cores.Manage.CoreModsViewModel>("CoreModsPage")
+        .WithPage<Views.Cores.Manage.CoreStatisticPage, ViewModels.Cores.Manage.CoreStatisticViewModel>("CoreStatisticPage")
 
         // Activities page
         .WithPage<Views.Activities.ActivitiesNavigationPage, ViewModels.Activities.ActivitiesNavigationViewModel>("ActivitiesNavigationPage")
@@ -170,6 +171,7 @@ public partial class App : Application
         services.AddTransient<ViewModels.Cores.ManageNavigationViewModel>();
         services.AddTransient<ViewModels.Cores.Manage.CoreModsViewModel>();
         services.AddTransient<ViewModels.Cores.Manage.CoreSettingsViewModel>();
+        services.AddTransient<ViewModels.Cores.Manage.CoreStatisticViewModel>();
 
         services.AddTransient<ViewModels.Home.HomeViewModel>();
 

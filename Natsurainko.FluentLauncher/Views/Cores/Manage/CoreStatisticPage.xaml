@@ -1,0 +1,103 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Cores.Manage.CoreStatisticPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:Natsurainko.FluentLauncher.Utils.Xaml.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:manage="using:Natsurainko.FluentLauncher.ViewModels.Cores.Manage"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
+    d:DataContext="{d:DesignInstance Type=manage:CoreStatisticViewModel}"
+    Background="Transparent"
+    mc:Ignorable="d">
+
+    <ScrollViewer Padding="30,0" VerticalScrollBarVisibility="Auto">
+        <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
+        <Border Margin="0,10">
+            <StackPanel MaxWidth="1000" Spacing="4">
+                <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xE946;}" IsExpanded="True">
+                    <labs:SettingsExpander.Header>
+                        <TextBlock x:Uid="Cores_Manage_CoreStatisticPage_H1" Text="Files Property" />
+                    </labs:SettingsExpander.Header>
+                    <labs:SettingsExpander.Description>
+                        <TextBlock x:Uid="Cores_Manage_CoreStatisticPage_D" Text="Disk space usage information" />
+                    </labs:SettingsExpander.Description>
+                    <labs:SettingsExpander.Items>
+                        <labs:SettingsCard>
+                            <labs:SettingsCard.Header>
+                                <TextBlock
+                                    x:Uid="Cores_Manage_CoreStatisticPage_SH1"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource BaseTextBlockStyle}"
+                                    Text="Libraries Count:" />
+                            </labs:SettingsCard.Header>
+                            <TextBlock Text="{Binding GameStatisticInfo.LibrariesCount}" />
+                        </labs:SettingsCard>
+                        <labs:SettingsCard>
+                            <labs:SettingsCard.Header>
+                                <TextBlock
+                                    x:Uid="Cores_Manage_CoreStatisticPage_SH2"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource BaseTextBlockStyle}"
+                                    Text="Assets Count:" />
+                            </labs:SettingsCard.Header>
+                            <TextBlock Text="{Binding GameStatisticInfo.AssetsCount}" />
+                        </labs:SettingsCard>
+                        <labs:SettingsCard>
+                            <labs:SettingsCard.Header>
+                                <TextBlock
+                                    x:Uid="Cores_Manage_CoreStatisticPage_SH3"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource BaseTextBlockStyle}"
+                                    Text="Total Size:" />
+                            </labs:SettingsCard.Header>
+                            <TextBlock Text="{Binding FormatSize}" />
+                        </labs:SettingsCard>
+
+                    </labs:SettingsExpander.Items>
+                </labs:SettingsExpander>
+
+                <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE71D;}">
+                    <labs:SettingsCard.Header>
+                        <TextBlock x:Uid="Cores_Manage_CoreStatisticPage_H2" Text="Game Loaders:" />
+                    </labs:SettingsCard.Header>
+
+                    <Grid>
+                        <ItemsRepeater ItemsSource="{Binding GameStatisticInfo.ModLoaders}">
+                            <ItemsRepeater.Layout>
+                                <StackLayout Orientation="Horizontal" Spacing="10" />
+                            </ItemsRepeater.Layout>
+                            <ItemsRepeater.ItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Padding="10,5"
+                                        BorderBrush="{ThemeResource SystemAccentColor}"
+                                        BorderThickness="2"
+                                        CornerRadius="{ThemeResource ControlCornerRadius}">
+                                        <TextBlock Style="{ThemeResource BaseTextBlockStyle}">
+                                            <Run Text="{Binding LoaderType}" />
+                                            <Run Text="{Binding Version}" />
+                                        </TextBlock>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsRepeater.ItemTemplate>
+                            <ItemsRepeater.Visibility>
+                                <Binding Path="IsVanilla">
+                                    <Binding.Converter>
+                                        <converters:BoolToVisibilityConverter Inverted="True" />
+                                    </Binding.Converter>
+                                </Binding>
+                            </ItemsRepeater.Visibility>
+                        </ItemsRepeater>
+                        <TextBlock
+                            x:Uid="Cores_Manage_CoreStatisticPage_VanillaGame"
+                            Style="{ThemeResource BaseTextBlockStyle}"
+                            Text="This is a vanilla core"
+                            Visibility="{Binding IsVanilla, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                    </Grid>
+                </labs:SettingsCard>
+            </StackPanel>
+        </Border>
+    </ScrollViewer>
+</Page>

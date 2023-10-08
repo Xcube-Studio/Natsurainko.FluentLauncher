@@ -4,6 +4,9 @@ using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.ViewModels.Common;
+using Natsurainko.FluentLauncher.Views;
+using Natsurainko.FluentLauncher.Views.Common;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
@@ -28,6 +31,9 @@ internal partial class ManageNavigationViewModel : ObservableObject, INavigation
         if (e.args.Index.Equals(0))
             _navigationService.Parent.GoBack();
     }
+
+    [RelayCommand]
+    void DeleteGame() => _ = new DeleteGameDialog() { XamlRoot = ShellPage._XamlRoot, DataContext = new DeleteGameDialogViewModel(_gameInfo, _navigationService) }.ShowAsync();
 
     #region Navigation
 

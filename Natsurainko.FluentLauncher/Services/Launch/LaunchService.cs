@@ -24,6 +24,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Windows.ApplicationModel;
 using Windows.UI.StartScreen;
 
@@ -146,7 +147,7 @@ internal class LaunchService : DefaultLaunchService
                 if (launchAccount == null)
                     throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
 
-                suitableJava = GetSuitableJava(gameInfo);
+                suitableJava = _settingsService.EnableAutoJava ? GetSuitableJava(gameInfo) : _settingsService.ActiveJava;
                 if (suitableJava == null)
                     throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoSuitableJava").Replace("${version}", gameInfo.GetSuitableJavaVersion()));
 
@@ -212,7 +213,9 @@ internal class LaunchService : DefaultLaunchService
                 var launchTime = DateTime.Now;
 
                 specialConfig.LastLaunchTime = launchTime;
-                _gameService.GameInfos.Where(x => x.AbsoluteId.Equals(gameInfo.AbsoluteId)).FirstOrDefault().LastLaunchTime = launchTime;
+
+                var contained = _gameService.GameInfos.Where(x => x.AbsoluteId.Equals(gameInfo.AbsoluteId)).FirstOrDefault();
+                if (contained != null) contained.LastLaunchTime = launchTime;
 
                 if (gameInfo is ExtendedGameInfo extendedGameInfo)
                     extendedGameInfo.LastLaunchTime = launchTime;

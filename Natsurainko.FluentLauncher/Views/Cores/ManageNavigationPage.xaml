@@ -12,7 +12,7 @@
     Background="Transparent"
     mc:Ignorable="d">
 
-    <Grid Padding="30,20,30,10">
+    <Grid Padding="30,20,30,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="1*" />
@@ -34,6 +34,24 @@
                 </DataTemplate>
             </BreadcrumbBar.ItemTemplate>
         </BreadcrumbBar>
+        <Button
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Background="{ThemeResource DeleteButtonBackground}"
+            BorderBrush="{ThemeResource DeleteButtonBorder}"
+            Command="{Binding DeleteGameCommand}"
+            Style="{ThemeResource ButtonRevealStyle}">
+            <StackPanel Orientation="Horizontal" Spacing="5">
+                <FontIcon
+                    FontSize="16"
+                    Foreground="White"
+                    Glyph="&#xe74d;" />
+                <TextBlock
+                    x:Uid="Buttons_Delete"
+                    Foreground="White"
+                    Text="Delete" />
+            </StackPanel>
+        </Button>
         <NavigationView
             Grid.Row="1"
             Margin="-30,0"
@@ -71,7 +89,7 @@
                 <NavigationViewItem
                     x:Uid="Cores_ManageNavigationPage_NV_Item_4"
                     Content="Statistics Data"
-                    IsEnabled="False">
+                    Tag="CoreStatisticPage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xF0E3;" />
                     </NavigationViewItem.Icon>

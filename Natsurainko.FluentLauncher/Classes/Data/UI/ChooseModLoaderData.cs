@@ -100,10 +100,7 @@ internal partial class ChooseModLoaderData : ObservableObject
                     {
                         DisplayText = x["loader"]["version"].GetValue<string>(),
                         Metadata = x
-                    }).ToList();
-
-                    fabric.Sort((a, b) => a.DisplayText.CompareTo(b.DisplayText));
-                    fabric.Reverse();
+                    }).ToList(); 
 
                     loaders = fabric;
 
@@ -126,9 +123,6 @@ internal partial class ChooseModLoaderData : ObservableObject
                         DisplayText = x["loader"]["version"].GetValue<string>(),
                         Metadata = x
                     }).ToList();
-
-                    quilt.Sort((a, b) => a.DisplayText.CompareTo(b.DisplayText));
-                    quilt.Reverse();
 
                     loaders = quilt;
 

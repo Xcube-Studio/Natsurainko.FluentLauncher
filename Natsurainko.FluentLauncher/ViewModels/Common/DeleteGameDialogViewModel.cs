@@ -53,7 +53,7 @@ internal partial class DeleteGameDialogViewModel : ObservableObject
             return false;
         }
 
-        var directory = new DirectoryInfo(Path.Combine(_gameInfo.MinecraftFolderPath, "versions", _gameInfo.AbsoluteVersion));
+        var directory = new DirectoryInfo(Path.Combine(_gameInfo.MinecraftFolderPath, "versions", _gameInfo.AbsoluteId));
         var notificationService = App.GetService<NotificationService>();
 
         if (!ExistsOccupiedFile(directory))

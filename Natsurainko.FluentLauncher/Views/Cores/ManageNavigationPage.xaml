@@ -17,41 +17,49 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
-        <BreadcrumbBar ItemsSource="{Binding BreadcrumbBarItemsSource}">
-            <i:Interaction.Behaviors>
-                <core:EventTriggerBehavior EventName="ItemClicked">
-                    <actions:ModifiedInvokeCommandAction Command="{Binding BreadcrumbBarClickedCommand}" />
-                </core:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
-            <BreadcrumbBar.ItemTemplate>
-                <DataTemplate>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <BreadcrumbBar ItemsSource="{Binding BreadcrumbBarItemsSource}">
+                <i:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="ItemClicked">
+                        <actions:ModifiedInvokeCommandAction Command="{Binding BreadcrumbBarClickedCommand}" />
+                    </core:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+                <BreadcrumbBar.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock
+                            Margin="10,0"
+                            FontSize="24"
+                            Style="{ThemeResource BaseTextBlockStyle}"
+                            Text="{Binding}"
+                            TextTrimming="CharacterEllipsis" />
+                    </DataTemplate>
+                </BreadcrumbBar.ItemTemplate>
+            </BreadcrumbBar>
+            <Button
+                Grid.Column="2"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Background="{ThemeResource DeleteButtonBackground}"
+                BorderBrush="{ThemeResource DeleteButtonBorder}"
+                Command="{Binding DeleteGameCommand}"
+                Style="{ThemeResource ButtonRevealStyle}">
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <FontIcon
+                        FontSize="16"
+                        Foreground="White"
+                        Glyph="&#xe74d;" />
                     <TextBlock
-                        Margin="10,0"
-                        FontSize="24"
-                        Style="{ThemeResource BaseTextBlockStyle}"
-                        Text="{Binding}"
-                        TextTrimming="CharacterEllipsis" />
-                </DataTemplate>
-            </BreadcrumbBar.ItemTemplate>
-        </BreadcrumbBar>
-        <Button
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"
-            Background="{ThemeResource DeleteButtonBackground}"
-            BorderBrush="{ThemeResource DeleteButtonBorder}"
-            Command="{Binding DeleteGameCommand}"
-            Style="{ThemeResource ButtonRevealStyle}">
-            <StackPanel Orientation="Horizontal" Spacing="5">
-                <FontIcon
-                    FontSize="16"
-                    Foreground="White"
-                    Glyph="&#xe74d;" />
-                <TextBlock
-                    x:Uid="Buttons_Delete"
-                    Foreground="White"
-                    Text="Delete" />
-            </StackPanel>
-        </Button>
+                        x:Uid="Buttons_Delete"
+                        Foreground="White"
+                        Text="Delete" />
+                </StackPanel>
+            </Button>
+        </Grid>
         <NavigationView
             Grid.Row="1"
             Margin="-30,0"

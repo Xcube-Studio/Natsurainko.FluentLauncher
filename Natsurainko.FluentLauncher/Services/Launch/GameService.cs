@@ -75,7 +75,7 @@ internal class GameService : DefaultGameService
         if (!MinecraftFolders.Any())
         {
             _gameInfos.Clear();
-            ActiveGameInfo = null;
+            _settingsService.ActiveGameInfo = ActiveGameInfo = null;
 
             return;
         }
@@ -106,9 +106,9 @@ internal class GameService : DefaultGameService
 
             if (_gameInfos.Contains(extended))
                 ActivateGameInfo(extended);
-            else _settingsService.ActiveGameInfo = null;
+            else _settingsService.ActiveGameInfo = ActiveGameInfo = null;
         }
-        else _settingsService.ActiveGameInfo = null;
+        else _settingsService.ActiveGameInfo = ActiveGameInfo = null;
 
         if (_gameInfos.Any() && _settingsService.ActiveGameInfo == null)
             ActivateGameInfo(_gameInfos.First());

@@ -2,7 +2,7 @@
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Xaml.Interactivity;
 using Natsurainko.FluentLauncher.Services.Storage;
-using Nrk.FluentCore.Classes.Datas.Authenticate;
+using Nrk.FluentCore.Authentication;
 
 namespace Natsurainko.FluentLauncher.Utils.Xaml.Behaviors;
 

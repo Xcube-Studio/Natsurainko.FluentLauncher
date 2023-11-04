@@ -11,7 +11,7 @@ using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views.Common;
-using Nrk.FluentCore.Classes.Datas.Authenticate;
+using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;

@@ -3,8 +3,8 @@ using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
-using Nrk.FluentCore.Classes.Datas.Authenticate;
-using Nrk.FluentCore.Classes.Exceptions;
+using Nrk.FluentCore.Authentication;
+using Nrk.FluentCore.Authentication.Microsoft;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -76,7 +76,7 @@ internal partial class ConfirmProfileViewModel : WizardViewModelBase
                     var builder = new StringBuilder();
                     builder.AppendLine("Failed to fetch account list");
 
-                    if (task.Exception.InnerException is MicrosoftAuthenticateException microsoftAuthenticateException)
+                    if (task.Exception.InnerException is MicrosoftAuthenticationException microsoftAuthenticateException)
                     {
                         builder.AppendLine(microsoftAuthenticateException.Message);
                         builder.AppendLine(microsoftAuthenticateException.HelpLink);

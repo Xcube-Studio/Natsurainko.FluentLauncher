@@ -2,7 +2,7 @@
 using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Components.Launch;
 using Nrk.FluentCore.Classes.Datas.Launch;
-using Nrk.FluentCore.Classes.Enums;
+using Nrk.FluentCore.Launch.Logging;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;

@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Classes.Datas.Launch;
-using Nrk.FluentCore.Classes.Enums;
+using Nrk.FluentCore.Launch.Logging;
 
 namespace Natsurainko.FluentLauncher.Classes.Data.Launch;
 

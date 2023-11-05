@@ -3,7 +3,7 @@ using AppSettingsManagement.Converters;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Classes.Datas.Launch;
-using Nrk.FluentCore.Interfaces.ServiceInterfaces;
+using Nrk.FluentCore.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;

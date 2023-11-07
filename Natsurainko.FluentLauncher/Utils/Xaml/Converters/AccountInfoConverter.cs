@@ -1,7 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Data;
 using Nrk.FluentCore.Authentication;
-using Nrk.FluentCore.Classes.Enums;
 using System;
 
 namespace Natsurainko.FluentLauncher.Utils.Xaml.Converters;

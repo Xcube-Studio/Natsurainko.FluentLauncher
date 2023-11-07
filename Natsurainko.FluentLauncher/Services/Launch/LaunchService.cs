@@ -8,7 +8,6 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Launch;
-using Nrk.FluentCore.DefaultComponents.Parse;
 using Nrk.FluentCore.Environment;
 using Nrk.FluentCore.Services.Launch;
 using Nrk.FluentCore.Utils;
@@ -23,9 +22,9 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Windows.ApplicationModel;
 using Windows.UI.StartScreen;
+using Nrk.FluentCore.GameResources.Parsing;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
 

@@ -1,6 +1,5 @@
 ﻿using AppSettingsManagement.Converters;
 using Nrk.FluentCore.Authentication;
-using Nrk.FluentCore.Classes.Enums;
 using System;
 using System.Text.Json;
 using System.Text.Json.Nodes;

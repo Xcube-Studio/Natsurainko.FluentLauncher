@@ -2,8 +2,8 @@
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Nrk.FluentCore.Authentication;
+using Nrk.FluentCore.GameResources.ModLoaders;
 using Nrk.FluentCore.Launch;
-using Nrk.FluentCore.Classes.Enums;
 using System;
 using System.IO;
 using System.Linq;

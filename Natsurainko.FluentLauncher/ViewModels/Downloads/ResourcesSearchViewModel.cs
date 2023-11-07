@@ -7,7 +7,6 @@ using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
-using Nrk.FluentCore.Classes.Datas.Download;
 using Nrk.FluentCore.GameResources.ThirdPartySources;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Natsurainko.FluentLauncher.Utils;
-using Nrk.FluentCore.Classes.Datas.Download;
-using Nrk.FluentCore.Classes.Enums;
+using Nrk.FluentCore.GameResources.ModLoaders;
 using Nrk.FluentCore.GameResources.ThirdPartySources;
 using Nrk.FluentCore.Utils;
 using System.Collections.Generic;

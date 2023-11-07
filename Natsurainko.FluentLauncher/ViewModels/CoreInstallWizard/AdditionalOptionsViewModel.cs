@@ -3,7 +3,7 @@ using Natsurainko.FluentLauncher.Classes.Data.Download;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.CoreInstallWizard;
-using Nrk.FluentCore.Classes.Datas.Download;
+using Nrk.FluentCore.GameResources.ThirdPartySources;
 using System.ComponentModel;
 using System.Threading.Tasks;
 

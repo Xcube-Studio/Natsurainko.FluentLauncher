@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Nrk.FluentCore.Authentication;
-using Nrk.FluentCore.Classes.Datas.Download;
+using Nrk.FluentCore.GameResources.ThirdPartySources;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;

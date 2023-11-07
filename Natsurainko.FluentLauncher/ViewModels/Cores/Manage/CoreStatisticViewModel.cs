@@ -2,7 +2,6 @@
 using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Nrk.FluentCore.Launch;
-using Nrk.FluentCore.Utils;
 using System;
 using System.Threading.Tasks;
 

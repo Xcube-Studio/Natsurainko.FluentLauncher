@@ -8,6 +8,7 @@ using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Classes.Datas.Download;
+using Nrk.FluentCore.GameResources.ThirdPartySources;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -102,10 +103,10 @@ internal partial class ResourcesSearchViewModel : ObservableObject, INavigationA
             {
                 var resources = _interfaceCacheService.CurseForgeClient.SearchResources(SearchBoxInput, ResourceType switch
                 {
-                    2 => Nrk.FluentCore.Classes.Enums.CurseResourceType.ModPack,
-                    3 => Nrk.FluentCore.Classes.Enums.CurseResourceType.TexturePack,
-                    4 => Nrk.FluentCore.Classes.Enums.CurseResourceType.World,
-                    _ => Nrk.FluentCore.Classes.Enums.CurseResourceType.McMod
+                    2 => CurseResourceType.ModPack,
+                    3 => CurseResourceType.TexturePack,
+                    4 => CurseResourceType.World,
+                    _ => CurseResourceType.McMod
                 });
 
                 App.DispatcherQueue.TryEnqueue(() => SearchedItems = resources);
@@ -117,9 +118,9 @@ internal partial class ResourcesSearchViewModel : ObservableObject, INavigationA
             {
                 var resources = _interfaceCacheService.ModrinthClient.SearchResources(SearchBoxInput, ResourceType switch
                 {
-                    2 => Nrk.FluentCore.Classes.Enums.ModrinthResourceType.ModPack,
-                    3 => Nrk.FluentCore.Classes.Enums.ModrinthResourceType.Resourcepack,
-                    _ => Nrk.FluentCore.Classes.Enums.ModrinthResourceType.McMod
+                    2 => ModrinthResourceType.ModPack,
+                    3 => ModrinthResourceType.Resourcepack,
+                    _ => ModrinthResourceType.McMod
                 });
 
                 App.DispatcherQueue.TryEnqueue(() => SearchedItems = resources);

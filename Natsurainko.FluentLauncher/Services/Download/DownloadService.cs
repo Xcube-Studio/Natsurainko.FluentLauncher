@@ -9,11 +9,8 @@ using Natsurainko.FluentLauncher.Utils.Xaml;
 using Nrk.FluentCore.Classes.Datas.Download;
 using Nrk.FluentCore.Classes.Datas.Install;
 using Nrk.FluentCore.Launch;
-using Nrk.FluentCore.Classes.Datas.Parse;
 using Nrk.FluentCore.Classes.Enums;
-using Nrk.FluentCore.DefaultComponents.Download;
 using Nrk.FluentCore.DefaultComponents.Install;
-using Nrk.FluentCore.Interfaces;
 using Nrk.FluentCore.Services.Download;
 using Nrk.FluentCore.Utils;
 using System;
@@ -23,6 +20,9 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
+using Nrk.FluentCore.GameResources.Parsing;
+using Nrk.FluentCore.GameResources.ThirdPartySources;
+using Nrk.FluentCore.GameResources.ModLoaders;
 
 namespace Natsurainko.FluentLauncher.Services.Download;
 

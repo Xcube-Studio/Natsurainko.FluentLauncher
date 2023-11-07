@@ -1,12 +1,12 @@
 ﻿using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Launch;
-using Nrk.FluentCore.Classes.Datas.Parse;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Nrk.FluentCore.GameResources.Parsing;
 
 namespace Natsurainko.FluentLauncher.Components.Launch;
 

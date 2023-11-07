@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Nrk.FluentCore.Classes.Datas.Download;
-using Nrk.FluentCore.Classes.Datas.Launch;
+using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Classes.Enums;
 using System;
 

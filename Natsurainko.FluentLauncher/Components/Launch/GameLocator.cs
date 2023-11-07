@@ -1,8 +1,7 @@
 ﻿using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Utils;
-using Nrk.FluentCore.Classes.Datas.Launch;
+using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Classes.Datas.Parse;
-using Nrk.FluentCore.Launch.GameLocator;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

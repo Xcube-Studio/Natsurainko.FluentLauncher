@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Nrk.FluentCore.Classes.Enums;
+using Nrk.FluentCore.Launch;
 
 namespace Natsurainko.FluentLauncher.Classes.Data.UI;
 

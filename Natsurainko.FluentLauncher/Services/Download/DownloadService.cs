@@ -8,7 +8,7 @@ using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Xaml;
 using Nrk.FluentCore.Classes.Datas.Download;
 using Nrk.FluentCore.Classes.Datas.Install;
-using Nrk.FluentCore.Classes.Datas.Launch;
+using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Classes.Datas.Parse;
 using Nrk.FluentCore.Classes.Enums;
 using Nrk.FluentCore.DefaultComponents.Download;

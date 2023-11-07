@@ -1,5 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Nrk.FluentCore.Utils;
+using Nrk.FluentCore.Environment;
 using System;
 
 namespace Natsurainko.FluentLauncher.Utils.Xaml.Converters;

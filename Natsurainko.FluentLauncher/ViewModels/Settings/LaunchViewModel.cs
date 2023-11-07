@@ -10,7 +10,7 @@ using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
-using Nrk.FluentCore.Utils;
+using Nrk.FluentCore.Environment;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;

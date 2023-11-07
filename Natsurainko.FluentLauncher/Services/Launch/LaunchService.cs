@@ -10,6 +10,7 @@ using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Classes.Datas.Launch;
 using Nrk.FluentCore.Classes.Enums;
 using Nrk.FluentCore.DefaultComponents.Parse;
+using Nrk.FluentCore.Environment;
 using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Services.Launch;
 using Nrk.FluentCore.Utils;

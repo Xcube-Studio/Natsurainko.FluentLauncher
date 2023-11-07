@@ -1,6 +1,6 @@
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
-using Nrk.FluentCore.Classes.Datas;
+using Nrk.FluentCore.Management;
 
 namespace Natsurainko.FluentLauncher.Views.Cores.Manage;
 

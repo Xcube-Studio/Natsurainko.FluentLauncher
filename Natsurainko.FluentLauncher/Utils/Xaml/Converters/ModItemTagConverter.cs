@@ -1,5 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Nrk.FluentCore.Classes.Datas;
+using Nrk.FluentCore.Management;
 using System;
 using System.Collections.Generic;
 using System.IO;

@@ -103,7 +103,6 @@
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Natsurainko.FluentCore\Natsurainko.FluentCore.Manage\Natsurainko.FluentCore.Manage.csproj" />
     <ProjectReference Include="..\Natsurainko.FluentCore\Natsurainko.FluentCore\Natsurainko.FluentCore.csproj" />
   </ItemGroup>
 

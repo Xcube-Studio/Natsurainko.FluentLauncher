@@ -170,36 +170,36 @@ internal class DownloadService : DefaultDownloadService
 
             var runInstallExecutor = new CoreInstallProcess.ProgressItem(@this =>
             {
-                IInstallExecutor executor = info.PrimaryLoader.Type switch
+                IModLoaderInstaller executor = info.PrimaryLoader.Type switch
                 {
-                    ModLoaderType.Forge => new ForgeInstallExecutor
+                    ModLoaderType.Forge => new ForgeInstaller
                     {
                         AbsoluteId = info.AbsoluteId,
                         InheritedFrom = inheritsFrom,
                         JavaPath = _settingsService.ActiveJava,
                         PackageFilePath = primaryLoaderFile
                     },
-                    ModLoaderType.NeoForge => new ForgeInstallExecutor
+                    ModLoaderType.NeoForge => new ForgeInstaller
                     {
                         AbsoluteId = info.AbsoluteId,
                         InheritedFrom = inheritsFrom,
                         JavaPath = _settingsService.ActiveJava,
                         PackageFilePath = primaryLoaderFile
                     },
-                    ModLoaderType.OptiFine => new OptiFineInstallExecutor
+                    ModLoaderType.OptiFine => new OptiFineInstaller
                     {
                         AbsoluteId = info.AbsoluteId,
                         InheritedFrom = inheritsFrom,
                         JavaPath = _settingsService.ActiveJava,
                         PackageFilePath = primaryLoaderFile
                     },
-                    ModLoaderType.Fabric => new FabricInstallExecutor
+                    ModLoaderType.Fabric => new FabricInstaller
                     {
                         AbsoluteId = info.AbsoluteId,
                         InheritedFrom = inheritsFrom,
                         FabricBuild = info.PrimaryLoader.SelectedItem.Metadata.Deserialize<FabricInstallBuild>()
                     },
-                    ModLoaderType.Quilt => new QuiltInstallExecutor
+                    ModLoaderType.Quilt => new QuiltInstaller
                     {
                         AbsoluteId = info.AbsoluteId,
                         InheritedFrom = inheritsFrom,

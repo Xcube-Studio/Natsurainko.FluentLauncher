@@ -1,5 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Nrk.FluentCore.GameResources.ThirdPartySources;
+using Nrk.FluentCore.Resources;
 using Nrk.FluentCore.Launch;
 using System;
 using System.Collections.Generic;

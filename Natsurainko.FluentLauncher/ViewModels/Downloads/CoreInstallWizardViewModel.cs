@@ -10,7 +10,7 @@ using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.ViewModels.CoreInstallWizard;
-using Nrk.FluentCore.GameResources.ThirdPartySources;
+using Nrk.FluentCore.Resources;
 using Nrk.FluentCore.Utils;
 using System.Collections.Generic;
 using System.ComponentModel;

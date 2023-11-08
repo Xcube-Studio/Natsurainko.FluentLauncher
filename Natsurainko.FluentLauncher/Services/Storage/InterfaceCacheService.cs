@@ -1,6 +1,6 @@
 ﻿using Natsurainko.FluentLauncher.Classes.Data.UI;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Nrk.FluentCore.GameResources.ThirdPartySources;
+using Nrk.FluentCore.Resources;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Buffers;

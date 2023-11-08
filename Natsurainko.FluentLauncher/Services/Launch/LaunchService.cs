@@ -24,7 +24,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.UI.StartScreen;
-using Nrk.FluentCore.GameResources.Parsing;
+using Nrk.FluentCore.Management.Parsing;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
 

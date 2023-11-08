@@ -9,7 +9,7 @@ using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
-using Nrk.FluentCore.GameResources.ThirdPartySources;
+using Nrk.FluentCore.Resources;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

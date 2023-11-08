@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using Nrk.FluentCore.GameResources.Parsing;
+using Nrk.FluentCore.Management.Parsing;
 using Natsurainko.FluentLauncher.Classes.Data.Launch;
 
 namespace Natsurainko.FluentLauncher.Components.Launch;

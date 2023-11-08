@@ -10,7 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.System;
-using Nrk.FluentCore.Management;
+using Nrk.FluentCore.Management.Mods;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
 

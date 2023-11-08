@@ -16,9 +16,9 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
-using Nrk.FluentCore.GameResources.Parsing;
-using Nrk.FluentCore.GameResources.ThirdPartySources;
-using Nrk.FluentCore.GameResources.ModLoaders;
+using Nrk.FluentCore.Management.Parsing;
+using Nrk.FluentCore.Resources;
+using Nrk.FluentCore.Management.ModLoaders;
 
 namespace Natsurainko.FluentLauncher.Services.Download;
 

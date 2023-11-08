@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Imaging;
-using Nrk.FluentCore.GameResources.ModLoaders;
-using Nrk.FluentCore.GameResources.ThirdPartySources;
+using Nrk.FluentCore.Management.ModLoaders;
+using Nrk.FluentCore.Resources;
 using Nrk.FluentCore.Launch;
 using System;
 

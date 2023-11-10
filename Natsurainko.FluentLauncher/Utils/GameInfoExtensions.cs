@@ -11,6 +11,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Nrk.FluentCore.Utils;
 
 namespace Natsurainko.FluentLauncher.Utils;
 

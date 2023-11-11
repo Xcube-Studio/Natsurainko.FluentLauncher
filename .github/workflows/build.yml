@@ -266,7 +266,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Pre-Publish
     needs: [build,release,Create-Tag]
-    if: ${{ (contains(github.ref,'refs/tags/beta')||(inputs.flag&&contains(needs.Create-Tag.outputs.tag,'beta')))&&!failure() }}
+    if: ${{ (contains(github.ref,'refs/tags/beta')||(inputs.flag&&contains(needs.Create-Tag.outputs.tag,'beta'))||(inputs.flag&&contains(needs.Create-Tag.outputs.tag,'v')))&&!failure() }}
     env:
       Artifacts_Path: .artifacts
     steps:
@@ -308,12 +308,14 @@ jobs:
           packages-keep: 9
       
       - name: Download .msixbundle from artifacts
+        if: ${{ !contains(needs.Create-Tag.outputs.tag,'v') }}
         uses: actions/download-artifact@v3
         with:
            name: .msixbundle
            path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
      
       - name: Create Pre-Release
+        if: ${{ !contains(needs.Create-Tag.outputs.tag,'v') }}
         uses: ncipollo/release-action@v1.12.0
         with:  
           artifacts: "${{ github.workspace }}/${{env.Artifacts_Path}}/*.msixbundle"

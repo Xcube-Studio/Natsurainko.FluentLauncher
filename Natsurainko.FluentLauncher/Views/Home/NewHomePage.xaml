@@ -2,6 +2,7 @@
     x:Class="Natsurainko.FluentLauncher.Views.Home.NewHomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Natsurainko.FluentLauncher.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:home="using:Natsurainko.FluentLauncher.ViewModels.Home"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Home"
@@ -113,6 +114,7 @@
                         Text="the currently selected core" />
                 </StackPanel>
                 <Button
+                    xmlns:ui="using:CommunityToolkit.WinUI.UI.Controls"
                     Grid.Column="2"
                     HorizontalAlignment="Right"
                     Background="Transparent"
@@ -128,12 +130,21 @@
                             FontSize="18"
                             FontWeight="Bold"
                             Glyph="&#xE76B;" />
-                        <TextBlock
+                        <ui:DropShadowPanel
                             Grid.Column="2"
-                            HorizontalTextAlignment="Right"
-                            Style="{ThemeResource TitleLargeTextBlockStyle}"
-                            Text="{Binding ActiveGameInfo.Name}"
-                            TextTrimming="CharacterEllipsis" />
+                            BlurRadius="17.5"
+                            OffsetX="0"
+                            OffsetY="0"
+                            OffsetZ="0"
+                            ShadowOpacity="0.75"
+                            Color="Black">
+                            <TextBlock
+                                x:Name="CoreTextBlock"
+                                HorizontalTextAlignment="Right"
+                                Style="{ThemeResource TitleLargeTextBlockStyle}"
+                                Text="{Binding ActiveGameInfo.Name}"
+                                TextTrimming="CharacterEllipsis" />
+                        </ui:DropShadowPanel>
                     </Grid>
                 </Button>
             </Grid>

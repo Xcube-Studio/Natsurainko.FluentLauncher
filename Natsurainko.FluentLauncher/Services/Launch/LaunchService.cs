@@ -6,11 +6,9 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Download;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
-using Nrk.FluentCore.Classes.Datas.Authenticate;
-using Nrk.FluentCore.Classes.Datas.Launch;
-using Nrk.FluentCore.Classes.Enums;
-using Nrk.FluentCore.DefaultComponents.Launch;
-using Nrk.FluentCore.DefaultComponents.Parse;
+using Nrk.FluentCore.Authentication;
+using Nrk.FluentCore.Launch;
+using Nrk.FluentCore.Environment;
 using Nrk.FluentCore.Services.Launch;
 using Nrk.FluentCore.Utils;
 using PInvoke;
@@ -24,9 +22,9 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Windows.ApplicationModel;
 using Windows.UI.StartScreen;
+using Nrk.FluentCore.Management.Parsing;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
 

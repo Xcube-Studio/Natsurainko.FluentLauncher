@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
-using Nrk.FluentCore.Classes.Enums;
+using Nrk.FluentCore.Authentication;
 
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 

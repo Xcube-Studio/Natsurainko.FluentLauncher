@@ -1,4 +1,4 @@
-﻿using Nrk.FluentCore.DefaultComponents.Download;
+﻿using Nrk.FluentCore.Resources;
 using System;
 using System.IO;
 using System.Text;

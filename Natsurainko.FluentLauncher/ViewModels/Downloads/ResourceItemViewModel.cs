@@ -6,7 +6,7 @@ using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
-using Nrk.FluentCore.Classes.Datas.Download;
+using Nrk.FluentCore.Resources;
 using System.Linq;
 using System.Threading.Tasks;
 

@@ -1,8 +1,7 @@
 ﻿using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
-using Nrk.FluentCore.Classes.Datas.Authenticate;
-using Nrk.FluentCore.Classes.Enums;
-using Nrk.FluentCore.Services.Authenticate;
+using Nrk.FluentCore.Authentication;
+using Nrk.FluentCore.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;

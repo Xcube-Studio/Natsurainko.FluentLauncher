@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Data;
-using Nrk.FluentCore.Classes.Enums;
+using Nrk.FluentCore.Launch;
 using System;
 
 namespace Natsurainko.FluentLauncher.Utils.Xaml.Converters;

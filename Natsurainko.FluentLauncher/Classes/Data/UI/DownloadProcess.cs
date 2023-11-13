@@ -6,7 +6,7 @@ using Natsurainko.FluentLauncher.Classes.Enums;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Xaml;
-using Nrk.FluentCore.Classes.Datas.Download;
+using Nrk.FluentCore.Resources;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;

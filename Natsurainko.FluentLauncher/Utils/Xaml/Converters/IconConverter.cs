@@ -1,8 +1,8 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Imaging;
-using Nrk.FluentCore.Classes.Datas.Download;
-using Nrk.FluentCore.Classes.Datas.Launch;
-using Nrk.FluentCore.Classes.Enums;
+using Nrk.FluentCore.Management.ModLoaders;
+using Nrk.FluentCore.Resources;
+using Nrk.FluentCore.Launch;
 using System;
 
 namespace Natsurainko.FluentLauncher.Utils.Xaml.Converters;

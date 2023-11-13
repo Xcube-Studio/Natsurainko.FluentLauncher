@@ -6,14 +6,7 @@ using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Xaml;
-using Nrk.FluentCore.Classes.Datas.Download;
-using Nrk.FluentCore.Classes.Datas.Install;
-using Nrk.FluentCore.Classes.Datas.Launch;
-using Nrk.FluentCore.Classes.Datas.Parse;
-using Nrk.FluentCore.Classes.Enums;
-using Nrk.FluentCore.DefaultComponents.Download;
-using Nrk.FluentCore.DefaultComponents.Install;
-using Nrk.FluentCore.Interfaces;
+using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Services.Download;
 using Nrk.FluentCore.Utils;
 using System;
@@ -23,6 +16,9 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
+using Nrk.FluentCore.Management.Parsing;
+using Nrk.FluentCore.Resources;
+using Nrk.FluentCore.Management.ModLoaders;
 
 namespace Natsurainko.FluentLauncher.Services.Download;
 
@@ -174,36 +170,36 @@ internal class DownloadService : DefaultDownloadService
 
             var runInstallExecutor = new CoreInstallProcess.ProgressItem(@this =>
             {
-                IInstallExecutor executor = info.PrimaryLoader.Type switch
+                IModLoaderInstaller executor = info.PrimaryLoader.Type switch
                 {
-                    ModLoaderType.Forge => new ForgeInstallExecutor
+                    ModLoaderType.Forge => new ForgeInstaller
                     {
                         AbsoluteId = info.AbsoluteId,
                         InheritedFrom = inheritsFrom,
                         JavaPath = _settingsService.ActiveJava,
                         PackageFilePath = primaryLoaderFile
                     },
-                    ModLoaderType.NeoForge => new ForgeInstallExecutor
+                    ModLoaderType.NeoForge => new ForgeInstaller
                     {
                         AbsoluteId = info.AbsoluteId,
                         InheritedFrom = inheritsFrom,
                         JavaPath = _settingsService.ActiveJava,
                         PackageFilePath = primaryLoaderFile
                     },
-                    ModLoaderType.OptiFine => new OptiFineInstallExecutor
+                    ModLoaderType.OptiFine => new OptiFineInstaller
                     {
                         AbsoluteId = info.AbsoluteId,
                         InheritedFrom = inheritsFrom,
                         JavaPath = _settingsService.ActiveJava,
                         PackageFilePath = primaryLoaderFile
                     },
-                    ModLoaderType.Fabric => new FabricInstallExecutor
+                    ModLoaderType.Fabric => new FabricInstaller
                     {
                         AbsoluteId = info.AbsoluteId,
                         InheritedFrom = inheritsFrom,
                         FabricBuild = info.PrimaryLoader.SelectedItem.Metadata.Deserialize<FabricInstallBuild>()
                     },
-                    ModLoaderType.Quilt => new QuiltInstallExecutor
+                    ModLoaderType.Quilt => new QuiltInstaller
                     {
                         AbsoluteId = info.AbsoluteId,
                         InheritedFrom = inheritsFrom,

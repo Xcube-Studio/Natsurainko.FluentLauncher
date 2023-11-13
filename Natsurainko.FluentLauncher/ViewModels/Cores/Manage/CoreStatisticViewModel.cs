@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
-using Nrk.FluentCore.Classes.Data.Launch;
+using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Threading.Tasks;

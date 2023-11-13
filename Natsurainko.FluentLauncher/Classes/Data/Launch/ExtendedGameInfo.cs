@@ -1,5 +1,5 @@
 ﻿using Natsurainko.FluentLauncher.Utils;
-using Nrk.FluentCore.Classes.Datas.Launch;
+using Nrk.FluentCore.Launch;
 using System;
 
 namespace Natsurainko.FluentLauncher.Classes.Data.Launch;

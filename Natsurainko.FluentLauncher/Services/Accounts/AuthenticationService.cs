@@ -1,6 +1,8 @@
 ﻿using Natsurainko.FluentLauncher.Services.Storage;
-using Nrk.FluentCore.Classes.Datas.Authenticate;
-using Nrk.FluentCore.DefaultComponents.Authenticate;
+using Nrk.FluentCore.Authentication;
+using Nrk.FluentCore.Authentication.Microsoft;
+using Nrk.FluentCore.Authentication.Yggdrasil;
+using Nrk.FluentCore.Authentication.Offline;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

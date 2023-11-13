@@ -1,5 +1,4 @@
-﻿using Nrk.FluentCore.Classes.Datas.Launch;
-using Nrk.FluentCore.Components.Launch;
+﻿using Nrk.FluentCore.Launch;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

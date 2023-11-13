@@ -3,15 +3,14 @@ using CommunityToolkit.Mvvm.Input;
 using Natsurainko.FluentLauncher.Classes.Data.Download;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
-using Nrk.FluentCore.Classes.Datas;
-using Nrk.FluentCore.Classes.Datas.Launch;
-using Nrk.FluentCore.DefaultComponents.Manage;
+using Nrk.FluentCore.Launch;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.System;
+using Nrk.FluentCore.Management.Mods;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
 

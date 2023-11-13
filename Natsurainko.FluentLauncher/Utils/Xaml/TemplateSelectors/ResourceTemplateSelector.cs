@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Nrk.FluentCore.Classes.Datas.Download;
+using Nrk.FluentCore.Resources;
 
 namespace Natsurainko.FluentLauncher.Utils.Xaml.TemplateSelectors;
 

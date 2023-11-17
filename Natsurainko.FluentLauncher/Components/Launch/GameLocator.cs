@@ -65,7 +65,7 @@ internal class GameLocator : BaseGameLocator
             TryGetIsVanillaAndAbsoluteVersion(gameInfo, jsonEntity);
 
             if (!gameInfo.IsInheritedFrom) gameInfo.JarPath = jsonFile.FullName.Replace(".json", ".jar");
-            if (!gameInfo.IsInheritedFrom /*&& gameInfo.IsVanilla*/) enumedGames.Add(gameInfo);
+            if (!gameInfo.IsInheritedFrom /*&& _gameInfo.IsVanilla*/) enumedGames.Add(gameInfo);
 
             yield return gameInfo.Extend();
         }

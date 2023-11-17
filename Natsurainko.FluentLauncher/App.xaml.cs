@@ -14,6 +14,7 @@ using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Services.UI.Pages;
 using Natsurainko.FluentLauncher.Services.UI.Windows;
 using Natsurainko.FluentLauncher.ViewModels;
+using Natsurainko.FluentLauncher.ViewModels.Activities;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
 using System;
@@ -58,6 +59,9 @@ public partial class App : Application
         try
         {
             App.GetService<IActivationService>().ActivateWindow("MainWindow");
+
+            // TODO: Move to UI services
+            App.GetService<LaunchSessions>(); // Init global launch sessions collection
         }
         catch (Exception e)
         {
@@ -153,6 +157,7 @@ public partial class App : Application
         // ViewModels
         services.AddTransient<ViewModels.OOBE.OOBEViewModel>();
 
+        services.AddSingleton<ViewModels.Activities.LaunchSessions>();
         services.AddTransient<ViewModels.Activities.ActivitiesNavigationViewModel>();
         services.AddTransient<ViewModels.Activities.NewsViewModel>();
         services.AddTransient<ViewModels.Activities.LaunchViewModel>();

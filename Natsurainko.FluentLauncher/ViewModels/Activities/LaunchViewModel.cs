@@ -13,14 +13,14 @@ namespace Natsurainko.FluentLauncher.ViewModels.Activities;
 
 internal partial class LaunchViewModel : ObservableObject
 {
-    public ReadOnlyObservableCollection<LaunchProcess> LaunchProcesses { get; init; }
+    public ReadOnlyObservableCollection<LaunchSessionViewModel> LaunchProcesses { get; init; }
 
     private readonly INavigationService _shellNavigationService;
     private readonly SettingsService _settings;
 
     public LaunchViewModel(LaunchService launchService, INavigationService navigationService, SettingsService settingsService)
     {
-        LaunchProcesses = launchService.LaunchProcesses;
+        LaunchProcesses = launchService.Sessions; // TODO: create view models from MinecraftSession list
         _shellNavigationService = navigationService.Parent ?? throw new InvalidOperationException("Cannot obtain the shell navigaiton service");
         _settings = settingsService;
 

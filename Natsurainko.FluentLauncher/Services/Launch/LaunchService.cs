@@ -1,7 +1,4 @@
-﻿using CommunityToolkit.WinUI.Notifications;
-using Natsurainko.FluentLauncher.Classes.Data.Launch;
-using Natsurainko.FluentLauncher.Classes.Exceptions;
-using Natsurainko.FluentLauncher.Components.Launch;
+﻿using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Download;
 using Natsurainko.FluentLauncher.Services.Settings;
@@ -15,8 +12,6 @@ using PInvoke;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -80,7 +75,32 @@ internal class LaunchService : DefaultLaunchService
         UpdateJumpList(gameInfo);
 
         // Start
-        _ = session.Start(); // TODO: update to fully async implementation (fire and forget for now)
+        session.Start().Wait(); // TODO: update to fully async implementation
+
+        session.MinecraftProcess!.GameProcessStart += (_, _) =>
+        {
+            var title = GameWindowTitle(specialConfig);
+            if (string.IsNullOrEmpty(title)) return;
+
+            Task.Run(async () =>
+            {
+                try
+                {
+                    while (!(launchProcess._mcProcess?.HasExited).GetValueOrDefault(true))
+                    {
+                        if (launchProcess._mcProcess != null && launchProcess._mcProcess?.MainWindowTitle != title)
+                            User32.SetWindowText(launchProcess.McProcess.MainWindowHandle, title);
+
+                        await Task.Delay(1000);
+                        launchProcess._mcProcess?.Refresh();
+                    }
+                }
+                catch //(Exception ex)
+                {
+                    //throw;
+                }
+            });
+        };
     }
 
     public void LaunchFromJumpList(string arguments)
@@ -184,31 +204,6 @@ internal class LaunchService : DefaultLaunchService
             _downloadService, _authenticationService, _accountService)
         {
             EnableAccountRefresh = _settingsService.AutoRefresh
-        };
-
-        launchProcess.GameProcessStart += (_, _) =>
-        {
-            var title = GameWindowTitle(specialConfig);
-            if (string.IsNullOrEmpty(title)) return;
-
-            Task.Run(async () =>
-            {
-                try
-                {
-                    while (!(launchProcess._mcProcess?.HasExited).GetValueOrDefault(true))
-                    {
-                        if (launchProcess._mcProcess != null && launchProcess._mcProcess?.MainWindowTitle != title)
-                            User32.SetWindowText(launchProcess.McProcess.MainWindowHandle, title);
-
-                        await Task.Delay(1000);
-                        launchProcess._mcProcess?.Refresh();
-                    }
-                }
-                catch //(Exception ex)
-                {
-                    //throw;
-                }
-            });
         };
 
         return session;

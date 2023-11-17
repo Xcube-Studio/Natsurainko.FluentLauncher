@@ -58,6 +58,7 @@ class MinecraftSession
 
     public MinecraftProcess? MinecraftProcess { get; private set; }
 
+    // TODO: Update State according to MinecraftProcess status
     public MinecraftSessionState State { get; private set; } = MinecraftSessionState.Created;
 
     public event EventHandler? DownloadProgressChagned;

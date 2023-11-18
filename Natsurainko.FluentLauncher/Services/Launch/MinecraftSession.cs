@@ -93,7 +93,8 @@ class MinecraftSession
     /// </summary>
     public event EventHandler<MinecraftSessionStateChagnedEventArgs>? StateChanged;
 
-    private MinecraftProcess? _mcProcess; // TODO: Create on init, so it can be non-nullable
+    private MinecraftProcess? _mcProcess; // TODO: Create on init, so it can be non-nullable, update argument list when needed before the process is started
+    // QUESTION: Should this be public? MinecraftSession is designed to hide the underlying process, maybe should forward events instead?
 
     private readonly IEnumerable<LibraryElement> _enabledLibraries;
     private readonly string _javaPath;

@@ -36,7 +36,7 @@ internal class LaunchService : DefaultLaunchService
 
     public ReadOnlyCollection<MinecraftSession> Sessions { get; }
 
-    public event EventHandler<MinecraftSession> SessionCreated;
+    public event EventHandler<MinecraftSession>? SessionCreated;
 
     public LaunchService(
         SettingsService settingsService,
@@ -61,9 +61,11 @@ internal class LaunchService : DefaultLaunchService
         _sessions.Add(session);
         SessionCreated?.Invoke(this, session);
 
+        var specialConfig = gameInfo.GetSpecialConfig();
+
         // Update launch time
         var launchTime = DateTime.Now;
-        gameInfo.GetSpecialConfig().LastLaunchTime = launchTime;
+        specialConfig.LastLaunchTime = launchTime;
 
         var contained = _gameService.GameInfos.Where(x => x.AbsoluteId.Equals(gameInfo.AbsoluteId)).FirstOrDefault();
         if (contained != null)
@@ -74,10 +76,8 @@ internal class LaunchService : DefaultLaunchService
 
         UpdateJumpList(gameInfo);
 
-        // Start
-        session.Start().Wait(); // TODO: update to fully async implementation
-
-        session.MinecraftProcess!.GameProcessStart += (_, _) =>
+        // _mcProcess is not null after session.Start()
+        session.ProcessStarted += (_, _) =>
         {
             var title = GameWindowTitle(specialConfig);
             if (string.IsNullOrEmpty(title)) return;
@@ -101,6 +101,9 @@ internal class LaunchService : DefaultLaunchService
                 }
             });
         };
+
+        // Start
+        session.Start().Wait(); // TODO: update to a fully async implementation
     }
 
     public void LaunchFromJumpList(string arguments)
@@ -209,7 +212,7 @@ internal class LaunchService : DefaultLaunchService
         return session;
     }
 
-    private string GetSuitableJava(GameInfo gameInfo)
+    private string? GetSuitableJava(GameInfo gameInfo)
     {
         var regex = new Regex(@"^([a-zA-Z]:\\)([-\u4e00-\u9fa5\w\s.()~!@#$%^&()\[\]{}+=]+\\?)*$");
 
@@ -228,7 +231,8 @@ internal class LaunchService : DefaultLaunchService
             }
         }
 
-        if (!suits.Any()) return null;
+        if (!suits.Any())
+            return null;
 
         return suits.First().Item1;
     }
@@ -248,7 +252,7 @@ internal class LaunchService : DefaultLaunchService
         return gameInfo.MinecraftFolderPath;
     }
 
-    private string GameWindowTitle(GameSpecialConfig specialConfig)
+    private string? GameWindowTitle(GameSpecialConfig specialConfig)
     {
         if (specialConfig.EnableSpecialSetting)
         {
@@ -358,7 +362,8 @@ internal class LaunchService : DefaultLaunchService
         var args = JsonSerializer.Serialize(gameInfo).ConvertToBase64();
         var latest = jumpList.Items.Where(x =>
         {
-            var gameInfo = JsonSerializer.Deserialize<GameInfo>(x.Arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64());
+            var gameInfo = JsonSerializer.Deserialize<GameInfo>(x.Arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64())
+                ?? throw new Exception("Cannot deserialize json");
 
             return x.GroupName.Equals("Latest") &&
             Path.Exists(Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId, $"{gameInfo.AbsoluteId}.json"));

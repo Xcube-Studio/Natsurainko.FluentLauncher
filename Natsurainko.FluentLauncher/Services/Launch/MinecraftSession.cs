@@ -22,6 +22,7 @@ namespace Natsurainko.FluentLauncher.Services.Launch;
 
 enum MinecraftSessionState
 {
+    // Launch sequence
     Created = 0,
     Inspecting = 1,
     Authenticating = 2,
@@ -29,13 +30,26 @@ enum MinecraftSessionState
     BuildingArguments = 4,
     LaunchingProcess = 5,
     GameRunning = 6,
-    GameExited = 7,
-    Faulted = 8,
-    Killed = 9,
-    GameCrashed = 10
+
+    GameExited = 7, // Game exited normally (exit code == 0)
+    Faulted = 8, // Failure before game started
+    Killed = 9, // Game killed by user
+    GameCrashed = 10 // Game crashed (exit code != 0)
 }
 
-// Encapsulates a launch session, holds a MinecraftProcess instance
+class MinecraftSessionStateChagnedEventArgs : EventArgs
+{
+    public MinecraftSessionState OldState { get; }
+    public MinecraftSessionState NewState { get; }
+
+    public MinecraftSessionStateChagnedEventArgs(MinecraftSessionState oldState, MinecraftSessionState newState)
+    {
+        OldState = oldState;
+        NewState = newState;
+    }
+}
+
+// Encapsulates a launch session, holds a _mcProcess instance
 class MinecraftSession
 {
     private readonly DownloadService _downloadService;
@@ -56,17 +70,30 @@ class MinecraftSession
 
     public bool EnableAccountRefresh { get; init; }
 
-    public MinecraftProcess? MinecraftProcess { get; private set; }
+    private MinecraftSessionState _state = MinecraftSessionState.Created;
 
-    // TODO: Update State according to MinecraftProcess status
-    public MinecraftSessionState State { get; private set; } = MinecraftSessionState.Created;
-
-    public event EventHandler? DownloadProgressChagned;
+    public MinecraftSessionState State
+    {
+        get { return _state; }
+        private set
+        {
+            var old = _state;
+            _state = value;
+            StateChanged?.Invoke(this, new MinecraftSessionStateChagnedEventArgs(old, value));
+        }
+    }
 
     public event EventHandler? SingleFileDownloaded;
-
     public event EventHandler<int>? DownloadElementsPosted;
 
+    public event EventHandler? ProcessStarted;
+
+    /// <summary>
+    /// Raised when <see cref="State"/> changes
+    /// </summary>
+    public event EventHandler<MinecraftSessionStateChagnedEventArgs>? StateChanged;
+
+    private MinecraftProcess? _mcProcess; // TODO: Create on init, so it can be non-nullable
 
     private readonly IEnumerable<LibraryElement> _enabledLibraries;
     private readonly string _javaPath;
@@ -75,6 +102,9 @@ class MinecraftSession
     private readonly string _gameDirectory;
     private readonly IEnumerable<string> _vmParameters;
     private readonly IEnumerable<string> _extraGameParameters;
+
+    // Sets to true when a Kill() is called, used for the Exited event handler to deterine state
+    private bool _killRequested = false;
 
     public MinecraftSession(GameInfo gameInfo, Account account, GameSpecialConfig specialConfig, IEnumerable<LibraryElement> libraries, string javaPath, bool useDemoUser, int javaMemory, string gameDirectory,
         IEnumerable<string> vmParameters, IEnumerable<string> extraGameParameters,
@@ -97,27 +127,70 @@ class MinecraftSession
     }
 
     /// <summary>
-    /// Start the Minecraft game (guarantees <see cref="MinecraftProcess"/> is not null when finished)
+    /// Start the Minecraft game (guarantees <see cref="_mcProcess"/> is not null when finished)
     /// </summary>
     /// <returns></returns>
     public async Task Start()
     {
-        // QUESTION: Use async or not?
-        State = MinecraftSessionState.Inspecting;
-        await Task.Run(CheckEnvironment);
+        try
+        {
+            // QUESTION: Use async or not?
+            State = MinecraftSessionState.Inspecting;
+            await Task.Run(CheckEnvironment);
 
-        State = MinecraftSessionState.Authenticating;
-        var authTask = Task.Run(Authenticate);
+            State = MinecraftSessionState.Authenticating;
+            var authTask = Task.Run(Authenticate);
 
-        State = MinecraftSessionState.CompletingResources;
-        var depTask = Task.Run(CheckAndCompleteDependencies);
+            State = MinecraftSessionState.CompletingResources;
+            var depTask = Task.Run(CheckAndCompleteDependencies);
 
-        State = MinecraftSessionState.BuildingArguments;
-        MinecraftProcess = CreateMinecraftProcess();
+            State = MinecraftSessionState.BuildingArguments;
+            _mcProcess = CreateMinecraftProcess();
+        }
+        catch (Exception)
+        {
+            State = MinecraftSessionState.Faulted;
+            // QUESTION: Invoke an event here? Maybe just use a general state changed event?
+            throw; // rethrow for caller to handle
+        }
 
         State = MinecraftSessionState.LaunchingProcess;
-        await Task.Run(MinecraftProcess.Start);
+        await Task.Run(_mcProcess.Start);
+        ProcessStarted?.Invoke(this, EventArgs.Empty);
         State = MinecraftSessionState.GameRunning;
+
+        // Updates session state when the game process exits
+        _mcProcess.Exited += (_, e) =>
+        {
+            if (e.ExitCode == 0)
+            {
+                State = MinecraftSessionState.GameExited;
+            }
+            else if (_killRequested)
+            {
+                State = MinecraftSessionState.Killed;
+                _killRequested = false;
+            }
+            else
+            {
+                State = MinecraftSessionState.GameCrashed;
+            }
+        };
+    }
+
+    /// <summary>
+    /// Kills a running Minecraft game. The operation is invalid if the game is not running.
+    /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
+    public void Kill()
+    {
+        // TODO: Cancel the launch sequence when an async version is implemented
+        if (_mcProcess is null)
+            throw new InvalidOperationException("Process has not been created");
+
+        _killRequested = true;
+        _mcProcess.Kill();
+        // State change handeled by _mcProcess.Exited event
     }
 
     // Check if Java path provided is valid
@@ -131,7 +204,7 @@ class MinecraftSession
     // Refresh the account if auto refresh is enabled
     private void Authenticate()
     {
-        // TODO: refactor to remove dependency on LaunchService, AuthenticationService, and AccountService.
+        // TODO: refactor to remove dependency on AuthenticationService, and AccountService.
         // Call FluentCore to refresh account directly.
         try
         {

@@ -132,11 +132,12 @@ class MinecraftSession
         _accountService = accountService;
     }
 
+    // TODO: use async
     /// <summary>
     /// Start the Minecraft game (guarantees <see cref="_mcProcess"/> is not null when finished)
     /// </summary>
     /// <returns></returns>
-    public async Task Start()
+    public void Start()
     {
         try
         {
@@ -145,10 +146,10 @@ class MinecraftSession
             CheckEnvironment();
 
             State = MinecraftSessionState.Authenticating;
-            var authTask = Task.Run(Authenticate);
+            Authenticate();
 
             State = MinecraftSessionState.CompletingResources;
-            var depTask = Task.Run(CheckAndCompleteDependencies);
+            CheckAndCompleteDependencies();
 
             State = MinecraftSessionState.BuildingArguments;
             _mcProcess = CreateMinecraftProcess();
@@ -158,6 +159,28 @@ class MinecraftSession
             _mcProcess.ErrorDataReceived += ErrorDataReceived;
             _mcProcess.Started += ProcessStarted;
             _mcProcess.Exited += ProcessExited;
+            // Updates session state when the game process exits
+            _mcProcess.Exited += (_, e) =>
+            {
+                if (e.ExitCode == 0)
+                {
+                    State = MinecraftSessionState.GameExited;
+                }
+                else if (_killRequested)
+                {
+                    State = MinecraftSessionState.Killed;
+                    _killRequested = false;
+                }
+                else
+                {
+                    State = MinecraftSessionState.GameCrashed;
+                }
+                _mcProcess.Dispose(); // Release resources used by the Minecraft process when it exits. Exit code is reflected by the MinecraftSessionState.
+            };
+
+            State = MinecraftSessionState.LaunchingProcess;
+            _mcProcess.Start();
+            State = MinecraftSessionState.GameRunning;
         }
         catch (Exception)
         {
@@ -165,29 +188,6 @@ class MinecraftSession
             // QUESTION: Invoke an event here? Maybe just use a general state changed event?
             throw; // rethrow for caller to handle
         }
-
-        State = MinecraftSessionState.LaunchingProcess;
-        await Task.Run(_mcProcess.Start);
-        State = MinecraftSessionState.GameRunning;
-
-        // Updates session state when the game process exits
-        _mcProcess.Exited += (_, e) =>
-        {
-            if (e.ExitCode == 0)
-            {
-                State = MinecraftSessionState.GameExited;
-            }
-            else if (_killRequested)
-            {
-                State = MinecraftSessionState.Killed;
-                _killRequested = false;
-            }
-            else
-            {
-                State = MinecraftSessionState.GameCrashed;
-            }
-            _mcProcess.Dispose(); // Release resources used by the Minecraft process when it exits. Exit code is reflected by the MinecraftSessionState.
-        };
     }
 
     /// <summary>

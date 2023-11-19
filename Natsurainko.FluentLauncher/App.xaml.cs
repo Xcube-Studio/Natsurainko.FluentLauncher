@@ -19,6 +19,7 @@ using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
 using System;
 using System.Text;
+using System.Threading;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -32,6 +33,11 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+
+        // Increase thread pool size for bad async code
+        // TODO: Remove this when refactoring is completed
+        ThreadPool.SetMinThreads(20, 20);
+        ThreadPool.SetMaxThreads(20, 20);
 
         // Global exception handler
         UnhandledException += (_, e) =>

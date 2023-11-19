@@ -106,7 +106,7 @@ internal class LaunchService : DefaultLaunchService
         // Start
         try
         {
-            session.Start().Wait(); // TODO: update to a fully async implementation
+            session.Start(); // TODO: update to a fully async implementation
         }
         catch (Exception ex)
         {

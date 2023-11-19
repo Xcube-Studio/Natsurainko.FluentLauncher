@@ -63,10 +63,10 @@ internal partial class HomeViewModel : ObservableObject
     public Visibility AccountTag => ActiveAccount is null ? Visibility.Collapsed : Visibility.Visible;
 
     [RelayCommand(CanExecute = nameof(CanExecuteLaunch))]
-    private async Task Launch()
+    private void Launch()
     {
-        await Task.Run(() => _launchService.LaunchGame(ActiveGameInfo));
         _navigationService.NavigateTo("ActivitiesNavigationPage", "LaunchTasksPage");
+        Task.Run(() => _launchService.LaunchGame(ActiveGameInfo));
     }
 
     [RelayCommand]

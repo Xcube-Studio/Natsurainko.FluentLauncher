@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Components.Launch;
+using Natsurainko.FluentLauncher.Services.Launch;
 using Nrk.FluentCore.Launch;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,14 +14,17 @@ internal partial class LoggerViewModel : ObservableObject
 {
     private readonly ObservableCollection<GameLoggerOutput> _gameLoggerOutputs;
 
-    public LoggerViewModel(LaunchProcess launchProcess, Views.LoggerPage view)
+    public LoggerViewModel(LaunchSessionViewModel launchProcess, Views.LoggerPage view)
     {
         _gameLoggerOutputs = launchProcess._gameLoggerOutputs;
         _gameLoggerOutputs.CollectionChanged += LoggerItems_CollectionChanged;
 
         View = view;
 
-        if (!launchProcess.McProcess.HasExited)
+        if (!(launchProcess.DisplayState == MinecraftSessionState.GameExited ||
+            launchProcess.DisplayState == MinecraftSessionState.Killed ||
+            launchProcess.DisplayState == MinecraftSessionState.GameCrashed)
+            )
             View.Unloaded += (_, e) => _gameLoggerOutputs.CollectionChanged -= LoggerItems_CollectionChanged;
 
         OnPropertyChanged();

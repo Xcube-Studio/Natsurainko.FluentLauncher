@@ -24,7 +24,7 @@ internal partial class ExceptionDialogViewModel : ObservableObject
         package.SetText(ErrorMessage);
         Clipboard.SetContent(package);
 
-        // Launch GitHub
+        // Start GitHub
         _ = Launcher.LaunchUriAsync(new Uri("https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/issues/new/choose"));
     }
 }

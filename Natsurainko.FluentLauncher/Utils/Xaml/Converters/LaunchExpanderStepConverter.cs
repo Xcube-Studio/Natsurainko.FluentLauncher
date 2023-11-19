@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Data;
+using Natsurainko.FluentLauncher.Services.Launch;
 using Nrk.FluentCore.Launch;
 using System;
 
@@ -34,7 +35,7 @@ internal class LaunchExpanderStepConverter : IValueConverter
             },
             "FontIconVisibility" => (int)value == 1 ? Visibility.Collapsed : Visibility.Visible,
             "ProgressRingActive" => (int)value == 1,
-            "ExitFontIcon" => (LaunchState)value == LaunchState.GameCrashed ? "\uE711" : "\uE73E",
+            "ExitFontIcon" => (MinecraftSessionState)value == MinecraftSessionState.GameCrashed ? "\uE711" : "\uE73E",
             _ => null
         };
     }

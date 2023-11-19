@@ -12,7 +12,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.Activities;
 
 class LaunchSessions : ObservableObject
 {
-    public ObservableCollection<LaunchSessionViewModel> Sessions = new();
+    public ObservableCollection<LaunchSessionViewModel> SessionViewModels = new();
 
     public LaunchSessions(LaunchService launchService)
     {
@@ -21,6 +21,6 @@ class LaunchSessions : ObservableObject
 
     private void LaunchService_SessionCreated(object sender, MinecraftSession e)
     {
-        Sessions.Insert(0, new LaunchSessionViewModel(e));
+        SessionViewModels.Insert(0, new LaunchSessionViewModel(e));
     }
 }

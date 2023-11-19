@@ -77,33 +77,41 @@ internal class LaunchService : DefaultLaunchService
         UpdateJumpList(gameInfo);
 
         // _mcProcess is not null after session.Start()
-        session.ProcessStarted += (_, _) =>
-        {
-            var title = GameWindowTitle(specialConfig);
-            if (string.IsNullOrEmpty(title)) return;
+        // TODO: Update window title
+        //session.ProcessStarted += (_, _) =>
+        //{
+        //    var title = GameWindowTitle(specialConfig);
+        //    if (string.IsNullOrEmpty(title)) return;
 
-            Task.Run(async () =>
-            {
-                try
-                {
-                    while (!(launchProcess._mcProcess?.HasExited).GetValueOrDefault(true))
-                    {
-                        if (launchProcess._mcProcess != null && launchProcess._mcProcess?.MainWindowTitle != title)
-                            User32.SetWindowText(launchProcess.McProcess.MainWindowHandle, title);
+        //    Task.Run(async () =>
+        //    {
+        //        try
+        //        {
+        //            while (!(launchProcess._mcProcess?.HasExited).GetValueOrDefault(true))
+        //            {
+        //                if (launchProcess._mcProcess != null && launchProcess._mcProcess?.MainWindowTitle != title)
+        //                    User32.SetWindowText(launchProcess.McProcess.MainWindowHandle, title);
 
-                        await Task.Delay(1000);
-                        launchProcess._mcProcess?.Refresh();
-                    }
-                }
-                catch //(Exception ex)
-                {
-                    //throw;
-                }
-            });
-        };
+        //                await Task.Delay(1000);
+        //                launchProcess._mcProcess?.Refresh();
+        //            }
+        //        }
+        //        catch //(Exception ex)
+        //        {
+        //            //throw;
+        //        }
+        //    });
+        //};
 
         // Start
-        session.Start().Wait(); // TODO: update to a fully async implementation
+        try
+        {
+            session.Start().Wait(); // TODO: update to a fully async implementation
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
     }
 
     public void LaunchFromJumpList(string arguments)

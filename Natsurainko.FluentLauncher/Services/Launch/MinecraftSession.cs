@@ -10,6 +10,7 @@ using Nrk.FluentCore.Management.Parsing;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -87,11 +88,15 @@ class MinecraftSession
     public event EventHandler<int>? DownloadElementsPosted;
 
     public event EventHandler? ProcessStarted;
+    public event EventHandler<MinecraftProcessExitedEventArgs>? ProcessExited;
 
     /// <summary>
     /// Raised when <see cref="State"/> changes
     /// </summary>
     public event EventHandler<MinecraftSessionStateChagnedEventArgs>? StateChanged;
+
+    public event DataReceivedEventHandler? OutputDataReceived;
+    public event DataReceivedEventHandler? ErrorDataReceived;
 
     private MinecraftProcess? _mcProcess; // TODO: Create on init, so it can be non-nullable, update argument list when needed before the process is started
     // QUESTION: Should this be public? MinecraftSession is designed to hide the underlying process, maybe should forward events instead?
@@ -137,7 +142,7 @@ class MinecraftSession
         {
             // QUESTION: Use async or not?
             State = MinecraftSessionState.Inspecting;
-            await Task.Run(CheckEnvironment);
+            CheckEnvironment();
 
             State = MinecraftSessionState.Authenticating;
             var authTask = Task.Run(Authenticate);
@@ -147,6 +152,12 @@ class MinecraftSession
 
             State = MinecraftSessionState.BuildingArguments;
             _mcProcess = CreateMinecraftProcess();
+
+            // Forward events from _mcProcess
+            _mcProcess.OutputDataReceived += OutputDataReceived;
+            _mcProcess.ErrorDataReceived += ErrorDataReceived;
+            _mcProcess.Started += ProcessStarted;
+            _mcProcess.Exited += ProcessExited;
         }
         catch (Exception)
         {
@@ -157,7 +168,6 @@ class MinecraftSession
 
         State = MinecraftSessionState.LaunchingProcess;
         await Task.Run(_mcProcess.Start);
-        ProcessStarted?.Invoke(this, EventArgs.Empty);
         State = MinecraftSessionState.GameRunning;
 
         // Updates session state when the game process exits
@@ -176,6 +186,7 @@ class MinecraftSession
             {
                 State = MinecraftSessionState.GameCrashed;
             }
+            _mcProcess.Dispose(); // Release resources used by the Minecraft process when it exits. Exit code is reflected by the MinecraftSessionState.
         };
     }
 

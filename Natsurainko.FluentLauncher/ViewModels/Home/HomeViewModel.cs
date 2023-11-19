@@ -11,6 +11,7 @@ using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Authentication;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Home;
 
@@ -62,9 +63,9 @@ internal partial class HomeViewModel : ObservableObject
     public Visibility AccountTag => ActiveAccount is null ? Visibility.Collapsed : Visibility.Visible;
 
     [RelayCommand(CanExecute = nameof(CanExecuteLaunch))]
-    public void Launch()
+    private async Task Launch()
     {
-        _launchService.LaunchGame(ActiveGameInfo);
+        await Task.Run(() => _launchService.LaunchGame(ActiveGameInfo));
         _navigationService.NavigateTo("ActivitiesNavigationPage", "LaunchTasksPage");
     }
 

@@ -205,6 +205,7 @@ internal class DownloadService : DefaultDownloadService
                         InheritedFrom = inheritsFrom,
                         QuiltBuild = info.PrimaryLoader.SelectedItem.Metadata.Deserialize<QuiltInstallBuild>()
                     },
+                    _ => throw new NotImplementedException()
                 };
 
                 executor.ProgressChanged += (_, e) => @this.OnProgressChanged(e);

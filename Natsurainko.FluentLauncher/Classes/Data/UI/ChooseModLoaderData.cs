@@ -3,6 +3,7 @@ using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Management.ModLoaders;
 using Nrk.FluentCore.Resources;
 using Nrk.FluentCore.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -66,7 +67,8 @@ internal partial class ChooseModLoaderData : ObservableObject
             ModLoaderType.Forge => $"{DownloadMirrors.Bmclapi.Domain}/forge/minecraft/{_manifestItem.Id}",
             ModLoaderType.OptiFine => $"{DownloadMirrors.Bmclapi.Domain}/optifine/{_manifestItem.Id}",
             ModLoaderType.Fabric => $"https://meta.fabricmc.net/v2/versions/loader/{_manifestItem.Id}",
-            ModLoaderType.Quilt => $"https://meta.quiltmc.org/v3/versions/loader/{_manifestItem.Id}"
+            ModLoaderType.Quilt => $"https://meta.quiltmc.org/v3/versions/loader/{_manifestItem.Id}",
+            _ => throw new NotImplementedException()
         };
 
         using var responseMessage = HttpUtils.HttpGet(url);

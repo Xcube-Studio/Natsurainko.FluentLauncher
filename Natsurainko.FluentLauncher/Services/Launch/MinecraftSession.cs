@@ -275,14 +275,13 @@ class MinecraftSession
     {
         (int maxMemory, int minMemory) = MemoryUtils.CalculateJavaMemory(_javaMemory);
 
-        var args = new DefaultArgumentsBuilder(GameInfo)
+        return new MinecraftProcessBuilder(GameInfo)
             .SetLibraries(_enabledLibraries)
             .SetAccountSettings(Account, _useDemoUser)
             .SetJavaSettings(_javaPath, maxMemory, minMemory)
             .SetGameDirectory(_gameDirectory)
-            .AddExtraParameters(_vmParameters, _extraGameParameters)
+            .AddArguments(_vmParameters)
+            .AddArguments(_extraGameParameters)
             .Build();
-
-        return new MinecraftProcess(_javaPath, _gameDirectory, args);
     }
 }

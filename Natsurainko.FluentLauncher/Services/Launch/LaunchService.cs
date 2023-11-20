@@ -27,9 +27,9 @@ namespace Natsurainko.FluentLauncher.Services.Launch;
 internal class LaunchService
 {
     private readonly AuthenticationService _authenticationService;
-    private readonly new SettingsService _settingsService;
-    private readonly new AccountService _accountService;
-    private readonly new GameService _gameService;
+    private readonly SettingsService _settingsService;
+    private readonly AccountService _accountService;
+    private readonly GameService _gameService;
     private readonly DownloadService _downloadService;
 
     private readonly List<MinecraftSession> _sessions = new();

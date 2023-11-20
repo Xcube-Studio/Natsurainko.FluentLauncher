@@ -24,7 +24,7 @@ using Nrk.FluentCore.Management.Parsing;
 namespace Natsurainko.FluentLauncher.Services.Launch;
 #nullable enable
 
-internal class LaunchService : DefaultLaunchService
+internal class LaunchService
 {
     private readonly AuthenticationService _authenticationService;
     private readonly new SettingsService _settingsService;
@@ -44,7 +44,6 @@ internal class LaunchService : DefaultLaunchService
         AccountService accountService,
         AuthenticationService authenticationService,
         DownloadService downloadService)
-        : base(settingsService, gameService, accountService)
     {
         _accountService = accountService;
         _authenticationService = authenticationService;

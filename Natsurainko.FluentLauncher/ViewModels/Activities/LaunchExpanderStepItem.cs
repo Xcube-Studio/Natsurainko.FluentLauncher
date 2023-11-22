@@ -2,7 +2,7 @@
 using Natsurainko.FluentLauncher.Services.Launch;
 using Nrk.FluentCore.Launch;
 
-namespace Natsurainko.FluentLauncher.Classes.Data.UI;
+namespace Natsurainko.FluentLauncher.ViewModels.Activities;
 
 internal partial class LaunchExpanderStepItem : ObservableObject
 {

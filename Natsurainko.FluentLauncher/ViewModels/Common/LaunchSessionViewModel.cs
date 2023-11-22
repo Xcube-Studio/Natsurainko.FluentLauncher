@@ -4,6 +4,7 @@ using Microsoft.UI;
 using Microsoft.UI.Xaml.Media;
 using Natsurainko.FluentLauncher.Classes.Data.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
+using Natsurainko.FluentLauncher.ViewModels.Activities;
 using Nrk.FluentCore.Launch;
 using System;
 using System.Collections.ObjectModel;
@@ -28,10 +29,11 @@ internal partial class LaunchSessionViewModel : ObservableObject
         _launchSession = session;
 
         // Handles all state changes
+        // !!!Event subscription issue: session might have already been started when this viewmodel is constructed
         session.StateChanged += (_, e)
             => App.DispatcherQueue.TryEnqueue(() =>
             {
-                DisplayState = e.NewState;
+                LaunchSessionStateChangedHandler(e);
             });
 
         // Retrieve the process output streams
@@ -70,8 +72,6 @@ internal partial class LaunchSessionViewModel : ObservableObject
         new LaunchExpanderStepItem { Step = MinecraftSessionState.LaunchingProcess }
     };
 
-    private int lastState;
-
     [ObservableProperty]
     private bool isExpanded = true;
 
@@ -98,9 +98,13 @@ internal partial class LaunchSessionViewModel : ObservableObject
 
     public string ProgressText => Progress.ToString("P1");
 
-    partial void OnDisplayStateChanged(MinecraftSessionState oldValue, MinecraftSessionState newValue)
+    private void LaunchSessionStateChangedHandler(MinecraftSessionStateChagnedEventArgs e)
     {
-        var state = (int)DisplayState;
+        DisplayState = e.NewState;
+
+        int state = (int)DisplayState;
+        int lastState = (int)e.OldState;
+        MinecraftSessionState newValue = e.NewState;
 
         if (2 <= state && state <= 6)
         {
@@ -111,19 +115,19 @@ internal partial class LaunchSessionViewModel : ObservableObject
         if (1 <= state && state <= 5)
             StepItems[state - 1].RunState = 1;
 
-        if (DisplayState == MinecraftSessionState.Faulted)
-            StepItems[lastState - 1].RunState = -1;
-
-        if (DisplayState == MinecraftSessionState.GameRunning)
+        if (newValue >= MinecraftSessionState.GameRunning) // Update start time for any state after GameRunning
             ProcessStartTime = $"[{DateTime.Now:HH:mm:ss}]";
 
-        if (DisplayState == MinecraftSessionState.GameExited)
+        // Fault before the game is started
+        if (newValue == MinecraftSessionState.Faulted)
+            StepItems[lastState - 1].RunState = -1;
+
+        // Session finished (exited, crashed, or killed)
+        if (newValue == MinecraftSessionState.GameExited)
             IsExpanded = false;
 
-        if (DisplayState == MinecraftSessionState.GameExited || DisplayState == MinecraftSessionState.GameCrashed)
+        if (newValue == MinecraftSessionState.GameExited || newValue == MinecraftSessionState.GameCrashed || newValue == MinecraftSessionState.Killed)
             ProcessExitTime = $"[{DateTime.Now:HH:mm:ss}]";
-
-        lastState = state;
 
         UpdateLaunchProgress();
     }

@@ -76,7 +76,7 @@ internal partial class LaunchSessionViewModel : ObservableObject
     private bool isExpanded = true;
 
     [ObservableProperty]
-    private MinecraftSessionState displayState;
+    private MinecraftSessionState sessionState;
 
     [ObservableProperty]
     private string? processStartTime;
@@ -100,9 +100,9 @@ internal partial class LaunchSessionViewModel : ObservableObject
 
     private void LaunchSessionStateChangedHandler(MinecraftSessionStateChagnedEventArgs e)
     {
-        DisplayState = e.NewState;
+        SessionState = e.NewState;
 
-        int state = (int)DisplayState;
+        int state = (int)SessionState;
         int lastState = (int)e.OldState;
         MinecraftSessionState newValue = e.NewState;
 

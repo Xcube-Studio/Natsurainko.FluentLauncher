@@ -21,9 +21,9 @@ internal partial class LoggerViewModel : ObservableObject
 
         View = view;
 
-        if (!(launchProcess.DisplayState == MinecraftSessionState.GameExited ||
-            launchProcess.DisplayState == MinecraftSessionState.Killed ||
-            launchProcess.DisplayState == MinecraftSessionState.GameCrashed)
+        if (!(launchProcess.SessionState == MinecraftSessionState.GameExited ||
+            launchProcess.SessionState == MinecraftSessionState.Killed ||
+            launchProcess.SessionState == MinecraftSessionState.GameCrashed)
             )
             View.Unloaded += (_, e) => _gameLoggerOutputs.CollectionChanged -= LoggerItems_CollectionChanged;
 

@@ -303,7 +303,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="cd ../&#xD;&#xA;call Localizer.bat &lt; nul" />
+    <Exec Command="cd ..&#xD;&#xA;pwsh ./update-localization.ps1" />
   </Target>
 
 </Project>

@@ -1,12 +1,12 @@
 ﻿using Natsurainko.FluentLauncher.Classes.Data.Launch;
+using Natsurainko.FluentLauncher.Classes.Exceptions;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Download;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Authentication;
-using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Environment;
-using Nrk.FluentCore.Services.Launch;
+using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Utils;
 using PInvoke;
 using System;
@@ -19,7 +19,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.UI.StartScreen;
-using Nrk.FluentCore.Management.Parsing;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
 #nullable enable
@@ -54,7 +53,7 @@ internal class LaunchService
         Sessions = new(_sessions);
     }
 
-    public void LaunchGame(GameInfo gameInfo)
+    public async void LaunchGame(GameInfo gameInfo)
     {
         var session = CreateLaunchSession(gameInfo); // TODO: replace with ctor of MinecraftSession
         _sessions.Add(session);
@@ -75,37 +74,9 @@ internal class LaunchService
 
         UpdateJumpList(gameInfo);
 
-        // _mcProcess is not null after session.Start()
-        // TODO: Update window title
-        //session.ProcessStarted += (_, _) =>
-        //{
-        //    var title = GameWindowTitle(specialConfig);
-        //    if (string.IsNullOrEmpty(title)) return;
-
-        //    Task.Run(async () =>
-        //    {
-        //        try
-        //        {
-        //            while (!(launchProcess._mcProcess?.HasExited).GetValueOrDefault(true))
-        //            {
-        //                if (launchProcess._mcProcess != null && launchProcess._mcProcess?.MainWindowTitle != title)
-        //                    User32.SetWindowText(launchProcess.McProcess.MainWindowHandle, title);
-
-        //                await Task.Delay(1000);
-        //                launchProcess._mcProcess?.Refresh();
-        //            }
-        //        }
-        //        catch //(Exception ex)
-        //        {
-        //            //throw;
-        //        }
-        //    });
-        //};
-
-        // Start
         try
         {
-            session.Start(); // TODO: update to a fully async implementation
+            await session.StartAsync(); // TODO: update to a fully async implementation
         }
         catch (Exception ex)
         {
@@ -183,37 +154,79 @@ internal class LaunchService
         string? suitableJava = null;
 
         if (string.IsNullOrEmpty(_settingsService.ActiveJava))
-            throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoActiveJava")); // TODO: Do not localize exception message
+            throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoActiveJava")); 
+        // TODO: Do not localize exception message
 
         suitableJava = _settingsService.EnableAutoJava ? GetSuitableJava(gameInfo) : _settingsService.ActiveJava;
         if (suitableJava == null)
             throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoSuitableJava").Replace("${version}", gameInfo.GetSuitableJavaVersion()));
 
-        // Game specific config
-        var specialConfig = gameInfo.GetSpecialConfig();
+        var specialConfig = gameInfo.GetSpecialConfig(); // Game specific config
+        var launchAccount = GetLaunchAccount(specialConfig, _accountService) 
+            ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount")); // Determine which account to use
 
-        string gameDirectory = GetGameDirectory(gameInfo, specialConfig);
-
-        // Determine which account to use
-        var launchAccount = GetLaunchAccount(specialConfig, _accountService);
-
-        if (launchAccount == null)
-            throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
-
-        // Libraries
-        var libraryParser = new DefaultLibraryParser(gameInfo);
-        libraryParser.EnumerateLibraries(out var enabledLibraries, out var enabledNativesLibraries);
-
-        // Launch session
-        var vmParams = GetExtraVmParameters(specialConfig, launchAccount);
-        var extraParams = GetExtraGameParameters(specialConfig);
-
-        var session = new MinecraftSession(
-            gameInfo, launchAccount, specialConfig, enabledLibraries, suitableJava,
-            _settingsService.EnableDemoUser, _settingsService.JavaMemory, gameDirectory, vmParams, extraParams,
-            _downloadService, _authenticationService, _accountService)
+        Account Authenticate()
         {
-            EnableAccountRefresh = _settingsService.AutoRefresh
+            // TODO: refactor to remove dependency on AuthenticationService, and AccountService.
+            // Call FluentCore to refresh account directly.
+            try
+            {
+                if (launchAccount.Equals(_accountService.ActiveAccount))
+                {
+                    _authenticationService.RefreshCurrentAccount();
+                    return _accountService.ActiveAccount;
+                }
+                else
+                {
+                    _authenticationService.RefreshContainedAccount(launchAccount);
+                    return GetLaunchAccount(specialConfig, _accountService);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new AuthenticateRefreshAccountException(ex);
+            }
+        }
+
+        var (maxMemory, minMemory) = _settingsService.EnableAutoJava
+            ? MemoryUtils.CalculateJavaMemory()
+            : (_settingsService.JavaMemory, _settingsService.JavaMemory);
+
+        var session = new MinecraftSession() // Launch session
+        {
+            Account = launchAccount,
+            GameInfo = gameInfo,
+            GameDirectory = GetGameDirectory(gameInfo, specialConfig),
+            JavaPath = suitableJava,
+            MaxMemory = maxMemory,
+            MinMemory = minMemory,
+            UseDemoUser = _settingsService.EnableDemoUser,
+            ExtraGameParameters = GetExtraGameParameters(specialConfig),
+            ExtraVmParameters = GetExtraVmParameters(specialConfig, launchAccount),
+            CreateResourcesDownloader = (libs) => _downloadService.CreateResourcesDownloader
+                (gameInfo, libs)
+        };
+
+        if (_settingsService.AutoRefresh)
+            session.RefreshAccountTask = new Task<Account>(Authenticate);
+
+        session.ProcessStarted += (s, e) =>
+        {
+            var title = GameWindowTitle(specialConfig);
+            if (string.IsNullOrEmpty(title)) return;
+
+            Task.Run(async () =>
+            {
+                try
+                {
+                    while (session.State == MinecraftSessionState.GameRunning)
+                    {
+                        User32.SetWindowText(session.GetProcessMainWindowHandle(), title);
+                        await Task.Delay(1000);
+                    }
+                }
+                catch { }
+            });
         };
 
         return session;

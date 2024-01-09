@@ -2,13 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Media;
-using Natsurainko.FluentLauncher.Classes.Data.UI;
-using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.ViewModels.Activities;
 using Nrk.FluentCore.Launch;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -23,6 +20,7 @@ internal partial class LaunchSessionViewModel : ObservableObject
 {
     private readonly MinecraftSession _launchSession;
     private GameInfo _gameInfo => _launchSession.GameInfo;
+    public GameInfo GameInfo => _gameInfo;
 
     public LaunchSessionViewModel(MinecraftSession session) : base()
     {
@@ -30,15 +28,19 @@ internal partial class LaunchSessionViewModel : ObservableObject
 
         // Handles all state changes
         // !!!Event subscription issue: session might have already been started when this viewmodel is constructed
-        session.StateChanged += (_, e)
-            => App.DispatcherQueue.TryEnqueue(() =>
-            {
-                LaunchSessionStateChangedHandler(e);
-            });
+        session.StateChanged += (_, e) => App.DispatcherQueue.TryEnqueue
+            (() => LaunchSessionStateChangedHandler(e));
 
         // Retrieve the process output streams
         session.OutputDataReceived += McProcess_OutputDataReceived;
         session.ErrorDataReceived += McProcess_ErrorDataReceived;
+
+        session.SingleFileDownloaded += (_, _) => App.DispatcherQueue.TryEnqueue(UpdateDownloadProgress);
+        session.DownloadElementsPosted += (_, count) => App.DispatcherQueue.TryEnqueue(() =>
+        {
+            StepItems[2].TaskNumber = count;
+            UpdateLaunchProgress();
+        });
 
         // TODO: show exception when falted
 

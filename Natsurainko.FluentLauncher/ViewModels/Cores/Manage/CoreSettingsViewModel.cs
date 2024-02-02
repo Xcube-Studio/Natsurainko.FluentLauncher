@@ -9,6 +9,7 @@ using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Authentication;
+using Nrk.FluentCore.Launch;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -21,7 +22,7 @@ internal partial class CoreSettingsViewModel : ObservableObject, INavigationAwar
     private readonly GameService _gameService;
     private readonly AccountService _accountService;
 
-    private ExtendedGameInfo _gameInfo;
+    private GameInfo _gameInfo;
     private bool inited = false;
 
     public ReadOnlyObservableCollection<Account> Accounts { get; private set; }
@@ -41,7 +42,7 @@ internal partial class CoreSettingsViewModel : ObservableObject, INavigationAwar
 
     void INavigationAware.OnNavigatedTo(object parameter)
     {
-        _gameInfo = parameter as ExtendedGameInfo;
+        _gameInfo = parameter as GameInfo;
         GameSpecialConfig = _gameInfo.GetSpecialConfig();
 
         Accounts = _accountService.Accounts;

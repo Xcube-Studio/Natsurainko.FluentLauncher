@@ -50,24 +50,7 @@ internal class LaunchService : DefaultLaunchService
 
         OnSessionCreated(session);
 
-        /*
-        var specialConfig = gameInfo.GetSpecialConfig();
-
-        
-
-        // Update launch time
-        var launchTime = DateTime.Now;
-        specialConfig.LastLaunchTime = launchTime;
-
-        var contained = _gameService.Games.Where(x => x.AbsoluteId.Equals(gameInfo.AbsoluteId)).FirstOrDefault();
-        if (contained != null)
-            contained.LastLaunchTime = launchTime;
-
-        if (gameInfo is ExtendedGameInfo extendedGameInfo)
-            extendedGameInfo.LastLaunchTime = launchTime;
-
-        */
-
+        gameInfo.UpdateLastLaunchTimeToNow();
         //UpdateJumpList(gameInfo);
 
         try

@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Utils;
@@ -10,7 +9,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
 
 internal partial class CoreStatisticViewModel : ObservableObject, INavigationAware
 {
-    private ExtendedGameInfo _gameInfo;
+    private GameInfo _gameInfo;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(FormatSize))]
@@ -41,7 +40,7 @@ internal partial class CoreStatisticViewModel : ObservableObject, INavigationAwa
 
     void INavigationAware.OnNavigatedTo(object parameter)
     {
-        _gameInfo = parameter as ExtendedGameInfo;
+        _gameInfo = parameter as GameInfo;
 
         Task.Run(() =>
         {

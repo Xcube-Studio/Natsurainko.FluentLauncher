@@ -13,6 +13,7 @@ using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Environment;
+using Nrk.FluentCore.Services.Launch;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -332,7 +333,7 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
         if (!processingActiveAccountChangedMessage)
         {
             if (value is not null)
-                _accountService.Activate(value);
+                _accountService.ActivateAccount(value);
         }
     }
 
@@ -343,7 +344,7 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     [RelayCommand]
     public void RemoveAccount(Account account)
     {
-        _accountService.Remove(account);
+        _accountService.RemoveAccount(account);
     }
     #endregion
 

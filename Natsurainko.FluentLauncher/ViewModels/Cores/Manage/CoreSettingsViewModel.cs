@@ -111,8 +111,8 @@ internal partial class CoreSettingsViewModel : ObservableObject, INavigationAwar
     {
         if (e.PropertyName == "NickName" && !string.IsNullOrEmpty(GameSpecialConfig.NickName))
         {
-            if (_gameInfo.Equals(_gameService.ActiveGameInfo))
-                _gameService.ActiveGameInfo.Name = GameSpecialConfig.NickName;
+            if (_gameInfo.Equals(_gameService.ActiveGame))
+                _gameService.ActiveGame.Name = GameSpecialConfig.NickName;
 
             _gameInfo.Name = GameSpecialConfig.NickName;
         }

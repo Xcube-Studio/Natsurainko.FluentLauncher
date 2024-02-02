@@ -7,11 +7,12 @@ using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Environment;
 using Nrk.FluentCore.Launch;
+using Nrk.FluentCore.Services.Accounts;
+using Nrk.FluentCore.Services.Launch;
 using Nrk.FluentCore.Utils;
 using PInvoke;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -21,21 +22,14 @@ using Windows.ApplicationModel;
 using Windows.UI.StartScreen;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
-#nullable enable
 
-internal class LaunchService
+internal class LaunchService : DefaultLaunchService
 {
     private readonly AuthenticationService _authenticationService;
-    private readonly SettingsService _settingsService;
-    private readonly AccountService _accountService;
-    private readonly GameService _gameService;
     private readonly DownloadService _downloadService;
 
-    private readonly List<MinecraftSession> _sessions = new();
+    private SettingsService AppSettingsService => (SettingsService)_settingsService;
 
-    public ReadOnlyCollection<MinecraftSession> Sessions { get; }
-
-    public event EventHandler<MinecraftSession>? SessionCreated;
 
     public LaunchService(
         SettingsService settingsService,
@@ -43,40 +37,42 @@ internal class LaunchService
         AccountService accountService,
         AuthenticationService authenticationService,
         DownloadService downloadService)
-    {
-        _accountService = accountService;
-        _authenticationService = authenticationService;
-        _settingsService = settingsService;
+        : base(settingsService, accountService, gameService)
+    { 
+        _authenticationService = authenticationService; 
         _downloadService = downloadService;
-        _gameService = gameService;
-
-        Sessions = new(_sessions);
     }
 
-    public async void LaunchGame(GameInfo gameInfo)
+    public override async void LaunchGame(GameInfo gameInfo)
     {
-        var session = CreateLaunchSession(gameInfo); // TODO: replace with ctor of MinecraftSession
+        var session = CreateMinecraftSessionFromGameInfo(gameInfo); // TODO: replace with ctor of MinecraftSession
         _sessions.Add(session);
-        SessionCreated?.Invoke(this, session);
 
+        OnSessionCreated(session);
+
+        /*
         var specialConfig = gameInfo.GetSpecialConfig();
+
+        
 
         // Update launch time
         var launchTime = DateTime.Now;
         specialConfig.LastLaunchTime = launchTime;
 
-        var contained = _gameService.GameInfos.Where(x => x.AbsoluteId.Equals(gameInfo.AbsoluteId)).FirstOrDefault();
+        var contained = _gameService.Games.Where(x => x.AbsoluteId.Equals(gameInfo.AbsoluteId)).FirstOrDefault();
         if (contained != null)
             contained.LastLaunchTime = launchTime;
 
         if (gameInfo is ExtendedGameInfo extendedGameInfo)
             extendedGameInfo.LastLaunchTime = launchTime;
 
-        UpdateJumpList(gameInfo);
+        */
+
+        //UpdateJumpList(gameInfo);
 
         try
         {
-            await session.StartAsync(); // TODO: update to a fully async implementation
+            await session.StartAsync();
         }
         catch (Exception ex)
         {
@@ -148,7 +144,7 @@ internal class LaunchService
         //};
     }
 
-    public MinecraftSession CreateLaunchSession(GameInfo gameInfo)
+    public override MinecraftSession CreateMinecraftSessionFromGameInfo(GameInfo gameInfo)
     {
         // Java
         string? suitableJava = null;
@@ -157,7 +153,7 @@ internal class LaunchService
             throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoActiveJava")); 
         // TODO: Do not localize exception message
 
-        suitableJava = _settingsService.EnableAutoJava ? GetSuitableJava(gameInfo) : _settingsService.ActiveJava;
+        suitableJava = AppSettingsService.EnableAutoJava ? GetSuitableJava(gameInfo) : _settingsService.ActiveJava;
         if (suitableJava == null)
             throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoSuitableJava").Replace("${version}", gameInfo.GetSuitableJavaVersion()));
 
@@ -188,7 +184,7 @@ internal class LaunchService
             }
         }
 
-        var (maxMemory, minMemory) = _settingsService.EnableAutoJava
+        var (maxMemory, minMemory) = AppSettingsService.EnableAutoJava
             ? MemoryUtils.CalculateJavaMemory()
             : (_settingsService.JavaMemory, _settingsService.JavaMemory);
 
@@ -207,7 +203,7 @@ internal class LaunchService
                 (gameInfo, libs)
         };
 
-        if (_settingsService.AutoRefresh)
+        if (AppSettingsService.AutoRefresh)
             session.RefreshAccountTask = new Task<Account>(Authenticate);
 
         session.ProcessStarted += (s, e) =>
@@ -266,7 +262,7 @@ internal class LaunchService
             else return gameInfo.MinecraftFolderPath;
         }
 
-        if (_settingsService.EnableIndependencyCore)
+        if (AppSettingsService.EnableIndependencyCore)
             return Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId);
 
         return gameInfo.MinecraftFolderPath;
@@ -281,14 +277,14 @@ internal class LaunchService
         }
         else
         {
-            if (!string.IsNullOrEmpty(_settingsService.GameWindowTitle))
-                return _settingsService.GameWindowTitle;
+            if (!string.IsNullOrEmpty(AppSettingsService.GameWindowTitle))
+                return AppSettingsService.GameWindowTitle;
         }
 
         return null;
     }
 
-    public static Account GetLaunchAccount(GameSpecialConfig specialConfig, AccountService _accountService)
+    public static Account GetLaunchAccount(GameSpecialConfig specialConfig, IAccountService _accountService)
     {
         if (specialConfig.EnableSpecialSetting && specialConfig.EnableTargetedAccount && specialConfig.Account != null)
         {
@@ -356,16 +352,16 @@ internal class LaunchService
         }
         else
         {
-            if (_settingsService.EnableFullScreen)
+            if (AppSettingsService.EnableFullScreen)
                 yield return "--fullscreen";
 
-            if (_settingsService.GameWindowWidth > 0)
-                yield return $"--width {_settingsService.GameWindowWidth}";
+            if (AppSettingsService.GameWindowWidth > 0)
+                yield return $"--width {AppSettingsService.GameWindowWidth}";
 
-            if (_settingsService.GameWindowHeight > 0)
-                yield return $"--height {_settingsService.GameWindowHeight}";
+            if (AppSettingsService.GameWindowHeight > 0)
+                yield return $"--height {AppSettingsService.GameWindowHeight}";
 
-            if (!string.IsNullOrEmpty(_settingsService.GameServerAddress))
+            if (!string.IsNullOrEmpty(AppSettingsService.GameServerAddress))
             {
                 specialConfig.ServerAddress.ParseServerAddress(out var host, out var port);
 

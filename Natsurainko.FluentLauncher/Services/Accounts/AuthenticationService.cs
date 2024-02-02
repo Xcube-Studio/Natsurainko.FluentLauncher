@@ -48,12 +48,7 @@ internal class AuthenticationService
 
         App.DispatcherQueue.TryEnqueue(() =>
         {
-#pragma warning disable CS0612 // Type or member is obsolete
-            _accountService.AddAccount(refreshedAccount);
-#pragma warning restore CS0612 // Type or member is obsolete
-            _accountService.Activate(refreshedAccount);
-
-            _accountService.Remove(activeAccount);
+            _accountService.UpdateAccount(refreshedAccount, true);
 
             Task.Run(() => _skinCacheService.TryCacheSkin(refreshedAccount));
         });
@@ -81,9 +76,7 @@ internal class AuthenticationService
 
         App.DispatcherQueue.TryEnqueue(() =>
         {
-            _accountService.Remove(account);
-            _accountService.AddAccount(refreshedAccount);
-
+            _accountService.UpdateAccount(refreshedAccount, false);
             Task.Run(() => _skinCacheService.TryCacheSkin(refreshedAccount));
         });
     }

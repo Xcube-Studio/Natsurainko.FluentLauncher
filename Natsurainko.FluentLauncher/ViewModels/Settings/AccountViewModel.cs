@@ -66,7 +66,7 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
 
     partial void OnActiveAccountChanged(Account value)
     {
-        if (value is not null) _accountService.Activate(value);
+        if (value is not null) _accountService.ActivateAccount(value);
     }
 
     [RelayCommand]

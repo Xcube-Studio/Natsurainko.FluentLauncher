@@ -101,7 +101,7 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
         var account = vm.SelectedAccount;
 
         _accountService.AddAccount(account);
-        _accountService.Activate(account);
+        _accountService.ActivateAccount(account);
 
         _dialog.Hide();
 

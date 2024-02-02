@@ -23,6 +23,7 @@
     <AppxBundle>Never</AppxBundle>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <Nullable>enable</Nullable>
 
   </PropertyGroup>
 

@@ -56,7 +56,7 @@ internal partial class EnterCoreSettingsViewModel : WizardViewModelBase
 
     public bool CheckAbsoluteId()
     {
-        if (string.IsNullOrEmpty(AbsoluteId) || _gameService.GameInfos.Where(x => x.AbsoluteId.Equals(AbsoluteId)).Any())
+        if (string.IsNullOrEmpty(AbsoluteId) || _gameService.Games.Where(x => x.AbsoluteId.Equals(AbsoluteId)).Any())
             return false;
 
         return true;

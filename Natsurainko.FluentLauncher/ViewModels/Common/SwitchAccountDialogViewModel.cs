@@ -36,12 +36,12 @@ internal partial class SwitchAccountDialogViewModel : SettingsViewModelBase, ISe
     }
 
     [RelayCommand]
-    public void Confirm() => _accountService.Activate(ActiveAccount);
+    public void Confirm() => _accountService.ActivateAccount(ActiveAccount);
 
     [RelayCommand(CanExecute = nameof(EnableRemoveAccount))]
     public void Remove()
     {
-        _accountService.Remove(ActiveAccount);
+        _accountService.RemoveAccount(ActiveAccount);
         ActiveAccount = _accountService.ActiveAccount;
     }
 

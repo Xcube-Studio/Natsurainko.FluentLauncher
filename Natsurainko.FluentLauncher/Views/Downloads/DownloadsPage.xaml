@@ -12,7 +12,6 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.Media"
-    xmlns:ui="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
     d:DataContext="{d:DesignInstance Type=downloads:DownloadsViewModel}"
     Background="Transparent"
@@ -346,11 +345,15 @@
                     Style="{ThemeResource BaseTextBlockStyle}"
                     Text="CurseForge Popular Mod Resources" />
 
-                <ui:AdaptiveGridView
-                    DesiredWidth="300"
-                    ItemTemplate="{ThemeResource ResourceTemplate}"
-                    ItemsSource="{Binding CurseMcMods}"
-                    SelectionMode="None" />
+                <ItemsRepeater ItemTemplate="{ThemeResource ResourceTemplate}" ItemsSource="{Binding CurseMcMods}">
+                    <ItemsRepeater.Layout>
+                        <UniformGridLayout
+                            ItemsJustification="Start"
+                            ItemsStretch="Fill"
+                            MinColumnSpacing="2"
+                            MinItemWidth="300" />
+                    </ItemsRepeater.Layout>
+                </ItemsRepeater>
 
                 <TextBlock
                     x:Uid="Downloads_DownloadsPage_T3"
@@ -358,11 +361,15 @@
                     Style="{ThemeResource BaseTextBlockStyle}"
                     Text="CurseForge Popular Modpack Resources" />
 
-                <ui:AdaptiveGridView
-                    DesiredWidth="300"
-                    ItemTemplate="{ThemeResource ResourceTemplate}"
-                    ItemsSource="{Binding CurseModPacks}"
-                    SelectionMode="None" />
+                <ItemsRepeater ItemTemplate="{ThemeResource ResourceTemplate}" ItemsSource="{Binding CurseModPacks}">
+                    <ItemsRepeater.Layout>
+                        <UniformGridLayout
+                            ItemsJustification="Start"
+                            ItemsStretch="Fill"
+                            MinColumnSpacing="2"
+                            MinItemWidth="300" />
+                    </ItemsRepeater.Layout>
+                </ItemsRepeater>
             </StackPanel>
         </Border>
     </ScrollViewer>

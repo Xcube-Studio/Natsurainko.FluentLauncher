@@ -2,18 +2,18 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:labs="using:CommunityToolkit.Labs.WinUI">
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:i="using:Microsoft.Xaml.Interactivity">
     <DataTemplate x:Key="StackTemplate">
         <Grid Background="Transparent">
-            <labs:SettingsCard
+            <controls:SettingsCard
                 Margin="2"
                 Padding="20,0"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 CommandParameter="{Binding}"
                 IsClickEnabled="True">
-                <labs:SettingsCard.Header>
+                <controls:SettingsCard.Header>
                     <Grid x:Name="DataGrid" Background="Transparent">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -51,14 +51,14 @@
                                 ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
                         </Grid>
                     </Grid>
-                </labs:SettingsCard.Header>
+                </controls:SettingsCard.Header>
                 <i:Interaction.Behaviors>
                     <behaviors:AncestorBindingBehavior
                         AncestorType="ItemsRepeater"
                         Binding="{Binding DataContext.OpenCoreManageCommand}"
                         TargetPropertyName="Command" />
                 </i:Interaction.Behaviors>
-            </labs:SettingsCard>
+            </controls:SettingsCard>
             <!--
 
             <Grid
@@ -149,7 +149,7 @@
         </Button>
     </DataTemplate>
     <DataTemplate x:Key="TileTemplate">
-        <labs:SettingsCard
+        <controls:SettingsCard
             Margin="2"
             Padding="20,0"
             HorizontalAlignment="Stretch"
@@ -162,7 +162,7 @@
                     Binding="{Binding DataContext.OpenCoreManageCommand}"
                     TargetPropertyName="Command" />
             </i:Interaction.Behaviors>
-            <labs:SettingsCard.Header>
+            <controls:SettingsCard.Header>
                 <Grid x:Name="DataGrid" Background="Transparent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -200,8 +200,8 @@
                             ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
                     </Grid>
                 </Grid>
-            </labs:SettingsCard.Header>
-        </labs:SettingsCard>
+            </controls:SettingsCard.Header>
+        </controls:SettingsCard>
     </DataTemplate>
 </ResourceDictionary>
 

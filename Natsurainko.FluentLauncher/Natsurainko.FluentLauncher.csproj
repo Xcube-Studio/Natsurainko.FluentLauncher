@@ -87,8 +87,8 @@
     <PackageReference Include="AppSettingsManagement.Windows" Version="0.2.6-alpha" />
     <PackageReference Include="ColorCode.WinUI" Version="2.0.15" />
     <PackageReference Include="CommunityToolkit.Labs.WinUI.SegmentedControl" Version="0.0.3" />
-    <PackageReference Include="CommunityToolkit.Labs.WinUI.SettingsControls" Version="0.0.18" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.0.240109" />
     <PackageReference Include="CommunityToolkit.WinUI.Notifications" Version="7.1.2" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Behaviors" Version="7.1.2" />

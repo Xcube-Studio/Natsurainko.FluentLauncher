@@ -4,11 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:controls_old="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Settings"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
@@ -26,10 +26,10 @@
                     Style="{ThemeResource BaseTextBlockStyle}"
                     Text="Language" />
 
-                <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xf2b7;}">
-                    <labs:SettingsCard.Header>
+                <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xf2b7;}">
+                    <controls:SettingsCard.Header>
                         <TextBlock x:Uid="Settings_AppearancePage_H1" Text="Language Settings" />
-                    </labs:SettingsCard.Header>
+                    </controls:SettingsCard.Header>
 
                     <ComboBox ItemsSource="{Binding SupportedLanguages}" SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}">
                         <i:Interaction.Behaviors>
@@ -37,7 +37,7 @@
                             <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                         </i:Interaction.Behaviors>
                     </ComboBox>
-                </labs:SettingsCard>
+                </controls:SettingsCard>
 
                 <TextBlock
                     x:Uid="Settings_AppearancePage_T2"
@@ -45,14 +45,14 @@
                     Style="{ThemeResource BaseTextBlockStyle}"
                     Text="Appearance settings" />
 
-                <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xe706;}">
-                    <labs:SettingsCard.Header>
+                <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xe706;}">
+                    <controls:SettingsCard.Header>
                         <TextBlock x:Uid="Settings_AppearancePage_H2" Text="Display Theme" />
-                    </labs:SettingsCard.Header>
+                    </controls:SettingsCard.Header>
 
-                    <labs:SettingsCard.Description>
+                    <controls:SettingsCard.Description>
                         <TextBlock x:Uid="Settings_AppearancePage_D1" Text="Dark and light color themes, effective after restarting the app" />
-                    </labs:SettingsCard.Description>
+                    </controls:SettingsCard.Description>
 
                     <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items1}" SelectedIndex="{Binding DisplayTheme, Mode=TwoWay}">
                         <i:Interaction.Behaviors>
@@ -60,16 +60,16 @@
                             <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                         </i:Interaction.Behaviors>
                     </ComboBox>
-                </labs:SettingsCard>
+                </controls:SettingsCard>
 
-                <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xE790;}">
-                    <labs:SettingsExpander.Header>
+                <controls:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xE790;}">
+                    <controls:SettingsExpander.Header>
                         <TextBlock x:Uid="Settings_AppearancePage_H4" Text="Application Theme Color" />
-                    </labs:SettingsExpander.Header>
+                    </controls:SettingsExpander.Header>
 
-                    <labs:SettingsExpander.Description>
+                    <controls:SettingsExpander.Description>
                         <TextBlock x:Uid="Settings_AppearancePage_D4" Text="Theme colors for various controls, effective after restarting the app" />
-                    </labs:SettingsExpander.Description>
+                    </controls:SettingsExpander.Description>
 
                     <Button>
                         <Button.Background>
@@ -78,27 +78,27 @@
                         <TextBlock Text="{Binding CurrentThemeColorString}" />
                     </Button>
 
-                    <labs:SettingsExpander.Items>
-                        <labs:SettingsCard>
-                            <labs:SettingsCard.Header>
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_AppearancePage_SH1" Text="Use the system accent color" />
-                            </labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
 
-                            <labs:SettingsCard.Description>
+                            <controls:SettingsCard.Description>
                                 <TextBlock x:Uid="Settings_AppearancePage_SD1" Text="Adaptable to the system and available in varying shades of color" />
-                            </labs:SettingsCard.Description>
+                            </controls:SettingsCard.Description>
 
                             <ToggleSwitch IsOn="{Binding UseSystemAccentColor, Mode=TwoWay}" />
-                        </labs:SettingsCard>
+                        </controls:SettingsCard>
 
-                        <labs:SettingsCard IsEnabled="{Binding UseSystemAccentColor, Converter={ThemeResource InvertBoolConverter}}">
-                            <labs:SettingsCard.Header>
+                        <controls:SettingsCard IsEnabled="{Binding UseSystemAccentColor, Converter={ThemeResource InvertBoolConverter}}">
+                            <controls:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_AppearancePage_SH2" Text="Customize theme color" />
-                            </labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
 
-                            <labs:SettingsCard.Description>
+                            <controls:SettingsCard.Description>
                                 <TextBlock x:Uid="Settings_AppearancePage_SD2" Text="All theme colors of varying shades will use this single color" />
-                            </labs:SettingsCard.Description>
+                            </controls:SettingsCard.Description>
 
                             <StackPanel Orientation="Horizontal" Spacing="10">
                                 <Button>
@@ -126,7 +126,7 @@
                                                 </Style>
                                             </Flyout.FlyoutPresenterStyle>
                                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <controls:ColorPicker Color="{Binding ThemeCustomColor, Mode=TwoWay}" />
+                                                <controls_old:ColorPicker Color="{Binding ThemeCustomColor, Mode=TwoWay}" />
                                                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                                                     <Button
                                                         Command="{Binding SelectColorConfirmCommand}"
@@ -141,37 +141,37 @@
                                     </Button.Flyout>
                                 </Button>
                             </StackPanel>
-                        </labs:SettingsCard>
-                    </labs:SettingsExpander.Items>
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
 
-                </labs:SettingsExpander>
+                </controls:SettingsExpander>
 
-                <labs:SettingsExpander x:Name="PreferenceExpander">
-                    <labs:SettingsExpander.Header>
+                <controls:SettingsExpander x:Name="PreferenceExpander">
+                    <controls:SettingsExpander.Header>
                         <TextBlock x:Uid="Settings_AppearancePage_H3" Text="Background" />
-                    </labs:SettingsExpander.Header>
+                    </controls:SettingsExpander.Header>
 
-                    <labs:SettingsExpander.Description>
+                    <controls:SettingsExpander.Description>
                         <TextBlock x:Uid="Settings_AppearancePage_D2" Text="Application background settings." />
-                    </labs:SettingsExpander.Description>
+                    </controls:SettingsExpander.Description>
 
-                    <labs:SettingsExpander.HeaderIcon>
+                    <controls:SettingsExpander.HeaderIcon>
                         <FontIcon Glyph="&#xE91B;" />
-                    </labs:SettingsExpander.HeaderIcon>
+                    </controls:SettingsExpander.HeaderIcon>
                     <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items2}" SelectedIndex="{Binding BackgroundMode, Mode=TwoWay}" />
 
-                    <labs:SettingsExpander.Items>
-                        <labs:SettingsCard IsEnabled="{Binding ElementName=enableCheckBox, Path=IsChecked, Converter={ThemeResource InvertBoolConverter}}">
-                            <labs:SettingsCard.Header>
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard IsEnabled="{Binding ElementName=enableCheckBox, Path=IsChecked, Converter={ThemeResource InvertBoolConverter}}">
+                            <controls:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_AppearancePage_SH3" Text="Tint Luminosity Opacity" />
-                            </labs:SettingsCard.Header>
-                            <labs:SettingsCard.Visibility>
+                            </controls:SettingsCard.Header>
+                            <controls:SettingsCard.Visibility>
                                 <Binding Converter="{ThemeResource BackgrondSettingItemVisibilityConverter}" Path="BackgroundMode">
                                     <Binding.ConverterParameter>
                                         <x:String>Acrylic</x:String>
                                     </Binding.ConverterParameter>
                                 </Binding>
-                            </labs:SettingsCard.Visibility>
+                            </controls:SettingsCard.Visibility>
                             <StackPanel Orientation="Horizontal" Spacing="10">
                                 <NumberBox
                                     Maximum="1"
@@ -180,50 +180,50 @@
                                     SpinButtonPlacementMode="Inline"
                                     Value="{Binding TintLuminosityOpacity, Mode=TwoWay}" />
                             </StackPanel>
-                        </labs:SettingsCard>
-                        <labs:SettingsCard IsEnabled="{Binding ElementName=enableCheckBox, Path=IsChecked, Converter={ThemeResource InvertBoolConverter}}">
-                            <labs:SettingsCard.Header>
+                        </controls:SettingsCard>
+                        <controls:SettingsCard IsEnabled="{Binding ElementName=enableCheckBox, Path=IsChecked, Converter={ThemeResource InvertBoolConverter}}">
+                            <controls:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_AppearancePage_SH4" Text="Tint Opacity" />
-                            </labs:SettingsCard.Header>
-                            <labs:SettingsCard.Visibility>
+                            </controls:SettingsCard.Header>
+                            <controls:SettingsCard.Visibility>
                                 <Binding Converter="{ThemeResource BackgrondSettingItemVisibilityConverter}" Path="BackgroundMode">
                                     <Binding.ConverterParameter>
                                         <x:String>Acrylic</x:String>
                                     </Binding.ConverterParameter>
                                 </Binding>
-                            </labs:SettingsCard.Visibility>
+                            </controls:SettingsCard.Visibility>
                             <NumberBox
                                 Maximum="1"
                                 Minimum="0"
                                 SmallChange="0.1"
                                 SpinButtonPlacementMode="Inline"
                                 Value="{Binding TintOpacity, Mode=TwoWay}" />
-                        </labs:SettingsCard>
-                        <labs:SettingsCard>
-                            <labs:SettingsCard.Visibility>
+                        </controls:SettingsCard>
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Visibility>
                                 <Binding Converter="{ThemeResource BackgrondSettingItemVisibilityConverter}" Path="BackgroundMode">
                                     <Binding.ConverterParameter>
                                         <x:String>Acrylic</x:String>
                                     </Binding.ConverterParameter>
                                 </Binding>
-                            </labs:SettingsCard.Visibility>
-                            <labs:SettingsCard.Header>
+                            </controls:SettingsCard.Visibility>
+                            <controls:SettingsCard.Header>
                                 <CheckBox Name="enableCheckBox" IsChecked="{Binding EnableDefaultAcrylicBrush, Mode=TwoWay}">
                                     <TextBlock x:Uid="Settings_AppearancePage_SH5" Text="Use the default acrylic brush" />
                                 </CheckBox>
-                            </labs:SettingsCard.Header>
-                        </labs:SettingsCard>
-                        <labs:SettingsCard HorizontalContentAlignment="Left">
-                            <labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
+                        </controls:SettingsCard>
+                        <controls:SettingsCard HorizontalContentAlignment="Left">
+                            <controls:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_AppearancePage_SH6" Text="Application background color" />
-                            </labs:SettingsCard.Header>
-                            <labs:SettingsCard.Visibility>
+                            </controls:SettingsCard.Header>
+                            <controls:SettingsCard.Visibility>
                                 <Binding Converter="{ThemeResource BackgrondSettingItemVisibilityConverter}" Path="BackgroundMode">
                                     <Binding.ConverterParameter>
                                         <x:String>Solid</x:String>
                                     </Binding.ConverterParameter>
                                 </Binding>
-                            </labs:SettingsCard.Visibility>
+                            </controls:SettingsCard.Visibility>
                             <StackPanel Orientation="Horizontal" Spacing="10">
                                 <GridView Margin="0,0,0,-15" SelectedIndex="{Binding SolidSelectedIndex, Mode=TwoWay}">
                                     <GridViewItem>
@@ -265,7 +265,7 @@
                                                 </Style>
                                             </Flyout.FlyoutPresenterStyle>
                                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <controls:ColorPicker Color="{Binding SolidCustomColor, Mode=TwoWay}" />
+                                                <controls_old:ColorPicker Color="{Binding SolidCustomColor, Mode=TwoWay}" />
                                                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                                                     <Button
                                                         Command="{Binding SelectColorConfirmCommand}"
@@ -280,43 +280,43 @@
                                     </Button.Flyout>
                                 </Button>
                             </StackPanel>
-                        </labs:SettingsCard>
-                        <labs:SettingsCard HorizontalContentAlignment="Left">
-                            <labs:SettingsCard.Header>
+                        </controls:SettingsCard>
+                        <controls:SettingsCard HorizontalContentAlignment="Left">
+                            <controls:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_AppearancePage_SH7" Text="Image Path" />
-                            </labs:SettingsCard.Header>
-                            <labs:SettingsCard.Visibility>
+                            </controls:SettingsCard.Header>
+                            <controls:SettingsCard.Visibility>
                                 <Binding Converter="{ThemeResource BackgrondSettingItemVisibilityConverter}" Path="BackgroundMode">
                                     <Binding.ConverterParameter>
                                         <x:String>Image</x:String>
                                     </Binding.ConverterParameter>
                                 </Binding>
-                            </labs:SettingsCard.Visibility>
+                            </controls:SettingsCard.Visibility>
                             <TextBox Width="400" Text="{Binding ImageFilePath, Mode=TwoWay}" />
-                        </labs:SettingsCard>
-                        <labs:SettingsCard Tag="Mica">
-                            <labs:SettingsCard.Header>
+                        </controls:SettingsCard>
+                        <controls:SettingsCard Tag="Mica">
+                            <controls:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_AppearancePage_SH8" Text="No additional options" />
-                            </labs:SettingsCard.Header>
-                            <labs:SettingsCard.Visibility>
+                            </controls:SettingsCard.Header>
+                            <controls:SettingsCard.Visibility>
                                 <Binding Converter="{ThemeResource BackgrondSettingItemVisibilityConverter}" Path="BackgroundMode">
                                     <Binding.ConverterParameter>
                                         <x:String>Mica</x:String>
                                     </Binding.ConverterParameter>
                                 </Binding>
-                            </labs:SettingsCard.Visibility>
-                        </labs:SettingsCard>
-                    </labs:SettingsExpander.Items>
-                </labs:SettingsExpander>
+                            </controls:SettingsCard.Visibility>
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
 
-                <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE700;}">
-                    <labs:SettingsCard.Header>
+                <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE700;}">
+                    <controls:SettingsCard.Header>
                         <TextBlock x:Uid="Settings_AppearancePage_H4" Text="NavigationView Display Mode" />
-                    </labs:SettingsCard.Header>
+                    </controls:SettingsCard.Header>
 
-                    <labs:SettingsCard.Description>
+                    <controls:SettingsCard.Description>
                         <TextBlock x:Uid="Settings_AppearancePage_D3" Text="NavigationView layout" />
-                    </labs:SettingsCard.Description>
+                    </controls:SettingsCard.Description>
 
                     <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items3}" SelectedIndex="{Binding NavigationViewDisplayMode, Mode=TwoWay}">
                         <i:Interaction.Behaviors>
@@ -324,15 +324,15 @@
                             <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                         </i:Interaction.Behaviors>
                     </ComboBox>
-                </labs:SettingsCard>
+                </controls:SettingsCard>
 
-                <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE80F;}">
-                    <labs:SettingsCard.Header>
+                <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE80F;}">
+                    <controls:SettingsCard.Header>
                         <TextBlock x:Uid="Settings_AppearancePage_H5" Text="Use new homepage" />
-                    </labs:SettingsCard.Header>
+                    </controls:SettingsCard.Header>
 
                     <ToggleSwitch IsOn="{Binding UseNewHomePage, Mode=TwoWay}" />
-                </labs:SettingsCard>
+                </controls:SettingsCard>
             </StackPanel>
         </Border>
     </ScrollViewer>

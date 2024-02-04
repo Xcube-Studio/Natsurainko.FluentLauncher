@@ -2,11 +2,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:labs="using:CommunityToolkit.Labs.WinUI">
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:i="using:Microsoft.Xaml.Interactivity">
 
     <DataTemplate x:Key="ResourceTemplate">
-        <labs:SettingsCard
+        <controls:SettingsCard
             Padding="20,0"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
@@ -19,7 +19,7 @@
                     Binding="{Binding DataContext.NavigateResourcePageCommand}"
                     TargetPropertyName="Command" />
             </i:Interaction.Behaviors>
-            <labs:SettingsCard.Header>
+            <controls:SettingsCard.Header>
                 <Grid Background="Transparent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -55,12 +55,12 @@
                             TextWrapping="NoWrap" />
                     </StackPanel>
                 </Grid>
-            </labs:SettingsCard.Header>
-        </labs:SettingsCard>
+            </controls:SettingsCard.Header>
+        </controls:SettingsCard>
     </DataTemplate>
 
     <DataTemplate x:Key="ManifestItemTemplate">
-        <labs:SettingsCard
+        <controls:SettingsCard
             Padding="20,0"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
@@ -73,7 +73,7 @@
                     Binding="{Binding DataContext.NavigateCoreInstallWizardPageCommand}"
                     TargetPropertyName="Command" />
             </i:Interaction.Behaviors>
-            <labs:SettingsCard.Header>
+            <controls:SettingsCard.Header>
                 <Grid Background="Transparent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -105,8 +105,8 @@
                             TextWrapping="NoWrap" />
                     </StackPanel>
                 </Grid>
-            </labs:SettingsCard.Header>
-        </labs:SettingsCard>
+            </controls:SettingsCard.Header>
+        </controls:SettingsCard>
     </DataTemplate>
 
 </ResourceDictionary>

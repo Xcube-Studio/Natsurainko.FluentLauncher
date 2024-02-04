@@ -5,11 +5,11 @@
     xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:downloads="using:Natsurainko.FluentLauncher.ViewModels.Downloads"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:ui="using:CommunityToolkit.WinUI.UI.Controls"
@@ -316,11 +316,11 @@
                                 </Grid>
                             </Grid>
                         </Border>
-                        <labs:SettingsCard
+                        <controls:SettingsCard
                             Grid.Row="2"
                             Command="{Binding SearchAllMinecraftCommand}"
                             IsClickEnabled="True">
-                            <labs:SettingsCard.HeaderIcon>
+                            <controls:SettingsCard.HeaderIcon>
                                 <AnimatedIcon Width="18" Height="18">
                                     <AnimatedIcon.Source>
                                         <animatedvisuals:AnimatedFindVisualSource />
@@ -329,14 +329,14 @@
                                         <SymbolIconSource Symbol="Find" />
                                     </AnimatedIcon.FallbackIconSource>
                                 </AnimatedIcon>
-                            </labs:SettingsCard.HeaderIcon>
-                            <labs:SettingsCard.Header>
+                            </controls:SettingsCard.HeaderIcon>
+                            <controls:SettingsCard.Header>
                                 <TextBlock x:Uid="Downloads_DownloadsPage_H" Text="List all version cores" />
-                            </labs:SettingsCard.Header>
-                            <labs:SettingsCard.Description>
+                            </controls:SettingsCard.Header>
+                            <controls:SettingsCard.Description>
                                 <TextBlock x:Uid="Downloads_DownloadsPage_D" Text="Find the version core and install it" />
-                            </labs:SettingsCard.Description>
-                        </labs:SettingsCard>
+                            </controls:SettingsCard.Description>
+                        </controls:SettingsCard>
                     </Grid>
                 </Grid>
 

@@ -2,9 +2,9 @@
     x:Class="Natsurainko.FluentLauncher.Views.Cores.Manage.CoreStatisticPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:converters="using:Natsurainko.FluentLauncher.Utils.Xaml.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:manage="using:Natsurainko.FluentLauncher.ViewModels.Cores.Manage"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
@@ -16,52 +16,52 @@
         <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
         <Border Margin="0,10">
             <StackPanel MaxWidth="1000" Spacing="4">
-                <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xE946;}" IsExpanded="True">
-                    <labs:SettingsExpander.Header>
+                <controls:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xE946;}" IsExpanded="True">
+                    <controls:SettingsExpander.Header>
                         <TextBlock x:Uid="Cores_Manage_CoreStatisticPage_H1" Text="Files Property" />
-                    </labs:SettingsExpander.Header>
-                    <labs:SettingsExpander.Description>
+                    </controls:SettingsExpander.Header>
+                    <controls:SettingsExpander.Description>
                         <TextBlock x:Uid="Cores_Manage_CoreStatisticPage_D" Text="Disk space usage information" />
-                    </labs:SettingsExpander.Description>
-                    <labs:SettingsExpander.Items>
-                        <labs:SettingsCard>
-                            <labs:SettingsCard.Header>
+                    </controls:SettingsExpander.Description>
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Header>
                                 <TextBlock
                                     x:Uid="Cores_Manage_CoreStatisticPage_SH1"
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource BaseTextBlockStyle}"
                                     Text="Libraries Count:" />
-                            </labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
                             <TextBlock Text="{Binding GameStatisticInfo.LibrariesCount}" />
-                        </labs:SettingsCard>
-                        <labs:SettingsCard>
-                            <labs:SettingsCard.Header>
+                        </controls:SettingsCard>
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Header>
                                 <TextBlock
                                     x:Uid="Cores_Manage_CoreStatisticPage_SH2"
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource BaseTextBlockStyle}"
                                     Text="Assets Count:" />
-                            </labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
                             <TextBlock Text="{Binding GameStatisticInfo.AssetsCount}" />
-                        </labs:SettingsCard>
-                        <labs:SettingsCard>
-                            <labs:SettingsCard.Header>
+                        </controls:SettingsCard>
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Header>
                                 <TextBlock
                                     x:Uid="Cores_Manage_CoreStatisticPage_SH3"
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource BaseTextBlockStyle}"
                                     Text="Total Size:" />
-                            </labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
                             <TextBlock Text="{Binding FormatSize}" />
-                        </labs:SettingsCard>
+                        </controls:SettingsCard>
 
-                    </labs:SettingsExpander.Items>
-                </labs:SettingsExpander>
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
 
-                <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE71D;}">
-                    <labs:SettingsCard.Header>
+                <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE71D;}">
+                    <controls:SettingsCard.Header>
                         <TextBlock x:Uid="Cores_Manage_CoreStatisticPage_H2" Text="Game Loaders:" />
-                    </labs:SettingsCard.Header>
+                    </controls:SettingsCard.Header>
 
                     <Grid>
                         <ItemsRepeater ItemsSource="{Binding GameStatisticInfo.ModLoaders}">
@@ -96,7 +96,7 @@
                             Text="This is a vanilla core"
                             Visibility="{Binding IsVanilla, Converter={ThemeResource BoolToVisibilityConverter}}" />
                     </Grid>
-                </labs:SettingsCard>
+                </controls:SettingsCard>
             </StackPanel>
         </Border>
     </ScrollViewer>

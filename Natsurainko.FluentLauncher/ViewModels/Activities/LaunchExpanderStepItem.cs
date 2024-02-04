@@ -1,11 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Natsurainko.FluentLauncher.Services.Launch;
 using Nrk.FluentCore.Launch;
 
-namespace Natsurainko.FluentLauncher.Classes.Data.UI;
+namespace Natsurainko.FluentLauncher.ViewModels.Activities;
 
 internal partial class LaunchExpanderStepItem : ObservableObject
 {
-    public LaunchState Step { get; set; }
+    public MinecraftSessionState Step { get; set; }
 
     [ObservableProperty]
     private int runState = 0; // 0 未开始, 1 进行中, 2 完成, -1 失败

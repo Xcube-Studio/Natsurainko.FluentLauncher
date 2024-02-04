@@ -130,21 +130,13 @@
                             FontSize="18"
                             FontWeight="Bold"
                             Glyph="&#xE76B;" />
-                        <ui:DropShadowPanel
+                        <TextBlock
+                            x:Name="CoreTextBlock"
                             Grid.Column="2"
-                            BlurRadius="17.5"
-                            OffsetX="0"
-                            OffsetY="0"
-                            OffsetZ="0"
-                            ShadowOpacity="0.75"
-                            Color="Black">
-                            <TextBlock
-                                x:Name="CoreTextBlock"
-                                HorizontalTextAlignment="Right"
-                                Style="{ThemeResource TitleLargeTextBlockStyle}"
-                                Text="{Binding ActiveGameInfo.Name}"
-                                TextTrimming="CharacterEllipsis" />
-                        </ui:DropShadowPanel>
+                            HorizontalTextAlignment="Right"
+                            Style="{ThemeResource TitleLargeTextBlockStyle}"
+                            Text="{Binding ActiveGameInfo.Name}"
+                            TextTrimming="CharacterEllipsis" />
                     </Grid>
                 </Button>
             </Grid>

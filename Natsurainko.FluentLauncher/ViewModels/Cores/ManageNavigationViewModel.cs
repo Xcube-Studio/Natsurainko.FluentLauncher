@@ -1,19 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
+using Nrk.FluentCore.Launch;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
 internal partial class ManageNavigationViewModel : ObservableObject, INavigationAware
 {
     public readonly INavigationService _navigationService;
-    public ExtendedGameInfo _gameInfo;
+    public GameInfo _gameInfo;
 
     public ManageNavigationViewModel(INavigationService navigationService)
     {
@@ -39,7 +39,7 @@ internal partial class ManageNavigationViewModel : ObservableObject, INavigation
 
     void INavigationAware.OnNavigatedTo(object parameter)
     {
-        _gameInfo = parameter as ExtendedGameInfo;
+        _gameInfo = parameter as GameInfo;
 
         BreadcrumbBarItemsSource = new string[]
         {

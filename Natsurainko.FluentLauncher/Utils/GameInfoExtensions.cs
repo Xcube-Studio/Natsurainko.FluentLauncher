@@ -58,27 +58,6 @@ internal static class GameInfoExtensions
         return coreProfile;
     }
 
-    public static ExtendedGameInfo Extend(this GameInfo gameInfo)
-    {
-        var specialConfig = gameInfo.GetSpecialConfig();
-
-        return new()
-        {
-            AbsoluteId = gameInfo.AbsoluteId,
-            AbsoluteVersion = gameInfo.AbsoluteVersion,
-            AssetsIndexJsonPath = gameInfo.AssetsIndexJsonPath,
-            InheritsFrom = gameInfo.InheritsFrom,// == null ? null : gameInfo.Extend(),
-            IsInheritedFrom = gameInfo.IsInheritedFrom,
-            IsVanilla = gameInfo.IsVanilla,
-            JarPath = gameInfo.JarPath,
-            LastLaunchTime = specialConfig.LastLaunchTime,
-            MinecraftFolderPath = gameInfo.MinecraftFolderPath,
-            Name = string.IsNullOrEmpty(specialConfig.NickName) ? gameInfo.AbsoluteId : specialConfig.NickName,
-            Type = gameInfo.Type,
-            VersionJsonPath = gameInfo.VersionJsonPath,
-        };
-    }
-
     public static bool IsSupportMod(this GameInfo gameInfo)
     {
         if (gameInfo.IsVanilla) return false;
@@ -110,5 +89,14 @@ internal static class GameInfoExtensions
             return Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId);
 
         return gameInfo.MinecraftFolderPath;
+    }
+
+    public static void UpdateLastLaunchTimeToNow(this GameInfo gameInfo)
+    {
+        var specialConfig = gameInfo.GetSpecialConfig();
+
+        // Update launch time
+        var launchTime = DateTime.Now;
+        specialConfig.LastLaunchTime = launchTime;
     }
 }

@@ -21,7 +21,7 @@
             <ItemsRepeater
                 Margin="0,0,0,20"
                 Background="Transparent"
-                ItemsSource="{Binding LaunchProcesses}">
+                ItemsSource="{Binding LaunchSessions}">
                 <ItemsRepeater.ItemTemplate>
                     <DataTemplate>
                         <labs:SettingsExpander
@@ -51,7 +51,7 @@
                                     <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
                                     <Run>
                                         <Run.Text>
-                                            <Binding Converter="{ThemeResource LaunchExpanderStepConverter}" Path="DisplayState">
+                                            <Binding Converter="{ThemeResource LaunchExpanderStepConverter}" Path="SessionState">
                                                 <Binding.ConverterParameter>
                                                     <x:String>StepName</x:String>
                                                 </Binding.ConverterParameter>
@@ -64,7 +64,7 @@
                             <labs:SettingsExpander.Items>
                                 <labs:SettingsCard>
                                     <labs:SettingsCard.Visibility>
-                                        <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="DisplayState">
+                                        <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="SessionState">
                                             <Binding.ConverterParameter>
                                                 <x:String>0,1,2,3,4,5</x:String>
                                             </Binding.ConverterParameter>
@@ -92,7 +92,7 @@
 
                                 <labs:SettingsCard Padding="25,15">
                                     <labs:SettingsCard.Visibility>
-                                        <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="DisplayState">
+                                        <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="SessionState">
                                             <Binding.ConverterParameter>
                                                 <x:String>0,1,2,3,4,5,8</x:String>
                                             </Binding.ConverterParameter>
@@ -176,7 +176,7 @@
 
                                 <labs:SettingsCard>
                                     <labs:SettingsCard.Visibility>
-                                        <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="DisplayState">
+                                        <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="SessionState">
                                             <Binding.ConverterParameter>
                                                 <x:String>6,7,9,10</x:String>
                                             </Binding.ConverterParameter>
@@ -197,7 +197,7 @@
 
                                 <labs:SettingsCard>
                                     <labs:SettingsCard.Visibility>
-                                        <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="DisplayState">
+                                        <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="SessionState">
                                             <Binding.ConverterParameter>
                                                 <x:String>7,9,10</x:String>
                                             </Binding.ConverterParameter>
@@ -207,7 +207,7 @@
                                     <labs:SettingsCard.HeaderIcon>
                                         <FontIcon>
                                             <FontIcon.Glyph>
-                                                <Binding Converter="{ThemeResource LaunchExpanderStepConverter}" Path="DisplayState">
+                                                <Binding Converter="{ThemeResource LaunchExpanderStepConverter}" Path="SessionState">
                                                     <Binding.ConverterParameter>
                                                         <x:String>ExitFontIcon</x:String>
                                                     </Binding.ConverterParameter>
@@ -221,7 +221,7 @@
                                             <Run Text=":" />
                                             <Run>
                                                 <Run.Text>
-                                                    <Binding Converter="{ThemeResource LaunchExpanderStepConverter}" Path="DisplayState">
+                                                    <Binding Converter="{ThemeResource LaunchExpanderStepConverter}" Path="SessionState">
                                                         <Binding.ConverterParameter>
                                                             <x:String>StepName</x:String>
                                                         </Binding.ConverterParameter>
@@ -234,7 +234,7 @@
 
                                 <labs:SettingsCard>
                                     <labs:SettingsCard.Visibility>
-                                        <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="DisplayState">
+                                        <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="SessionState">
                                             <Binding.ConverterParameter>
                                                 <x:String>6</x:String>
                                             </Binding.ConverterParameter>
@@ -263,7 +263,7 @@
 
                                 <labs:SettingsCard>
                                     <labs:SettingsCard.Visibility>
-                                        <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="DisplayState">
+                                        <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="SessionState">
                                             <Binding.ConverterParameter>
                                                 <x:String>10</x:String>
                                             </Binding.ConverterParameter>
@@ -292,7 +292,7 @@
 
                                 <labs:SettingsCard>
                                     <labs:SettingsCard.Visibility>
-                                        <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="DisplayState">
+                                        <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="SessionState">
                                             <Binding.ConverterParameter>
                                                 <x:String>8</x:String>
                                             </Binding.ConverterParameter>

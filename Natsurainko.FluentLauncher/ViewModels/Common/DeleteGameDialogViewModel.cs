@@ -69,7 +69,7 @@ internal partial class DeleteGameDialogViewModel : ObservableObject
             App.DispatcherQueue.TryEnqueue(() =>
             {
                 var gameService = App.GetService<GameService>();
-                gameService.RefreshCurrentFolder();
+                gameService.RefreshGames();
 
                 _dialog.Hide();
                 _navigationService.Parent.NavigateTo("CoresPage");

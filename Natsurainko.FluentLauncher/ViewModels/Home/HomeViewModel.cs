@@ -9,15 +9,17 @@ using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Authentication;
+using Nrk.FluentCore.Launch;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Home;
 
 internal partial class HomeViewModel : ObservableObject
 {
     public ReadOnlyObservableCollection<Account> Accounts { get; private set; }
-    public ReadOnlyObservableCollection<ExtendedGameInfo> GameInfos { get; private set; }
+    public ReadOnlyObservableCollection<GameInfo> GameInfos { get; private set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(AccountTag))]
@@ -26,7 +28,7 @@ internal partial class HomeViewModel : ObservableObject
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(LaunchButtonTag))]
-    private ExtendedGameInfo activeGameInfo;
+    private GameInfo activeGameInfo;
 
     private readonly GameService _gameService;
     private readonly AccountService _accountService;
@@ -45,8 +47,8 @@ internal partial class HomeViewModel : ObservableObject
         Accounts = accountService.Accounts;
         ActiveAccount = accountService.ActiveAccount;
 
-        GameInfos = _gameService.GameInfos;
-        ActiveGameInfo = _gameService.ActiveGameInfo;
+        GameInfos = _gameService.Games;
+        ActiveGameInfo = _gameService.ActiveGame;
 
         WeakReferenceMessenger.Default.Register<ActiveAccountChangedMessage>(this, (r, m) =>
         {
@@ -62,10 +64,10 @@ internal partial class HomeViewModel : ObservableObject
     public Visibility AccountTag => ActiveAccount is null ? Visibility.Collapsed : Visibility.Visible;
 
     [RelayCommand(CanExecute = nameof(CanExecuteLaunch))]
-    public void Launch()
+    private async Task Launch()
     {
-        _launchService.LaunchGame(ActiveGameInfo);
         _navigationService.NavigateTo("ActivitiesNavigationPage", "LaunchTasksPage");
+        await Task.Run(() => _launchService.LaunchGame(ActiveGameInfo));
     }
 
     [RelayCommand]
@@ -79,10 +81,10 @@ internal partial class HomeViewModel : ObservableObject
         base.OnPropertyChanged(e);
 
         if (e.PropertyName == nameof(ActiveAccount) && ActiveAccount is not null)
-            _accountService.Activate(ActiveAccount);
+            _accountService.ActivateAccount(ActiveAccount);
 
         if (e.PropertyName == nameof(ActiveGameInfo) && ActiveGameInfo is not null)
-            _gameService.ActivateGameInfo(ActiveGameInfo);
+            _gameService.ActivateGame(ActiveGameInfo);
     }
 
     private bool CanExecuteLaunch() => ActiveGameInfo is not null;

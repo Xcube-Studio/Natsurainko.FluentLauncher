@@ -21,8 +21,11 @@ class MessengerService
         _accountService.ActiveAccountChanged += AccountService_ActiveAccountChanged;
     }
 
-    private void AccountService_ActiveAccountChanged(object sender, PropertyChangedEventArgs e)
+    private void AccountService_ActiveAccountChanged(object? sender, Nrk.FluentCore.Authentication.Account? e)
     {
-        WeakReferenceMessenger.Default.Send(new ActiveAccountChangedMessage(_accountService.ActiveAccount));
+        if (e == null)
+            return;
+
+        WeakReferenceMessenger.Default.Send(new ActiveAccountChangedMessage(e));
     }
 }

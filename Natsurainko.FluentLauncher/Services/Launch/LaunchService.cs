@@ -1,22 +1,18 @@
-﻿using CommunityToolkit.WinUI.Notifications;
-using Natsurainko.FluentLauncher.Classes.Data.Launch;
+﻿using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Classes.Exceptions;
-using Natsurainko.FluentLauncher.Components.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Download;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Authentication;
-using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Environment;
+using Nrk.FluentCore.Launch;
+using Nrk.FluentCore.Services.Accounts;
 using Nrk.FluentCore.Services.Launch;
 using Nrk.FluentCore.Utils;
 using PInvoke;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -24,19 +20,16 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.UI.StartScreen;
-using Nrk.FluentCore.Management.Parsing;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
 
 internal class LaunchService : DefaultLaunchService
 {
     private readonly AuthenticationService _authenticationService;
-    private readonly new SettingsService _settingsService;
-    private readonly new AccountService _accountService;
-    private readonly new GameService _gameService;
     private readonly DownloadService _downloadService;
-    private readonly ObservableCollection<LaunchProcess> _launchProcesses = new();
-    public ReadOnlyObservableCollection<LaunchProcess> LaunchProcesses { get; init; }
+
+    private SettingsService AppSettingsService => (SettingsService)_settingsService;
+
 
     public LaunchService(
         SettingsService settingsService,
@@ -44,193 +37,159 @@ internal class LaunchService : DefaultLaunchService
         AccountService accountService,
         AuthenticationService authenticationService,
         DownloadService downloadService)
-        : base(settingsService, gameService, accountService)
-    {
-        _accountService = accountService;
-        _authenticationService = authenticationService;
-        _settingsService = settingsService;
+        : base(settingsService, accountService, gameService)
+    { 
+        _authenticationService = authenticationService; 
         _downloadService = downloadService;
-        _gameService = gameService;
-
-        LaunchProcesses = new(_launchProcesses);
     }
 
-    public void LaunchGame(GameInfo gameInfo)
+    public override async void LaunchGame(GameInfo gameInfo)
     {
-        var process = CreateLaunchProcess(gameInfo);
-        _launchProcesses.Insert(0, process);
+        var session = CreateMinecraftSessionFromGameInfo(gameInfo); // TODO: replace with ctor of MinecraftSession
+        _sessions.Add(session);
 
-        Task.Run(process.RunLaunch);
+        OnSessionCreated(session);
+
+        gameInfo.UpdateLastLaunchTimeToNow();
+        //UpdateJumpList(gameInfo);
+
+        try
+        {
+            await session.StartAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
     }
 
     public void LaunchFromJumpList(string arguments)
     {
-        var gameInfo = JsonSerializer.Deserialize<GameInfo>(arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64());
+        //TODO: Implement launch from jump list
+        //var _gameInfo = JsonSerializer.Deserialize<GameInfo>(arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64());
 
-        new ToastContentBuilder()
-            .AddHeader(gameInfo.Name, $"正在尝试启动游戏: {gameInfo.Name}", string.Empty)
-            .AddText("这可能需要一点时间，请稍后")
-            .Show();
+        //new ToastContentBuilder()
+        //    .AddHeader(_gameInfo.Name, $"正在尝试启动游戏: {_gameInfo.Name}", string.Empty)
+        //    .AddText("这可能需要一点时间，请稍后")
+        //    .Show();
 
-        var process = CreateLaunchProcess(gameInfo);
-        _launchProcesses.Insert(0, process);
+        //var process = CreateLaunchSession(_gameInfo);
+        //_launchProcesses.Insert(0, process);
 
-        Task.Run(process.RunLaunch);
+        //Task.Run(process.Start);
 
-        process.PropertyChanged += (object sender, PropertyChangedEventArgs e) =>
-        {
-            if (e.PropertyName == "DisplayState")
-            {
-                if (!(process.State == LaunchState.GameRunning ||
-                    process.State == LaunchState.Faulted ||
-                    process.State == LaunchState.GameExited ||
-                    process.State == LaunchState.GameCrashed))
-                    return;
+        //process.PropertyChanged += (object sender, PropertyChangedEventArgs e) =>
+        //{
+        //    if (e.PropertyName == "DisplayState")
+        //    {
+        //        if (!(process.State == MinecraftSessionState.GameRunning ||
+        //            process.State == MinecraftSessionState.Faulted ||
+        //            process.State == MinecraftSessionState.GameExited ||
+        //            process.State == MinecraftSessionState.GameCrashed))
+        //            return;
 
-                var builder = new ToastContentBuilder();
+        //        var builder = new ToastContentBuilder();
 
-                switch (process.State)
-                {
-                    case LaunchState.GameRunning:
-                        builder.AddHeader(Guid.NewGuid().ToString(), $"启动游戏成功: {gameInfo.Name}", string.Empty);
-                        break;
-                    case LaunchState.Faulted:
-                        builder.AddHeader(Guid.NewGuid().ToString(), $"启动游戏失败: {gameInfo.Name}", string.Empty);
-                        break;
-                    case LaunchState.GameExited:
-                        builder.AddHeader(Guid.NewGuid().ToString(), $"启动进程消息: {gameInfo.Name}", string.Empty);
-                        break;
-                    case LaunchState.GameCrashed:
-                        builder.AddHeader(Guid.NewGuid().ToString(), $"启动进程消息: {gameInfo.Name}", string.Empty);
-                        break;
-                    default:
-                        break;
-                }
+        //        switch (process.State)
+        //        {
+        //            case MinecraftSessionState.GameRunning:
+        //                builder.AddHeader(Guid.NewGuid().ToString(), $"启动游戏成功: {_gameInfo.Name}", string.Empty);
+        //                break;
+        //            case MinecraftSessionState.Faulted:
+        //                builder.AddHeader(Guid.NewGuid().ToString(), $"启动游戏失败: {_gameInfo.Name}", string.Empty);
+        //                break;
+        //            case MinecraftSessionState.GameExited:
+        //                builder.AddHeader(Guid.NewGuid().ToString(), $"启动进程消息: {_gameInfo.Name}", string.Empty);
+        //                break;
+        //            case MinecraftSessionState.GameCrashed:
+        //                builder.AddHeader(Guid.NewGuid().ToString(), $"启动进程消息: {_gameInfo.Name}", string.Empty);
+        //                break;
+        //            default:
+        //                break;
+        //        }
 
-                builder.AddText(ResourceUtils.GetValue("Converters", $"_LaunchState_{process.State}"));
-                builder.Show();
+        //        builder.AddText(ResourceUtils.GetValue("Converters", $"_LaunchState_{process.State}"));
+        //        builder.Show();
 
-                switch (process.State)
-                {
-                    case LaunchState.Faulted:
-                    case LaunchState.GameExited:
-                        Process.GetCurrentProcess().Kill();
-                        break;
-                    case LaunchState.GameCrashed:
-                        App.DispatcherQueue.TryEnqueue(() => process.LoggerButton());
-                        break;
-                    default:
-                        break;
-                }
-            }
-        };
+        //        switch (process.State)
+        //        {
+        //            case MinecraftSessionState.Faulted:
+        //            case MinecraftSessionState.GameExited:
+        //                Process.GetCurrentProcess().Kill();
+        //                break;
+        //            case MinecraftSessionState.GameCrashed:
+        //                App.DispatcherQueue.TryEnqueue(() => process.LoggerButton());
+        //                break;
+        //            default:
+        //                break;
+        //        }
+        //    }
+        //};
     }
 
-    public new LaunchProcess CreateLaunchProcess(GameInfo gameInfo)
+    public override MinecraftSession CreateMinecraftSessionFromGameInfo(GameInfo gameInfo)
     {
-        var libraryParser = new DefaultLibraryParser(gameInfo);
-        libraryParser.EnumerateLibraries(out var enabledLibraries, out var enabledNativesLibraries);
+        // Java
+        string? suitableJava = null;
 
-        var specialConfig = gameInfo.GetSpecialConfig();
+        if (string.IsNullOrEmpty(_settingsService.ActiveJava))
+            throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoActiveJava")); 
+        // TODO: Do not localize exception message
 
-        string suitableJava = default;
-        string gameDirectory = GetGameDirectory(gameInfo, specialConfig);
-        var launchAccount = GetLaunchAccount(specialConfig);
+        suitableJava = AppSettingsService.EnableAutoJava ? GetSuitableJava(gameInfo) : _settingsService.ActiveJava;
+        if (suitableJava == null)
+            throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoSuitableJava").Replace("${version}", gameInfo.GetSuitableJavaVersion()));
 
-        var launchProcess = new LaunchProcessBuilder(gameInfo)
-            .SetInspectAction(() =>
+        var specialConfig = gameInfo.GetSpecialConfig(); // Game specific config
+        var launchAccount = GetLaunchAccount(specialConfig, _accountService) 
+            ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount")); // Determine which account to use
+
+        Account Authenticate()
+        {
+            // TODO: refactor to remove dependency on AuthenticationService, and AccountService.
+            // Call FluentCore to refresh account directly.
+            try
             {
-                if (string.IsNullOrEmpty(_settingsService.ActiveJava))
-                    throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoActiveJava"));
-                if (launchAccount == null)
-                    throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
-
-                suitableJava = _settingsService.EnableAutoJava ? GetSuitableJava(gameInfo) : _settingsService.ActiveJava;
-                if (suitableJava == null)
-                    throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoSuitableJava").Replace("${version}", gameInfo.GetSuitableJavaVersion()));
-
-                return true;
-            })
-            .SetAuthenticateFunc(() =>
-            {
-                try
+                if (launchAccount.Equals(_accountService.ActiveAccount))
                 {
-                    if (_settingsService.AutoRefresh)
-                    {
-                        if (launchAccount.Equals(_accountService.ActiveAccount))
-                        {
-                            _authenticationService.RefreshCurrentAccount();
-                            launchAccount = _accountService.ActiveAccount;
-                        }
-                        else
-                        {
-                            _authenticationService.RefreshContainedAccount(launchAccount);
-                            launchAccount = GetLaunchAccount(specialConfig);
-                        }
-                    }
+                    _authenticationService.RefreshCurrentAccount();
+                    return _accountService.ActiveAccount;
                 }
-                catch (Exception ex)
+                else
                 {
-                    throw new AuthenticateRefreshAccountException(ex);
+                    _authenticationService.RefreshContainedAccount(launchAccount);
+                    return GetLaunchAccount(specialConfig, _accountService);
                 }
-            })
-            .SetCompleteResourcesAction(launchProcess =>
+            }
+            catch (Exception ex)
             {
-                var resourcesDownloader = _downloadService.CreateResourcesDownloader(gameInfo, enabledLibraries.Union(enabledNativesLibraries));
-                resourcesDownloader.SingleFileDownloaded += (_, _) => App.DispatcherQueue.TryEnqueue(launchProcess.UpdateDownloadProgress);
-                resourcesDownloader.DownloadElementsPosted += (_, count) => App.DispatcherQueue.TryEnqueue(() =>
-                {
-                    launchProcess.StepItems[2].TaskNumber = count;
-                    launchProcess.UpdateLaunchProgress();
-                });
+                throw new AuthenticateRefreshAccountException(ex);
+            }
+        }
 
-                resourcesDownloader.Download();
+        var (maxMemory, minMemory) = AppSettingsService.EnableAutoJava
+            ? MemoryUtils.CalculateJavaMemory()
+            : (_settingsService.JavaMemory, _settingsService.JavaMemory);
 
-                if (resourcesDownloader.ErrorDownload.Count > 0)
-                    throw new CompleteGameResourcesException(resourcesDownloader);
+        var session = new MinecraftSession() // Launch session
+        {
+            Account = launchAccount,
+            GameInfo = gameInfo,
+            GameDirectory = GetGameDirectory(gameInfo, specialConfig),
+            JavaPath = suitableJava,
+            MaxMemory = maxMemory,
+            MinMemory = minMemory,
+            UseDemoUser = _settingsService.EnableDemoUser,
+            ExtraGameParameters = GetExtraGameParameters(specialConfig),
+            ExtraVmParameters = GetExtraVmParameters(specialConfig, launchAccount),
+            CreateResourcesDownloader = (libs) => _downloadService.CreateResourcesDownloader
+                (gameInfo, libs)
+        };
 
-                UnzipUtils.BatchUnzip(
-                    Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId, "natives"),
-                    enabledNativesLibraries.Select(x => x.AbsolutePath));
-            })
-            .SetBuildArgumentsFunc(() =>
-            {
-                (int maxMemory, int minMemory) = MemoryUtils.CalculateJavaMemory(_settingsService.JavaMemory);
+        if (AppSettingsService.AutoRefresh)
+            session.RefreshAccountTask = new Task<Account>(Authenticate);
 
-                var builder = new DefaultArgumentsBuilder(gameInfo)
-                    .SetLibraries(enabledLibraries)
-                    .SetAccountSettings(launchAccount, _settingsService.EnableDemoUser)
-                    .SetJavaSettings(suitableJava, maxMemory, minMemory)
-                    .SetGameDirectory(gameDirectory)
-                    .AddExtraParameters(GetExtraVmParameters(specialConfig, launchAccount), GetExtraGameParameters(specialConfig));
-
-                return builder.Build();
-            })
-            .SetCreateProcessFunc(() =>
-            {
-                var launchTime = DateTime.Now;
-
-                specialConfig.LastLaunchTime = launchTime;
-
-                var contained = _gameService.GameInfos.Where(x => x.AbsoluteId.Equals(gameInfo.AbsoluteId)).FirstOrDefault();
-                if (contained != null) contained.LastLaunchTime = launchTime;
-
-                if (gameInfo is ExtendedGameInfo extendedGameInfo)
-                    extendedGameInfo.LastLaunchTime = launchTime;
-
-                UpdateJumpList(gameInfo);
-
-                return new Process
-                {
-                    StartInfo = new ProcessStartInfo(suitableJava)
-                    {
-                        WorkingDirectory = gameDirectory
-                    },
-                };
-            })
-            .Build();
-
-        launchProcess.GameProcessStart += (_, _) =>
+        session.ProcessStarted += (s, e) =>
         {
             var title = GameWindowTitle(specialConfig);
             if (string.IsNullOrEmpty(title)) return;
@@ -239,26 +198,20 @@ internal class LaunchService : DefaultLaunchService
             {
                 try
                 {
-                    while (!(launchProcess.McProcess?.HasExited).GetValueOrDefault(true))
+                    while (session.State == MinecraftSessionState.GameRunning)
                     {
-                        if (launchProcess.McProcess != null && launchProcess.McProcess?.MainWindowTitle != title)
-                            User32.SetWindowText(launchProcess.McProcess.MainWindowHandle, title);
-
+                        User32.SetWindowText(session.GetProcessMainWindowHandle(), title);
                         await Task.Delay(1000);
-                        launchProcess.McProcess?.Refresh();
                     }
                 }
-                catch //(Exception ex)
-                {
-                    //throw;
-                }
+                catch { }
             });
         };
 
-        return launchProcess;
+        return session;
     }
 
-    private string GetSuitableJava(GameInfo gameInfo)
+    private string? GetSuitableJava(GameInfo gameInfo)
     {
         var regex = new Regex(@"^([a-zA-Z]:\\)([-\u4e00-\u9fa5\w\s.()~!@#$%^&()\[\]{}+=]+\\?)*$");
 
@@ -277,7 +230,8 @@ internal class LaunchService : DefaultLaunchService
             }
         }
 
-        if (!suits.Any()) return null;
+        if (!suits.Any())
+            return null;
 
         return suits.First().Item1;
     }
@@ -291,13 +245,13 @@ internal class LaunchService : DefaultLaunchService
             else return gameInfo.MinecraftFolderPath;
         }
 
-        if (_settingsService.EnableIndependencyCore)
+        if (AppSettingsService.EnableIndependencyCore)
             return Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId);
 
         return gameInfo.MinecraftFolderPath;
     }
 
-    private string GameWindowTitle(GameSpecialConfig specialConfig)
+    private string? GameWindowTitle(GameSpecialConfig specialConfig)
     {
         if (specialConfig.EnableSpecialSetting)
         {
@@ -306,14 +260,14 @@ internal class LaunchService : DefaultLaunchService
         }
         else
         {
-            if (!string.IsNullOrEmpty(_settingsService.GameWindowTitle))
-                return _settingsService.GameWindowTitle;
+            if (!string.IsNullOrEmpty(AppSettingsService.GameWindowTitle))
+                return AppSettingsService.GameWindowTitle;
         }
 
         return null;
     }
 
-    private Account GetLaunchAccount(GameSpecialConfig specialConfig)
+    public static Account GetLaunchAccount(GameSpecialConfig specialConfig, IAccountService _accountService)
     {
         if (specialConfig.EnableSpecialSetting && specialConfig.EnableTargetedAccount && specialConfig.Account != null)
         {
@@ -381,16 +335,16 @@ internal class LaunchService : DefaultLaunchService
         }
         else
         {
-            if (_settingsService.EnableFullScreen)
+            if (AppSettingsService.EnableFullScreen)
                 yield return "--fullscreen";
 
-            if (_settingsService.GameWindowWidth > 0)
-                yield return $"--width {_settingsService.GameWindowWidth}";
+            if (AppSettingsService.GameWindowWidth > 0)
+                yield return $"--width {AppSettingsService.GameWindowWidth}";
 
-            if (_settingsService.GameWindowHeight > 0)
-                yield return $"--height {_settingsService.GameWindowHeight}";
+            if (AppSettingsService.GameWindowHeight > 0)
+                yield return $"--height {AppSettingsService.GameWindowHeight}";
 
-            if (!string.IsNullOrEmpty(_settingsService.GameServerAddress))
+            if (!string.IsNullOrEmpty(AppSettingsService.GameServerAddress))
             {
                 specialConfig.ServerAddress.ParseServerAddress(out var host, out var port);
 
@@ -407,7 +361,8 @@ internal class LaunchService : DefaultLaunchService
         var args = JsonSerializer.Serialize(gameInfo).ConvertToBase64();
         var latest = jumpList.Items.Where(x =>
         {
-            var gameInfo = JsonSerializer.Deserialize<GameInfo>(x.Arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64());
+            var gameInfo = JsonSerializer.Deserialize<GameInfo>(x.Arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64())
+                ?? throw new Exception("Cannot deserialize json");
 
             return x.GroupName.Equals("Latest") &&
             Path.Exists(Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId, $"{gameInfo.AbsoluteId}.json"));

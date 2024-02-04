@@ -98,7 +98,7 @@ internal class DownloadService : DefaultDownloadService
         var installProcess = new CoreInstallProcess() { Title = GetTitle() };
         var firstToStart = new List<CoreInstallProcess.ProgressItem>();
 
-        GameInfo inheritsFrom = _gameService.GameInfos.FirstOrDefault(x => x.AbsoluteId.Equals(info.ManifestItem.Id));
+        GameInfo inheritsFrom = _gameService.Games.FirstOrDefault(x => x.AbsoluteId.Equals(info.ManifestItem.Id));
 
         var installVanillaGame = new CoreInstallProcess.ProgressItem(@this =>
         {
@@ -115,8 +115,8 @@ internal class DownloadService : DefaultDownloadService
 
             downloadTask.Wait();
 
-            App.DispatcherQueue.SynchronousTryEnqueue(() => _gameService.RefreshCurrentFolder());
-            inheritsFrom = _gameService.GameInfos.FirstOrDefault(x => x.AbsoluteId.Equals(info.ManifestItem.Id));
+            App.DispatcherQueue.SynchronousTryEnqueue(() => _gameService.RefreshGames());
+            inheritsFrom = _gameService.Games.FirstOrDefault(x => x.AbsoluteId.Equals(info.ManifestItem.Id));
 
         }, ResourceUtils.GetValue("Converters", "_ProgressItem_InstallVanilla").Replace("${id}", info.ManifestItem.Id), installProcess);
         var completeResources = new CoreInstallProcess.ProgressItem(@this =>
@@ -142,9 +142,9 @@ internal class DownloadService : DefaultDownloadService
         }, ResourceUtils.GetValue("Converters", "_ProgressItem_CompleteResources"), installProcess);
         var setCoreConfig = new CoreInstallProcess.ProgressItem(@this =>
         {
-            App.DispatcherQueue.SynchronousTryEnqueue(() => _gameService.RefreshCurrentFolder());
+            App.DispatcherQueue.SynchronousTryEnqueue(() => _gameService.RefreshGames());
 
-            var gameInfo = _gameService.GameInfos.First(x => x.AbsoluteId.Equals(info.AbsoluteId));
+            var gameInfo = _gameService.Games.First(x => x.AbsoluteId.Equals(info.AbsoluteId));
             var specialConfig = gameInfo.GetSpecialConfig();
 
             specialConfig.EnableSpecialSetting = info.EnableIndependencyCore || !string.IsNullOrEmpty(info.NickName);
@@ -205,6 +205,7 @@ internal class DownloadService : DefaultDownloadService
                         InheritedFrom = inheritsFrom,
                         QuiltBuild = info.PrimaryLoader.SelectedItem.Metadata.Deserialize<QuiltInstallBuild>()
                     },
+                    _ => throw new NotImplementedException()
                 };
 
                 executor.ProgressChanged += (_, e) => @this.OnProgressChanged(e);

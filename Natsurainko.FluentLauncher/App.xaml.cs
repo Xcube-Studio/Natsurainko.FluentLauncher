@@ -14,10 +14,15 @@ using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Services.UI.Pages;
 using Natsurainko.FluentLauncher.Services.UI.Windows;
 using Natsurainko.FluentLauncher.ViewModels;
+using Natsurainko.FluentLauncher.ViewModels.Activities;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
+using Nrk.FluentCore.Services;
+using Nrk.FluentCore.Services.Accounts;
+using Nrk.FluentCore.Services.Launch;
 using System;
 using System.Text;
+using System.Threading;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -31,6 +36,11 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+
+        // Increase thread pool size for bad async code
+        // TODO: Remove this when refactoring is completed
+        ThreadPool.SetMinThreads(20, 20);
+        ThreadPool.SetMaxThreads(20, 20);
 
         // Global exception handler
         UnhandledException += (_, e) =>
@@ -58,6 +68,9 @@ public partial class App : Application
         try
         {
             App.GetService<IActivationService>().ActivateWindow("MainWindow");
+
+            // TODO: Move to UI services
+            App.GetService<LaunchSessions>(); // Init global launch sessions collection
         }
         catch (Exception e)
         {
@@ -153,6 +166,7 @@ public partial class App : Application
         // ViewModels
         services.AddTransient<ViewModels.OOBE.OOBEViewModel>();
 
+        services.AddSingleton<ViewModels.Activities.LaunchSessions>();
         services.AddTransient<ViewModels.Activities.ActivitiesNavigationViewModel>();
         services.AddTransient<ViewModels.Activities.NewsViewModel>();
         services.AddTransient<ViewModels.Activities.LaunchViewModel>();

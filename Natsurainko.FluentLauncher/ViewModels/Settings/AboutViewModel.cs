@@ -4,6 +4,7 @@ using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
 using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.System;
 
@@ -27,19 +28,19 @@ internal partial class AboutViewModel : ObservableObject
 #endif
 
     [RelayCommand]
-    public async void CheckUpdate()
+    public async Task CheckUpdate()
         => await Launcher.LaunchUriAsync(new Uri("ms-windows-store://pdp/?productid=9P4NQQXQ942P"));
 
     [RelayCommand]
-    public async void OpenGit()
+    public async Task OpenGit()
         => await Launcher.LaunchUriAsync(new Uri("https://github.com/Xcube-Studio/Fluent-Launcher"));
 
     [RelayCommand]
-    public async void OpenAuthor()
+    public async Task OpenAuthor()
         => await Launcher.LaunchUriAsync(new Uri("https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/graphs/contributors"));
 
     [RelayCommand]
-    public async void DisplayCopyrightLicense()
+    public async Task DisplayCopyrightLicense()
     {
         await new CopyrightLicenseDialog
         {

@@ -38,7 +38,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
         _navigationService = navigationService;
         _notificationService = notificationService;
 
-        GameInfos = _gameService.GameInfos;
+        GameInfos = _gameService.Games;
 
         (this as ISettingsViewModel).InitializeSettings();
         initSettings = true;
@@ -61,10 +61,10 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     [ObservableProperty]
     private string searchBoxInput;
 
-    public ReadOnlyObservableCollection<ExtendedGameInfo> GameInfos { get; init; }
+    public ReadOnlyObservableCollection<GameInfo> GameInfos { get; init; }
 
     [ObservableProperty]
-    private IEnumerable<ExtendedGameInfo> displayGameInfos;
+    private IEnumerable<GameInfo> displayGameInfos;
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
@@ -97,7 +97,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
 
         var list = SortByIndex.Equals(0)
             ? infos.OrderBy(x => x.Name).ToList()
-            : infos.OrderByDescending(x => x.LastLaunchTime).ToList();
+            : infos.OrderByDescending(x => x.GetSpecialConfig().LastLaunchTime).ToList();
 
         App.DispatcherQueue.TryEnqueue(() => DisplayGameInfos = list);
     }

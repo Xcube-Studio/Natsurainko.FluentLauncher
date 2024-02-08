@@ -4,10 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:converters="using:Natsurainko.FluentLauncher.Utils.Xaml.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Settings"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Settings"
@@ -36,21 +36,21 @@
                     Style="{ThemeResource BaseTextBlockStyle}"
                     Text="Global launch settings" />
 
-                <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe8b7;}">
+                <controls:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe8b7;}">
 
-                    <labs:SettingsExpander.Header>
+                    <controls:SettingsExpander.Header>
                         <TextBlock x:Uid="Settings_LaunchPage_H1" Text=".minecraft Folder" />
-                    </labs:SettingsExpander.Header>
+                    </controls:SettingsExpander.Header>
 
-                    <labs:SettingsExpander.Description>
+                    <controls:SettingsExpander.Description>
                         <TextBlock x:Uid="Settings_LaunchPage_D1" Text="Where to store the core of your game" />
-                    </labs:SettingsExpander.Description>
+                    </controls:SettingsExpander.Description>
 
-                    <labs:SettingsExpander.Items>
-                        <labs:SettingsCard Visibility="{Binding IsMinecraftFoldersEmpty, Converter={StaticResource InvertBoolConverter}}">
-                            <labs:SettingsCard.Header>
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard Visibility="{Binding IsMinecraftFoldersEmpty, Converter={StaticResource InvertBoolConverter}}">
+                            <controls:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_LaunchPage_SH1" Text="Current .minecraft folder:" />
-                            </labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
 
                             <ComboBox
                                 HorizontalAlignment="Stretch"
@@ -67,12 +67,12 @@
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                        </labs:SettingsCard>
+                        </controls:SettingsCard>
 
-                        <labs:SettingsCard>
-                            <labs:SettingsCard.Header>
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_LaunchPage_SH2" Text="Open the .minecraft folder:" />
-                            </labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
 
                             <Button Command="{Binding BrowserFolderCommand}">
                                 <StackPanel Orientation="Horizontal">
@@ -84,15 +84,15 @@
                                 </StackPanel>
                             </Button>
 
-                        </labs:SettingsCard>
+                        </controls:SettingsCard>
 
-                        <labs:SettingsCard Visibility="{Binding IsMinecraftFoldersEmpty, Converter={StaticResource InvertBoolConverter}}">
-                            <labs:SettingsCard.Header>
+                        <controls:SettingsCard Visibility="{Binding IsMinecraftFoldersEmpty, Converter={StaticResource InvertBoolConverter}}">
+                            <controls:SettingsCard.Header>
                                 <TextBlock
                                     x:Uid="Settings_LaunchPage_SH3"
                                     VerticalAlignment="Center"
                                     Text="Remove the current .minecraft folder:" />
-                            </labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
 
                             <Button
                                 Background="{ThemeResource DeleteButtonBackground}"
@@ -111,25 +111,25 @@
                                         Text="Remove" />
                                 </StackPanel>
                             </Button>
-                        </labs:SettingsCard>
-                    </labs:SettingsExpander.Items>
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
 
-                </labs:SettingsExpander>
+                </controls:SettingsExpander>
 
-                <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe8f1;}">
-                    <labs:SettingsExpander.Header>
+                <controls:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe8f1;}">
+                    <controls:SettingsExpander.Header>
                         <TextBlock x:Uid="Settings_LaunchPage_H2" Text="Java Runtime" />
-                    </labs:SettingsExpander.Header>
+                    </controls:SettingsExpander.Header>
 
-                    <labs:SettingsExpander.Description>
+                    <controls:SettingsExpander.Description>
                         <TextBlock x:Uid="Settings_LaunchPage_D2" Text="Executable to launch the game" />
-                    </labs:SettingsExpander.Description>
+                    </controls:SettingsExpander.Description>
 
-                    <labs:SettingsExpander.Items>
-                        <labs:SettingsCard Visibility="{Binding IsJavasEmpty, Converter={StaticResource InvertBoolConverter}}">
-                            <labs:SettingsCard.Header>
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard Visibility="{Binding IsJavasEmpty, Converter={StaticResource InvertBoolConverter}}">
+                            <controls:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_LaunchPage_SH4" Text="Current Java runtime:" />
-                            </labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
 
                             <ComboBox
                                 Height="60"
@@ -174,12 +174,12 @@
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                        </labs:SettingsCard>
+                        </controls:SettingsCard>
 
-                        <labs:SettingsCard>
-                            <labs:SettingsCard.Header>
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_LaunchPage_SH5" Text="Open the Java runtime:" />
-                            </labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
 
                             <StackPanel Orientation="Horizontal">
                                 <Button Height="32" Command="{Binding SearchJavaCommand}">
@@ -208,13 +208,13 @@
                                     </StackPanel>
                                 </Button>
                             </StackPanel>
-                        </labs:SettingsCard>
+                        </controls:SettingsCard>
 
-                        <labs:SettingsCard Visibility="{Binding IsJavasEmpty, Converter={StaticResource InvertBoolConverter}}">
-                            <labs:SettingsCard.Header>
+                        <controls:SettingsCard Visibility="{Binding IsJavasEmpty, Converter={StaticResource InvertBoolConverter}}">
+                            <controls:SettingsCard.Header>
 
                                 <TextBlock x:Uid="Settings_LaunchPage_SH6" Text="Remove the current Java runtime:" />
-                            </labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
 
                             <Button
                                 Background="{ThemeResource DeleteButtonBackground}"
@@ -233,40 +233,40 @@
                                         Text="Remove" />
                                 </StackPanel>
                             </Button>
-                        </labs:SettingsCard>
+                        </controls:SettingsCard>
 
-                        <labs:SettingsCard>
-                            <labs:SettingsCard.Header>
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_LaunchPage_SH7" Text="Automatically select the suitable Java:" />
-                            </labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
 
                             <ToggleSwitch IsOn="{Binding EnableAutoJava, Mode=TwoWay}" />
-                        </labs:SettingsCard>
+                        </controls:SettingsCard>
 
-                        <labs:SettingsCard>
-                            <labs:SettingsCard.Header>
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_LaunchPage_SH8" Text="JVM memory:" />
-                            </labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
 
                             <NumberBox
                                 Width="100"
                                 IsEnabled="{Binding ElementName=AutoJVMMemory, Path=IsOn, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
                                 Minimum="0"
                                 Value="{Binding JavaMemory, Mode=TwoWay}" />
-                        </labs:SettingsCard>
+                        </controls:SettingsCard>
 
-                        <labs:SettingsCard>
-                            <labs:SettingsCard.Header>
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_LaunchPage_SH9" Text="Automatically allocate JVM memory:" />
-                            </labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
 
                             <ToggleSwitch x:Name="AutoJVMMemory" IsOn="{Binding EnableAutoMemory, Mode=TwoWay}" />
-                        </labs:SettingsCard>
+                        </controls:SettingsCard>
 
-                        <labs:SettingsCard>
-                            <labs:SettingsCard.Header>
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_LaunchPage_SH15" Text="Go to third-party Java download sources:" />
-                            </labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
 
                             <Button Command="{Binding OpenJavaMirrorsDialogCommand}">
                                 <StackPanel Orientation="Horizontal">
@@ -277,43 +277,43 @@
                                         Text="Open" />
                                 </StackPanel>
                             </Button>
-                        </labs:SettingsCard>
+                        </controls:SettingsCard>
 
-                    </labs:SettingsExpander.Items>
-                </labs:SettingsExpander>
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
 
-                <labs:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe737;}">
-                    <labs:SettingsExpander.Header>
+                <controls:SettingsExpander HeaderIcon="{xh:FontIcon Glyph=&#xe737;}">
+                    <controls:SettingsExpander.Header>
                         <TextBlock x:Uid="Settings_LaunchPage_H3" Text="Game Settings" />
-                    </labs:SettingsExpander.Header>
+                    </controls:SettingsExpander.Header>
 
-                    <labs:SettingsExpander.Description>
+                    <controls:SettingsExpander.Description>
                         <TextBlock x:Uid="Settings_LaunchPage_D3" Text="Game play settings" />
-                    </labs:SettingsExpander.Description>
+                    </controls:SettingsExpander.Description>
 
-                    <labs:SettingsExpander.Items>
-                        <labs:SettingsCard>
-                            <labs:SettingsCard.Header>
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Header>
 
                                 <TextBlock x:Uid="Settings_LaunchPage_SH10" Text="Global core independent:" />
-                            </labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
 
                             <ToggleSwitch IsOn="{Binding EnableIndependencyCore, Mode=TwoWay}" />
-                        </labs:SettingsCard>
+                        </controls:SettingsCard>
 
-                        <labs:SettingsCard>
-                            <labs:SettingsCard.Header>
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Header>
 
                                 <TextBlock x:Uid="Settings_LaunchPage_SH11" Text="Full screen mode:" />
-                            </labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
 
                             <ToggleSwitch IsOn="{Binding EnableFullScreen, Mode=TwoWay}" />
-                        </labs:SettingsCard>
+                        </controls:SettingsCard>
 
-                        <labs:SettingsCard>
-                            <labs:SettingsCard.Header>
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_LaunchPage_SH12" Text="Game window resolution:" />
-                            </labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
 
                             <StackPanel Orientation="Horizontal">
                                 <NumberBox
@@ -329,33 +329,33 @@
                                     Minimum="0"
                                     Value="{Binding GameWindowHeight, Mode=TwoWay}" />
                             </StackPanel>
-                        </labs:SettingsCard>
+                        </controls:SettingsCard>
 
-                        <labs:SettingsCard>
-                            <labs:SettingsCard.Header>
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_LaunchPage_SH13" Text="Server address:" />
-                            </labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
 
                             <TextBox Width="400" Text="{Binding GameServerAddress, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                                 </i:Interaction.Behaviors>
                             </TextBox>
-                        </labs:SettingsCard>
+                        </controls:SettingsCard>
 
-                        <labs:SettingsCard>
-                            <labs:SettingsCard.Header>
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Header>
                                 <TextBlock x:Uid="Settings_LaunchPage_SH14" Text="Game window title:" />
-                            </labs:SettingsCard.Header>
+                            </controls:SettingsCard.Header>
 
                             <TextBox Width="400" Text="{Binding GameWindowTitle, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                                 </i:Interaction.Behaviors>
                             </TextBox>
-                        </labs:SettingsCard>
-                    </labs:SettingsExpander.Items>
-                </labs:SettingsExpander>
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
 
                 <TextBlock
                     x:Uid="Settings_LaunchPage_T2"
@@ -363,7 +363,7 @@
                     Style="{ThemeResource BaseTextBlockStyle}"
                     Text="Game specific settings" />
 
-                <labs:SettingsCard
+                <controls:SettingsCard
                     x:Uid="Settings_LaunchPage_H4"
                     ActionIconToolTip="Go to Cores page"
                     Command="{Binding ActivateCoresPageCommand}"

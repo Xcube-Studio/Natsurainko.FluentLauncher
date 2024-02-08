@@ -1,17 +1,17 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml">
     <DataTemplate x:Key="ResourceDownloadTemplate">
-        <labs:SettingsExpander
+        <controls:SettingsExpander
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Stretch"
             VerticalContentAlignment="Stretch"
             HeaderIcon="{xh:FontIcon Glyph=&#xE896;}"
             IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
 
-            <labs:SettingsExpander.Header>
+            <controls:SettingsExpander.Header>
                 <TextBlock TextTrimming="CharacterEllipsis">
                     <Run
                         x:Uid="Activities_DownloadPage_Item_T"
@@ -20,9 +20,9 @@
                     <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
                     <Run FontWeight="SemiBold" Text="{Binding Title}" />
                 </TextBlock>
-            </labs:SettingsExpander.Header>
+            </controls:SettingsExpander.Header>
 
-            <labs:SettingsExpander.Description>
+            <controls:SettingsExpander.Description>
                 <TextBlock FontSize="13" TextTrimming="CharacterEllipsis">
                     <Run
                         x:Uid="Activities_DownloadPage_Item_TD"
@@ -31,11 +31,11 @@
                     <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
                     <Run Text="{Binding DisplayState}" />
                 </TextBlock>
-            </labs:SettingsExpander.Description>
+            </controls:SettingsExpander.Description>
 
-            <labs:SettingsExpander.Items>
-                <labs:SettingsCard>
-                    <labs:SettingsCard.Header>
+            <controls:SettingsExpander.Items>
+                <controls:SettingsCard>
+                    <controls:SettingsCard.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -52,33 +52,33 @@
                                 Maximum="1"
                                 Value="{Binding Progress}" />
                         </Grid>
-                    </labs:SettingsCard.Header>
-                </labs:SettingsCard>
+                    </controls:SettingsCard.Header>
+                </controls:SettingsCard>
 
-                <labs:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE838;}">
-                    <labs:SettingsCard.Header>
+                <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE838;}">
+                    <controls:SettingsCard.Header>
                         <TextBlock
                             x:Uid="Activities_DownloadPage_Item_H2"
                             Text="Open File Folder:"
                             TextTrimming="CharacterEllipsis" />
-                    </labs:SettingsCard.Header>
+                    </controls:SettingsCard.Header>
                     <Button Command="{Binding OpenFolderCommand}">
                         <TextBlock x:Uid="Buttons_Open" Text="Open" />
                     </Button>
-                </labs:SettingsCard>
-            </labs:SettingsExpander.Items>
-        </labs:SettingsExpander>
+                </controls:SettingsCard>
+            </controls:SettingsExpander.Items>
+        </controls:SettingsExpander>
     </DataTemplate>
 
     <DataTemplate x:Key="CoreInstllTemplate">
-        <labs:SettingsExpander
+        <controls:SettingsExpander
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Stretch"
             VerticalContentAlignment="Stretch"
             HeaderIcon="{xh:FontIcon Glyph=&#xE896;}"
             IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
 
-            <labs:SettingsExpander.Header>
+            <controls:SettingsExpander.Header>
                 <TextBlock TextTrimming="CharacterEllipsis">
                     <Run
                         x:Uid="Activities_DownloadPage_Item_T"
@@ -87,9 +87,9 @@
                     <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
                     <Run FontWeight="SemiBold" Text="{Binding Title}" />
                 </TextBlock>
-            </labs:SettingsExpander.Header>
+            </controls:SettingsExpander.Header>
 
-            <labs:SettingsExpander.Description>
+            <controls:SettingsExpander.Description>
                 <TextBlock FontSize="13" TextTrimming="CharacterEllipsis">
                     <Run
                         x:Uid="Activities_DownloadPage_Item_TD"
@@ -98,11 +98,11 @@
                     <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
                     <Run Text="{Binding DisplayState}" />
                 </TextBlock>
-            </labs:SettingsExpander.Description>
+            </controls:SettingsExpander.Description>
 
-            <labs:SettingsExpander.Items>
-                <labs:SettingsCard>
-                    <labs:SettingsCard.Header>
+            <controls:SettingsExpander.Items>
+                <controls:SettingsCard>
+                    <controls:SettingsCard.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -119,11 +119,11 @@
                                 Maximum="1"
                                 Value="{Binding Progress}" />
                         </Grid>
-                    </labs:SettingsCard.Header>
-                </labs:SettingsCard>
+                    </controls:SettingsCard.Header>
+                </controls:SettingsCard>
 
-                <labs:SettingsCard Padding="25,15">
-                    <labs:SettingsCard.Header>
+                <controls:SettingsCard Padding="25,15">
+                    <controls:SettingsCard.Header>
                         <ItemsRepeater ItemsSource="{Binding Progresses}">
                             <ItemsRepeater.ItemTemplate>
                                 <DataTemplate>
@@ -160,9 +160,9 @@
                                 </DataTemplate>
                             </ItemsRepeater.ItemTemplate>
                         </ItemsRepeater>
-                    </labs:SettingsCard.Header>
-                </labs:SettingsCard>
-            </labs:SettingsExpander.Items>
-        </labs:SettingsExpander>
+                    </controls:SettingsCard.Header>
+                </controls:SettingsCard>
+            </controls:SettingsExpander.Items>
+        </controls:SettingsExpander>
     </DataTemplate>
 </ResourceDictionary>

@@ -16,9 +16,16 @@ internal class CoresLayoutConverter : IValueConverter
             1 => new UniformGridLayout()
             {
                 MinItemHeight = 150,
-                MinItemWidth = 125
+                MinItemWidth = 125,
+                ItemsStretch = UniformGridLayoutItemsStretch.Fill,
+                ItemsJustification = UniformGridLayoutItemsJustification.Start
             },
-            2 => new UniformGridLayout(),
+            2 => new UniformGridLayout()
+            { 
+                MinItemWidth = 300,
+                ItemsStretch = UniformGridLayoutItemsStretch.Fill,
+                ItemsJustification = UniformGridLayoutItemsJustification.Start
+            },
             _ => new StackLayout()
         };
     }

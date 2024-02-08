@@ -3,11 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:data="using:Nrk.FluentCore.Classes.Datas.Download"
     xmlns:downloads="using:Natsurainko.FluentLauncher.ViewModels.Downloads"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:CommunityToolkit.WinUI.UI.Controls"
     d:DataContext="{d:DesignInstance Type=downloads:ResourceItemViewModel}"
@@ -78,21 +77,21 @@
                 MaxWidth="1000"
                 DataContext="{Binding Resource}"
                 Spacing="4">
-                <labs:SettingsCard>
-                    <labs:SettingsCard.HeaderIcon>
+                <controls:SettingsCard>
+                    <controls:SettingsCard.HeaderIcon>
                         <ImageIcon>
                             <ImageIcon.Source>
                                 <BitmapImage UriSource="{Binding IconUrl}" />
                             </ImageIcon.Source>
                         </ImageIcon>
-                    </labs:SettingsCard.HeaderIcon>
-                    <labs:SettingsCard.Header>
+                    </controls:SettingsCard.HeaderIcon>
+                    <controls:SettingsCard.Header>
                         <TextBlock FontWeight="SemiBold" Text="{Binding Name}" />
-                    </labs:SettingsCard.Header>
+                    </controls:SettingsCard.Header>
 
-                    <labs:SettingsCard.Description>
+                    <controls:SettingsCard.Description>
                         <TextBlock Text="{Binding Summary}" />
-                    </labs:SettingsCard.Description>
+                    </controls:SettingsCard.Description>
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <Button Width="125" Style="{ThemeResource AccentButtonStyle}">
                             <i:Interaction.Behaviors>
@@ -107,7 +106,7 @@
                             <TextBlock x:Uid="Downloads_ResourceItemPage_Hyperlink" Text="Open in Browser" />
                         </HyperlinkButton>
                     </StackPanel>
-                </labs:SettingsCard>
+                </controls:SettingsCard>
 
                 <Border
                     Padding="20,15"

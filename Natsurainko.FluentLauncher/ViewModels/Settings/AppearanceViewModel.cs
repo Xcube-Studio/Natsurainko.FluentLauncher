@@ -74,14 +74,25 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     [NotifyPropertyChangedFor(nameof(CurrentThemeColorString))]
     private Color? themeCustomColor;
 
-    public string ThemeCustomColorString => System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.FromArgb(ColorHelper.ToInt(ThemeCustomColor.GetValueOrDefault())));
+    public string ThemeCustomColorString => ThemeCustomColor != null 
+        ? System.Drawing.ColorTranslator.ToHtml(
+            System.Drawing.Color.FromArgb(
+                CurrentThemeColor.A,
+                CurrentThemeColor.R,
+                CurrentThemeColor.G,
+                CurrentThemeColor.B))
+        : System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.FromArgb(255, default));
 
     public string CurrentThemeColorString 
     { 
         get 
         {
-            int value = ColorHelper.ToInt(CurrentThemeColor);
-            return System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.FromArgb(value));
+            return System.Drawing.ColorTranslator.ToHtml(
+                System.Drawing.Color.FromArgb(
+                    CurrentThemeColor.A, 
+                    CurrentThemeColor.R, 
+                    CurrentThemeColor.G, 
+                    CurrentThemeColor.B));
         } 
     }
 

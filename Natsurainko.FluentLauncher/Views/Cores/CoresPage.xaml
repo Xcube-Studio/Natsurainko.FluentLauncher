@@ -3,9 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:cores="using:Natsurainko.FluentLauncher.ViewModels.Cores"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:selectors="using:Natsurainko.FluentLauncher.Utils.Xaml.TemplateSelectors"
     xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
@@ -56,27 +56,27 @@
                             Text="Install cores" />
                     </StackPanel>
                 </Button>
-                <labs:Segmented
+                <controls:Segmented
                     Grid.Column="4"
                     HorizontalAlignment="Right"
                     SelectedIndex="{Binding SegmentedSelectedIndex, Mode=TwoWay}"
                     SelectionMode="Single">
-                    <labs:SegmentedItem>
-                        <labs:SegmentedItem.Icon>
+                    <controls:SegmentedItem>
+                        <controls:SegmentedItem.Icon>
                             <FontIcon FontSize="12" Glyph="&#xEA37;" />
-                        </labs:SegmentedItem.Icon>
-                    </labs:SegmentedItem>
-                    <labs:SegmentedItem>
-                        <labs:SegmentedItem.Icon>
+                        </controls:SegmentedItem.Icon>
+                    </controls:SegmentedItem>
+                    <controls:SegmentedItem>
+                        <controls:SegmentedItem.Icon>
                             <FontIcon FontSize="12" Glyph="&#xF0E2;" />
-                        </labs:SegmentedItem.Icon>
-                    </labs:SegmentedItem>
-                    <labs:SegmentedItem>
-                        <labs:SegmentedItem.Icon>
+                        </controls:SegmentedItem.Icon>
+                    </controls:SegmentedItem>
+                    <controls:SegmentedItem>
+                        <controls:SegmentedItem.Icon>
                             <FontIcon FontSize="12" Glyph="&#xE80A;" />
-                        </labs:SegmentedItem.Icon>
-                    </labs:SegmentedItem>
-                </labs:Segmented>
+                        </controls:SegmentedItem.Icon>
+                    </controls:SegmentedItem>
+                </controls:Segmented>
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>

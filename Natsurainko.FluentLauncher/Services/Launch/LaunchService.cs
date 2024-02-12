@@ -15,11 +15,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
-using Windows.UI.StartScreen;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
 
@@ -29,7 +27,6 @@ internal class LaunchService : DefaultLaunchService
     private readonly DownloadService _downloadService;
 
     private SettingsService AppSettingsService => (SettingsService)_settingsService;
-
 
     public LaunchService(
         SettingsService settingsService,
@@ -61,70 +58,6 @@ internal class LaunchService : DefaultLaunchService
         {
             Console.WriteLine(ex);
         }
-    }
-
-    public void LaunchFromJumpList(string arguments)
-    {
-        //TODO: Implement launch from jump list
-        //var _gameInfo = JsonSerializer.Deserialize<GameInfo>(arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64());
-
-        //new ToastContentBuilder()
-        //    .AddHeader(_gameInfo.Name, $"正在尝试启动游戏: {_gameInfo.Name}", string.Empty)
-        //    .AddText("这可能需要一点时间，请稍后")
-        //    .Show();
-
-        //var process = CreateLaunchSession(_gameInfo);
-        //_launchProcesses.Insert(0, process);
-
-        //Task.Run(process.Start);
-
-        //process.PropertyChanged += (object sender, PropertyChangedEventArgs e) =>
-        //{
-        //    if (e.PropertyName == "DisplayState")
-        //    {
-        //        if (!(process.State == MinecraftSessionState.GameRunning ||
-        //            process.State == MinecraftSessionState.Faulted ||
-        //            process.State == MinecraftSessionState.GameExited ||
-        //            process.State == MinecraftSessionState.GameCrashed))
-        //            return;
-
-        //        var builder = new ToastContentBuilder();
-
-        //        switch (process.State)
-        //        {
-        //            case MinecraftSessionState.GameRunning:
-        //                builder.AddHeader(Guid.NewGuid().ToString(), $"启动游戏成功: {_gameInfo.Name}", string.Empty);
-        //                break;
-        //            case MinecraftSessionState.Faulted:
-        //                builder.AddHeader(Guid.NewGuid().ToString(), $"启动游戏失败: {_gameInfo.Name}", string.Empty);
-        //                break;
-        //            case MinecraftSessionState.GameExited:
-        //                builder.AddHeader(Guid.NewGuid().ToString(), $"启动进程消息: {_gameInfo.Name}", string.Empty);
-        //                break;
-        //            case MinecraftSessionState.GameCrashed:
-        //                builder.AddHeader(Guid.NewGuid().ToString(), $"启动进程消息: {_gameInfo.Name}", string.Empty);
-        //                break;
-        //            default:
-        //                break;
-        //        }
-
-        //        builder.AddText(ResourceUtils.GetValue("Converters", $"_LaunchState_{process.State}"));
-        //        builder.Show();
-
-        //        switch (process.State)
-        //        {
-        //            case MinecraftSessionState.Faulted:
-        //            case MinecraftSessionState.GameExited:
-        //                Process.GetCurrentProcess().Kill();
-        //                break;
-        //            case MinecraftSessionState.GameCrashed:
-        //                App.DispatcherQueue.TryEnqueue(() => process.LoggerButton());
-        //                break;
-        //            default:
-        //                break;
-        //        }
-        //    }
-        //};
     }
 
     public override MinecraftSession CreateMinecraftSessionFromGameInfo(GameInfo gameInfo)
@@ -353,43 +286,4 @@ internal class LaunchService : DefaultLaunchService
             }
         }
     }
-
-    private static void UpdateJumpList(GameInfo gameInfo) => Task.Run(async () =>
-    {
-        var jumpList = await JumpList.LoadCurrentAsync();
-
-        var args = JsonSerializer.Serialize(gameInfo).ConvertToBase64();
-        var latest = jumpList.Items.Where(x =>
-        {
-            var gameInfo = JsonSerializer.Deserialize<GameInfo>(x.Arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64())
-                ?? throw new Exception("Cannot deserialize json");
-
-            return x.GroupName.Equals("Latest") &&
-            Path.Exists(Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId, $"{gameInfo.AbsoluteId}.json"));
-        }).Take(6).ToList();
-
-        var jumpListItem = JumpListItem.CreateWithArguments($"/quick-launch {args}", gameInfo.Name);
-
-        jumpListItem.Logo = new Uri(string.Format("ms-appx:///Assets/Icons/{0}.png", !gameInfo.IsVanilla ? "furnace_front" : gameInfo.Type switch
-        {
-            "release" => "grass_block_side",
-            "snapshot" => "crafting_table_front",
-            "old_beta" => "dirt_path_side",
-            "old_alpha" => "dirt_path_side",
-            _ => "grass_block_side"
-        }), UriKind.RelativeOrAbsolute);
-
-        jumpListItem.GroupName = "Latest";
-
-        if (latest.Where(x => x.DisplayName.Equals(gameInfo.Name)).FirstOrDefault() is JumpListItem equalsItem)
-            latest.Remove(equalsItem);
-
-        latest.Insert(0, jumpListItem);
-        jumpList.Items.Clear();
-
-        foreach (var item in latest)
-            jumpList.Items.Add(item);
-
-        await jumpList.SaveAsync();
-    });
 }

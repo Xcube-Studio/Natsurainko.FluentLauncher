@@ -249,7 +249,7 @@ internal class InterfaceCacheService
             {
                 "Bmclapi" => DownloadMirrors.Bmclapi.VersionManifestUrl,
                 "Mcbbs" => DownloadMirrors.Mcbbs.VersionManifestUrl,
-                _ => "http://launchermeta.mojang.com/mc/game/version_manifest_v2.json"
+                _ => "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
             };
 
             var localFile = GetLocalFileOfInterface(url, autoRefresh: true);

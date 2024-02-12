@@ -56,12 +56,12 @@ public partial class App : Application
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
         string[] cmdargs = Environment.GetCommandLineArgs();
-
+        /*
         if (cmdargs.Length > 1 && cmdargs[1].Equals("/quick-launch"))
         {
             App.GetService<LaunchService>().LaunchFromJumpList(cmdargs[2]);
             return;
-        }
+        }*/
 
         App.GetService<MessengerService>().SubscribeEvents();
 

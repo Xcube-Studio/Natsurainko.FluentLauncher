@@ -4,7 +4,7 @@ using Nrk.FluentCore.Services.Launch;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
 
-internal class GameService(SettingsService settingsService) 
+internal class GameService(SettingsService settingsService)
     : DefaultGameService(settingsService)
 {
     public override void WhenActiveMinecraftFolderChanged(string? oldFolder, string? newFolder)

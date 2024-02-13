@@ -13,7 +13,6 @@ using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Environment;
-using Nrk.FluentCore.Services.Launch;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

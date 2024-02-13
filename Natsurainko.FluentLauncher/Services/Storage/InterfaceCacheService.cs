@@ -253,7 +253,7 @@ internal class InterfaceCacheService
             };
 
             var localFile = GetLocalFileOfInterface(url, autoRefresh: true);
-            if (string.IsNullOrEmpty(localFile)) 
+            if (string.IsNullOrEmpty(localFile))
                 return Array.Empty<VersionManifestItem>();
 
             return JsonSerializer.Deserialize<VersionManifestJsonEntity>(File.ReadAllText(localFile)).Versions.ToArray();

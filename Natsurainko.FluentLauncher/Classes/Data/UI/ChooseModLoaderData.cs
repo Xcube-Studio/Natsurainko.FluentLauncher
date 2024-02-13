@@ -101,7 +101,7 @@ internal partial class ChooseModLoaderData : ObservableObject
                     {
                         DisplayText = x["loader"]["version"].GetValue<string>(),
                         Metadata = x
-                    }).ToList(); 
+                    }).ToList();
 
                     loaders = fabric;
 

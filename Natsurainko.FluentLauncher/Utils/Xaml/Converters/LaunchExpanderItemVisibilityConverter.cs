@@ -1,6 +1,5 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Data;
-using Natsurainko.FluentLauncher.Services.Launch;
 using Nrk.FluentCore.Launch;
 using System;
 using System.Linq;

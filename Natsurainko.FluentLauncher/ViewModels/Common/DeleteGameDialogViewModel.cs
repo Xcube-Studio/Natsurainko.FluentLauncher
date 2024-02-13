@@ -45,7 +45,7 @@ internal partial class DeleteGameDialogViewModel : ObservableObject
             foreach (var file in directory.EnumerateFiles())
                 if (file.IsFileOccupied())
                     return true;
-             
+
             foreach (var directoryInfo in directory.EnumerateDirectories())
                 if (ExistsOccupiedFile(directoryInfo))
                     return true;

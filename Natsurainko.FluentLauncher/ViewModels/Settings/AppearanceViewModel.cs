@@ -1,7 +1,6 @@
 ﻿using AppSettingsManagement.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.WinUI.Helpers;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
@@ -40,7 +39,7 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.UseSystemAccentColor))]
     [NotifyPropertyChangedFor(nameof(CurrentThemeColor))]
-    [NotifyPropertyChangedFor(nameof(CurrentThemeColorString))] 
+    [NotifyPropertyChangedFor(nameof(CurrentThemeColorString))]
     private bool useSystemAccentColor;
 
     [ObservableProperty]
@@ -74,7 +73,7 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     [NotifyPropertyChangedFor(nameof(CurrentThemeColorString))]
     private Color? themeCustomColor;
 
-    public string ThemeCustomColorString => ThemeCustomColor != null 
+    public string ThemeCustomColorString => ThemeCustomColor != null
         ? System.Drawing.ColorTranslator.ToHtml(
             System.Drawing.Color.FromArgb(
                 CurrentThemeColor.A,
@@ -83,17 +82,17 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
                 CurrentThemeColor.B))
         : System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.FromArgb(255, default));
 
-    public string CurrentThemeColorString 
-    { 
-        get 
+    public string CurrentThemeColorString
+    {
+        get
         {
             return System.Drawing.ColorTranslator.ToHtml(
                 System.Drawing.Color.FromArgb(
-                    CurrentThemeColor.A, 
-                    CurrentThemeColor.R, 
-                    CurrentThemeColor.G, 
+                    CurrentThemeColor.A,
+                    CurrentThemeColor.R,
+                    CurrentThemeColor.G,
                     CurrentThemeColor.B));
-        } 
+        }
     }
 
     public Color CurrentThemeColor => UseSystemAccentColor ? (Color)App.Current.Resources["RawSystemAccentColor"] : ThemeCustomColor.GetValueOrDefault();

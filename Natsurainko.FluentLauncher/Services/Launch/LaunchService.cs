@@ -35,8 +35,8 @@ internal class LaunchService : DefaultLaunchService
         AuthenticationService authenticationService,
         DownloadService downloadService)
         : base(settingsService, accountService, gameService)
-    { 
-        _authenticationService = authenticationService; 
+    {
+        _authenticationService = authenticationService;
         _downloadService = downloadService;
     }
 
@@ -66,7 +66,7 @@ internal class LaunchService : DefaultLaunchService
         string? suitableJava = null;
 
         if (string.IsNullOrEmpty(_settingsService.ActiveJava))
-            throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoActiveJava")); 
+            throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoActiveJava"));
         // TODO: Do not localize exception message
 
         suitableJava = AppSettingsService.EnableAutoJava ? GetSuitableJava(gameInfo) : _settingsService.ActiveJava;
@@ -74,7 +74,7 @@ internal class LaunchService : DefaultLaunchService
             throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoSuitableJava").Replace("${version}", gameInfo.GetSuitableJavaVersion()));
 
         var specialConfig = gameInfo.GetSpecialConfig(); // Game specific config
-        var launchAccount = GetLaunchAccount(specialConfig, _accountService) 
+        var launchAccount = GetLaunchAccount(specialConfig, _accountService)
             ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount")); // Determine which account to use
 
         Account Authenticate()

@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Natsurainko.FluentLauncher.Services.Launch;
 using Nrk.FluentCore.Launch;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Activities;

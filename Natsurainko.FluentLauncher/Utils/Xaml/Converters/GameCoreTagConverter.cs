@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Nrk.FluentCore.Resources;
 using Nrk.FluentCore.Launch;
+using Nrk.FluentCore.Resources;
 using System;
 using System.Collections.Generic;
 

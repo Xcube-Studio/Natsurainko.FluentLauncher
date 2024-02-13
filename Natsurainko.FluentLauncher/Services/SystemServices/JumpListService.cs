@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.UI.StartScreen;
-using Microsoft.Windows.AppNotifications;
 
 namespace Natsurainko.FluentLauncher.Services.SystemServices;
 
@@ -17,6 +16,56 @@ internal class JumpListService
     public JumpListService(LaunchService launchService)
     {
         _launchService = launchService;
+    }
+
+    private static async Task AddItem(GameInfo gameInfo)
+    {
+        var itemArguments = JsonSerializer.Serialize(gameInfo).ConvertToBase64();
+        var jumpListItem = JumpListItem.CreateWithArguments($"/quick-launch {itemArguments}", gameInfo.Name);
+
+        jumpListItem.GroupName = "Latest";
+        jumpListItem.Logo = new Uri(string.Format("ms-appx:///Assets/Icons/{0}.png", !gameInfo.IsVanilla ? "furnace_front" : gameInfo.Type switch
+        {
+            "release" => "grass_block_side",
+            "snapshot" => "crafting_table_front",
+            "old_beta" => "dirt_path_side",
+            "old_alpha" => "dirt_path_side",
+            _ => "grass_block_side"
+        }), UriKind.RelativeOrAbsolute);
+
+        var list = await JumpList.LoadCurrentAsync();
+        list.Items.Add(jumpListItem);
+
+        await list.SaveAsync();
+    }
+
+    private static async Task RemoveItem(GameInfo gameInfo)
+    {
+        var list = await JumpList.LoadCurrentAsync();
+        var jumpListItem = list.Items.Where(item =>
+            gameInfo == JsonSerializer.Deserialize<GameInfo>
+                (item.Arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64())).FirstOrDefault();
+
+        if (jumpListItem != null)
+            list.Items.Remove(jumpListItem);
+
+        await list.SaveAsync();
+    }
+
+    private static async Task MoveToFirst(GameInfo gameInfo)
+    {
+        var list = await JumpList.LoadCurrentAsync();
+        var jumpListItem = list.Items.Where(item =>
+            gameInfo == JsonSerializer.Deserialize<GameInfo>
+                (item.Arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64())).FirstOrDefault();
+
+        if (jumpListItem != null)
+        {
+            list.Items.Remove(jumpListItem);
+            list.Items.Insert(0, jumpListItem);
+        }
+
+        await list.SaveAsync();
     }
 
     public void LaunchFromJumpList(string arguments)
@@ -83,57 +132,7 @@ internal class JumpListService
         //};
     }
 
-    public static async Task AddItem(GameInfo gameInfo)
-    {
-        var itemArguments = JsonSerializer.Serialize(gameInfo).ConvertToBase64();
-        var jumpListItem = JumpListItem.CreateWithArguments($"/quick-launch {itemArguments}", gameInfo.Name);
-
-        jumpListItem.GroupName = "Latest";
-        jumpListItem.Logo = new Uri(string.Format("ms-appx:///Assets/Icons/{0}.png", !gameInfo.IsVanilla ? "furnace_front" : gameInfo.Type switch
-        {
-            "release" => "grass_block_side",
-            "snapshot" => "crafting_table_front",
-            "old_beta" => "dirt_path_side",
-            "old_alpha" => "dirt_path_side",
-            _ => "grass_block_side"
-        }), UriKind.RelativeOrAbsolute);
-
-        var list = await JumpList.LoadCurrentAsync();
-        list.Items.Add(jumpListItem);
-
-        await list.SaveAsync();
-    }
-
-    public static async Task RemoveItem(GameInfo gameInfo)
-    {
-        var list = await JumpList.LoadCurrentAsync();
-        var jumpListItem = list.Items.Where(item =>
-            gameInfo == JsonSerializer.Deserialize<GameInfo>
-                (item.Arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64())).FirstOrDefault();
-
-        if (jumpListItem != null)
-            list.Items.Remove(jumpListItem);
-
-        await list.SaveAsync();
-    }
-
-    public static async Task MoveToFirst(GameInfo gameInfo)
-    {
-        var list = await JumpList.LoadCurrentAsync();
-        var jumpListItem = list.Items.Where(item =>
-            gameInfo == JsonSerializer.Deserialize<GameInfo>
-                (item.Arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64())).FirstOrDefault();
-
-        if (jumpListItem != null)
-        {
-            list.Items.Remove(jumpListItem);
-            list.Items.Insert(0, jumpListItem);
-        }
-
-        await list.SaveAsync();
-    }
-
-    private static void UpdateJumpList(GameInfo gameInfo)
+    public static void UpdateJumpList(GameInfo gameInfo)
     {
 
     }

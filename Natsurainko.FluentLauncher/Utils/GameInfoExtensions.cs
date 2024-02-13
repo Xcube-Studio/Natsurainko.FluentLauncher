@@ -2,8 +2,9 @@
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Nrk.FluentCore.Authentication;
-using Nrk.FluentCore.Management.ModLoaders;
 using Nrk.FluentCore.Launch;
+using Nrk.FluentCore.Management.ModLoaders;
+using Nrk.FluentCore.Utils;
 using System;
 using System.IO;
 using System.Linq;
@@ -11,7 +12,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using Nrk.FluentCore.Utils;
 
 namespace Natsurainko.FluentLauncher.Utils;
 

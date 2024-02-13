@@ -19,7 +19,7 @@ internal partial class CoreStatisticViewModel : ObservableObject, INavigationAwa
     {
         get
         {
-            if (GameStatisticInfo == null) 
+            if (GameStatisticInfo == null)
                 return string.Empty;
 
             double d = GameStatisticInfo.TotalSize;

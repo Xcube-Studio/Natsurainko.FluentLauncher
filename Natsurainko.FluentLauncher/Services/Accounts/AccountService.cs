@@ -5,7 +5,6 @@ using Nrk.FluentCore.Services.Accounts;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -72,7 +71,7 @@ internal class AccountService : DefaultAccountService
     }
 
     public override void WhenActiveAccountChanged(Account? oldAccount, Account? newAccount)
-    { 
+    {
         _settingsService.ActiveAccountUuid = newAccount?.Uuid;
         ActiveAccountChanged?.Invoke(this, newAccount);
     }

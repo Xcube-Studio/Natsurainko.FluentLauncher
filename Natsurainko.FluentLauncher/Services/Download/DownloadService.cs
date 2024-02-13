@@ -7,6 +7,9 @@ using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Xaml;
 using Nrk.FluentCore.Launch;
+using Nrk.FluentCore.Management.ModLoaders;
+using Nrk.FluentCore.Management.Parsing;
+using Nrk.FluentCore.Resources;
 using Nrk.FluentCore.Services.Download;
 using Nrk.FluentCore.Utils;
 using System;
@@ -16,9 +19,6 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
-using Nrk.FluentCore.Management.Parsing;
-using Nrk.FluentCore.Resources;
-using Nrk.FluentCore.Management.ModLoaders;
 
 namespace Natsurainko.FluentLauncher.Services.Download;
 

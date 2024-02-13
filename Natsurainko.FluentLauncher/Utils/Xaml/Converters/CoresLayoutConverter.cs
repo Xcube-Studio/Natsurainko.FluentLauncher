@@ -21,7 +21,7 @@ internal class CoresLayoutConverter : IValueConverter
                 ItemsJustification = UniformGridLayoutItemsJustification.Start
             },
             2 => new UniformGridLayout()
-            { 
+            {
                 MinItemWidth = 300,
                 ItemsStretch = UniformGridLayoutItemsStretch.Fill,
                 ItemsJustification = UniformGridLayoutItemsJustification.Start

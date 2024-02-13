@@ -24,6 +24,6 @@ public sealed partial class NewHomePage : Page
         LaunchButton.Focus(Microsoft.UI.Xaml.FocusState.Programmatic);
 
         SharedShadow.Receivers.Add(BackgroundGrid);
-        PanelGrid.Translation += new System.Numerics.Vector3(0, 0, 48); 
+        PanelGrid.Translation += new System.Numerics.Vector3(0, 0, 48);
     }
 }

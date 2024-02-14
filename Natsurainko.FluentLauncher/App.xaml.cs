@@ -26,9 +26,10 @@ namespace Natsurainko.FluentLauncher;
 public partial class App : Application
 {
     public static IServiceProvider Services { get; } = ConfigureServices();
-    public static T GetService<T>() => Services.GetService<T>();
-    public static MainWindow MainWindow { get; set; }
-    public static DispatcherQueue DispatcherQueue { get; private set; }
+    public static T GetService<T>() => Services.GetService<T>()
+        ?? throw new InvalidOperationException($"Service of type {typeof(T).Name} not found.");
+    public static MainWindow MainWindow { get; set; } = null!;
+    public static DispatcherQueue DispatcherQueue { get; private set; } = null!;
 
     public App()
     {

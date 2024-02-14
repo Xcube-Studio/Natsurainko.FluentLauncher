@@ -12,7 +12,7 @@ public sealed partial class NewHomePage : Page
 
     private void Button_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        var vm = DataContext as HomeViewModel;
+        var vm = (HomeViewModel)DataContext;
         splitView.IsPaneOpen = !splitView.IsPaneOpen;
 
         if (splitView.IsPaneOpen && vm.ActiveGameInfo != null)

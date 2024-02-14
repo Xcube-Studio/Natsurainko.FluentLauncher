@@ -5,6 +5,7 @@ using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Management.Mods;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -36,9 +37,10 @@ internal partial class CoreModsViewModel : ObservableObject, INavigationAware
     [ObservableProperty]
     private string searchBoxInput;
 
-    void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object? parameter)
     {
-        var gameInfo = parameter as GameInfo;
+        if (parameter is not GameInfo gameInfo)
+            throw new ArgumentException("Invalid parameter type");
 
         SupportMod = gameInfo.IsSupportMod();
 

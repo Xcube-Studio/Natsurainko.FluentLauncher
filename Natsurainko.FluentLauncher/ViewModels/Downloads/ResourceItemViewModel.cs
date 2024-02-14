@@ -35,7 +35,7 @@ internal partial class ResourceItemViewModel : ObservableObject, INavigationAwar
     [ObservableProperty]
     private object resource;
 
-    void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object? parameter)
     {
         Resource = parameter;
 

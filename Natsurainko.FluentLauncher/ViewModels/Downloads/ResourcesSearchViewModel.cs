@@ -8,6 +8,7 @@ using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Resources;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -58,9 +59,10 @@ internal partial class ResourcesSearchViewModel : ObservableObject, INavigationA
 
     public bool ComboBoxEnable => ResourceType != 4;
 
-    void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object? parameter)
     {
-        var searchData = parameter as ResourceSearchData;
+        if (parameter is not ResourceSearchData searchData)
+            throw new ArgumentException("Invalid parameter type");
 
         SearchBoxInput = searchData.SearchInput;
         ResourceType = searchData.ResourceType;

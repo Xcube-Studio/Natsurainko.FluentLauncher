@@ -14,7 +14,7 @@ class SettingsNavigationViewModel : ObservableObject, INavigationAware
         _navigationService = navigationService;
     }
 
-    void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object? parameter)
     {
         if (parameter is string pageKey)
             _navigationService.NavigateTo(pageKey);

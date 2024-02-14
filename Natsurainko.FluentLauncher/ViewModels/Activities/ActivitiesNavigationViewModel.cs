@@ -16,7 +16,7 @@ class ActivitiesNavigationViewModel : ObservableObject, INavigationAware
 
     #region Navigation
 
-    void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object? parameter)
     {
         if (parameter is string pageKey)
             _navigationService.NavigateTo(pageKey);

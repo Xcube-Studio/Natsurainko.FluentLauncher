@@ -78,8 +78,8 @@ public sealed partial class ShellPage : Page, INavigationProvider
         _XamlRoot = XamlRoot;
 
         App.MainWindow.SetTitleBar(AppTitleBar);
-
-        if (_settings.BackgroundMode == 3)
+        
+        if (_settings.BackgroundMode == 3 && !VM._onNavigatedTo)
         {
             var sprite = await PipelineBuilder
                 .FromBackdrop()

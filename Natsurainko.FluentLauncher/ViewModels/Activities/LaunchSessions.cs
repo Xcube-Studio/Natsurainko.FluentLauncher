@@ -15,7 +15,7 @@ class LaunchSessions : ObservableObject
         launchService.SessionCreated += LaunchService_SessionCreated;
     }
 
-    private void LaunchService_SessionCreated(object sender, MinecraftSession e)
+    private void LaunchService_SessionCreated(object? sender, MinecraftSession e)
     {
         App.DispatcherQueue.TryEnqueue(() =>
         {

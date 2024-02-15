@@ -88,6 +88,8 @@ internal class AppearanceService
 
     public void ApplyThemeColorBeforePageInit(ShellPage page)
     {
+        App.Current.Resources["RawSystemAccentColor"] = App.Current.Resources["SystemAccentColor"];
+
         if (!_settingsService.UseSystemAccentColor)
         {
             App.Current.Resources["SystemAccentColorLight1"] = _settingsService.ThemeCustomColor.GetValueOrDefault();
@@ -97,10 +99,8 @@ internal class AppearanceService
             App.Current.Resources["SystemAccentColorDark2"] = _settingsService.ThemeCustomColor.GetValueOrDefault();
             App.Current.Resources["SystemAccentColorDark3"] = _settingsService.ThemeCustomColor.GetValueOrDefault();
 
-            App.Current.Resources.Add("RawSystemAccentColor", App.Current.Resources["SystemAccentColor"]);
             App.Current.Resources["SystemAccentColor"] = _settingsService.ThemeCustomColor.GetValueOrDefault();
         }
-        else App.Current.Resources.Add("RawSystemAccentColor", App.Current.Resources["SystemAccentColor"]);
     }
 
     public void ApplyBackgroundAfterPageInit(ShellPage page)

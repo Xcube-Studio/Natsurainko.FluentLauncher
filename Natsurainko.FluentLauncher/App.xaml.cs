@@ -8,6 +8,7 @@ using Natsurainko.FluentLauncher.Services.Download;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
+using Natsurainko.FluentLauncher.Services.SystemServices;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
@@ -20,6 +21,7 @@ using Natsurainko.FluentLauncher.Views.Common;
 using System;
 using System.Text;
 using System.Threading;
+using Windows.UI.StartScreen;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -53,27 +55,19 @@ public partial class App : Application
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
         string[] cmdargs = Environment.GetCommandLineArgs();
-        /*
-        if (cmdargs.Length > 1 && cmdargs[1].Equals("/quick-launch"))
-        {
-            App.GetService<LaunchService>().LaunchFromJumpList(cmdargs[2]);
-            return;
-        }*/
 
+        // TODO: Move to UI services
+        App.GetService<LaunchSessions>(); // Init global launch sessions collection
         App.GetService<MessengerService>().SubscribeEvents();
 
-        try
+        if (cmdargs.Length > 1 && cmdargs[1].Equals("/quick-launch"))
         {
-            App.GetService<IActivationService>().ActivateWindow("MainWindow");
-
-            // TODO: Move to UI services
-            App.GetService<LaunchSessions>(); // Init global launch sessions collection
-        }
-        catch (Exception e)
-        {
-            ProcessException(e);
+            App.GetService<JumpListService>().LaunchFromJumpList(cmdargs[2]);
+            return;
         }
 
+        try { App.GetService<IActivationService>().ActivateWindow("MainWindow"); }
+        catch (Exception e) { ProcessException(e); }
     }
 
     private static IPageProvider BuildPageProvider(IServiceProvider sp) => WinUIPageProvider.GetBuilder(sp)
@@ -156,6 +150,7 @@ public partial class App : Application
         services.AddSingleton<AppearanceService>();
         services.AddSingleton<SkinCacheService>();
         services.AddSingleton<InterfaceCacheService>();
+        services.AddSingleton<JumpListService>();
 
         // Windows
         services.AddScoped<MainWindow>();

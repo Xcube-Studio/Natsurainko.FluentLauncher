@@ -6,6 +6,7 @@ using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using System.IO;
+using System.Windows.Navigation;
 using Windows.ApplicationModel;
 using Windows.Globalization;
 using WinUIEx;
@@ -71,10 +72,12 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
     {
         if (_firstActivated)
             _navService.NavigateTo(_settings.FinishGuide ? "ShellPage" : "OOBENavigationPage");
-        //_navService.NavigateTo("OOBENavigationPage");
 
         _firstActivated = false;
     }
 
-
+    public void NavigateToLaunchTasksPage()
+    {
+        _navService.NavigateTo("ShellPage", "ActivitiesNavigationPage");
+    }
 }

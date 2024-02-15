@@ -10,6 +10,8 @@ class ShellViewModel : INavigationAware
     private readonly INavigationService _shellNavigationService;
     private readonly SettingsService _settings;
 
+    public bool _onNavigatedTo = false;
+
     public ShellViewModel(INavigationService shellNavigationService, SettingsService settings)
     {
         _shellNavigationService = shellNavigationService;
@@ -18,7 +20,12 @@ class ShellViewModel : INavigationAware
 
     void INavigationAware.OnNavigatedTo(object parameter)
     {
-        _shellNavigationService.NavigateTo(_settings.UseNewHomePage ? "NewHomePage" : "HomePage");
+        if (parameter is string pageKey)
+        {
+            _shellNavigationService.NavigateTo(pageKey);
+            _onNavigatedTo = true;
+        }
+        else
+            _shellNavigationService.NavigateTo(_settings.UseNewHomePage ? "NewHomePage" : "HomePage");
     }
-
 }

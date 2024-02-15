@@ -31,6 +31,13 @@
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
       <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Remove="Assets\PackageIcons\SplashScreen.scale-100.scale-100.png" />
+    <Content Remove="Assets\PackageIcons\SplashScreen.scale-100.scale-125.png" />
+    <Content Remove="Assets\PackageIcons\SplashScreen.scale-100.scale-150.png" />
+    <Content Remove="Assets\PackageIcons\SplashScreen.scale-100.scale-200.png" />
+    <Content Remove="Assets\PackageIcons\SplashScreen.scale-100.scale-400.png" />
+  </ItemGroup>
 
   <!-- Multilingual App Toolkit
   <PropertyGroup Label="MultilingualAppToolkit">

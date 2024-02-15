@@ -37,20 +37,10 @@ public sealed partial class ShellPage : Page, INavigationProvider
         _appearanceService.RegisterNavigationView(NavigationViewControl);
     }
 
-    private void UpdateAppTitleMargin(NavigationView sender)
-    {
-        AppTitle.TranslationTransition = new Vector3Transition();
-        AppTitle.Translation = ((sender.DisplayMode == NavigationViewDisplayMode.Expanded && sender.IsPaneOpen) ||
-                 sender.DisplayMode == NavigationViewDisplayMode.Minimal)
-                 ? new System.Numerics.Vector3(8, 0, 0)
-                 : new System.Numerics.Vector3(28, 0, 0);
-    }
+    #region NavigationView Events
+    private void NavigationViewControl_PaneClosing(NavigationView sender, object _) => UpdateAppTitleMargin(sender);
 
-    private void NavigationViewControl_PaneClosing(NavigationView sender, object _)
-        => UpdateAppTitleMargin(sender);
-
-    private void NavigationViewControl_PaneOpening(NavigationView sender, object _)
-        => UpdateAppTitleMargin(sender);
+    private void NavigationViewControl_PaneOpening(NavigationView sender, object _) => UpdateAppTitleMargin(sender);
 
     private void NavigationViewControl_ItemInvoked(NavigationView _, NavigationViewItemInvokedEventArgs args)
     {
@@ -62,8 +52,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
         VM.NavigationService.NavigateTo(pageTag);
     }
 
-    private void NavigationViewControl_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
-        => VM.NavigationService.GoBack();
+    private void NavigationViewControl_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args) => VM.NavigationService.GoBack();
 
     private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
     {
@@ -72,6 +61,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
         UpdateAppTitleMargin(sender);
         RefreshDragArea();
     }
+    #endregion
 
     private async void Page_Loaded(object sender, RoutedEventArgs e)
     {
@@ -92,13 +82,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
         RefreshDragArea();
     }
 
-    private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
-    {
-        RefreshDragArea();
-
-        _settings.AppWindowWidth = App.MainWindow.Width;
-        _settings.AppWindowHeight = App.MainWindow.Height;
-    }
+    private void Page_SizeChanged(object sender, SizeChangedEventArgs e) => RefreshDragArea();
 
     private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
     {
@@ -130,6 +114,15 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
         var dragRect = new RectInt32(x, y, width, height);
         App.MainWindow.AppWindow.TitleBar.SetDragRectangles(new[] { dragRect });
+    }
+
+    private void UpdateAppTitleMargin(NavigationView sender)
+    {
+        AppTitle.TranslationTransition = new Vector3Transition();
+        AppTitle.Translation = ((sender.DisplayMode == NavigationViewDisplayMode.Expanded && sender.IsPaneOpen) ||
+                 sender.DisplayMode == NavigationViewDisplayMode.Minimal)
+                 ? new System.Numerics.Vector3(8, 0, 0)
+                 : new System.Numerics.Vector3(28, 0, 0);
     }
 
     internal async void BlurAnimation(int from, int to)

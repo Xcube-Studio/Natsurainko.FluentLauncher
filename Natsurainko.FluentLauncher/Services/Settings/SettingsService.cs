@@ -42,7 +42,7 @@ public partial class SettingsService : SettingsContainer, IFluentCoreSettingsSer
     [SettingItem(typeof(bool), "AutoRefresh", Default = true, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(Guid), "ActiveAccountUuid")]
 
-    [SettingItem(typeof(string), "CurrentDownloadSource", Default = "Mcbbs", Converter = typeof(JsonStringConverter<string>))]
+    [SettingItem(typeof(string), "CurrentDownloadSource", Default = "Mojang", Converter = typeof(JsonStringConverter<string>))]
     [SettingItem(typeof(bool), "EnableFragmentDownload", Default = true, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(int), "MaxDownloadThreads", Default = 128, Converter = typeof(JsonStringConverter<int>))]
 

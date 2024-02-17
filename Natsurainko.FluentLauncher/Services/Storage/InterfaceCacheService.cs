@@ -1,5 +1,6 @@
 ﻿using Natsurainko.FluentLauncher.Classes.Data.UI;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Resources;
 using Nrk.FluentCore.Utils;
 using System;
@@ -108,15 +109,16 @@ internal class InterfaceCacheService
         _fetchNewsTask = Task.Run(() =>
         {
             var localFile = GetLocalFileOfInterface("https://launchercontent.mojang.com/news.json", autoRefresh: true);
-            if (string.IsNullOrEmpty(localFile)) throw new ArgumentNullException(nameof(localFile));
+            if (string.IsNullOrEmpty(localFile))
+                throw new ArgumentNullException(nameof(localFile));
 
-            return JsonNode.Parse(File.ReadAllText(localFile))["entries"].AsArray()
-                .Select(x =>
-                {
-                    var contentData = x.Deserialize<NewsData>();
-                    contentData.ImageUrl = $"https://launchercontent.mojang.com{x["newsPageImage"]["url"].GetValue<string>()}";
-                    return contentData;
-                }).ToArray();
+            var entries = JsonNodeUtils.ParseFile(localFile)?["entries"]
+                ?? throw new JsonException("Failed to get news entries");
+
+            return entries
+                .AsArray()
+                .WhereNotNull()
+                .Select(x => NewsData.Deserialize(x)).ToArray();
         });
 
         return _fetchNewsTask;

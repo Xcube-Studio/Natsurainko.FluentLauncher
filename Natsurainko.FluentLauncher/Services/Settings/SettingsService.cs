@@ -42,7 +42,7 @@ public partial class SettingsService : SettingsContainer, IFluentCoreSettingsSer
     [SettingItem(typeof(bool), "AutoRefresh", Default = true, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(Guid), "ActiveAccountUuid")]
 
-    [SettingItem(typeof(string), "CurrentDownloadSource", Default = "Mcbbs", Converter = typeof(JsonStringConverter<string>))]
+    [SettingItem(typeof(string), "CurrentDownloadSource", Default = "Mojang", Converter = typeof(JsonStringConverter<string>))]
     [SettingItem(typeof(bool), "EnableFragmentDownload", Default = true, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(int), "MaxDownloadThreads", Default = 128, Converter = typeof(JsonStringConverter<int>))]
 
@@ -62,6 +62,7 @@ public partial class SettingsService : SettingsContainer, IFluentCoreSettingsSer
 
     [SettingItem(typeof(double), "AppWindowHeight", Default = 500, Converter = typeof(JsonStringConverter<double>))]
     [SettingItem(typeof(double), "AppWindowWidth", Default = 950, Converter = typeof(JsonStringConverter<double>))]
+    [SettingItem(typeof(WinUIEx.WindowState), "AppWindowState", Default = WinUIEx.WindowState.Normal, Converter = typeof(JsonStringConverter<WinUIEx.WindowState>))]
     [SettingItem(typeof(bool), "FinishGuide", Default = false, Converter = typeof(JsonStringConverter<bool>))]
 
     [SettingItem(typeof(int), "CoresSortByIndex", Default = 0, Converter = typeof(JsonStringConverter<int>))]

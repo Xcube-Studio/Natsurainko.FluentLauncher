@@ -3,6 +3,7 @@ using Natsurainko.FluentLauncher.Classes.Exceptions;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Download;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.SystemServices;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Environment;
@@ -48,7 +49,7 @@ internal class LaunchService : DefaultLaunchService
         OnSessionCreated(session);
 
         gameInfo.UpdateLastLaunchTimeToNow();
-        //UpdateJumpList(gameInfo);
+        App.GetService<JumpListService>().UpdateJumpList(gameInfo);
 
         try
         {

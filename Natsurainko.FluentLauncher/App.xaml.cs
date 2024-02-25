@@ -21,7 +21,6 @@ using Natsurainko.FluentLauncher.Views.Common;
 using System;
 using System.Text;
 using System.Threading;
-using Windows.UI.StartScreen;
 
 namespace Natsurainko.FluentLauncher;
 

@@ -36,7 +36,6 @@
                     <ComboBox SelectedItem="{Binding CurrentDownloadSource, Mode=TwoWay}">
                         <x:String>Mojang</x:String>
                         <x:String>Bmclapi</x:String>
-                        <x:String>Mcbbs</x:String>
                     </ComboBox>
                 </controls:SettingsCard>
 

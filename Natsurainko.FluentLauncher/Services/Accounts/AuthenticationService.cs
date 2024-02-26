@@ -30,6 +30,7 @@ internal class AuthenticationService
     {
         Account activeAccount = _accountService.ActiveAccount;
         Account refreshedAccount = default;
+
         if (activeAccount is MicrosoftAccount microsoftAccount)
         {
             refreshedAccount = DefaultMicrosoftAuthenticator
@@ -39,7 +40,7 @@ internal class AuthenticationService
         else if (activeAccount is YggdrasilAccount yggdrasilAccount)
         {
             refreshedAccount = DefaultYggdrasilAuthenticator
-                .CreateForRefresh(yggdrasilAccount)
+                .CreateForRefresh(yggdrasilAccount, yggdrasilAccount.ClientToken)
                 .Authenticate()
                 .First(account => account.Uuid.Equals(activeAccount.Uuid));
         }
@@ -56,7 +57,7 @@ internal class AuthenticationService
 
     public void RefreshContainedAccount(Account account)
     {
-        Account refreshedAccount = default;
+        Account? refreshedAccount = default;
 
         if (account is MicrosoftAccount microsoftAccount)
         {
@@ -67,7 +68,7 @@ internal class AuthenticationService
         else if (account is YggdrasilAccount yggdrasilAccount)
         {
             refreshedAccount = DefaultYggdrasilAuthenticator
-                .CreateForRefresh(yggdrasilAccount)
+                .CreateForRefresh(yggdrasilAccount, yggdrasilAccount.ClientToken)
                 .Authenticate()
                 .First(account => account.Uuid.Equals(account.Uuid));
         }

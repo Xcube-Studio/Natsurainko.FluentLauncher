@@ -96,6 +96,9 @@ public partial class SettingsService : SettingsContainer, IFluentCoreSettingsSer
 
     private void Migrate()
     {
+        if (this.CurrentDownloadSource == "Mcbbs")
+            this.CurrentDownloadSource = "Bmclapi";
+
         // ApplicationData.Current.LocalSettings.Values["SettingsVersion"] = 1u; // TODO: testing only, to be removed
         if (SettingsVersion == 0u) // Version 0: Before Release 2.1.8.0
         {

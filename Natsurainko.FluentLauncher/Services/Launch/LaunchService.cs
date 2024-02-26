@@ -43,16 +43,16 @@ internal class LaunchService : DefaultLaunchService
 
     public override async void LaunchGame(GameInfo gameInfo)
     {
-        var session = CreateMinecraftSessionFromGameInfo(gameInfo); // TODO: replace with ctor of MinecraftSession
-        _sessions.Add(session);
-
-        OnSessionCreated(session);
-
-        gameInfo.UpdateLastLaunchTimeToNow();
-        App.GetService<JumpListService>().UpdateJumpList(gameInfo);
-
         try
         {
+            var session = CreateMinecraftSessionFromGameInfo(gameInfo); // TODO: replace with ctor of MinecraftSession
+            _sessions.Add(session);
+
+            OnSessionCreated(session);
+
+            gameInfo.UpdateLastLaunchTimeToNow();
+            App.GetService<JumpListService>().UpdateJumpList(gameInfo);
+
             await session.StartAsync();
         }
         catch (Exception ex)

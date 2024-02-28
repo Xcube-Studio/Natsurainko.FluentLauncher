@@ -19,21 +19,14 @@ namespace Natsurainko.FluentLauncher.Services.UI;
 internal class AppearanceService
 {
     private readonly SettingsService _settingsService;
-    private NavigationView _navigationView;
-    private BitmapImage backgroundImage;
+    private NavigationView? _navigationView;
+    private BitmapImage? backgroundImage;
 
     public Type HomePageType => _settingsService.UseNewHomePage ? typeof(NewHomePage) : typeof(HomePage);
 
     public AppearanceService(SettingsService settingsService)
     {
         _settingsService = settingsService;
-    }
-
-    private void NavigationViewDisplayModeChanged(AppSettingsManagement.SettingsContainer sender, AppSettingsManagement.SettingChangedEventArgs e)
-    {
-        _navigationView.PaneDisplayMode = _settingsService.NavigationViewDisplayMode == 0
-            ? NavigationViewPaneDisplayMode.Auto
-            : NavigationViewPaneDisplayMode.LeftMinimal;
     }
 
     public void RegisterNavigationView(NavigationView navigationView)
@@ -43,7 +36,12 @@ internal class AppearanceService
             ? NavigationViewPaneDisplayMode.Auto
             : NavigationViewPaneDisplayMode.LeftMinimal;
 
-        _settingsService.NavigationViewDisplayModeChanged += NavigationViewDisplayModeChanged;
+        _settingsService.NavigationViewDisplayModeChanged += (sender, e)=>
+        {
+            _navigationView.PaneDisplayMode = _settingsService.NavigationViewDisplayMode == 0
+                ? NavigationViewPaneDisplayMode.Auto
+                : NavigationViewPaneDisplayMode.LeftMinimal;
+        };
     }
 
     public void ApplyDisplayTheme()
@@ -136,9 +134,9 @@ internal class AppearanceService
 
     public void ApplyBackgroundAtWindowCreated(MainWindow window)
     {
-        WindowsSystemDispatcherQueueHelper m_wsdqHelper = null;
-        DesktopAcrylicController m_backdropController = null;
-        SystemBackdropConfiguration m_configurationSource = null;
+        WindowsSystemDispatcherQueueHelper? m_wsdqHelper = null;
+        DesktopAcrylicController? m_backdropController = null;
+        SystemBackdropConfiguration? m_configurationSource = null;
 
         bool TrySetAcrylicBackdrop(MainWindow window)
         {

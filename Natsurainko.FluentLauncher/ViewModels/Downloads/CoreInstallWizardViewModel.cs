@@ -57,9 +57,12 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
         _interfaceCacheService = interfaceCacheService;
     }
 
-    void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object? parameter)
     {
-        _manifestItem = (VersionManifestItem)parameter;
+        if (parameter is VersionManifestItem item)
+        {
+            _manifestItem = item;
+        }
     }
 
     [RelayCommand]

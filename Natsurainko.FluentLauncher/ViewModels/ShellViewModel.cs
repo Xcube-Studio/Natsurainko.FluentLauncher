@@ -18,7 +18,7 @@ class ShellViewModel : INavigationAware
         _settings = settings;
     }
 
-    void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object? parameter)
     {
         if (parameter is string pageKey)
         {

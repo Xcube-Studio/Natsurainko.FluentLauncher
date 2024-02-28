@@ -10,6 +10,7 @@ using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Launch;
+using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -40,9 +41,11 @@ internal partial class CoreSettingsViewModel : ObservableObject, INavigationAwar
         _accountService = accountService;
     }
 
-    void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object? parameter)
     {
-        _gameInfo = parameter as GameInfo;
+        if (parameter is not GameInfo _gameInfo)
+            throw new ArgumentException("Invalid parameter type");
+        
         GameSpecialConfig = _gameInfo.GetSpecialConfig();
 
         Accounts = _accountService.Accounts;

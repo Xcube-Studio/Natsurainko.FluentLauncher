@@ -7,6 +7,7 @@ using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Launch;
+using System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
@@ -37,9 +38,12 @@ internal partial class ManageNavigationViewModel : ObservableObject, INavigation
 
     #region Navigation
 
-    void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object? parameter)
     {
-        _gameInfo = parameter as GameInfo;
+        if (parameter is not GameInfo gameInfo)
+            throw new ArgumentException("Invalid parameter type");
+
+        _gameInfo = gameInfo;
 
         BreadcrumbBarItemsSource = new string[]
         {

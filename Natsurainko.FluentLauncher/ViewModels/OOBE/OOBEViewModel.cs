@@ -75,7 +75,7 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
         "OOBEGetStartedPage"
     };
 
-    void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object? parameter)
     {
         _navigationService.NavigateTo("OOBELanguagePage"); // Default page
     }

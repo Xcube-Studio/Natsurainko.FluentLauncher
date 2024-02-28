@@ -15,15 +15,15 @@ public sealed partial class CoreModsPage : Page
     {
         void ToggleSwitch_Toggled(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
-            var toggleSwitch = sender as ToggleSwitch;
-            var modInfo = toggleSwitch.DataContext as ModInfo;
-            var modsManager = (this.DataContext as CoreModsViewModel).modsManager;
+            var toggleSwitch = (ToggleSwitch)sender;
+            var modInfo = (ModInfo)toggleSwitch.DataContext;
+            var modsManager = ((CoreModsViewModel)DataContext).modsManager;
 
             if (modInfo != null)
                 modsManager.Switch(modInfo, toggleSwitch.IsOn);
         }
 
-        var toggleSwitch = sender as ToggleSwitch;
+        var toggleSwitch = (ToggleSwitch)sender;
 
         toggleSwitch.Toggled += ToggleSwitch_Toggled;
         toggleSwitch.Unloaded += (_, _) => toggleSwitch.Toggled -= ToggleSwitch_Toggled;

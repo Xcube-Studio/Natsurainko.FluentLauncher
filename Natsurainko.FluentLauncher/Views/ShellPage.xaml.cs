@@ -6,6 +6,7 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Services.UI.Pages;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels;
 using Natsurainko.FluentLauncher.Views.Home;
 using System;
@@ -16,8 +17,8 @@ namespace Natsurainko.FluentLauncher.Views;
 
 public sealed partial class ShellPage : Page, INavigationProvider
 {
-    public static XamlRoot _XamlRoot { get; private set; }
-    public static Frame ContentFrame { get; private set; }
+    public static XamlRoot _XamlRoot { get; private set; } = null!; // Initialized on Page_Loaded
+    public static Frame ContentFrame { get; private set; } = null!; // Initialized on Page_Loaded
 
     object INavigationProvider.NavigationControl => contentFrame;
     private ShellViewModel VM => (ShellViewModel)DataContext;
@@ -44,7 +45,8 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
     private void NavigationViewControl_ItemInvoked(NavigationView _, NavigationViewItemInvokedEventArgs args)
     {
-        var pageTag = ((NavigationViewItem)args.InvokedItemContainer).Tag.ToString();
+        var pageTag = ((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()
+            ?? throw new ArgumentNullException("The invoked item's tag is null.");
 
         if (pageTag == "HomePage" && _settings.UseNewHomePage)
             pageTag = "NewHomePage";
@@ -88,13 +90,15 @@ public sealed partial class ShellPage : Page, INavigationProvider
     {
         foreach (NavigationViewItem item in NavigationViewControl.MenuItems.Union(NavigationViewControl.FooterMenuItems).Cast<NavigationViewItem>())
         {
-            if (App.GetService<IPageProvider>().RegisteredPages[item.Tag.ToString()].PageType == e.SourcePageType)
+            string tag = item.GetTag();
+
+            if (App.GetService<IPageProvider>().RegisteredPages[tag].PageType == e.SourcePageType)
             {
                 NavigationViewControl.SelectedItem = item;
                 item.IsSelected = true;
                 return;
             }
-            if (e.SourcePageType == typeof(NewHomePage) && item.Tag.ToString() == "HomePage")
+            if (e.SourcePageType == typeof(NewHomePage) && tag == "HomePage")
             {
                 NavigationViewControl.SelectedItem = item;
                 item.IsSelected = true;

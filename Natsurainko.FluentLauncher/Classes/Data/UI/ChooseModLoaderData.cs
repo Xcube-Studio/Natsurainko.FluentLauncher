@@ -54,10 +54,10 @@ internal partial class ChooseModLoaderData : ObservableObject
     private string displayText = ResourceUtils.GetValue("CoreInstallWizard", "ChooseModLoaderPage", "_Loading");
 
     [ObservableProperty]
-    private IEnumerable<LoaderBuildData> items;
+    private IEnumerable<LoaderBuildData>? items;
 
     [ObservableProperty]
-    private LoaderBuildData selectedItem;
+    private LoaderBuildData? selectedItem;
 
     private void Init() => Task.Run(() =>
     {
@@ -74,20 +74,31 @@ internal partial class ChooseModLoaderData : ObservableObject
         using var responseMessage = HttpUtils.HttpGet(url);
         responseMessage.EnsureSuccessStatusCode();
 
-        var array = JsonNode.Parse(responseMessage.Content.ReadAsString()).AsArray();
-        IEnumerable<LoaderBuildData> loaders = default;
+        var array = responseMessage.Content.ReadAsString()
+            .ToJsonNode()?
+            .AsArray()
+            .WhereNotNull();
+        IEnumerable<LoaderBuildData>? loaders = null;
 
-        if (array.Any())
+        if (array is not null && array.Any())
         {
             switch (Type)
             {
                 case ModLoaderType.Forge:
 
-                    var forge = array.Select(x => new LoaderBuildData
+                    var forge = array.Select(x =>
                     {
-                        DisplayText = x["version"].GetValue<string>(),
-                        Metadata = x["build"]
-                    }).ToList();
+                        var displayText = x["version"]?.GetValue<string>();
+                        var metadata = x["build"];
+                        if (displayText is null || metadata is null)
+                            throw new Exception("Invalid forge data");
+
+                        return new LoaderBuildData
+                        {
+                            DisplayText = displayText,
+                            Metadata = metadata
+                        };
+                    }).WhereNotNull().ToList();
 
                     forge.Sort((a, b) => a.Metadata.GetValue<int>().CompareTo(b.Metadata.GetValue<int>()));
                     forge.Reverse();
@@ -97,10 +108,17 @@ internal partial class ChooseModLoaderData : ObservableObject
                     break;
                 case ModLoaderType.Fabric:
 
-                    var fabric = array.Select(x => new LoaderBuildData
+                    var fabric = array.Select(x =>
                     {
-                        DisplayText = x["loader"]["version"].GetValue<string>(),
-                        Metadata = x
+                        var displayText = x["loader"]?["version"]?.GetValue<string>();
+                        if (displayText is null)
+                            throw new Exception("Invalid fabric data");
+
+                        return new LoaderBuildData
+                        {
+                            DisplayText = displayText,
+                            Metadata = x
+                        };
                     }).ToList();
 
                     loaders = fabric;
@@ -108,10 +126,18 @@ internal partial class ChooseModLoaderData : ObservableObject
                     break;
                 case ModLoaderType.OptiFine:
 
-                    var optifine = array.Select(x => new LoaderBuildData
+                    var optifine = array.Select(x =>
                     {
-                        DisplayText = $"{x["type"].GetValue<string>()}_{x["patch"].GetValue<string>()}",
-                        Metadata = x
+                        var type = x["type"]?.GetValue<string>();
+                        var patch = x["patch"]?.GetValue<string>();
+                        if (type is null || patch is null)
+                            throw new Exception("Invalid optifine data");
+
+                        return new LoaderBuildData
+                        {
+                            DisplayText = $"{type}_{patch}",
+                            Metadata = x
+                        };
                     }).ToList();
 
                     loaders = optifine;
@@ -213,8 +239,8 @@ internal partial class ChooseModLoaderData : ObservableObject
 
     public class LoaderBuildData
     {
-        public string DisplayText { get; set; }
+        public required string DisplayText { get; set; }
 
-        public JsonNode Metadata { get; set; }
+        public required JsonNode Metadata { get; set; }
     }
 }

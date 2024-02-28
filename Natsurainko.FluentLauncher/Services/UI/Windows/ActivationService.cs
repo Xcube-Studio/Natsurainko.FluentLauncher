@@ -34,7 +34,8 @@ abstract class ActivationService<TWindowBase> : IActivationService
 
         // Constructs the window
         Type windowType = RegisteredWindows[key].WindowType; // windowType is guaranteed to be a subclass of TWindowBase when the activation service is built
-        TWindowBase window = (TWindowBase)scope.ServiceProvider.GetService(windowType);
+        TWindowBase window = (TWindowBase?)scope.ServiceProvider.GetService(windowType)
+            ?? throw new InvalidOperationException($"The window type {windowType} is not registered with the window provider.");
 
         // If the window supports navigation, initialize the navigation service for the window scope
         // The navigation service may have been instantiated and injected into 'window' already.

@@ -38,9 +38,12 @@ internal partial class CoreStatisticViewModel : ObservableObject, INavigationAwa
 
     public bool IsVanilla => _gameInfo.IsVanilla;
 
-    void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object? parameter)
     {
-        _gameInfo = parameter as GameInfo;
+        if (parameter is not GameInfo gameInfo)
+            throw new ArgumentException("Invalid parameter type");
+
+        _gameInfo = gameInfo;
 
         Task.Run(() =>
         {

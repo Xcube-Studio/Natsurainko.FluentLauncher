@@ -1,41 +1,17 @@
 name: Build
 
-on: 
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-    types: [opened, synchronize, reopened]
-
-  workflow_dispatch:
+# Reusable workflow for building and packaging FluentLauncher
+on:
+  workflow_call:
     inputs:
-     flag:
-        description:  'Publish?'
-        required: true
-        default: false
+      create_package:
+        required: false
         type: boolean
-     tag1:
-        description: 'Pre/Release?'
-        required: true
-        default: 'beta'
-        type: choice
-        options:
-          - beta
-          - v
-     tag2:
-        description: 'Version?(e.g 2.0.0.6)'
-        required: true
-        type: string
+        default: false
 
 jobs:
-
   build:
-    # Ignore draft PRs
-    if: github.event_name != 'pull_request' || (github.event_name == 'pull_request' && github.event.pull_request.draft == false)
     runs-on: windows-latest
-    strategy:
-      matrix:
-        architecture: [x64, arm64]
     env:
       Solution_Name: Natsurainko.FluentLauncher
       Project_Directory: Natsurainko.FluentLauncher
@@ -43,343 +19,139 @@ jobs:
       Packages_DirectoryName: AppPackages
       Packages_Directory: Natsurainko.FluentLauncher\AppPackages
       SigningKey_Path: SigningKey.pfx
+
+    strategy:
+      matrix:
+        architecture: [x64, arm64]
+
     name: Build (${{ matrix.architecture }})
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 7.0.x
-    
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v1.3
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
 
-    - name: Get NuGet Dependencies
-      run: .\.github\write-nuget-cache-file.ps1
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 7.0.x
 
-    # - name: Cache NuGet packages
-    #   id: cache
-    #   uses: actions/cache@v3
-    #   with:
-    #     path: |
-    #       ~\.nuget\packages
-    #       ~\AppData\Roaming\NuGet\NuGet.Config
-    #     key: ${{ runner.os }}-nuget-${{ hashFiles('.package-references.xml') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-nuget-
-    
-    - name: Add nuget source
-      # if: steps.cache.outputs.cache-hit != 'true'
-      run: dotnet nuget add source "https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json"
-    - name: Init SubModules
-      run: git submodule update --init --recursive
-      
-    # Restore the application to populate the obj folder with RuntimeIdentifiers
-    - name: Restore NuGet packages
-      # must run
-      run: dotnet restore # msbuild $env:Solution_Name /t:Restore /p:Configuration=Release
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
 
-    # Prepare FluentLauncher.Localization
-    - name: Prepare FluentLauncher.Localization
-      run: .\update-localization.ps1
+      # - name: Cache NuGet packages
+      #   id: cache-nuget
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: |
+      #       ~\AppData\Local\NuGet\v3-cache
+      #       ~\AppData\Roaming\NuGet\NuGet.Config
+      #     key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-nuget-
 
-    # Create the app package by building and packaging the Windows Application Packaging project
-    - name: Create app package
-      run: |
-        msbuild $env:Solution_Name /p:Platform=$env:Platform /p:AppxBundlePlatforms="$env:Appx_Bundle_Platforms" /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
-      env:
-        Appx_Bundle: Never
-        Platform: ${{ matrix.architecture }}
-        Appx_Bundle_Platforms: ${{ matrix.architecture }}
-        Appx_Package_Build_Mode: SideloadOnly
-        Appx_Package_Dir: ${{ env.Packages_DirectoryName }}\ # DO NOT REMOVE THE TRAILING SLASH
-    
-    - name: Prepare for bundling
-      id: preparation
-      run: |
+      - name: Add NuGet Source for WCT Labs
+        # if: steps.cache-nuget.outputs.cache-hit != 'true'
+        run: dotnet nuget add source "https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json"
 
-        # Get package name
-        $msixFile = Get-Item -Path "${{ env.Packages_Directory }}\*\*.msix"
-        $packageName = [System.IO.Path]::GetFileNameWithoutExtension($msixFile.FullName)
-        echo "::set-output name=packageName::$packageName"
+      # Restore the application to populate the obj folder with RuntimeIdentifiers
+      - name: Restore NuGet packages
+        run: dotnet restore
 
-        # Get version number
-        $version = $packageName -replace '^(.*?Natsurainko\.FluentLauncher)_(\d+\.\d+\.\d+\.\d+)(_x64|_arm64)$', '$2'
-        echo "::set-output name=version::$version"
+      # Prepare FluentLauncher.Localization
+      - name: Prepare FluentLauncher.Localization
+        run: .\update-localization.ps1
 
-        # Get package directory
-        $directory = $msixFile.DirectoryName
-        echo "::set-output name=packageDirectory::$directory"
-
-        # Rename .msixsym to .appxsym to pass Partner Center validation
-        # Move .appx to root directory for making .msixupload
-        mv "$directory\$packageName.msixsym" ".\$packageName.appxsym"
-
-        # Move .msix for upload to artifacts
-        mv ${{ env.Packages_Directory }}\*\*.msix "$packageName.msix"
-
-    # Decode the base 64 encoded pfx and sign the package
-    - name: Sign .msix
-      run: |
-        # Get signtool.exe
-        $signtool = Get-Item -Path "C:\Program Files (x86)\Windows Kits\10\bin\*\x64\signtool.exe"
-        if ($signtool -is [array]) {
-          $signtool = $signtool[0]
-        }
-
-        # Sign .msix
-        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.PFX_BASE64_ENCODED }}")
-        [IO.File]::WriteAllBytes("${{ env.SigningKey_Path }}", $pfx_cert_byte)
-        & $signtool sign /f "${{ env.SigningKey_Path }}" /fd SHA256 /td SHA256 "${{ steps.preparation.outputs.packageName }}.msix"
-        rm "${{ env.SigningKey_Path }}"
-
-    - name: Upload .msix to artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: .msix
-        path: ${{ steps.preparation.outputs.packageName }}.msix
-
-    - name: Create .msixupload
-      id: create_msixupload
-      env:
-        PackageName: ${{ steps.preparation.outputs.packageName }}
-        PackageDirectory: ${{ steps.preparation.outputs.packageDirectory }}
-        Version: ${{ steps.preparation.outputs.version }}
-        TmpDirectory: .\tmp
-      run: |
-        
-        # Get makeappx.exe
-        $makeappx = Get-Item -Path "C:\Program Files (x86)\Windows Kits\10\bin\*\x64\makeappx.exe"
-        if ($makeappx -is [array]) {
-          $makeappx = $makeappx[0]
-        }
-
-        # Convert .msix to .msixbundle
-        mkdir "$env:TmpDirectory"
-        mv "$env:PackageName.msix" "$env:TmpDirectory\$env:PackageName.msix"
-        & $makeappx.FullName bundle /d "$env:TmpDirectory" /p "$env:PackageName.msixbundle" /bv $env:Version
-
-        # Create .msixupload
-        $msixbundlePath = $env:PackageName + '.msixbundle'
-        $appxsymPath = $env:PackageName + '.appxsym'
-        Compress-Archive -Path $msixbundlePath, $appxsymPath -DestinationPath "$env:PackageName.zip"
-        mv "$env:PackageName.zip" "$env:PackageName.msixupload"
-
-    - name: Upload .msixupload to artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: .msixupload
-        path: ${{ steps.preparation.outputs.packageName }}.msixupload
-
-        
-  release:
-    name: Release
-    needs: build
-    runs-on: windows-latest
-    env:
-      SigningKey_Path: SigningKey.pfx
-      Artifacts_Path: .artifacts
-
-    steps:
-    - name: CheckOut
-      uses: actions/checkout@v3
-      
-    - name: Download .msix from artifacts
-      uses: actions/download-artifact@v3
-      with:
-        name: .msix
-        path: ${{ env.Artifacts_Path }}
-
-    - name: Get Package Information
-      id: get_package_info
-      run: |
-        # Get the name of the .msix file
-        $file = Get-Item -Path "${{ env.Artifacts_Path }}\*.msix"
-        if ($file -is [array]) {
-          $file = $file[0]
-        }
-
-        # Extract the package name with version number
-        $fileName = [System.IO.Path]::GetFileNameWithoutExtension($file.FullName)
-        $bundleFileName = $fileName -replace '^(.*?Natsurainko\.FluentLauncher)_(\d+\.\d+\.\d+\.\d+)(_x64|_arm64)$', '$1_$2.msixbundle'
-        $version = $fileName -replace '^(.*?Natsurainko\.FluentLauncher)_(\d+\.\d+\.\d+\.\d+)(_x64|_arm64)$', '$2'
-        echo "::set-output name=bundleFileName::$bundleFileName"
-        echo "::set-output name=version::$version"
-
-    - name: Create .msixbundle
-      run: |
-        # Get makeappx.exe
-        $makeappx = Get-Item -Path "C:\Program Files (x86)\Windows Kits\10\bin\*\x64\makeappx.exe"
-        if ($makeappx -is [array]) {
-          $makeappx = $makeappx[0]
-        }
-
-        # Create the .msixbundle using makeappx.exe
-        & $makeappx.FullName bundle /d "${{ env.Artifacts_Path }}" /p "${{ steps.get_package_info.outputs.bundleFileName }}" /bv "${{ steps.get_package_info.outputs.version }}"
-
-    # Decode the base 64 encoded pfx and sign the package
-    - name: Sign .msixbundle
-      run: |
-        # Get signtool.exe
-        $signtool = Get-Item -Path "C:\Program Files (x86)\Windows Kits\10\bin\*\x64\signtool.exe"
-        if ($signtool -is [array]) {
-          $signtool = $signtool[0]
-        }
-
-        # Sign .msixbundle
-        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.PFX_BASE64_ENCODED }}")
-        [IO.File]::WriteAllBytes("${{ env.SigningKey_Path }}", $pfx_cert_byte)
-        & $signtool sign /f "${{ env.SigningKey_Path }}" /fd SHA256 /td SHA256 "${{ steps.get_package_info.outputs.bundleFileName }}"
-        rm "${{ env.SigningKey_Path }}"
-
-    - name: Upload .msixbundle to artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: .msixbundle
-        path: ${{ steps.get_package_info.outputs.bundleFileName }}
-        
-  Create-Tag:
-    runs-on: ubuntu-latest
-    name: Create-Tag
-    needs: [build]
-    if: ${{inputs.flag}}
-    outputs: 
-      tag:  'refs/tags/${{inputs.tag1}}${{inputs.tag2}}'
-    steps:
-      - name: CheckOut
-        uses: actions/checkout@v3
-      
-      - name: config Git
+      # Create the app package by building and packaging the Windows Application Packaging project
+      - name: Create app package
+        env:
+          Appx_Bundle: Never
+          Platform: ${{ matrix.architecture }}
+          Appx_Bundle_Platforms: ${{ matrix.architecture }}
+          Appx_Package_Build_Mode: SideloadOnly
+          Appx_Package_Dir: ${{ env.Packages_DirectoryName }}\ # DO NOT REMOVE THE TRAILING SLASH
         run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "GitHub-actions[bot]"
-          
-      - name: Create Tag
+          msbuild $env:Solution_Name /p:Platform=$env:Platform /p:AppxBundlePlatforms="$env:Appx_Bundle_Platforms" /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
+
+      - name: Prepare for bundling
+        if: ${{ github.event.inputs.create_package == 'true' }}
+        id: preparation
         run: |
-          git tag -a ${{inputs.tag1}}${{inputs.tag2}} -m "${{inputs.tag1}}${{inputs.tag2}}"
-          git push origin ${{inputs.tag1}}${{inputs.tag2}}
-          
-  Pre-Publish:
-    runs-on: ubuntu-latest
-    name: Pre-Publish
-    needs: [build,release,Create-Tag]
-    if: ${{ (contains(github.ref,'refs/tags/beta')||(inputs.flag&&contains(needs.Create-Tag.outputs.tag,'beta'))||(inputs.flag&&contains(needs.Create-Tag.outputs.tag,'v')))&&!failure() }}
-    env:
-      Artifacts_Path: .artifacts
-    steps:
-      - name: CheckOut
-        uses: actions/checkout@v3
-      
-      - name: CheckTag
-        id: CheckTag
+
+          # Get package name
+          $msixFile = Get-Item -Path "${{ env.Packages_Directory }}\*\*.msix"
+          $packageName = [System.IO.Path]::GetFileNameWithoutExtension($msixFile.FullName)
+          echo "::set-output name=packageName::$packageName"
+
+          # Get version number
+          $version = $packageName -replace '^(.*?Natsurainko\.FluentLauncher)_(\d+\.\d+\.\d+\.\d+)(_x64|_arm64)$', '$2'
+          echo "::set-output name=version::$version"
+
+          # Get package directory
+          $directory = $msixFile.DirectoryName
+          echo "::set-output name=packageDirectory::$directory"
+
+          # Rename .msixsym to .appxsym to pass Partner Center validation
+          # Move .appx to root directory for making .msixupload
+          mv "$directory\$packageName.msixsym" ".\$packageName.appxsym"
+
+          # Move .msix for upload to artifacts
+          mv ${{ env.Packages_Directory }}\*\*.msix "$packageName.msix"
+
+      # Decode the base64 encoded pfx and sign the package
+      - name: Sign .msix
+        if: ${{ github.event.inputs.create_package == 'true' }}
         run: |
-          if [ "${{inputs.flag}}" ]; then
-            echo "tag=${{needs.Create-Tag.outputs.tag}}" >> "$GITHUB_OUTPUT"
-            echo exit 0
-          else 
-            echo "tag=${{github.ref}}" >> "$GITHUB_OUTPUT"
-            echo exit 0
-          fi
-      
-      - name: Download .msixupload from artifacts
-        uses: actions/download-artifact@v3
+          # Get signtool.exe
+          $signtool = Get-Item -Path "C:\Program Files (x86)\Windows Kits\10\bin\*\x64\signtool.exe"
+          if ($signtool -is [array]) {
+            $signtool = $signtool[0]
+          }
+
+          # Sign .msix
+          $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.PFX_BASE64_ENCODED }}")
+          [IO.File]::WriteAllBytes("${{ env.SigningKey_Path }}", $pfx_cert_byte)
+          & $signtool sign /f "${{ env.SigningKey_Path }}" /fd SHA256 /td SHA256 "${{ steps.preparation.outputs.packageName }}.msix"
+          rm "${{ env.SigningKey_Path }}"
+
+      - name: Upload .msix to artifacts
+        if: ${{ github.event.inputs.create_package == 'true' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: .msix
+          path: ${{ steps.preparation.outputs.packageName }}.msix
+
+      - name: Create .msixupload
+        if: ${{ github.event.inputs.create_package == 'true' }}
+        id: create_msixupload
+        env:
+          PackageName: ${{ steps.preparation.outputs.packageName }}
+          PackageDirectory: ${{ steps.preparation.outputs.packageDirectory }}
+          Version: ${{ steps.preparation.outputs.version }}
+          TmpDirectory: .\tmp
+        run: |
+
+          # Get makeappx.exe
+          $makeappx = Get-Item -Path "C:\Program Files (x86)\Windows Kits\10\bin\*\x64\makeappx.exe"
+          if ($makeappx -is [array]) {
+            $makeappx = $makeappx[0]
+          }
+
+          # Convert .msix to .msixbundle
+          mkdir "$env:TmpDirectory"
+          mv "$env:PackageName.msix" "$env:TmpDirectory\$env:PackageName.msix"
+          & $makeappx.FullName bundle /d "$env:TmpDirectory" /p "$env:PackageName.msixbundle" /bv $env:Version
+
+          # Create .msixupload
+          $msixbundlePath = $env:PackageName + '.msixbundle'
+          $appxsymPath = $env:PackageName + '.appxsym'
+          Compress-Archive -Path $msixbundlePath, $appxsymPath -DestinationPath "$env:PackageName.zip"
+          mv "$env:PackageName.zip" "$env:PackageName.msixupload"
+
+      - name: Upload .msixupload to artifacts
+        if: ${{ github.event.inputs.create_package == 'true' }}
+        uses: actions/upload-artifact@v2
         with:
           name: .msixupload
-          path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
-          
-      - name: Delete arm Pkg
-        run: find "${{ github.workspace }}/${{env.Artifacts_Path}}" -name '*arm*' -exec rm {} \;
-  
-      - name: Pre-Publish MSStore
-        uses: trympet/microsoft-store-flight-action@v1
-        with:
-          tenant-id: ${{ secrets.PARTNER_CENTER_TENANT_ID }}
-          client-id: ${{ secrets.PARTNER_CENTER_CLIENT_ID }}
-          client-secret: ${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}
-          app-id: ${{ secrets.PARTNER_CENTER_APP_ID }}
-          flight-id: ${{ secrets.PARTNER_CENTER_BETA_APP_ID }}
-          package-path: "${{ github.workspace }}/${{env.Artifacts_Path}}/"
-          delete-pending: true
-          delete-packages: true
-          skip-polling: true
-          packages-keep: 9
-      
-      - name: Download .msixbundle from artifacts
-        if: ${{ !contains(needs.Create-Tag.outputs.tag,'v') }}
-        uses: actions/download-artifact@v3
-        with:
-           name: .msixbundle
-           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
-     
-      - name: Create Pre-Release
-        if: ${{ !contains(needs.Create-Tag.outputs.tag,'v') }}
-        uses: ncipollo/release-action@v1.12.0
-        with:  
-          artifacts: "${{ github.workspace }}/${{env.Artifacts_Path}}/*.msixbundle"
-          prerelease: true
-          allowUpdates: true
-          generateReleaseNotes: true
-          tag: ${{steps.CheckTag.outputs.tag}}
-          
-          
-  Publish:
-    runs-on: ubuntu-latest
-    name: Publish
-    needs: [build,release,Create-Tag]
-    if: ${{ (contains(github.ref,'v2')||(inputs.flag&&contains(needs.Create-Tag.outputs.tag,'v2')))&&!failure()  }}
-    env:
-      Artifacts_Path: .artifacts
-    steps:
-      - name: CheckOut
-        uses: actions/checkout@v3
-      
-      - name: CheckTag
-        id: CheckTag
-        run: |
-          if [ "${{inputs.flag}}" ]; then
-            echo "tag=${{needs.Create-Tag.outputs.tag}}" >> "$GITHUB_OUTPUT"
-            echo exit 0
-          else 
-            echo "tag=${{github.ref}}" >> "$GITHUB_OUTPUT"
-            echo exit 0
-          fi
-      
-      - name: Download .msixupload from artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: .msixupload
-          path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
-          
-      - name: Delete arm Pkg
-        run: find "${{ github.workspace }}/${{env.Artifacts_Path}}" -name '*arm*' -exec rm {} \;
-        
-      - name: Publish MSStore
-        uses: isaacrlevin/windows-store-action@1.0
-        with:
-          tenant-id: ${{ secrets.PARTNER_CENTER_TENANT_ID }}
-          client-id: ${{ secrets.PARTNER_CENTER_CLIENT_ID }}
-          client-secret: ${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}
-          app-id: ${{ secrets.PARTNER_CENTER_APP_ID }}
-          package-path: "${{ github.workspace }}/${{env.Artifacts_Path}}/"
-          delete-pending: true
-          delete-packages: true
-          skip-polling: true
-          packages-keep: 9
-      
-      - name: Download .msixbundle from artifacts
-        uses: actions/download-artifact@v3
-        with:
-           name: .msixbundle
-           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
-
-     
-      - name: Create Release
-        uses: ncipollo/release-action@v1.12.0
-        with:  
-          artifacts: "${{ github.workspace }}/${{env.Artifacts_Path}}/*.msixbundle"
-          allowUpdates: true
-          generateReleaseNotes: true
-          tag: ${{steps.CheckTag.outputs.tag}}
+          path: ${{ steps.preparation.outputs.packageName }}.msixupload

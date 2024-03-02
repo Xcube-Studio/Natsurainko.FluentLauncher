@@ -8,7 +8,7 @@ internal class ResourceAuthorsConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is CurseResource curseResource)
+        if (value is CurseForgeResource curseResource)
             return string.Join("\r\n", curseResource.Authors);
         else if (value is ModrinthResource modrinthResource)
             return modrinthResource.Author;

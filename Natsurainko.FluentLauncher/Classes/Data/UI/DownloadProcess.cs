@@ -57,7 +57,7 @@ internal partial class ResourceDownloadProcess : DownloadProcess
 
         string url = default;
 
-        url = _file is CurseFile curseFile
+        url = _file is CurseForgeFile curseFile
             ? App.GetService<InterfaceCacheService>().CurseForgeClient.GetCurseFileDownloadUrl(curseFile)
             : ((ModrinthFile)_file).Url;
 

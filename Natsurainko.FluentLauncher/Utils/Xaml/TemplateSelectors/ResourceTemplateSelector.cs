@@ -12,7 +12,7 @@ internal class ResourceTemplateSelector : DataTemplateSelector
 
     protected override DataTemplate SelectTemplateCore(object item)
     {
-        if (item is CurseResource || item is ModrinthResource)
+        if (item is CurseForgeResource || item is ModrinthResource)
             return Resource;
 
         if (item is VersionManifestItem)

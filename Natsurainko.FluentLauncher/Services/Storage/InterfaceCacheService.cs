@@ -33,8 +33,8 @@ internal class InterfaceCacheService
     public ModrinthClient ModrinthClient => _modrinthClient;
 
 
-    private IEnumerable<CurseResource> _CurseMcMods;
-    private IEnumerable<CurseResource> _CurseModPacks;
+    private IEnumerable<CurseForgeResource> _CurseMcMods;
+    private IEnumerable<CurseForgeResource> _CurseModPacks;
 
     public InterfaceCacheService(LocalStorageService localStorageService, SettingsService settingsService)
     {
@@ -264,7 +264,7 @@ internal class InterfaceCacheService
         return _fetchVersionManifest;
     }
 
-    public void FetchCurseForgeFeaturedResources(out IEnumerable<CurseResource> McMods, out IEnumerable<CurseResource> ModPacks)
+    public void FetchCurseForgeFeaturedResources(out IEnumerable<CurseForgeResource> McMods, out IEnumerable<CurseForgeResource> ModPacks)
     {
         if (_CurseMcMods == null || _CurseModPacks == null)
         {

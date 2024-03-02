@@ -42,7 +42,7 @@ internal partial class AdditionalOptionsViewModel : WizardViewModelBase
     private ModrinthFile fabricApi;
 
     [ObservableProperty]
-    private CurseFile optiFabric;
+    private CurseForgeFile optiFabric;
 
     public void Init()
     {

@@ -73,10 +73,10 @@ internal partial class DownloadsViewModel : ObservableObject
     private PublishData secondaryPublishData;
 
     [ObservableProperty]
-    private IEnumerable<CurseResource> curseMcMods;
+    private IEnumerable<CurseForgeResource> curseMcMods;
 
     [ObservableProperty]
-    private IEnumerable<CurseResource> curseModPacks;
+    private IEnumerable<CurseForgeResource> curseModPacks;
 
     [ObservableProperty]
     private IEnumerable<string> versions;

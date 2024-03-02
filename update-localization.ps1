@@ -1,4 +1,4 @@
-$localizer = ".\FluentLauncher.LocalizationPoroject\build.bat"
+$localizer = ".\FluentLauncher.Localization\build.bat"
 
 # Check if localizer exists
 if (-not (Test-Path $localizer)) {
@@ -19,7 +19,7 @@ function Get-MostRecentModificationDate {
 }
 
 # Get the most recent modification dates
-$latestViewsDate = Get-MostRecentModificationDate -path ".\FluentLauncher.LocalizationPoroject\Views"
+$latestViewsDate = Get-MostRecentModificationDate -path ".\FluentLauncher.Localization\Views"
 $latestStringsDate = Get-MostRecentModificationDate -path ".\Natsurainko.FluentLauncher\Strings"
 
 # Compare dates and exit if no compilation is needed
@@ -29,7 +29,7 @@ if ($latestStringsDate -ge $latestViewsDate) {
 }
 
 # Change directory and call build.bat
-Set-Location .\FluentLauncher.LocalizationPoroject
+Set-Location .\FluentLauncher.Localization
 echo `n | & ".\build.bat"
 
 # Copy resw files generated to the FluentLauncher project

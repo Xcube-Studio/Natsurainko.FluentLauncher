@@ -69,7 +69,7 @@
 
 准备好上述环境后
 
-1. 克隆该仓库及其子模块 Natsurainko.FluentCore、FluentLauncher.LocalizationPoroject
+1. 克隆该仓库及其子模块 Natsurainko.FluentCore、FluentLauncher.Localization
 2. 确保代码完整后，在本地用 Visual Studio 打开
 3. 在 Nuget 包管理器中添加 CommunityToolkit-Labs 的 Nuget 包源  
 https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json (升级到 CommunityToolkit 8.0 后将不需要)  
@@ -80,7 +80,7 @@ https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-L
 `本地化脚本目前有所改动，暂时先不列出`
 
 #### 贡献本地化资源
-详细见仓库 **[Xcube-Studio/FluentLauncher.LocalizationPoroject](https://github.com/Xcube-Studio/FluentLauncher.LocalizationPoroject)**
+详细见仓库 **[Xcube-Studio/FluentLauncher.Localization](https://github.com/Xcube-Studio/FluentLauncher.Localization)**
 
 ### 如何贡献该项目
 

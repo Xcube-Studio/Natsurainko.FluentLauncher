@@ -59,13 +59,9 @@ jobs:
         # if: steps.cache.outputs.cache-hit != 'true'
         run: dotnet nuget add source "https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json"
 
-      # - name: Init SubModules
-      #   run: git submodule update --init --recursive
-
       # Restore the application to populate the obj folder with RuntimeIdentifiers
       - name: Restore NuGet packages
-        # must run
-        run: dotnet restore # msbuild $env:Solution_Name /t:Restore /p:Configuration=Release
+        run: dotnet restore
 
       # Prepare FluentLauncher.Localization
       - name: Prepare FluentLauncher.Localization
@@ -106,7 +102,7 @@ jobs:
           # Move .msix for upload to artifacts
           mv ${{ env.Packages_Directory }}\*\*.msix "$packageName.msix"
 
-      # Decode the base 64 encoded pfx and sign the package
+      # Decode the base64 encoded pfx and sign the package
       - name: Sign .msix
         run: |
           # Get signtool.exe

@@ -30,7 +30,7 @@ if ($latestStringsDate -ge $latestViewsDate) {
 
 # Change directory and call build.bat
 Set-Location .\FluentLauncher.Localization
-echo `n | & ".\build.bat"
+Write-Output `n | & ".\build.bat"
 
 # Copy resw files generated to the FluentLauncher project
 $source = Join-Path (Get-Location) "Strings"

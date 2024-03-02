@@ -4,20 +4,20 @@ on:
   workflow_dispatch:
     inputs:
       flag:
-        description: "Publish?"
+        description: "Publish to Microsoft Store"
         required: true
         default: false
         type: boolean
       tag1:
-        description: "Pre/Release?"
+        description: "Is beta?"
         required: true
-        default: "beta"
+        default: "v"
         type: choice
         options:
           - beta
           - v
       tag2:
-        description: "Version?(e.g 2.0.0.6)"
+        description: "Version (e.g 2.0.0.6):"
         required: true
         type: string
 
@@ -28,7 +28,7 @@ jobs:
     uses: ./.github/workflows/build.yml
 
   release:
-    name: Release
+    name: Create .msixbundle
     needs: build
     runs-on: windows-latest
     env:
@@ -36,11 +36,8 @@ jobs:
       Artifacts_Path: .artifacts
 
     steps:
-      - name: CheckOut
-        uses: actions/checkout@v3
-
       - name: Download .msix from artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: .msix
           path: ${{ env.Artifacts_Path }}
@@ -88,28 +85,28 @@ jobs:
           rm "${{ env.SigningKey_Path }}"
 
       - name: Upload .msixbundle to artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: .msixbundle
           path: ${{ steps.get_package_info.outputs.bundleFileName }}
 
   Create-Tag:
     runs-on: ubuntu-latest
-    name: Create-Tag
-    needs: [build]
+    name: Create tag
+    needs: build
     if: ${{inputs.flag}}
     outputs:
       tag: "refs/tags/${{inputs.tag1}}${{inputs.tag2}}"
     steps:
-      - name: CheckOut
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: config Git
+      - name: Config git user
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "GitHub-actions[bot]"
 
-      - name: Create Tag
+      - name: Create tag
         run: |
           git tag -a ${{inputs.tag1}}${{inputs.tag2}} -m "${{inputs.tag1}}${{inputs.tag2}}"
           git push origin ${{inputs.tag1}}${{inputs.tag2}}
@@ -122,10 +119,10 @@ jobs:
     env:
       Artifacts_Path: .artifacts
     steps:
-      - name: CheckOut
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: CheckTag
+      - name: Check tag
         id: CheckTag
         run: |
           if [ "${{inputs.flag}}" ]; then
@@ -137,7 +134,7 @@ jobs:
           fi
 
       - name: Download .msixupload from artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: .msixupload
           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
@@ -161,7 +158,7 @@ jobs:
 
       - name: Download .msixbundle from artifacts
         if: ${{ !contains(needs.Create-Tag.outputs.tag,'v') }}
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: .msixbundle
           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"

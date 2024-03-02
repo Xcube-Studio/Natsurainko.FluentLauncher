@@ -57,6 +57,7 @@ jobs:
 
       # Restore the application to populate the obj folder with RuntimeIdentifiers
       - name: Restore NuGet packages
+        if: steps.cache-nuget.outputs.cache-hit != 'true'
         run: dotnet restore
 
       # Prepare FluentLauncher.Localization

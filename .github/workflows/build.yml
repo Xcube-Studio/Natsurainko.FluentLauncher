@@ -1,17 +1,16 @@
 name: Build
 
+# Reusable workflow for building and packaging FluentLauncher
 on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
   workflow_call:
+    inputs:
+      create_package:
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   build:
-    # Ignore draft PRs
-    if: github.event_name != 'pull_request' || (github.event_name == 'pull_request' && github.event.pull_request.draft == false)
-
     runs-on: windows-latest
     env:
       Solution_Name: Natsurainko.FluentLauncher
@@ -79,6 +78,7 @@ jobs:
           msbuild $env:Solution_Name /p:Platform=$env:Platform /p:AppxBundlePlatforms="$env:Appx_Bundle_Platforms" /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
 
       - name: Prepare for bundling
+        if: ${{ github.event.inputs.create_package == 'true' }}
         id: preparation
         run: |
 
@@ -104,6 +104,7 @@ jobs:
 
       # Decode the base64 encoded pfx and sign the package
       - name: Sign .msix
+        if: ${{ github.event.inputs.create_package == 'true' }}
         run: |
           # Get signtool.exe
           $signtool = Get-Item -Path "C:\Program Files (x86)\Windows Kits\10\bin\*\x64\signtool.exe"
@@ -118,12 +119,14 @@ jobs:
           rm "${{ env.SigningKey_Path }}"
 
       - name: Upload .msix to artifacts
+        if: ${{ github.event.inputs.create_package == 'true' }}
         uses: actions/upload-artifact@v2
         with:
           name: .msix
           path: ${{ steps.preparation.outputs.packageName }}.msix
 
       - name: Create .msixupload
+        if: ${{ github.event.inputs.create_package == 'true' }}
         id: create_msixupload
         env:
           PackageName: ${{ steps.preparation.outputs.packageName }}
@@ -150,6 +153,7 @@ jobs:
           mv "$env:PackageName.zip" "$env:PackageName.msixupload"
 
       - name: Upload .msixupload to artifacts
+        if: ${{ github.event.inputs.create_package == 'true' }}
         uses: actions/upload-artifact@v2
         with:
           name: .msixupload

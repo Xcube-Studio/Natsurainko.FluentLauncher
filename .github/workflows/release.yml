@@ -26,6 +26,8 @@ jobs:
   build:
     name: Build
     uses: ./.github/workflows/build.yml
+    with:
+      create_package: true
 
   release:
     name: Create .msixbundle

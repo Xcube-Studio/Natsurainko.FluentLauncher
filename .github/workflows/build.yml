@@ -40,19 +40,16 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      # - name: Get NuGet Dependencies
-      #   run: .\.github\write-nuget-cache-file.ps1
-
-      # - name: Cache NuGet packages
-      #   id: cache-nuget
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: |
-      #       ~\AppData\Local\NuGet\v3-cache
-      #       ~\AppData\Roaming\NuGet\NuGet.Config
-      #     key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-nuget-
+      - name: Cache NuGet packages
+        id: cache-nuget
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~\AppData\Local\NuGet\v3-cache
+            ~\AppData\Roaming\NuGet\NuGet.Config
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
 
       - name: Add NuGet Source for WCT Labs
         # if: steps.cache.outputs.cache-hit != 'true'

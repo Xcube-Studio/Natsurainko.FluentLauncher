@@ -49,7 +49,7 @@ internal partial class ResourceItemFilesDialogViewModel : ObservableObject
 
         IEnumerable<object> files = default;
 
-        if (_resource is CurseResource curseResource)
+        if (_resource is CurseForgeResource curseResource)
         {
             files = from item in curseResource.Files
                     group item by item.McVersion into g
@@ -81,7 +81,7 @@ internal partial class ResourceItemFilesDialogViewModel : ObservableObject
     {
         var saveFileDialog = new SaveFileDialog
         {
-            FileName = SelectedFile is CurseFile curse ? curse.FileName : ((ModrinthFile)SelectedFile).FileName,
+            FileName = SelectedFile is CurseForgeFile curse ? curse.FileName : ((ModrinthFile)SelectedFile).FileName,
             InitialDirectory = _gameService.ActiveMinecraftFolder
         };
 

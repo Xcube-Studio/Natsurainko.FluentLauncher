@@ -39,10 +39,10 @@ internal partial class ResourceItemViewModel : ObservableObject, INavigationAwar
     {
         Resource = parameter;
 
-        bool isCurse = parameter is CurseResource;
+        bool isCurse = parameter is CurseForgeResource;
 
-        var urls = isCurse ? ((CurseResource)parameter).ScreenshotUrls : ((ModrinthResource)parameter).ScreenshotUrls;
-        object id = isCurse ? ((CurseResource)parameter).Id : ((ModrinthResource)parameter).Id;
+        var urls = isCurse ? ((CurseForgeResource)parameter).ScreenshotUrls : ((ModrinthResource)parameter).ScreenshotUrls;
+        object id = isCurse ? ((CurseForgeResource)parameter).Id : ((ModrinthResource)parameter).Id;
 
         if (urls.Any())
             ScreenshotsBorderVisbility = Visibility.Visible;

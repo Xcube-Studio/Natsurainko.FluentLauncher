@@ -104,10 +104,10 @@ internal partial class ResourcesSearchViewModel : ObservableObject, INavigationA
             {
                 var resources = _interfaceCacheService.CurseForgeClient.SearchResources(SearchBoxInput, ResourceType switch
                 {
-                    2 => CurseResourceType.ModPack,
-                    3 => CurseResourceType.TexturePack,
-                    4 => CurseResourceType.World,
-                    _ => CurseResourceType.McMod
+                    2 => CurseForgeResourceType.ModPack,
+                    3 => CurseForgeResourceType.TexturePack,
+                    4 => CurseForgeResourceType.World,
+                    _ => CurseForgeResourceType.McMod
                 });
 
                 App.DispatcherQueue.TryEnqueue(() => SearchedItems = resources);

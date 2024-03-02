@@ -8,6 +8,9 @@ on:
         required: false
         type: boolean
         default: false
+    secrets:
+      pfx_base64_encoded:
+        required: true
 
 jobs:
   build:
@@ -75,7 +78,7 @@ jobs:
           msbuild $env:Solution_Name /p:Platform=$env:Platform /p:AppxBundlePlatforms="$env:Appx_Bundle_Platforms" /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
 
       - name: Prepare for bundling
-        if: ${{ github.event.inputs.create_package == 'true' }}
+        if: ${{ inputs.create_package }}
         id: preparation
         run: |
 
@@ -101,7 +104,7 @@ jobs:
 
       # Decode the base64 encoded pfx and sign the package
       - name: Sign .msix
-        if: ${{ github.event.inputs.create_package == 'true' }}
+        if: ${{ inputs.create_package }}
         run: |
           # Get signtool.exe
           $signtool = Get-Item -Path "C:\Program Files (x86)\Windows Kits\10\bin\*\x64\signtool.exe"
@@ -110,20 +113,20 @@ jobs:
           }
 
           # Sign .msix
-          $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.PFX_BASE64_ENCODED }}")
+          $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.pfx_base64_encoded }}")
           [IO.File]::WriteAllBytes("${{ env.SigningKey_Path }}", $pfx_cert_byte)
           & $signtool sign /f "${{ env.SigningKey_Path }}" /fd SHA256 /td SHA256 "${{ steps.preparation.outputs.packageName }}.msix"
           rm "${{ env.SigningKey_Path }}"
 
       - name: Upload .msix to artifacts
-        if: ${{ github.event.inputs.create_package == 'true' }}
-        uses: actions/upload-artifact@v2
+        if: ${{ inputs.create_package }}
+        uses: actions/upload-artifact@v4
         with:
-          name: .msix
+          name: msix-${{ matrix.architecture }}
           path: ${{ steps.preparation.outputs.packageName }}.msix
 
       - name: Create .msixupload
-        if: ${{ github.event.inputs.create_package == 'true' }}
+        if: ${{ inputs.create_package }}
         id: create_msixupload
         env:
           PackageName: ${{ steps.preparation.outputs.packageName }}
@@ -150,8 +153,8 @@ jobs:
           mv "$env:PackageName.zip" "$env:PackageName.msixupload"
 
       - name: Upload .msixupload to artifacts
-        if: ${{ github.event.inputs.create_package == 'true' }}
-        uses: actions/upload-artifact@v2
+        if: ${{ inputs.create_package }}
+        uses: actions/upload-artifact@v4
         with:
-          name: .msixupload
+          name: msixupload-${{ matrix.architecture }}
           path: ${{ steps.preparation.outputs.packageName }}.msixupload

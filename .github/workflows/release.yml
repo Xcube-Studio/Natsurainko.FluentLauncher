@@ -28,6 +28,8 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       create_package: true
+    secrets:
+      pfx_base64_encoded: ${{ secrets.PFX_BASE64_ENCODED }}
 
   release:
     name: Create .msixbundle
@@ -41,7 +43,8 @@ jobs:
       - name: Download .msix from artifacts
         uses: actions/download-artifact@v4
         with:
-          name: .msix
+          pattern: msix-*
+          merge-multiple: true
           path: ${{ env.Artifacts_Path }}
 
       - name: Get Package Information
@@ -138,7 +141,8 @@ jobs:
       - name: Download .msixupload from artifacts
         uses: actions/download-artifact@v4
         with:
-          name: .msixupload
+          pattern: msixupload-*
+          merge-multiple: true
           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
 
       - name: Delete arm Pkg
@@ -198,7 +202,7 @@ jobs:
           fi
 
       - name: Download .msixupload from artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: .msixupload
           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
@@ -220,7 +224,7 @@ jobs:
           packages-keep: 9
 
       - name: Download .msixbundle from artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: .msixbundle
           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"

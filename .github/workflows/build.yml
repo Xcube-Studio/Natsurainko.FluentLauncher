@@ -52,7 +52,7 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Add NuGet Source for WCT Labs
-        # if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache-nuget.outputs.cache-hit != 'true'
         run: dotnet nuget add source "https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json"
 
       # Restore the application to populate the obj folder with RuntimeIdentifiers

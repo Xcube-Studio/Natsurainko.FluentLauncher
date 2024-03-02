@@ -40,24 +40,23 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      - name: Cache NuGet packages
-        id: cache-nuget
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~\AppData\Local\NuGet\v3-cache
-            ~\AppData\Roaming\NuGet\NuGet.Config
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
+      # - name: Cache NuGet packages
+      #   id: cache-nuget
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: |
+      #       ~\AppData\Local\NuGet\v3-cache
+      #       ~\AppData\Roaming\NuGet\NuGet.Config
+      #     key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-nuget-
 
       - name: Add NuGet Source for WCT Labs
-        if: steps.cache-nuget.outputs.cache-hit != 'true'
+        # if: steps.cache-nuget.outputs.cache-hit != 'true'
         run: dotnet nuget add source "https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json"
 
       # Restore the application to populate the obj folder with RuntimeIdentifiers
       - name: Restore NuGet packages
-        if: steps.cache-nuget.outputs.cache-hit != 'true'
         run: dotnet restore
 
       # Prepare FluentLauncher.Localization

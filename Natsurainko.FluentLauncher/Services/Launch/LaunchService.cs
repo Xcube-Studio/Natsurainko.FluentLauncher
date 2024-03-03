@@ -8,7 +8,6 @@ using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Environment;
 using Nrk.FluentCore.Launch;
-using Nrk.FluentCore.Services.Accounts;
 using Nrk.FluentCore.Services.Launch;
 using Nrk.FluentCore.Utils;
 using PInvoke;
@@ -26,6 +25,7 @@ internal class LaunchService : DefaultLaunchService
 {
     private readonly AuthenticationService _authenticationService;
     private readonly DownloadService _downloadService;
+    private readonly AccountService _accountService;
 
     private SettingsService AppSettingsService => (SettingsService)_settingsService;
 
@@ -35,17 +35,22 @@ internal class LaunchService : DefaultLaunchService
         AccountService accountService,
         AuthenticationService authenticationService,
         DownloadService downloadService)
-        : base(settingsService, accountService, gameService)
+        : base(settingsService, gameService)
     {
         _authenticationService = authenticationService;
+        _accountService = accountService;
         _downloadService = downloadService;
     }
 
-    public override async void LaunchGame(GameInfo gameInfo)
+    public async Task LaunchGame(GameInfo gameInfo)
     {
         try
         {
-            var session = CreateMinecraftSessionFromGameInfo(gameInfo); // TODO: replace with ctor of MinecraftSession
+            Account? account = _accountService.ActiveAccount;
+            if (account is null)
+                throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
+
+            var session = CreateMinecraftSessionFromGameInfo(gameInfo, account); // TODO: replace with ctor of MinecraftSession
             _sessions.Add(session);
 
             OnSessionCreated(session);
@@ -61,8 +66,12 @@ internal class LaunchService : DefaultLaunchService
         }
     }
 
-    public override MinecraftSession CreateMinecraftSessionFromGameInfo(GameInfo gameInfo)
+    public MinecraftSession CreateMinecraftSessionFromGameInfo(GameInfo gameInfo)
     {
+        Account? account = _accountService.ActiveAccount;
+        if (account is null)
+            throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
+
         // Java
         string? suitableJava = null;
 
@@ -201,7 +210,7 @@ internal class LaunchService : DefaultLaunchService
         return null;
     }
 
-    public static Account GetLaunchAccount(GameSpecialConfig specialConfig, IAccountService _accountService)
+    public static Account GetLaunchAccount(GameSpecialConfig specialConfig, AccountService _accountService)
     {
         if (specialConfig.EnableSpecialSetting && specialConfig.EnableTargetedAccount && specialConfig.Account != null)
         {

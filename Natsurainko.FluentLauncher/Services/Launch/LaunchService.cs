@@ -4,6 +4,7 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Download;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.SystemServices;
+using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Environment;
@@ -26,6 +27,7 @@ internal class LaunchService : DefaultLaunchService
 {
     private readonly AuthenticationService _authenticationService;
     private readonly DownloadService _downloadService;
+    private readonly NotificationService _notificationService;
 
     private SettingsService AppSettingsService => (SettingsService)_settingsService;
 
@@ -34,11 +36,13 @@ internal class LaunchService : DefaultLaunchService
         GameService gameService,
         AccountService accountService,
         AuthenticationService authenticationService,
-        DownloadService downloadService)
+        DownloadService downloadService,
+        NotificationService notificationService)
         : base(settingsService, accountService, gameService)
     {
         _authenticationService = authenticationService;
         _downloadService = downloadService;
+        _notificationService = notificationService;
     }
 
     public override async void LaunchGame(GameInfo gameInfo)
@@ -57,7 +61,7 @@ internal class LaunchService : DefaultLaunchService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex);
+            _notificationService.NotifyWithoutContent(ex.Message);
         }
     }
 
@@ -234,7 +238,7 @@ internal class LaunchService : DefaultLaunchService
         {
             using var res = HttpUtils.HttpGet(yggdrasil.YggdrasilServerUrl);
 
-            yield return $"-javaagent:{Path.Combine(Package.Current.InstalledLocation.Path, "Assets", "Libs", "authlib-injector-1.2.3.jar").ToPathParameter()}={yggdrasil.YggdrasilServerUrl}";
+            yield return $"-javaagent:{Path.Combine(Package.Current.InstalledLocation.Path, "Assets", "Libs", "authlib-injector-1.2.5.jar").ToPathParameter()}={yggdrasil.YggdrasilServerUrl}";
             yield return "-Dauthlibinjector.side=client";
             yield return $"-Dauthlibinjector.yggdrasil.prefetched={(res.Content.ReadAsString()).ConvertToBase64()}";
         }

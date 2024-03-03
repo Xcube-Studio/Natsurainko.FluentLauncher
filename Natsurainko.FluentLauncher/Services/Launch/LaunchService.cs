@@ -36,10 +36,9 @@ internal class LaunchService : DefaultLaunchService
         GameService gameService,
         AccountService accountService,
         AuthenticationService authenticationService,
-        DownloadService downloadService)
         DownloadService downloadService,
         NotificationService notificationService)
-        : base(settingsService, accountService, gameService)
+        : base(settingsService, gameService)
     {
         _authenticationService = authenticationService;
         _accountService = accountService;

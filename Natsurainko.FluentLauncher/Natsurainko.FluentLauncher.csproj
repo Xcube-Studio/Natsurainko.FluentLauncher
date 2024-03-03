@@ -32,6 +32,7 @@
       <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="Assets\Libs\authlib-injector-1.2.5.jar" />
     <Content Remove="Assets\PackageIcons\SplashScreen.scale-100.scale-100.png" />
     <Content Remove="Assets\PackageIcons\SplashScreen.scale-100.scale-125.png" />
     <Content Remove="Assets\PackageIcons\SplashScreen.scale-100.scale-150.png" />
@@ -54,7 +55,6 @@
   -->
   <ItemGroup>
     <None Remove="Assets\Icons\OptiFabricIcon.png" />
-    <None Remove="Assets\Libs\authlib-injector-1.2.3.jar" />
     <None Remove="Assets\MinecraftTen.ttf" />
     <None Remove="Dictionaries\CoresLayoutTemplateDictionary.xaml" />
     <None Remove="Dictionaries\DownloadProcessTemplateDictionary.xaml" />
@@ -121,6 +121,12 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\Libs\authlib-injector-1.2.5.jar">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

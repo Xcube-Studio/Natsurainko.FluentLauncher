@@ -46,9 +46,9 @@ internal partial class DownloadsViewModel : ObservableObject
             });
         });
 
-        Task.Run(() =>
+        Task.Run(async () =>
         {
-            _interfaceCacheService.FetchCurseForgeFeaturedResources(out var McMods, out var ModPacks);
+            var (McMods, ModPacks) = await _interfaceCacheService.FetchCurseForgeFeaturedResources();
 
             App.DispatcherQueue.TryEnqueue(() =>
             {

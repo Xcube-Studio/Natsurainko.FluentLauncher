@@ -82,11 +82,11 @@ internal partial class ResourcesSearchViewModel : ObservableObject, INavigationA
     }
 
     [RelayCommand]
-    private void Search()
+    private async Task Search()
     {
         if (ResourceType == 0)
         {
-            Task.Run(async () =>
+            await Task.Run(async () =>
             {
                 IEnumerable<VersionManifestItem> manifestItems = await _interfaceCacheService.FetchVersionManifest();
                 manifestItems = manifestItems.Where(manifestItem => manifestItem.Id.ToLower().Contains(SearchBoxInput.ToLower()));
@@ -100,22 +100,19 @@ internal partial class ResourcesSearchViewModel : ObservableObject, INavigationA
 
         if (SelectedSource == 0)
         {
-            Task.Run(() =>
+            var resources = await _interfaceCacheService.CurseForgeClient.GetResourceSearchResultAsync(SearchBoxInput, ResourceType switch
             {
-                var resources = _interfaceCacheService.CurseForgeClient.SearchResources(SearchBoxInput, ResourceType switch
-                {
-                    2 => CurseForgeResourceType.ModPack,
-                    3 => CurseForgeResourceType.TexturePack,
-                    4 => CurseForgeResourceType.World,
-                    _ => CurseForgeResourceType.McMod
-                });
-
-                App.DispatcherQueue.TryEnqueue(() => SearchedItems = resources);
+                2 => CurseForgeResourceType.ModPack,
+                3 => CurseForgeResourceType.TexturePack,
+                4 => CurseForgeResourceType.World,
+                _ => CurseForgeResourceType.McMod
             });
+
+            App.DispatcherQueue.TryEnqueue(() => SearchedItems = resources);
         }
         else
         {
-            Task.Run(() =>
+            await Task.Run(() =>
             {
                 var resources = _interfaceCacheService.ModrinthClient.SearchResources(SearchBoxInput, ResourceType switch
                 {

@@ -22,11 +22,7 @@ internal class InterfaceCacheService
 {
     private readonly LocalStorageService _localStorageService;
     private readonly SettingsService _settingsService;
-    private readonly CurseForgeClient _curseForgeClient = new CurseForgeClient
-    {
-        ApiKey = "$2a$10$Awb53b9gSOIJJkdV3Zrgp.CyFP.dI13QKbWn/4UZI4G4ff18WneB6",
-        GameId = 432
-    };
+    private readonly CurseForgeClient _curseForgeClient = new CurseForgeClient("$2a$10$Awb53b9gSOIJJkdV3Zrgp.CyFP.dI13QKbWn/4UZI4G4ff18WneB6");
     private readonly ModrinthClient _modrinthClient = new ModrinthClient();
 
     public CurseForgeClient CurseForgeClient => _curseForgeClient;
@@ -264,17 +260,16 @@ internal class InterfaceCacheService
         return _fetchVersionManifest;
     }
 
-    public void FetchCurseForgeFeaturedResources(out IEnumerable<CurseForgeResource> McMods, out IEnumerable<CurseForgeResource> ModPacks)
+    public async Task<(IEnumerable<CurseForgeResource>, IEnumerable<CurseForgeResource>)> FetchCurseForgeFeaturedResources()
     {
         if (_CurseMcMods == null || _CurseModPacks == null)
         {
-            _curseForgeClient.GetFeaturedResources(out var mcMods, out var modPacks);
+            var (mcMods, modPacks) = await _curseForgeClient.GetFeaturedResourcesAsync();
 
             _CurseMcMods = mcMods;
             _CurseModPacks = modPacks;
         }
 
-        McMods = _CurseMcMods.ToList();
-        ModPacks = _CurseModPacks.ToList();
+        return (_CurseMcMods, _CurseModPacks);
     }
 }

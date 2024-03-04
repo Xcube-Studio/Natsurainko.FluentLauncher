@@ -47,7 +47,7 @@ internal partial class ResourceItemViewModel : ObservableObject, INavigationAwar
         if (urls.Any())
             ScreenshotsBorderVisbility = Visibility.Visible;
 
-        Task.Run(() =>
+        Task.Run(async () =>
         {
             string markdown = default;
 
@@ -57,7 +57,7 @@ internal partial class ResourceItemViewModel : ObservableObject, INavigationAwar
             }
             else
             {
-                var des = _interfaceCacheService.CurseForgeClient.GetResourceDescription((int)id);
+                var des = await _interfaceCacheService.CurseForgeClient.GetResourceDescriptionAsync((int)id);
                 markdown = new ReverseMarkdown.Converter().Convert(des);
             }
 

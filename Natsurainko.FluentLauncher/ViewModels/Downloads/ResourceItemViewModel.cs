@@ -53,7 +53,7 @@ internal partial class ResourceItemViewModel : ObservableObject, INavigationAwar
 
             if (!isCurse)
             {
-                markdown = _interfaceCacheService.ModrinthClient.GetResourceDescription((string)id);
+                markdown = await _interfaceCacheService.ModrinthClient.GetResourceDescriptionAsync((string)id);
             }
             else
             {

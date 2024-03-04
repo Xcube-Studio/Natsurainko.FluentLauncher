@@ -100,7 +100,7 @@ internal partial class ResourcesSearchViewModel : ObservableObject, INavigationA
 
         if (SelectedSource == 0)
         {
-            var resources = await _interfaceCacheService.CurseForgeClient.GetResourceSearchResultAsync(SearchBoxInput, ResourceType switch
+            var resources = await _interfaceCacheService.CurseForgeClient.SearchResourcesAsync(SearchBoxInput, ResourceType switch
             {
                 2 => CurseForgeResourceType.ModPack,
                 3 => CurseForgeResourceType.TexturePack,
@@ -112,17 +112,14 @@ internal partial class ResourcesSearchViewModel : ObservableObject, INavigationA
         }
         else
         {
-            await Task.Run(() =>
+            var resources = await _interfaceCacheService.ModrinthClient.SearchResourcesAsync(SearchBoxInput, ResourceType switch
             {
-                var resources = _interfaceCacheService.ModrinthClient.SearchResources(SearchBoxInput, ResourceType switch
-                {
-                    2 => ModrinthResourceType.ModPack,
-                    3 => ModrinthResourceType.Resourcepack,
-                    _ => ModrinthResourceType.McMod
-                });
-
-                App.DispatcherQueue.TryEnqueue(() => SearchedItems = resources);
+                2 => ModrinthResourceType.ModPack,
+                3 => ModrinthResourceType.Resourcepack,
+                _ => ModrinthResourceType.McMod
             });
+
+            App.DispatcherQueue.TryEnqueue(() => SearchedItems = resources);
         }
     }
 

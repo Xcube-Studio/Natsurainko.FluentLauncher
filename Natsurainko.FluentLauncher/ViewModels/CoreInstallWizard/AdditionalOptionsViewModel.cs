@@ -46,9 +46,9 @@ internal partial class AdditionalOptionsViewModel : WizardViewModelBase
 
     public void Init()
     {
-        Task.Run(() =>
+        Task.Run(async () =>
         {
-            foreach (var item in _interfaceCacheService.ModrinthClient.GetProjectVersions("P7dR8mSH"))
+            foreach (var item in await _interfaceCacheService.ModrinthClient.GetProjectVersionsAsync("P7dR8mSH"))
             {
                 if (item.McVersion.Equals(_coreInstallationInfo.ManifestItem.Id))
                 {

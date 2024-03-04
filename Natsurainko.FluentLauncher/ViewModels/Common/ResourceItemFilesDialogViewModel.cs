@@ -39,7 +39,7 @@ internal partial class ResourceItemFilesDialogViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public Task LoadEvent(object args) => Task.Run(() =>
+    public Task LoadEvent(object args) => Task.Run(async () =>
     {
         App.DispatcherQueue.TryEnqueue(() =>
         {
@@ -58,7 +58,7 @@ internal partial class ResourceItemFilesDialogViewModel : ObservableObject
         }
         else if (_resource is ModrinthResource modrinthResource)
         {
-            files = from item in _interfaceCacheService.ModrinthClient.GetProjectVersions(modrinthResource.Id)
+            files = from item in await _interfaceCacheService.ModrinthClient.GetProjectVersionsAsync(modrinthResource.Id)
                     group item by item.McVersion into g
                     orderby g.Key
                     select new GroupInfoList(g) { Key = g.Key };

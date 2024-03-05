@@ -47,17 +47,17 @@ internal partial class ResourceItemViewModel : ObservableObject, INavigationAwar
         if (urls.Any())
             ScreenshotsBorderVisbility = Visibility.Visible;
 
-        Task.Run(() =>
+        Task.Run(async () =>
         {
             string markdown = default;
 
             if (!isCurse)
             {
-                markdown = _interfaceCacheService.ModrinthClient.GetResourceDescription((string)id);
+                markdown = await _interfaceCacheService.ModrinthClient.GetResourceDescriptionAsync((string)id);
             }
             else
             {
-                var des = _interfaceCacheService.CurseForgeClient.GetResourceDescription((int)id);
+                var des = await _interfaceCacheService.CurseForgeClient.GetResourceDescriptionAsync((int)id);
                 markdown = new ReverseMarkdown.Converter().Convert(des);
             }
 

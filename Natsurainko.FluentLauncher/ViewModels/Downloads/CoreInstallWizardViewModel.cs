@@ -192,12 +192,13 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
                 ? Path.Combine(_gameService.ActiveMinecraftFolder, "versions", installInfo.AbsoluteId, "mods", vm.OptiFabric.FileName)
                 : Path.Combine(_gameService.ActiveMinecraftFolder, "mods", vm.OptiFabric.FileName);
 
-            installInfo.AdditionalOptions.Add(new(@this =>
+            installInfo.AdditionalOptions.Add(new(async @this =>
             {
+                string fileUrl = await _interfaceCacheService.CurseForgeClient.GetFileUrlAsync(vm.OptiFabric);
                 var downloadTask = HttpUtils.DownloadElementAsync(new DownloadElement
                 {
                     AbsolutePath = file,
-                    Url = _interfaceCacheService.CurseForgeClient.GetCurseFileDownloadUrl(vm.OptiFabric)
+                    Url = fileUrl
                 },
                 downloadSetting: new DownloadSetting
                 {

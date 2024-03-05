@@ -46,9 +46,9 @@ internal partial class AdditionalOptionsViewModel : WizardViewModelBase
 
     public void Init()
     {
-        Task.Run(() =>
+        Task.Run(async () =>
         {
-            foreach (var item in _interfaceCacheService.ModrinthClient.GetProjectVersions("P7dR8mSH"))
+            foreach (var item in await _interfaceCacheService.ModrinthClient.GetProjectVersionsAsync("P7dR8mSH"))
             {
                 if (item.McVersion.Equals(_coreInstallationInfo.ManifestItem.Id))
                 {
@@ -58,9 +58,10 @@ internal partial class AdditionalOptionsViewModel : WizardViewModelBase
             };
         });
 
-        Task.Run(() =>
+        Task.Run(async () =>
         {
-            foreach (var item in _interfaceCacheService.CurseForgeClient.GetResource(322385).Files)
+            var resource = await _interfaceCacheService.CurseForgeClient.GetResourceAsync(322385);
+            foreach (var item in resource.Files)
             {
                 if (item.McVersion.Equals(_coreInstallationInfo.ManifestItem.Id))
                 {

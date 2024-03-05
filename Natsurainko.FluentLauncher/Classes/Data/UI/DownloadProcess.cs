@@ -58,7 +58,7 @@ internal partial class ResourceDownloadProcess : DownloadProcess
         string url = default;
 
         url = _file is CurseForgeFile curseFile
-            ? App.GetService<InterfaceCacheService>().CurseForgeClient.GetCurseFileDownloadUrl(curseFile)
+            ? await App.GetService<InterfaceCacheService>().CurseForgeClient.GetFileUrlAsync(curseFile)
             : ((ModrinthFile)_file).Url;
 
         App.DispatcherQueue.SynchronousTryEnqueue(() =>

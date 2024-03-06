@@ -101,8 +101,11 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
             // User has entered the device code and msaOAuth is completed successfully
             if (!Unloaded && p == MicrosoftAccountAuthenticationProgress.AuthenticatingWithXboxLive)
             {
-                _canNext = true;
-                OnPropertyChanged(nameof(CanNext)); // Enable the next button to allow proceeding to the confirmation page
+                App.DispatcherQueue.TryEnqueue(() =>
+                {
+                    _canNext = true;
+                    OnPropertyChanged(nameof(CanNext)); // Enable the next button to allow proceeding to the confirmation page
+                });
             }
         });
 
@@ -120,7 +123,7 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
                 Loading = false;
             });
         }
-        // TODO: Cancellation handling
+        catch (OperationCanceledException) { }
     }
 
     private void Copy()

@@ -101,6 +101,7 @@ internal class AuthenticationService
         var authenticator = DefaultMicrosoftAuthenticator.CreateForLogin(ClientId, RedirectUrl, accessCode);
         //authenticator.ProgressChanged += (_, e) => progressChanged(e.Item2);
 
-        return (MicrosoftAccount)authenticator.Authenticate();
+        //return (MicrosoftAccount)authenticator.Authenticate();
+        return new DefaultMicrosoftAuthenticator2(ClientId, RedirectUrl).LoginAsync(accessCode).GetAwaiter().GetResult();
     }
 }

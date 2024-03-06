@@ -76,7 +76,7 @@ internal partial class ConfirmProfileViewModel : WizardViewModelBase
                     var builder = new StringBuilder();
                     builder.AppendLine("Failed to fetch account list");
 
-                    if (task.Exception.InnerException is MicrosoftAuthenticationException microsoftAuthenticateException)
+                    if (task.Exception.InnerException is MicrosoftAccountAuthenticationException microsoftAuthenticateException)
                     {
                         builder.AppendLine(microsoftAuthenticateException.Message);
                         builder.AppendLine(microsoftAuthenticateException.HelpLink);

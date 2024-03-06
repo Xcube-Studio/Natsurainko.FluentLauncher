@@ -6,6 +6,7 @@ using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Authentication.Microsoft;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
@@ -15,11 +16,13 @@ namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 
 internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
 {
-    public override bool CanNext => DeviceFlowAuthResult != null;
+    public override bool CanNext => _canNext;
 
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CanNext))]
-    private DeviceFlowResponse deviceFlowAuthResult;
+    private bool _canNext = false;
+
+    //[ObservableProperty]
+    //[NotifyPropertyChangedFor(nameof(CanNext))]
+    //private DeviceFlowResponse deviceFlowAuthResult;
 
     [ObservableProperty]
     private string deviceCode;
@@ -32,7 +35,7 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
     private readonly AuthenticationService _authenticationService;
 
     internal CancellationTokenSource CancellationTokenSource;
-    internal Task<DeviceFlowResponse> DeviceFlowProcess;
+    internal Task<MicrosoftAccount> DeviceFlowProcess;
 
     public DeviceFlowMicrosoftAuthViewModel()
     {
@@ -67,12 +70,9 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
 
     public override WizardViewModelBase GetNextViewModel()
     {
-        ConfirmProfileViewModel confirmProfileViewModel = default;
-
-        confirmProfileViewModel = new ConfirmProfileViewModel(() => new Account[]
+        ConfirmProfileViewModel confirmProfileViewModel = new ConfirmProfileViewModel(() => new Account[]
         {
-            _authenticationService.AuthenticateMicrosoft(DeviceFlowAuthResult,
-                progress => App.DispatcherQueue.TryEnqueue(() => confirmProfileViewModel.LoadingProgressText = progress))
+            DeviceFlowProcess.GetAwaiter().GetResult()
         });
 
         return confirmProfileViewModel;
@@ -81,35 +81,46 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
     private void CreateDeviceFlowProcess()
     {
         CancellationTokenSource?.Dispose();
+        CancellationTokenSource = new CancellationTokenSource();
 
-        DeviceFlowProcess = DefaultMicrosoftAuthenticator.DeviceFlowAuthAsync(AuthenticationService.ClientId,
-            res => App.DispatcherQueue.TryEnqueue(() =>
+        // Display user code when received and launch browser
+        var receiveUserCodeAction = (DeviceCodeResponse res) =>
+        {
+            App.DispatcherQueue.TryEnqueue(async () =>
             {
-                DeviceCode = res.UserCode;
+                DeviceCode = res.UserCode!;
                 Loading = false;
 
                 Copy();
-                _ = Launcher.LaunchUriAsync(new("https://login.live.com/oauth20_remoteconnect.srf"));
-            }),
-            out var cancellationTokenSource);
-        CancellationTokenSource = cancellationTokenSource;
+                await Launcher.LaunchUriAsync(new("https://login.live.com/oauth20_remoteconnect.srf"));
+            });
+        };
 
-        DeviceFlowProcess.ContinueWith(task =>
+        var progress = new Progress<MicrosoftAccountAuthenticationProgress>((p) =>
         {
-            if (task.IsFaulted || !task.Result.Success || (CancellationTokenSource.IsCancellationRequested && !task.Result.Success))
+            // User has entered the device code and msaOAuth is completed successfully
+            if (!Unloaded && p == MicrosoftAccountAuthenticationProgress.AuthenticatingWithXboxLive)
             {
-                App.DispatcherQueue.SynchronousTryEnqueue(() =>
-                {
-                    DeviceCode = "Failed";
-                    Loading = false;
-                });
-
-                return;
+                _canNext = true;
+                OnPropertyChanged(nameof(CanNext)); // Enable the next button to allow proceeding to the confirmation page
             }
-
-            if (!Unloaded && task.Result.Success)
-                App.DispatcherQueue.SynchronousTryEnqueue(() => DeviceFlowAuthResult = task.Result);
         });
+
+        try
+        {
+            DeviceFlowProcess = new DefaultMicrosoftAuthenticator2(AuthenticationService.ClientId, AuthenticationService.RedirectUrl)
+                .LoginFromDeviceFlowAsync(receiveUserCodeAction, CancellationTokenSource.Token, progress);
+        }
+        catch (MicrosoftAccountAuthenticationException)
+        {
+            // handle failed authentication
+            App.DispatcherQueue.SynchronousTryEnqueue(() =>
+            {
+                DeviceCode = "Failed";
+                Loading = false;
+            });
+        }
+        // TODO: Cancellation handling
     }
 
     private void Copy()

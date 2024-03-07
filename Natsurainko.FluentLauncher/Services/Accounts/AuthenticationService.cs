@@ -1,8 +1,4 @@
-﻿using Natsurainko.FluentLauncher.Services.Storage;
-using Nrk.FluentCore.Authentication;
-using Nrk.FluentCore.Authentication.Microsoft;
-using Nrk.FluentCore.Authentication.Offline;
-using Nrk.FluentCore.Authentication.Yggdrasil;
+﻿using Nrk.FluentCore.Authentication;
 using System;
 using System.Linq;
 using System.Threading;
@@ -23,13 +19,13 @@ internal class AuthenticationService
 
     public AuthenticationService() { }
 
-    public Task<MicrosoftAccount> LoginMicrosoft(string code, IProgress<MicrosoftAccountAuthenticationProgress>? progress = null)
+    public Task<MicrosoftAccount> LoginMicrosoft(string code, IProgress<MicrosoftAuthenticationProgress>? progress = null)
         => _microsoftAuthenticator.LoginAsync(code, progress);
 
     public Task<MicrosoftAccount> LoginMicrosoft(
         Action<DeviceCodeResponse> receiveUserCodeAction,
         CancellationToken cancellationToken = default,
-        IProgress<MicrosoftAccountAuthenticationProgress>? progress = null
+        IProgress<MicrosoftAuthenticationProgress>? progress = null
         )
         => _microsoftAuthenticator.LoginFromDeviceFlowAsync(receiveUserCodeAction, cancellationToken, progress);
 

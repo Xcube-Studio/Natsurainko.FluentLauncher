@@ -5,7 +5,6 @@ using Natsurainko.FluentLauncher.Utils.Xaml;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
 using Nrk.FluentCore.Authentication;
-using Nrk.FluentCore.Authentication.Microsoft;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -96,10 +95,10 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
             });
         };
 
-        var progress = new Progress<MicrosoftAccountAuthenticationProgress>((p) =>
+        var progress = new Progress<MicrosoftAuthenticationProgress>((p) =>
         {
             // User has entered the device code and msaOAuth is completed successfully
-            if (!Unloaded && p == MicrosoftAccountAuthenticationProgress.AuthenticatingWithXboxLive)
+            if (!Unloaded && p == MicrosoftAuthenticationProgress.AuthenticatingWithXboxLive)
             {
                 App.DispatcherQueue.TryEnqueue(() =>
                 {
@@ -114,7 +113,7 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
             DeviceFlowProcess = _authenticationService
                 .LoginMicrosoft(receiveUserCodeAction, CancellationTokenSource.Token, progress);
         }
-        catch (MicrosoftAccountAuthenticationException)
+        catch (MicrosoftAuthenticationException)
         {
             // handle failed authentication
             App.DispatcherQueue.SynchronousTryEnqueue(() =>

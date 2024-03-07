@@ -4,7 +4,6 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
 using Nrk.FluentCore.Authentication;
-using Nrk.FluentCore.Authentication.Microsoft;
 using System;
 using System.ComponentModel;
 using System.Web;
@@ -95,7 +94,7 @@ internal partial class BrowserMicrosoftAuthViewModel : WizardViewModelBase
 
         confirmProfileViewModel = new ConfirmProfileViewModel(() =>
         {
-            var progress = new Progress<MicrosoftAccountAuthenticationProgress>((p) =>
+            var progress = new Progress<MicrosoftAuthenticationProgress>((p) =>
             {
                 App.DispatcherQueue.TryEnqueue(() => confirmProfileViewModel.LoadingProgressText = p.ToString());
             });

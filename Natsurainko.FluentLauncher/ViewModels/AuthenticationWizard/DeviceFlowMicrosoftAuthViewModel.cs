@@ -111,8 +111,8 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
 
         try
         {
-            DeviceFlowProcess = new DefaultMicrosoftAuthenticator2(AuthenticationService.ClientId, AuthenticationService.RedirectUrl)
-                .LoginFromDeviceFlowAsync(receiveUserCodeAction, CancellationTokenSource.Token, progress);
+            DeviceFlowProcess = _authenticationService
+                .LoginMicrosoft(receiveUserCodeAction, CancellationTokenSource.Token, progress);
         }
         catch (MicrosoftAccountAuthenticationException)
         {

@@ -99,12 +99,12 @@ internal class LaunchService : DefaultLaunchService
             {
                 if (launchAccount.Equals(_accountService.ActiveAccount))
                 {
-                    _authenticationService.RefreshCurrentAccount();
+                    _accountService.RefreshActiveAccount().GetAwaiter().GetResult();
                     return _accountService.ActiveAccount;
                 }
                 else
                 {
-                    _authenticationService.RefreshContainedAccount(launchAccount);
+                    _accountService.RefreshAccount(launchAccount).GetAwaiter().GetResult();
                     return GetLaunchAccount(specialConfig, _accountService);
                 }
             }

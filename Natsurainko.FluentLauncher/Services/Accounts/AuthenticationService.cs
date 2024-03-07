@@ -5,103 +5,55 @@ using Nrk.FluentCore.Authentication.Offline;
 using Nrk.FluentCore.Authentication.Yggdrasil;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Services.Accounts;
 
 internal class AuthenticationService
 {
-    internal const string ClientId = "0844e754-1d2e-4861-8e2b-18059609badb";
+    internal const string MicrosoftClientId = "0844e754-1d2e-4861-8e2b-18059609badb";
+    internal const string MicrosoftRedirectUrl = "https://login.live.com/oauth20_desktop.srf";
 
-    internal const string RedirectUrl = "https://login.live.com/oauth20_desktop.srf";
+    // Authenticators
+    // TODO: Move to config file and remove from source control
+    private readonly MicrosoftAuthenticator _microsoftAuthenticator = new(MicrosoftClientId, MicrosoftRedirectUrl);
 
-    private readonly AccountService _accountService;
-    private readonly SkinCacheService _skinCacheService;
+    private readonly OfflineAuthenticator _offlineAuthenticator = new();
 
-    public AuthenticationService(AccountService accountService, SkinCacheService skinCacheService)
-    {
-        _accountService = accountService;
-        _skinCacheService = skinCacheService;
-    }
+    public AuthenticationService() { }
 
-    public Task RefreshCurrentAccountAsync() => Task.Run(RefreshCurrentAccount);
+    public Task<MicrosoftAccount> LoginMicrosoft(string code, IProgress<MicrosoftAccountAuthenticationProgress>? progress = null)
+        => _microsoftAuthenticator.LoginAsync(code, progress);
 
-    public void RefreshCurrentAccount()
-    {
-        Account activeAccount = _accountService.ActiveAccount;
-        Account refreshedAccount = default;
+    public Task<MicrosoftAccount> LoginMicrosoft(
+        Action<DeviceCodeResponse> receiveUserCodeAction,
+        CancellationToken cancellationToken = default,
+        IProgress<MicrosoftAccountAuthenticationProgress>? progress = null
+        )
+        => _microsoftAuthenticator.LoginFromDeviceFlowAsync(receiveUserCodeAction, cancellationToken, progress);
 
-        if (activeAccount is MicrosoftAccount microsoftAccount)
-        {
-            refreshedAccount = DefaultMicrosoftAuthenticator
-                .CreateForRefresh(ClientId, RedirectUrl, microsoftAccount)
-                .Authenticate();
-        }
-        else if (activeAccount is YggdrasilAccount yggdrasilAccount)
-        {
-            refreshedAccount = DefaultYggdrasilAuthenticator
-                .CreateForRefresh(yggdrasilAccount, yggdrasilAccount.ClientToken)
-                .Authenticate()
-                .First(account => account.Uuid.Equals(activeAccount.Uuid));
-        }
-        else if (activeAccount is OfflineAccount offlineAccount)
-            refreshedAccount = new DefaultOfflineAuthenticator(activeAccount.Name, activeAccount.Uuid).Authenticate();
+    public Task<YggdrasilAccount[]> LoginYggdrasil(string serverUrl, string email, string password)
+        => new YggdrasilAuthenticator(serverUrl).LoginAsync(email, password);
 
-        App.DispatcherQueue.TryEnqueue(() =>
-        {
-            _accountService.UpdateAccount(refreshedAccount, true);
+    public OfflineAccount LoginOffline(string name, string? uuid)
+        => _offlineAuthenticator.Login(name, uuid == null ? null : Guid.Parse(uuid));
 
-            Task.Run(() => _skinCacheService.TryCacheSkin(refreshedAccount));
-        });
-    }
+    public Task<MicrosoftAccount> Refresh(MicrosoftAccount account)
+        => _microsoftAuthenticator.RefreshAsync(account);
 
-    public void RefreshContainedAccount(Account account)
-    {
-        Account? refreshedAccount = default;
+    public Task<YggdrasilAccount[]> Refresh(YggdrasilAccount account)
+        => new YggdrasilAuthenticator(account.YggdrasilServerUrl).RefreshAsync(account);
 
-        if (account is MicrosoftAccount microsoftAccount)
-        {
-            refreshedAccount = DefaultMicrosoftAuthenticator
-                .CreateForRefresh(ClientId, RedirectUrl, microsoftAccount)
-                .Authenticate();
-        }
-        else if (account is YggdrasilAccount yggdrasilAccount)
-        {
-            refreshedAccount = DefaultYggdrasilAuthenticator
-                .CreateForRefresh(yggdrasilAccount, yggdrasilAccount.ClientToken)
-                .Authenticate()
-                .First(account => account.Uuid.Equals(account.Uuid));
-        }
-        else if (account is OfflineAccount offlineAccount)
-            refreshedAccount = new DefaultOfflineAuthenticator(account.Name, account.Uuid).Authenticate();
+    public OfflineAccount Refresh(OfflineAccount account)
+        => _offlineAuthenticator.Refresh(account);
 
-        App.DispatcherQueue.TryEnqueue(() =>
-        {
-            _accountService.UpdateAccount(refreshedAccount, false);
-            Task.Run(() => _skinCacheService.TryCacheSkin(refreshedAccount));
-        });
-    }
+    // TODO: replace with new APIs
+    //public MicrosoftAccount AuthenticateMicrosoft(DeviceFlowResponse deviceFlowResponse, Action<string> progressChanged)
+    //{
+    //    var authenticator = DefaultMicrosoftAuthenticator.CreateFromDeviceFlow(microsoftClientId, MicrosoftRedirectUrl, deviceFlowResponse.OAuth20TokenResponse);
+    //    //authenticator.ProgressChanged += (_, e) => progressChanged(e.Item2); //TODO:
 
-    public OfflineAccount AuthenticateOffline(string name, string uuid)
-        => new DefaultOfflineAuthenticator(name, uuid == null ? null : Guid.Parse(uuid)).Authenticate();
-
-    public YggdrasilAccount[] AuthenticateYggdrasil(string url, string email, string password)
-        => DefaultYggdrasilAuthenticator.CreateForLogin(email, password, url).Authenticate();
-
-    public MicrosoftAccount AuthenticateMicrosoft(DeviceFlowResponse deviceFlowResponse, Action<string> progressChanged)
-    {
-        var authenticator = DefaultMicrosoftAuthenticator.CreateFromDeviceFlow(ClientId, RedirectUrl, deviceFlowResponse.OAuth20TokenResponse);
-        //authenticator.ProgressChanged += (_, e) => progressChanged(e.Item2); //TODO:
-
-        return authenticator.Authenticate();
-    }
-
-    public MicrosoftAccount AuthenticateMicrosoft(string accessCode, Action<string> progressChanged)
-    {
-        var authenticator = DefaultMicrosoftAuthenticator.CreateForLogin(ClientId, RedirectUrl, accessCode);
-        //authenticator.ProgressChanged += (_, e) => progressChanged(e.Item2);
-
-        //return (MicrosoftAccount)authenticator.Authenticate();
-        return new DefaultMicrosoftAuthenticator2(ClientId, RedirectUrl).LoginAsync(accessCode).GetAwaiter().GetResult();
-    }
+    //    return authenticator.Authenticate();
+    //}
 }

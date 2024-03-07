@@ -4,6 +4,7 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
 using Nrk.FluentCore.Authentication;
+using Nrk.FluentCore.Authentication.Microsoft;
 using System;
 using System.ComponentModel;
 using System.Web;
@@ -31,10 +32,10 @@ internal partial class BrowserMicrosoftAuthViewModel : WizardViewModelBase
     private Uri source;
 
     private readonly string AuthUrl = "https://login.live.com/oauth20_authorize.srf" +
-        $"?client_id={AuthenticationService.ClientId}" +
+        $"?client_id={AuthenticationService.MicrosoftClientId}" +
         "&response_type=code" +
         "&scope=XboxLive.signin%20offline_access" +
-        $"&redirect_uri={AuthenticationService.RedirectUrl}" +
+        $"&redirect_uri={AuthenticationService.MicrosoftRedirectUrl}" +
         "&prompt=login";
 
     private readonly AuthenticationService _authenticationService;
@@ -92,10 +93,14 @@ internal partial class BrowserMicrosoftAuthViewModel : WizardViewModelBase
     {
         ConfirmProfileViewModel confirmProfileViewModel = default;
 
-        confirmProfileViewModel = new ConfirmProfileViewModel(() => new Account[]
+        confirmProfileViewModel = new ConfirmProfileViewModel(() =>
         {
-            _authenticationService.AuthenticateMicrosoft(AccessCode,
-                progress => App.DispatcherQueue.TryEnqueue(() => confirmProfileViewModel.LoadingProgressText = progress))
+            var progress = new Progress<MicrosoftAccountAuthenticationProgress>((p) =>
+            {
+                App.DispatcherQueue.TryEnqueue(() => confirmProfileViewModel.LoadingProgressText = p.ToString());
+            });
+
+            return [_authenticationService.LoginMicrosoft(AccessCode, progress).GetAwaiter().GetResult()];
         });
 
         return confirmProfileViewModel;

@@ -73,14 +73,17 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     public void Login() => _ = new AuthenticationWizardDialog { XamlRoot = Views.ShellPage._XamlRoot }.ShowAsync();
 
     [RelayCommand]
-    public Task Refresh() => Task.Run(_authenticationService.RefreshCurrentAccount).ContinueWith(task =>
+    public async Task Refresh()
     {
-        if (task.IsFaulted)
-            _notificationService.NotifyException("_AccountRefreshFailedTitle", task.Exception, "_AccountRefreshFailedDescription");
+        var refreshTask = _accountService.RefreshActiveAccount();
+        await refreshTask;
+
+        if (refreshTask.IsFaulted)
+            _notificationService.NotifyException("_AccountRefreshFailedTitle", refreshTask.Exception, "_AccountRefreshFailedDescription");
         else _notificationService.NotifyMessage(
             ResourceUtils.GetValue("Notifications", "_AccountRefreshedTitle"),
             ResourceUtils.GetValue("Notifications", "_AccountRefreshedDescription").Replace("${name}", _accountService.ActiveAccount.Name));
-    });
+    }
 
     [RelayCommand]
     public void Switch()

@@ -24,38 +24,42 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
     //private DeviceFlowResponse deviceFlowAuthResult;
 
     [ObservableProperty]
-    private string deviceCode;
+    private string? deviceCode;
 
     [ObservableProperty]
     private bool loading = true;
 
     private bool Unloaded = false;
 
-    private readonly AuthenticationService _authenticationService;
+    private readonly AuthenticationService _authService;
 
-    internal CancellationTokenSource CancellationTokenSource;
-    internal Task<MicrosoftAccount> DeviceFlowProcess;
+    // Started in the constructor
+    internal CancellationTokenSource CancellationTokenSource = null!;
+    internal Task<OAuth2Tokens> DeviceFlowProcess = null!;
 
     public DeviceFlowMicrosoftAuthViewModel()
     {
         XamlPageType = typeof(DeviceFlowMicrosoftAuthPage);
 
-        _authenticationService = App.GetService<AuthenticationService>();
+        _authService = App.GetService<AuthenticationService>();
 
-        CreateDeviceFlowProcess();
+        _ = CreateDeviceFlowProcessAsync();
     }
 
     [RelayCommand]
-    public Task RefreshCode() => Task.Run(() =>
+    public async Task RefreshCode()
     {
-        App.DispatcherQueue.SynchronousTryEnqueue(() => Loading = true);
+        Loading = true;
 
         CancellationTokenSource.Cancel();
-        if (DeviceFlowProcess.Status == TaskStatus.Running)
-            DeviceFlowProcess.Wait();
+        try
+        {
+            await DeviceFlowProcess; // Wait for polling to stop after cancellation requested
+        }
+        catch (OperationCanceledException) { }
 
-        CreateDeviceFlowProcess();
-    });
+        _ = CreateDeviceFlowProcessAsync(); // Start a new device flow process
+    }
 
     [RelayCommand]
     public void CopyCode() => Copy();
@@ -71,23 +75,23 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
     {
         ConfirmProfileViewModel confirmProfileViewModel = new ConfirmProfileViewModel(() => new Account[]
         {
-            DeviceFlowProcess.GetAwaiter().GetResult()
+            _authService.LoginMicrosoftAsync(DeviceFlowProcess.GetAwaiter().GetResult()).GetAwaiter().GetResult()
         });
 
         return confirmProfileViewModel;
     }
 
-    private void CreateDeviceFlowProcess()
+    private async Task CreateDeviceFlowProcessAsync()
     {
         CancellationTokenSource?.Dispose();
         CancellationTokenSource = new CancellationTokenSource();
 
         // Display user code when received and launch browser
-        var receiveUserCodeAction = (DeviceCodeResponse res) =>
+        var receiveUserCodeAction = (OAuth2DeviceCodeResponse response) =>
         {
             App.DispatcherQueue.TryEnqueue(async () =>
             {
-                DeviceCode = res.UserCode!;
+                DeviceCode = response.UserCode!; // TODO: Make UserCOde required
                 Loading = false;
 
                 Copy();
@@ -95,23 +99,10 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
             });
         };
 
-        var progress = new Progress<MicrosoftAuthenticationProgress>((p) =>
-        {
-            // User has entered the device code and msaOAuth is completed successfully
-            if (!Unloaded && p == MicrosoftAuthenticationProgress.AuthenticatingWithXboxLive)
-            {
-                App.DispatcherQueue.TryEnqueue(() =>
-                {
-                    _canNext = true;
-                    OnPropertyChanged(nameof(CanNext)); // Enable the next button to allow proceeding to the confirmation page
-                });
-            }
-        });
-
         try
         {
-            DeviceFlowProcess = _authenticationService
-                .LoginMicrosoft(receiveUserCodeAction, CancellationTokenSource.Token, progress);
+            DeviceFlowProcess = _authService.AuthMsaFromDeviceFlowAsync(receiveUserCodeAction, CancellationTokenSource.Token);
+            await DeviceFlowProcess;
         }
         catch (MicrosoftAuthenticationException)
         {
@@ -123,6 +114,13 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
             });
         }
         catch (OperationCanceledException) { }
+
+        // User has entered the device code and msaOAuth is completed successfully
+        if (!Unloaded && DeviceFlowProcess.IsCompletedSuccessfully)
+        {
+            _canNext = true;
+            OnPropertyChanged(nameof(CanNext)); // Enable the next button to allow proceeding to the next page
+        }
     }
 
     private void Copy()

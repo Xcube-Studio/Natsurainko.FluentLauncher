@@ -31,7 +31,7 @@ internal partial class EnterYggdrasilProfileViewModel : WizardViewModelBase
     }
 
     public override WizardViewModelBase GetNextViewModel()
-        => new ConfirmProfileViewModel(() => _authenticationService.LoginYggdrasil(Url, Email, Password).GetAwaiter().GetResult())
+        => new ConfirmProfileViewModel(() => _authenticationService.LoginYggdrasilAsync(Url, Email, Password).GetAwaiter().GetResult())
         {
             LoadingProgressText = "Authenticating with Yggdrasil Server"
         };

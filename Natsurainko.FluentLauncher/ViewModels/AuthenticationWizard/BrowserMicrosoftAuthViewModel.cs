@@ -99,7 +99,7 @@ internal partial class BrowserMicrosoftAuthViewModel : WizardViewModelBase
                 App.DispatcherQueue.TryEnqueue(() => confirmProfileViewModel.LoadingProgressText = p.ToString());
             });
 
-            return [_authenticationService.LoginMicrosoft(AccessCode, progress).GetAwaiter().GetResult()];
+            return [_authenticationService.LoginMicrosoftAsync(AccessCode, progress).GetAwaiter().GetResult()];
         });
 
         return confirmProfileViewModel;

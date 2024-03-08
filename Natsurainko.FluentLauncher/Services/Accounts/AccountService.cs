@@ -165,11 +165,11 @@ internal class AccountService
 
     public async Task RefreshAccount(Account account)
     {
-        // Refresh account
+        // RefreshAsync account
         Account refreshedAccount = account switch
         {
-            MicrosoftAccount microsoftAccount => await _authService.Refresh(microsoftAccount),
-            YggdrasilAccount yggdrasilAccount => (await _authService.Refresh(yggdrasilAccount))
+            MicrosoftAccount microsoftAccount => await _authService.RefreshAsync(microsoftAccount),
+            YggdrasilAccount yggdrasilAccount => (await _authService.RefreshAsync(yggdrasilAccount))
                 .First(acc => acc.Uuid.Equals(account.Uuid)),
             OfflineAccount offlineAccount => _authService.Refresh(offlineAccount),
 

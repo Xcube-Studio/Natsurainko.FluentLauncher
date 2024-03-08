@@ -19,37 +19,29 @@ internal class AuthenticationService
 
     public AuthenticationService() { }
 
-    public Task<MicrosoftAccount> LoginMicrosoft(string code, IProgress<MicrosoftAuthenticationProgress>? progress = null)
+    public Task<MicrosoftAccount> LoginMicrosoftAsync(string code, IProgress<MicrosoftAuthenticationProgress>? progress = null)
         => _microsoftAuthenticator.LoginAsync(code, progress);
 
-    public Task<MicrosoftAccount> LoginMicrosoft(
-        Action<DeviceCodeResponse> receiveUserCodeAction,
-        CancellationToken cancellationToken = default,
-        IProgress<MicrosoftAuthenticationProgress>? progress = null
-        )
-        => _microsoftAuthenticator.LoginFromDeviceFlowAsync(receiveUserCodeAction, cancellationToken, progress);
+    public Task<MicrosoftAccount> LoginMicrosoftAsync(OAuth2Tokens msaTokens, IProgress<MicrosoftAuthenticationProgress>? progress = null)
+        => _microsoftAuthenticator.LoginAsync(msaTokens, progress);
 
-    public Task<YggdrasilAccount[]> LoginYggdrasil(string serverUrl, string email, string password)
+    public Task<OAuth2Tokens> AuthMsaFromDeviceFlowAsync(
+        Action<OAuth2DeviceCodeResponse> receiveUserCodeAction,
+        CancellationToken cancellationToken = default)
+        => _microsoftAuthenticator.AuthMsaFromDeviceFlowAsync(receiveUserCodeAction, cancellationToken);
+
+    public Task<YggdrasilAccount[]> LoginYggdrasilAsync(string serverUrl, string email, string password)
         => new YggdrasilAuthenticator(serverUrl).LoginAsync(email, password);
 
     public OfflineAccount LoginOffline(string name, string? uuid)
         => _offlineAuthenticator.Login(name, uuid == null ? null : Guid.Parse(uuid));
 
-    public Task<MicrosoftAccount> Refresh(MicrosoftAccount account)
+    public Task<MicrosoftAccount> RefreshAsync(MicrosoftAccount account)
         => _microsoftAuthenticator.RefreshAsync(account);
 
-    public Task<YggdrasilAccount[]> Refresh(YggdrasilAccount account)
+    public Task<YggdrasilAccount[]> RefreshAsync(YggdrasilAccount account)
         => new YggdrasilAuthenticator(account.YggdrasilServerUrl).RefreshAsync(account);
 
     public OfflineAccount Refresh(OfflineAccount account)
         => _offlineAuthenticator.Refresh(account);
-
-    // TODO: replace with new APIs
-    //public MicrosoftAccount AuthenticateMicrosoft(DeviceFlowResponse deviceFlowResponse, Action<string> progressChanged)
-    //{
-    //    var authenticator = DefaultMicrosoftAuthenticator.CreateFromDeviceFlow(microsoftClientId, MicrosoftRedirectUrl, deviceFlowResponse.OAuth20TokenResponse);
-    //    //authenticator.ProgressChanged += (_, e) => progressChanged(e.Item2); //TODO:
-
-    //    return authenticator.Authenticate();
-    //}
 }

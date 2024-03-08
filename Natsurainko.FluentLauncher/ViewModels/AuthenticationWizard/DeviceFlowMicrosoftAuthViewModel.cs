@@ -15,6 +15,8 @@ namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 
 internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
 {
+    private readonly AuthenticationService _authService;
+
     public override bool CanNext => _canNext;
 
     private bool _canNext = false;
@@ -31,18 +33,16 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
 
     private bool Unloaded = false;
 
-    private readonly AuthenticationService _authService;
-
     // Started in the constructor
     internal CancellationTokenSource CancellationTokenSource = null!;
     internal Task<OAuth2Tokens> DeviceFlowProcess = null!;
 
-    public DeviceFlowMicrosoftAuthViewModel()
+    public DeviceFlowMicrosoftAuthViewModel(AuthenticationService authService)
     {
+        _authService = authService;
         XamlPageType = typeof(DeviceFlowMicrosoftAuthPage);
 
-        _authService = App.GetService<AuthenticationService>();
-
+        // Safe to fire and forget as all exceptions are handled
         _ = CreateDeviceFlowProcessAsync();
     }
 
@@ -56,8 +56,12 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
         {
             await DeviceFlowProcess; // Wait for polling to stop after cancellation requested
         }
+        // When refresh is clicked, failed device flow auth will throw an exception here.
+        // It should be handled already in CreateDeviceFlowProcessAsync
+        catch (MicrosoftAuthenticationException) { }
         catch (OperationCanceledException) { }
 
+        // Safe to fire and forget as all exceptions are handled
         _ = CreateDeviceFlowProcessAsync(); // Start a new device flow process
     }
 
@@ -91,7 +95,7 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
         {
             App.DispatcherQueue.TryEnqueue(async () =>
             {
-                DeviceCode = response.UserCode!; // TODO: Make UserCOde required
+                DeviceCode = response.UserCode;
                 Loading = false;
 
                 Copy();
@@ -104,16 +108,13 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
             DeviceFlowProcess = _authService.AuthMsaFromDeviceFlowAsync(receiveUserCodeAction, CancellationTokenSource.Token);
             await DeviceFlowProcess;
         }
-        catch (MicrosoftAuthenticationException)
-        {
-            // handle failed authentication
-            App.DispatcherQueue.SynchronousTryEnqueue(() =>
-            {
-                DeviceCode = "Failed";
-                Loading = false;
-            });
-        }
         catch (OperationCanceledException) { }
+        catch (Exception)
+        {
+            // handle all exceptions
+            DeviceCode = "Failed";
+            Loading = false;
+        }
 
         // User has entered the device code and msaOAuth is completed successfully
         if (!Unloaded && DeviceFlowProcess.IsCompletedSuccessfully)

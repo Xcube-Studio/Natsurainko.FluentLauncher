@@ -12,9 +12,6 @@
     d:DataContext="{d:DesignInstance Type=common:AuthenticationWizardDialogViewModel}"
     Style="{ThemeResource DefaultContentDialogStyle}"
     mc:Ignorable="d">
-    <ContentDialog.DataContext>
-        <common:AuthenticationWizardDialogViewModel />
-    </ContentDialog.DataContext>
 
     <ContentDialog.Resources>
         <Thickness x:Key="ContentDialogPadding">0</Thickness>

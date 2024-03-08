@@ -20,14 +20,16 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
 
     private readonly AccountService _accountService;
     private readonly NotificationService _notificationService;
+    private readonly AuthenticationService _authService;
 
     private Frame _contentFrame;
     private ContentDialog _dialog;
 
-    public AuthenticationWizardDialogViewModel()
+    public AuthenticationWizardDialogViewModel(AccountService accountService, NotificationService notificationService, AuthenticationService authService)
     {
-        _accountService = App.GetService<AccountService>();
-        _notificationService = App.GetService<NotificationService>();
+        _accountService = accountService;
+        _notificationService = notificationService;
+        _authService = authService;
     }
 
     [RelayCommand]
@@ -37,7 +39,7 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
         _contentFrame = grid.FindName("contentFrame") as Frame;
         _dialog = grid.FindName("Dialog") as ContentDialog;
 
-        CurrentFrameDataContext = new ChooseAccountTypeViewModel();
+        CurrentFrameDataContext = new ChooseAccountTypeViewModel(_authService);
 
         _contentFrame.Navigate(
             CurrentFrameDataContext.XamlPageType,

@@ -5,7 +5,7 @@ using Natsurainko.FluentLauncher.Utils.Xaml;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
 using Nrk.FluentCore.Authentication;
-using Nrk.FluentCore.Authentication.Microsoft;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
@@ -15,45 +15,55 @@ namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 
 internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
 {
-    public override bool CanNext => DeviceFlowAuthResult != null;
+    private readonly AuthenticationService _authService;
+
+    public override bool CanNext => _canNext;
+
+    private bool _canNext = false;
+
+    //[ObservableProperty]
+    //[NotifyPropertyChangedFor(nameof(CanNext))]
+    //private DeviceFlowResponse deviceFlowAuthResult;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CanNext))]
-    private DeviceFlowResponse deviceFlowAuthResult;
-
-    [ObservableProperty]
-    private string deviceCode;
+    private string? deviceCode;
 
     [ObservableProperty]
     private bool loading = true;
 
     private bool Unloaded = false;
 
-    private readonly AuthenticationService _authenticationService;
+    // Started in the constructor
+    internal CancellationTokenSource CancellationTokenSource = null!;
+    internal Task<OAuth2Tokens> DeviceFlowProcess = null!;
 
-    internal CancellationTokenSource CancellationTokenSource;
-    internal Task<DeviceFlowResponse> DeviceFlowProcess;
-
-    public DeviceFlowMicrosoftAuthViewModel()
+    public DeviceFlowMicrosoftAuthViewModel(AuthenticationService authService)
     {
+        _authService = authService;
         XamlPageType = typeof(DeviceFlowMicrosoftAuthPage);
 
-        _authenticationService = App.GetService<AuthenticationService>();
-
-        CreateDeviceFlowProcess();
+        // Safe to fire and forget as all exceptions are handled
+        _ = CreateDeviceFlowProcessAsync();
     }
 
     [RelayCommand]
-    public Task RefreshCode() => Task.Run(() =>
+    public async Task RefreshCode()
     {
-        App.DispatcherQueue.SynchronousTryEnqueue(() => Loading = true);
+        Loading = true;
 
         CancellationTokenSource.Cancel();
-        if (DeviceFlowProcess.Status == TaskStatus.Running)
-            DeviceFlowProcess.Wait();
+        try
+        {
+            await DeviceFlowProcess; // Wait for polling to stop after cancellation requested
+        }
+        // When refresh is clicked, failed device flow auth will throw an exception here.
+        // It should be handled already in CreateDeviceFlowProcessAsync
+        catch (MicrosoftAuthenticationException) { }
+        catch (OperationCanceledException) { }
 
-        CreateDeviceFlowProcess();
-    });
+        // Safe to fire and forget as all exceptions are handled
+        _ = CreateDeviceFlowProcessAsync(); // Start a new device flow process
+    }
 
     [RelayCommand]
     public void CopyCode() => Copy();
@@ -67,49 +77,51 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
 
     public override WizardViewModelBase GetNextViewModel()
     {
-        ConfirmProfileViewModel confirmProfileViewModel = default;
-
-        confirmProfileViewModel = new ConfirmProfileViewModel(() => new Account[]
+        ConfirmProfileViewModel confirmProfileViewModel = new ConfirmProfileViewModel(() => new Account[]
         {
-            _authenticationService.AuthenticateMicrosoft(DeviceFlowAuthResult,
-                progress => App.DispatcherQueue.TryEnqueue(() => confirmProfileViewModel.LoadingProgressText = progress))
+            _authService.LoginMicrosoftAsync(DeviceFlowProcess.GetAwaiter().GetResult()).GetAwaiter().GetResult()
         });
 
         return confirmProfileViewModel;
     }
 
-    private void CreateDeviceFlowProcess()
+    private async Task CreateDeviceFlowProcessAsync()
     {
         CancellationTokenSource?.Dispose();
+        CancellationTokenSource = new CancellationTokenSource();
 
-        DeviceFlowProcess = DefaultMicrosoftAuthenticator.DeviceFlowAuthAsync(AuthenticationService.ClientId,
-            res => App.DispatcherQueue.TryEnqueue(() =>
+        // Display user code when received and launch browser
+        var receiveUserCodeAction = (OAuth2DeviceCodeResponse response) =>
+        {
+            App.DispatcherQueue.TryEnqueue(async () =>
             {
-                DeviceCode = res.UserCode;
+                DeviceCode = response.UserCode;
                 Loading = false;
 
                 Copy();
-                _ = Launcher.LaunchUriAsync(new("https://login.live.com/oauth20_remoteconnect.srf"));
-            }),
-            out var cancellationTokenSource);
-        CancellationTokenSource = cancellationTokenSource;
+                await Launcher.LaunchUriAsync(new("https://login.live.com/oauth20_remoteconnect.srf"));
+            });
+        };
 
-        DeviceFlowProcess.ContinueWith(task =>
+        try
         {
-            if (task.IsFaulted || !task.Result.Success || (CancellationTokenSource.IsCancellationRequested && !task.Result.Success))
-            {
-                App.DispatcherQueue.SynchronousTryEnqueue(() =>
-                {
-                    DeviceCode = "Failed";
-                    Loading = false;
-                });
+            DeviceFlowProcess = _authService.AuthMsaFromDeviceFlowAsync(receiveUserCodeAction, CancellationTokenSource.Token);
+            await DeviceFlowProcess;
+        }
+        catch (OperationCanceledException) { }
+        catch (Exception)
+        {
+            // handle all exceptions
+            DeviceCode = "Failed";
+            Loading = false;
+        }
 
-                return;
-            }
-
-            if (!Unloaded && task.Result.Success)
-                App.DispatcherQueue.SynchronousTryEnqueue(() => DeviceFlowAuthResult = task.Result);
-        });
+        // User has entered the device code and msaOAuth is completed successfully
+        if (!Unloaded && DeviceFlowProcess.IsCompletedSuccessfully)
+        {
+            _canNext = true;
+            OnPropertyChanged(nameof(CanNext)); // Enable the next button to allow proceeding to the next page
+        }
     }
 
     private void Copy()

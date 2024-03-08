@@ -9,13 +9,17 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Services.Accounts;
 
 internal class AccountService
 {
+    // Dependencies
     private readonly LocalStorageService _storageService;
     private readonly SettingsService _settingsService;
+    private readonly AuthenticationService _authService;
+    private readonly SkinCacheService _skinCacheService;
 
     public readonly string AccountsJsonPath = Path.Combine("settings", "accounts.json");
 
@@ -41,8 +45,10 @@ internal class AccountService
         set
         {
             if (_activeAccount != value)
-                WhenActiveAccountChanged(_activeAccount, value);
-
+            {
+                _settingsService.ActiveAccountUuid = value?.Uuid;
+                ActiveAccountChanged?.Invoke(this, value);
+            }
             _activeAccount = value;
         }
     }
@@ -51,10 +57,16 @@ internal class AccountService
 
     #endregion
 
-    public AccountService(SettingsService settingsService, LocalStorageService storageService)
+    public AccountService(
+        SettingsService settingsService,
+        LocalStorageService storageService,
+        AuthenticationService authService,
+        SkinCacheService skinCacheService)
     {
         _settingsService = settingsService;
         _storageService = storageService;
+        _authService = authService;
+        _skinCacheService = skinCacheService;
 
         _accounts = new ObservableCollection<Account>(InitializeAccountCollection());
         Accounts = new ReadOnlyObservableCollection<Account>(_accounts);
@@ -68,7 +80,7 @@ internal class AccountService
     /// <summary>
     /// Loads the account list to Accounts from a JSON file
     /// </summary>
-    public IEnumerable<Account> InitializeAccountCollection()
+    private IEnumerable<Account> InitializeAccountCollection()
     {
         // Read settings/accounts.json from local storage service
         var accountJson = App.GetService<LocalStorageService>().GetFile(AccountsJsonPath);
@@ -95,12 +107,6 @@ internal class AccountService
 
             yield return account;
         }
-    }
-
-    public void WhenActiveAccountChanged(Account? oldAccount, Account? newAccount)
-    {
-        _settingsService.ActiveAccountUuid = newAccount?.Uuid;
-        ActiveAccountChanged?.Invoke(this, newAccount);
     }
 
     /// <summary>
@@ -157,18 +163,41 @@ internal class AccountService
         ActiveAccount = account;
     }
 
-    public void UpdateAccount(Account account, bool isActiveAccount)
+    public async Task RefreshAccount(Account account)
     {
-        var oldAccount = Accounts.Where(x => x.Uuid.Equals(account.Uuid) && x.Type.Equals(account.Type)).FirstOrDefault();
+        // RefreshAsync account
+        Account refreshedAccount = account switch
+        {
+            MicrosoftAccount microsoftAccount => await _authService.RefreshAsync(microsoftAccount),
+            YggdrasilAccount yggdrasilAccount => (await _authService.RefreshAsync(yggdrasilAccount))
+                .First(acc => acc.Uuid.Equals(account.Uuid)),
+            OfflineAccount offlineAccount => _authService.Refresh(offlineAccount),
 
+            _ => throw new InvalidOperationException("Unknown account type")
+        };
+
+        // Update stored account
+        Account? oldAccount = Accounts.Where(x => x.Uuid.Equals(account.Uuid) && x.Type.Equals(account.Type)).FirstOrDefault();
         if (oldAccount == null)
-            throw new Exception("找不到要更新的账户");
+            throw new Exception($"{account} does not exist in AccountService");
 
-        _accounts.Add(account);
+        bool isActiveAccount = ActiveAccount == oldAccount;
+        RemoveAccount(oldAccount);
+        AddAccount(account);
 
         if (isActiveAccount)
-            this.ActivateAccount(account);
+            ActivateAccount(account);
 
-        RemoveAccount(oldAccount);
+        // Cache skin
+        await Task.Run(() => _skinCacheService.TryCacheSkin(refreshedAccount));
     }
+
+    public async Task RefreshActiveAccount()
+    {
+        if (ActiveAccount is null)
+            return;
+
+        await RefreshAccount(ActiveAccount);
+    }
+
 }

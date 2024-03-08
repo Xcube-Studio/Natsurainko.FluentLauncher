@@ -41,5 +41,5 @@ internal partial class EnterOfflineProfileViewModel : WizardViewModelBase
     }
 
     public override WizardViewModelBase GetNextViewModel()
-        => new ConfirmProfileViewModel(() => new Account[] { _authenticationService.AuthenticateOffline(Name, Uuid) });
+        => new ConfirmProfileViewModel(() => new Account[] { _authenticationService.LoginOffline(Name, Uuid) });
 }

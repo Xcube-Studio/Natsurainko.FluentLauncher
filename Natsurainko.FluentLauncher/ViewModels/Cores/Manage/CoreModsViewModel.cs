@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Natsurainko.FluentLauncher.Classes.Data.Download;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
-using Nrk.FluentCore.Launch;
+using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Management.Mods;
 using System;
 using System.Collections.Generic;

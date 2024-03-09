@@ -8,7 +8,7 @@ using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Authentication;
-using Nrk.FluentCore.Launch;
+using Nrk.FluentCore.Management;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;

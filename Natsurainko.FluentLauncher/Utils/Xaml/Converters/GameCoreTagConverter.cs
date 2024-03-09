@@ -1,5 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Nrk.FluentCore.Launch;
+using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Management.Downloader.Data;
 using System;
 using System.Collections.Generic;

@@ -6,6 +6,7 @@ using Natsurainko.FluentLauncher.Services.UI.Windows;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Activities;
 using Nrk.FluentCore.Launch;
+using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Utils;
 using System;
 using System.ComponentModel;

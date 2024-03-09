@@ -1,5 +1,6 @@
 ﻿using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Launch;
+using Nrk.FluentCore.Management.GameLocator;
 using Nrk.FluentCore.Management.Parsing;
 using System.IO;
 

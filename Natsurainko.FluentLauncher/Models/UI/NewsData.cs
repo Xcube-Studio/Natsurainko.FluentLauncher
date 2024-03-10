@@ -2,7 +2,7 @@
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
-namespace Natsurainko.FluentLauncher.Classes.Data.UI;
+namespace Natsurainko.FluentLauncher.Models.UI;
 
 internal class NewsData
 {

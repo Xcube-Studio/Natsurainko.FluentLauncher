@@ -3,7 +3,7 @@ using Nrk.FluentCore.Management.Downloader.Data;
 using System.Collections.Generic;
 using static Natsurainko.FluentLauncher.Classes.Data.UI.CoreInstallProcess;
 
-namespace Natsurainko.FluentLauncher.Classes.Data.Download;
+namespace Natsurainko.FluentLauncher.Models.Download;
 
 internal record CoreInstallationInfo
 {

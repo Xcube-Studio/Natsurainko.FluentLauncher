@@ -1,4 +1,4 @@
-﻿namespace Natsurainko.FluentLauncher.Classes.Data.UI;
+﻿namespace Natsurainko.FluentLauncher.Models;
 
 internal enum MicrosoftAuthMethod
 {

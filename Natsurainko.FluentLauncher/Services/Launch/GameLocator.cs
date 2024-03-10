@@ -4,7 +4,7 @@ using Nrk.FluentCore.Management.GameLocator;
 using Nrk.FluentCore.Management.Parsing;
 using System.IO;
 
-namespace Natsurainko.FluentLauncher.Components.Launch;
+namespace Natsurainko.FluentLauncher.Services.Launch;
 
 internal class GameLocator : DefaultGameLocator
 {

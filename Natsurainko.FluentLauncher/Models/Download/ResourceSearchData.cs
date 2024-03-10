@@ -1,4 +1,4 @@
-﻿namespace Natsurainko.FluentLauncher.Classes.Data.Download;
+﻿namespace Natsurainko.FluentLauncher.Models.Download;
 
 internal record ResourceSearchData
 {

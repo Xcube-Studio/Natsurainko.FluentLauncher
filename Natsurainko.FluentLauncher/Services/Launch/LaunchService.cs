@@ -9,6 +9,7 @@ using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Environment;
 using Nrk.FluentCore.Launch;
+using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Services.Launch;
 using Nrk.FluentCore.Utils;
 using PInvoke;

@@ -6,7 +6,7 @@ using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
-using Nrk.FluentCore.Launch;
+using Nrk.FluentCore.Management;
 using System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Cores;

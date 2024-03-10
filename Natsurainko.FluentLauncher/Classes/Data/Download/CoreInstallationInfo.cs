@@ -1,5 +1,5 @@
 ﻿using Natsurainko.FluentLauncher.Classes.Data.UI;
-using Nrk.FluentCore.Resources;
+using Nrk.FluentCore.Management.Downloader.Data;
 using System.Collections.Generic;
 using static Natsurainko.FluentLauncher.Classes.Data.UI.CoreInstallProcess;
 

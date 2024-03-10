@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Natsurainko.FluentLauncher.Classes.Exceptions;
+namespace Natsurainko.FluentLauncher.Models;
 
 internal class AuthenticateRefreshAccountException : Exception
 {

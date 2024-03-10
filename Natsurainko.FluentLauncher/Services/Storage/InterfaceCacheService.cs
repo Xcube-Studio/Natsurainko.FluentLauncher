@@ -1,8 +1,6 @@
-﻿using Natsurainko.FluentLauncher.Classes.Data.UI;
+﻿using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
-using Nrk.FluentCore.Management.Downloader;
-using Nrk.FluentCore.Management.Downloader.Data;
 using Nrk.FluentCore.Resources;
 using Nrk.FluentCore.Utils;
 using System;

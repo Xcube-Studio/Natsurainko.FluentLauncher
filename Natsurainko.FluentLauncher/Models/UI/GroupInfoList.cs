@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Natsurainko.FluentLauncher.Classes.Data.UI;
+namespace Natsurainko.FluentLauncher.Models.UI;
 
 internal class GroupInfoList : List<object>
 {

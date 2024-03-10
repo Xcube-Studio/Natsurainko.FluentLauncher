@@ -1,4 +1,4 @@
-﻿namespace Natsurainko.FluentLauncher.Classes.Enums;
+﻿namespace Natsurainko.FluentLauncher.Models;
 
 public enum ResourceDownloadProcessState
 {

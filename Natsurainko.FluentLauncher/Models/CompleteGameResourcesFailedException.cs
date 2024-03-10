@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace Natsurainko.FluentLauncher.Classes.Exceptions;
+namespace Natsurainko.FluentLauncher.Models;
 
 public class CompleteGameResourcesException : Exception
 {

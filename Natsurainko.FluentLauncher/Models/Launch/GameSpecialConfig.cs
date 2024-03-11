@@ -7,7 +7,7 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Natsurainko.FluentLauncher.Classes.Data.Launch;
+namespace Natsurainko.FluentLauncher.Models.Launch;
 
 internal partial class GameSpecialConfig : ObservableObject
 {

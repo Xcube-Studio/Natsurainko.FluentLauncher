@@ -1,5 +1,5 @@
-﻿using Natsurainko.FluentLauncher.Classes.Data.Launch;
-using Natsurainko.FluentLauncher.Classes.Exceptions;
+﻿using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Download;
 using Natsurainko.FluentLauncher.Services.Settings;

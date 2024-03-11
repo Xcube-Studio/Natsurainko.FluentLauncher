@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.Classes.Data.UI;
+using Natsurainko.FluentLauncher.Models.UI;
 
 namespace Natsurainko.FluentLauncher.Utils.Xaml.TemplateSelectors;
 

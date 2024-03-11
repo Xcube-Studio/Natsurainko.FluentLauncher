@@ -1,4 +1,5 @@
 ﻿using Natsurainko.FluentLauncher.Classes.Data.Launch;
+using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Nrk.FluentCore.Authentication;

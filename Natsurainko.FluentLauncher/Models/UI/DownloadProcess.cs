@@ -18,7 +18,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Text;
 
-namespace Natsurainko.FluentLauncher.Classes.Data.UI;
+namespace Natsurainko.FluentLauncher.Models.UI;
 
 internal partial class DownloadProcess : ObservableObject
 {

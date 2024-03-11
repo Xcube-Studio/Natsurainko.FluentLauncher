@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-namespace Natsurainko.FluentLauncher.Classes.Data.UI;
+namespace Natsurainko.FluentLauncher.Models.UI;
 
 internal partial class ChooseModLoaderData : ObservableObject
 {

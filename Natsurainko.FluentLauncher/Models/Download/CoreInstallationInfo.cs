@@ -1,7 +1,7 @@
-﻿using Natsurainko.FluentLauncher.Classes.Data.UI;
+﻿using Natsurainko.FluentLauncher.Models.UI;
 using Nrk.FluentCore.Management.Downloader.Data;
 using System.Collections.Generic;
-using static Natsurainko.FluentLauncher.Classes.Data.UI.CoreInstallProcess;
+using static Natsurainko.FluentLauncher.Models.UI.CoreInstallProcess;
 
 namespace Natsurainko.FluentLauncher.Models.Download;
 

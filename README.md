@@ -5,7 +5,7 @@
 ![](https://img.shields.io/github/contributors/Xcube-Studio/Natsurainko.FluentLauncher)
 ![](https://img.shields.io/github/commit-activity/y/Xcube-Studio/Natsurainko.FluentLauncher)
 
-基于 .NET 8 以及 WinUI3 技术开发的 Minecraft Java 版启动器  
+基于 .NET 7 以及 WinUI3 技术开发的 Minecraft Java 版启动器  
 专为 Windows 11 设计的 Minecraft 启动器  
 提供简洁、流畅的视觉体验
 
@@ -16,11 +16,11 @@
 
 | 功能                                     | 状态               |
 | ---------------------------------------- | ------------------ |
-| 升级到 CommunityToolkit 8.0 `[紧急]`     | [ ]                |
-| 启动过程异步化                           | [ ]                |
-| 游戏整合包导入                           | [ ]                |
-| 皮肤管理与 3D 预览 (需要讨论?)           | [ ]                |
-| Native AOT 支持 (需要讨论?)              | [ ]                |
+| 升级到 CommunityToolkit 8.1 （等待发布）   | [ ]                |
+| 启动过程异步化（等待 FluentCore 更新）      | [ ]                |
+| 游戏整合包导入                             | [ ]                |
+| 皮肤管理与 3D 预览 (需要讨论?)              | [ ]                |
+| NativeAOT 支持 (等待 Windows App SDK 更新) | [ ]                |
 
 ## 功能列表 ✨
 
@@ -50,7 +50,7 @@
 
 ## 安装本应用 ✈️
 
-#### *一定需要安装 [.NET 8 运行时](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0) (不论是从哪种渠道安装)*
+#### *一定需要安装 [.NET 7 运行时](https://dotnet.microsoft.com/zh-cn/download/dotnet/7.0) (不论是从哪种渠道安装)*
 
 
 + 从 Microsoft Store 获取我们的应用 <a><img src="https://get.microsoft.com/images/en-us%20dark.svg" alt="Logo" width="70" height="20"></a>  
@@ -64,12 +64,12 @@
 
 编译前提：
 > + 安装 .NET 桌面开发的 Visual Studio 2022
-> + 安装 .NET 8 SDK 的开发工具
-> + 安装 WindowsAppSDK 1.4 的开发环境和 VS 扩展
+> + 安装 [.NET 7 SDK](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks) 的开发工具
+> + 安装 [WindowsAppSDK](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/set-up-your-development-environment?tabs=cs-vs-community%2Ccpp-vs-community%2Cvs-2022-17-1-a%2Cvs-2022-17-1-b) 的开发环境和 [Visual Studio 扩展](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/single-project-msix?tabs=csharp)
 
 准备好上述环境后
 
-1. 克隆该仓库及其子模块 Natsurainko.FluentCore、FluentLauncher.Localization
+1. 克隆 GitHub 仓库及其子模块
 2. 确保代码完整后，在本地用 Visual Studio 打开
 3. 在 Nuget 包管理器中添加 CommunityToolkit-Labs 的 Nuget 包源  
 https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json (升级到 CommunityToolkit 8.0 后将不需要)  

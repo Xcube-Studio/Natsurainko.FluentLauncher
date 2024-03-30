@@ -204,7 +204,8 @@ jobs:
       - name: Download .msixupload from artifacts
         uses: actions/download-artifact@v4
         with:
-          name: .msixupload
+          pattern: msixupload-*
+          merge-multiple: true
           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
 
       - name: Delete arm Pkg

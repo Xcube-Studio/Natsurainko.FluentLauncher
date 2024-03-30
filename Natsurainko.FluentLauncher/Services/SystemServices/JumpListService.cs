@@ -121,7 +121,7 @@ internal class JumpListService
 
         #region Create Launch Session
 
-        var minecraftSession = _launchService.CreateMinecraftSessionFromGameInfo(gameInfo);
+        var minecraftSession = _launchService.CreateMinecraftSessionFromGameInfo(gameInfo, null);
         var sessionViewModel = new LaunchSessionViewModel(minecraftSession);
         App.GetService<LaunchSessions>().SessionViewModels.Insert(0, sessionViewModel);
 

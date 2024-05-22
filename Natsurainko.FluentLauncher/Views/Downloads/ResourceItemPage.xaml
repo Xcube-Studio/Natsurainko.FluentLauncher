@@ -7,8 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:downloads="using:Natsurainko.FluentLauncher.ViewModels.Downloads"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI.MarkdownTextBlock"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ui="using:CommunityToolkit.WinUI.UI.Controls"
     d:DataContext="{d:DesignInstance Type=downloads:ResourceItemViewModel}"
     Background="Transparent"
     mc:Ignorable="d">
@@ -287,14 +287,14 @@
                             Margin="-20,10"
                             HorizontalAlignment="Stretch"
                             Background="{ThemeResource SettingsCardBorderBrush}" />
-                        <ui:MarkdownTextBlock Grid.Row="2" Background="Transparent">
+                        <labs:MarkdownTextBlock Grid.Row="2" Background="Transparent">
                             <i:Interaction.Behaviors>
                                 <behaviors:AncestorBindingBehavior
                                     AncestorType="ScrollViewer"
                                     Binding="{Binding DataContext.MarkdownText}"
                                     TargetPropertyName="Text" />
                             </i:Interaction.Behaviors>
-                        </ui:MarkdownTextBlock>
+                        </labs:MarkdownTextBlock>
                     </Grid>
                 </Border>
             </StackPanel>

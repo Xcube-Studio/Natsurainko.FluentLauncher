@@ -58,6 +58,8 @@
   <ItemGroup>
     <None Remove="Assets\Icons\OptiFabricIcon.png" />
     <None Remove="Assets\MinecraftTen.ttf" />
+    <None Remove="Assets\Rig_alex.obj" />
+    <None Remove="Assets\Rig_steve.obj" />
     <None Remove="Dictionaries\CoresLayoutTemplateDictionary.xaml" />
     <None Remove="Dictionaries\DownloadProcessTemplateDictionary.xaml" />
     <None Remove="Dictionaries\ResourceItemTemplateDictionary.xaml" />
@@ -74,6 +76,7 @@
     <None Remove="Views\Common\DeleteGameDialog.xaml" />
     <None Remove="Views\Common\JavaMirrorsDialog.xaml" />
     <None Remove="Views\Common\ResourceItemFilesDialog.xaml" />
+    <None Remove="Views\Common\SkinManageDialog.xaml" />
     <None Remove="Views\Common\SwitchAccountDialog.xaml" />
     <None Remove="Views\CoreInstallWizard\AdditionalOptionsPage.xaml" />
     <None Remove="Views\CoreInstallWizard\ChooseModLoaderPage.xaml" />
@@ -86,7 +89,7 @@
     <None Remove="Views\Downloads\DownloadsPage.xaml" />
     <None Remove="Views\Downloads\ResourceItemPage.xaml" />
     <None Remove="Views\Downloads\ResourcesSearchPage.xaml" />
-    <None Remove="Views\Home\NewHomePage.xaml" />
+    <None Remove="Views\Home\HomePage.xaml" />
     <None Remove="Views\NotifyStyleDictionary.xaml" />
     <None Remove="Views\OOBE\JavaPage.xaml" />
   </ItemGroup>
@@ -104,6 +107,8 @@
     <PackageReference Include="CommunityToolkit.WinUI.Media" Version="8.0.240109" />
     <PackageReference Include="CommunityToolkit.WinUI.Notifications" Version="7.1.2" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
+    <PackageReference Include="HelixToolkit.SharpDX.Assimp" Version="2.25.0" />
+    <PackageReference Include="HelixToolkit.WinUI" Version="2.25.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231115000" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.2428" />
@@ -129,6 +134,9 @@
     <None Update="Assets\Libs\authlib-injector-1.2.5.jar">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\Common\SkinManageDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>
@@ -240,7 +248,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Views\Home\NewHomePage.xaml">
+    <Page Update="Views\Home\HomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

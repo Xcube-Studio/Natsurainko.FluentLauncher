@@ -19,6 +19,7 @@
         <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
         <Border Margin="0,20">
             <StackPanel MaxWidth="1000" Spacing="4">
+
                 <win:StackPanel.ChildrenTransitions>
                     <win:EntranceThemeTransition FromVerticalOffset="50" />
                     <win:RepositionThemeTransition IsStaggeringEnabled="False" />
@@ -125,6 +126,19 @@
                                 x:Uid="Buttons_SignIn"
                                 Margin="5,0,0,0"
                                 Text="Sign in" />
+                        </StackPanel>
+                    </Button>
+                </controls:SettingsCard>
+
+                <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE734;}">
+                    <controls:SettingsCard.Header>
+                        <TextBlock Text="Manage skins and capes" />
+                    </controls:SettingsCard.Header>
+
+                    <Button Command="{Binding DisplayAccountSkinCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon FontSize="16" Glyph="&#xe912;" />
+                            <TextBlock Margin="5,0,0,0" Text="Manage" />
                         </StackPanel>
                     </Button>
                 </controls:SettingsCard>

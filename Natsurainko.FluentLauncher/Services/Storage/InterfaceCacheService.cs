@@ -248,7 +248,6 @@ internal class InterfaceCacheService
             var url = _settingsService.CurrentDownloadSource switch
             {
                 "Bmclapi" => DownloadMirrors.Bmclapi.VersionManifestUrl,
-                "Mcbbs" => DownloadMirrors.Mcbbs.VersionManifestUrl,
                 _ => "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
             };
 

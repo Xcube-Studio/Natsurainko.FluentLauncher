@@ -41,5 +41,5 @@ internal partial class LaunchViewModel : ObservableObject
     public Visibility TipVisibility => LaunchSessions.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
 
     [RelayCommand]
-    public void Home() => _shellNavigationService.NavigateTo(_settings.UseNewHomePage ? "NewHomePage" : "HomePage");
+    public void Home() => _shellNavigationService.NavigateTo("HomePage");
 }

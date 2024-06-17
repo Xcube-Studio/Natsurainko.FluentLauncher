@@ -1,6 +1,5 @@
 ﻿using Nrk.FluentCore.Authentication;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,6 +13,7 @@ internal class AuthenticationService
     // Authenticators
     // TODO: Move to config file and remove from source control
     private readonly MicrosoftAuthenticator _microsoftAuthenticator = new(MicrosoftClientId, MicrosoftRedirectUrl);
+    //private readonly MicrosoftAuthenticator _officialMicrosoftAuthenticator = new(MicrosoftClientId, MicrosoftRedirectUrl);
 
     private readonly OfflineAuthenticator _offlineAuthenticator = new();
 

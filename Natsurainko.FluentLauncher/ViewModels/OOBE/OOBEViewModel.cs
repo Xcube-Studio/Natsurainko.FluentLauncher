@@ -24,7 +24,7 @@ using Windows.Storage.Pickers;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
-internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, ISettingsViewModel, IRecipient<ActiveAccountChangedMessage>
+internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, ISettingsViewModel
 {
     #region Dependencies
 
@@ -318,14 +318,7 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
     private Account activeAccount;
 
-    bool processingActiveAccountChangedMessage = false;
-
-    public void Receive(ActiveAccountChangedMessage message)
-    {
-        processingActiveAccountChangedMessage = true;
-        ActiveAccount = message.Value;
-        processingActiveAccountChangedMessage = false;
-    }
+    public bool processingActiveAccountChangedMessage = false;
 
     partial void OnActiveAccountChanged(Account value)
     {

@@ -2,7 +2,6 @@
 using Microsoft.UI.Xaml.Media.Imaging;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Management.Downloader.Data;
-using Nrk.FluentCore.Resources;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;

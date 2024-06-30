@@ -107,6 +107,8 @@
     <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="8.1.240328-rc" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.1.240328-rc" />
     <PackageReference Include="CommunityToolkit.WinUI.Media" Version="8.1.240328-rc" />
+    <PackageReference Include="HelixToolkit.SharpDX.Assimp" Version="2.25.0" />
+    <PackageReference Include="HelixToolkit.WinUI" Version="2.25.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240428000" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.3233" />

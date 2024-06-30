@@ -34,7 +34,7 @@ Write-Output `n | & ".\build.bat"
 
 # Copy resw files generated to the FluentLauncher project
 $source = Join-Path (Get-Location) "Strings"
-$target = Join-Path $PSScriptRoot "Natsurainko.FluentLauncher\Strings"
+$target = Join-Path $PSScriptRoot "Natsurainko.FluentLauncher"
 Copy-Item -Path $source -Destination $target -Recurse -Force
 
 # Display message

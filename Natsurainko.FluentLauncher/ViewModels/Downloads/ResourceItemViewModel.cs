@@ -1,14 +1,18 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Labs.WinUI.MarkdownTextBlock;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Resources;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
+using static HelixToolkit.WinUI.ViewportCommands;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 
@@ -22,9 +26,6 @@ internal partial class ResourceItemViewModel : ObservableObject, INavigationAwar
         _navigationService = navigationService;
         _interfaceCacheService = interfaceCacheService;
     }
-
-    [ObservableProperty]
-    private string markdownText;
 
     [ObservableProperty]
     private Visibility descriptionBorderVisbility = Visibility.Collapsed;
@@ -42,10 +43,27 @@ internal partial class ResourceItemViewModel : ObservableObject, INavigationAwar
         bool isCurse = parameter is CurseForgeResource;
 
         var urls = isCurse ? ((CurseForgeResource)parameter).ScreenshotUrls : ((ModrinthResource)parameter).ScreenshotUrls;
-        object id = isCurse ? ((CurseForgeResource)parameter).Id : ((ModrinthResource)parameter).Id;
 
         if (urls.Any())
             ScreenshotsBorderVisbility = Visibility.Visible;
+    }
+
+    [RelayCommand]
+    public void Download()
+    {
+        _ = new ResourceItemFilesDialog()
+        {
+            XamlRoot = ShellPage._XamlRoot,
+            DataContext = new ResourceItemFilesDialogViewModel(Resource, _navigationService)
+        }.ShowAsync();
+    }
+
+    [RelayCommand]
+    public void LoadedEvent(object args)
+    {
+        var sender = args.As<MarkdownTextBlock, object>().sender;
+        bool isCurse = Resource is CurseForgeResource;
+        object id = isCurse ? ((CurseForgeResource)Resource).Id : ((ModrinthResource)Resource).Id;
 
         Task.Run(async () =>
         {
@@ -63,19 +81,10 @@ internal partial class ResourceItemViewModel : ObservableObject, INavigationAwar
 
             App.DispatcherQueue.TryEnqueue(() =>
             {
-                MarkdownText = markdown;
+                sender.Config = new MarkdownConfig();
+                sender.Text = markdown;
                 DescriptionBorderVisbility = Visibility.Visible;
             });
         });
-    }
-
-    [RelayCommand]
-    public void Download()
-    {
-        _ = new ResourceItemFilesDialog()
-        {
-            XamlRoot = ShellPage._XamlRoot,
-            DataContext = new ResourceItemFilesDialogViewModel(Resource, _navigationService)
-        }.ShowAsync();
     }
 }

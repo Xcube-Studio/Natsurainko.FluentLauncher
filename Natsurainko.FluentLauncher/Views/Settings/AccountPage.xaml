@@ -130,7 +130,7 @@
                     </Button>
                 </controls:SettingsCard>
 
-                <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE734;}">
+                <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE734;}" Visibility="Collapsed">
                     <controls:SettingsCard.Header>
                         <TextBlock Text="Manage skins and capes" />
                     </controls:SettingsCard.Header>

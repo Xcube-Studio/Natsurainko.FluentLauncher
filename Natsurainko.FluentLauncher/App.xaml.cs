@@ -84,7 +84,6 @@ public partial class App : Application
 
         // Home page
         .WithPage<Views.Home.HomePage, ViewModels.Home.HomeViewModel>("HomePage")
-        .WithPage<Views.Home.NewHomePage, ViewModels.Home.HomeViewModel>("NewHomePage")
 
         // Cores page
         .WithPage<Views.Cores.CoresPage, ViewModels.Cores.CoresViewModel>("CoresPage")

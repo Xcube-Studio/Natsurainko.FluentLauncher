@@ -48,12 +48,6 @@ internal partial class HomeViewModel : ObservableObject
 
         GameInfos = _gameService.Games;
         ActiveGameInfo = _gameService.ActiveGame;
-
-        WeakReferenceMessenger.Default.Register<ActiveAccountChangedMessage>(this, (r, m) =>
-        {
-            HomeViewModel vm = r as HomeViewModel;
-            vm.ActiveAccount = m.Value;
-        });
     }
 
     public string LaunchButtonTag => ActiveGameInfo is null ? _coreNotSelected : ActiveGameInfo.Name;
@@ -78,9 +72,6 @@ internal partial class HomeViewModel : ObservableObject
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
-
-        if (e.PropertyName == nameof(ActiveAccount) && ActiveAccount is not null)
-            _accountService.ActivateAccount(ActiveAccount);
 
         if (e.PropertyName == nameof(ActiveGameInfo) && ActiveGameInfo is not null)
             _gameService.ActivateGame(ActiveGameInfo);

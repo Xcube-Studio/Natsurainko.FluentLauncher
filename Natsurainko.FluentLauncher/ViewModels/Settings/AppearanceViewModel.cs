@@ -33,10 +33,6 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     private int backgroundMode;
 
     [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.UseNewHomePage))]
-    private bool useNewHomePage;
-
-    [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.UseSystemAccentColor))]
     [NotifyPropertyChangedFor(nameof(CurrentThemeColor))]
     [NotifyPropertyChangedFor(nameof(CurrentThemeColorString))]

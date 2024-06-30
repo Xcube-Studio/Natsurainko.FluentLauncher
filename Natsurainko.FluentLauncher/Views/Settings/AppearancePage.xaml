@@ -324,14 +324,6 @@
                         </i:Interaction.Behaviors>
                     </ComboBox>
                 </controls:SettingsCard>
-
-                <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE80F;}">
-                    <controls:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_AppearancePage_H5" Text="Use new homepage" />
-                    </controls:SettingsCard.Header>
-
-                    <ToggleSwitch IsOn="{Binding UseNewHomePage, Mode=TwoWay}" />
-                </controls:SettingsCard>
             </StackPanel>
         </Border>
     </ScrollViewer>

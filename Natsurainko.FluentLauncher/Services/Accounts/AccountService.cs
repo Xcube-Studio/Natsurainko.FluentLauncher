@@ -145,11 +145,11 @@ internal class AccountService
         _accounts.Add(account);
     }
 
-    public bool RemoveAccount(Account account)
+    public bool RemoveAccount(Account account, bool dontActive = false)
     {
         bool result = _accounts.Remove(account);
 
-        if (ActiveAccount == account)
+        if (ActiveAccount == account && !dontActive)
             this.ActivateAccount(_accounts.Count != 0 ? _accounts[0] : null);
 
         return result;
@@ -182,11 +182,11 @@ internal class AccountService
             throw new Exception($"{account} does not exist in AccountService");
 
         bool isActiveAccount = ActiveAccount == oldAccount;
-        RemoveAccount(oldAccount);
-        AddAccount(account);
+        RemoveAccount(oldAccount, true);
+        AddAccount(refreshedAccount);
 
         if (isActiveAccount)
-            ActivateAccount(account);
+            ActivateAccount(refreshedAccount);
 
         // Cache skin
         await Task.Run(() => _skinCacheService.TryCacheSkin(refreshedAccount));

@@ -22,8 +22,6 @@ internal class AppearanceService
     private NavigationView? _navigationView;
     private BitmapImage? backgroundImage;
 
-    public Type HomePageType => _settingsService.UseNewHomePage ? typeof(NewHomePage) : typeof(HomePage);
-
     public AppearanceService(SettingsService settingsService)
     {
         _settingsService = settingsService;
@@ -36,12 +34,16 @@ internal class AppearanceService
             ? NavigationViewPaneDisplayMode.Auto
             : NavigationViewPaneDisplayMode.LeftMinimal;
 
-        _settingsService.NavigationViewDisplayModeChanged += (sender, e)=>
+        _settingsService.NavigationViewDisplayModeChanged += (sender, e) =>
         {
             _navigationView.PaneDisplayMode = _settingsService.NavigationViewDisplayMode == 0
                 ? NavigationViewPaneDisplayMode.Auto
                 : NavigationViewPaneDisplayMode.LeftMinimal;
         };
+
+        _navigationView.IsPaneOpen = _settingsService.NavigationViewIsPaneOpen;
+        _navigationView.PaneOpening += (sender, e) => _settingsService.NavigationViewIsPaneOpen = sender.IsPaneOpen;
+        _navigationView.PaneClosing += (sender, e) => _settingsService.NavigationViewIsPaneOpen = sender.IsPaneOpen;
     }
 
     public void ApplyDisplayTheme()
@@ -111,7 +113,7 @@ internal class AppearanceService
 
                 ShellPage.ContentFrame.Navigated += (object sender, NavigationEventArgs e) =>
                 {
-                    if (!HomePageType.Equals(e.SourcePageType))
+                    if (!typeof(HomePage).Equals(e.SourcePageType))
                     {
                         if (blurred.Equals(75))
                             return;

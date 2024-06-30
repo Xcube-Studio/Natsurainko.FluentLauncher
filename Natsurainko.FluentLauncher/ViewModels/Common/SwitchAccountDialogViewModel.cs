@@ -21,7 +21,7 @@ internal partial class SwitchAccountDialogViewModel : SettingsViewModelBase, ISe
 
     #endregion
 
-    public ReadOnlyObservableCollection<Account> Accounts { get; init; }
+    public ReadOnlyObservableCollection<Account> Accounts { get; set; }
 
     private readonly AccountService _accountService;
 

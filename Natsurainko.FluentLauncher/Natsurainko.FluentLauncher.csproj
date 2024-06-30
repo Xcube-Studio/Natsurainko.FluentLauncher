@@ -24,8 +24,10 @@
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
     <Nullable>enable</Nullable>
-    <AppxPackageSigningEnabled>False</AppxPackageSigningEnabled>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+    <PackageCertificateThumbprint>231DAEC7302196E2D0810AB34418155A03045157</PackageCertificateThumbprint>
+    <PackageCertificateKeyFile>Natsurainko.FluentLauncher_TemporaryKey.pfx</PackageCertificateKeyFile>
 
   </PropertyGroup>
 

@@ -5,7 +5,6 @@
     xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
-    xmlns:controls_old="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
@@ -126,7 +125,7 @@
                                                 </Style>
                                             </Flyout.FlyoutPresenterStyle>
                                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <controls_old:ColorPicker Color="{Binding ThemeCustomColor, Mode=TwoWay}" />
+                                                <controls:ColorPicker Color="{Binding ThemeCustomColor, Mode=TwoWay}" />
                                                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                                                     <Button
                                                         Command="{Binding SelectColorConfirmCommand}"
@@ -265,7 +264,7 @@
                                                 </Style>
                                             </Flyout.FlyoutPresenterStyle>
                                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <controls_old:ColorPicker Color="{Binding SolidCustomColor, Mode=TwoWay}" />
+                                                <controls:ColorPicker Color="{Binding SolidCustomColor, Mode=TwoWay}" />
                                                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                                                     <Button
                                                         Command="{Binding SelectColorConfirmCommand}"

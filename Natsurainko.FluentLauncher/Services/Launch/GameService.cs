@@ -1,5 +1,4 @@
-﻿using Natsurainko.FluentLauncher.Components.Launch;
-using Natsurainko.FluentLauncher.Services.Settings;
+﻿using Natsurainko.FluentLauncher.Services.Settings;
 using Nrk.FluentCore.Services.Launch;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
@@ -14,6 +13,8 @@ internal class GameService(SettingsService settingsService)
         if (newFolder == null)
         {
             _games.Clear();
+            ActivateGame(null);
+
             return;
         }
 

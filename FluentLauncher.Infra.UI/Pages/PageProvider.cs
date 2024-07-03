@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Natsurainko.FluentLauncher.Services.UI.Pages;
+namespace FluentLauncher.Infra.UI.Pages;
 
 public record PageDescriptor(Type PageType, Type ViewModelType = null);
 

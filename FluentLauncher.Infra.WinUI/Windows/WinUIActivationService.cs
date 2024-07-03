@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentLauncher.Infra.UI.Windows;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
 
-namespace Natsurainko.FluentLauncher.Services.UI.Windows;
+namespace FluentLauncher.Infra.WinUI.Windows;
 
 internal class WinUIActivationService : ActivationService<Window>
 {

@@ -1,9 +1,8 @@
+using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
-using Natsurainko.FluentLauncher.Services.UI.Navigation;
-using Natsurainko.FluentLauncher.Services.UI.Pages;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.OOBE;
 using System.Linq;

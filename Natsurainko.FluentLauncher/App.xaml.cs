@@ -1,5 +1,8 @@
 ﻿using AppSettingsManagement;
 using AppSettingsManagement.Windows;
+using FluentLauncher.Infra.UI.Navigation;
+using FluentLauncher.Infra.UI.Pages;
+using FluentLauncher.Infra.UI.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
@@ -12,8 +15,7 @@ using Natsurainko.FluentLauncher.Services.SystemServices;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Services.UI.Navigation;
-using Natsurainko.FluentLauncher.Services.UI.Pages;
-using Natsurainko.FluentLauncher.Services.UI.Windows;
+using Natsurainko.FluentLauncher.Services.UI.Windowing;
 using Natsurainko.FluentLauncher.ViewModels;
 using Natsurainko.FluentLauncher.ViewModels.Activities;
 using Natsurainko.FluentLauncher.Views;

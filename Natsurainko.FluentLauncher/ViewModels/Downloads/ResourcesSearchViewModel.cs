@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Models.Download;
 using Natsurainko.FluentLauncher.Services.Launch;

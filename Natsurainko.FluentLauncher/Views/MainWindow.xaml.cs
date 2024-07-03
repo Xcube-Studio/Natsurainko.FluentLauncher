@@ -1,3 +1,4 @@
+using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;

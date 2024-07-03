@@ -1,12 +1,11 @@
-﻿using FluentLauncher.Infra.UI.Navigation;
-using FluentLauncher.Infra.UI.Pages;
+﻿using FluentLauncher.Infra.UI.Pages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 
-namespace Natsurainko.FluentLauncher.Services.UI.Navigation;
+namespace FluentLauncher.Infra.UI.Navigation;
 
 public class NavigationService : INavigationService
 {
@@ -112,7 +111,7 @@ public class NavigationService : INavigationService
             }
 
             // After navigation
-            if (page.ReadLocalValue(FrameworkElement.DataContextProperty) != DependencyProperty.UnsetValue && // Requires VM set for the page, rather than inherited
+            if (page.ReadLocalValue(Page.DataContextProperty) != DependencyProperty.UnsetValue && // Requires VM set for the page, rather than inherited
                 page.DataContext is INavigationAware vmAfter)
                 vmAfter.OnNavigatedTo(parameter);
         }

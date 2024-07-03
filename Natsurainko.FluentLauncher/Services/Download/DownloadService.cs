@@ -1,4 +1,5 @@
-﻿using Natsurainko.FluentLauncher.Models.Download;
+﻿using FluentLauncher.Infra.UI.Navigation;
+using Natsurainko.FluentLauncher.Models.Download;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;

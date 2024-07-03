@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Natsurainko.FluentLauncher"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Natsurainko.FluentCore", "Natsurainko.FluentCore\Natsurainko.FluentCore\Natsurainko.FluentCore.csproj", "{7CA745E6-DEE6-4018-87DB-4012EC94C3B8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentLauncher.Infra.UI", "FluentLauncher.Infra.UI\FluentLauncher.Infra.UI.csproj", "{1A205815-87D8-4334-82F4-A876BC6BF0EE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{0537A9FF-BF86-4F92-A731-B6141B27ADDB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,9 +58,28 @@ Global
 		{7CA745E6-DEE6-4018-87DB-4012EC94C3B8}.Release|x64.Build.0 = Release|Any CPU
 		{7CA745E6-DEE6-4018-87DB-4012EC94C3B8}.Release|x86.ActiveCfg = Release|Any CPU
 		{7CA745E6-DEE6-4018-87DB-4012EC94C3B8}.Release|x86.Build.0 = Release|Any CPU
+		{1A205815-87D8-4334-82F4-A876BC6BF0EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A205815-87D8-4334-82F4-A876BC6BF0EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A205815-87D8-4334-82F4-A876BC6BF0EE}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{1A205815-87D8-4334-82F4-A876BC6BF0EE}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{1A205815-87D8-4334-82F4-A876BC6BF0EE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1A205815-87D8-4334-82F4-A876BC6BF0EE}.Debug|x64.Build.0 = Debug|Any CPU
+		{1A205815-87D8-4334-82F4-A876BC6BF0EE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1A205815-87D8-4334-82F4-A876BC6BF0EE}.Debug|x86.Build.0 = Debug|Any CPU
+		{1A205815-87D8-4334-82F4-A876BC6BF0EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A205815-87D8-4334-82F4-A876BC6BF0EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A205815-87D8-4334-82F4-A876BC6BF0EE}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{1A205815-87D8-4334-82F4-A876BC6BF0EE}.Release|ARM64.Build.0 = Release|Any CPU
+		{1A205815-87D8-4334-82F4-A876BC6BF0EE}.Release|x64.ActiveCfg = Release|Any CPU
+		{1A205815-87D8-4334-82F4-A876BC6BF0EE}.Release|x64.Build.0 = Release|Any CPU
+		{1A205815-87D8-4334-82F4-A876BC6BF0EE}.Release|x86.ActiveCfg = Release|Any CPU
+		{1A205815-87D8-4334-82F4-A876BC6BF0EE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1A205815-87D8-4334-82F4-A876BC6BF0EE} = {0537A9FF-BF86-4F92-A731-B6141B27ADDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7BD789E2-AC9A-40C1-BD71-A7DA5DFBF325}

@@ -1,6 +1,4 @@
-﻿namespace Natsurainko.FluentLauncher.Services.UI.Navigation;
-
-#nullable enable
+﻿namespace FluentLauncher.Infra.UI.Navigation;
 
 /// <summary>
 /// A page or window that provides navigation

@@ -1,4 +1,5 @@
 using FluentLauncher.Infra.UI.Navigation;
+using FluentLauncher.Infra.UI.Pages;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;

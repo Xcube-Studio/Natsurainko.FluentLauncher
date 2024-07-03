@@ -1,5 +1,6 @@
 ﻿using FluentLauncher.Infra.UI.Windows;
 using Microsoft.UI.Xaml;
+using WinUIEx;
 
 namespace Natsurainko.FluentLauncher.Services.UI.Windowing;
 

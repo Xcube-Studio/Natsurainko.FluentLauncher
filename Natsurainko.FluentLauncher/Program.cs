@@ -7,6 +7,24 @@ using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher;
 using System;
 using WinRT;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
+
+IHost host = Host.CreateDefaultBuilder()
+    .ConfigureHostConfiguration((config) =>
+    {
+        //config.AddJsonFile("appsettings.json", optional: true);
+        //config.AddCommandLine(args);
+    })
+    .ConfigureServices((services) =>
+    {
+
+    })
+    .ConfigureLogging(logging =>
+    {
+
+    })
+    .Build();
 
 XamlCheckProcessRequirements();
 ComWrappersSupport.InitializeComWrappers();
@@ -16,6 +34,9 @@ Application.Start(delegate
     SynchronizationContext.SetSynchronizationContext(synchronizationContext);
     new App();
 });
+
+await host.RunAsync();
+
 
 [DllImport("Microsoft.ui.xaml.dll")]
 [DefaultDllImportSearchPaths(DllImportSearchPath.SafeDirectories)]

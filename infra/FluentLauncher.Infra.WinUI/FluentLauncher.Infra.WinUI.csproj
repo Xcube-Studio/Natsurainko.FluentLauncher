@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FluentLauncher.Infra.Settings\FluentLauncher.Infra.Settings.csproj" />
     <ProjectReference Include="..\FluentLauncher.Infra.UI\FluentLauncher.Infra.UI.csproj" />
   </ItemGroup>
 </Project>

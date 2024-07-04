@@ -7,7 +7,7 @@ namespace Natsurainko.FluentLauncher.Services.UI.Windowing;
 /// <summary>
 /// Default implementation of <see cref="IActivationService"/> for a WinUI window.
 /// </summary>
-public class WindowService : IWindowService
+public class WinUIWindowService : IWindowService
 {
     private readonly Window _window;
 
@@ -17,7 +17,7 @@ public class WindowService : IWindowService
         set => _window.Title = value;
     }
 
-    public WindowService(Window window)
+    public WinUIWindowService(Window window)
     {
         _window = window;
     }

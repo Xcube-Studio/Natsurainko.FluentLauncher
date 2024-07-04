@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Natsurainko.FluentLauncher.Services.UI.Navigation;
 
-public class NavigationService : INavigationService
+public class WinUINavigationService : INavigationService
 {
     private INavigationProvider? _navigationProvider;
     public INavigationProvider NavigationProvider
@@ -26,7 +26,7 @@ public class NavigationService : INavigationService
 
     private readonly IPageProvider _pageProvider;
 
-    public NavigationService(IPageProvider pageProvider)
+    public WinUINavigationService(IPageProvider pageProvider)
     {
         _pageProvider = pageProvider;
     }

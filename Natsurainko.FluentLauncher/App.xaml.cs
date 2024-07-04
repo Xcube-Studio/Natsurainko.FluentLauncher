@@ -131,7 +131,7 @@ public partial class App : Application
         // UI services
         services.AddSingleton<IPageProvider>(sp => BuildPageProvider(sp));
         services.AddSingleton<IActivationService>(_ => BuildActivationService());
-        services.AddScoped<INavigationService, NavigationService>(); // A scope is created for each window or page that supports navigation.
+        services.AddScoped<INavigationService, WinUINavigationService>(); // A scope is created for each window or page that supports navigation.
 
         // Settings service
         services.AddSingleton<SettingsService>();

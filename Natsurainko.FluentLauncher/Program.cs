@@ -8,26 +8,15 @@ using Natsurainko.FluentLauncher;
 using System;
 using WinRT;
 
-namespace Natsurainko.FluentLauncher;
-
-public static class Program
+XamlCheckProcessRequirements();
+ComWrappersSupport.InitializeComWrappers();
+Application.Start(delegate
 {
-    [DllImport("Microsoft.ui.xaml.dll")]
-    [DefaultDllImportSearchPaths(DllImportSearchPath.SafeDirectories)]
-    private static extern void XamlCheckProcessRequirements();
+    DispatcherQueueSynchronizationContext synchronizationContext = new DispatcherQueueSynchronizationContext(DispatcherQueue.GetForCurrentThread());
+    SynchronizationContext.SetSynchronizationContext(synchronizationContext);
+    new App();
+});
 
-    [GeneratedCode("Microsoft.UI.Xaml.Markup.Compiler", " 3.0.0.2404")]
-    [DebuggerNonUserCode]
-    [STAThread]
-    private static void Main(string[] args)
-    {
-        XamlCheckProcessRequirements();
-        ComWrappersSupport.InitializeComWrappers();
-        Application.Start(delegate
-        {
-            DispatcherQueueSynchronizationContext synchronizationContext = new DispatcherQueueSynchronizationContext(DispatcherQueue.GetForCurrentThread());
-            SynchronizationContext.SetSynchronizationContext(synchronizationContext);
-            new App();
-        });
-    }
-}
+[DllImport("Microsoft.ui.xaml.dll")]
+[DefaultDllImportSearchPaths(DllImportSearchPath.SafeDirectories)]
+static extern void XamlCheckProcessRequirements();

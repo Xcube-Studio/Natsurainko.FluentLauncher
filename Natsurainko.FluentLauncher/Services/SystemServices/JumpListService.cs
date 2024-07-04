@@ -2,7 +2,6 @@
 using Microsoft.Windows.AppNotifications.Builder;
 using Natsurainko.FluentLauncher.Components.Launch;
 using Natsurainko.FluentLauncher.Services.Launch;
-using Natsurainko.FluentLauncher.Services.UI.Windows;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Activities;
 using Nrk.FluentCore.Launch;
@@ -14,6 +13,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.UI.StartScreen;
+using FluentLauncher.Infra.UI.Windows;
 
 namespace Natsurainko.FluentLauncher.Services.SystemServices;
 

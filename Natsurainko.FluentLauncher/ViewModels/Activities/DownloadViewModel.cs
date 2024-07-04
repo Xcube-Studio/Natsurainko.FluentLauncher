@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Download;
-using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;

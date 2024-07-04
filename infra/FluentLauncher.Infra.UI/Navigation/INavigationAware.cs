@@ -1,4 +1,4 @@
-﻿namespace Natsurainko.FluentLauncher.Services.UI.Navigation;
+﻿namespace FluentLauncher.Infra.UI.Navigation;
 
 /// <summary>
 /// Implemented by a view model that can respond to navigation events

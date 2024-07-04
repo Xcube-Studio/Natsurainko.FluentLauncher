@@ -1,11 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
-using Natsurainko.FluentLauncher.Services.UI.Navigation;
+
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Management;

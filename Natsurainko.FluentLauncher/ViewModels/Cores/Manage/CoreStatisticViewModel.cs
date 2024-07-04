@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Natsurainko.FluentLauncher.Services.UI.Navigation;
+using FluentLauncher.Infra.UI.Navigation;
 using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Utils;
 using System;

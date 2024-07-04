@@ -1,11 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentLauncher.Infra.UI.Windows;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
 
-namespace Natsurainko.FluentLauncher.Services.UI.Windows;
+namespace FluentLauncher.Infra.WinUI.Windows;
 
-internal class WinUIActivationService : ActivationService<Window>
+public class WinUIActivationService : ActivationService<Window>
 {
     // Factory pattern
     public static ActivationServiceBuilder<WinUIActivationService, Window> GetBuilder(IServiceProvider windowProvider)
@@ -20,7 +21,7 @@ internal class WinUIActivationService : ActivationService<Window>
     protected override IWindowService ActivateWindow(Window window)
     {
         window.Activate();
-        return new WindowService(window);
+        return new WinUIWindowService(window);
     }
 
     protected override void ConfigureWindowClose(Window window, IServiceScope scope)

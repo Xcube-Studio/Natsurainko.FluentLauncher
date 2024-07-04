@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Natsurainko.FluentLauncher.Services.UI.Windows;
+namespace FluentLauncher.Infra.UI.Windows;
 
 /// <summary>
 /// Builder of any type derived from <see cref="ActivationService{TWindowBase}"/>
 /// </summary>
 /// <typeparam name="TService">Type of the activation service</typeparam>
 /// <typeparam name="TWindowBase">Base type of the window managed by the activation service</typeparam>
-class ActivationServiceBuilder<TService, TWindowBase> where TService : ActivationService<TWindowBase>
+public class ActivationServiceBuilder<TService, TWindowBase> where TService : ActivationService<TWindowBase>
 {
     private readonly Dictionary<string, WindowDescriptor> _registeredWindows = new();
     private readonly IServiceProvider _windowProvider;

@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FluentLauncher.Infra.UI.Navigation;
 using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
-using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views;

@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Natsurainko.FluentLauncher.Services.UI.Navigation;
-
-#nullable enable
+namespace FluentLauncher.Infra.UI.Navigation;
 
 /// <summary>
 /// A service that controls the navigation in a window or page

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Natsurainko.FluentLauncher.Services.UI.Pages;
+namespace FluentLauncher.Infra.UI.Pages;
+
 public class PageProviderBuilder<TPageProvider, TPageBase> where TPageProvider : PageProvider<TPageBase>
 {
     private readonly Dictionary<string, PageDescriptor> _registeredPages = new();

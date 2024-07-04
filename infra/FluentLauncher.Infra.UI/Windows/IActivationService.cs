@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Natsurainko.FluentLauncher.Services.UI.Windows;
-
-#nullable enable
+namespace FluentLauncher.Infra.UI.Windows;
 
 public record WindowDescriptor(Type WindowType, bool MultiInstance = false);
 
@@ -11,7 +9,7 @@ public record WindowDescriptor(Type WindowType, bool MultiInstance = false);
 /// A service for activating app windows.
 /// A window can be registered as single instance or multiple instances with a string key.
 /// </summary>
-interface IActivationService
+public interface IActivationService
 {
     /// <summary>
     /// A dictionary of registered windows that maps a string key to a window type.

@@ -122,6 +122,7 @@
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\infra\FluentLauncher.Infra.WinUI\FluentLauncher.Infra.WinUI.csproj" />
     <ProjectReference Include="..\Natsurainko.FluentCore\Natsurainko.FluentCore\Natsurainko.FluentCore.csproj" />
   </ItemGroup>
 

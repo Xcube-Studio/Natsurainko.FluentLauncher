@@ -6,7 +6,7 @@ using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 
-namespace Natsurainko.FluentLauncher.Services.UI.Navigation;
+namespace FluentLauncher.Infra.WinUI.Navigation;
 
 public class WinUINavigationService : INavigationService
 {

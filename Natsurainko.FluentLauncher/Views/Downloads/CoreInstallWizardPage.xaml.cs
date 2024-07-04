@@ -1,6 +1,6 @@
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.Services.UI.Navigation;
+
 
 namespace Natsurainko.FluentLauncher.Views.Downloads;
 

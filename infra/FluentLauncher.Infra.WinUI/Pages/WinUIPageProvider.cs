@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 
-namespace Natsurainko.FluentLauncher.Services.UI.Windowing;
+namespace FluentLauncher.Infra.WinUI.Pages;
 
 public class WinUIPageProvider : PageProvider<Page>
 {

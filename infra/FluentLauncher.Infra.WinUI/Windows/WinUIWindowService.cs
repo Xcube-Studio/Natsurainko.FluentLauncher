@@ -2,7 +2,7 @@
 using Microsoft.UI.Xaml;
 using WinUIEx;
 
-namespace Natsurainko.FluentLauncher.Services.UI.Windowing;
+namespace FluentLauncher.Infra.WinUI.Windows;
 
 /// <summary>
 /// Default implementation of <see cref="IActivationService"/> for a WinUI window.

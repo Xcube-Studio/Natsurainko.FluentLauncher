@@ -1,5 +1,5 @@
 ﻿using FluentLauncher.Infra.UI.Navigation;
-using Natsurainko.FluentLauncher.Services.UI.Navigation;
+
 
 namespace Natsurainko.FluentLauncher.ViewModels;
 

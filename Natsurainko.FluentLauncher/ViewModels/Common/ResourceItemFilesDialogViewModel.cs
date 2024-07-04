@@ -8,7 +8,6 @@ using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Download;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Storage;
-using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Resources;
 using System.Collections.Generic;

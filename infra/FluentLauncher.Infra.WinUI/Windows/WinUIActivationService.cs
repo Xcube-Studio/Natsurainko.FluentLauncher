@@ -4,7 +4,7 @@ using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
 
-namespace Natsurainko.FluentLauncher.Services.UI.Windowing;
+namespace FluentLauncher.Infra.WinUI.Windows;
 
 public class WinUIActivationService : ActivationService<Window>
 {

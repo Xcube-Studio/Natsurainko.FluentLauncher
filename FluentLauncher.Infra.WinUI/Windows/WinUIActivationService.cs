@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Natsurainko.FluentLauncher.Services.UI.Windowing;
 
-internal class WinUIActivationService : ActivationService<Window>
+public class WinUIActivationService : ActivationService<Window>
 {
     // Factory pattern
     public static ActivationServiceBuilder<WinUIActivationService, Window> GetBuilder(IServiceProvider windowProvider)

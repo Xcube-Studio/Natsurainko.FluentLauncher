@@ -1,4 +1,4 @@
-﻿using AppSettingsManagement.Converters;
+﻿using FluentLauncher.Infra.Settings.Converters;
 using Nrk.FluentCore.Authentication;
 using System;
 using System.Text.Json;

@@ -1,5 +1,5 @@
-﻿using AppSettingsManagement;
-using AppSettingsManagement.Converters;
+﻿using FluentLauncher.Infra.Settings;
+using FluentLauncher.Infra.Settings.Converters;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Management;

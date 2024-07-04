@@ -1,4 +1,4 @@
-﻿using AppSettingsManagement.Mvvm;
+﻿using FluentLauncher.Infra.Settings.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Common;

@@ -1,12 +1,11 @@
 ﻿using Windows.Storage;
 using System.Linq;
-using System.Collections;
 using Windows.Foundation;
-using Windows.UI.ViewManagement;
 using System;
 using System.Collections.Generic;
+using AppSettingsManagement;
 
-namespace AppSettingsManagement.Windows;
+namespace FluentLauncher.Infra.WinUI.Settings;
 
 // Consider rename to WinRTSettingsStorage
 public class WinRTSettingsStorage : ISettingsStorage

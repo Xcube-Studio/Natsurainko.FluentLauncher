@@ -1,11 +1,11 @@
 ﻿using AppSettingsManagement;
-using AppSettingsManagement.Windows;
 using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Pages;
 using FluentLauncher.Infra.UI.Windows;
 using FluentLauncher.Infra.WinUI;
 using FluentLauncher.Infra.WinUI.Navigation;
 using FluentLauncher.Infra.WinUI.Pages;
+using FluentLauncher.Infra.WinUI.Settings;
 using FluentLauncher.Infra.WinUI.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Dispatching;

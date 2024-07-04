@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace AppSettingsManagement.Converters;
+namespace FluentLauncher.Infra.Settings.Converters;
 
 /// <summary>
 /// Converts a string to a type T using JSON serialization

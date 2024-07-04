@@ -6,9 +6,9 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AppSettingsManagement.Converters;
+using FluentLauncher.Infra.Settings.Converters;
 
-namespace AppSettingsManagement;
+namespace FluentLauncher.Infra.Settings;
 
 // Cannot store null values in a collection
 public class SettingsCollection<T> : ObservableCollection<T> where T : notnull

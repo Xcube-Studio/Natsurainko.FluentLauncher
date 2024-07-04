@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace AppSettingsManagement.SourceGenerators;
+namespace FluentLauncher.Infra.Settings.SourceGenerators;
 
 [Generator(LanguageNames.CSharp)]
 public class SettingsViewModelGenerator : ISourceGenerator
@@ -54,8 +54,8 @@ public class SettingsViewModelGenerator : ISourceGenerator
                 #nullable enable
 
                 using System.CodeDom.Compiler;
-                using ISettingsViewModel = global::AppSettingsManagement.Mvvm.ISettingsViewModel;
-                using SettingChangedEventHandler = global::AppSettingsManagement.SettingChangedEventHandler;
+                using ISettingsViewModel = global::FluentLauncher.Infra.Settings.Mvvm.ISettingsViewModel;
+                using SettingChangedEventHandler = global::FluentLauncher.Infra.Settings.SettingChangedEventHandler;
                 using PropertyChangedEventArgs = global::System.ComponentModel.PropertyChangedEventArgs;
                 using SettingsService = {{model.SettingsProviderClassFullName}};
 
@@ -63,14 +63,14 @@ public class SettingsViewModelGenerator : ISourceGenerator
                 {
                     partial class {{model.ClassName}}
                     {
-                        [GeneratedCode("AppSettingsManagement", "alpha")]
-                        global::AppSettingsManagement.SettingsContainer ISettingsViewModel.SettingsContainer => {{model.SettingsProviderMemberName}};
+                        [GeneratedCode("FluentLauncher.Infra.Settings", "alpha")]
+                        global::FluentLauncher.Infra.Settings.SettingsContainer ISettingsViewModel.SettingsContainer => {{model.SettingsProviderMemberName}};
 
-                        [GeneratedCode("AppSettingsManagement", "alpha")]
+                        [GeneratedCode("FluentLauncher.Infra.Settings", "alpha")]
                         global::System.Collections.Generic.Dictionary<string, SettingChangedEventHandler> ISettingsViewModel.SettingChangedEventHandlers { get; } = new();
 
                         /// <inheritdoc/>
-                        [GeneratedCode("AppSettingsManagement", "alpha")]
+                        [GeneratedCode("FluentLauncher.Infra.Settings", "alpha")]
                         void ISettingsViewModel.InitializeSettings()
                         {
                             SettingsService container = {{model.SettingsProviderMemberName}};
@@ -83,7 +83,7 @@ public class SettingsViewModelGenerator : ISourceGenerator
                         }
 
                         /// <inheritdoc/>
-                        [GeneratedCode("AppSettingsManagement", "alpha")]
+                        [GeneratedCode("FluentLauncher.Infra.Settings", "alpha")]
                         void ISettingsViewModel.SettingsViewModelPropertyChangedCallback(object? sender, PropertyChangedEventArgs e)
                         {
                             SettingsService container = {{model.SettingsProviderMemberName}};
@@ -95,7 +95,7 @@ public class SettingsViewModelGenerator : ISourceGenerator
                         }
 
                         /// <inheritdoc/>
-                        [GeneratedCode("AppSettingsManagement", "alpha")]
+                        [GeneratedCode("FluentLauncher.Infra.Settings", "alpha")]
                         void ISettingsViewModel.RemoveSettingsChagnedHandlers()
                         {
                             SettingsService container = {{model.SettingsProviderMemberName}};

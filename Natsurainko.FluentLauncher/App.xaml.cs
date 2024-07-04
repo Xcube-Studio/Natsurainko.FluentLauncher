@@ -1,4 +1,4 @@
-﻿using AppSettingsManagement;
+﻿using FluentLauncher.Infra.Settings;
 using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Pages;
 using FluentLauncher.Infra.UI.Windows;

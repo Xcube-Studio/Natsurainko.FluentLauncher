@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppSettingsManagement.Converters;
+namespace FluentLauncher.Infra.Settings.Converters;
 
 /// <summary>
 /// ConvertFrom is used when converting an object from the displayed type to the stored type. <br/>

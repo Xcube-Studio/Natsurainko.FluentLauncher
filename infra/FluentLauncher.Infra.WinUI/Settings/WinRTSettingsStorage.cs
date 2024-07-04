@@ -3,7 +3,7 @@ using System.Linq;
 using Windows.Foundation;
 using System;
 using System.Collections.Generic;
-using AppSettingsManagement;
+using FluentLauncher.Infra.Settings;
 
 namespace FluentLauncher.Infra.WinUI.Settings;
 

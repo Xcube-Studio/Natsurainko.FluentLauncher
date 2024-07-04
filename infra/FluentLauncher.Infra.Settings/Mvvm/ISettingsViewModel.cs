@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppSettingsManagement.Mvvm;
+namespace FluentLauncher.Infra.Settings.Mvvm;
 
 public interface ISettingsViewModel
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppSettingsManagement.Mvvm;
+namespace FluentLauncher.Infra.Settings.Mvvm;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
 public class SettingsProviderAttribute : Attribute

@@ -183,11 +183,6 @@
                     </controls:SettingsExpander.Description>
 
                     <controls:SettingsExpander.Items>
-                        <controls:SettingsCard Description="0.2.6-alpha" Header="AppSettingsManagement.Windows">
-                            <HyperlinkButton NavigateUri="https://github.com/gaviny82/AppSettingsManagement" ToolTipService.ToolTip="https://github.com/gaviny82/AppSettingsManagement">
-                                <TextBlock Text="Github" />
-                            </HyperlinkButton>
-                        </controls:SettingsCard>
 
                         <controls:SettingsCard Description="2.0.15" Header="ColorCode.WinUI">
                             <HyperlinkButton NavigateUri="https://github.com/CommunityToolkit/ColorCode-Universal" ToolTipService.ToolTip="https://github.com/CommunityToolkit/ColorCode-Universal">

@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppSettingsManagement;
-
+namespace FluentLauncher.Infra.Settings;
 
 public interface ISettingsContainer
 {

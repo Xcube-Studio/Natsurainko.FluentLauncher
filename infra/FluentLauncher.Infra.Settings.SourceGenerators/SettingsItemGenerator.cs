@@ -10,8 +10,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace AppSettingsManagement.Generators;
-
+namespace FluentLauncher.Infra.Settings.SourceGenerators;
 
 [Generator(LanguageNames.CSharp)]
 public class SettingsItemSourceGenerator : ISourceGenerator
@@ -85,7 +84,7 @@ public class SettingsItemSourceGenerator : ISourceGenerator
             {
                 var converterTypeofExpression = arguments[i].Expression as TypeOfExpressionSyntax;
                 string converterName = GetFullNameFromTypeOfExpression(converterTypeofExpression);
-                converter = $", global::AppSettingsManagement.Converters.DataTypeConverters.GetConverter(typeof({converterName}))";
+                converter = $", global::FluentLauncher.Infra.Settings.Converters.DataTypeConverters.GetConverter(typeof({converterName}))";
             }
         }
 
@@ -99,7 +98,7 @@ public class SettingsItemSourceGenerator : ISourceGenerator
                             set => SetValue<{{propertyType}}>(nameof({{propertyName}}), value, {{propertyName}}Changed{{converter}});
                         }
 
-                        public event global::AppSettingsManagement.SettingChangedEventHandler? {{propertyName}}Changed;
+                        public event global::FluentLauncher.Infra.Settings.SettingChangedEventHandler? {{propertyName}}Changed;
 
 
                 """);
@@ -146,17 +145,17 @@ public class SettingsItemSourceGenerator : ISourceGenerator
         {
             var converterTypeofExpression = arguments[2].Expression as TypeOfExpressionSyntax;
             string converterName = GetFullNameFromTypeOfExpression(converterTypeofExpression);
-            converter = $", global::AppSettingsManagement.Converters.DataTypeConverters.GetConverter(typeof({converterName}))";
+            converter = $", global::FluentLauncher.Infra.Settings.Converters.DataTypeConverters.GetConverter(typeof({converterName}))";
         }
 
         // Generate code
         membersBuilder.Append($$"""
-                        public global::AppSettingsManagement.SettingsCollection<{{elementType}}> {{propertyName}} { get; private set; } = null!;
+                        public global::FluentLauncher.Infra.Settings.SettingsCollection<{{elementType}}> {{propertyName}} { get; private set; } = null!;
 
                 """);
 
         initBuilder.Append($$"""
-                            {{propertyName}} = new global::AppSettingsManagement.SettingsCollection<{{elementType}}>(Storage, "{{propertyName}}"{{converter}});
+                            {{propertyName}} = new global::FluentLauncher.Infra.Settings.SettingsCollection<{{elementType}}>(Storage, "{{propertyName}}"{{converter}});
 
                 """);
     }

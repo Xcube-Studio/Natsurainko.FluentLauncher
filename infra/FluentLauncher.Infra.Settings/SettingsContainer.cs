@@ -5,9 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AppSettingsManagement.Converters;
+using FluentLauncher.Infra.Settings.Converters;
 
-namespace AppSettingsManagement;
+namespace FluentLauncher.Infra.Settings;
 
 public abstract class SettingsContainer : ISettingsContainer
 {

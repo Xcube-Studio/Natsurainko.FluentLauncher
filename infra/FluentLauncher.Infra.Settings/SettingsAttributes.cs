@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppSettingsManagement
+namespace FluentLauncher.Infra.Settings
 {
     /// <summary>
     /// Must be applied to properties of a class which extends SettingsManagerBase

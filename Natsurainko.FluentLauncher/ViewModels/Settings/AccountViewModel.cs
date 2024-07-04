@@ -1,4 +1,4 @@
-﻿using AppSettingsManagement.Mvvm;
+﻿using FluentLauncher.Infra.Settings.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;

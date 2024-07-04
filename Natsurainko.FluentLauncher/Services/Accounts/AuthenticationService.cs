@@ -1,6 +1,5 @@
 ﻿using Nrk.FluentCore.Authentication;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,7 +39,7 @@ internal class AuthenticationService
         => _microsoftAuthenticator.RefreshAsync(account);
 
     public Task<YggdrasilAccount[]> RefreshAsync(YggdrasilAccount account)
-        => new YggdrasilAuthenticator(account.YggdrasilServerUrl).RefreshAsync(account);
+        => new YggdrasilAuthenticator(account.YggdrasilServerUrl, account.ClientToken).RefreshAsync(account);
 
     public OfflineAccount Refresh(OfflineAccount account)
         => _offlineAuthenticator.Refresh(account);

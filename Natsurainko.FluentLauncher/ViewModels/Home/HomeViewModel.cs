@@ -1,11 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
-using Natsurainko.FluentLauncher.Services.UI.Navigation;
+
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Management;
@@ -48,12 +49,6 @@ internal partial class HomeViewModel : ObservableObject
 
         GameInfos = _gameService.Games;
         ActiveGameInfo = _gameService.ActiveGame;
-
-        WeakReferenceMessenger.Default.Register<ActiveAccountChangedMessage>(this, (r, m) =>
-        {
-            HomeViewModel vm = r as HomeViewModel;
-            vm.ActiveAccount = m.Value;
-        });
     }
 
     public string LaunchButtonTag => ActiveGameInfo is null ? _coreNotSelected : ActiveGameInfo.Name;
@@ -78,9 +73,6 @@ internal partial class HomeViewModel : ObservableObject
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
-
-        if (e.PropertyName == nameof(ActiveAccount) && ActiveAccount is not null)
-            _accountService.ActivateAccount(ActiveAccount);
 
         if (e.PropertyName == nameof(ActiveGameInfo) && ActiveGameInfo is not null)
             _gameService.ActivateGame(ActiveGameInfo);

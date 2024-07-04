@@ -1,8 +1,10 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using FluentLauncher.Infra.UI.Pages;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 
-namespace Natsurainko.FluentLauncher.Services.UI.Pages;
+namespace FluentLauncher.Infra.WinUI.Pages;
+
 public class WinUIPageProvider : PageProvider<Page>
 {
     // Factory pattern

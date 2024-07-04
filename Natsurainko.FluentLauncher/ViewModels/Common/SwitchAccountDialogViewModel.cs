@@ -1,4 +1,4 @@
-﻿using AppSettingsManagement.Mvvm;
+﻿using FluentLauncher.Infra.Settings.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Natsurainko.FluentLauncher.Services.Accounts;
@@ -21,7 +21,7 @@ internal partial class SwitchAccountDialogViewModel : SettingsViewModelBase, ISe
 
     #endregion
 
-    public ReadOnlyObservableCollection<Account> Accounts { get; init; }
+    public ReadOnlyObservableCollection<Account> Accounts { get; set; }
 
     private readonly AccountService _accountService;
 

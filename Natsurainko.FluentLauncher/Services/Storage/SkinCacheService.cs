@@ -2,7 +2,6 @@
 using Microsoft.UI.Xaml.Media.Imaging;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Management.Downloader.Data;
-using Nrk.FluentCore.Resources;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;
@@ -42,10 +41,10 @@ class SkinCacheService
         container.Child = grid;
     }
 
-    public void TryCacheSkin(Account account)
+    public bool TryCacheSkin(Account account)
     {
         if (account == null || account.Type.Equals(AccountType.Offline))
-            return;
+            return false;
 
         var authorization = new Tuple<string, string>("Bearer", account.AccessToken);
         var skinUrl = string.Empty;
@@ -73,7 +72,7 @@ class SkinCacheService
             skinUrl = json?["url"]?.GetValue<string>();
         }
 
-        if (string.IsNullOrEmpty(skinUrl)) return;
+        if (string.IsNullOrEmpty(skinUrl)) return false;
 
         var skinFilePath = GetSkinFilePath(account);
         var downloadTask = HttpUtils.DownloadElementAsync(new DownloadElement
@@ -84,9 +83,11 @@ class SkinCacheService
 
         downloadTask.Wait();
 
-        if (downloadTask.Result.IsFaulted) return;
+        if (downloadTask.Result.IsFaulted) return false;
 
         CreateHeadsFile(skinFilePath);
+
+        return true;
     }
 
     private async IAsyncEnumerable<SoftwareBitmapSource> GetSkinHeadSourcesAsync(int width, int height, Account account)
@@ -147,7 +148,7 @@ class SkinCacheService
             RuntimeCache.Add(account, sources);
     }
 
-    private string GetSkinFilePath(Account account)
+    public string GetSkinFilePath(Account account)
     {
         var dir = Path.Combine(_localStorageService.GetDirectory("cache-skins").FullName, $"{account.Type}-{account.Uuid}");
 

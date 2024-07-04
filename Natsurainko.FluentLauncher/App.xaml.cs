@@ -1,5 +1,12 @@
-﻿using AppSettingsManagement;
-using AppSettingsManagement.Windows;
+﻿using FluentLauncher.Infra.Settings;
+using FluentLauncher.Infra.UI.Navigation;
+using FluentLauncher.Infra.UI.Pages;
+using FluentLauncher.Infra.UI.Windows;
+using FluentLauncher.Infra.WinUI;
+using FluentLauncher.Infra.WinUI.Navigation;
+using FluentLauncher.Infra.WinUI.Pages;
+using FluentLauncher.Infra.WinUI.Settings;
+using FluentLauncher.Infra.WinUI.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
@@ -11,9 +18,6 @@ using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.SystemServices;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
-using Natsurainko.FluentLauncher.Services.UI.Navigation;
-using Natsurainko.FluentLauncher.Services.UI.Pages;
-using Natsurainko.FluentLauncher.Services.UI.Windows;
 using Natsurainko.FluentLauncher.ViewModels;
 using Natsurainko.FluentLauncher.ViewModels.Activities;
 using Natsurainko.FluentLauncher.Views;
@@ -84,7 +88,6 @@ public partial class App : Application
 
         // Home page
         .WithPage<Views.Home.HomePage, ViewModels.Home.HomeViewModel>("HomePage")
-        .WithPage<Views.Home.NewHomePage, ViewModels.Home.HomeViewModel>("NewHomePage")
 
         // Cores page
         .WithPage<Views.Cores.CoresPage, ViewModels.Cores.CoresViewModel>("CoresPage")
@@ -130,7 +133,7 @@ public partial class App : Application
         // UI services
         services.AddSingleton<IPageProvider>(sp => BuildPageProvider(sp));
         services.AddSingleton<IActivationService>(_ => BuildActivationService());
-        services.AddScoped<INavigationService, NavigationService>(); // A scope is created for each window or page that supports navigation.
+        services.AddScoped<INavigationService, WinUINavigationService>(); // A scope is created for each window or page that supports navigation.
 
         // Settings service
         services.AddSingleton<SettingsService>();

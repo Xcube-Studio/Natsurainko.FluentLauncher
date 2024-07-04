@@ -14,7 +14,6 @@ internal class SkinHeadControlBehavior : DependencyObject, IBehavior
         set { SetValue(AccountProperty, value); }
     }
 
-    // Using a DependencyProperty as the backing store for Account.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty AccountProperty =
         DependencyProperty.Register("Account", typeof(Account), typeof(SkinHeadControlBehavior), new PropertyMetadata(null, OnAccountChanged));
 

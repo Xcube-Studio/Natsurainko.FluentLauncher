@@ -1,14 +1,15 @@
-﻿using AppSettingsManagement.Mvvm;
+﻿using FluentLauncher.Infra.Settings.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
-using Natsurainko.FluentLauncher.Services.UI.Navigation;
+
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Authentication;
@@ -24,7 +25,7 @@ using Windows.Storage.Pickers;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
-internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, ISettingsViewModel, IRecipient<ActiveAccountChangedMessage>
+internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, ISettingsViewModel
 {
     #region Dependencies
 
@@ -318,14 +319,7 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
     private Account activeAccount;
 
-    bool processingActiveAccountChangedMessage = false;
-
-    public void Receive(ActiveAccountChangedMessage message)
-    {
-        processingActiveAccountChangedMessage = true;
-        ActiveAccount = message.Value;
-        processingActiveAccountChangedMessage = false;
-    }
+    public bool processingActiveAccountChangedMessage = false;
 
     partial void OnActiveAccountChanged(Account value)
     {

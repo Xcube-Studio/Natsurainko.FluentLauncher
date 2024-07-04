@@ -1,4 +1,4 @@
-﻿using AppSettingsManagement.Mvvm;
+﻿using FluentLauncher.Infra.Settings.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
@@ -31,10 +31,6 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.BackgroundMode))]
     private int backgroundMode;
-
-    [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.UseNewHomePage))]
-    private bool useNewHomePage;
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.UseSystemAccentColor))]

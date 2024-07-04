@@ -1,12 +1,13 @@
-﻿using Microsoft.UI.Xaml;
+﻿using FluentLauncher.Infra.UI.Windows;
+using Microsoft.UI.Xaml;
 using WinUIEx;
 
-namespace Natsurainko.FluentLauncher.Services.UI.Windows;
+namespace FluentLauncher.Infra.WinUI.Windows;
 
 /// <summary>
 /// Default implementation of <see cref="IActivationService"/> for a WinUI window.
 /// </summary>
-class WindowService : IWindowService
+public class WinUIWindowService : IWindowService
 {
     private readonly Window _window;
 
@@ -16,7 +17,7 @@ class WindowService : IWindowService
         set => _window.Title = value;
     }
 
-    public WindowService(Window window)
+    public WinUIWindowService(Window window)
     {
         _window = window;
     }

@@ -5,7 +5,6 @@
     xmlns:actions="using:Natsurainko.FluentLauncher.Utils.Xaml.Actions"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
-    xmlns:controls_old="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
@@ -126,7 +125,7 @@
                                                 </Style>
                                             </Flyout.FlyoutPresenterStyle>
                                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <controls_old:ColorPicker Color="{Binding ThemeCustomColor, Mode=TwoWay}" />
+                                                <controls:ColorPicker Color="{Binding ThemeCustomColor, Mode=TwoWay}" />
                                                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                                                     <Button
                                                         Command="{Binding SelectColorConfirmCommand}"
@@ -265,7 +264,7 @@
                                                 </Style>
                                             </Flyout.FlyoutPresenterStyle>
                                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <controls_old:ColorPicker Color="{Binding SolidCustomColor, Mode=TwoWay}" />
+                                                <controls:ColorPicker Color="{Binding SolidCustomColor, Mode=TwoWay}" />
                                                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                                                     <Button
                                                         Command="{Binding SelectColorConfirmCommand}"
@@ -324,14 +323,6 @@
                             <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                         </i:Interaction.Behaviors>
                     </ComboBox>
-                </controls:SettingsCard>
-
-                <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE80F;}">
-                    <controls:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_AppearancePage_H5" Text="Use new homepage" />
-                    </controls:SettingsCard.Header>
-
-                    <ToggleSwitch IsOn="{Binding UseNewHomePage, Mode=TwoWay}" />
                 </controls:SettingsCard>
             </StackPanel>
         </Border>

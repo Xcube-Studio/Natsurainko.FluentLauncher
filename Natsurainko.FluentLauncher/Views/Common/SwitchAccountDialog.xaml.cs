@@ -8,5 +8,10 @@ namespace Natsurainko.FluentLauncher.Views.Common
         {
             this.InitializeComponent();
         }
+
+        private void ContentDialog_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        {
+            ListView.ItemsSource = null; // Unload Binding to AccountService.Accounts
+        }
     }
 }

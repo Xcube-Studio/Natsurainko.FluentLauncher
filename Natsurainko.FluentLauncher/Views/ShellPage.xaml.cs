@@ -1,14 +1,13 @@
 using CommunityToolkit.WinUI.Media.Pipelines;
+using FluentLauncher.Infra.UI.Navigation;
+using FluentLauncher.Infra.UI.Pages;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
-using Natsurainko.FluentLauncher.Services.UI.Navigation;
-using Natsurainko.FluentLauncher.Services.UI.Pages;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels;
-using Natsurainko.FluentLauncher.Views.Home;
 using System;
 using System.Linq;
 using Windows.Graphics;
@@ -47,9 +46,6 @@ public sealed partial class ShellPage : Page, INavigationProvider
     {
         var pageTag = ((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()
             ?? throw new ArgumentNullException("The invoked item's tag is null.");
-
-        if (pageTag == "HomePage" && _settings.UseNewHomePage)
-            pageTag = "NewHomePage";
 
         VM.NavigationService.NavigateTo(pageTag);
     }
@@ -93,12 +89,6 @@ public sealed partial class ShellPage : Page, INavigationProvider
             string tag = item.GetTag();
 
             if (App.GetService<IPageProvider>().RegisteredPages[tag].PageType == e.SourcePageType)
-            {
-                NavigationViewControl.SelectedItem = item;
-                item.IsSelected = true;
-                return;
-            }
-            if (e.SourcePageType == typeof(NewHomePage) && tag == "HomePage")
             {
                 NavigationViewControl.SelectedItem = item;
                 item.IsSelected = true;

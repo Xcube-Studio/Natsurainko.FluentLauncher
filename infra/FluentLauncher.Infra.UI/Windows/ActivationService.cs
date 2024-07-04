@@ -1,14 +1,14 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Natsurainko.FluentLauncher.Services.UI.Navigation;
+﻿using FluentLauncher.Infra.UI.Navigation;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 
-namespace Natsurainko.FluentLauncher.Services.UI.Windows;
+namespace FluentLauncher.Infra.UI.Windows;
 
 /// <summary>
 /// Default implementation of <see cref="IActivationService"/>
 /// </summary>
-abstract class ActivationService<TWindowBase> : IActivationService
+public abstract class ActivationService<TWindowBase> : IActivationService
 {
     protected readonly IServiceProvider _windowProvider;
     protected readonly IReadOnlyDictionary<string, WindowDescriptor> _registeredWindows;
@@ -21,7 +21,7 @@ abstract class ActivationService<TWindowBase> : IActivationService
     /// </summary>
     /// <param name="registeredWindows">A read only dictionary that maps string keys to <see cref="WindowDescriptor"/> objects.</param>
     /// <param name="windowProvider">An <see cref="IServiceProvider"/> that has been configured to support window types according to the rules defined by <paramref name="registeredWindows"/>.</param>
-    internal ActivationService(IReadOnlyDictionary<string, WindowDescriptor> registeredWindows, IServiceProvider windowProvider)
+    public ActivationService(IReadOnlyDictionary<string, WindowDescriptor> registeredWindows, IServiceProvider windowProvider)
     {
         _registeredWindows = registeredWindows;
         _windowProvider = windowProvider;

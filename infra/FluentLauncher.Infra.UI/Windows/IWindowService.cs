@@ -1,7 +1,7 @@
-﻿namespace Natsurainko.FluentLauncher.Services.UI.Windows;
+﻿namespace FluentLauncher.Infra.UI.Windows;
 
 // Sevice for operations of a window
-interface IWindowService
+public interface IWindowService
 {
     string Title { get; set; }
 

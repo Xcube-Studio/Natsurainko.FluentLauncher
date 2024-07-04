@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
     d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Center">
@@ -64,7 +65,10 @@
             Width="300"
             HorizontalAlignment="Center"
             VerticalAlignment="Center">
-            <ListView ItemsSource="{Binding Accounts}" SelectedItem="{Binding ActiveAccount, Mode=TwoWay}">
+            <ListView
+                x:Name="ListView"
+                ItemsSource="{Binding Accounts}"
+                SelectedItem="{Binding ActiveAccount, Mode=TwoWay}">
                 <ListView.Header>
                     <TextBlock
                         x:Uid="OOBE_AccountPage_H"

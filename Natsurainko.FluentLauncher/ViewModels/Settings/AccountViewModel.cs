@@ -1,4 +1,4 @@
-﻿using AppSettingsManagement.Mvvm;
+﻿using FluentLauncher.Infra.Settings.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -9,8 +9,10 @@ using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
+using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Authentication;
+using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
@@ -56,11 +58,6 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
         Accounts = accountService.Accounts;
         ActiveAccount = accountService.ActiveAccount;
 
-        WeakReferenceMessenger.Default.Register<ActiveAccountChangedMessage>(this, (r, m) =>
-        {
-            AccountViewModel vm = r as AccountViewModel;
-            vm.ActiveAccount = m.Value;
-        });
         (this as ISettingsViewModel).InitializeSettings();
     }
 
@@ -94,5 +91,15 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
             DataContext = App.Services.GetService<SwitchAccountDialogViewModel>()
         };
         _ = switchAccountDialog.ShowAsync();
+    }
+
+    [RelayCommand]
+    public async Task DisplayAccountSkin()
+    {
+        await new SkinManageDialog
+        {
+            DataContext = new SkinManageViewModel(ActiveAccount),
+            XamlRoot = ShellPage._XamlRoot
+        }.ShowAsync();
     }
 }

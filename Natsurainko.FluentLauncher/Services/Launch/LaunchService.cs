@@ -51,9 +51,7 @@ internal class LaunchService : DefaultLaunchService
     {
         try
         {
-            Account? account = _accountService.ActiveAccount;
-            if (account is null)
-                throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
+            Account? account = _accountService.ActiveAccount ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
 
             var session = CreateMinecraftSessionFromGameInfo(gameInfo, account); // TODO: replace with ctor of MinecraftSession
             _sessions.Add(session);
@@ -71,7 +69,7 @@ internal class LaunchService : DefaultLaunchService
         }
     }
 
-    public MinecraftSession CreateMinecraftSessionFromGameInfo(GameInfo gameInfo)
+    public override MinecraftSession CreateMinecraftSessionFromGameInfo(GameInfo gameInfo, Account? _)
     {
         Account? account = _accountService.ActiveAccount;
         if (account is null)

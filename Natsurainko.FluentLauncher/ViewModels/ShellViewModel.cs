@@ -1,5 +1,5 @@
-﻿using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.Services.UI.Navigation;
+﻿using FluentLauncher.Infra.UI.Navigation;
+
 
 namespace Natsurainko.FluentLauncher.ViewModels;
 
@@ -8,14 +8,12 @@ class ShellViewModel : INavigationAware
     public INavigationService NavigationService => _shellNavigationService;
 
     private readonly INavigationService _shellNavigationService;
-    private readonly SettingsService _settings;
 
     public bool _onNavigatedTo = false;
 
-    public ShellViewModel(INavigationService shellNavigationService, SettingsService settings)
+    public ShellViewModel(INavigationService shellNavigationService)
     {
         _shellNavigationService = shellNavigationService;
-        _settings = settings;
     }
 
     void INavigationAware.OnNavigatedTo(object? parameter)
@@ -25,7 +23,6 @@ class ShellViewModel : INavigationAware
             _shellNavigationService.NavigateTo(pageKey);
             _onNavigatedTo = true;
         }
-        else
-            _shellNavigationService.NavigateTo(_settings.UseNewHomePage ? "NewHomePage" : "HomePage");
+        else _shellNavigationService.NavigateTo("HomePage");
     }
 }

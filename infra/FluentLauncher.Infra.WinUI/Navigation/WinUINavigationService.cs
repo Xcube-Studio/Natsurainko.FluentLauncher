@@ -1,15 +1,14 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentLauncher.Infra.UI.Navigation;
+using FluentLauncher.Infra.UI.Pages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.Services.UI.Pages;
 using System;
 using System.Collections.Generic;
 
-#nullable enable
+namespace FluentLauncher.Infra.WinUI.Navigation;
 
-namespace Natsurainko.FluentLauncher.Services.UI.Navigation;
-
-public class NavigationService : INavigationService
+public class WinUINavigationService : INavigationService
 {
     private INavigationProvider? _navigationProvider;
     public INavigationProvider NavigationProvider
@@ -27,7 +26,7 @@ public class NavigationService : INavigationService
 
     private readonly IPageProvider _pageProvider;
 
-    public NavigationService(IPageProvider pageProvider)
+    public WinUINavigationService(IPageProvider pageProvider)
     {
         _pageProvider = pageProvider;
     }
@@ -113,7 +112,7 @@ public class NavigationService : INavigationService
             }
 
             // After navigation
-            if (page.ReadLocalValue(Page.DataContextProperty) != DependencyProperty.UnsetValue && // Requires VM set for the page, rather than inherited
+            if (page.ReadLocalValue(FrameworkElement.DataContextProperty) != DependencyProperty.UnsetValue && // Requires VM set for the page, rather than inherited
                 page.DataContext is INavigationAware vmAfter)
                 vmAfter.OnNavigatedTo(parameter);
         }

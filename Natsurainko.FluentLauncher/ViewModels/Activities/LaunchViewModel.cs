@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Components.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.Services.UI.Navigation;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -41,5 +41,5 @@ internal partial class LaunchViewModel : ObservableObject
     public Visibility TipVisibility => LaunchSessions.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
 
     [RelayCommand]
-    public void Home() => _shellNavigationService.NavigateTo(_settings.UseNewHomePage ? "NewHomePage" : "HomePage");
+    public void Home() => _shellNavigationService.NavigateTo("HomePage");
 }

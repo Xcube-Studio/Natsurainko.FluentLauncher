@@ -27,6 +27,12 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
         });
     }
 
+    public WinUIApplication Build()
+    {
+        IHost host = _hostApplicationBuilder.Build();
+        return new WinUIApplication(_createApplicationFunc, host);
+    }
+
     #region Forward IHostApplicationBuilder members
 
     IDictionary<object, object> IHostApplicationBuilder.Properties => ((IHostApplicationBuilder)_hostApplicationBuilder).Properties;
@@ -40,19 +46,49 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
 
     #endregion
 
-    public WinUIApplication Build()
+    #region IHostApplicationBuilder member configuration methods
+
+    public WinUIApplicationBuilder ConfigureAppConfiguration(Action<IConfigurationManager> action)
     {
-        IHost host = _hostApplicationBuilder.Build();
-        return new WinUIApplication(_createApplicationFunc, host);
+        action(Configuration);
+        return this;
     }
+
+    public WinUIApplicationBuilder ConfigureEnvironment(Action<IHostEnvironment> action)
+    {
+        action(Environment);
+        return this;
+    }
+
+    public WinUIApplicationBuilder ConfigureLogging(Action<ILoggingBuilder> action)
+    {
+        action(Logging);
+        return this;
+    }
+
+    public WinUIApplicationBuilder ConfigureMetrics(Action<IMetricsBuilder> action)
+    {
+        action(Metrics);
+        return this;
+    }
+
+    public WinUIApplicationBuilder ConfigureServices(Action<IServiceCollection> action)
+    {
+        action(Services);
+        return this;
+    }
+
+    #endregion
 
     public WinUIApplicationBuilder UseExtendedWinUIServices()
     {
         // TODO: Add UI services to DI
         return this;
     }
-    public WinUIApplicationBuilder ConfigurePages(Action<List<object>> action)
+
+    public WinUIApplicationBuilder ConfigurePages()
     {
+        // Add pages and view models to DI
         return this;
     }
 }

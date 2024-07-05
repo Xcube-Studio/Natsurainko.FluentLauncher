@@ -25,10 +25,6 @@ var builder = WinUIApplication.CreateBuilder(() => new App());
 
 builder.UseExtendedWinUIServices();
 
-builder.ConfigurePages((pages) =>
-{
-    pages.Add(typeof(ShellPage));
-});
 
 var app = builder.Build();
 

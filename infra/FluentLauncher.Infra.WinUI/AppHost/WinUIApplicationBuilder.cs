@@ -46,7 +46,7 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
         return new WinUIApplication(_createApplicationFunc, host);
     }
 
-    public WinUIApplicationBuilder UseWinUIExtensionServices()
+    public WinUIApplicationBuilder UseExtendedWinUIServices()
     {
         // TODO: Add UI services to DI
         return this;

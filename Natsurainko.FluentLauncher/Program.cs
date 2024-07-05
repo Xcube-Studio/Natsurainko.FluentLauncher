@@ -23,7 +23,7 @@ var builder = WinUIApplication.CreateBuilder(() => new App());
 
 //builder.Logging...
 
-builder.UseWinUIExtensionServices();
+builder.UseExtendedWinUIServices();
 
 builder.ConfigurePages((pages) =>
 {

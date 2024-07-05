@@ -9,35 +9,27 @@ using System;
 using WinRT;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
+using FluentLauncher.Infra.WinUI.AppHost;
+using Microsoft.Extensions.DependencyInjection;
+using Natsurainko.FluentLauncher.Views;
 
-IHost host = Host.CreateDefaultBuilder()
-    .ConfigureHostConfiguration((config) =>
-    {
-        //config.AddJsonFile("appsettings.json", optional: true);
-        //config.AddCommandLine(args);
-    })
-    .ConfigureServices((services) =>
-    {
 
-    })
-    .ConfigureLogging(logging =>
-    {
+var builder = WinUIApplication.CreateBuilder(() => new App());
 
-    })
-    .Build();
+//builder.Configuration.AddJsonFile("appsettings.json", optional: true);
+//builder.Configuration.AddCommandLine(args);
 
-XamlCheckProcessRequirements();
-ComWrappersSupport.InitializeComWrappers();
-Application.Start(delegate
+//builder.Services.Add(...);
+
+//builder.Logging...
+
+builder.UseWinUIExtensionServices();
+
+builder.ConfigurePages((pages) =>
 {
-    DispatcherQueueSynchronizationContext synchronizationContext = new DispatcherQueueSynchronizationContext(DispatcherQueue.GetForCurrentThread());
-    SynchronizationContext.SetSynchronizationContext(synchronizationContext);
-    new App();
+    pages.Add(typeof(ShellPage));
 });
 
-await host.RunAsync();
+var app = builder.Build();
 
-
-[DllImport("Microsoft.ui.xaml.dll")]
-[DefaultDllImportSearchPaths(DllImportSearchPath.SafeDirectories)]
-static extern void XamlCheckProcessRequirements();
+await app.RunAsync();

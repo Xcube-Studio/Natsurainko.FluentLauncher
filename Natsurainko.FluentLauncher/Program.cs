@@ -34,10 +34,73 @@ var builder = WinUIApplication.CreateBuilder(() => new App());
 
 builder.UseExtendedWinUIServices();
 
-ConfigureServices(builder.Services);
+#region Services
 
+var services = builder.Services;
+// UI services
+services.AddSingleton<IPageProvider>(sp => BuildPageProvider(sp));
+services.AddSingleton<IActivationService>(_ => BuildActivationService());
+services.AddScoped<INavigationService, WinUINavigationService>(); // A scope is created for each window or page that supports navigation.
 
+// Settings service
+services.AddSingleton<SettingsService>();
+services.AddSingleton<ISettingsStorage, WinRTSettingsStorage>();
 
+// FluentCore Services
+services.AddSingleton<GameService>();
+services.AddSingleton<LaunchService>();
+services.AddSingleton<AccountService>();
+services.AddSingleton<DownloadService>();
+
+// Services
+services.AddSingleton<LocalStorageService>();
+services.AddSingleton<MessengerService>();
+services.AddSingleton<AuthenticationService>();
+services.AddSingleton<NotificationService>();
+services.AddSingleton<AppearanceService>();
+services.AddSingleton<SkinCacheService>();
+services.AddSingleton<InterfaceCacheService>();
+services.AddSingleton<JumpListService>();
+
+// Windows
+services.AddScoped<Views.MainWindow>();
+
+// ViewModels
+services.AddTransient<ViewModels.OOBE.OOBEViewModel>();
+
+services.AddSingleton<ViewModels.Activities.LaunchSessions>();
+services.AddTransient<ViewModels.Activities.ActivitiesNavigationViewModel>();
+services.AddTransient<ViewModels.Activities.NewsViewModel>();
+services.AddTransient<ViewModels.Activities.LaunchViewModel>();
+services.AddTransient<ViewModels.Activities.DownloadViewModel>();
+
+services.AddTransient<ViewModels.Common.SwitchAccountDialogViewModel>();
+
+services.AddTransient<ViewModels.Settings.SettingsNavigationViewModel>();
+services.AddTransient<ViewModels.Settings.AppearanceViewModel>();
+services.AddTransient<ViewModels.Settings.DownloadViewModel>();
+services.AddTransient<ViewModels.Settings.AccountViewModel>();
+services.AddTransient<ViewModels.Settings.LaunchViewModel>();
+services.AddTransient<ViewModels.Settings.AboutViewModel>();
+
+services.AddTransient<ViewModels.Cores.CoresViewModel>();
+services.AddTransient<ViewModels.Cores.ManageNavigationViewModel>();
+services.AddTransient<ViewModels.Cores.Manage.CoreModsViewModel>();
+services.AddTransient<ViewModels.Cores.Manage.CoreSettingsViewModel>();
+services.AddTransient<ViewModels.Cores.Manage.CoreStatisticViewModel>();
+
+services.AddTransient<ViewModels.Home.HomeViewModel>();
+
+services.AddTransient<ViewModels.Downloads.DownloadsViewModel>();
+services.AddTransient<ViewModels.Downloads.ResourcesSearchViewModel>();
+services.AddTransient<ViewModels.Downloads.ResourceItemViewModel>();
+services.AddTransient<ViewModels.Downloads.CoreInstallWizardViewModel>();
+
+services.AddTransient<ViewModels.ShellViewModel>();
+
+#endregion
+
+// Build and run the app
 var app = builder.Build();
 AppHost = app.Host;
 
@@ -45,7 +108,7 @@ await app.RunAsync();
 
 
 static IPageProvider BuildPageProvider(IServiceProvider sp) => WinUIPageProvider.GetBuilder(sp)
-// OOBE
+    // OOBE
     .WithPage<Views.OOBE.OOBENavigationPage, ViewModels.OOBE.OOBEViewModel>("OOBENavigationPage")
     .WithPage<Views.OOBE.AccountPage>("OOBEAccountPage")
     .WithPage<Views.OOBE.MinecraftFolderPage>("OOBEMinecraftFolderPage")
@@ -53,32 +116,32 @@ static IPageProvider BuildPageProvider(IServiceProvider sp) => WinUIPageProvider
     .WithPage<Views.OOBE.GetStartedPage>("OOBEGetStartedPage")
     .WithPage<Views.OOBE.LanguagePage>("OOBELanguagePage")
 
-// Main
+    // Main
     .WithPage<Views.ShellPage, ViewModels.ShellViewModel>("ShellPage")
 
-// Home page
+    // Home page
     .WithPage<Views.Home.HomePage, ViewModels.Home.HomeViewModel>("HomePage")
 
-// Cores page
+    // Cores page
     .WithPage<Views.Cores.CoresPage, ViewModels.Cores.CoresViewModel>("CoresPage")
     .WithPage<Views.Cores.ManageNavigationPage, ViewModels.Cores.ManageNavigationViewModel>("CoresManageNavigationPage")
     .WithPage<Views.Cores.Manage.CoreSettingsPage, ViewModels.Cores.Manage.CoreSettingsViewModel>("CoreSettingsPage")
     .WithPage<Views.Cores.Manage.CoreModsPage, ViewModels.Cores.Manage.CoreModsViewModel>("CoreModsPage")
     .WithPage<Views.Cores.Manage.CoreStatisticPage, ViewModels.Cores.Manage.CoreStatisticViewModel>("CoreStatisticPage")
 
-// Activities page
+    // Activities page
     .WithPage<Views.Activities.ActivitiesNavigationPage, ViewModels.Activities.ActivitiesNavigationViewModel>("ActivitiesNavigationPage")
     .WithPage<Views.Activities.LaunchPage, ViewModels.Activities.LaunchViewModel>("LaunchTasksPage")
     .WithPage<Views.Activities.DownloadPage, ViewModels.Activities.DownloadViewModel>("DownloadTasksPage")
     .WithPage<Views.Activities.NewsPage, ViewModels.Activities.NewsViewModel>("NewsPage")
 
-// Resources download page
+    // Resources download page
     .WithPage<Views.Downloads.DownloadsPage, ViewModels.Downloads.DownloadsViewModel>("ResourcesDownloadPage")
     .WithPage<Views.Downloads.ResourcesSearchPage, ViewModels.Downloads.ResourcesSearchViewModel>("ResourcesSearchPage")
     .WithPage<Views.Downloads.CoreInstallWizardPage, ViewModels.Downloads.CoreInstallWizardViewModel>("CoreInstallWizardPage")
     .WithPage<Views.Downloads.ResourceItemPage, ViewModels.Downloads.ResourceItemViewModel>("ResourceItemPage") // Configures VM for itself
 
-// Settings
+    // Settings
     .WithPage<Views.Settings.NavigationPage, ViewModels.Settings.SettingsNavigationViewModel>("SettingsNavigationPage")
     .WithPage<Views.Settings.LaunchPage, ViewModels.Settings.LaunchViewModel>("LaunchSettingsPage")
     .WithPage<Views.Settings.AccountPage, ViewModels.Settings.AccountViewModel>("AccountSettingsPage")
@@ -93,71 +156,6 @@ static IActivationService BuildActivationService() => WinUIActivationService.Get
     // .WithMultiInstanceWindow<LogWindow>("LogWindow")
     .Build();
 
-static IServiceProvider ConfigureServices(IServiceCollection services)
-{
-    // UI services
-    services.AddSingleton<IPageProvider>(sp => BuildPageProvider(sp));
-    services.AddSingleton<IActivationService>(_ => BuildActivationService());
-    services.AddScoped<INavigationService, WinUINavigationService>(); // A scope is created for each window or page that supports navigation.
-
-    // Settings service
-    services.AddSingleton<SettingsService>();
-    services.AddSingleton<ISettingsStorage, WinRTSettingsStorage>();
-
-    // FluentCore Services
-    services.AddSingleton<GameService>();
-    services.AddSingleton<LaunchService>();
-    services.AddSingleton<AccountService>();
-    services.AddSingleton<DownloadService>();
-
-    // Services
-    services.AddSingleton<LocalStorageService>();
-    services.AddSingleton<MessengerService>();
-    services.AddSingleton<AuthenticationService>();
-    services.AddSingleton<NotificationService>();
-    services.AddSingleton<AppearanceService>();
-    services.AddSingleton<SkinCacheService>();
-    services.AddSingleton<InterfaceCacheService>();
-    services.AddSingleton<JumpListService>();
-
-    // Windows
-    services.AddScoped<Views.MainWindow>();
-
-    // ViewModels
-    services.AddTransient<ViewModels.OOBE.OOBEViewModel>();
-
-    services.AddSingleton<ViewModels.Activities.LaunchSessions>();
-    services.AddTransient<ViewModels.Activities.ActivitiesNavigationViewModel>();
-    services.AddTransient<ViewModels.Activities.NewsViewModel>();
-    services.AddTransient<ViewModels.Activities.LaunchViewModel>();
-    services.AddTransient<ViewModels.Activities.DownloadViewModel>();
-
-    services.AddTransient<ViewModels.Common.SwitchAccountDialogViewModel>();
-
-    services.AddTransient<ViewModels.Settings.SettingsNavigationViewModel>();
-    services.AddTransient<ViewModels.Settings.AppearanceViewModel>();
-    services.AddTransient<ViewModels.Settings.DownloadViewModel>();
-    services.AddTransient<ViewModels.Settings.AccountViewModel>();
-    services.AddTransient<ViewModels.Settings.LaunchViewModel>();
-    services.AddTransient<ViewModels.Settings.AboutViewModel>();
-
-    services.AddTransient<ViewModels.Cores.CoresViewModel>();
-    services.AddTransient<ViewModels.Cores.ManageNavigationViewModel>();
-    services.AddTransient<ViewModels.Cores.Manage.CoreModsViewModel>();
-    services.AddTransient<ViewModels.Cores.Manage.CoreSettingsViewModel>();
-    services.AddTransient<ViewModels.Cores.Manage.CoreStatisticViewModel>();
-
-    services.AddTransient<ViewModels.Home.HomeViewModel>();
-
-    services.AddTransient<ViewModels.Downloads.DownloadsViewModel>();
-    services.AddTransient<ViewModels.Downloads.ResourcesSearchViewModel>();
-    services.AddTransient<ViewModels.Downloads.ResourceItemViewModel>();
-    services.AddTransient<ViewModels.Downloads.CoreInstallWizardViewModel>();
-
-    services.AddTransient<ViewModels.ShellViewModel>();
-
-    return services.BuildServiceProvider();
-}
 
 public partial class Program
 {

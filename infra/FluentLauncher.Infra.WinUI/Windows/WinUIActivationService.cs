@@ -22,7 +22,7 @@ public class WinUIActivationService : ActivationService<Window>
     {
         window.Activate();
         var windowService = new WinUIWindowService(window);
-        _activeWindows.Add(window);
+        _activeWindows.Add((window, windowService));
         return windowService;
     }
 
@@ -31,7 +31,14 @@ public class WinUIActivationService : ActivationService<Window>
         window.Closed += (_, _) =>
         {
             scope.Dispose();
-            _activeWindows.Remove(window);
+            for (int i = 0; i < _activeWindows.Count; i++)
+            {
+                if (_activeWindows[i].Item1 == window)
+                {
+                    _activeWindows.RemoveAt(i);
+                    break;
+                }
+            }
         };
     }
 }

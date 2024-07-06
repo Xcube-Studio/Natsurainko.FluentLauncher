@@ -9,11 +9,13 @@ namespace FluentLauncher.Infra.UI.Windows;
 /// </summary>
 /// <typeparam name="TService">Type of the activation service</typeparam>
 /// <typeparam name="TWindowBase">Base type of the window managed by the activation service</typeparam>
-public class ActivationServiceBuilder<TService, TWindowBase> where TService : ActivationService<TWindowBase>
+public class ActivationServiceBuilder<TService, TWindowBase>
+    where TService : ActivationService<TWindowBase>
+    where TWindowBase : notnull
 {
     private readonly Dictionary<string, WindowDescriptor> _registeredWindows = new();
     private readonly IServiceProvider _windowProvider;
-    private Func<IReadOnlyDictionary<string, WindowDescriptor>, IServiceProvider, TService> _serviceFactory;
+    private Func<IReadOnlyDictionary<string, WindowDescriptor>, IServiceProvider, TService>? _serviceFactory;
 
     public ActivationServiceBuilder(IServiceProvider windowProvider)
     {
@@ -49,6 +51,9 @@ public class ActivationServiceBuilder<TService, TWindowBase> where TService : Ac
 
     public TService Build()
     {
+        if (_serviceFactory is null)
+            throw new InvalidOperationException("IServiceProvider factory is required");
+
         var registeredWindows = new ReadOnlyDictionary<string, WindowDescriptor>(_registeredWindows);
         return _serviceFactory(registeredWindows, _windowProvider);
     }

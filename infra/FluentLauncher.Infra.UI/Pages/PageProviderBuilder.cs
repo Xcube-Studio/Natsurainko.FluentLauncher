@@ -8,7 +8,7 @@ public class PageProviderBuilder<TPageProvider, TPageBase> where TPageProvider :
     private readonly Dictionary<string, PageDescriptor> _registeredPages = new();
     private readonly IServiceProvider _serviceProvider;
 
-    private Func<IReadOnlyDictionary<string, PageDescriptor>, IServiceProvider, TPageProvider> _pageProviderFactory;
+    private Func<IReadOnlyDictionary<string, PageDescriptor>, IServiceProvider, TPageProvider>? _pageProviderFactory;
 
     public PageProviderBuilder(IServiceProvider serviceProvider)
     {
@@ -36,6 +36,9 @@ public class PageProviderBuilder<TPageProvider, TPageBase> where TPageProvider :
 
     public TPageProvider Build()
     {
+        if (_pageProviderFactory is null)
+            throw new InvalidOperationException("IServiceProvider factory is required");
+
         return _pageProviderFactory(_registeredPages, _serviceProvider);
     }
 }

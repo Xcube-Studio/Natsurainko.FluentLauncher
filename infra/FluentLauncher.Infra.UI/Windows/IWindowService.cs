@@ -13,7 +13,7 @@ public interface IWindowService
     /// <summary>
     /// Minimize the window
     /// </summary>
-    void Hide(); // TODO: Rename to Minimize()
+    void Minimize();
 
     /// <summary>
     /// Activate the window

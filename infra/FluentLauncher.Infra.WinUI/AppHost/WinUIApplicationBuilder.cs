@@ -41,6 +41,12 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
 
     private void ConfigureExtendedWinUIServices()
     {
+        // Configure IActivationService
+        foreach (var (key, descriptor) in Windows.RegisteredWindows)
+        {
+            // Always add as scoped for NavigationService; single-instance property is dealt by ActivationService
+            Services.AddScoped(descriptor.WindowType);
+        }
         Services.AddSingleton<IActivationService, WinUIActivationService>((sp) =>
         {
             return Windows.Build(sp);

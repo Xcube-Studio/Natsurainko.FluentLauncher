@@ -64,9 +64,6 @@ services.AddSingleton<SkinCacheService>();
 services.AddSingleton<InterfaceCacheService>();
 services.AddSingleton<JumpListService>();
 
-// Windows
-services.AddScoped<Views.MainWindow>();
-
 // ViewModels
 services.AddTransient<ViewModels.OOBE.OOBEViewModel>();
 

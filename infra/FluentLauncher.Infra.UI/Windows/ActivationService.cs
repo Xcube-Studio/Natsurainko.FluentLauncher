@@ -12,7 +12,7 @@ public abstract class ActivationService<TWindowBase> : IActivationService
 {
     protected readonly IServiceProvider _windowProvider;
     protected readonly IReadOnlyDictionary<string, WindowDescriptor> _registeredWindows;
-    protected readonly List<TWindowBase> _activeWindows = new(); // TODO: maintain a list of active windows
+    protected readonly List<TWindowBase> _activeWindows = new(); // Tracks all active windows for checking windows registered as SingleInstance
 
     public IReadOnlyDictionary<string, WindowDescriptor> RegisteredWindows => _registeredWindows;
 
@@ -34,8 +34,7 @@ public abstract class ActivationService<TWindowBase> : IActivationService
 
         // Constructs the window
         Type windowType = RegisteredWindows[key].WindowType; // windowType is guaranteed to be a subclass of TWindowBase when the activation service is built
-        TWindowBase window = (TWindowBase?)scope.ServiceProvider.GetService(windowType)
-            ?? throw new InvalidOperationException($"The window type {windowType} is not registered with the window provider.");
+        TWindowBase window = (TWindowBase)scope.ServiceProvider.GetRequiredService(windowType);
 
         // If the window supports navigation, initialize the navigation service for the window scope
         // The navigation service may have been instantiated and injected into 'window' already.
@@ -55,12 +54,15 @@ public abstract class ActivationService<TWindowBase> : IActivationService
     /// <summary>
     /// Activate the <paramref name="window"/> resolved and return an <see cref="IWindowService"/> that can be used to control it.
     /// </summary>
+    /// <remarks>Must update <see cref="_activeWindows"/> after the <paramref name="window"/> is successfully activated.</remarks>
     /// <param name="window"></param>
     /// <returns></returns>
     protected abstract IWindowService ActivateWindow(TWindowBase window);
+
     /// <summary>
     /// Configure the <paramref name="window"/> to dispose the <paramref name="scope"/> and removes itself from ActiveWindows when it is closed.
     /// </summary>
+    /// <remarks>Must update <see cref="_activeWindows"/> after the <paramref name="window"/> is closed.</remarks>
     /// <param name="window"></param>
     /// <param name="scope"></param>
     protected abstract void ConfigureWindowClose(TWindowBase window, IServiceScope scope);

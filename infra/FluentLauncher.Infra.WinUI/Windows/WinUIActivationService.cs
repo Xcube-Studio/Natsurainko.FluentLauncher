@@ -9,14 +9,14 @@ namespace FluentLauncher.Infra.WinUI.Windows;
 public class WinUIActivationService : ActivationService<Window>
 {
     // Factory pattern
-    public static ActivationServiceBuilder<WinUIActivationService, Window> GetBuilder(IServiceProvider windowProvider)
+    public static ActivationServiceBuilder<WinUIActivationService, Window> GetBuilder(IServiceProvider serviceProvider)
     {
-        return new ActivationServiceBuilder<WinUIActivationService, Window>(windowProvider)
+        return new ActivationServiceBuilder<WinUIActivationService, Window>(serviceProvider)
             .WithServiceFactory((r, p) => new WinUIActivationService(r, p));
     }
 
-    private WinUIActivationService(IReadOnlyDictionary<string, WindowDescriptor> registeredWindows, IServiceProvider windowProvier)
-        : base(registeredWindows, windowProvier) { }
+    private WinUIActivationService(IReadOnlyDictionary<string, WindowDescriptor> registeredWindows, IServiceProvider serviceProvider)
+        : base(registeredWindows, serviceProvider) { }
 
     protected override IWindowService ActivateWindow(Window window)
     {

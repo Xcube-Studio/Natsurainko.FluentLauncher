@@ -10,7 +10,7 @@ namespace FluentLauncher.Infra.UI.Windows;
 /// </summary>
 public abstract class ActivationService<TWindowBase> : IActivationService where TWindowBase : notnull
 {
-    protected readonly IServiceProvider _windowProvider;
+    protected readonly IServiceProvider _serviceProvider;
     protected readonly IReadOnlyDictionary<string, WindowDescriptor> _registeredWindows;
     protected readonly List<(TWindowBase, IWindowService)> _activeWindows = new(); // Tracks all active windows for checking windows registered as SingleInstance
 
@@ -20,11 +20,11 @@ public abstract class ActivationService<TWindowBase> : IActivationService where 
     /// Build an activation service that supports activating the windows described
     /// </summary>
     /// <param name="registeredWindows">A read only dictionary that maps string keys to <see cref="WindowDescriptor"/> objects.</param>
-    /// <param name="windowProvider">An <see cref="IServiceProvider"/> that has been configured to support window types according to the rules defined by <paramref name="registeredWindows"/>.</param>
-    public ActivationService(IReadOnlyDictionary<string, WindowDescriptor> registeredWindows, IServiceProvider windowProvider)
+    /// <param name="serviceProvider">An <see cref="IServiceProvider"/> that has been configured to support window types according to the rules defined by <paramref name="registeredWindows"/>.</param>
+    public ActivationService(IReadOnlyDictionary<string, WindowDescriptor> registeredWindows, IServiceProvider serviceProvider)
     {
         _registeredWindows = registeredWindows;
-        _windowProvider = windowProvider;
+        _serviceProvider = serviceProvider;
     }
 
     public IWindowService ActivateWindow(string key)
@@ -47,7 +47,7 @@ public abstract class ActivationService<TWindowBase> : IActivationService where 
         }
 
         // Creates a new scope for resources owned by the window
-        IServiceScope scope = _windowProvider.CreateScope();
+        IServiceScope scope = _serviceProvider.CreateScope();
 
         TWindowBase window = (TWindowBase)scope.ServiceProvider.GetRequiredService(windowType);
 

@@ -21,11 +21,17 @@ public class WinUIActivationService : ActivationService<Window>
     protected override IWindowService ActivateWindow(Window window)
     {
         window.Activate();
-        return new WinUIWindowService(window);
+        var windowService = new WinUIWindowService(window);
+        _activeWindows.Add(window);
+        return windowService;
     }
 
     protected override void ConfigureWindowClose(Window window, IServiceScope scope)
     {
-        window.Closed += (_, _) => scope.Dispose();
+        window.Closed += (_, _) =>
+        {
+            scope.Dispose();
+            _activeWindows.Remove(window);
+        };
     }
 }

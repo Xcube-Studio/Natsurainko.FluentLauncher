@@ -1,4 +1,6 @@
-﻿using FluentLauncher.Infra.UI.Windows;
+﻿using FluentLauncher.Infra.UI.Navigation;
+using FluentLauncher.Infra.UI.Windows;
+using FluentLauncher.Infra.WinUI.Navigation;
 using FluentLauncher.Infra.WinUI.Windows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,6 +53,12 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
         {
             return Windows.Build(sp);
         });
+
+        // Configure INavigationService
+        Services.AddScoped<INavigationService, WinUINavigationService>();
+
+        // TODO: Configure IPageProvider
+
     }
 
     #region Forward IHostApplicationBuilder members

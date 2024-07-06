@@ -40,7 +40,6 @@ builder.Windows.AddSingleInstanceWindow<Views.MainWindow>("MainWindow");
 var services = builder.Services;
 // UI services
 services.AddSingleton<IPageProvider>(sp => BuildPageProvider(sp));
-services.AddScoped<INavigationService, WinUINavigationService>(); // A scope is created for each window or page that supports navigation.
 
 // Settings service
 services.AddSingleton<SettingsService>();

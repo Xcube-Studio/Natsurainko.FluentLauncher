@@ -11,28 +11,27 @@ namespace FluentLauncher.Infra.WinUI.Navigation;
 public class WinUINavigationService : INavigationService
 {
     private INavigationProvider? _navigationProvider;
+    private IServiceScope? _scope;
+    private readonly IPageProvider _pageProvider;
+
+    private Frame Frame => _navigationProvider?.NavigationControl as Frame ?? throw new InvalidOperationException("E001");
+
     public INavigationProvider NavigationProvider
     {
-        get => _navigationProvider ?? throw new InvalidOperationException("NavigationService has not been initialized");
+        get => _navigationProvider ?? throw new InvalidOperationException("E001");
         private set => _navigationProvider = value;
     }
 
-    private IServiceScope? _scope;
     public IServiceScope Scope
     {
-        get => _scope ?? throw new InvalidOperationException("NavigationService has not been initialized");
+        get => _scope ?? throw new InvalidOperationException("E001");
         private set => _scope = value;
     }
-
-    private readonly IPageProvider _pageProvider;
 
     public WinUINavigationService(IPageProvider pageProvider)
     {
         _pageProvider = pageProvider;
     }
-
-    private Frame Frame => _navigationProvider?.NavigationControl as Frame ??
-        throw new InvalidOperationException("NavigationService has not been initialized");
 
     public void InitializeNavigation(INavigationProvider navigationProvider, IServiceScope scope, INavigationService? parent)
     {
@@ -44,12 +43,14 @@ public class WinUINavigationService : INavigationService
     #region Navigation
 
     public INavigationService? Parent { get; private set; }
+
     public bool CanGoBack => Frame.CanGoBack;
+
     public bool CanGoForward => Frame.CanGoForward;
 
     Stack<(string key, object? param)> _backStack = new();
-    (string key, object? param) _current;
     Stack<(string key, object? param)> _forwardStack = new();
+    (string key, object? param) _current;
 
     public void GoBack()
     {

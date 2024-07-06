@@ -4,19 +4,11 @@ using System.Collections.Generic;
 
 namespace FluentLauncher.Infra.UI.Pages;
 
-public record PageDescriptor(Type PageType, Type ViewModelType = null);
-
-public interface IPageProvider
-{
-    IReadOnlyDictionary<string, PageDescriptor> RegisteredPages { get; }
-    object GetPage(string key);
-    object GetViewModel(string key);
-}
-
 public abstract class PageProvider<TPageBase> : IPageProvider
 {
     protected readonly IServiceProvider _pageProvider;
     protected readonly IReadOnlyDictionary<string, PageDescriptor> _registeredPages;
+
     public IReadOnlyDictionary<string, PageDescriptor> RegisteredPages => _registeredPages;
 
     public PageProvider(IReadOnlyDictionary<string, PageDescriptor> registeredPages, IServiceProvider pageProvider)
@@ -46,6 +38,7 @@ public abstract class PageProvider<TPageBase> : IPageProvider
     public object? GetViewModel(string key)
     {
         var vmType = _registeredPages[key].ViewModelType;
+
         if (vmType is null)
             return null;
 

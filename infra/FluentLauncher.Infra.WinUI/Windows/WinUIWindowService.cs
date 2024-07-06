@@ -23,6 +23,8 @@ public class WinUIWindowService : IWindowService
     }
 
     public void Close() => _window.Close();
-    public void Hide() => _window.Hide();
+
+    public void Minimize() => _window.Hide();
+
     public void Activate() => _window.Activate();
 }

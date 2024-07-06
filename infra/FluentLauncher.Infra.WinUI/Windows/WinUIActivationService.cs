@@ -9,23 +9,36 @@ namespace FluentLauncher.Infra.WinUI.Windows;
 public class WinUIActivationService : ActivationService<Window>
 {
     // Factory pattern
-    public static ActivationServiceBuilder<WinUIActivationService, Window> GetBuilder(IServiceProvider windowProvider)
+    public static ActivationServiceBuilder<WinUIActivationService, Window> GetBuilder(IServiceProvider serviceProvider)
     {
-        return new ActivationServiceBuilder<WinUIActivationService, Window>(windowProvider)
+        return new ActivationServiceBuilder<WinUIActivationService, Window>(serviceProvider)
             .WithServiceFactory((r, p) => new WinUIActivationService(r, p));
     }
 
-    private WinUIActivationService(IReadOnlyDictionary<string, WindowDescriptor> registeredWindows, IServiceProvider windowProvier)
-        : base(registeredWindows, windowProvier) { }
+    private WinUIActivationService(IReadOnlyDictionary<string, WindowDescriptor> registeredWindows, IServiceProvider serviceProvider)
+        : base(registeredWindows, serviceProvider) { }
 
     protected override IWindowService ActivateWindow(Window window)
     {
         window.Activate();
-        return new WinUIWindowService(window);
+        var windowService = new WinUIWindowService(window);
+        _activeWindows.Add((window, windowService));
+        return windowService;
     }
 
     protected override void ConfigureWindowClose(Window window, IServiceScope scope)
     {
-        window.Closed += (_, _) => scope.Dispose();
+        window.Closed += (_, _) =>
+        {
+            scope.Dispose();
+            for (int i = 0; i < _activeWindows.Count; i++)
+            {
+                if (_activeWindows[i].Item1 == window)
+                {
+                    _activeWindows.RemoveAt(i);
+                    break;
+                }
+            }
+        };
     }
 }

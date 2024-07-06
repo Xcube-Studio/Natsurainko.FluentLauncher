@@ -7,6 +7,7 @@ public class PageProviderBuilder<TPageProvider, TPageBase> where TPageProvider :
 {
     private readonly Dictionary<string, PageDescriptor> _registeredPages = new();
     private readonly IServiceProvider _serviceProvider;
+
     private Func<IReadOnlyDictionary<string, PageDescriptor>, IServiceProvider, TPageProvider> _pageProviderFactory;
 
     public PageProviderBuilder(IServiceProvider serviceProvider)

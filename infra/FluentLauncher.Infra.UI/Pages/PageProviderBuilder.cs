@@ -7,6 +7,8 @@ public abstract class PageProviderBuilder<TPageProvider, TPageBase> where TPageP
 {
     protected readonly Dictionary<string, PageDescriptor> _registeredPages = new();
 
+    public IDictionary<string, PageDescriptor> RegisteredPages => _registeredPages;
+
     public PageProviderBuilder() { }
 
     public PageProviderBuilder<TPageProvider, TPageBase> WithPage<TPage, TViewModel>(string key)

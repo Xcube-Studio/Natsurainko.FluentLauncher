@@ -1,6 +1,8 @@
 ﻿using FluentLauncher.Infra.UI.Navigation;
+using FluentLauncher.Infra.UI.Pages;
 using FluentLauncher.Infra.UI.Windows;
 using FluentLauncher.Infra.WinUI.Navigation;
+using FluentLauncher.Infra.WinUI.Pages;
 using FluentLauncher.Infra.WinUI.Windows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +23,8 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
     private bool _useExtendedWinUIServices = false;
 
     public WinUIActivationServiceBuilder Windows { get; } = new();
+
+    public WinUIPageProviderBuilder Pages { get; } = new();
 
     public WinUIApplicationBuilder(Func<Application> createApplicationFunc)
     {
@@ -49,16 +53,19 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
             // Always add as scoped for NavigationService; single-instance property is dealt by ActivationService
             Services.AddScoped(descriptor.WindowType);
         }
-        Services.AddSingleton<IActivationService, WinUIActivationService>((sp) =>
-        {
-            return Windows.Build(sp);
-        });
+        Services.AddSingleton<IActivationService, WinUIActivationService>(Windows.Build);
 
         // Configure INavigationService
         Services.AddScoped<INavigationService, WinUINavigationService>();
 
-        // TODO: Configure IPageProvider
-
+        // Configure IPageProvider
+        foreach (var (key, descriptor) in Pages.RegisteredPages)
+        {
+            Services.AddTransient(descriptor.PageType);
+            if (descriptor.ViewModelType is not null)
+                Services.AddTransient(descriptor.ViewModelType);
+        }
+        Services.AddSingleton<IPageProvider, WinUIPageProvider>(Pages.Build);
     }
 
     #region Forward IHostApplicationBuilder members

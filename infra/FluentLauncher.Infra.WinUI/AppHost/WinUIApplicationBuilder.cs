@@ -16,6 +16,8 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
     private readonly HostApplicationBuilder _hostApplicationBuilder;
     private readonly Func<Application> _createApplicationFunc;
 
+    private bool _useExtendedWinUIServices = false;
+
     public WinUIActivationServiceBuilder Windows { get; } = new();
 
     public WinUIApplicationBuilder(Func<Application> createApplicationFunc)
@@ -30,13 +32,19 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
 
     public WinUIApplication Build()
     {
+        if (_useExtendedWinUIServices)
+            ConfigureExtendedWinUIServices();
+
+        IHost host = _hostApplicationBuilder.Build();
+        return new WinUIApplication(_createApplicationFunc, host);
+    }
+
+    private void ConfigureExtendedWinUIServices()
+    {
         Services.AddSingleton<IActivationService, WinUIActivationService>((sp) =>
         {
             return Windows.Build(sp);
         });
-
-        IHost host = _hostApplicationBuilder.Build();
-        return new WinUIApplication(_createApplicationFunc, host);
     }
 
     #region Forward IHostApplicationBuilder members
@@ -86,9 +94,11 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
 
     #endregion
 
+    #region Extended WinUI services configuration methods
+
     public WinUIApplicationBuilder UseExtendedWinUIServices()
     {
-        // TODO: Add UI services to DI
+        _useExtendedWinUIServices = true;
         return this;
     }
 
@@ -97,4 +107,12 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
         // Add pages and view models to DI
         return this;
     }
+
+    public WinUIApplicationBuilder ConfigureWindows(Action<WinUIActivationServiceBuilder> action)
+    {
+        action(Windows);
+        return this;
+    }
+
+    #endregion
 }

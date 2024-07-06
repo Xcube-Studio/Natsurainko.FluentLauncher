@@ -34,17 +34,17 @@ public abstract class ActivationServiceBuilder<TService, TWindowBase>
         return this;
     }
 
-    public ActivationServiceBuilder<TService, TWindowBase> WithSingleInstanceWindow(string key, Type windowType)
+    public ActivationServiceBuilder<TService, TWindowBase> AddSingleInstanceWindow(string key, Type windowType)
         => WithWindow(key, windowType, false);
 
-    public ActivationServiceBuilder<TService, TWindowBase> WithSingleInstanceWindow<TWindow>(string key)
-        => WithSingleInstanceWindow(key, typeof(TWindow));
+    public ActivationServiceBuilder<TService, TWindowBase> AddSingleInstanceWindow<TWindow>(string key)
+        => AddSingleInstanceWindow(key, typeof(TWindow));
 
-    public ActivationServiceBuilder<TService, TWindowBase> WithMultiInstanceWindow(string key, Type windowType)
+    public ActivationServiceBuilder<TService, TWindowBase> AddMultiInstanceWindow(string key, Type windowType)
         => WithWindow(key, windowType, true);
 
-    public ActivationServiceBuilder<TService, TWindowBase> WithMultiInstanceWindow<TWindow>(string key)
-        => WithMultiInstanceWindow(key, typeof(TWindow));
+    public ActivationServiceBuilder<TService, TWindowBase> AddMultiInstanceWindow<TWindow>(string key)
+        => AddMultiInstanceWindow(key, typeof(TWindow));
 
     public abstract IActivationService Build(IServiceProvider serviceProvider);
 }

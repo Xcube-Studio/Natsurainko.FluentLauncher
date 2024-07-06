@@ -6,11 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using FluentLauncher.Infra.Settings;
 using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Pages;
-using FluentLauncher.Infra.UI.Windows;
 using FluentLauncher.Infra.WinUI.Navigation;
 using FluentLauncher.Infra.WinUI.Pages;
 using FluentLauncher.Infra.WinUI.Settings;
-using FluentLauncher.Infra.WinUI.Windows;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Download;
 using Natsurainko.FluentLauncher.Services.Launch;
@@ -35,7 +33,7 @@ var builder = WinUIApplication.CreateBuilder(() => new App());
 builder.UseExtendedWinUIServices();
 
 // Configure WinUI windows
-builder.Windows.WithSingleInstanceWindow<Views.MainWindow>("MainWindow");
+builder.Windows.AddSingleInstanceWindow<Views.MainWindow>("MainWindow");
 
 #region Services
 

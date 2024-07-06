@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FluentLauncher.Infra.UI.Windows;
+using FluentLauncher.Infra.WinUI.Windows;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.Metrics;
 using Microsoft.Extensions.Hosting;
@@ -14,6 +16,8 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
     private readonly HostApplicationBuilder _hostApplicationBuilder;
     private readonly Func<Application> _createApplicationFunc;
 
+    public WinUIActivationServiceBuilder Windows { get; } = new();
+
     public WinUIApplicationBuilder(Func<Application> createApplicationFunc)
     {
         _createApplicationFunc = createApplicationFunc;
@@ -26,6 +30,11 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
 
     public WinUIApplication Build()
     {
+        Services.AddSingleton<IActivationService, WinUIActivationService>((sp) =>
+        {
+            return Windows.Build(sp);
+        });
+
         IHost host = _hostApplicationBuilder.Build();
         return new WinUIApplication(_createApplicationFunc, host);
     }

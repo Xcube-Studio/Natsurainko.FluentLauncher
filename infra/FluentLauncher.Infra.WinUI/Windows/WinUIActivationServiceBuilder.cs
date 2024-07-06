@@ -10,11 +10,8 @@ namespace FluentLauncher.Infra.WinUI.Windows;
 
 public class WinUIActivationServiceBuilder : ActivationServiceBuilder<WinUIActivationService, Window>
 {
-    public WinUIActivationServiceBuilder(IServiceProvider serviceProvider)
-        : base(serviceProvider) { }
-
-    public override IActivationService Build()
+    public override WinUIActivationService Build(IServiceProvider serviceProvider)
     {
-        return new WinUIActivationService(_registeredWindows, _serviceProvider);
+        return new WinUIActivationService(_registeredWindows, serviceProvider);
     }
 }

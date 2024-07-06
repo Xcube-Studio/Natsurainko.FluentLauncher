@@ -34,12 +34,14 @@ var builder = WinUIApplication.CreateBuilder(() => new App());
 
 builder.UseExtendedWinUIServices();
 
+// Configure WinUI windows
+builder.Windows.WithSingleInstanceWindow<Views.MainWindow>("MainWindow");
+
 #region Services
 
 var services = builder.Services;
 // UI services
 services.AddSingleton<IPageProvider>(sp => BuildPageProvider(sp));
-services.AddSingleton<IActivationService>(_ => BuildActivationService());
 services.AddScoped<INavigationService, WinUINavigationService>(); // A scope is created for each window or page that supports navigation.
 
 // Settings service
@@ -149,11 +151,6 @@ static IPageProvider BuildPageProvider(IServiceProvider sp) => WinUIPageProvider
     .WithPage<Views.Settings.AppearancePage, ViewModels.Settings.AppearanceViewModel>("AppearanceSettingsPage")
     .WithPage<Views.Settings.AboutPage, ViewModels.Settings.AboutViewModel>("AboutPage")
 
-    .Build();
-
-static IActivationService BuildActivationService() => WinUIActivationService.GetBuilder(AppHost.Services)
-    .WithSingleInstanceWindow<Views.MainWindow>("MainWindow")
-    // .WithMultiInstanceWindow<LogWindow>("LogWindow")
     .Build();
 
 

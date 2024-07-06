@@ -9,19 +9,15 @@ namespace FluentLauncher.Infra.UI.Windows;
 /// </summary>
 /// <typeparam name="TService">Type of the activation service</typeparam>
 /// <typeparam name="TWindowBase">Base type of the window managed by the activation service</typeparam>
-public abstract class ActivationServiceBuilder<TService, TWindowBase> : IActivationServiceBuilder
+public abstract class ActivationServiceBuilder<TService, TWindowBase>
     where TService : ActivationService<TWindowBase>
     where TWindowBase : notnull
 {
     protected readonly Dictionary<string, WindowDescriptor> _registeredWindows = new();
-    protected readonly IServiceProvider _serviceProvider;
 
     public IDictionary<string, WindowDescriptor> RegisteredWindows => _registeredWindows;
 
-    public ActivationServiceBuilder(IServiceProvider serviceProvider)
-    {
-        _serviceProvider = serviceProvider;
-    }
+    public ActivationServiceBuilder() { }
 
     /// <summary>
     /// Add a window type to the list of registered windows.
@@ -38,25 +34,17 @@ public abstract class ActivationServiceBuilder<TService, TWindowBase> : IActivat
         return this;
     }
 
-    public ActivationServiceBuilder<TService, TWindowBase> WithSingleInstanceWindow(string key, Type windowType) => WithWindow(key, windowType, false);
-    public ActivationServiceBuilder<TService, TWindowBase> WithSingleInstanceWindow<TWindow>(string key) => WithSingleInstanceWindow(key, typeof(TWindow));
-    public ActivationServiceBuilder<TService, TWindowBase> WithMultiInstanceWindow(string key, Type windowType) => WithWindow(key, windowType, true);
-    public ActivationServiceBuilder<TService, TWindowBase> WithMultiInstanceWindow<TWindow>(string key) => WithMultiInstanceWindow(key, typeof(TWindow));
+    public ActivationServiceBuilder<TService, TWindowBase> WithSingleInstanceWindow(string key, Type windowType)
+        => WithWindow(key, windowType, false);
 
-    #region Forward IActivationServiceBuilder members
+    public ActivationServiceBuilder<TService, TWindowBase> WithSingleInstanceWindow<TWindow>(string key)
+        => WithSingleInstanceWindow(key, typeof(TWindow));
 
-    IActivationServiceBuilder IActivationServiceBuilder.WithSingleInstanceWindow(string key, Type windowType)
-        => WithSingleInstanceWindow(key, windowType);
-    IActivationServiceBuilder IActivationServiceBuilder.WithSingleInstanceWindow<TWindow>(string key)
-        => WithSingleInstanceWindow<TWindow>(key);
-    IActivationServiceBuilder IActivationServiceBuilder.WithMultiInstanceWindow(string key, Type windowType)
-        => WithMultiInstanceWindow(key, windowType);
-    IActivationServiceBuilder IActivationServiceBuilder.WithMultiInstanceWindow<TWindow>(string key)
-        => WithMultiInstanceWindow<TWindow>(key);
-    IActivationServiceBuilder IActivationServiceBuilder.WithWindow(string key, Type windowType, bool multiInstance)
-        => WithWindow(key, windowType, multiInstance);
+    public ActivationServiceBuilder<TService, TWindowBase> WithMultiInstanceWindow(string key, Type windowType)
+        => WithWindow(key, windowType, true);
 
-    #endregion
+    public ActivationServiceBuilder<TService, TWindowBase> WithMultiInstanceWindow<TWindow>(string key)
+        => WithMultiInstanceWindow(key, typeof(TWindow));
 
-    public abstract IActivationService Build();
+    public abstract IActivationService Build(IServiceProvider serviceProvider);
 }

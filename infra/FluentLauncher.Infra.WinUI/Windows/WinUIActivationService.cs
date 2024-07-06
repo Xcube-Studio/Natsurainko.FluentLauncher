@@ -8,12 +8,14 @@ namespace FluentLauncher.Infra.WinUI.Windows;
 
 public class WinUIActivationService : ActivationService<Window>
 {
-    public static WinUIActivationServiceBuilder GetBuilder(IServiceProvider serviceProvider)
+    public static WinUIActivationServiceBuilder CreateBuilder()
     {
-        return new WinUIActivationServiceBuilder(serviceProvider);
+        return new WinUIActivationServiceBuilder();
     }
 
-    public WinUIActivationService(IReadOnlyDictionary<string, WindowDescriptor> registeredWindows, IServiceProvider serviceProvider)
+    public WinUIActivationService(
+        IReadOnlyDictionary<string, WindowDescriptor> registeredWindows,
+        IServiceProvider serviceProvider)
         : base(registeredWindows, serviceProvider) { }
 
     protected override IWindowService ActivateWindow(Window window)

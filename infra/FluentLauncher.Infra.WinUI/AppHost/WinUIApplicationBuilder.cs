@@ -1,4 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FluentLauncher.Infra.UI.Navigation;
+using FluentLauncher.Infra.UI.Pages;
+using FluentLauncher.Infra.UI.Windows;
+using FluentLauncher.Infra.WinUI.Navigation;
+using FluentLauncher.Infra.WinUI.Pages;
+using FluentLauncher.Infra.WinUI.Windows;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.Metrics;
 using Microsoft.Extensions.Hosting;
@@ -14,6 +20,12 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
     private readonly HostApplicationBuilder _hostApplicationBuilder;
     private readonly Func<Application> _createApplicationFunc;
 
+    private bool _useExtendedWinUIServices = false;
+
+    public WinUIActivationServiceBuilder Windows { get; } = new();
+
+    public WinUIPageProviderBuilder Pages { get; } = new();
+
     public WinUIApplicationBuilder(Func<Application> createApplicationFunc)
     {
         _createApplicationFunc = createApplicationFunc;
@@ -26,8 +38,34 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
 
     public WinUIApplication Build()
     {
+        if (_useExtendedWinUIServices)
+            ConfigureExtendedWinUIServices();
+
         IHost host = _hostApplicationBuilder.Build();
         return new WinUIApplication(_createApplicationFunc, host);
+    }
+
+    private void ConfigureExtendedWinUIServices()
+    {
+        // Configure IActivationService
+        foreach (var (key, descriptor) in Windows.RegisteredWindows)
+        {
+            // Always add as scoped for NavigationService; single-instance property is dealt by ActivationService
+            Services.AddScoped(descriptor.WindowType);
+        }
+        Services.AddSingleton<IActivationService, WinUIActivationService>(Windows.Build);
+
+        // Configure INavigationService
+        Services.AddScoped<INavigationService, WinUINavigationService>();
+
+        // Configure IPageProvider
+        foreach (var (key, descriptor) in Pages.RegisteredPages)
+        {
+            Services.AddTransient(descriptor.PageType);
+            if (descriptor.ViewModelType is not null)
+                Services.AddTransient(descriptor.ViewModelType);
+        }
+        Services.AddSingleton<IPageProvider, WinUIPageProvider>(Pages.Build);
     }
 
     #region Forward IHostApplicationBuilder members
@@ -77,9 +115,11 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
 
     #endregion
 
+    #region Extended WinUI services configuration methods
+
     public WinUIApplicationBuilder UseExtendedWinUIServices()
     {
-        // TODO: Add UI services to DI
+        _useExtendedWinUIServices = true;
         return this;
     }
 
@@ -88,4 +128,12 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
         // Add pages and view models to DI
         return this;
     }
+
+    public WinUIApplicationBuilder ConfigureWindows(Action<WinUIActivationServiceBuilder> action)
+    {
+        action(Windows);
+        return this;
+    }
+
+    #endregion
 }

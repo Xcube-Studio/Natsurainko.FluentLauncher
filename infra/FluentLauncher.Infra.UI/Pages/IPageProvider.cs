@@ -9,7 +9,7 @@ public interface IPageProvider
 
     object GetPage(string key);
 
-    object GetViewModel(string key);
+    object? GetViewModel(string key);
 }
 
 public record PageDescriptor(Type PageType, Type? ViewModelType = default);

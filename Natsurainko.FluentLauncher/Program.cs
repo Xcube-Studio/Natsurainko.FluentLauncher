@@ -103,7 +103,7 @@ AppHost = app.Host;
 await app.RunAsync();
 
 
-static IPageProvider BuildPageProvider(IServiceProvider sp) => WinUIPageProvider.GetBuilder(sp)
+static IPageProvider BuildPageProvider(IServiceProvider sp) => WinUIPageProvider.CreateBuilder()
     // OOBE
     .WithPage<Views.OOBE.OOBENavigationPage, ViewModels.OOBE.OOBEViewModel>("OOBENavigationPage")
     .WithPage<Views.OOBE.AccountPage>("OOBEAccountPage")
@@ -145,7 +145,7 @@ static IPageProvider BuildPageProvider(IServiceProvider sp) => WinUIPageProvider
     .WithPage<Views.Settings.AppearancePage, ViewModels.Settings.AppearanceViewModel>("AppearanceSettingsPage")
     .WithPage<Views.Settings.AboutPage, ViewModels.Settings.AboutViewModel>("AboutPage")
 
-    .Build();
+    .Build(sp);
 
 
 public partial class Program

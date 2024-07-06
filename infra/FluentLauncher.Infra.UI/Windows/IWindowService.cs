@@ -1,6 +1,6 @@
 ﻿namespace FluentLauncher.Infra.UI.Windows;
 
-// Sevice for operations of a window
+// Service for operations of a window
 public interface IWindowService
 {
     string Title { get; set; }
@@ -9,10 +9,12 @@ public interface IWindowService
     /// Close the window
     /// </summary>
     void Close();
+
     /// <summary>
-    /// Hide the window
+    /// Minimize the window
     /// </summary>
-    void Hide();
+    void Hide(); // TODO: Rename to Minimize()
+
     /// <summary>
     /// Activate the window
     /// </summary>

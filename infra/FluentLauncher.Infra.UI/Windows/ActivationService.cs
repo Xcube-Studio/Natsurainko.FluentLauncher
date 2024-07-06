@@ -8,11 +8,11 @@ namespace FluentLauncher.Infra.UI.Windows;
 /// <summary>
 /// Default implementation of <see cref="IActivationService"/>
 /// </summary>
-public abstract class ActivationService<TWindowBase> : IActivationService
+public abstract class ActivationService<TWindowBase> : IActivationService where TWindowBase : notnull
 {
     protected readonly IServiceProvider _windowProvider;
     protected readonly IReadOnlyDictionary<string, WindowDescriptor> _registeredWindows;
-    protected readonly List<TWindowBase> _activeWindows = new(); // TODO: maintain a list of active windows
+    protected readonly List<(TWindowBase, IWindowService)> _activeWindows = new(); // Tracks all active windows for checking windows registered as SingleInstance
 
     public IReadOnlyDictionary<string, WindowDescriptor> RegisteredWindows => _registeredWindows;
 
@@ -29,15 +29,29 @@ public abstract class ActivationService<TWindowBase> : IActivationService
 
     public IWindowService ActivateWindow(string key)
     {
+        var windowDescriptor = RegisteredWindows[key];
+        Type windowType = windowDescriptor.WindowType; // windowType is guaranteed to be a subclass of TWindowBase when the activation service is built
+
+        // Check for single-instance windows
+        if (!windowDescriptor.AllowMultiInstances)
+        {
+            foreach (var (w, s) in _activeWindows)
+            {
+                if (w.GetType() == windowType)
+                {
+                    // The single-instance window exists already
+                    s.Activate();
+                    return s;
+                }
+            }
+        }
+
         // Creates a new scope for resources owned by the window
         IServiceScope scope = _windowProvider.CreateScope();
 
-        // Constructs the window
-        Type windowType = RegisteredWindows[key].WindowType; // windowType is guaranteed to be a subclass of TWindowBase when the activation service is built
-        TWindowBase window = (TWindowBase?)scope.ServiceProvider.GetService(windowType)
-            ?? throw new InvalidOperationException($"The window type {windowType} is not registered with the window provider.");
+        TWindowBase window = (TWindowBase)scope.ServiceProvider.GetRequiredService(windowType);
 
-        // If the window supports navigation, initialize the navigation service for the window scope
+        // If the window supports navigation, initialize the navigation service in the window scope
         // The navigation service may have been instantiated and injected into 'window' already.
         if (window is INavigationProvider navProvider)
         {
@@ -55,12 +69,15 @@ public abstract class ActivationService<TWindowBase> : IActivationService
     /// <summary>
     /// Activate the <paramref name="window"/> resolved and return an <see cref="IWindowService"/> that can be used to control it.
     /// </summary>
+    /// <remarks>Must update <see cref="_activeWindows"/> after the <paramref name="window"/> is successfully activated.</remarks>
     /// <param name="window"></param>
     /// <returns></returns>
     protected abstract IWindowService ActivateWindow(TWindowBase window);
+
     /// <summary>
     /// Configure the <paramref name="window"/> to dispose the <paramref name="scope"/> and removes itself from ActiveWindows when it is closed.
     /// </summary>
+    /// <remarks>Must update <see cref="_activeWindows"/> after the <paramref name="window"/> is closed.</remarks>
     /// <param name="window"></param>
     /// <param name="scope"></param>
     protected abstract void ConfigureWindowClose(TWindowBase window, IServiceScope scope);

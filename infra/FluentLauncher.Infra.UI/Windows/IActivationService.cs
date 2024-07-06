@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FluentLauncher.Infra.UI.Windows;
 
-public record WindowDescriptor(Type WindowType, bool MultiInstance = false);
+public record WindowDescriptor(Type WindowType, bool AllowMultiInstances = false);
 
 /// <summary>
 /// A service for activating app windows.

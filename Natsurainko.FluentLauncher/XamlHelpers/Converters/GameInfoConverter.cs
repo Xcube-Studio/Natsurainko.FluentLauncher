@@ -4,36 +4,37 @@ using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Management.Downloader.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
-public class GameCoreTagConverter : IValueConverter
+public class GameInfoConverter : IValueConverter
 {
+    public bool EnableShowModLoaderType { get; set; } = false;
+
     public object Convert(object value, Type targetType, object parameter, string language)
     {
         if (value is GameInfo game)
         {
             var strings = new List<string>
             {
+                game.AbsoluteVersion ?? "Unknown Version",
                 ResourceUtils.GetValue("Converters", "_" + game.Type switch
                 {
                     "release" => "Release",
                     "snapshot" => "Snapshot",
                     "old_beta" => "Old Beta",
                     "old_alpha" => "Old Alpha",
-                    _ => "Unknown"
-                })
+                    _ => "Unknown Type"
+                }),
             };
 
-            if (game.IsInheritedFrom)
-                strings.Add(ResourceUtils.GetValue("Converters", "_Inherited From"));
+            if (EnableShowModLoaderType)
+                strings.AddRange(game.GetModLoaders().Select(x => $"{x.LoaderType} {x.Version}"));
 
-            strings.Add(game.AbsoluteVersion);
-
-            return string.Join(" ", strings);
+            return strings;
         }
-
 
         if (value is VersionManifestItem manifestItem)
             return ResourceUtils.GetValue("Converters", "_" + manifestItem.Type switch

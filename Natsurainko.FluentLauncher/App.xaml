@@ -40,8 +40,10 @@
 
             <converters:AccountInfoConverter x:Key="AccountInfoConverter" />
             <converters:JavaInfoConverter x:Key="JavaInfoConverter" />
-            <converters:IconConverter x:Key="IconConverter" />
-            <converters:GameCoreTagConverter x:Key="GameCoreTagConverter" />
+
+            <converters:GameIconConverter x:Key="GameIconConverter" />
+            <converters:GameInfoConverter x:Key="GameInfoConverter" />
+
             <converters:TeachingTipTitleConverter x:Key="TeachingTipTitleConverter" />
             <converters:PathToFiguresConverter x:Key="PathToFiguresConverter" />
             <converters:InvertBoolConverter x:Key="InvertBoolConverter" />

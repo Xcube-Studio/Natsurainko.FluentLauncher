@@ -55,14 +55,14 @@ public sealed partial class ShellPage : Page, INavigationProvider
             await blurAnimation(sprite.Brush, 0, TimeSpan.FromMilliseconds(1));
         }
 
-        RefreshDragArea();
+        UpdateTitleBarDragArea();
     }
 
     private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
     {
         AppTitle.Visibility = e.NewSize.Width <= 750 ? Visibility.Collapsed : Visibility.Visible;
 
-        RefreshDragArea();
+        UpdateTitleBarDragArea();
     }
 
     #endregion
@@ -72,16 +72,16 @@ public sealed partial class ShellPage : Page, INavigationProvider
     {
         AutoSuggestBox.Visibility = Visibility.Visible;
 
-        UpdateAppTitleMargin(sender);
-        RefreshDragArea();
+        UpdateTitleTextPosition(sender);
+        UpdateTitleBarDragArea();
     }
 
     private void NavigationViewControl_PaneOpening(NavigationView sender, object _)
     {
         AutoSuggestBox.Visibility = NavigationViewControl.DisplayMode == NavigationViewDisplayMode.Minimal ? Visibility.Collapsed : Visibility.Visible;
 
-        UpdateAppTitleMargin(sender);
-        RefreshDragArea();
+        UpdateTitleTextPosition(sender);
+        UpdateTitleBarDragArea();
     }
 
     private void NavigationViewControl_ItemInvoked(NavigationView _, NavigationViewItemInvokedEventArgs args)
@@ -112,8 +112,8 @@ public sealed partial class ShellPage : Page, INavigationProvider
             contentFrame.Margin = new Thickness(0);
         }
 
-        UpdateAppTitleMargin(sender);
-        RefreshDragArea();
+        UpdateTitleTextPosition(sender);
+        UpdateTitleBarDragArea();
     }
 
     private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
@@ -143,7 +143,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
     #endregion
 
-    private void RefreshDragArea()
+    private void UpdateTitleBarDragArea()
     {
         var scaleAdjustment = XamlRoot.RasterizationScale;
         var height = (int)(48 * scaleAdjustment);
@@ -185,7 +185,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
         App.MainWindow.AppWindow.TitleBar.SetDragRectangles([.. dragRects]);
     }
 
-    private void UpdateAppTitleMargin(NavigationView sender)
+    private void UpdateTitleTextPosition(NavigationView sender)
     {
         AppTitle.TranslationTransition = new Vector3Transition();
         AppTitle.Translation = ((sender.DisplayMode == NavigationViewDisplayMode.Expanded && sender.IsPaneOpen) ||

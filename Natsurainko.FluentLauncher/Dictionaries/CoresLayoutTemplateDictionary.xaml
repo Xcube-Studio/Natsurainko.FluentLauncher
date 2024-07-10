@@ -29,7 +29,7 @@
                             BorderThickness="2"
                             CornerRadius="4">
                             <Border CornerRadius="4">
-                                <Image Source="{Binding Converter={ThemeResource IconConverter}}" />
+                                <Image Source="{Binding Converter={ThemeResource GameIconConverter}}" />
                             </Border>
                         </Border>
                         <Grid Grid.Column="2" VerticalAlignment="Center">
@@ -46,7 +46,7 @@
                                 Grid.Row="1"
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
-                                Text="{Binding Converter={ThemeResource GameCoreTagConverter}}"
+                                Text="{Binding Converter={ThemeResource GameInfoConverter}}"
                                 TextTrimming="CharacterEllipsis"
                                 ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
                         </Grid>
@@ -118,7 +118,7 @@
                         BorderThickness="2"
                         CornerRadius="4">
                         <Border CornerRadius="4">
-                            <Image Source="{Binding Converter={ThemeResource IconConverter}}" />
+                            <Image Source="{Binding Converter={ThemeResource GameIconConverter}}" />
                         </Border>
                     </Border>
                     <Grid
@@ -140,7 +140,7 @@
                             HorizontalAlignment="Center"
                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                             Style="{ThemeResource CaptionTextBlockStyle}"
-                            Text="{Binding Converter={ThemeResource GameCoreTagConverter}}"
+                            Text="{Binding Converter={ThemeResource GameInfoConverter}}"
                             TextTrimming="CharacterEllipsis"
                             ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
                     </Grid>
@@ -178,7 +178,7 @@
                         BorderThickness="2"
                         CornerRadius="4">
                         <Border CornerRadius="4">
-                            <Image Source="{Binding Converter={ThemeResource IconConverter}}" />
+                            <Image Source="{Binding Converter={ThemeResource GameIconConverter}}" />
                         </Border>
                     </Border>
                     <Grid Grid.Column="2" VerticalAlignment="Center">
@@ -195,7 +195,7 @@
                             Grid.Row="1"
                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                             Style="{ThemeResource CaptionTextBlockStyle}"
-                            Text="{Binding Converter={ThemeResource GameCoreTagConverter}}"
+                            Text="{Binding Converter={ThemeResource GameInfoConverter}}"
                             TextTrimming="CharacterEllipsis"
                             ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
                     </Grid>

@@ -17,10 +17,9 @@ namespace Natsurainko.FluentLauncher;
 public partial class App : Application
 {
     public static IServiceProvider Services => Program.AppHost.Services;
-    public static T GetService<T>() where T : notnull // TODO: Rename to GetRequiredService
-        => Services.GetRequiredService<T>();
 
     public static MainWindow MainWindow { get; set; } = null!;
+
     public static DispatcherQueue DispatcherQueue { get; private set; } = null!;
 
     public App()
@@ -120,4 +119,7 @@ public partial class App : Application
     }
 
     #endregion
+
+    public static T GetService<T>() where T : notnull // TODO: Rename to GetRequiredService
+        => Services.GetRequiredService<T>();
 }

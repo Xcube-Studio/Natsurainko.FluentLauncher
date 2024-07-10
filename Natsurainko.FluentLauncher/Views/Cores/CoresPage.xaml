@@ -7,8 +7,8 @@
     xmlns:cores="using:Natsurainko.FluentLauncher.ViewModels.Cores"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:selectors="using:Natsurainko.FluentLauncher.Utils.Xaml.TemplateSelectors"
-    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
+    xmlns:selectors="using:Natsurainko.FluentLauncher.XamlHelpers.Selectors"
+    xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     d:DataContext="{d:DesignInstance Type=cores:CoresViewModel}"
     Background="Transparent"
     mc:Ignorable="d">

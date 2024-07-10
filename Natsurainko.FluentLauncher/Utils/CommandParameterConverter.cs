@@ -1,5 +1,6 @@
 ﻿using System;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.Utils;
 
 public static class CommandParameterConverter

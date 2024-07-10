@@ -2,10 +2,9 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
-using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.Utils.Xaml;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Management.Downloader.Data;
 using Nrk.FluentCore.Resources;
 using Nrk.FluentCore.Utils;

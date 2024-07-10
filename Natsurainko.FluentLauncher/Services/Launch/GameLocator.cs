@@ -1,4 +1,4 @@
-﻿using Natsurainko.FluentLauncher.Utils;
+﻿using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Management.GameLocator;
 using Nrk.FluentCore.Management.Parsing;

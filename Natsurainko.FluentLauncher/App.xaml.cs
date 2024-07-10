@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
+using Microsoft.Windows.AppLifecycle;
 using Natsurainko.FluentLauncher.Services.SystemServices;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
@@ -9,6 +10,7 @@ using Natsurainko.FluentLauncher.ViewModels.Activities;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
 using System;
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
 
@@ -25,11 +27,21 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+        ConfigureApplication();
+    }
 
+    void ConfigureApplication()
+    {
         // Increase thread pool size for bad async code
         // TODO: Remove this when refactoring is completed
         ThreadPool.SetMinThreads(20, 20);
         ThreadPool.SetMaxThreads(20, 20);
+
+        DispatcherQueue = DispatcherQueue.GetForCurrentThread();
+
+        App.GetService<MessengerService>().SubscribeEvents();
+        App.GetService<AppearanceService>().ApplyDisplayTheme();
+        App.GetService<LaunchSessions>(); // TODO: Move to UI services ; Init global launch sessions collection
 
         // Global exception handler
         UnhandledException += (_, e) =>
@@ -37,18 +49,28 @@ public partial class App : Application
             e.Handled = true;
             ProcessException(e.Exception);
         };
-
-        DispatcherQueue = DispatcherQueue.GetForCurrentThread();
-        App.GetService<AppearanceService>().ApplyDisplayTheme();
     }
 
-    protected override void OnLaunched(LaunchActivatedEventArgs args)
+    protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
-        string[] cmdargs = Environment.GetCommandLineArgs();
+        // 确保单例应用程序启动
+        var mainInstance = AppInstance.FindOrRegisterForKey("Main");
+        mainInstance.Activated += (object? sender, AppActivationArguments e) =>
+        {
+            DispatcherQueue.TryEnqueue(() => MainWindow?.Activate());
+        };
 
-        // TODO: Move to UI services
-        App.GetService<LaunchSessions>(); // Init global launch sessions collection
-        App.GetService<MessengerService>().SubscribeEvents();
+        if (!mainInstance.IsCurrent)
+        {
+            //Redirect the activation (and args) to the "main" instance, and exit.
+            var activatedEventArgs = AppInstance.GetCurrent().GetActivatedEventArgs();
+
+            await mainInstance.RedirectActivationToAsync(activatedEventArgs);
+            Process.GetCurrentProcess().Kill();
+            return;
+        }
+
+        string[] cmdargs = Environment.GetCommandLineArgs();
 
         if (cmdargs.Length > 1 && cmdargs[1].Equals("/quick-launch"))
         {
@@ -56,8 +78,14 @@ public partial class App : Application
             return;
         }
 
-        try { App.GetService<IActivationService>().ActivateWindow("MainWindow"); }
-        catch (Exception e) { ProcessException(e); }
+        try 
+        {
+            IWindowService mainWindowService = App.GetService<IActivationService>().ActivateWindow("MainWindow");
+        }
+        catch (Exception e) 
+        {
+            ProcessException(e); 
+        }
     }
 
     #region Global exception handlers

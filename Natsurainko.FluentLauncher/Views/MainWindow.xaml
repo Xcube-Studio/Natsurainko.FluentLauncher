@@ -7,9 +7,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:winuiex="using:WinUIEx"
     mc:Ignorable="d">
+
     <Grid>
         <Grid x:Name="BackgroundGrid" Background="Transparent" />
-        <Frame x:Name="Frame" Background="Transparent" />
+        <Frame
+            x:Name="Frame"
+            Background="Transparent"
+            Loaded="Frame_Loaded" />
 
         <ScrollViewer
             Margin="50,50,50,20"

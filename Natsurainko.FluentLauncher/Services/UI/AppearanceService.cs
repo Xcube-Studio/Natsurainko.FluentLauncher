@@ -10,7 +10,6 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Home;
-using System;
 using System.IO;
 using WinRT;
 

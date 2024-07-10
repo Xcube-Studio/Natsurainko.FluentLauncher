@@ -53,7 +53,7 @@ internal partial class ResourceItemViewModel : ObservableObject, INavigationAwar
     {
         _ = new ResourceItemFilesDialog()
         {
-            XamlRoot = ShellPage._XamlRoot,
+            XamlRoot = MainWindow.XamlRoot,
             DataContext = new ResourceItemFilesDialogViewModel(Resource, _navigationService)
         }.ShowAsync();
     }

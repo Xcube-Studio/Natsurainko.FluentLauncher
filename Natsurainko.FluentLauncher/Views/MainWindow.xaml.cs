@@ -18,6 +18,8 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
 
     object INavigationProvider.NavigationControl => Frame;
 
+    public static XamlRoot XamlRoot { get; set; } = null!;
+
     private readonly INavigationService _navigationService;
     private readonly SettingsService _settingsService;
     private readonly NotificationService _notificationService;
@@ -76,6 +78,7 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
 
         AppWindow.TitleBar.ButtonHoverBackgroundColor = hoverColor;
     }
+
     #endregion
 
     void ConfigureWindow()
@@ -105,4 +108,6 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
     }
 
     public void NavigateToLaunchTasksPage() => _navigationService.NavigateTo("ShellPage", "ActivitiesNavigationPage");
+
+    private void Frame_Loaded(object sender, RoutedEventArgs e) => XamlRoot = Frame.XamlRoot;
 }

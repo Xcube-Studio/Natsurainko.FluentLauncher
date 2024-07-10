@@ -64,7 +64,7 @@ internal partial class CoreSettingsViewModel : ObservableObject, INavigationAwar
     {
         _ = new AddVmArgumentDialog()
         {
-            XamlRoot = ShellPage._XamlRoot,
+            XamlRoot = MainWindow.XamlRoot,
             DataContext = new AddVmArgumentDialogViewModel(arg => VmArguments.Add(arg))
         }.ShowAsync();
     }

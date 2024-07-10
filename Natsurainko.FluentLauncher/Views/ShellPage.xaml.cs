@@ -18,8 +18,6 @@ namespace Natsurainko.FluentLauncher.Views;
 
 public sealed partial class ShellPage : Page, INavigationProvider
 {
-    public static XamlRoot _XamlRoot { get; private set; } = null!; // Initialized on Page_Loaded
-
     public static Frame ContentFrame { get; private set; } = null!; // Initialized on Page_Loaded
 
     object INavigationProvider.NavigationControl => contentFrame;
@@ -45,8 +43,6 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
     private async void Page_Loaded(object sender, RoutedEventArgs e)
     {
-        _XamlRoot = XamlRoot;
-
         App.MainWindow.SetTitleBar(AppTitleBar);
 
         if (_settings.BackgroundMode == 3 && !VM._onNavigatedTo)

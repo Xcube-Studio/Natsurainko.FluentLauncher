@@ -200,7 +200,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     {
         _ = new JavaMirrorsDialog
         {
-            XamlRoot = ShellPage._XamlRoot
+            XamlRoot = MainWindow.XamlRoot
         }.ShowAsync();
     }
 }

@@ -67,7 +67,7 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     }
 
     [RelayCommand]
-    public void Login() => _ = new AuthenticationWizardDialog { XamlRoot = Views.ShellPage._XamlRoot }.ShowAsync();
+    public void Login() => _ = new AuthenticationWizardDialog { XamlRoot = Views.MainWindow.XamlRoot }.ShowAsync();
 
     [RelayCommand]
     public async Task Refresh()
@@ -87,7 +87,7 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     {
         var switchAccountDialog = new SwitchAccountDialog
         {
-            XamlRoot = Views.ShellPage._XamlRoot,
+            XamlRoot = Views.MainWindow.XamlRoot,
             DataContext = App.Services.GetService<SwitchAccountDialogViewModel>()
         };
         _ = switchAccountDialog.ShowAsync();
@@ -99,7 +99,7 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
         await new SkinManageDialog
         {
             DataContext = new SkinManageViewModel(ActiveAccount),
-            XamlRoot = ShellPage._XamlRoot
+            XamlRoot = MainWindow.XamlRoot
         }.ShowAsync();
     }
 }

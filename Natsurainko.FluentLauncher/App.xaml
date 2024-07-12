@@ -51,6 +51,22 @@
             <converters:BackgrondSettingItemVisibilityConverter x:Key="BackgrondSettingItemVisibilityConverter" />
             <converters:ModItemTagConverter x:Key="ModItemTagConverter" />
             <converters:ResourceAuthorsConverter x:Key="ResourceAuthorsConverter" />
+
+            <Style
+                x:Key="SettingsSectionHeaderTextBlockStyle"
+                BasedOn="{StaticResource BodyStrongTextBlockStyle}"
+                TargetType="TextBlock">
+                <Style.Setters>
+                    <Setter Property="Margin" Value="1,30,0,6" />
+                </Style.Setters>
+            </Style>
+
+            <Style
+                x:Key="SettingsTitleSectionHeaderTextBlockStyle"
+                BasedOn="{StaticResource BodyStrongTextBlockStyle}"
+                TargetType="TextBlock" />
+
+            <x:Double x:Key="SettingsCardSpacing">4</x:Double>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -1,17 +1,15 @@
 using FluentLauncher.Infra.UI.Navigation;
-using FluentLauncher.Infra.UI.Pages;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Settings;
-using System.Linq;
 
 namespace Natsurainko.FluentLauncher.Views.Settings;
 
 public sealed partial class NavigationPage : Page, INavigationProvider
 {
     object INavigationProvider.NavigationControl => contentFrame;
-    private SettingsNavigationViewModel VM => (SettingsNavigationViewModel)DataContext;
+    private NavigationViewModel VM => (NavigationViewModel)DataContext;
 
     public NavigationPage()
     {
@@ -28,15 +26,8 @@ public sealed partial class NavigationPage : Page, INavigationProvider
 
     private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
     {
-        foreach (NavigationViewItem item in NavigationView.MenuItems.Union(NavigationView.FooterMenuItems).Cast<NavigationViewItem>())
-        {
-            if (App.GetService<IPageProvider>().RegisteredPages[item.GetTag()].PageType == e.SourcePageType)
-            {
-                NavigationView.SelectedItem = item;
-                item.IsSelected = true;
-                return;
-            }
-        }
+        var breadcrumbBarAware = (contentFrame.Content as Page)!.DataContext as IBreadcrumbBarAware;
+        VM.Routes.Add(breadcrumbBarAware!.Route);
     }
 
     #endregion

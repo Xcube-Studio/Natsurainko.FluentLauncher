@@ -2,65 +2,57 @@
     x:Class="Natsurainko.FluentLauncher.Views.Settings.NavigationPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Settings"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Background="Transparent"
     mc:Ignorable="d">
 
-    <Grid Margin="0,5,0,0">
-        <NavigationView
-            x:Name="NavigationView"
-            IsBackButtonVisible="Collapsed"
-            IsSettingsVisible="False"
-            ItemInvoked="NavigationView_ItemInvoked"
-            PaneDisplayMode="Top">
-            <NavigationView.MenuItems>
-                <NavigationViewItem
-                    x:Uid="Settings_NavigationPage_NV_Item_1"
-                    Content="Launch"
-                    IsSelected="True"
-                    Tag="LaunchSettingsPage">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xe945;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem
-                    x:Uid="Settings_NavigationPage_NV_Item_2"
-                    Content="Account"
-                    Tag="AccountSettingsPage">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xe77b;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem
-                    x:Uid="Settings_NavigationPage_NV_Item_3"
-                    Content="Download"
-                    Tag="DownloadSettingsPage">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xe896;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem
-                    x:Uid="Settings_NavigationPage_NV_Item_4"
-                    Content="Appearance"
-                    Tag="AppearanceSettingsPage">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE790;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-            </NavigationView.MenuItems>
-            <NavigationView.FooterMenuItems>
-                <NavigationViewItem
-                    x:Uid="Settings_NavigationPage_NV_Item_5"
-                    Content="About"
-                    Tag="AboutPage">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE736;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-            </NavigationView.FooterMenuItems>
-            <Frame x:Name="contentFrame" Navigated="ContentFrame_Navigated" />
-        </NavigationView>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+
+        <BreadcrumbBar
+            Grid.Row="0"
+            Margin="30,15"
+            ItemsSource="{Binding Routes}">
+            <i:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="ItemClicked">
+                    <actions:ModifiedInvokeCommandAction Command="{Binding ItemClickedEventCommand}" />
+                </core:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+
+            <BreadcrumbBar.ItemTemplate>
+                <DataTemplate>
+                    <BreadcrumbBarItem Content="{Binding}">
+                        <BreadcrumbBarItem.ContentTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Margin="10,0"
+                                    Style="{ThemeResource TitleTextBlockStyle}"
+                                    Text="{Binding}"
+                                    TextTrimming="CharacterEllipsis" />
+                            </DataTemplate>
+                        </BreadcrumbBarItem.ContentTemplate>
+                    </BreadcrumbBarItem>
+                </DataTemplate>
+            </BreadcrumbBar.ItemTemplate>
+
+        </BreadcrumbBar>
+
+        <Frame
+            x:Name="contentFrame"
+            Grid.Row="1"
+            Navigated="ContentFrame_Navigated">
+            <Frame.ContentTransitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition />
+                </TransitionCollection>
+            </Frame.ContentTransitions>
+        </Frame>
     </Grid>
 </Page>

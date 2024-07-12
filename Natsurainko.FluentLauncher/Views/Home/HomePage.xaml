@@ -3,10 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:home="using:Natsurainko.FluentLauncher.ViewModels.Home"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DataContext="{d:DesignInstance Type=home:HomeViewModel}"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
 
@@ -175,7 +175,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <StackPanel VerticalAlignment="Bottom">
-                    <HyperlinkButton Background="Transparent" Command="{Binding AccountCommand}">
+                    <HyperlinkButton Background="Transparent" Command="{Binding GotoAccountCommand}">
                         <StackPanel>
                             <TextBlock
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
@@ -230,7 +230,7 @@
                         Grid.Column="2"
                         HorizontalTextAlignment="Right"
                         Style="{ThemeResource TitleLargeTextBlockStyle}"
-                        Text="{Binding ActiveGameInfo.Name}"
+                        Text="{Binding DropDownButtonDisplayText}"
                         TextTrimming="CharacterEllipsis" />
                     <DropDownButton.Flyout>
                         <Flyout Opened="Flyout_Opened" Placement="TopEdgeAlignedRight">
@@ -245,62 +245,97 @@
                                     <Setter Property="CornerRadius" Value="8" />
                                 </Style>
                             </Flyout.FlyoutPresenterStyle>
-                            <ListView
-                                x:Name="listView"
-                                MinWidth="250"
-                                MaxWidth="425"
-                                MaxHeight="250"
-                                Margin="-10,-7.5"
-                                ItemsSource="{Binding GameInfos}"
-                                SelectedItem="{Binding ActiveGameInfo, Mode=TwoWay}">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid
-                                            x:Name="DataGrid"
-                                            Padding="0,7.5"
-                                            Background="Transparent">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="10" />
-                                                <ColumnDefinition Width="1*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Border
-                                                Width="36"
-                                                Height="36"
-                                                VerticalAlignment="Center"
-                                                BorderBrush="{ThemeResource IconBorder}"
-                                                BorderThickness="2"
-                                                CornerRadius="4">
-                                                <Border CornerRadius="4">
-                                                    <Image Source="{Binding Converter={ThemeResource GameIconConverter}}" />
+                            <Grid>
+                                <ListView
+                                    x:Name="listView"
+                                    MinWidth="250"
+                                    MaxWidth="425"
+                                    MaxHeight="250"
+                                    Margin="-10,-7.5"
+                                    ItemsSource="{Binding GameInfos}"
+                                    SelectedItem="{Binding ActiveGameInfo, Mode=TwoWay}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid
+                                                x:Name="DataGrid"
+                                                Padding="0,7.5"
+                                                Background="Transparent">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="10" />
+                                                    <ColumnDefinition Width="1*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border
+                                                    Width="36"
+                                                    Height="36"
+                                                    VerticalAlignment="Center"
+                                                    BorderBrush="{ThemeResource IconBorder}"
+                                                    BorderThickness="2"
+                                                    CornerRadius="4">
+                                                    <Border CornerRadius="4">
+                                                        <Image Source="{Binding Converter={ThemeResource GameIconConverter}}" />
+                                                    </Border>
                                                 </Border>
-                                            </Border>
-                                            <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                                                <TextBlock
-                                                    Style="{ThemeResource BaseTextBlockStyle}"
-                                                    Text="{Binding Name}"
-                                                    TextTrimming="CharacterEllipsis"
-                                                    TextWrapping="NoWrap"
-                                                    ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
-                                                <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource GameInfoConverter}}">
-                                                    <ItemsRepeater.Layout>
-                                                        <StackLayout Orientation="Horizontal" Spacing="5" />
-                                                    </ItemsRepeater.Layout>
-                                                    <ItemsRepeater.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <TextBlock
-                                                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                                                Text="{Binding}"
-                                                                ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
-                                                        </DataTemplate>
-                                                    </ItemsRepeater.ItemTemplate>
-                                                </ItemsRepeater>
-                                            </StackPanel>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
+                                                <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                                    <TextBlock
+                                                        Style="{ThemeResource BaseTextBlockStyle}"
+                                                        Text="{Binding Name}"
+                                                        TextTrimming="CharacterEllipsis"
+                                                        TextWrapping="NoWrap"
+                                                        ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                                                    <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource GameInfoConverter}}">
+                                                        <ItemsRepeater.Layout>
+                                                            <StackLayout Orientation="Horizontal" Spacing="5" />
+                                                        </ItemsRepeater.Layout>
+                                                        <ItemsRepeater.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock
+                                                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                    Text="{Binding}"
+                                                                    ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                                                            </DataTemplate>
+                                                        </ItemsRepeater.ItemTemplate>
+                                                    </ItemsRepeater>
+                                                </StackPanel>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                                <StackPanel
+                                    Grid.Row="2"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal"
+                                    Spacing="5">
+                                    <FontIcon
+                                        FontSize="56"
+                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                        Glyph="&#xe74c;" />
+
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock
+                                            x:Uid="Cores_CoresPage_Text3"
+                                            Margin="10,0"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            FontWeight="SemiBold"
+                                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                            Text="No Core" />
+                                        <HyperlinkButton Margin="0,0,0,-5" Command="{Binding GoToSettingsCommand}">
+                                            <TextBlock
+                                                x:Uid="Cores_CoresPage_Text4"
+                                                FontWeight="SemiBold"
+                                                Text="Go To Settings" />
+                                        </HyperlinkButton>
+                                    </StackPanel>
+
+                                    <i:Interaction.Behaviors>
+                                        <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{Binding GameInfos}" />
+                                    </i:Interaction.Behaviors>
+                                </StackPanel>
+
+                            </Grid>
                         </Flyout>
                     </DropDownButton.Flyout>
                 </DropDownButton>

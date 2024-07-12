@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
 using FluentLauncher.Infra.UI.Navigation;
-using Natsurainko.FluentLauncher.Models.Download;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
@@ -12,20 +11,23 @@ using Nrk.FluentCore.Management;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.System;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
 internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
 {
-    private bool initSettings = false;
-
     [SettingsProvider]
     private readonly SettingsService _settingsService;
     private readonly INavigationService _navigationService;
     private readonly GameService _gameService;
     private readonly NotificationService _notificationService;
+
+    public ReadOnlyObservableCollection<GameInfo> GameInfos { get; init; }
 
     public CoresViewModel(
         GameService gameService,
@@ -41,14 +43,15 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
         GameInfos = _gameService.Games;
 
         (this as ISettingsViewModel).InitializeSettings();
-        initSettings = true;
 
         Task.Run(UpdateDisplayGameInfos);
+        PropertyChanged += OnPropertyChanged;
     }
 
     [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.CoresLayoutIndex))]
-    private int segmentedSelectedIndex;
+    [NotifyPropertyChangedFor(nameof(DisplayFolderPath))]
+    [BindToSetting(Path = nameof(SettingsService.ActiveMinecraftFolder))]
+    private string activeMinecraftFolder;
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.CoresFilterIndex))]
@@ -59,23 +62,16 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     private int sortByIndex;
 
     [ObservableProperty]
-    private string searchBoxInput;
-
-    public ReadOnlyObservableCollection<GameInfo> GameInfos { get; init; }
-
-    [ObservableProperty]
     private IEnumerable<GameInfo> displayGameInfos;
 
-    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    public string DisplayFolderPath => (string.IsNullOrEmpty(ActiveMinecraftFolder) || !Directory.Exists(ActiveMinecraftFolder)) 
+        ? ResourceUtils.GetValue("Cores", "CoresPage", "_FolderError")
+        : ActiveMinecraftFolder;
+
+    private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        base.OnPropertyChanged(e);
-
-        if (!initSettings)
-            return;
-
         if (e.PropertyName == nameof(FilterIndex) ||
-            e.PropertyName == nameof(SortByIndex) ||
-            e.PropertyName == nameof(SearchBoxInput))
+            e.PropertyName == nameof(SortByIndex))
             Task.Run(UpdateDisplayGameInfos);
     }
 
@@ -92,9 +88,6 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
             };
         });
 
-        if (!string.IsNullOrEmpty(SearchBoxInput))
-            infos = infos.Where(x => x.Name.ToLower().Contains(SearchBoxInput.ToLower()));
-
         var list = SortByIndex.Equals(0)
             ? infos.OrderBy(x => x.Name).ToList()
             : infos.OrderByDescending(x => x.GetSpecialConfig().LastLaunchTime).ToList();
@@ -103,30 +96,15 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     }
 
     [RelayCommand]
-    public void OpenCoreManage(GameInfo gameInfo)
-        => _navigationService.NavigateTo("CoresManageNavigationPage", gameInfo);
-
-    [RelayCommand]
-    public void SearchAllMinecraft()
-    {
-        if (string.IsNullOrEmpty(_gameService.ActiveMinecraftFolder))
-        {
-            _notificationService.NotifyWithSpecialContent(
-                ResourceUtils.GetValue("Notifications", "_NoMinecraftFolder"),
-                "NoMinecraftFolderNotifyTemplate",
-                GoToSettingsCommand, "\uE711");
-
-            return;
-        }
-
-        _navigationService.NavigateTo("ResourcesSearchPage", new ResourceSearchData
-        {
-            SearchInput = string.Empty,
-            ResourceType = 0
-        });
-    }
-
-    [RelayCommand]
     public void GoToSettings() => _navigationService.NavigateTo("SettingsNavigationPage", "LaunchSettingsPage");
 
+    [RelayCommand]
+    public void GoToCoreSettings(GameInfo gameInfo) => _navigationService.NavigateTo("CoresManageNavigationPage", gameInfo);
+
+    [RelayCommand]
+    public void NavigateFolder()
+    {
+        if (Directory.Exists(ActiveMinecraftFolder))
+            _ = Launcher.LaunchFolderPathAsync(ActiveMinecraftFolder);
+    }
 }

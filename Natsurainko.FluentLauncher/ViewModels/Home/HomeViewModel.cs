@@ -4,6 +4,7 @@ using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
+using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Management;
 using System.Collections.ObjectModel;
@@ -22,6 +23,7 @@ internal partial class HomeViewModel : ObservableObject
     private Account activeAccount;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(DropDownButtonDisplayText))]
     private GameInfo activeGameInfo;
 
     private readonly GameService _gameService;
@@ -44,18 +46,9 @@ internal partial class HomeViewModel : ObservableObject
 
     public Visibility AccountTag => ActiveAccount is null ? Visibility.Collapsed : Visibility.Visible;
 
-    [RelayCommand(CanExecute = nameof(CanExecuteLaunch))]
-    private async Task Launch()
-    {
-        _navigationService.NavigateTo("ActivitiesNavigationPage", "LaunchTasksPage");
-        await Task.Run(() => _launchService.LaunchGame(ActiveGameInfo));
-    }
-
-    [RelayCommand]
-    public void Account() => _navigationService.NavigateTo("SettingsNavigationPage", "AccountSettingsPage");
-
-    [RelayCommand]
-    public void Cores() => _navigationService.NavigateTo("CoresPage");
+    public string DropDownButtonDisplayText => ActiveGameInfo == null
+        ? ResourceUtils.GetValue("Home", "HomePage", "_NoCore")
+        : ActiveGameInfo.Name;
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
@@ -66,4 +59,17 @@ internal partial class HomeViewModel : ObservableObject
     }
 
     private bool CanExecuteLaunch() => ActiveGameInfo is not null;
+
+    [RelayCommand(CanExecute = nameof(CanExecuteLaunch))]
+    private async Task Launch()
+    {
+        _navigationService.NavigateTo("ActivitiesNavigationPage", "LaunchTasksPage");
+        await Task.Run(() => _launchService.LaunchGame(ActiveGameInfo));
+    }
+
+    [RelayCommand]
+    public void GotoAccount() => _navigationService.NavigateTo("SettingsNavigationPage", "AccountSettingsPage");
+
+    [RelayCommand]
+    public void GoToSettings() => _navigationService.NavigateTo("SettingsNavigationPage", "LaunchSettingsPage");
 }

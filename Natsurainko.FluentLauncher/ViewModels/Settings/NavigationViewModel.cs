@@ -1,15 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
+using Microsoft.UI.Xaml.Controls;
+using Natsurainko.FluentLauncher.Utils;
 using System.Collections.ObjectModel;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-public class NavigationViewModel : ObservableObject, INavigationAware
+public partial class NavigationViewModel : ObservableObject, INavigationAware
 {
     private readonly INavigationService _navigationService;
 
-    public ObservableCollection<string> Routes { get; set; }
+    [ObservableProperty]
+    private ObservableCollection<string> routes;
 
     public NavigationViewModel(INavigationService navigationService)
     {
@@ -20,19 +24,29 @@ public class NavigationViewModel : ObservableObject, INavigationAware
     {
         if (parameter is string pageKey)
         {
-            _navigationService.NavigateTo(pageKey);
             Routes = new(pageKey.Split('/'));
+            _navigationService.NavigateTo(pageKey);
         }
         else
         {
-            _navigationService.NavigateTo("Settings/Default"); // Default page
             Routes = [];
+            _navigationService.NavigateTo("Settings/Default"); // Default page
         }
     }
 
     public void NavigateTo(string pageKey, object parameter = null)
     {
         _navigationService.NavigateTo(pageKey, parameter);
-        Routes = new(pageKey.Split('/'));
+        Routes = new(pageKey == "Settings/Default" ? ["Settings"] : pageKey.Split('/'));
+    }
+
+    [RelayCommand]
+    public void ItemClickedEvent(object args)
+    {
+        var breadcrumbBarItemClickedEventArgs = args.As<BreadcrumbBar, BreadcrumbBarItemClickedEventArgs>().args;
+
+        if (breadcrumbBarItemClickedEventArgs.Item.ToString() == "Settings")
+            NavigateTo("Settings/Default");
+        else NavigateTo(string.Join('/', Routes));
     }
 }

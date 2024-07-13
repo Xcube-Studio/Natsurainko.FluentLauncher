@@ -40,11 +40,7 @@ internal partial class AboutViewModel : ObservableObject
         => await Launcher.LaunchUriAsync(new Uri("https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/graphs/contributors"));
 
     [RelayCommand]
-    public async Task DisplayCopyrightLicense()
-    {
-        await new CopyrightLicenseDialog
-        {
-            XamlRoot = MainWindow.XamlRoot
-        }.ShowAsync();
-    }
+    public async Task OpenLicense()
+        => await Launcher.LaunchUriAsync(new Uri("https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/blob/main/LICENSE"));
+
 }

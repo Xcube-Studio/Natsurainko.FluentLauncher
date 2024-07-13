@@ -11,15 +11,13 @@ using Windows.ApplicationModel;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-internal partial class DefaultViewModel : SettingsViewModelBase, ISettingsViewModel, IBreadcrumbBarAware
+internal partial class DefaultViewModel : SettingsViewModelBase, ISettingsViewModel
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;
     private readonly INavigationService _navigationService;
 
     public List<string> Languages { get; } = ResourceUtils.Languages;
-
-    public string Route => "Settings";
 
     public DefaultViewModel(SettingsService settingsService, INavigationService navigationService)
     {
@@ -42,10 +40,10 @@ internal partial class DefaultViewModel : SettingsViewModelBase, ISettingsViewMo
 
 #if DEBUG
     [ObservableProperty]
-    private string edition = "Debug";
+    private string edition = ResourceUtils.GetValue("Settings", "AboutPage", "_Debug");
 #else
     [ObservableProperty]
-    private string edition = "Release";
+    private string edition = ResourceUtils.GetValue("Settings", "AboutPage", "_Release");
 #endif
 
     partial void OnCurrentLanguageChanged(string oldValue, string newValue)

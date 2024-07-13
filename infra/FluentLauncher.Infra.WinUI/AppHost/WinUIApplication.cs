@@ -49,7 +49,7 @@ public class WinUIApplication : IHost
         // Completes when the MUX Application exits.
         var winUIStartedTcs = new TaskCompletionSource();
 
-        Task.Run(() =>
+        void RunWinUIApp()
         {
             try
             {
@@ -75,7 +75,12 @@ public class WinUIApplication : IHost
             {
                 winUIStartedTcs.SetException(ex); // Signal that an exception is thrown during initialization
             }
-        }, cancellationToken);
+        }
+
+        // Start the WinUI app on a new STA thread
+        Thread winuiThread = new(RunWinUIApp);
+        winuiThread.SetApartmentState(ApartmentState.STA);
+        winuiThread.Start();
 
         return winUIStartedTcs.Task;
     }

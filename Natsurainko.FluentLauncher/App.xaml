@@ -38,6 +38,8 @@
             <FontFamily x:Key="MinecraftTen">/Assets/MinecraftTen.ttf#Minecraft Ten</FontFamily>
 
             <converters:AccountInfoConverter x:Key="AccountInfoConverter" />
+
+            <converters:JavaIconConverter x:Key="JavaIconConverter" />
             <converters:JavaInfoConverter x:Key="JavaInfoConverter" />
 
             <converters:GameIconConverter x:Key="GameIconConverter" />

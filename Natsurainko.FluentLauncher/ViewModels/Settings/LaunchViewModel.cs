@@ -1,24 +1,25 @@
-﻿using FluentLauncher.Infra.Settings.Mvvm;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FluentLauncher.Infra.Settings.Mvvm;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
-
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
-using Natsurainko.FluentLauncher.Views;
-using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Environment;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage.Pickers;
+using Windows.System;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
 internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
@@ -113,6 +114,8 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
         }
     }
 
+    #region Minecraft Folder
+
     [RelayCommand]
     public Task BrowserFolder() => Task.Run(async () =>
     {
@@ -142,6 +145,35 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
             });
 
     });
+
+    [RelayCommand]
+    public void RemoveFolder(string folder)
+    {
+        _gameService.RemoveMinecraftFolder(folder);
+        OnPropertyChanged(nameof(IsMinecraftFoldersEmpty));
+    }
+
+    [RelayCommand]
+    public void ActivateFolder(string folder)
+    {
+        if (!Directory.Exists(folder))
+            return;
+
+        _gameService.ActivateMinecraftFolder(folder);
+    }
+
+    [RelayCommand]
+    public void NavigateFolder(string folder)
+    {
+        if (!Directory.Exists(folder))
+            return;
+
+        _ = Launcher.LaunchFolderPathAsync(folder);
+    }
+
+    #endregion
+
+    #region Java
 
     [RelayCommand]
     public void BrowserJava()
@@ -177,30 +209,36 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     }
 
     [RelayCommand]
-    public void RemoveFolder()
+    public void RemoveJava(string java)
     {
-        _gameService.RemoveMinecraftFolder(ActiveMinecraftFolder);
-        OnPropertyChanged(nameof(IsMinecraftFoldersEmpty));
-    }
+        Javas.Remove(java);
 
-    [RelayCommand]
-    public void RemoveJava()
-    {
-        Javas.Remove(ActiveJava);
-        ActiveJava = Javas.Any() ? Javas[0] : null;
+        if (java == ActiveJava)
+            ActiveJava = Javas.Any() ? Javas[0] : null;
 
         OnPropertyChanged(nameof(IsJavasEmpty));
     }
 
     [RelayCommand]
-    public void ActivateCoresPage() => _navigationService.Parent.NavigateTo("CoresPage");
+    public void ActivateJava(string java)
+    {
+        if (!File.Exists(java))
+            return;
+
+        ActiveJava = java;
+    }
 
     [RelayCommand]
-    public void OpenJavaMirrorsDialog()
+    public void NavigateJava(string java)
     {
-        _ = new JavaMirrorsDialog
-        {
-            XamlRoot = MainWindow.XamlRoot
-        }.ShowAsync();
+        if (!File.Exists(java))
+            return;
+
+        using var process = Process.Start(new ProcessStartInfo("explorer.exe", $"/select,{java}"));
     }
+
+    #endregion
+
+    [RelayCommand]
+    public void ActivateCoresPage() => _navigationService.Parent.NavigateTo("CoresPage");
 }

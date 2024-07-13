@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using Nrk.FluentCore.Environment;
 using System;
+using System.IO;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
@@ -9,10 +10,11 @@ public class JavaInfoConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        var file = (string)value;
+        var file = value.ToString();
 
-        if (string.IsNullOrEmpty(file))
-            return null;
+        if (!File.Exists(file))
+            return "Executable file does not exist";
+
         var info = JavaUtils.GetJavaInfo(file);
 
         return $"{info.Name} ({info.Architecture}, {info.Version})";

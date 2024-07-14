@@ -355,9 +355,13 @@
                     <win:RepositionThemeTransition IsStaggeringEnabled="False" />
                 </win:StackPanel.ChildrenTransitions>
 
-                <TextBlock Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}" Text="Theme" />
+                <TextBlock
+                    x:Uid="Settings_AppearancePage_T1"
+                    Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
+                    Text="Theme" />
 
                 <controls:SettingsCard
+                    x:Uid="Settings_AppearancePage_Card1"
                     Description="Dark and light color themes, effective after restarting the app"
                     Header="Display Theme"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe706;}">
@@ -371,6 +375,7 @@
                 </controls:SettingsCard>
 
                 <controls:SettingsExpander
+                    x:Uid="Settings_AppearancePage_Card2"
                     Description="Theme colors for various controls, effective after restarting the app"
                     Header="Application Theme Color"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE790;}">
@@ -383,10 +388,14 @@
                     </Button>
 
                     <controls:SettingsExpander.Items>
-                        <controls:SettingsCard Description="Adaptable to the system and available in varying shades of color" Header="Use the system accent color">
+                        <controls:SettingsCard
+                            x:Uid="Settings_AppearancePage_SubCard1"
+                            Description="Adaptable to the system and available in varying shades of color"
+                            Header="Use the system accent color">
                             <ToggleSwitch IsOn="{Binding UseSystemAccentColor, Mode=TwoWay}" />
                         </controls:SettingsCard>
                         <controls:SettingsCard
+                            x:Uid="Settings_AppearancePage_SubCard2"
                             Description="All theme colors of varying shades will use this single color"
                             Header="Customize theme color"
                             IsEnabled="{Binding UseSystemAccentColor, Converter={ThemeResource InvertBoolConverter}}">
@@ -436,7 +445,10 @@
 
                 </controls:SettingsExpander>
 
-                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Background" />
+                <TextBlock
+                    x:Uid="Settings_AppearancePage_T2"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Background" />
 
                 <controls:SettingsExpander IsEnabled="{Binding MicaIsSupported}">
                     <controls:SettingsExpander.Header>
@@ -453,12 +465,14 @@
                                 </Binding>
                             </RadioButton.IsChecked>
                             <StackPanel>
-                                <TextBlock Text="Mica Background" />
+                                <TextBlock x:Uid="Settings_AppearancePage_H1" Text="Mica Background" />
                                 <TextBlock
+                                    x:Uid="Settings_AppearancePage_D1"
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
                                     Text="Mica is an opaque, dynamic material that incorporates theme and desktop wallpaper to paint the background of long-lived windows such as apps and settings." />
                                 <TextBlock
+                                    x:Uid="Settings_AppearancePage_Text1"
                                     Foreground="{ThemeResource SystemErrorTextColor}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
                                     Text="Unsupported System Version">
@@ -484,7 +498,7 @@
                         </RadioButton>
                     </controls:SettingsExpander.Header>
                     <controls:SettingsExpander.Items>
-                        <controls:SettingsCard Header="Mica Viausl Effect Kind">
+                        <controls:SettingsCard x:Uid="Settings_AppearancePage_SubCard3" Header="Mica Viausl Effect Kind">
                             <ComboBox SelectedIndex="{Binding MicaKind, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
@@ -511,12 +525,14 @@
                                 </Binding>
                             </RadioButton.IsChecked>
                             <StackPanel>
-                                <TextBlock Text="Acrylic Background" />
+                                <TextBlock x:Uid="Settings_AppearancePage_H2" Text="Acrylic Background" />
                                 <TextBlock
+                                    x:Uid="Settings_AppearancePage_D2"
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
                                     Text="Acrylic is a type of Brush that creates a translucent texture." />
                                 <TextBlock
+                                    x:Uid="Settings_AppearancePage_Text1"
                                     Foreground="{ThemeResource SystemErrorTextColor}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
                                     Text="Unsupported System Version">
@@ -557,8 +573,9 @@
                                 </Binding>
                             </RadioButton.IsChecked>
                             <StackPanel>
-                                <TextBlock Text="Solid Color Background" />
+                                <TextBlock x:Uid="Settings_AppearancePage_H3" Text="Solid Color Background" />
                                 <TextBlock
+                                    x:Uid="Settings_AppearancePage_D3"
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
                                     Text="Background composed of a single color" />
@@ -576,7 +593,10 @@
                         </RadioButton>
                     </controls:SettingsExpander.Header>
                     <controls:SettingsExpander.Items>
-                        <controls:SettingsCard HorizontalContentAlignment="Left" Header="Application background color">
+                        <controls:SettingsCard
+                            x:Uid="Settings_AppearancePage_SubCard4"
+                            HorizontalContentAlignment="Left"
+                            Header="Application background color">
                             <StackPanel Orientation="Horizontal" Spacing="10">
                                 <GridView Margin="0,0,0,-15" SelectedIndex="{Binding SolidSelectedIndex, Mode=TwoWay}">
                                     <GridViewItem>
@@ -600,6 +620,7 @@
                                     </GridViewItem>
                                 </GridView>
                                 <Button
+                                    x:Uid="Settings_AppearancePage_ColorSelectorButton"
                                     Content="Color Selector"
                                     Style="{ThemeResource AccentButtonStyle}"
                                     Tag="backgroundColor">
@@ -650,12 +671,14 @@
                                 </Binding>
                             </RadioButton.IsChecked>
                             <StackPanel>
-                                <TextBlock Text="Image Background" />
+                                <TextBlock x:Uid="Settings_AppearancePage_H4" Text="Image Background" />
                                 <TextBlock
+                                    x:Uid="Settings_AppearancePage_D4"
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="Mica is an opaque, dynamic material that incorporates theme and desktop wallpaper to paint the background of long-lived windows such as apps and settings." />
+                                    Text="Use an image as a background" />
                                 <TextBlock
+                                    x:Uid="Settings_AppearancePage_Text2"
                                     Foreground="{ThemeResource SystemErrorTextColor}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
                                     Text="File is not existed">
@@ -681,7 +704,7 @@
                         </RadioButton>
                     </controls:SettingsExpander.Header>
                     <controls:SettingsExpander.Items>
-                        <controls:SettingsCard Header="Image File Path">
+                        <controls:SettingsCard x:Uid="Settings_AppearancePage_SubCard5" Header="Image File Path">
                             <TextBox Width="400" Text="{Binding ImageFilePath, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />

@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
+    xmlns:converters="using:Natsurainko.FluentLauncher.XamlHelpers.Converters"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
@@ -34,8 +35,15 @@
                                 <TextBlock
                                     Margin="10,0"
                                     Style="{ThemeResource TitleTextBlockStyle}"
-                                    Text="{Binding}"
-                                    TextTrimming="CharacterEllipsis" />
+                                    TextTrimming="CharacterEllipsis">
+                                    <TextBlock.Text>
+                                        <Binding>
+                                            <Binding.Converter>
+                                                <converters:BreadcrumbBarLocalizationConverter BasePath="Settings_NavigationPage" />
+                                            </Binding.Converter>
+                                        </Binding>
+                                    </TextBlock.Text>
+                                </TextBlock>
                             </DataTemplate>
                         </BreadcrumbBarItem.ContentTemplate>
                     </BreadcrumbBarItem>

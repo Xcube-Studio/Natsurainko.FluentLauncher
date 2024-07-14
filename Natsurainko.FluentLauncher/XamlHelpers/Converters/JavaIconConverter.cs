@@ -20,7 +20,7 @@ public class JavaIconConverter : IValueConverter
         var bitmapImage = new BitmapImage();
 
         _ = bitmapImage.SetSourceAsync(thumbnail);
-        return new ImageIcon() { Source = bitmapImage };
+        return bitmapImage;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)

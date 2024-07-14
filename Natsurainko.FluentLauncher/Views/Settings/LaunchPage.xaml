@@ -151,10 +151,12 @@
                                 CommandParameter="{Binding}"
                                 Description="{Binding}"
                                 Header="{Binding Converter={ThemeResource JavaInfoConverter}}"
-                                HeaderIcon="{Binding Converter={ThemeResource JavaIconConverter}}"
                                 IsClickEnabled="True"
                                 Loaded="Card_Loaded"
                                 Tag="ActiveJava">
+                                <controls:SettingsCard.HeaderIcon>
+                                    <ImageIcon Source="{Binding Converter={ThemeResource JavaIconConverter}}" />
+                                </controls:SettingsCard.HeaderIcon>
                                 <StackPanel
                                     Name="Operations"
                                     Orientation="Horizontal"

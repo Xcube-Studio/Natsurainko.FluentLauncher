@@ -5,6 +5,7 @@ using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
 using Nrk.FluentCore.Authentication;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 
 internal partial class ChooseAccountTypeViewModel : WizardViewModelBase
@@ -17,7 +18,7 @@ internal partial class ChooseAccountTypeViewModel : WizardViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
-    private AccountType? selectedAccountType;
+    private AccountType? selectedAccountType = AccountType.Microsoft;
 
     public ChooseAccountTypeViewModel(AuthenticationService authService)
     {
@@ -26,16 +27,7 @@ internal partial class ChooseAccountTypeViewModel : WizardViewModelBase
     }
 
     [RelayCommand]
-    public void Checked(string type)
-    {
-        SelectedAccountType = type switch
-        {
-            "Microsoft" => AccountType.Microsoft,
-            "Yggdrasil" => AccountType.Yggdrasil,
-            "Offline" => AccountType.Offline,
-            _ => null
-        };
-    }
+    public void Checked(int index) => SelectedAccountType = (AccountType)index;
 
     public override WizardViewModelBase GetNextViewModel()
     {
@@ -43,8 +35,7 @@ internal partial class ChooseAccountTypeViewModel : WizardViewModelBase
         {
             AccountType.Microsoft => new ChooseMicrosoftAuthMethodViewModel(_authService),
             AccountType.Offline => new EnterOfflineProfileViewModel(),
-            AccountType.Yggdrasil => new EnterYggdrasilProfileViewModel(),
-            _ => null
+            AccountType.Yggdrasil => new EnterYggdrasilProfileViewModel()
         };
     }
 }

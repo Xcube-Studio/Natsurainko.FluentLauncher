@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:converters="using:Natsurainko.FluentLauncher.XamlHelpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Settings"
@@ -15,21 +16,18 @@
     Background="Transparent"
     mc:Ignorable="d">
 
-    <ScrollViewer Padding="32,0" VerticalScrollBarVisibility="Auto">
-        <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
-        <Border Margin="0,20">
-            <StackPanel MaxWidth="1000" Spacing="4">
-
+    <ScrollViewer>
+        <Border Margin="40,0,40,25">
+            <StackPanel
+                MaxWidth="1000"
+                HorizontalAlignment="Stretch"
+                Spacing="{StaticResource SettingsCardSpacing}">
                 <win:StackPanel.ChildrenTransitions>
                     <win:EntranceThemeTransition FromVerticalOffset="50" />
                     <win:RepositionThemeTransition IsStaggeringEnabled="False" />
                 </win:StackPanel.ChildrenTransitions>
 
-                <TextBlock
-                    x:Uid="Settings_AccountPage_T1"
-                    Margin="1,0,0,4"
-                    Style="{ThemeResource BaseTextBlockStyle}"
-                    Text="Accounts" />
+                <TextBlock Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}" Text="Account" />
 
                 <controls:SettingsExpander>
                     <controls:SettingsExpander.Header>
@@ -115,10 +113,10 @@
                     </StackPanel>
                 </controls:SettingsExpander>
 
-                <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xe8fa;}">
-                    <controls:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_AccountPage_H1" Text="Add new account:" />
-                    </controls:SettingsCard.Header>
+                <controls:SettingsCard
+                    Description="Sign in with a Microsoft account or from a third-party Yggdrasil server, or use an offline account"
+                    Header="Add new account"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xe8fa;}">
                     <Button Command="{Binding LoginCommand}">
                         <StackPanel Orientation="Horizontal">
                             <FontIcon FontSize="16" Glyph="&#xe8fa;" />
@@ -130,39 +128,95 @@
                     </Button>
                 </controls:SettingsCard>
 
-                <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE734;}" Visibility="Collapsed">
-                    <controls:SettingsCard.Header>
-                        <TextBlock Text="Manage skins and capes" />
-                    </controls:SettingsCard.Header>
-
-                    <Button Command="{Binding DisplayAccountSkinCommand}">
-                        <StackPanel Orientation="Horizontal">
-                            <FontIcon FontSize="16" Glyph="&#xe912;" />
-                            <TextBlock Margin="5,0,0,0" Text="Manage" />
+                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Skin" />
+                <controls:SettingsCard
+                    Header="Manage skins and capes"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xe728;}"
+                    IsClickEnabled="True">
+                    <controls:SettingsCard.IsEnabled>
+                        <Binding Path="IsOfflineAccount">
+                            <Binding.Converter>
+                                <converters:InvertBoolConverter />
+                            </Binding.Converter>
+                        </Binding>
+                    </controls:SettingsCard.IsEnabled>
+                    <controls:SettingsCard.Description>
+                        <StackPanel>
+                            <TextBlock
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                Text="Preview the current skin, or change the skin" />
+                            <TextBlock
+                                Foreground="{ThemeResource SystemErrorTextColor}"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                Text="Offline accounts do not support skin function">
+                                <TextBlock.Visibility>
+                                    <Binding Path="IsOfflineAccount">
+                                        <Binding.Converter>
+                                            <converters:BoolToVisibilityConverter />
+                                        </Binding.Converter>
+                                    </Binding>
+                                </TextBlock.Visibility>
+                            </TextBlock>
                         </StackPanel>
-                    </Button>
+                    </controls:SettingsCard.Description>
+                </controls:SettingsCard>
+                <controls:SettingsCard
+                    ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
+                    Command="{Binding OpenSkinFileCommand}"
+                    Header="Open the current skin file in File Explorer"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
+                    IsClickEnabled="True">
+                    <controls:SettingsCard.IsEnabled>
+                        <Binding Path="IsOfflineAccount">
+                            <Binding.Converter>
+                                <converters:InvertBoolConverter />
+                            </Binding.Converter>
+                        </Binding>
+                    </controls:SettingsCard.IsEnabled>
+                    <controls:SettingsCard.Description>
+                        <StackPanel>
+                            <TextBlock
+                                Text="{Binding SkinFile}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap">
+                                <TextBlock.Visibility>
+                                    <Binding Path="IsOfflineAccount">
+                                        <Binding.Converter>
+                                            <converters:BoolToVisibilityConverter Inverted="True" />
+                                        </Binding.Converter>
+                                    </Binding>
+                                </TextBlock.Visibility>
+                            </TextBlock>
+                            <TextBlock
+                                Foreground="{ThemeResource SystemErrorTextColor}"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                Text="Offline accounts do not support skin function">
+                                <TextBlock.Visibility>
+                                    <Binding Path="IsOfflineAccount">
+                                        <Binding.Converter>
+                                            <converters:BoolToVisibilityConverter />
+                                        </Binding.Converter>
+                                    </Binding>
+                                </TextBlock.Visibility>
+                            </TextBlock>
+                        </StackPanel>
+                    </controls:SettingsCard.Description>
                 </controls:SettingsCard>
 
-                <TextBlock
-                    x:Uid="Settings_AccountPage_T2"
-                    Margin="1,20,0,4"
-                    Style="{ThemeResource BaseTextBlockStyle}"
-                    Text="Account Settings" />
+                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Other Settings" />
 
-                <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xEC7A;}">
-                    <controls:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_AccountPage_H2" Text="Launch the game with a Demo account:" />
-                    </controls:SettingsCard.Header>
+                <controls:SettingsCard
+                    Description="Will run Minecraft in trial mode"
+                    Header="Launch the game with a Demo account"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xEC7A;}">
                     <ToggleSwitch IsOn="{Binding EnableDemoUser, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
-                <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE72C;}">
-                    <controls:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_AccountPage_H3" Text="Auto refresh account:" />
-                    </controls:SettingsCard.Header>
-                    <controls:SettingsCard.Description>
-                        <TextBlock x:Uid="Settings_AccountPage_D1" Text="Automatically refresh Token before each launch" />
-                    </controls:SettingsCard.Description>
+                <controls:SettingsCard
+                    Description="Automatically refresh Token before each launch"
+                    Header="Auto refresh account"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xE72C;}">
                     <ToggleSwitch IsOn="{Binding AutoRefresh, Mode=TwoWay}" />
                 </controls:SettingsCard>
             </StackPanel>

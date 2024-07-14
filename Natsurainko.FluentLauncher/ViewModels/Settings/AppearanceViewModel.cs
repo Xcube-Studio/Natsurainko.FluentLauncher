@@ -1,14 +1,15 @@
-﻿using FluentLauncher.Infra.Settings.Mvvm;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FluentLauncher.Infra.Settings.Mvvm;
+using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
-using System.Collections.Generic;
-using System.ComponentModel;
+using System.IO;
 using Windows.UI;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
 internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsViewModel
@@ -16,13 +17,11 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     [SettingsProvider]
     private readonly SettingsService _settingsService;
 
-    [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.CurrentLanguage))]
-    private string currentLanguage;
-
-    [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.NavigationViewDisplayMode))]
-    private int navigationViewDisplayMode;
+    public AppearanceViewModel(SettingsService settingsService)
+    {
+        _settingsService = settingsService;
+        (this as ISettingsViewModel).InitializeSettings();
+    }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.DisplayTheme))]
@@ -35,23 +34,15 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.UseSystemAccentColor))]
     [NotifyPropertyChangedFor(nameof(CurrentThemeColor))]
-    [NotifyPropertyChangedFor(nameof(CurrentThemeColorString))]
     private bool useSystemAccentColor;
 
     [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.EnableDefaultAcrylicBrush))]
-    private bool enableDefaultAcrylicBrush;
-
-    [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.TintOpacity))]
-    private double tintOpacity;
-
-    [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.TintLuminosityOpacity))]
-    private double tintLuminosityOpacity;
+    [BindToSetting(Path = nameof(SettingsService.MicaKind))]
+    private int micaKind;
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.ImageFilePath))]
+    [NotifyPropertyChangedFor(nameof(ImageFileExists))]
     private string imageFilePath;
 
     [ObservableProperty]
@@ -59,57 +50,33 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     private int solidSelectedIndex;
 
     [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.SolidCustomColor))]
-    private Color? solidCustomColor;
+    [BindToSetting(Path = nameof(SettingsService.CustomThemeColor))]
+    [NotifyPropertyChangedFor(nameof(CurrentThemeColor))]
+    private Color? customThemeColor;
 
     [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.ThemeCustomColor))]
-    [NotifyPropertyChangedFor(nameof(ThemeCustomColorString))]
-    [NotifyPropertyChangedFor(nameof(CurrentThemeColor))]
-    [NotifyPropertyChangedFor(nameof(CurrentThemeColorString))]
-    private Color? themeCustomColor;
+    [BindToSetting(Path = nameof(SettingsService.CustomBackgroundColor))]
+    private Color? customBackgroundColor;
 
-    public string ThemeCustomColorString => ThemeCustomColor != null
-        ? System.Drawing.ColorTranslator.ToHtml(
-            System.Drawing.Color.FromArgb(
-                CurrentThemeColor.A,
-                CurrentThemeColor.R,
-                CurrentThemeColor.G,
-                CurrentThemeColor.B))
-        : System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.FromArgb(255, default));
+    public Color CurrentThemeColor => UseSystemAccentColor ? (Color)App.Current.Resources["RawSystemAccentColor"] : CustomThemeColor.GetValueOrDefault();
 
-    public string CurrentThemeColorString
-    {
-        get
-        {
-            return System.Drawing.ColorTranslator.ToHtml(
-                System.Drawing.Color.FromArgb(
-                    CurrentThemeColor.A,
-                    CurrentThemeColor.R,
-                    CurrentThemeColor.G,
-                    CurrentThemeColor.B));
-        }
-    }
+    public bool AcrylicIsSupported => DesktopAcrylicController.IsSupported();
 
-    public Color CurrentThemeColor => UseSystemAccentColor ? (Color)App.Current.Resources["RawSystemAccentColor"] : ThemeCustomColor.GetValueOrDefault();
+    public bool MicaIsSupported => MicaController.IsSupported();
 
-    public List<string> SupportedLanguages => ResourceUtils.Languages;
+    public bool ImageFileExists => File.Exists(ImageFilePath);
 
     private Flyout backgroundColorFlyout;
     private Flyout themeColorFlyout;
 
-    public AppearanceViewModel(SettingsService settingsService)
+    [RelayCommand]
+    private void Loaded(object args)
     {
-        _settingsService = settingsService;
-        (this as ISettingsViewModel).InitializeSettings();
+        var button = args.As<Button, object>().sender;
 
-        PropertyChanged += AppearanceViewModel_PropertyChanged;
-    }
-
-    private void AppearanceViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == nameof(CurrentLanguage))
-            ResourceUtils.ApplyLanguage(CurrentLanguage);
+        if (button.Tag.ToString() == "backgroundColor")
+            backgroundColorFlyout = button.Flyout as Flyout;
+        else themeColorFlyout = button.Flyout as Flyout;
     }
 
     [RelayCommand]
@@ -121,12 +88,6 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     }
 
     [RelayCommand]
-    private void Loaded(object args)
-    {
-        var button = args.As<Button, object>().sender;
-
-        if (button.Tag.ToString() == "backgroundColor")
-            backgroundColorFlyout = button.Flyout as Flyout;
-        else themeColorFlyout = button.Flyout as Flyout;
-    }
+    private void RadioButtonChecked(int index)
+        => BackgroundMode = index;
 }

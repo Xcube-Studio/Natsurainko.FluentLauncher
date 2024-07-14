@@ -1,21 +1,18 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Natsurainko.FluentLauncher.Models;
 using System;
+using Windows.UI;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
-internal class MicrosoftAuthMethodToIsCheckedConverter : IValueConverter
+public class ColorHexCodeConverter : IValueConverter
 {
-    public MicrosoftAuthMethod? Method { get; set; }
-
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is MicrosoftAuthMethod method)
-            if (method.Equals(Method))
-                return true;
+        if (value is Color color)
+            return System.Drawing.ColorTranslator.ToHtml(
+                System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B));
 
-        return false;
+        return System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.FromArgb(255, default));
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)

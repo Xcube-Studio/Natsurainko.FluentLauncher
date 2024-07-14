@@ -5,6 +5,7 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 
 internal partial class ChooseMicrosoftAuthMethodViewModel : WizardViewModelBase
@@ -14,7 +15,7 @@ internal partial class ChooseMicrosoftAuthMethodViewModel : WizardViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
-    private MicrosoftAuthMethod? selectedMicrosoftAuthMethod;
+    private MicrosoftAuthMethod? selectedMicrosoftAuthMethod = MicrosoftAuthMethod.BuiltInBrowser;
 
     public ChooseMicrosoftAuthMethodViewModel(AuthenticationService authService)
     {
@@ -23,23 +24,14 @@ internal partial class ChooseMicrosoftAuthMethodViewModel : WizardViewModelBase
     }
 
     [RelayCommand]
-    public void Checked(string method)
-    {
-        SelectedMicrosoftAuthMethod = method switch
-        {
-            "BuiltInBrowser" => MicrosoftAuthMethod.BuiltInBrowser,
-            "DeviceFlowCode" => MicrosoftAuthMethod.DeviceFlowCode,
-            _ => null
-        };
-    }
+    public void Checked(int index) => SelectedMicrosoftAuthMethod = (MicrosoftAuthMethod)index;
 
     public override WizardViewModelBase GetNextViewModel()
     {
         return SelectedMicrosoftAuthMethod switch
         {
             MicrosoftAuthMethod.BuiltInBrowser => new BrowserMicrosoftAuthViewModel(),
-            MicrosoftAuthMethod.DeviceFlowCode => new DeviceFlowMicrosoftAuthViewModel(_authService),
-            _ => null
+            MicrosoftAuthMethod.DeviceFlowCode => new DeviceFlowMicrosoftAuthViewModel(_authService)
         };
     }
 }

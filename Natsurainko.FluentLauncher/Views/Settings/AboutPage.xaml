@@ -62,7 +62,10 @@
                     HeaderIcon="{xh:FontIcon Glyph=&#xe7c1;}"
                     IsClickEnabled="True" />
 
-                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Other information" />
+                <TextBlock
+                    x:Uid="Settings_AboutPage_T1"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Other information" />
 
                 <controls:SettingsCard
                     x:Uid="Settings_AboutPage_Card3"
@@ -80,7 +83,10 @@
                     HeaderIcon="{xh:FontIcon Glyph=&#xF167;}"
                     IsClickEnabled="True" />
 
-                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Credits" />
+                <TextBlock
+                    x:Uid="Settings_AboutPage_T2"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Credits" />
 
                 <controls:SettingsExpander
                     x:Uid="Settings_AboutPage_Card5"

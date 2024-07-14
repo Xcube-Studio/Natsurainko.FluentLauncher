@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
     xmlns:authenticationwizard="using:Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard"
-    xmlns:converters="using:Natsurainko.FluentLauncher.XamlHelpers.Converters"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
@@ -24,15 +23,19 @@
         <StackPanel Spacing="10">
             <RadioButton>
                 <RadioButton.IsChecked>
-                    <Binding Mode="OneWay" Path="SelectedAccountType">
-                        <Binding.Converter>
-                            <converters:AccountTypeToIsCheckedConverter Type="Microsoft" />
-                        </Binding.Converter>
+                    <Binding Converter="{ThemeResource RadioButtonSelectedIndexConverter}" Path="SelectedAccountType">
+                        <Binding.ConverterParameter>
+                            <x:Int32>1</x:Int32>
+                        </Binding.ConverterParameter>
                     </Binding>
                 </RadioButton.IsChecked>
                 <i:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="Checked">
-                        <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}" CommandParameter="Microsoft" />
+                        <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}">
+                            <actions:ModifiedInvokeCommandAction.CommandParameter>
+                                <x:Int32>1</x:Int32>
+                            </actions:ModifiedInvokeCommandAction.CommandParameter>
+                        </actions:ModifiedInvokeCommandAction>
                     </core:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
                 <StackPanel>
@@ -49,15 +52,19 @@
             </RadioButton>
             <RadioButton>
                 <RadioButton.IsChecked>
-                    <Binding Mode="OneWay" Path="SelectedAccountType">
-                        <Binding.Converter>
-                            <converters:AccountTypeToIsCheckedConverter Type="Yggdrasil" />
-                        </Binding.Converter>
+                    <Binding Converter="{ThemeResource RadioButtonSelectedIndexConverter}" Path="SelectedAccountType">
+                        <Binding.ConverterParameter>
+                            <x:Int32>2</x:Int32>
+                        </Binding.ConverterParameter>
                     </Binding>
                 </RadioButton.IsChecked>
                 <i:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="Checked">
-                        <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}" CommandParameter="Yggdrasil" />
+                        <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}">
+                            <actions:ModifiedInvokeCommandAction.CommandParameter>
+                                <x:Int32>1</x:Int32>
+                            </actions:ModifiedInvokeCommandAction.CommandParameter>
+                        </actions:ModifiedInvokeCommandAction>
                     </core:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
                 <StackPanel>
@@ -74,15 +81,19 @@
             </RadioButton>
             <RadioButton>
                 <RadioButton.IsChecked>
-                    <Binding Mode="OneWay" Path="SelectedAccountType">
-                        <Binding.Converter>
-                            <converters:AccountTypeToIsCheckedConverter Type="Offline" />
-                        </Binding.Converter>
+                    <Binding Converter="{ThemeResource RadioButtonSelectedIndexConverter}" Path="SelectedAccountType">
+                        <Binding.ConverterParameter>
+                            <x:Int32>0</x:Int32>
+                        </Binding.ConverterParameter>
                     </Binding>
                 </RadioButton.IsChecked>
                 <i:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="Checked">
-                        <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}" CommandParameter="Offline" />
+                        <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}">
+                            <actions:ModifiedInvokeCommandAction.CommandParameter>
+                                <x:Int32>0</x:Int32>
+                            </actions:ModifiedInvokeCommandAction.CommandParameter>
+                        </actions:ModifiedInvokeCommandAction>
                     </core:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
                 <StackPanel>

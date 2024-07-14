@@ -175,7 +175,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <StackPanel VerticalAlignment="Bottom">
-                    <HyperlinkButton Background="Transparent" Command="{Binding GotoAccountCommand}">
+                    <HyperlinkButton Background="Transparent" Command="{Binding GoToAccountCommand}">
                         <StackPanel>
                             <TextBlock
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"

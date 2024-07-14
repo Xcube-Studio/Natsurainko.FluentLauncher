@@ -45,14 +45,12 @@
             <converters:GameIconConverter x:Key="GameIconConverter" />
             <converters:GameInfoConverter x:Key="GameInfoConverter" />
 
-            <converters:TeachingTipTitleConverter x:Key="TeachingTipTitleConverter" />
-            <converters:PathToFiguresConverter x:Key="PathToFiguresConverter" />
+            <converters:ColorHexCodeConverter x:Key="ColorHexCodeConverter" />
             <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-            <converters:CoresLayoutConverter x:Key="CoresLayoutConverter" />
-            <converters:BackgrondSettingItemVisibilityConverter x:Key="BackgrondSettingItemVisibilityConverter" />
             <converters:ModItemTagConverter x:Key="ModItemTagConverter" />
             <converters:ResourceAuthorsConverter x:Key="ResourceAuthorsConverter" />
+            <converters:RadioButtonSelectedIndexConverter x:Key="RadioButtonSelectedIndexConverter" />
 
             <Style
                 x:Key="SettingsSectionHeaderTextBlockStyle"

@@ -13,10 +13,12 @@
     d:DataContext="{d:DesignInstance Type=vm:DownloadViewModel}"
     mc:Ignorable="d">
 
-    <ScrollViewer Padding="32,0" VerticalScrollBarVisibility="Auto">
-        <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
-        <Border Margin="0,20">
-            <StackPanel MaxWidth="1000" Spacing="4">
+    <ScrollViewer>
+        <Border Margin="40,0,40,25">
+            <StackPanel
+                MaxWidth="1000"
+                HorizontalAlignment="Stretch"
+                Spacing="{StaticResource SettingsCardSpacing}">
                 <win:StackPanel.ChildrenTransitions>
                     <win:EntranceThemeTransition FromVerticalOffset="50" />
                     <win:RepositionThemeTransition IsStaggeringEnabled="False" />
@@ -24,51 +26,77 @@
 
                 <TextBlock
                     x:Uid="Settings_DownloadPage_T1"
-                    Margin="1,0,0,4"
-                    Style="{ThemeResource BaseTextBlockStyle}"
+                    Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
                     Text="Download" />
 
-                <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xEBD3;}">
-                    <controls:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_DownloadPage_H1" Text="Current download sources:" />
-                    </controls:SettingsCard.Header>
-
+                <controls:SettingsCard Header="Current download sources" HeaderIcon="{xh:FontIcon Glyph=&#xEBD3;}">
                     <ComboBox SelectedItem="{Binding CurrentDownloadSource, Mode=TwoWay}">
                         <x:String>Mojang</x:String>
                         <x:String>Bmclapi</x:String>
                     </ComboBox>
                 </controls:SettingsCard>
 
-                <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
-                    <controls:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_DownloadPage_H2" Text="Maximum number of download threads:" />
-                    </controls:SettingsCard.Header>
-                    <controls:SettingsCard.Description>
-                        <TextBlock x:Uid="Settings_DownloadPage_D1" Text="Please optimize and adjust according to the actual network environment" />
-                    </controls:SettingsCard.Description>
-
+                <controls:SettingsCard
+                    Description="Please optimize and adjust according to the actual network environment"
+                    Header="Maximum number of download threads"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
                     <Slider
-                        Width="256"
+                        Width="128"
                         Maximum="256"
                         Minimum="32"
                         Value="{Binding MaxDownloadThreads, Mode=TwoWay}">
+                        <Slider.Header>
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                Style="{ThemeResource BaseTextBlockStyle}"
+                                Text="{Binding MaxDownloadThreads}" />
+                        </Slider.Header>
                         <i:Interaction.Behaviors>
                             <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                         </i:Interaction.Behaviors>
                     </Slider>
                 </controls:SettingsCard>
 
-                <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xEC4A;}">
-                    <controls:SettingsCard.Header>
-                        <TextBlock x:Uid="Settings_DownloadPage_H3" Text="Enable fragmented download of large files:" />
-                    </controls:SettingsCard.Header>
-                    <controls:SettingsCard.Description>
-                        <TextBlock x:Uid="Settings_DownloadPage_D2" Text="Can effectively speed up when encountering large files" />
-                    </controls:SettingsCard.Description>
+                <controls:SettingsCard
+                    Description="Can effectively speed up when encountering large files"
+                    Header="Enable fragmented download of large files:"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xEC4A;}">
                     <ToggleSwitch IsOn="{Binding EnableFragmentDownload, Mode=TwoWay}" />
                 </controls:SettingsCard>
-            </StackPanel>
 
+                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Cache" />
+
+                <controls:SettingsCard
+                    ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
+                    Command="{Binding OpenCacheFolderCommand}"
+                    CommandParameter="{Binding CoreConfigurationsFolder}"
+                    Header="Specific core configuration storage directory"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
+                    IsClickEnabled="True">
+                    <controls:SettingsCard.Description>
+                        <TextBlock
+                            Text="{Binding CoreConfigurationsFolder}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
+                    </controls:SettingsCard.Description>
+                </controls:SettingsCard>
+
+                <controls:SettingsCard
+                    ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
+                    Command="{Binding OpenCacheFolderCommand}"
+                    CommandParameter="{Binding LauncherCacheFolder}"
+                    Header="Launcher cache folder (including caches of images, texts, interfaces, etc.)"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
+                    IsClickEnabled="True">
+                    <controls:SettingsCard.Description>
+                        <TextBlock
+                            Text="{Binding LauncherCacheFolder}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
+                    </controls:SettingsCard.Description>
+                </controls:SettingsCard>
+
+            </StackPanel>
         </Border>
     </ScrollViewer>
 </Page>

@@ -25,7 +25,7 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
         if (parameter is string pageKey)
         {
             Routes = new(pageKey.Split('/'));
-            _navigationService.NavigateTo(pageKey);
+            NavigateTo(pageKey);
         }
         else
         {

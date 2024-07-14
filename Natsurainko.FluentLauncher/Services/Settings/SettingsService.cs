@@ -47,17 +47,15 @@ public partial class SettingsService : SettingsContainer, IFluentCoreSettingsSer
     [SettingItem(typeof(int), "MaxDownloadThreads", Default = 128, Converter = typeof(JsonStringConverter<int>))]
 
     [SettingItem(typeof(string), "CurrentLanguage", Default = "en-US, English", Converter = typeof(JsonStringConverter<string>))] // TODO: remove default value; set to system language if null
-    [SettingItem(typeof(int), "NavigationViewDisplayMode", Default = 0, Converter = typeof(JsonStringConverter<int>))]
+    [SettingItem(typeof(int), "NavigationViewDisplayMode", Default = 0, Converter = typeof(JsonStringConverter<int>))] //TODO: remove this
     [SettingItem(typeof(bool), "NavigationViewIsPaneOpen", Default = false, Converter = typeof(JsonStringConverter<bool>))]
     [SettingItem(typeof(int), "DisplayTheme", Default = 0, Converter = typeof(JsonStringConverter<int>))]
     [SettingItem(typeof(int), "BackgroundMode", Default = 1, Converter = typeof(JsonStringConverter<int>))]
-    [SettingItem(typeof(double), "TintLuminosityOpacity", Default = 0.64, Converter = typeof(JsonStringConverter<double>))]
-    [SettingItem(typeof(double), "TintOpacity", Default = 0, Converter = typeof(JsonStringConverter<double>))]
-    [SettingItem(typeof(bool), "EnableDefaultAcrylicBrush", Default = false, Converter = typeof(JsonStringConverter<bool>))]
+    [SettingItem(typeof(int), "MicaKind", Default = 0, Converter = typeof(JsonStringConverter<int>))]
     [SettingItem(typeof(string), "ImageFilePath", Default = "", Converter = typeof(JsonStringConverter<string>))]
     [SettingItem(typeof(int), "SolidSelectedIndex", Default = 0, Converter = typeof(JsonStringConverter<int>))]
-    [SettingItem(typeof(Windows.UI.Color), "SolidCustomColor", Converter = typeof(JsonStringConverter<Windows.UI.Color>))]
-    [SettingItem(typeof(Windows.UI.Color), "ThemeCustomColor", Converter = typeof(JsonStringConverter<Windows.UI.Color>))]
+    [SettingItem(typeof(Windows.UI.Color), "CustomBackgroundColor", Converter = typeof(JsonStringConverter<Windows.UI.Color>))]
+    [SettingItem(typeof(Windows.UI.Color), "CustomThemeColor", Converter = typeof(JsonStringConverter<Windows.UI.Color>))]
     [SettingItem(typeof(bool), "UseSystemAccentColor", Default = true, Converter = typeof(JsonStringConverter<bool>))]
 
     [SettingItem(typeof(double), "AppWindowHeight", Default = 500, Converter = typeof(JsonStringConverter<double>))]
@@ -67,7 +65,6 @@ public partial class SettingsService : SettingsContainer, IFluentCoreSettingsSer
 
     [SettingItem(typeof(int), "CoresSortByIndex", Default = 0, Converter = typeof(JsonStringConverter<int>))]
     [SettingItem(typeof(int), "CoresFilterIndex", Default = 0, Converter = typeof(JsonStringConverter<int>))]
-    [SettingItem(typeof(int), "CoresLayoutIndex", Default = 0, Converter = typeof(JsonStringConverter<int>))]
 
     [SettingItem(typeof(uint), "SettingsVersion", Default = 0u)]
     public SettingsService(ISettingsStorage storage) : base(storage)

@@ -27,7 +27,10 @@
                     <win:RepositionThemeTransition IsStaggeringEnabled="False" />
                 </win:StackPanel.ChildrenTransitions>
 
-                <TextBlock Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}" Text="Account" />
+                <TextBlock
+                    x:Uid="Settings_AccountPage_T1"
+                    Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
+                    Text="Account" />
 
                 <controls:SettingsExpander>
                     <controls:SettingsExpander.Header>
@@ -114,6 +117,7 @@
                 </controls:SettingsExpander>
 
                 <controls:SettingsCard
+                    x:Uid="Settings_AccountPage_Card1"
                     Description="Sign in with a Microsoft account or from a third-party Yggdrasil server, or use an offline account"
                     Header="Add new account"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe8fa;}">
@@ -128,8 +132,13 @@
                     </Button>
                 </controls:SettingsCard>
 
-                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Skin" />
+                <TextBlock
+                    x:Uid="Settings_AccountPage_T2"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Skin" />
+
                 <controls:SettingsCard
+                    x:Uid="Settings_AccountPage_Card4"
                     Header="Manage skins and capes"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe728;}"
                     IsClickEnabled="True">
@@ -143,10 +152,12 @@
                     <controls:SettingsCard.Description>
                         <StackPanel>
                             <TextBlock
+                                x:Uid="Settings_AccountPage_Text1"
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
                                 Text="Preview the current skin, or change the skin" />
                             <TextBlock
+                                x:Uid="Settings_AccountPage_Text2"
                                 Foreground="{ThemeResource SystemErrorTextColor}"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
                                 Text="Offline accounts do not support skin function">
@@ -162,9 +173,10 @@
                     </controls:SettingsCard.Description>
                 </controls:SettingsCard>
                 <controls:SettingsCard
+                    x:Uid="Settings_AccountPage_Card4"
                     ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
                     Command="{Binding OpenSkinFileCommand}"
-                    Header="Open the current skin file in File Explorer"
+                    Header="Open the current skin file in Explorer"
                     HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
                     IsClickEnabled="True">
                     <controls:SettingsCard.IsEnabled>
@@ -189,6 +201,7 @@
                                 </TextBlock.Visibility>
                             </TextBlock>
                             <TextBlock
+                                x:Uid="Settings_AccountPage_Text2"
                                 Foreground="{ThemeResource SystemErrorTextColor}"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
                                 Text="Offline accounts do not support skin function">
@@ -204,9 +217,13 @@
                     </controls:SettingsCard.Description>
                 </controls:SettingsCard>
 
-                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Other Settings" />
+                <TextBlock
+                    x:Uid="Settings_AccountPage_T3"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Other Settings" />
 
                 <controls:SettingsCard
+                    x:Uid="Settings_AccountPage_Card2"
                     Description="Will run Minecraft in trial mode"
                     Header="Launch the game with a Demo account"
                     HeaderIcon="{xh:FontIcon Glyph=&#xEC7A;}">
@@ -214,6 +231,7 @@
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
+                    x:Uid="Settings_AccountPage_Card3"
                     Description="Automatically refresh Token before each launch"
                     Header="Auto refresh account"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE72C;}">

@@ -29,7 +29,10 @@
                     Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
                     Text="Download" />
 
-                <controls:SettingsCard Header="Current download sources" HeaderIcon="{xh:FontIcon Glyph=&#xEBD3;}">
+                <controls:SettingsCard
+                    x:Uid="Settings_DownloadPage_Card1"
+                    Header="Current download sources"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xEBD3;}">
                     <ComboBox SelectedItem="{Binding CurrentDownloadSource, Mode=TwoWay}">
                         <x:String>Mojang</x:String>
                         <x:String>Bmclapi</x:String>
@@ -37,6 +40,7 @@
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
+                    x:Uid="Settings_DownloadPage_Card2"
                     Description="Please optimize and adjust according to the actual network environment"
                     Header="Maximum number of download threads"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
@@ -58,15 +62,20 @@
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
+                    x:Uid="Settings_DownloadPage_Card3"
                     Description="Can effectively speed up when encountering large files"
-                    Header="Enable fragmented download of large files:"
+                    Header="Enable fragmented download of large files"
                     HeaderIcon="{xh:FontIcon Glyph=&#xEC4A;}">
                     <ToggleSwitch IsOn="{Binding EnableFragmentDownload, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
-                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Cache" />
+                <TextBlock
+                    x:Uid="Settings_DownloadPage_T2"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Cache" />
 
                 <controls:SettingsCard
+                    x:Uid="Settings_DownloadPage_Card4"
                     ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
                     Command="{Binding OpenCacheFolderCommand}"
                     CommandParameter="{Binding CoreConfigurationsFolder}"
@@ -82,6 +91,7 @@
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
+                    x:Uid="Settings_DownloadPage_Card5"
                     ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
                     Command="{Binding OpenCacheFolderCommand}"
                     CommandParameter="{Binding LauncherCacheFolder}"

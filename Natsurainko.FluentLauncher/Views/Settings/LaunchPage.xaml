@@ -27,7 +27,10 @@
                     <win:RepositionThemeTransition IsStaggeringEnabled="False" />
                 </win:StackPanel.ChildrenTransitions>
 
-                <TextBlock Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}" Text=".minecraft Folders" />
+                <TextBlock
+                    x:Uid="Settings_LaunchPage_T1"
+                    Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
+                    Text=".minecraft Folders" />
 
                 <StackPanel
                     Margin="0,20,0,15"
@@ -46,6 +49,7 @@
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Glyph="&#xe74c;" />
                     <TextBlock
+                        x:Uid="Settings_LaunchPage_Text2"
                         VerticalAlignment="Center"
                         FontSize="28"
                         FontWeight="SemiBold"
@@ -59,19 +63,19 @@
                                 ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
                                 CommandParameter="{Binding}"
                                 Description="{Binding}"
-                                Header="Minecraft Folder"
                                 HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
                                 IsClickEnabled="True"
                                 Loaded="Card_Loaded"
                                 Tag="ActiveMinecraftFolder">
+                                <controls:SettingsCard.Header>
+                                    <TextBlock x:Uid="Settings_LaunchPage_Text1" Text="Minecraft Folder" />
+                                </controls:SettingsCard.Header>
                                 <StackPanel
                                     Name="Operations"
                                     Orientation="Horizontal"
                                     Spacing="10">
-                                    <Button
-                                        CommandParameter="{Binding}"
-                                        Content="Active"
-                                        Style="{ThemeResource AccentButtonStyle}">
+                                    <Button CommandParameter="{Binding}" Style="{ThemeResource AccentButtonStyle}">
+                                        <TextBlock x:Uid="Buttons_Activate" Text="Activate" />
                                         <i:Interaction.Behaviors>
                                             <behaviors:AncestorBindingBehavior
                                                 AncestorType="ScrollViewer"
@@ -79,7 +83,8 @@
                                                 TargetPropertyName="Command" />
                                         </i:Interaction.Behaviors>
                                     </Button>
-                                    <Button CommandParameter="{Binding}" Content="Remove">
+                                    <Button CommandParameter="{Binding}">
+                                        <TextBlock x:Uid="Buttons_Remove" Text="Remove" />
                                         <i:Interaction.Behaviors>
                                             <behaviors:AncestorBindingBehavior
                                                 AncestorType="ScrollViewer"
@@ -101,6 +106,7 @@
                     </ItemsRepeater.ItemTemplate>
                 </ItemsRepeater>
                 <controls:SettingsCard
+                    x:Uid="Settings_LaunchPage_Card1"
                     ActionIcon="{xh:FontIcon Glyph=&#xe838;}"
                     Command="{Binding BrowserFolderCommand}"
                     Description="The imported folders will be displayed in the list above"
@@ -108,7 +114,10 @@
                     HeaderIcon="{xh:FontIcon Glyph=&#xe8f4;}"
                     IsClickEnabled="True" />
 
-                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Java Runtime" />
+                <TextBlock
+                    x:Uid="Settings_LaunchPage_T2"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Java Runtime" />
 
                 <StackPanel
                     Margin="0,20,0,15"
@@ -127,6 +136,7 @@
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Glyph="&#xe74c;" />
                     <TextBlock
+                        x:Uid="Settings_LaunchPage_Text3"
                         VerticalAlignment="Center"
                         FontSize="28"
                         FontWeight="SemiBold"
@@ -149,10 +159,8 @@
                                     Name="Operations"
                                     Orientation="Horizontal"
                                     Spacing="10">
-                                    <Button
-                                        CommandParameter="{Binding}"
-                                        Content="Active"
-                                        Style="{ThemeResource AccentButtonStyle}">
+                                    <Button CommandParameter="{Binding}" Style="{ThemeResource AccentButtonStyle}">
+                                        <TextBlock x:Uid="Buttons_Activate" Text="Activate" />
                                         <i:Interaction.Behaviors>
                                             <behaviors:AncestorBindingBehavior
                                                 AncestorType="ScrollViewer"
@@ -160,7 +168,8 @@
                                                 TargetPropertyName="Command" />
                                         </i:Interaction.Behaviors>
                                     </Button>
-                                    <Button CommandParameter="{Binding}" Content="Remove">
+                                    <Button CommandParameter="{Binding}">
+                                        <TextBlock x:Uid="Buttons_Remove" Text="Remove" />
                                         <i:Interaction.Behaviors>
                                             <behaviors:AncestorBindingBehavior
                                                 AncestorType="ScrollViewer"
@@ -182,6 +191,7 @@
                     </ItemsRepeater.ItemTemplate>
                 </ItemsRepeater>
                 <controls:SettingsCard
+                    x:Uid="Settings_LaunchPage_Card2"
                     ActionIcon="{xh:FontIcon Glyph=&#xe838;}"
                     Command="{Binding BrowserJavaCommand}"
                     Description="The imported Javas will be displayed in the list above"
@@ -198,17 +208,19 @@
                                     <SymbolIconSource Symbol="Find" />
                                 </AnimatedIcon.FallbackIconSource>
                             </AnimatedIcon>
-                            <TextBlock Text="Search" />
+                            <TextBlock x:Uid="Buttons_Search" Text="Search" />
                         </StackPanel>
                     </Button>
                 </controls:SettingsCard>
                 <controls:SettingsCard
+                    x:Uid="Settings_LaunchPage_Card3"
                     Description="Select the appropriate version of Java from the list to launch game according to the Minecraft version"
                     Header="Automatically Select Java Runtime"
                     HeaderIcon="{xh:FontIcon Glyph=&#xeccb;}">
                     <ToggleSwitch IsOn="{Binding EnableAutoJava, Mode=TwoWay}" />
                 </controls:SettingsCard>
                 <controls:SettingsCard
+                    x:Uid="Settings_LaunchPage_Card4"
                     Description="The maximum running memory of the Java virtual machine"
                     Header="Java Runtime Memory"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe9e9;}">
@@ -230,15 +242,20 @@
                     </StackPanel>
                 </controls:SettingsCard>
                 <controls:SettingsCard
+                    x:Uid="Settings_LaunchPage_Card5"
                     Description="Calculate the memory allocated to Java based on the remaining physical memory on the system"
                     Header="Automatically set Java runtime memory"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe9d9;}">
                     <ToggleSwitch IsOn="{Binding EnableAutoMemory, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
-                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Global Game Settings" />
+                <TextBlock
+                    x:Uid="Settings_LaunchPage_T3"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Global Game Settings" />
 
                 <controls:SettingsCard
+                    x:Uid="Settings_LaunchPage_Card6"
                     Description="The game will run at versions\${version} directory"
                     Header="Core Independent"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
@@ -246,13 +263,18 @@
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
+                    x:Uid="Settings_LaunchPage_Card7"
                     Description="Automatic full screen mode after entering the game"
                     Header="Full Screen Mode"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE740;}">
                     <ToggleSwitch IsOn="{Binding EnableFullScreen, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
-                <controls:SettingsCard Header="Game Window Resolution" HeaderIcon="{xh:FontIcon Glyph=&#xE744;}">
+                <controls:SettingsCard
+                    x:Uid="Settings_LaunchPage_Card8"
+                    Description="The size of the game window being rendered"
+                    Header="Game Window Resolution"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xE744;}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <NumberBox
                             Width="100"
@@ -267,6 +289,7 @@
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
+                    x:Uid="Settings_LaunchPage_Card9"
                     Description="The server address to connect after entering the game"
                     Header="Server Address"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE967;}">
@@ -277,7 +300,10 @@
                     </TextBox>
                 </controls:SettingsCard>
 
-                <controls:SettingsCard Header="Game Window Title" HeaderIcon="{xh:FontIcon Glyph=&#xE76F;}">
+                <controls:SettingsCard
+                    x:Uid="Settings_LaunchPage_Card10"
+                    Header="Game Window Title"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xE76F;}">
                     <TextBox Width="400" Text="{Binding GameWindowTitle, Mode=TwoWay}">
                         <i:Interaction.Behaviors>
                             <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />

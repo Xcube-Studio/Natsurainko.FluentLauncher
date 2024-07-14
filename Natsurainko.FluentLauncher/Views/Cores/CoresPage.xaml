@@ -18,7 +18,7 @@
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Margin="40,15" Spacing="15">
+        <StackPanel Margin="40,20" Spacing="15">
             <TextBlock
                 x:Uid="Cores_CoresPage_Title"
                 Style="{ThemeResource TitleTextBlockStyle}"

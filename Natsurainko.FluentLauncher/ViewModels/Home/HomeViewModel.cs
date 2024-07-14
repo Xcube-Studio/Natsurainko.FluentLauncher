@@ -68,8 +68,8 @@ internal partial class HomeViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void GotoAccount() => _navigationService.NavigateTo("SettingsNavigationPage", "AccountSettingsPage");
+    public void GoToAccount() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Account");
 
     [RelayCommand]
-    public void GoToSettings() => _navigationService.NavigateTo("SettingsNavigationPage", "LaunchSettingsPage");
+    public void GoToSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Launch");
 }

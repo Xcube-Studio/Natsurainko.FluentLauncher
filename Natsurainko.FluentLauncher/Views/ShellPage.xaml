@@ -281,7 +281,7 @@
                 <NavigationViewItem
                     x:Uid="ShellPage_NV_Item_5"
                     Content="Settings"
-                    Tag="SettingsNavigationPage">
+                    Tag="Settings/Navigation">
                     <NavigationViewItem.Icon>
                         <AnimatedIcon>
                             <AnimatedIcon.FallbackIconSource>

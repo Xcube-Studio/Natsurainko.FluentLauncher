@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
+﻿using FluentLauncher.Infra.Settings;
 using FluentLauncher.Infra.WinUI.AppHost;
-using FluentLauncher.Infra.Settings;
 using FluentLauncher.Infra.WinUI.Settings;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Natsurainko.FluentLauncher;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Download;
@@ -11,11 +10,11 @@ using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.SystemServices;
-using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Services.UI;
-
-using Views = Natsurainko.FluentLauncher.Views;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using System;
 using ViewModels = Natsurainko.FluentLauncher.ViewModels;
+using Views = Natsurainko.FluentLauncher.Views;
 
 var builder = WinUIApplication.CreateBuilder(() => new App());
 
@@ -67,12 +66,13 @@ pages.WithPage<Views.Downloads.CoreInstallWizardPage, ViewModels.Downloads.CoreI
 pages.WithPage<Views.Downloads.ResourceItemPage, ViewModels.Downloads.ResourceItemViewModel>("ResourceItemPage");
 
 // Settings
-pages.WithPage<Views.Settings.NavigationPage, ViewModels.Settings.SettingsNavigationViewModel>("SettingsNavigationPage");
-pages.WithPage<Views.Settings.LaunchPage, ViewModels.Settings.LaunchViewModel>("LaunchSettingsPage");
-pages.WithPage<Views.Settings.AccountPage, ViewModels.Settings.AccountViewModel>("AccountSettingsPage");
-pages.WithPage<Views.Settings.DownloadPage, ViewModels.Settings.DownloadViewModel>("DownloadSettingsPage");
-pages.WithPage<Views.Settings.AppearancePage, ViewModels.Settings.AppearanceViewModel>("AppearanceSettingsPage");
-pages.WithPage<Views.Settings.AboutPage, ViewModels.Settings.AboutViewModel>("AboutPage"); ;
+pages.WithPage<Views.Settings.NavigationPage, ViewModels.Settings.NavigationViewModel>("Settings/Navigation");
+pages.WithPage<Views.Settings.DefaultPage, ViewModels.Settings.DefaultViewModel>("Settings/Default");
+pages.WithPage<Views.Settings.LaunchPage, ViewModels.Settings.LaunchViewModel>("Settings/Launch");
+pages.WithPage<Views.Settings.AccountPage, ViewModels.Settings.AccountViewModel>("Settings/Account");
+pages.WithPage<Views.Settings.DownloadPage, ViewModels.Settings.DownloadViewModel>("Settings/Download");
+pages.WithPage<Views.Settings.AppearancePage, ViewModels.Settings.AppearanceViewModel>("Settings/Appearance");
+pages.WithPage<Views.Settings.AboutPage, ViewModels.Settings.AboutViewModel>("Settings/About"); ;
 
 #endregion
 
@@ -111,7 +111,6 @@ var app = builder.Build();
 AppHost = app.Host;
 
 await app.RunAsync();
-
 
 public partial class Program
 {

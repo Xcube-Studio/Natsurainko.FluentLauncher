@@ -1,21 +1,16 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Nrk.FluentCore.Authentication;
 using System;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
-internal class AccountTypeToIsCheckedConverter : IValueConverter
+public class RadioButtonSelectedIndexConverter : IValueConverter
 {
-    public AccountType? Type { get; set; }
-
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is AccountType type)
-            if (type.Equals(Type))
-                return true;
+        var currentIndex = (int)parameter;
+        var requestIndex = (int)value;
 
-        return false;
+        return currentIndex == requestIndex;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)

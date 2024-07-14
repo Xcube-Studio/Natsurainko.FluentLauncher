@@ -8,6 +8,7 @@ using System;
 using System.ComponentModel;
 using System.Web;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 
 internal partial class BrowserMicrosoftAuthViewModel : WizardViewModelBase

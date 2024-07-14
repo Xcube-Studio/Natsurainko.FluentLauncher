@@ -18,15 +18,19 @@
     <StackPanel Spacing="10">
         <RadioButton>
             <RadioButton.IsChecked>
-                <Binding Mode="OneWay" Path="SelectedMicrosoftAuthMethod">
-                    <Binding.Converter>
-                        <converters:MicrosoftAuthMethodToIsCheckedConverter Method="BuiltInBrowser" />
-                    </Binding.Converter>
+                <Binding Converter="{ThemeResource RadioButtonSelectedIndexConverter}" Path="SelectedMicrosoftAuthMethod">
+                    <Binding.ConverterParameter>
+                        <x:Int32>0</x:Int32>
+                    </Binding.ConverterParameter>
                 </Binding>
             </RadioButton.IsChecked>
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="Checked">
-                    <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}" CommandParameter="BuiltInBrowser" />
+                    <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}">
+                        <actions:ModifiedInvokeCommandAction.CommandParameter>
+                            <x:Int32>0</x:Int32>
+                        </actions:ModifiedInvokeCommandAction.CommandParameter>
+                    </actions:ModifiedInvokeCommandAction>
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
             <StackPanel>
@@ -43,15 +47,19 @@
         </RadioButton>
         <RadioButton>
             <RadioButton.IsChecked>
-                <Binding Mode="OneWay" Path="SelectedMicrosoftAuthMethod">
-                    <Binding.Converter>
-                        <converters:MicrosoftAuthMethodToIsCheckedConverter Method="DeviceFlowCode" />
-                    </Binding.Converter>
+                <Binding Converter="{ThemeResource RadioButtonSelectedIndexConverter}" Path="SelectedMicrosoftAuthMethod">
+                    <Binding.ConverterParameter>
+                        <x:Int32>1</x:Int32>
+                    </Binding.ConverterParameter>
                 </Binding>
             </RadioButton.IsChecked>
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="Checked">
-                    <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}" CommandParameter="DeviceFlowCode" />
+                    <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}">
+                        <actions:ModifiedInvokeCommandAction.CommandParameter>
+                            <x:Int32>1</x:Int32>
+                        </actions:ModifiedInvokeCommandAction.CommandParameter>
+                    </actions:ModifiedInvokeCommandAction>
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
             <StackPanel>

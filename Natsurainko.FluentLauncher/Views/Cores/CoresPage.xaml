@@ -18,20 +18,20 @@
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Margin="40,15" Spacing="15">
+        <StackPanel Margin="40,20" Spacing="15">
             <TextBlock
                 x:Uid="Cores_CoresPage_Title"
                 Style="{ThemeResource TitleTextBlockStyle}"
                 Text="CoresPage" />
 
             <controls:WrapPanel HorizontalSpacing="15" VerticalSpacing="15">
-                <Button Style="{ThemeResource AccentButtonStyle}">
+                <Button Command="{Binding SearchAllMinecraftCommand}" Style="{ThemeResource AccentButtonStyle}">
                     <StackPanel Orientation="Horizontal" Spacing="5">
                         <FontIcon FontSize="14" Glyph="&#xE896;" />
                         <TextBlock x:Uid="Cores_CoresPage_InstallButton" Text="Install cores" />
                     </StackPanel>
                 </Button>
-                <Button Style="{ThemeResource AccentButtonStyle}">
+                <Button IsEnabled="False" Style="{ThemeResource AccentButtonStyle}">
                     <StackPanel Orientation="Horizontal" Spacing="5">
                         <FontIcon FontSize="14" Glyph="&#xe8b5;" />
                         <TextBlock x:Uid="Cores_CoresPage_ImportButton" Text="Import Modpack" />

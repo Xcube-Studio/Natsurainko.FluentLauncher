@@ -53,8 +53,12 @@
 #### *一定需要安装 [.NET 7 运行时](https://dotnet.microsoft.com/zh-cn/download/dotnet/7.0) (不论是从哪种渠道安装)*
 
 
-+ 从 Microsoft Store 获取我们的应用 <a><img src="https://get.microsoft.com/images/en-us%20dark.svg" alt="Logo" width="70" height="20"></a>  
-+ 从 Action 下载最近一次的 Build 的 msixbundle 安装包进行手动安装 
++ 从 Microsoft Store 获取我们的应用
+<a href="https://apps.microsoft.com/detail/Natsurianko.FluentLauncher/9p4nqqxq942p">
+	<img src="https://get.microsoft.com/images/en-us%20dark.svg" width="200"/>
+</a>
+
++  从 Action 下载最近一次的 Build 的 msixbundle 安装包进行手动安装 
   + [如何安装 Msixbundle 包 ?](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85-Msixbundle-%E5%8C%85)
 + 克隆本仓库，从源码手动编译程序
 

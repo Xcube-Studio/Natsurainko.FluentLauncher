@@ -59,7 +59,7 @@
 </a>
 
 +  从 Action 下载最近一次的 Build 的 msixbundle 安装包进行手动安装 
-  + [如何安装 Msixbundle 包 ?](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85-Msixbundle-%E5%8C%85)
+	+ [如何安装 Msixbundle 包 ?](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85-Msixbundle-%E5%8C%85)
 + 克隆本仓库，从源码手动编译程序
 
 ## 开发事宜 🔧

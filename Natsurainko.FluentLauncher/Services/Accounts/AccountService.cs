@@ -19,7 +19,6 @@ internal class AccountService
     private readonly LocalStorageService _storageService;
     private readonly SettingsService _settingsService;
     private readonly AuthenticationService _authService;
-    private readonly SkinCacheService _skinCacheService;
 
     public readonly string AccountsJsonPath = Path.Combine("settings", "accounts.json");
 
@@ -60,13 +59,11 @@ internal class AccountService
     public AccountService(
         SettingsService settingsService,
         LocalStorageService storageService,
-        AuthenticationService authService,
-        SkinCacheService skinCacheService)
+        AuthenticationService authService)
     {
         _settingsService = settingsService;
         _storageService = storageService;
         _authService = authService;
-        _skinCacheService = skinCacheService;
 
         _accounts = new ObservableCollection<Account>(InitializeAccountCollection());
         Accounts = new ReadOnlyObservableCollection<Account>(_accounts);
@@ -188,8 +185,10 @@ internal class AccountService
         if (isActiveAccount)
             ActivateAccount(refreshedAccount);
 
-        // Cache skin
-        await Task.Run(() => _skinCacheService.TryCacheSkin(refreshedAccount));
+        App.GetService<CacheSkinService>().CacheSkinOfAccount(refreshedAccount).ContinueWith(task =>
+        {
+
+        });
     }
 
     public async Task RefreshActiveAccount()

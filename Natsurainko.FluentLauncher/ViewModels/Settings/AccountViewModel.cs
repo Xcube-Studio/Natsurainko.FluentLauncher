@@ -9,7 +9,6 @@ using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
-using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Authentication;
 using System;
@@ -28,23 +27,23 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     private readonly AccountService _accountService;
     private readonly AuthenticationService _authenticationService;
     private readonly NotificationService _notificationService;
-    private readonly SkinCacheService _skinCacheService;
     private readonly INavigationService _navigationService;
+    private readonly CacheSkinService _cacheSkinService;
 
     public AccountViewModel(
         SettingsService settingsService,
         AccountService accountService,
         AuthenticationService authenticationService,
         NotificationService notificationService,
-        SkinCacheService skinCacheService,
-        INavigationService navigationService)
+        INavigationService navigationService,
+        CacheSkinService cacheSkinService)
     {
         _settingsService = settingsService;
         _accountService = accountService;
         _authenticationService = authenticationService;
         _notificationService = notificationService;
-        _skinCacheService = skinCacheService;
         _navigationService = navigationService;
+        _cacheSkinService = cacheSkinService;
 
         Accounts = accountService.Accounts;
         ActiveAccount = accountService.ActiveAccount;
@@ -67,7 +66,7 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
 
     public ReadOnlyObservableCollection<Account> Accounts { get; init; }
 
-    public string SkinFile => _skinCacheService.GetSkinFilePath(ActiveAccount);
+    public string SkinFile => _cacheSkinService.GetSkinFilePath(ActiveAccount);
 
     public bool IsOfflineAccount => ActiveAccount.Type == AccountType.Offline;
 

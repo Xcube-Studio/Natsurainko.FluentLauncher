@@ -17,3 +17,8 @@ class SettingsStringValueChangedMessage : ValueChangedMessage<string>
         PropertyName = propertyName;
     }
 }
+
+class AccountSkinCacheUpdatedMessage : ValueChangedMessage<Account>
+{
+    public AccountSkinCacheUpdatedMessage(Account value) : base(value) { }
+}

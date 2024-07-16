@@ -73,7 +73,7 @@ pages.WithPage<Views.Settings.AccountPage, ViewModels.Settings.AccountViewModel>
 pages.WithPage<Views.Settings.DownloadPage, ViewModels.Settings.DownloadViewModel>("Settings/Download");
 pages.WithPage<Views.Settings.AppearancePage, ViewModels.Settings.AppearanceViewModel>("Settings/Appearance");
 pages.WithPage<Views.Settings.AboutPage, ViewModels.Settings.AboutViewModel>("Settings/About");
-pages.WithPage<Views.Settings.SkinPage>("Settings/Account/Skin");
+pages.WithPage<Views.Settings.SkinPage, ViewModels.Settings.SkinViewModel>("Settings/Account/Skin");
 
 #endregion
 
@@ -97,7 +97,7 @@ services.AddSingleton<MessengerService>();
 services.AddSingleton<AuthenticationService>();
 services.AddSingleton<NotificationService>();
 services.AddSingleton<AppearanceService>();
-services.AddSingleton<SkinCacheService>();
+services.AddSingleton<CacheSkinService>();
 services.AddSingleton<InterfaceCacheService>();
 services.AddSingleton<JumpListService>();
 

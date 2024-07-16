@@ -62,7 +62,7 @@
                     <core:EventTriggerBehavior EventName="Checked">
                         <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}">
                             <actions:ModifiedInvokeCommandAction.CommandParameter>
-                                <x:Int32>1</x:Int32>
+                                <x:Int32>2</x:Int32>
                             </actions:ModifiedInvokeCommandAction.CommandParameter>
                         </actions:ModifiedInvokeCommandAction>
                     </core:EventTriggerBehavior>

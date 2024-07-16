@@ -48,13 +48,10 @@ internal partial class ConfirmProfileViewModel : WizardViewModelBase
 
         Accounts = new();
 
-        Task.Run(async () =>
+        Task.Run(() =>
         {
             App.DispatcherQueue.TryEnqueue(() => Loading = Visibility.Visible);
             var accountsList = new List<Account>(_authenticateAction());
-
-            foreach (var account in accountsList)
-                await Task.Run(() => App.GetService<SkinCacheService>().TryCacheSkin(account));
 
             App.DispatcherQueue.TryEnqueue(() =>
             {

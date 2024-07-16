@@ -82,6 +82,7 @@
     <None Remove="Assets\MinecraftTen.ttf" />
     <None Remove="Assets\Rig_alex.obj" />
     <None Remove="Assets\Rig_steve.obj" />
+    <None Remove="Assets\skin_steve.png" />
     <Content Remove="Assets\Libs\authlib-injector-1.2.5.jar" />
     <Content Remove="Assets\PackageIcons\SplashScreen.scale-100.scale-100.png" />
     <Content Remove="Assets\PackageIcons\SplashScreen.scale-100.scale-125.png" />

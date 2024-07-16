@@ -1,7 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using FluentLauncher.Infra.Settings.Mvvm;
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.WinUI;
+using Natsurainko.FluentLauncher.Services.Accounts;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
+using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Utils;
 using System;
@@ -13,18 +17,32 @@ using Windows.ApplicationModel;
 using Windows.Graphics.Imaging;
 using Windows.Storage.Streams;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Common;
+namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-internal partial class SkinManageViewModel : ObservableObject
+internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
 {
-    private readonly Account _account;
-    private readonly CacheSkinService _cacheSkinService = App.GetService<CacheSkinService>();
+    [SettingsProvider]
+    private readonly SettingsService _settingsService;
+    private readonly AccountService _accountService;
+    private readonly CacheSkinService _cacheSkinService;
+
+    [ObservableProperty]
+    private Account activeAccount;
 
     public ObservableElement3DCollection ModelGeometry { get; private set; } = new ObservableElement3DCollection();
 
-    public SkinManageViewModel(Account account)
+    public SkinViewModel(
+        SettingsService settingsService,
+        AccountService accountService,
+        CacheSkinService cacheSkinService)
     {
-        _account = account;
+        _settingsService = settingsService;
+        _accountService = accountService;
+        _cacheSkinService = cacheSkinService;
+
+        ActiveAccount = accountService.ActiveAccount!;
+
+        (this as ISettingsViewModel).InitializeSettings();
 
         Task.Run(LoadModel);
     }
@@ -36,7 +54,7 @@ internal partial class SkinManageViewModel : ObservableObject
 
         #region Create Skin Texture Stream
 
-        using var fileStream = File.OpenRead(_cacheSkinService.GetSkinFilePath(_account));
+        using var fileStream = File.OpenRead(_cacheSkinService.GetSkinFilePath(ActiveAccount));
         using var randomAccessStream = fileStream.AsRandomAccessStream();
 
         var decoder = await BitmapDecoder.CreateAsync(randomAccessStream);
@@ -69,10 +87,10 @@ internal partial class SkinManageViewModel : ObservableObject
 
     private async Task<bool> IsSlimSkin()
     {
-        var authorization = new Tuple<string, string>("Bearer", _account.AccessToken);
+        var authorization = new Tuple<string, string>("Bearer", ActiveAccount.AccessToken);
         var skinUrl = string.Empty;
 
-        if (_account is YggdrasilAccount yggdrasil)
+        if (ActiveAccount is YggdrasilAccount yggdrasil)
         {
             using var responseMessage = HttpUtils.HttpGet(
                 yggdrasil.YggdrasilServerUrl +
@@ -87,7 +105,7 @@ internal partial class SkinManageViewModel : ObservableObject
                 return true;
         }
 
-        if (_account is MicrosoftAccount microsoft)
+        if (ActiveAccount is MicrosoftAccount microsoft)
         {
             using var responseMessage = HttpUtils.HttpGet("https://api.minecraftservices.com/minecraft/profile", authorization);
             var json = JsonNode.Parse(responseMessage.Content.ReadAsString())["skins"]
@@ -99,4 +117,5 @@ internal partial class SkinManageViewModel : ObservableObject
 
         return false;
     }
+
 }

@@ -425,7 +425,7 @@
                                                 </Style>
                                             </Flyout.FlyoutPresenterStyle>
                                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <controls:ColorPicker Color="{Binding ThemeCustomColor, Mode=TwoWay}" />
+                                                <controls:ColorPicker Color="{Binding CustomThemeColor, Mode=TwoWay}" />
                                                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                                                     <Button
                                                         Command="{Binding SelectColorConfirmCommand}"
@@ -638,7 +638,7 @@
                                                 </Style>
                                             </Flyout.FlyoutPresenterStyle>
                                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <controls:ColorPicker Color="{Binding SolidCustomColor, Mode=TwoWay}" />
+                                                <controls:ColorPicker Color="{Binding CustomBackgroundColor, Mode=TwoWay}" />
                                                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                                                     <Button
                                                         Command="{Binding SelectColorConfirmCommand}"

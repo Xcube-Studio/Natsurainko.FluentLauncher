@@ -4,11 +4,12 @@ using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
-using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Management;
 using System;
+using System.Threading.Tasks;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
 internal partial class ManageNavigationViewModel : ObservableObject, INavigationAware
@@ -34,7 +35,7 @@ internal partial class ManageNavigationViewModel : ObservableObject, INavigation
     }
 
     [RelayCommand]
-    void DeleteGame() => _ = new DeleteGameDialog() { XamlRoot = MainWindow.XamlRoot, DataContext = new DeleteGameDialogViewModel(_gameInfo, _navigationService) }.ShowAsync();
+    async Task DeleteGame() => await new DeleteGameDialog() { DataContext = new DeleteGameDialogViewModel(_gameInfo, _navigationService) }.ShowAsync();
 
     #region Navigation
 

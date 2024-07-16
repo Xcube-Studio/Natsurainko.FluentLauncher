@@ -10,6 +10,7 @@ public sealed partial class SkinManageDialog : ContentDialog
 {
     public SkinManageDialog()
     {
+        this.XamlRoot = MainWindow.XamlRoot;
         this.InitializeComponent();
 
         this.Loaded += SkinManageDialog_Loaded;

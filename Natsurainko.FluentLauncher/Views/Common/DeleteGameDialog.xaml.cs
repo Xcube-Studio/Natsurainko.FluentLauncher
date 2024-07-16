@@ -6,6 +6,8 @@ public sealed partial class DeleteGameDialog : ContentDialog
 {
     public DeleteGameDialog()
     {
+        this.XamlRoot = MainWindow.XamlRoot;
+
         this.InitializeComponent();
     }
 }

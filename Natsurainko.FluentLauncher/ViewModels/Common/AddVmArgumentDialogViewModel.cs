@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Utils;
 using System;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
 internal partial class AddVmArgumentDialogViewModel : ObservableObject

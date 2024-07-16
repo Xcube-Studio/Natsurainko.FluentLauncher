@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
+using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Settings;
@@ -17,6 +18,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
 internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
@@ -27,19 +29,22 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     private readonly AuthenticationService _authenticationService;
     private readonly NotificationService _notificationService;
     private readonly SkinCacheService _skinCacheService;
+    private readonly INavigationService _navigationService;
 
     public AccountViewModel(
         SettingsService settingsService,
         AccountService accountService,
         AuthenticationService authenticationService,
         NotificationService notificationService,
-        SkinCacheService skinCacheService)
+        SkinCacheService skinCacheService,
+        INavigationService navigationService)
     {
         _settingsService = settingsService;
         _accountService = accountService;
         _authenticationService = authenticationService;
         _notificationService = notificationService;
         _skinCacheService = skinCacheService;
+        _navigationService = navigationService;
 
         Accounts = accountService.Accounts;
         ActiveAccount = accountService.ActiveAccount;
@@ -72,7 +77,7 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     }
 
     [RelayCommand]
-    public void Login() => _ = new AuthenticationWizardDialog { XamlRoot = MainWindow.XamlRoot }.ShowAsync();
+    public async Task Login() => await new AuthenticationWizardDialog().ShowAsync();
 
     [RelayCommand]
     public async Task Refresh()
@@ -92,7 +97,6 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     {
         var switchAccountDialog = new SwitchAccountDialog
         {
-            XamlRoot = Views.MainWindow.XamlRoot,
             DataContext = App.Services.GetService<SwitchAccountDialogViewModel>()
         };
         _ = switchAccountDialog.ShowAsync();
@@ -106,4 +110,7 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
 
         using var process = Process.Start(new ProcessStartInfo("explorer.exe", $"/select,{SkinFile}"));
     }
+
+    [RelayCommand]
+    public void GoToSkinPage() => _navigationService.NavigateTo("Settings/Account/Skin");
 }

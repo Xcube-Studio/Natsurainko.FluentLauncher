@@ -6,14 +6,13 @@ using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
-using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Resources;
+using System;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Threading.Tasks;
-using static HelixToolkit.WinUI.ViewportCommands;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 
 internal partial class ResourceItemViewModel : ObservableObject, INavigationAware
@@ -28,10 +27,10 @@ internal partial class ResourceItemViewModel : ObservableObject, INavigationAwar
     }
 
     [ObservableProperty]
-    private Visibility descriptionBorderVisbility = Visibility.Collapsed;
+    private Visibility descriptionBorderVisibility = Visibility.Collapsed;
 
     [ObservableProperty]
-    private Visibility screenshotsBorderVisbility = Visibility.Collapsed;
+    private Visibility screenshotsBorderVisibility = Visibility.Collapsed;
 
     [ObservableProperty]
     private object resource;
@@ -45,15 +44,14 @@ internal partial class ResourceItemViewModel : ObservableObject, INavigationAwar
         var urls = isCurse ? ((CurseForgeResource)parameter).ScreenshotUrls : ((ModrinthResource)parameter).ScreenshotUrls;
 
         if (urls.Any())
-            ScreenshotsBorderVisbility = Visibility.Visible;
+            ScreenshotsBorderVisibility = Visibility.Visible;
     }
 
     [RelayCommand]
-    public void Download()
+    public async Task Download()
     {
-        _ = new ResourceItemFilesDialog()
+        await new ResourceItemFilesDialog()
         {
-            XamlRoot = MainWindow.XamlRoot,
             DataContext = new ResourceItemFilesDialogViewModel(Resource, _navigationService)
         }.ShowAsync();
     }
@@ -83,7 +81,7 @@ internal partial class ResourceItemViewModel : ObservableObject, INavigationAwar
             {
                 sender.Config = new MarkdownConfig();
                 sender.Text = markdown;
-                DescriptionBorderVisbility = Visibility.Visible;
+                DescriptionBorderVisibility = Visibility.Visible;
             });
         });
     }

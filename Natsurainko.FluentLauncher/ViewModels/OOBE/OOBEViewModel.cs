@@ -1,15 +1,12 @@
-﻿using FluentLauncher.Infra.Settings.Mvvm;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
+using FluentLauncher.Infra.Settings.Mvvm;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
-using Natsurainko.FluentLauncher.Services.UI.Messaging;
-
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Authentication;
@@ -305,9 +302,11 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
         ActiveJavaRuntime = JavaRuntimes.Any() ? JavaRuntimes[0] : null;
     }
 
+    /*
     [RelayCommand]
     public void OpenJavaMirrorsDialog(HyperlinkButton parameter)
         => _ = new JavaMirrorsDialog { XamlRoot = parameter.XamlRoot }.ShowAsync();
+    */
 
     #endregion
 

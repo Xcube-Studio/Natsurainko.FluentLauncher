@@ -6,7 +6,6 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Common;
-using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Management;
@@ -15,7 +14,9 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
 
 internal partial class CoreSettingsViewModel : ObservableObject, INavigationAware
@@ -60,12 +61,11 @@ internal partial class CoreSettingsViewModel : ObservableObject, INavigationAwar
     }
 
     [RelayCommand]
-    public void AddArgument()
+    public async Task AddArgument()
     {
-        _ = new AddVmArgumentDialog()
+        await new AddVmArgumentDialog()
         {
-            XamlRoot = MainWindow.XamlRoot,
-            DataContext = new AddVmArgumentDialogViewModel(arg => VmArguments.Add(arg))
+            DataContext = new AddVmArgumentDialogViewModel(VmArguments.Add)
         }.ShowAsync();
     }
 

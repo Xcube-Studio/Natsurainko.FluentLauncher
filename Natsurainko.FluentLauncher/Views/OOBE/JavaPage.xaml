@@ -66,11 +66,13 @@
                         </StackPanel>
                     </Button>
                 </StackPanel>
+                <!--
                 <HyperlinkButton
                     x:Uid="OOBE_JavaPage_Hyplink"
                     Command="{Binding OpenJavaMirrorsDialogCommand}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
                     Content="Third-party Java Download Sources" />
+                -->
             </StackPanel>
         </Grid>
 

@@ -119,8 +119,7 @@ public partial class App : Application
             {
                 try
                 {
-                    var dialog = new ExceptionDialog(errorMessage) { XamlRoot = MainWindow.Content.XamlRoot };
-                    await dialog.ShowAsync();
+                    await new ExceptionDialog(errorMessage).ShowAsync();
                 }
                 catch
                 {

@@ -139,6 +139,7 @@
 
                 <controls:SettingsCard
                     x:Uid="Settings_AccountPage_Card4"
+                    Command="{Binding GoToSkinPageCommand}"
                     Header="Manage skins and capes"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe728;}"
                     IsClickEnabled="True">
@@ -173,7 +174,7 @@
                     </controls:SettingsCard.Description>
                 </controls:SettingsCard>
                 <controls:SettingsCard
-                    x:Uid="Settings_AccountPage_Card4"
+                    x:Uid="Settings_AccountPage_Card5"
                     ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
                     Command="{Binding OpenSkinFileCommand}"
                     Header="Open the current skin file in Explorer"

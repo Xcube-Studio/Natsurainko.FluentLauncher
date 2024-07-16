@@ -94,6 +94,12 @@
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="cd ..&#xD;&#xA;pwsh ./update-localization.ps1" />
   </Target>
+  <ItemGroup>
+    <CustomAdditionalCompileInputs Remove="Views\Settings\SkinPage.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Remove="Views\Settings\SkinPage.xaml" />
+  </ItemGroup>
 
   <!-- Multilingual App Toolkit
   <PropertyGroup Label="MultilingualAppToolkit">

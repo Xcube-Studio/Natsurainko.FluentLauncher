@@ -4,6 +4,7 @@ using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Utils;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
@@ -47,6 +48,6 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
 
         if (breadcrumbBarItemClickedEventArgs.Item.ToString() == "Settings")
             NavigateTo("Settings/Default");
-        else NavigateTo(string.Join('/', Routes));
+        else NavigateTo(string.Join('/', Routes.ToArray()[..^1]));
     }
 }

@@ -10,7 +10,7 @@ Minecraft launcher for Windows 11
 Provides a clean and smooth visual experience
 
 ## Screenshots 🪟
-<img src="https://github.com/okgamr/okgamr/blob/Fluent-Launcher/image0_EN.png">
+<img src="https://github.com/pdimu/pdimu/blob/Fluent-Launcher/image0_EN.png">
 
 ## Future Plans 📝
 

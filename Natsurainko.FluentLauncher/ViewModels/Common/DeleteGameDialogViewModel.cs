@@ -5,8 +5,8 @@ using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Management;
-using Nrk.FluentCore.Utils;
 using System.IO;
 using System.Threading.Tasks;
 

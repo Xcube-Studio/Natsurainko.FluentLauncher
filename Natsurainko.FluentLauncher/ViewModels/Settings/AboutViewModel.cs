@@ -44,7 +44,7 @@ internal partial class AboutViewModel : ObservableObject
     {
         await new CopyrightLicenseDialog
         {
-            XamlRoot = ShellPage._XamlRoot
+            XamlRoot = MainWindow.XamlRoot
         }.ShowAsync();
     }
 }

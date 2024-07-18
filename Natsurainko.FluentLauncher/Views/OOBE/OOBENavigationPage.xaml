@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
-    xmlns:xh="using:Natsurainko.FluentLauncher.Utils.Xaml"
+    xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
     mc:Ignorable="d">
     <Page.Resources>

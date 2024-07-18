@@ -4,7 +4,7 @@ using FluentLauncher.Infra.UI.Navigation;
 using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
-using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
@@ -64,7 +64,7 @@ internal partial class CoreSettingsViewModel : ObservableObject, INavigationAwar
     {
         _ = new AddVmArgumentDialog()
         {
-            XamlRoot = ShellPage._XamlRoot,
+            XamlRoot = MainWindow.XamlRoot,
             DataContext = new AddVmArgumentDialogViewModel(arg => VmArguments.Add(arg))
         }.ShowAsync();
     }

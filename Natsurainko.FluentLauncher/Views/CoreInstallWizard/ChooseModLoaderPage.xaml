@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
-    xmlns:converters="using:Natsurainko.FluentLauncher.Utils.Xaml.Converters"
+    xmlns:converters="using:Natsurainko.FluentLauncher.XamlHelpers.Converters"
     xmlns:coreinstallwizard="using:Natsurainko.FluentLauncher.ViewModels.CoreInstallWizard"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -44,7 +44,7 @@
                                                     BorderThickness="2"
                                                     CornerRadius="4">
                                                     <Border CornerRadius="4">
-                                                        <Image Source="{Binding Type, Converter={ThemeResource IconConverter}}" />
+                                                        <Image Source="{Binding Type, Converter={ThemeResource GameIconConverter}}" />
                                                     </Border>
                                                 </Border>
                                                 <StackPanel Grid.Column="2">

@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
-using Natsurainko.FluentLauncher.Utils.Xaml;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using System;
 using System.Threading.Tasks;
 

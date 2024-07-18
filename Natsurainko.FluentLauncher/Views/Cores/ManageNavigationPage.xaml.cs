@@ -1,7 +1,6 @@
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
-
-using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Cores;
 
 namespace Natsurainko.FluentLauncher.Views.Cores;

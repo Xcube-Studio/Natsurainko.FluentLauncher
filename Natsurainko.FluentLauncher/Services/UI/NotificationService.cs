@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Services.UI;
 
-internal class NotificationService
+public class NotificationService
 {
     private StackPanel _itemsContainer;
     private Grid _shadowReceiver;

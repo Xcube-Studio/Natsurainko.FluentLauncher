@@ -1,7 +1,7 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:behaviors="using:Natsurainko.FluentLauncher.Utils.Xaml.Behaviors"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:i="using:Microsoft.Xaml.Interactivity">
 
@@ -88,7 +88,7 @@
                         BorderThickness="2"
                         CornerRadius="4">
                         <Border.Background>
-                            <ImageBrush ImageSource="{Binding Converter={ThemeResource IconConverter}}" />
+                            <ImageBrush ImageSource="{Binding Converter={ThemeResource GameIconConverter}}" />
                         </Border.Background>
                     </Border>
                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
@@ -100,7 +100,7 @@
                         <TextBlock
                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                             Style="{ThemeResource CaptionTextBlockStyle}"
-                            Text="{Binding Converter={ThemeResource GameCoreTagConverter}}"
+                            Text="{Binding Converter={ThemeResource GameInfoConverter}}"
                             TextTrimming="CharacterEllipsis"
                             TextWrapping="NoWrap" />
                     </StackPanel>

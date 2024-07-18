@@ -34,7 +34,7 @@ internal partial class ManageNavigationViewModel : ObservableObject, INavigation
     }
 
     [RelayCommand]
-    void DeleteGame() => _ = new DeleteGameDialog() { XamlRoot = ShellPage._XamlRoot, DataContext = new DeleteGameDialogViewModel(_gameInfo, _navigationService) }.ShowAsync();
+    void DeleteGame() => _ = new DeleteGameDialog() { XamlRoot = MainWindow.XamlRoot, DataContext = new DeleteGameDialogViewModel(_gameInfo, _navigationService) }.ShowAsync();
 
     #region Navigation
 

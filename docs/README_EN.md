@@ -10,7 +10,7 @@ Minecraft launcher for Windows 11
 Provides a clean and smooth visual experience
 
 ## Screenshots 🪟
-<img src="https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/blob/main/docs/images/image0.png">
+<img src="https://github.com/pdimu/pdimu/blob/Fluent-Launcher/image0_EN.png">
 
 ## Future Plans 📝
 
@@ -53,9 +53,13 @@ Provides a clean and smooth visual experience
 #### *[.NET 7 Runtime](https://dotnet.microsoft.com/zh-cn/download/dotnet/7.0) must be installed (regardless of the source)*
 
 
-+ Get our app from the Microsoft Store <a><img src="https://get.microsoft.com/images/en-us%20dark.svg" alt="Logo" width="70" height="20"></a>  
-+ Download the msixbundle for the latest Build from Action and install it manually. 
-  + [How to install Msixbundle package?](https://github-com.translate.goog/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85-Msixbundle-%E5%8C%85?_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=wapp)
++ Get our app from the Microsoft Store
+<a href="https://apps.microsoft.com/detail/Natsurianko.FluentLauncher/9p4nqqxq942p">
+	<img src="https://get.microsoft.com/images/en-us%20dark.svg" width="200"/>
+</a>
+
++ Download the msixbundle for the latest Build from Action and install it manually.
+  	+ [How to install Msixbundle package?](https://github-com.translate.goog/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85-Msixbundle-%E5%8C%85?_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=wapp)
 + Clone this repository and compile the program manually from the source code
 
 ## Developments 🔧

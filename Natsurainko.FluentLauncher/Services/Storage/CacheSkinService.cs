@@ -4,15 +4,11 @@ using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Management.Downloader.Data;
 using Nrk.FluentCore.Utils;
 using System;
-using System.IO;
-using System.Linq;
-using System.Text.Json.Nodes;
 using System.Threading.Tasks;
-using Windows.Storage;
 
 namespace Natsurainko.FluentLauncher.Services.Storage;
 
-internal class CacheSkinService
+internal class CacheSkinService 
 {
     private readonly LocalStorageService _localStorageService;
 
@@ -38,31 +34,10 @@ internal class CacheSkinService
         var skinUrl = string.Empty;
 
         if (account is YggdrasilAccount yggdrasil)
-        {
-            using var responseMessage = HttpUtils.HttpGet(
-                yggdrasil.YggdrasilServerUrl +
-                "/sessionserver/session/minecraft/profile/" +
-                yggdrasil.Uuid.ToString("N").ToLower()
-                , authorization);
-
-            responseMessage.EnsureSuccessStatusCode();
-
-            var jsonBase64 = JsonNode.Parse(responseMessage.Content.ReadAsString())!["properties"]![0]!["value"]!;
-            var json = JsonNode.Parse(jsonBase64.GetValue<string>().ConvertFromBase64());
-
-            skinUrl = json!["textures"]?["SKIN"]?["url"]?.GetValue<string>();
-        }
+            skinUrl = await SkinHelper.GetSkinUrlAsync(yggdrasil);
 
         if (account is MicrosoftAccount microsoft)
-        {
-            using var responseMessage = HttpUtils.HttpGet("https://api.minecraftservices.com/minecraft/profile", authorization);
-            responseMessage.EnsureSuccessStatusCode();
-
-            var json = JsonNode.Parse(responseMessage.Content.ReadAsString())!["skins"]!
-                .AsArray().Where(item => (item!["state"]?.GetValue<string>().Equals("ACTIVE")).GetValueOrDefault()).FirstOrDefault();
-
-            skinUrl = json!["url"]!.GetValue<string>();
-        }
+            skinUrl = await SkinHelper.GetSkinUrlAsync(microsoft);
 
         var skinFilePath = GetSkinFilePath(account);
         if (!string.IsNullOrEmpty(skinUrl))
@@ -76,7 +51,7 @@ internal class CacheSkinService
             if (downloadResult.IsFaulted)
                 return false;
         }
-        else File.Copy((await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/skin_steve.png"))).Path, skinFilePath, true);
+        else return false;
 
         WeakReferenceMessenger.Default.Send(new AccountSkinCacheUpdatedMessage(account));
 

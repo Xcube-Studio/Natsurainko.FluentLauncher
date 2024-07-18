@@ -60,14 +60,16 @@
 
                 <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Operations" />
                 <controls:SettingsCard
-                    Description="Manage your skins on the official website or skin site"
+                    Command="{Binding UploadSkinCommand}"
+                    Description="Upload a new skin and replace the current skin"
                     Header="Upload new skin"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe898;}"
                     IsClickEnabled="True" />
                 <controls:SettingsCard
+                    Command="{Binding NavigateToWebsiteCommand}"
                     Description="Click to go to management"
-                    Header="Upload a new skin and replace the current skin"
-                    HeaderIcon="{xh:FontIcon Glyph=&#xe898;}"
+                    Header="Manage your skins on the official website or skin site"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xe71b;}"
                     IsClickEnabled="True" />
             </StackPanel>
         </Border>

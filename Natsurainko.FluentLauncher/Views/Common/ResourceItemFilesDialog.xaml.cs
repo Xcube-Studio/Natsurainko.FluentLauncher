@@ -6,6 +6,8 @@ public sealed partial class ResourceItemFilesDialog : ContentDialog
 {
     public ResourceItemFilesDialog()
     {
+        this.XamlRoot = MainWindow.XamlRoot;
+
         this.InitializeComponent();
     }
 }

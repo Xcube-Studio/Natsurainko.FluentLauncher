@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:userControls="using:Natsurainko.FluentLauncher.UserControls"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
     d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
     Loaded="Page_Loaded"
@@ -63,6 +64,7 @@
         <Grid
             Grid.Column="2"
             Width="300"
+            MaxHeight="275"
             HorizontalAlignment="Center"
             VerticalAlignment="Center">
             <ListView
@@ -86,21 +88,13 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <Border
+                            <userControls:AccountAvatar
                                 Grid.RowSpan="2"
                                 Grid.Column="0"
                                 Width="36"
                                 Height="36"
                                 VerticalAlignment="Center"
-                                BorderBrush="{ThemeResource IconBorder}"
-                                BorderThickness="2"
-                                CornerRadius="4">
-                                <Border CornerRadius="4">
-                                    <i:Interaction.Behaviors>
-                                        <behaviors:SkinHeadControlBehavior Account="{Binding}" />
-                                    </i:Interaction.Behaviors>
-                                </Border>
-                            </Border>
+                                Account="{Binding}" />
                             <StackPanel Grid.Column="2">
                                 <TextBlock
                                     FontWeight="SemiBold"

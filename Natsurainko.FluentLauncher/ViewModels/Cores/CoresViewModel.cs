@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
 using FluentLauncher.Infra.UI.Navigation;
+using Natsurainko.FluentLauncher.Models.Download;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
@@ -96,10 +97,30 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     }
 
     [RelayCommand]
-    public void GoToSettings() => _navigationService.NavigateTo("SettingsNavigationPage", "LaunchSettingsPage");
+    public void GoToSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Launch");
 
     [RelayCommand]
     public void GoToCoreSettings(GameInfo gameInfo) => _navigationService.NavigateTo("CoresManageNavigationPage", gameInfo);
+
+    [RelayCommand]
+    public void SearchAllMinecraft()
+    {
+        if (string.IsNullOrEmpty(_gameService.ActiveMinecraftFolder))
+        {
+            _notificationService.NotifyWithSpecialContent(
+                ResourceUtils.GetValue("Notifications", "_NoMinecraftFolder"),
+                "NoMinecraftFolderNotifyTemplate",
+                GoToSettingsCommand, "\uE711");
+
+            return;
+        }
+
+        _navigationService.NavigateTo("ResourcesSearchPage", new ResourceSearchData
+        {
+            SearchInput = string.Empty,
+            ResourceType = 0
+        });
+    }
 
     [RelayCommand]
     public void NavigateFolder()

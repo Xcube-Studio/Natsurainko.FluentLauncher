@@ -1,9 +1,7 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views">
+    xmlns:userControls="using:Natsurainko.FluentLauncher.UserControls">
     <DataTemplate x:Key="NotifyPresenterTemplate">
         <Border
             MinWidth="100"
@@ -157,16 +155,12 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <Border
+                    <userControls:AccountAvatar
                         Grid.RowSpan="2"
                         Grid.Column="0"
                         Width="32"
                         Height="32"
-                        CornerRadius="4">
-                        <i:Interaction.Behaviors>
-                            <behaviors:SkinHeadControlBehavior Account="{Binding}" />
-                        </i:Interaction.Behaviors>
-                    </Border>
+                        Account="{Binding}" />
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="2"

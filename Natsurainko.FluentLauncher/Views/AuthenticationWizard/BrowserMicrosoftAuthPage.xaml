@@ -15,6 +15,7 @@
         <Border CornerRadius="4">
             <WebView2
                 Height="300"
+                MinWidth="400"
                 HorizontalAlignment="Stretch"
                 Source="{Binding Source, Mode=TwoWay}">
                 <WebView2.Visibility>

@@ -18,7 +18,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.Common;
 internal partial class SkinManageViewModel : ObservableObject
 {
     private readonly Account _account;
-    private readonly SkinCacheService _skinCacheService = App.GetService<SkinCacheService>();
+    private readonly CacheSkinService _cacheSkinService = App.GetService<CacheSkinService>();
 
     public ObservableElement3DCollection ModelGeometry { get; private set; } = new ObservableElement3DCollection();
 
@@ -36,7 +36,7 @@ internal partial class SkinManageViewModel : ObservableObject
 
         #region Create Skin Texture Stream
 
-        using var fileStream = File.OpenRead(_skinCacheService.GetSkinFilePath(_account));
+        using var fileStream = File.OpenRead(_cacheSkinService.GetSkinFilePath(_account));
         using var randomAccessStream = fileStream.AsRandomAccessStream();
 
         var decoder = await BitmapDecoder.CreateAsync(randomAccessStream);

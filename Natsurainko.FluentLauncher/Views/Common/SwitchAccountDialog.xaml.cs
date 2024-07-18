@@ -1,17 +1,17 @@
 using Microsoft.UI.Xaml.Controls;
 
-namespace Natsurainko.FluentLauncher.Views.Common
-{
-    public sealed partial class SwitchAccountDialog : ContentDialog
-    {
-        public SwitchAccountDialog()
-        {
-            this.InitializeComponent();
-        }
+namespace Natsurainko.FluentLauncher.Views.Common;
 
-        private void ContentDialog_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-        {
-            ListView.ItemsSource = null; // Unload Binding to AccountService.Accounts
-        }
+public sealed partial class SwitchAccountDialog : ContentDialog
+{
+    public SwitchAccountDialog()
+    {
+        this.XamlRoot = MainWindow.XamlRoot;
+        this.InitializeComponent();
+    }
+
+    private void ContentDialog_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        ListView.ItemsSource = null; // Unload Binding to AccountService.Accounts
     }
 }

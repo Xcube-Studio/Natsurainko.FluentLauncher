@@ -1,0 +1,103 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Settings.DefaultPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    mc:Ignorable="d">
+
+    <ScrollViewer>
+        <Border Margin="40,0,40,25">
+            <StackPanel
+                MaxWidth="1000"
+                HorizontalAlignment="Stretch"
+                Spacing="{StaticResource SettingsCardSpacing}">
+                <win:StackPanel.ChildrenTransitions>
+                    <win:EntranceThemeTransition FromVerticalOffset="50" />
+                    <win:RepositionThemeTransition IsStaggeringEnabled="False" />
+                </win:StackPanel.ChildrenTransitions>
+
+                <controls:SettingsCard
+                    x:Uid="Settings_DefaultPage_Card1"
+                    Command="{Binding CardClickCommand}"
+                    CommandParameter="Settings/Launch"
+                    Description="Set up your .minecraft folder, Java runtime, and global game settings"
+                    Header="Launch settings"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xe945;}"
+                    IsClickEnabled="True" />
+
+                <controls:SettingsCard
+                    x:Uid="Settings_DefaultPage_Card2"
+                    Command="{Binding CardClickCommand}"
+                    CommandParameter="Settings/Account"
+                    Description="Manage login accounts and set skins for games"
+                    Header="Account &amp; Skin settings"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xe77b;}"
+                    IsClickEnabled="True" />
+
+                <controls:SettingsCard
+                    x:Uid="Settings_DefaultPage_Card3"
+                    Command="{Binding CardClickCommand}"
+                    CommandParameter="Settings/Download"
+                    Description="Adjust download performance, set download sources, and manage cache"
+                    Header="Download &amp; Cache settings"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xe896;}"
+                    IsClickEnabled="True" />
+
+                <controls:SettingsCard
+                    x:Uid="Settings_DefaultPage_Card4"
+                    Command="{Binding CardClickCommand}"
+                    CommandParameter="Settings/Appearance"
+                    Description="Set the application background and set the light/dark mode"
+                    Header="Appearance settings"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xE790;}"
+                    IsClickEnabled="True" />
+
+                <TextBlock
+                    x:Uid="Settings_DefaultPage_T1"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Language" />
+
+                <controls:SettingsCard
+                    x:Uid="Settings_DefaultPage_Card5"
+                    Header="Language Settings"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xf2b7;}">
+                    <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}">
+                        <i:Interaction.Behaviors>
+                            <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
+                            <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
+                        </i:Interaction.Behaviors>
+                    </ComboBox>
+                </controls:SettingsCard>
+
+                <TextBlock
+                    x:Uid="Settings_DefaultPage_T2"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="About" />
+
+                <controls:SettingsCard
+                    x:Uid="Settings_DefaultPage_Card6"
+                    Command="{Binding CardClickCommand}"
+                    CommandParameter="Settings/About"
+                    Description="Xcube Studio ©2022-2024. All rights reserved."
+                    Header="Fluent Launcher"
+                    IsClickEnabled="True">
+
+                    <controls:SettingsCard.HeaderIcon>
+                        <ImageIcon Source="ms-appx:///Assets/AppIcon.png" />
+                    </controls:SettingsCard.HeaderIcon>
+
+                    <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Style="{ThemeResource CaptionTextBlockStyle}">
+                        <Run Text="{Binding Edition}" />
+                        <Run Text="{Binding Version}" />
+                    </TextBlock>
+                </controls:SettingsCard>
+            </StackPanel>
+        </Border>
+    </ScrollViewer>
+</Page>

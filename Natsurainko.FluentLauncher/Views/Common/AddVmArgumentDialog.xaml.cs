@@ -6,6 +6,8 @@ public sealed partial class AddVmArgumentDialog : ContentDialog
 {
     public AddVmArgumentDialog()
     {
+        this.XamlRoot = MainWindow.XamlRoot;
+
         this.InitializeComponent();
     }
 }

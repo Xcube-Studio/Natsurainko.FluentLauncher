@@ -219,7 +219,7 @@
                     BorderBrush="{ThemeResource SettingsCardBorderBrush}"
                     BorderThickness="1"
                     CornerRadius="{ThemeResource ControlCornerRadius}"
-                    Visibility="{Binding ScreenshotsBorderVisbility}">
+                    Visibility="{Binding ScreenshotsBorderVisibility}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -262,7 +262,7 @@
                     BorderBrush="{ThemeResource SettingsCardBorderBrush}"
                     BorderThickness="1"
                     CornerRadius="{ThemeResource ControlCornerRadius}"
-                    Visibility="{Binding DescriptionBorderVisbility}">
+                    Visibility="{Binding DescriptionBorderVisibility}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />

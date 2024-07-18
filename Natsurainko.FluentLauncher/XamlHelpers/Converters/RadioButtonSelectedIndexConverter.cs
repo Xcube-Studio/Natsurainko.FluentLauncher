@@ -1,21 +1,16 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Natsurainko.FluentLauncher.Models;
 using System;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
-internal class MicrosoftAuthMethodToIsCheckedConverter : IValueConverter
+public class RadioButtonSelectedIndexConverter : IValueConverter
 {
-    public MicrosoftAuthMethod? Method { get; set; }
-
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is MicrosoftAuthMethod method)
-            if (method.Equals(Method))
-                return true;
+        var currentIndex = (int)parameter;
+        var requestIndex = (int)value;
 
-        return false;
+        return currentIndex == requestIndex;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)

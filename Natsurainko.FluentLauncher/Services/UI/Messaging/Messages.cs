@@ -7,3 +7,18 @@ class ActiveAccountChangedMessage : ValueChangedMessage<Account>
 {
     public ActiveAccountChangedMessage(Account value) : base(value) { }
 }
+
+class SettingsStringValueChangedMessage : ValueChangedMessage<string>
+{
+    public string PropertyName { get; set; }
+
+    public SettingsStringValueChangedMessage(string value, string propertyName) : base(value)
+    {
+        PropertyName = propertyName;
+    }
+}
+
+class AccountSkinCacheUpdatedMessage : ValueChangedMessage<Account>
+{
+    public AccountSkinCacheUpdatedMessage(Account value) : base(value) { }
+}

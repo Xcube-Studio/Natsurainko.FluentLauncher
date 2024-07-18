@@ -66,17 +66,20 @@
                         </StackPanel>
                     </Button>
                 </StackPanel>
+                <!--
                 <HyperlinkButton
                     x:Uid="OOBE_JavaPage_Hyplink"
                     Command="{Binding OpenJavaMirrorsDialogCommand}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
                     Content="Third-party Java Download Sources" />
+                -->
             </StackPanel>
         </Grid>
 
         <Grid
             Grid.Column="2"
             Width="300"
+            MaxHeight="275"
             HorizontalAlignment="Center"
             VerticalAlignment="Center">
             <ListView ItemsSource="{Binding JavaRuntimes}" SelectedItem="{Binding ActiveJavaRuntime, Mode=TwoWay}">
@@ -90,13 +93,13 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid
-                            Padding="0,7.5"
+                            Padding="0,10"
                             Background="Transparent"
                             PointerEntered="Grid_PointerEntered"
                             PointerExited="Grid_PointerExited">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="7.5" />
+                                <ColumnDefinition Width="10" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
@@ -106,12 +109,9 @@
                                 Width="32"
                                 Height="32"
                                 VerticalAlignment="Center"
-                                Source="/Assets/Icons/java_logo.png" />
+                                Source="{Binding Converter={ThemeResource JavaIconConverter}}" />
                             <StackPanel Grid.Column="2">
-                                <TextBlock
-                                    FontWeight="SemiBold"
-                                    Text="{Binding Converter={ThemeResource JavaInfoConverter}}"
-                                    TextTrimming="CharacterEllipsis" />
+                                <TextBlock Text="{Binding Converter={ThemeResource JavaInfoConverter}}" TextTrimming="CharacterEllipsis" />
                                 <TextBlock
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"

@@ -6,6 +6,7 @@ using Natsurainko.FluentLauncher.Utils.Extensions;
 using System;
 using System.Threading.Tasks;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Notification;
 
 internal partial class NotifyPresenterViewModel : ObservableObject

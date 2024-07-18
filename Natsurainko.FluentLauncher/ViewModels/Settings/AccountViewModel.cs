@@ -1,29 +1,55 @@
-﻿using FluentLauncher.Infra.Settings.Mvvm;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
+using FluentLauncher.Infra.Settings.Mvvm;
+using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI;
-using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
-using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Authentication;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
 internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
 {
-    #region Settings
-
     [SettingsProvider]
     private readonly SettingsService _settingsService;
+    private readonly AccountService _accountService;
+    private readonly AuthenticationService _authenticationService;
+    private readonly NotificationService _notificationService;
+    private readonly INavigationService _navigationService;
+    private readonly CacheSkinService _cacheSkinService;
+
+    public AccountViewModel(
+        SettingsService settingsService,
+        AccountService accountService,
+        AuthenticationService authenticationService,
+        NotificationService notificationService,
+        INavigationService navigationService,
+        CacheSkinService cacheSkinService)
+    {
+        _settingsService = settingsService;
+        _accountService = accountService;
+        _authenticationService = authenticationService;
+        _notificationService = notificationService;
+        _navigationService = navigationService;
+        _cacheSkinService = cacheSkinService;
+
+        Accounts = accountService.Accounts;
+        ActiveAccount = accountService.ActiveAccount;
+
+        (this as ISettingsViewModel).InitializeSettings();
+    }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.EnableDemoUser))]
@@ -33,33 +59,16 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     [BindToSetting(Path = nameof(SettingsService.AutoRefresh))]
     private bool autoRefresh;
 
-    #endregion
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SkinFile))]
+    [NotifyPropertyChangedFor(nameof(IsOfflineAccount))]
+    private Account activeAccount;
 
     public ReadOnlyObservableCollection<Account> Accounts { get; init; }
 
-    [ObservableProperty]
-    private Account activeAccount;
+    public string SkinFile => _cacheSkinService.GetSkinFilePath(ActiveAccount);
 
-    private readonly AccountService _accountService;
-    private readonly AuthenticationService _authenticationService;
-    private readonly NotificationService _notificationService;
-
-    public AccountViewModel(
-        SettingsService settingsService,
-        AccountService accountService,
-        AuthenticationService authenticationService,
-        NotificationService notificationService)
-    {
-        _settingsService = settingsService;
-        _accountService = accountService;
-        _authenticationService = authenticationService;
-        _notificationService = notificationService;
-
-        Accounts = accountService.Accounts;
-        ActiveAccount = accountService.ActiveAccount;
-
-        (this as ISettingsViewModel).InitializeSettings();
-    }
+    public bool IsOfflineAccount => ActiveAccount.Type == AccountType.Offline;
 
     partial void OnActiveAccountChanged(Account value)
     {
@@ -67,7 +76,7 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     }
 
     [RelayCommand]
-    public void Login() => _ = new AuthenticationWizardDialog { XamlRoot = Views.MainWindow.XamlRoot }.ShowAsync();
+    public async Task Login() => await new AuthenticationWizardDialog().ShowAsync();
 
     [RelayCommand]
     public async Task Refresh()
@@ -87,19 +96,20 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     {
         var switchAccountDialog = new SwitchAccountDialog
         {
-            XamlRoot = Views.MainWindow.XamlRoot,
             DataContext = App.Services.GetService<SwitchAccountDialogViewModel>()
         };
         _ = switchAccountDialog.ShowAsync();
     }
 
     [RelayCommand]
-    public async Task DisplayAccountSkin()
+    public void OpenSkinFile()
     {
-        await new SkinManageDialog
-        {
-            DataContext = new SkinManageViewModel(ActiveAccount),
-            XamlRoot = MainWindow.XamlRoot
-        }.ShowAsync();
+        if (!File.Exists(SkinFile))
+            return;
+
+        using var process = Process.Start(new ProcessStartInfo("explorer.exe", $"/select,{SkinFile}"));
     }
+
+    [RelayCommand]
+    public void GoToSkinPage() => _navigationService.NavigateTo("Settings/Account/Skin");
 }

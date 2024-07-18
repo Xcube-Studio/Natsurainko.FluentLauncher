@@ -1,21 +1,20 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Nrk.FluentCore.Authentication;
+using Natsurainko.FluentLauncher.Utils;
 using System;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
-internal class AccountTypeToIsCheckedConverter : IValueConverter
+public class BreadcrumbBarLocalizationConverter : IValueConverter
 {
-    public AccountType? Type { get; set; }
+    public string BasePath { get; set; }
 
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is AccountType type)
-            if (type.Equals(Type))
-                return true;
+        if (value is not string text)
+            return string.Empty;
 
-        return false;
+        return ResourceUtils.GetValue(BasePath, $"_{text}");
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)

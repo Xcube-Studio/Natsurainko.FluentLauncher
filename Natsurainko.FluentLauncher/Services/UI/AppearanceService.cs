@@ -1,5 +1,4 @@
 ﻿using Microsoft.UI;
-using Microsoft.UI.Composition;
 using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -7,11 +6,9 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Home;
 using System.IO;
-using WinRT;
 
 namespace Natsurainko.FluentLauncher.Services.UI;
 
@@ -62,8 +59,8 @@ internal class AppearanceService
             case 2:
                 if (_settingsService.SolidSelectedIndex == 0)
                     page.Background = App.Current.Resources["ApplicationPageBackgroundThemeBrush"] as Brush;
-                else if (_settingsService.SolidCustomColor != null)
-                    page.Background = new SolidColorBrush(_settingsService.SolidCustomColor.GetValueOrDefault(Colors.Transparent));
+                else if (_settingsService.CustomBackgroundColor != null)
+                    page.Background = new SolidColorBrush(_settingsService.CustomBackgroundColor.GetValueOrDefault(Colors.Transparent));
 
                 break;
             case 3:
@@ -91,14 +88,14 @@ internal class AppearanceService
 
         if (!_settingsService.UseSystemAccentColor)
         {
-            App.Current.Resources["SystemAccentColorLight1"] = _settingsService.ThemeCustomColor.GetValueOrDefault();
-            App.Current.Resources["SystemAccentColorLight2"] = _settingsService.ThemeCustomColor.GetValueOrDefault();
-            App.Current.Resources["SystemAccentColorLight3"] = _settingsService.ThemeCustomColor.GetValueOrDefault();
-            App.Current.Resources["SystemAccentColorDark1"] = _settingsService.ThemeCustomColor.GetValueOrDefault();
-            App.Current.Resources["SystemAccentColorDark2"] = _settingsService.ThemeCustomColor.GetValueOrDefault();
-            App.Current.Resources["SystemAccentColorDark3"] = _settingsService.ThemeCustomColor.GetValueOrDefault();
+            App.Current.Resources["SystemAccentColorLight1"] = _settingsService.CustomThemeColor.GetValueOrDefault();
+            App.Current.Resources["SystemAccentColorLight2"] = _settingsService.CustomThemeColor.GetValueOrDefault();
+            App.Current.Resources["SystemAccentColorLight3"] = _settingsService.CustomThemeColor.GetValueOrDefault();
+            App.Current.Resources["SystemAccentColorDark1"] = _settingsService.CustomThemeColor.GetValueOrDefault();
+            App.Current.Resources["SystemAccentColorDark2"] = _settingsService.CustomThemeColor.GetValueOrDefault();
+            App.Current.Resources["SystemAccentColorDark3"] = _settingsService.CustomThemeColor.GetValueOrDefault();
 
-            App.Current.Resources["SystemAccentColor"] = _settingsService.ThemeCustomColor.GetValueOrDefault();
+            App.Current.Resources["SystemAccentColor"] = _settingsService.CustomThemeColor.GetValueOrDefault();
         }
     }
 
@@ -135,91 +132,15 @@ internal class AppearanceService
 
     public void ApplyBackgroundAtWindowCreated(MainWindow window)
     {
-        WindowsSystemDispatcherQueueHelper? m_wsdqHelper = null;
-        DesktopAcrylicController? m_backdropController = null;
-        SystemBackdropConfiguration? m_configurationSource = null;
-
-        bool TrySetAcrylicBackdrop(MainWindow window)
-        {
-            if (DesktopAcrylicController.IsSupported())
-            {
-                m_wsdqHelper = new WindowsSystemDispatcherQueueHelper();
-                m_wsdqHelper.EnsureWindowsSystemDispatcherQueueController();
-
-                m_configurationSource = new SystemBackdropConfiguration();
-                window.Activated += Window_Activated;
-                window.Closed += Window_Closed;
-                ((FrameworkElement)window.Content).ActualThemeChanged += Window_ThemeChanged;
-
-                m_configurationSource.IsInputActive = true;
-                SetConfigurationSourceTheme();
-
-                m_backdropController = new DesktopAcrylicController();
-
-                if (!_settingsService.EnableDefaultAcrylicBrush)
-                {
-                    m_backdropController.TintOpacity = (float)_settingsService.TintOpacity;
-                    m_backdropController.LuminosityOpacity = (float)_settingsService.TintLuminosityOpacity;
-                    m_backdropController.TintColor = ((FrameworkElement)window.Content).ActualTheme switch
-                    {
-                        ElementTheme.Dark => Colors.Black,
-                        ElementTheme.Light => Colors.White,
-                        _ => Colors.White
-                    };
-                }
-
-                m_backdropController.AddSystemBackdropTarget(window.As<ICompositionSupportsSystemBackdrop>());
-                m_backdropController.SetSystemBackdropConfiguration(m_configurationSource);
-                return true;
-            }
-
-            return false;
-        }
-
-        void Window_Activated(object sender, WindowActivatedEventArgs args)
-        {
-            m_configurationSource.IsInputActive = args.WindowActivationState != WindowActivationState.Deactivated;
-        }
-
-        void Window_Closed(object sender, WindowEventArgs args)
-        {
-            if (m_backdropController != null)
-            {
-                m_backdropController.Dispose();
-                m_backdropController = null;
-            }
-            window.Activated -= Window_Activated;
-            m_configurationSource = null;
-        }
-
-        void Window_ThemeChanged(FrameworkElement sender, object args)
-        {
-            if (m_configurationSource != null)
-            {
-                SetConfigurationSourceTheme();
-                TrySetAcrylicBackdrop(window);
-            }
-        }
-
-        void SetConfigurationSourceTheme()
-        {
-            m_configurationSource.Theme = ((FrameworkElement)window.Content).ActualTheme switch
-            {
-                ElementTheme.Dark => SystemBackdropTheme.Dark,
-                ElementTheme.Light => SystemBackdropTheme.Light,
-                _ => SystemBackdropTheme.Default
-            };
-        }
-
         switch (_settingsService.BackgroundMode)
         {
             case 0:
                 if (MicaController.IsSupported())
-                    window.SystemBackdrop = new MicaBackdrop() { Kind = MicaKind.BaseAlt };
+                    window.SystemBackdrop = new MicaBackdrop() { Kind = (MicaKind)_settingsService.MicaKind };
                 break;
             case 1:
                 if (DesktopAcrylicController.IsSupported())
-                    TrySetAcrylicBackdrop(window);
+                    window.SystemBackdrop = new DesktopAcrylicBackdrop();
                 break;
         }
     }

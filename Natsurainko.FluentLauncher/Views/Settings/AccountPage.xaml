@@ -155,15 +155,8 @@
                                 x:Uid="Settings_AccountPage_Text2"
                                 Foreground="{ThemeResource SystemErrorTextColor}"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
-                                Text="Offline accounts do not support skin function">
-                                <TextBlock.Visibility>
-                                    <Binding Path="IsOfflineAccount">
-                                        <Binding.Converter>
-                                            <converters:BoolToVisibilityConverter />
-                                        </Binding.Converter>
-                                    </Binding>
-                                </TextBlock.Visibility>
-                            </TextBlock>
+                                Text="Offline accounts do not support skin function"
+                                Visibility="{Binding IsOfflineAccount, Converter={ThemeResource BoolToVisibilityConverter}}" />
                         </StackPanel>
                     </controls:SettingsCard.Description>
                 </controls:SettingsCard>

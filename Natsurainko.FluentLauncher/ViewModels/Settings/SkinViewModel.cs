@@ -29,11 +29,6 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
     private readonly AccountService _accountService;
     private readonly CacheSkinService _cacheSkinService;
 
-    [ObservableProperty]
-    private Account activeAccount;
-
-    public ObservableElement3DCollection ModelGeometry { get; private set; } = new ObservableElement3DCollection();
-
     public SkinViewModel(
         SettingsService settingsService,
         AccountService accountService,
@@ -49,6 +44,13 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
 
         Task.Run(LoadModel);
     }
+
+    [ObservableProperty]
+    private Account activeAccount;
+
+    public ObservableElement3DCollection ModelGeometry { get; private set; } = new ObservableElement3DCollection();
+
+    public bool IsYggdrasilAccount => ActiveAccount.Type == AccountType.Yggdrasil;
 
     #region Skin 3D Model Load
 

@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:converters="using:Natsurainko.FluentLauncher.XamlHelpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:hx="using:HelixToolkit.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -61,10 +62,27 @@
                 <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Operations" />
                 <controls:SettingsCard
                     Command="{Binding UploadSkinCommand}"
-                    Description="Upload a new skin and replace the current skin"
                     Header="Upload new skin"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe898;}"
-                    IsClickEnabled="True" />
+                    IsClickEnabled="True">
+                    <controls:SettingsCard.IsEnabled>
+                        <Binding Path="IsYggdrasilAccount">
+                            <Binding.Converter>
+                                <converters:InvertBoolConverter />
+                            </Binding.Converter>
+                        </Binding>
+                    </controls:SettingsCard.IsEnabled>
+                    <controls:SettingsCard.Description>
+                        <StackPanel>
+                            <TextBlock Text="Upload a new skin and replace the current skin" />
+                            <TextBlock
+                                Foreground="{ThemeResource SystemErrorTextColor}"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                Text="This feature is currently not supported for Yggdrasil accounts"
+                                Visibility="{Binding IsYggdrasilAccount, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                        </StackPanel>
+                    </controls:SettingsCard.Description>
+                </controls:SettingsCard>
                 <controls:SettingsCard
                     Command="{Binding NavigateToWebsiteCommand}"
                     Description="Click to go to management"

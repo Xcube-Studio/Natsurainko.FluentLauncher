@@ -3,10 +3,12 @@ using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
 using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using System.IO;
+using System.Threading.Tasks;
 using Windows.UI;
 
 #nullable disable
@@ -90,4 +92,17 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     [RelayCommand]
     private void RadioButtonChecked(int index)
         => BackgroundMode = index;
+
+    /// <summary>
+    /// 神金 Command 无法被触发
+    /// </summary>
+    public void BrowserImage()
+    {
+        var openFileDialog = new OpenFileDialog();
+        openFileDialog.Multiselect = false;
+        openFileDialog.Filter = "Png Image File|*.png|JPG Image File|*.jpg|BMP Image File|*.bmp|All Files|*.*";
+
+        if (openFileDialog.ShowDialog().GetValueOrDefault(false)) 
+            ImageFilePath = openFileDialog.FileName;
+    }
 }

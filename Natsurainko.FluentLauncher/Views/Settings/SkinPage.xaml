@@ -17,7 +17,11 @@
                 MaxWidth="1000"
                 HorizontalAlignment="Stretch"
                 Spacing="{StaticResource SettingsCardSpacing}">
-                <TextBlock Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}" Text="3D Model Preview" />
+                <TextBlock
+                    x:Uid="Settings_SkinPage_T1"
+                    Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
+                    Text="3D Model Preview" />
+
                 <controls:SettingsCard>
                     <controls:SettingsCard.Header>
                         <Grid Margin="10,0">
@@ -59,8 +63,13 @@
                     </hx:Viewport3DX>
                 </Grid>
 
-                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Operations" />
+                <TextBlock
+                    x:Uid="Settings_SkinPage_T2"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Operations" />
+
                 <controls:SettingsCard
+                    x:Uid="Settings_SkinPage_Card1"
                     Command="{Binding UploadSkinCommand}"
                     Header="Upload new skin"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe898;}"
@@ -74,8 +83,9 @@
                     </controls:SettingsCard.IsEnabled>
                     <controls:SettingsCard.Description>
                         <StackPanel>
-                            <TextBlock Text="Upload a new skin and replace the current skin" />
+                            <TextBlock x:Uid="Settings_SkinPage_Text1" Text="Upload a new skin and replace the current skin" />
                             <TextBlock
+                                x:Uid="Settings_SkinPage_Text2"
                                 Foreground="{ThemeResource SystemErrorTextColor}"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
                                 Text="This feature is currently not supported for Yggdrasil accounts"
@@ -84,6 +94,7 @@
                     </controls:SettingsCard.Description>
                 </controls:SettingsCard>
                 <controls:SettingsCard
+                    x:Uid="Settings_SkinPage_Card2"
                     Command="{Binding NavigateToWebsiteCommand}"
                     Description="Click to go to management"
                     Header="Manage your skins on the official website or skin site"

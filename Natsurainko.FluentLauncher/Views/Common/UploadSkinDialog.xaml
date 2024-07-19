@@ -15,7 +15,7 @@
     </ContentDialog.Resources>
     <ContentDialog.Title>
         <StackPanel Margin="24,24,24,0">
-            <TextBlock Text="Upload New Skin File" />
+            <TextBlock x:Uid="Dialogs_UploadSkinDialog_T" Text="Upload New Skin File" />
         </StackPanel>
     </ContentDialog.Title>
 
@@ -46,7 +46,10 @@
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
             <StackPanel Spacing="10">
-                <AutoSuggestBox Header="Skin File Path" Text="{Binding FilePath, Mode=TwoWay}">
+                <AutoSuggestBox
+                    x:Uid="Dialogs_UploadSkinDialog_Box"
+                    Header="Skin File Path"
+                    Text="{Binding FilePath, Mode=TwoWay}">
                     <AutoSuggestBox.QueryIcon>
                         <FontIcon FontSize="14" Glyph="&#xED43;" />
                     </AutoSuggestBox.QueryIcon>
@@ -56,7 +59,10 @@
                         </core:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                 </AutoSuggestBox>
-                <CheckBox Content="Use slim Minecraft character shape" IsChecked="{Binding IsSlimModel, Mode=TwoWay}" />
+                <CheckBox
+                    x:Uid="Dialogs_UploadSkinDialog_CheckBox"
+                    Content="Use slim Minecraft character shape"
+                    IsChecked="{Binding IsSlimModel, Mode=TwoWay}" />
             </StackPanel>
         </Grid>
         <Rectangle

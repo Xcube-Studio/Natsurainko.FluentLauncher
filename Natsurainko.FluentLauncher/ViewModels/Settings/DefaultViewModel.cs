@@ -4,9 +4,9 @@ using FluentLauncher.Infra.Settings.Mvvm;
 using FluentLauncher.Infra.UI.Navigation;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using System.Collections.Generic;
-using Windows.ApplicationModel;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
@@ -31,12 +31,7 @@ internal partial class DefaultViewModel : SettingsViewModelBase, ISettingsViewMo
     [BindToSetting(Path = nameof(SettingsService.CurrentLanguage))]
     private string currentLanguage;
 
-    [ObservableProperty]
-    private string version = string.Format("{0}.{1}.{2}.{3}",
-        Package.Current.Id.Version.Major,
-        Package.Current.Id.Version.Minor,
-        Package.Current.Id.Version.Build,
-        Package.Current.Id.Version.Revision);
+    public string Version => App.Version.GetVersionString();
 
 #if DEBUG
     [ObservableProperty]

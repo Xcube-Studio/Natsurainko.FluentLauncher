@@ -6,11 +6,14 @@ using Microsoft.Windows.AppLifecycle;
 using Natsurainko.FluentLauncher.Services.SystemServices;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Activities;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
+using Nrk.FluentCore.Utils;
 using System;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 
@@ -24,6 +27,8 @@ public partial class App : Application
 
     public static DispatcherQueue DispatcherQueue { get; private set; } = null!;
 
+    public static Windows.ApplicationModel.PackageVersion Version => Windows.ApplicationModel.Package.Current.Id.Version;
+
     public App()
     {
         InitializeComponent();
@@ -36,6 +41,10 @@ public partial class App : Application
         // TODO: Remove this when refactoring is completed
         ThreadPool.SetMinThreads(20, 20);
         ThreadPool.SetMaxThreads(20, 20);
+
+        //Fix https://github.com/MCLF-CN/docs/issues/2 
+        HttpUtils.HttpClient.DefaultRequestHeaders.UserAgent.Clear();
+        HttpUtils.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("Natsurainko.FluentLauncher", Version.GetVersionString()));
 
         DispatcherQueue = DispatcherQueue.GetForCurrentThread();
 

@@ -8,6 +8,7 @@ using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Environment;
@@ -17,7 +18,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
 using Windows.Storage.Pickers;
 
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
@@ -148,11 +148,7 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
 
     public List<string> Languages { get; } = ResourceUtils.Languages;
 
-    public string Version { get; } = string.Format("{0}.{1}.{2}.{3}",
-            Package.Current.Id.Version.Major,
-            Package.Current.Id.Version.Minor,
-            Package.Current.Id.Version.Build,
-            Package.Current.Id.Version.Revision);
+    public string Version => App.Version.GetVersionString();
 
 #if DEBUG 
     public string Edition { get; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Debug");

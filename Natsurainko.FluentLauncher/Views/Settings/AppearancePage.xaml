@@ -10,8 +10,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:settings="using:Natsurainko.FluentLauncher.ViewModels.Settings"
     xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    d:DataContext="{d:DesignInstance Type=settings:AppearanceViewModel}"
     mc:Ignorable="d">
     <Page.Resources>
         <Style x:Key="RadioButtonStyle" TargetType="RadioButton">
@@ -705,11 +707,18 @@
                     </controls:SettingsExpander.Header>
                     <controls:SettingsExpander.Items>
                         <controls:SettingsCard x:Uid="Settings_AppearancePage_SubCard5" Header="Image File Path">
-                            <TextBox Width="400" Text="{Binding ImageFilePath, Mode=TwoWay}">
+                            <AutoSuggestBox
+                                Width="200"
+                                QuerySubmitted="AutoSuggestBox_QuerySubmitted"
+                                Text="{Binding ImageFilePath, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                                 </i:Interaction.Behaviors>
-                            </TextBox>
+
+                                <AutoSuggestBox.QueryIcon>
+                                    <FontIcon FontSize="14" Glyph="&#xED43;" />
+                                </AutoSuggestBox.QueryIcon>
+                            </AutoSuggestBox>
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>

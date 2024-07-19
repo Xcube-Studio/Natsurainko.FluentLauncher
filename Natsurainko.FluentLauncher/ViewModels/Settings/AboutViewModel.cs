@@ -1,23 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.Views;
-using Natsurainko.FluentLauncher.Views.Common;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using System;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
 using Windows.System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
 internal partial class AboutViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private string version = string.Format("{0}.{1}.{2}.{3}",
-            Package.Current.Id.Version.Major,
-            Package.Current.Id.Version.Minor,
-            Package.Current.Id.Version.Build,
-            Package.Current.Id.Version.Revision);
+    public string Version => App.Version.GetVersionString();
 
 #if DEBUG
     [ObservableProperty]

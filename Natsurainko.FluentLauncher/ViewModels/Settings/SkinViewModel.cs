@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.WinUI;
@@ -6,6 +7,7 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.ViewModels.Common;
+using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Utils;
 using System;
@@ -16,6 +18,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Graphics.Imaging;
 using Windows.Storage.Streams;
+using Windows.System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
@@ -25,11 +28,6 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
     private readonly SettingsService _settingsService;
     private readonly AccountService _accountService;
     private readonly CacheSkinService _cacheSkinService;
-
-    [ObservableProperty]
-    private Account activeAccount;
-
-    public ObservableElement3DCollection ModelGeometry { get; private set; } = new ObservableElement3DCollection();
 
     public SkinViewModel(
         SettingsService settingsService,
@@ -47,45 +45,63 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
         Task.Run(LoadModel);
     }
 
-    private async void LoadModel()
+    [ObservableProperty]
+    private Account activeAccount;
+
+    public ObservableElement3DCollection ModelGeometry { get; private set; } = new ObservableElement3DCollection();
+
+    public bool IsYggdrasilAccount => ActiveAccount.Type == AccountType.Yggdrasil;
+
+    #region Skin 3D Model Load
+
+    public async void LoadModel()
     {
-        var loader = new ObjReader();
-        var object3Ds = loader.Read(Path.Combine(Package.Current.InstalledLocation.Path, $"Assets/{(await IsSlimSkin() ? "Rig_alex.obj" : "Rig_steve.obj")}"));
-
-        #region Create Skin Texture Stream
-
-        using var fileStream = File.OpenRead(_cacheSkinService.GetSkinFilePath(ActiveAccount));
-        using var randomAccessStream = fileStream.AsRandomAccessStream();
-
-        var decoder = await BitmapDecoder.CreateAsync(randomAccessStream);
-
-        var transform = new BitmapTransform
+        try
         {
-            InterpolationMode = BitmapInterpolationMode.NearestNeighbor,
-            ScaledWidth = (uint)1024,
-            ScaledHeight = (uint)1024
-        };
-        InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream();
+            var loader = new ObjReader();
+            var object3Ds = loader.Read(Path.Combine(Package.Current.InstalledLocation.Path, $"Assets/{(await IsSlimSkin() ? "Rig_alex.obj" : "Rig_steve.obj")}"));
 
-        using var bmp = await decoder.GetSoftwareBitmapAsync(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied, transform, ExifOrientationMode.RespectExifOrientation, ColorManagementMode.ColorManageToSRgb);
-        BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, stream);
+            #region Create Skin Texture Stream
 
-        encoder.SetSoftwareBitmap(bmp);
-        await encoder.FlushAsync();
+            using var fileStream = File.OpenRead(_cacheSkinService.GetSkinFilePath(ActiveAccount));
+            using var randomAccessStream = fileStream.AsRandomAccessStream();
 
-        #endregion
+            var decoder = await BitmapDecoder.CreateAsync(randomAccessStream);
 
-        App.DispatcherQueue.TryEnqueue(() =>
+            var transform = new BitmapTransform
+            {
+                InterpolationMode = BitmapInterpolationMode.NearestNeighbor,
+                ScaledWidth = (uint)1024,
+                ScaledHeight = (uint)1024
+            };
+            InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream();
+
+            using var bmp = await decoder.GetSoftwareBitmapAsync(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied, transform, ExifOrientationMode.RespectExifOrientation, ColorManagementMode.ColorManageToSRgb);
+            BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, stream);
+
+            encoder.SetSoftwareBitmap(bmp);
+            await encoder.FlushAsync();
+
+            #endregion
+
+            App.DispatcherQueue.TryEnqueue(() =>
+            {
+                var material = new DiffuseMaterial();
+                material.DiffuseMap = TextureModel.Create(stream.AsStreamForRead());
+
+                ModelGeometry.Clear();
+
+                foreach (var object3D in object3Ds)
+                    ModelGeometry.Add(new MeshGeometryModel3D() { Material = material, Geometry = object3D.Geometry });
+            });
+        }
+        catch
         {
-            var material = new DiffuseMaterial();
-            material.DiffuseMap = TextureModel.Create(stream.AsStreamForRead());
 
-            foreach (var object3D in object3Ds)
-                ModelGeometry.Add(new MeshGeometryModel3D() { Material = material, Geometry = object3D.Geometry });
-        });
+        }
     }
 
-    private async Task<bool> IsSlimSkin()
+    public async Task<bool> IsSlimSkin()
     {
         var authorization = new Tuple<string, string>("Bearer", ActiveAccount.AccessToken);
         var skinUrl = string.Empty;
@@ -118,4 +134,20 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
         return false;
     }
 
+    #endregion
+
+    [RelayCommand]
+    public async Task UploadSkin()
+    {
+        await new UploadSkinDialog() { DataContext = new UploadSkinDialogViewModel(ActiveAccount) }.ShowAsync();
+        _ = Task.Run(LoadModel);
+    }
+
+    [RelayCommand]
+    public void NavigateToWebsite()
+    {
+        if (ActiveAccount is YggdrasilAccount yggdrasilAccount)
+            _ = Launcher.LaunchUriAsync(new Uri("https://" + new Uri(yggdrasilAccount.YggdrasilServerUrl).Host));
+        else _ = Launcher.LaunchUriAsync(new Uri("https://www.minecraft.net/msaprofile/mygames/editskin"));
+    }
 }

@@ -19,6 +19,7 @@
 
         <BreadcrumbBar
             Grid.Row="0"
+            MaxWidth="1020"
             Margin="30,15"
             ItemsSource="{Binding Routes}">
             <i:Interaction.Behaviors>

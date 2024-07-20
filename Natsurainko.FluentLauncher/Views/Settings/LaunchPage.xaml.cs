@@ -3,7 +3,6 @@ using CommunityToolkit.WinUI.Controls;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 
@@ -36,12 +35,12 @@ public sealed partial class LaunchPage : Page, IBreadcrumbBarAware
             if (m.PropertyName != tag)
                 return;
 
-            card.Background = path == m.Value ? (Brush)this.Resources["AccentButtonBackground"] : defaultBackground;
-            card.RequestedTheme = path == m.Value ? ElementTheme.Light : defaultTheme;
+            var enableText = card.FindName("EnableText") as Border;
+            enableText!.Visibility = path == m.Value ? Visibility.Visible : Visibility.Collapsed;
         });
 
-        card.Background = path == current ? (Brush)this.Resources["AccentButtonBackground"] : defaultBackground;
-        card.RequestedTheme = path == current ? ElementTheme.Light : defaultTheme;
+        var enableText = card.FindName("EnableText") as Border;
+        enableText!.Visibility = path == current ? Visibility.Visible : Visibility.Collapsed;
 
         card.Unloaded += (s, e) => WeakReferenceMessenger.Default.Unregister<SettingsStringValueChangedMessage>(sender);
     }

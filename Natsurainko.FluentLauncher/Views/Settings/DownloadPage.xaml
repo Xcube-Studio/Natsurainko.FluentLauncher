@@ -44,21 +44,22 @@
                     Description="Please optimize and adjust according to the actual network environment"
                     Header="Maximum number of download threads"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
-                    <Slider
-                        Width="128"
-                        Maximum="256"
-                        Minimum="32"
-                        Value="{Binding MaxDownloadThreads, Mode=TwoWay}">
-                        <Slider.Header>
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                Style="{ThemeResource BaseTextBlockStyle}"
-                                Text="{Binding MaxDownloadThreads}" />
-                        </Slider.Header>
-                        <i:Interaction.Behaviors>
-                            <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
-                        </i:Interaction.Behaviors>
-                    </Slider>
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Style="{ThemeResource BaseTextBlockStyle}"
+                            Text="{Binding MaxDownloadThreads}" />
+
+                        <Slider
+                            Width="128"
+                            Maximum="256"
+                            Minimum="32"
+                            Value="{Binding MaxDownloadThreads, Mode=TwoWay}">
+                            <i:Interaction.Behaviors>
+                                <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
+                            </i:Interaction.Behaviors>
+                        </Slider>
+                    </StackPanel>
                 </controls:SettingsCard>
 
                 <controls:SettingsCard

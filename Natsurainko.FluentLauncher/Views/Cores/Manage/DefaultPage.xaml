@@ -18,6 +18,7 @@
                 Spacing="{StaticResource SettingsCardSpacing}">
 
                 <TextBlock Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}" Text="Basic Configuration" />
+
                 <controls:SettingsCard DataContext="{Binding GameInfo}">
                     <controls:SettingsCard.Header>
                         <Grid>
@@ -74,7 +75,6 @@
                         </Grid>
                     </controls:SettingsCard.Header>
                 </controls:SettingsCard>
-
                 <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE8AC;}">
                     <controls:SettingsCard.Header>
                         <TextBlock Text="Core Nickname" />
@@ -85,7 +85,6 @@
 
                     <TextBox Width="150" Text="{Binding GameSpecialConfig.NickName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </controls:SettingsCard>
-
                 <controls:SettingsCard
                     Command="{Binding CardClickCommand}"
                     CommandParameter="CoreManage/Config"
@@ -93,6 +92,26 @@
                     Header="Game launch settings"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe945;}"
                     IsClickEnabled="True" />
+
+                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Resource Management" />
+
+                <controls:SettingsCard
+                    Command="{Binding CardClickCommand}"
+                    CommandParameter="CoreManage/Mod"
+                    Description="Import, enable/disable, delete modules"
+                    Header="Module Management"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xe8f1;}"
+                    IsClickEnabled="True" />
+                <controls:SettingsCard
+                    Command="{Binding CardClickCommand}"
+                    CommandParameter="CoreManage/Map"
+                    Description="Set additional JVM parameters, game accounts, core independence, etc."
+                    Header="Save Management"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xE81E;}"
+                    IsClickEnabled="True" />
+
+
+
             </StackPanel>
         </Border>
     </ScrollViewer>

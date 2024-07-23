@@ -1,31 +1,34 @@
-using Microsoft.UI.Xaml;
+using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+namespace Natsurainko.FluentLauncher.Views.Cores.Manage;
 
-namespace Natsurainko.FluentLauncher.Views.Cores.Manage
+public sealed partial class ModPage : Page, IBreadcrumbBarAware
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class ModPage : Page
+    public string Route => "Mod";
+
+    public ModPage()
     {
-        public ModPage()
-        {
-            this.InitializeComponent();
-        }
+        this.InitializeComponent();
+    }
+
+    private void Grid_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        var grid = (sender as Grid)!;
+        var textBlock = (grid.FindName("InfoText") as TextBlock)!;
+
+        textBlock.TextWrapping = Microsoft.UI.Xaml.TextWrapping.WrapWholeWords;
+        textBlock.TextTrimming = Microsoft.UI.Xaml.TextTrimming.None;
+        textBlock.MaxLines = 0;
+    }
+
+    private void Grid_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        var grid = (sender as Grid)!;
+        var textBlock = (grid.FindName("InfoText") as TextBlock)!;
+
+        textBlock.TextWrapping = Microsoft.UI.Xaml.TextWrapping.NoWrap;
+        textBlock.TextTrimming = Microsoft.UI.Xaml.TextTrimming.CharacterEllipsis;
+        textBlock.MaxLines = 1;
     }
 }

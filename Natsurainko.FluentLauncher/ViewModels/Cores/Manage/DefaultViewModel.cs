@@ -18,7 +18,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     }
 
     [RelayCommand]
-    void CardClick(string tag) => _navigationService.NavigateTo(tag);
+    void CardClick(string tag) => _navigationService.NavigateTo(tag, GameInfo);
 
     void INavigationAware.OnNavigatedTo(object parameter)
     {

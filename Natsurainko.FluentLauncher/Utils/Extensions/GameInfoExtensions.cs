@@ -90,6 +90,8 @@ internal static class GameInfoExtensions
         return gameInfo.MinecraftFolderPath;
     }
 
+    public static string GetModsDirectory(this GameInfo gameInfo) => Path.Combine(GetGameDirectory(gameInfo), "mods");
+
     public static void UpdateLastLaunchTimeToNow(this GameInfo gameInfo)
     {
         var specialConfig = gameInfo.GetSpecialConfig();

@@ -52,9 +52,8 @@ pages.WithPage<Views.Cores.CoresPage, ViewModels.Cores.CoresViewModel>("CoresPag
 pages.WithPage<Views.Cores.Manage.NavigationPage, ViewModels.Cores.Manage.NavigationViewModel>("CoreManage/Navigation");
 pages.WithPage<Views.Cores.Manage.DefaultPage, ViewModels.Cores.Manage.DefaultViewModel>("CoreManage/Default");
 pages.WithPage<Views.Cores.Manage.ConfigPage>("CoreManage/Config");
-pages.WithPage<Views.Cores.Manage.ModPage>("CoreManage/Mod");
+pages.WithPage<Views.Cores.Manage.ModPage, ViewModels.Cores.Manage.ModViewModel>("CoreManage/Mod");
 pages.WithPage<Views.Cores.Manage.MapPage>("CoreManage/Map");
-pages.WithPage<Views.Cores.Manage.StatisticPage>("CoreManage/Statistic");
 
 /*
 pages.WithPage<Views.Cores.ManageNavigationPage, ViewModels.Cores.ManageNavigationViewModel>("CoresManageNavigationPage");

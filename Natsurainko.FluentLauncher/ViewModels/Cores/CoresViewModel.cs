@@ -100,7 +100,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     public void GoToSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Launch");
 
     [RelayCommand]
-    public void GoToCoreSettings(GameInfo gameInfo) => _navigationService.NavigateTo("CoresManageNavigationPage", gameInfo);
+    public void GoToCoreSettings(GameInfo gameInfo) => _navigationService.NavigateTo("CoreManage/Navigation", gameInfo);
 
     [RelayCommand]
     public void SearchAllMinecraft()

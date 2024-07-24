@@ -3,11 +3,11 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace Natsurainko.FluentLauncher.Views.Cores.Manage;
 
-public sealed partial class MapPage : Page, IBreadcrumbBarAware
+public sealed partial class SavePage : Page, IBreadcrumbBarAware
 {
-    public string Route => "Map";
+    public string Route => "Save";
 
-    public MapPage()
+    public SavePage()
     {
         this.InitializeComponent();
     }

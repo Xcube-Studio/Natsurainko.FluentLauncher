@@ -62,7 +62,7 @@ internal partial class DeleteGameDialogViewModel : ObservableObject
 
             if (DeleteCoreSettings)
             {
-                var file = _gameInfo.GetSpecialConfig().FilePath;
+                var file = _gameInfo.GetConfig().FilePath;
                 if (File.Exists(file)) File.Delete(file);
             }
 

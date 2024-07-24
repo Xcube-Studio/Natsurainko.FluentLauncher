@@ -29,7 +29,7 @@ internal partial class DownloadViewModel : SettingsViewModelBase, ISettingsViewM
     [BindToSetting(Path = nameof(SettingsService.EnableFragmentDownload))]
     private bool enableFragmentDownload;
 
-    public string CoreConfigurationsFolder => _localStorageService.GetDirectory("CoreSpecialConfigs").FullName;
+    public string CoreConfigurationsFolder => _localStorageService.GetDirectory("GameConfigsFolder").FullName;
 
     public string LauncherCacheFolder => LocalStorageService.LocalFolderPath;
 

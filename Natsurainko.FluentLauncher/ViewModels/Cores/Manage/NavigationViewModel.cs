@@ -19,6 +19,8 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
 
     public GameInfo GameInfo { get; private set; }
 
+    public string GameName { get; private set; } // 缓存游戏名称，防止昵称修改后名称对不上
+
     public NavigationViewModel(INavigationService navigationService)
     {
         _navigationService = navigationService;
@@ -27,6 +29,7 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
     void INavigationAware.OnNavigatedTo(object parameter)
     {
         GameInfo = parameter as GameInfo;
+        GameName = GameInfo.Name;
 
         Routes = [];
         _navigationService.NavigateTo("CoreManage/Default", GameInfo);
@@ -38,12 +41,12 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
 
         if (pageKey == "CoreManage/Default")
         {
-            Routes = new(["CoreManage", GameInfo.Name]);
+            Routes = new(["CoreManage", GameName]);
         }
         else
         {
             Routes = new(pageKey.Split('/'));
-            Routes.Insert(1, GameInfo.Name);
+            Routes.Insert(1, GameName);
         }
     }
 
@@ -54,8 +57,8 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
 
         if (breadcrumbBarItemClickedEventArgs.Item.ToString() == "CoreManage")
             _navigationService.Parent.NavigateTo("CoresPage");
-        else if (breadcrumbBarItemClickedEventArgs.Item.ToString() == GameInfo.Name)
+        else if (breadcrumbBarItemClickedEventArgs.Item.ToString() == GameName)
             NavigateTo("CoreManage/Default", GameInfo);
-        else NavigateTo(string.Join('/', Routes.ToArray()[..^1]).Replace($"/{GameInfo.Name}/", "/"), GameInfo);
+        else NavigateTo(string.Join('/', Routes.ToArray()[..^1]).Replace($"/{GameName}/", "/"), GameInfo);
     }
 }

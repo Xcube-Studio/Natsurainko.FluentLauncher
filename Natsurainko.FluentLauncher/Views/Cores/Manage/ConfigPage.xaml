@@ -6,9 +6,9 @@
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Cores.Manage"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    Unloaded="Page_Unloaded"
     mc:Ignorable="d">
 
     <ScrollViewer>
@@ -22,10 +22,13 @@
                     Description="Only if you enable this item, the following settings will take effect"
                     Header="Enable specific core settings"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
-                    <ToggleSwitch IsOn="{Binding GameSpecialConfig.EnableSpecialSetting, Mode=TwoWay}" />
+                    <ToggleSwitch IsOn="{Binding GameConfig.EnableSpecialSetting, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
-                <ContentControl HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                <ContentControl
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    IsEnabled="{Binding GameConfig.EnableSpecialSetting}">
                     <StackPanel Spacing="4">
                         <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Launch Settings" />
 
@@ -33,14 +36,14 @@
                             Description="The game will run at versions\${version} directory"
                             Header="Core independent"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
-                            <ToggleSwitch />
+                            <ToggleSwitch IsOn="{Binding GameConfig.EnableIndependencyCore, Mode=TwoWay}" />
                         </controls:SettingsCard>
 
                         <controls:SettingsCard
                             Description="Automatic full screen mode after entering the game"
                             Header="Full Screen Mode"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE740;}">
-                            <ToggleSwitch />
+                            <ToggleSwitch IsOn="{Binding GameConfig.EnableFullScreen, Mode=TwoWay}" />
                         </controls:SettingsCard>
 
                         <controls:SettingsCard
@@ -48,9 +51,15 @@
                             Header="Game Window Resolution"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE744;}">
                             <StackPanel Orientation="Horizontal" Spacing="10">
-                                <NumberBox Width="100" Minimum="0" />
+                                <NumberBox
+                                    Width="100"
+                                    Minimum="0"
+                                    Value="{Binding GameConfig.GameWindowWidth, Mode=TwoWay}" />
                                 <FontIcon FontSize="14" Glyph="&#xe947;" />
-                                <NumberBox Width="100" Minimum="0" />
+                                <NumberBox
+                                    Width="100"
+                                    Minimum="0"
+                                    Value="{Binding GameConfig.GameWindowHeight, Mode=TwoWay}" />
                             </StackPanel>
                         </controls:SettingsCard>
 
@@ -58,7 +67,7 @@
                             Description="The server address to connect after entering the game"
                             Header="Server Address"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE967;}">
-                            <TextBox Width="400">
+                            <TextBox Width="400" Text="{Binding GameConfig.ServerAddress, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                                 </i:Interaction.Behaviors>
@@ -66,7 +75,7 @@
                         </controls:SettingsCard>
 
                         <controls:SettingsCard Header="Game Window Title" HeaderIcon="{xh:FontIcon Glyph=&#xE76F;}">
-                            <TextBox Width="400">
+                            <TextBox Width="400" Text="{Binding GameConfig.GameWindowTitle, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                                 </i:Interaction.Behaviors>
@@ -79,9 +88,10 @@
                             Description="If the selected account cannot be found in the account list after enabling it, an error will be reported"
                             Header="Account used to launch this game"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE716;}">
-
                             <StackPanel Orientation="Horizontal" Spacing="15">
                                 <ComboBox
+                                    x:Name="ComboBox"
+                                    Width="150"
                                     IsEnabled="{Binding ElementName=AccountToggleSwitch, Path=IsOn}"
                                     ItemsSource="{Binding Accounts}"
                                     SelectedItem="{Binding TargetedAccount, Mode=TwoWay}">
@@ -110,7 +120,7 @@
                                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                                     Style="{ThemeResource CaptionTextBlockStyle}"
                                                     TextTrimming="CharacterEllipsis"
-                                                    TextWrapping="WrapWholeWords">
+                                                    TextWrapping="NoWrap">
                                                     <Run Text="{Binding Type, Converter={ThemeResource AccountInfoConverter}}" />
                                                     <Run>
                                                         <Run.Text>
@@ -125,8 +135,11 @@
                                             </Grid>
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
+                                    <i:Interaction.Behaviors>
+                                        <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
+                                    </i:Interaction.Behaviors>
                                 </ComboBox>
-                                <ToggleSwitch Name="AccountToggleSwitch" IsOn="{Binding GameSpecialConfig.EnableTargetedAccount, Mode=TwoWay}" />
+                                <ToggleSwitch Name="AccountToggleSwitch" IsOn="{Binding GameConfig.EnableTargetedAccount, Mode=TwoWay}" />
                             </StackPanel>
                         </controls:SettingsCard>
 
@@ -136,6 +149,7 @@
                             Description="These will be added to the generated launch parameters"
                             Header="Additional JVM parameter settings"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE713;}"
+                            IsExpanded="True"
                             ItemsSource="{Binding VmArguments}">
                             <controls:SettingsExpander.ItemTemplate>
                                 <DataTemplate>
@@ -148,6 +162,13 @@
                                                 <FontIcon FontSize="16" Glyph="&#xE738;" />
                                                 <TextBlock x:Uid="Buttons_Remove" Text="Remove" />
                                             </StackPanel>
+
+                                            <i:Interaction.Behaviors>
+                                                <behaviors:AncestorBindingBehavior
+                                                    AncestorType="SettingsExpander"
+                                                    Binding="{Binding DataContext.RemoveArgumentCommand}"
+                                                    TargetPropertyName="Command" />
+                                            </i:Interaction.Behaviors>
                                         </Button>
                                     </controls:SettingsCard>
                                 </DataTemplate>

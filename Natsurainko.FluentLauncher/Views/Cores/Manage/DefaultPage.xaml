@@ -5,7 +5,6 @@
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:converters="using:Natsurainko.FluentLauncher.XamlHelpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Cores.Manage"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     mc:Ignorable="d">
@@ -42,7 +41,7 @@
                             <StackPanel Grid.Column="2" Spacing="5">
                                 <TextBlock
                                     FontWeight="SemiBold"
-                                    Text="{Binding Name}"
+                                    Text="{Binding AbsoluteId}"
                                     TextTrimming="CharacterEllipsis"
                                     ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
                                 <ItemsRepeater>
@@ -75,16 +74,14 @@
                         </Grid>
                     </controls:SettingsCard.Header>
                 </controls:SettingsCard>
-                <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE8AC;}">
-                    <controls:SettingsCard.Header>
-                        <TextBlock Text="Core Nickname" />
-                    </controls:SettingsCard.Header>
-                    <controls:SettingsCard.Description>
-                        <TextBlock Text="Only as a display name, the actual Id will not be modified" />
-                    </controls:SettingsCard.Description>
 
-                    <TextBox Width="150" Text="{Binding GameSpecialConfig.NickName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <controls:SettingsCard
+                    Description="Only as a display name, the actual Id will not be modified"
+                    Header="Core Nickname"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xE8AC;}">
+                    <TextBox Width="150" Text="{Binding GameConfig.NickName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </controls:SettingsCard>
+
                 <controls:SettingsCard
                     Command="{Binding CardClickCommand}"
                     CommandParameter="CoreManage/Config"
@@ -102,16 +99,14 @@
                     Header="Module Management"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe8f1;}"
                     IsClickEnabled="True" />
+
                 <controls:SettingsCard
                     Command="{Binding CardClickCommand}"
-                    CommandParameter="CoreManage/Map"
+                    CommandParameter="CoreManage/Save"
                     Description="Set additional JVM parameters, game accounts, core independence, etc."
                     Header="Save Management"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE81E;}"
                     IsClickEnabled="True" />
-
-
-
             </StackPanel>
         </Border>
     </ScrollViewer>

@@ -7,9 +7,10 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.Models.Launch;
 
-internal partial class GameSpecialConfig : ObservableObject
+internal partial class GameConfig : ObservableObject
 {
     [JsonIgnore]
     public string FilePath { get; set; }

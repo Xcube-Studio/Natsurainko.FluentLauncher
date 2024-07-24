@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Management;

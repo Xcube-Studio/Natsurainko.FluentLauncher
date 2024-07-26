@@ -53,7 +53,7 @@ pages.WithPage<Views.Cores.Manage.NavigationPage, ViewModels.Cores.Manage.Naviga
 pages.WithPage<Views.Cores.Manage.DefaultPage, ViewModels.Cores.Manage.DefaultViewModel>("CoreManage/Default");
 pages.WithPage<Views.Cores.Manage.ConfigPage, ViewModels.Cores.Manage.ConfigViewModel>("CoreManage/Config");
 pages.WithPage<Views.Cores.Manage.ModPage, ViewModels.Cores.Manage.ModViewModel>("CoreManage/Mod");
-pages.WithPage<Views.Cores.Manage.SavePage>("CoreManage/Save");
+pages.WithPage<Views.Cores.Manage.SavePage, ViewModels.Cores.Manage.SaveViewModel>("CoreManage/Save");
 
 /*
 pages.WithPage<Views.Cores.ManageNavigationPage, ViewModels.Cores.ManageNavigationViewModel>("CoresManageNavigationPage");

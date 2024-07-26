@@ -15,25 +15,16 @@
                 <ResourceDictionary x:Key="Light">
                     <SolidColorBrush x:Key="DeleteButtonBackground" Color="#BFCC0000" />
                     <SolidColorBrush x:Key="DeleteButtonBorder" Color="#BFCC0000" />
-                    <x:Double x:Key="ExpanderSplitterOpacity">1</x:Double>
                     <Color x:Key="AcrylicTintColor">White</Color>
                     <SolidColorBrush x:Key="IconBorder" Color="#25000000" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="DeleteButtonBackground" Color="#3FFF0000" />
                     <SolidColorBrush x:Key="DeleteButtonBorder" Color="#59FF0000" />
-                    <x:Double x:Key="ExpanderSplitterOpacity">0.1</x:Double>
                     <Color x:Key="AcrylicTintColor">Black</Color>
                     <SolidColorBrush x:Key="IconBorder" Color="#10FFFFFF" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
-
-            <Style x:Key="ExpanderSplitter" TargetType="Border">
-                <Setter Property="Height" Value="1" />
-                <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="BorderBrush" Value="{ThemeResource AppBarBorderThemeBrush}" />
-                <Setter Property="Opacity" Value="{ThemeResource ExpanderSplitterOpacity}" />
-            </Style>
 
             <FontFamily x:Key="MinecraftTen">/Assets/MinecraftTen.ttf#Minecraft Ten</FontFamily>
 
@@ -45,11 +36,14 @@
             <converters:GameIconConverter x:Key="GameIconConverter" />
             <converters:GameInfoConverter x:Key="GameInfoConverter" />
 
+            <converters:ModInfoConverter x:Key="ModInfoConverter" />
+            <converters:SaveInfoConverter x:Key="SaveInfoConverter" />
+
             <converters:ColorHexCodeConverter x:Key="ColorHexCodeConverter" />
             <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-            <converters:ModItemTagConverter x:Key="ModItemTagConverter" />
             <converters:ResourceAuthorsConverter x:Key="ResourceAuthorsConverter" />
+
             <converters:RadioButtonSelectedIndexConverter x:Key="RadioButtonSelectedIndexConverter" />
 
             <Style
@@ -60,7 +54,6 @@
                     <Setter Property="Margin" Value="1,30,0,6" />
                 </Style.Setters>
             </Style>
-
             <Style
                 x:Key="SettingsTitleSectionHeaderTextBlockStyle"
                 BasedOn="{StaticResource BodyStrongTextBlockStyle}"

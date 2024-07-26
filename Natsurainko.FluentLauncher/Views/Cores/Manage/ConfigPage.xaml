@@ -17,6 +17,10 @@
                 MaxWidth="1000"
                 HorizontalAlignment="Stretch"
                 Spacing="{StaticResource SettingsCardSpacing}">
+                <StackPanel.ChildrenTransitions>
+                    <EntranceThemeTransition FromVerticalOffset="50" />
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                </StackPanel.ChildrenTransitions>
 
                 <controls:SettingsCard
                     Description="Only if you enable this item, the following settings will take effect"

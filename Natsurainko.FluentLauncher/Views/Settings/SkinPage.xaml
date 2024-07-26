@@ -17,6 +17,11 @@
                 MaxWidth="1000"
                 HorizontalAlignment="Stretch"
                 Spacing="{StaticResource SettingsCardSpacing}">
+                <StackPanel.ChildrenTransitions>
+                    <EntranceThemeTransition FromVerticalOffset="50" />
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                </StackPanel.ChildrenTransitions>
+
                 <TextBlock
                     x:Uid="Settings_SkinPage_T1"
                     Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"

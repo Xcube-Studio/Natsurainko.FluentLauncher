@@ -18,6 +18,11 @@
                 MaxWidth="1000"
                 HorizontalAlignment="Stretch"
                 Spacing="{StaticResource SettingsCardSpacing}">
+                <StackPanel.ChildrenTransitions>
+                    <EntranceThemeTransition FromVerticalOffset="50" />
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                </StackPanel.ChildrenTransitions>
+
                 <controls:SettingsCard
                     ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
                     Command="{Binding OpenModsFolderCommand}"
@@ -58,7 +63,7 @@
                                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                                     MaxLines="1"
                                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                                    Text="{Binding Converter={ThemeResource ModItemTagConverter}}"
+                                                    Text="{Binding Converter={ThemeResource ModInfoConverter}}"
                                                     TextTrimming="CharacterEllipsis"
                                                     TextWrapping="NoWrap" />
                                             </StackPanel>

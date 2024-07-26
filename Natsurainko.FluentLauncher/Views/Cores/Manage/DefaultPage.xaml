@@ -25,9 +25,9 @@
                     Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
                     Text="Basic Configuration" />
 
-                <controls:SettingsCard DataContext="{Binding GameInfo}">
+                <controls:SettingsCard>
                     <controls:SettingsCard.Header>
-                        <Grid>
+                        <Grid DataContext="{Binding GameInfo}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="15" />
@@ -85,7 +85,7 @@
                         Name="DeleteButton"
                         Background="{ThemeResource DeleteButtonBackground}"
                         BorderBrush="{ThemeResource DeleteButtonBorder}"
-                        CommandParameter="{Binding}"
+                        Command="{Binding DeleteGameCommand}"
                         Style="{ThemeResource ButtonRevealStyle}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <FontIcon

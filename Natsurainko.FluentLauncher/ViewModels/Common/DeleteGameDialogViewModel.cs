@@ -10,6 +10,7 @@ using Nrk.FluentCore.Management;
 using System.IO;
 using System.Threading.Tasks;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
 internal partial class DeleteGameDialogViewModel : ObservableObject
@@ -72,7 +73,7 @@ internal partial class DeleteGameDialogViewModel : ObservableObject
                 gameService.RefreshGames();
 
                 _dialog.Hide();
-                _navigationService.Parent.NavigateTo("CoresPage");
+                _navigationService.Parent!.NavigateTo("CoresPage");
             });
 
             notificationService.NotifyWithoutContent(

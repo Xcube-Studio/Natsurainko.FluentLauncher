@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.XamlHelpers.Converters;
 using Nrk.FluentCore.Management;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -60,5 +61,14 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
         else if (breadcrumbBarItemClickedEventArgs.Item.ToString() == GameName)
             NavigateTo("CoreManage/Default", GameInfo);
         else NavigateTo(string.Join('/', Routes.ToArray()[..^1]).Replace($"/{GameName}/", "/"), GameInfo);
+    }
+
+    [RelayCommand]
+    public void BreadcrumbBarLoadingEvent(object args)
+    {
+        var breadcrumbBar = args.As<BreadcrumbBar, object>().sender;
+        var converter = breadcrumbBar.Resources["BreadcrumbBarLocalizationConverter"] as BreadcrumbBarLocalizationConverter;
+
+        converter.IgnoredText.Add(GameName);
     }
 }

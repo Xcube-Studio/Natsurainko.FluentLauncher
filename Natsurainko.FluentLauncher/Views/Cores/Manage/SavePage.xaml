@@ -24,6 +24,7 @@
                 </StackPanel.ChildrenTransitions>
 
                 <controls:SettingsCard
+                    x:Uid="Cores_Manage_SavePage_Card1"
                     ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
                     Command="{Binding OpenSavesFolderCommand}"
                     Description="{Binding SavesFolder}"
@@ -31,7 +32,10 @@
                     HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
                     IsClickEnabled="True" />
 
-                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Saves" />
+                <TextBlock
+                    x:Uid="Cores_Manage_SavePage_T1"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Saves" />
 
                 <ItemsRepeater ItemsSource="{Binding Saves}">
                     <ItemsRepeater.ItemTemplate>
@@ -91,9 +95,6 @@
                             </controls:SettingsCard>
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>
-                    <ItemsRepeater.Layout>
-                        <StackLayout Spacing="4" />
-                    </ItemsRepeater.Layout>
                 </ItemsRepeater>
 
                 <StackPanel
@@ -108,6 +109,7 @@
                         Glyph="&#xe74c;" />
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock
+                            x:Uid="Cores_Manage_SavePage_Text1"
                             Margin="10,0"
                             VerticalAlignment="Center"
                             FontSize="24"

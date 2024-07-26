@@ -21,9 +21,16 @@
             MaxWidth="1020"
             Margin="30,15"
             ItemsSource="{Binding Routes}">
+            <BreadcrumbBar.Resources>
+                <converters:BreadcrumbBarLocalizationConverter x:Key="BreadcrumbBarLocalizationConverter" BasePath="Cores_Manage_NavigationPage" />
+            </BreadcrumbBar.Resources>
+
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="ItemClicked">
                     <actions:ModifiedInvokeCommandAction Command="{Binding ItemClickedEventCommand}" />
+                </core:EventTriggerBehavior>
+                <core:EventTriggerBehavior EventName="Loading">
+                    <actions:ModifiedInvokeCommandAction Command="{Binding BreadcrumbBarLoadingEventCommand}" />
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
 
@@ -35,14 +42,13 @@
                                 <TextBlock
                                     Margin="10,0"
                                     Style="{ThemeResource TitleTextBlockStyle}"
-                                    Text="{Binding}"
+                                    Text="{Binding Converter={ThemeResource BreadcrumbBarLocalizationConverter}}"
                                     TextTrimming="CharacterEllipsis" />
                             </DataTemplate>
                         </BreadcrumbBarItem.ContentTemplate>
                     </BreadcrumbBarItem>
                 </DataTemplate>
             </BreadcrumbBar.ItemTemplate>
-
         </BreadcrumbBar>
 
         <Frame

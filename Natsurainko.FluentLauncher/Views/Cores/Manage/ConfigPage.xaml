@@ -23,6 +23,7 @@
                 </StackPanel.ChildrenTransitions>
 
                 <controls:SettingsCard
+                    x:Uid="Cores_Manage_ConfigPage_Card1"
                     Description="Only if you enable this item, the following settings will take effect"
                     Header="Enable specific core settings"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
@@ -34,9 +35,13 @@
                     HorizontalContentAlignment="Stretch"
                     IsEnabled="{Binding GameConfig.EnableSpecialSetting}">
                     <StackPanel Spacing="4">
-                        <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Launch Settings" />
+                        <TextBlock
+                            x:Uid="Cores_Manage_ConfigPage_T1"
+                            Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                            Text="Launch Settings" />
 
                         <controls:SettingsCard
+                            x:Uid="Cores_Manage_ConfigPage_Card2"
                             Description="The game will run at versions\${version} directory"
                             Header="Core independent"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
@@ -44,6 +49,7 @@
                         </controls:SettingsCard>
 
                         <controls:SettingsCard
+                            x:Uid="Cores_Manage_ConfigPage_Card3"
                             Description="Automatic full screen mode after entering the game"
                             Header="Full Screen Mode"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE740;}">
@@ -51,6 +57,7 @@
                         </controls:SettingsCard>
 
                         <controls:SettingsCard
+                            x:Uid="Cores_Manage_ConfigPage_Card4"
                             Description="The size of the game window being rendered"
                             Header="Game Window Resolution"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE744;}">
@@ -68,6 +75,7 @@
                         </controls:SettingsCard>
 
                         <controls:SettingsCard
+                            x:Uid="Cores_Manage_ConfigPage_Card5"
                             Description="The server address to connect after entering the game"
                             Header="Server Address"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE967;}">
@@ -78,7 +86,10 @@
                             </TextBox>
                         </controls:SettingsCard>
 
-                        <controls:SettingsCard Header="Game Window Title" HeaderIcon="{xh:FontIcon Glyph=&#xE76F;}">
+                        <controls:SettingsCard
+                            x:Uid="Cores_Manage_ConfigPage_Card6"
+                            Header="Game Window Title"
+                            HeaderIcon="{xh:FontIcon Glyph=&#xE76F;}">
                             <TextBox Width="400" Text="{Binding GameConfig.GameWindowTitle, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
@@ -86,9 +97,13 @@
                             </TextBox>
                         </controls:SettingsCard>
 
-                        <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Account Settings" />
+                        <TextBlock
+                            x:Uid="Cores_Manage_ConfigPage_T2"
+                            Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                            Text="Account Settings" />
 
                         <controls:SettingsCard
+                            x:Uid="Cores_Manage_ConfigPage_Card7"
                             Description="If the selected account cannot be found in the account list after enabling it, an error will be reported"
                             Header="Account used to launch this game"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE716;}">
@@ -147,9 +162,13 @@
                             </StackPanel>
                         </controls:SettingsCard>
 
-                        <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="JVM Settings" />
+                        <TextBlock
+                            x:Uid="Cores_Manage_ConfigPage_T3"
+                            Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                            Text="JVM Settings" />
 
                         <controls:SettingsExpander
+                            x:Uid="Cores_Manage_ConfigPage_Card8"
                             Description="These will be added to the generated launch parameters"
                             Header="Additional JVM parameter settings"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE713;}"

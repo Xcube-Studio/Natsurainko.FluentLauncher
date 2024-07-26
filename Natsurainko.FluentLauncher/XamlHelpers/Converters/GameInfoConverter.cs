@@ -26,7 +26,7 @@ public class GameInfoConverter : IValueConverter
                     "snapshot" => "Snapshot",
                     "old_beta" => "Old Beta",
                     "old_alpha" => "Old Alpha",
-                    _ => "Unknown Type"
+                    _ => "Unknown"
                 }),
             };
 

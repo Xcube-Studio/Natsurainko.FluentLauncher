@@ -20,7 +20,10 @@
                     <RepositionThemeTransition IsStaggeringEnabled="False" />
                 </StackPanel.ChildrenTransitions>
 
-                <TextBlock Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}" Text="Basic Configuration" />
+                <TextBlock
+                    x:Uid="Cores_Manage_DefaultPage_T1"
+                    Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
+                    Text="Basic Configuration" />
 
                 <controls:SettingsCard DataContext="{Binding GameInfo}">
                     <controls:SettingsCard.Header>
@@ -77,9 +80,28 @@
                             </StackPanel>
                         </Grid>
                     </controls:SettingsCard.Header>
+
+                    <Button
+                        Name="DeleteButton"
+                        Background="{ThemeResource DeleteButtonBackground}"
+                        BorderBrush="{ThemeResource DeleteButtonBorder}"
+                        CommandParameter="{Binding}"
+                        Style="{ThemeResource ButtonRevealStyle}">
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <FontIcon
+                                FontSize="14"
+                                Foreground="White"
+                                Glyph="&#xe74d;" />
+                            <TextBlock
+                                x:Uid="Buttons_Delete"
+                                Foreground="White"
+                                Text="Delete" />
+                        </StackPanel>
+                    </Button>
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
+                    x:Uid="Cores_Manage_DefaultPage_Card1"
                     Description="Only as a display name, the actual Id will not be modified"
                     Header="Core Nickname"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE8AC;}">
@@ -87,6 +109,7 @@
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
+                    x:Uid="Cores_Manage_DefaultPage_Card2"
                     Command="{Binding CardClickCommand}"
                     CommandParameter="CoreManage/Config"
                     Description="Set additional JVM parameters, game accounts, core independence, etc."
@@ -94,9 +117,13 @@
                     HeaderIcon="{xh:FontIcon Glyph=&#xe945;}"
                     IsClickEnabled="True" />
 
-                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Resource Management" />
+                <TextBlock
+                    x:Uid="Cores_Manage_DefaultPage_T2"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Resource Management" />
 
                 <controls:SettingsCard
+                    x:Uid="Cores_Manage_DefaultPage_Card3"
                     Command="{Binding CardClickCommand}"
                     CommandParameter="CoreManage/Mod"
                     Description="Import, enable/disable, delete modules"
@@ -105,9 +132,10 @@
                     IsClickEnabled="True" />
 
                 <controls:SettingsCard
+                    x:Uid="Cores_Manage_DefaultPage_Card4"
                     Command="{Binding CardClickCommand}"
                     CommandParameter="CoreManage/Save"
-                    Description="Set additional JVM parameters, game accounts, core independence, etc."
+                    Description="View and manage your game saves"
                     Header="Save Management"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE81E;}"
                     IsClickEnabled="True" />

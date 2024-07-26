@@ -55,12 +55,6 @@ pages.WithPage<Views.Cores.Manage.ConfigPage, ViewModels.Cores.Manage.ConfigView
 pages.WithPage<Views.Cores.Manage.ModPage, ViewModels.Cores.Manage.ModViewModel>("CoreManage/Mod");
 pages.WithPage<Views.Cores.Manage.SavePage, ViewModels.Cores.Manage.SaveViewModel>("CoreManage/Save");
 
-/*
-pages.WithPage<Views.Cores.ManageNavigationPage, ViewModels.Cores.ManageNavigationViewModel>("CoresManageNavigationPage");
-pages.WithPage<Views.Cores.Manage.CoreSettingsPage, ViewModels.Cores.Manage.CoreSettingsViewModel>("CoreSettingsPage");
-pages.WithPage<Views.Cores.Manage.CoreModsPage, ViewModels.Cores.Manage.CoreModsViewModel>("CoreModsPage");
-pages.WithPage<Views.Cores.Manage.CoreStatisticPage, ViewModels.Cores.Manage.CoreStatisticViewModel>("CoreStatisticPage");*/
-
 // Activities page
 pages.WithPage<Views.Activities.ActivitiesNavigationPage, ViewModels.Activities.ActivitiesNavigationViewModel>("ActivitiesNavigationPage");
 pages.WithPage<Views.Activities.LaunchPage, ViewModels.Activities.LaunchViewModel>("LaunchTasksPage");

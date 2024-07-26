@@ -1,8 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
-using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Management.Mods;
@@ -19,11 +17,14 @@ namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
 public partial class ModViewModel : ObservableObject, INavigationAware
 {
     private readonly INavigationService _navigationService;
-    public DefaultModsManager modsManager;
+
+    public DefaultModsManager ModsManager { get; private set; }
 
     public string ModsFolder { get; private set; }
 
     public GameInfo GameInfo { get; private set; }
+
+    public bool NotSupportMod => !GameInfo.IsSupportMod();
 
     [ObservableProperty]
     public IReadOnlyList<ModInfo> mods;
@@ -41,26 +42,27 @@ public partial class ModViewModel : ObservableObject, INavigationAware
         if (!Directory.Exists(ModsFolder))
             Directory.CreateDirectory(ModsFolder);
 
-        modsManager = new DefaultModsManager(ModsFolder);
+        ModsManager = new DefaultModsManager(ModsFolder);
 
-        Task.Run(() =>
-        {
-            var modInfos = modsManager.EnumerateMods().ToList();
-            App.DispatcherQueue.TryEnqueue(() => Mods = modInfos);
-        });
+        LoadModList();
     }
 
     [RelayCommand]
     public async Task OpenModsFolder() => await Launcher.LaunchFolderPathAsync(ModsFolder);
 
     [RelayCommand]
-    public void Toggled(object args)
+    public void DeleteMod(ModInfo modInfo)
     {
-        var toggleSwitch = args.As<ToggleSwitch, object>().sender;
+        File.Delete(modInfo.AbsolutePath);
+        LoadModList();
+    }
 
-        var modInfo = (ModInfo)toggleSwitch.DataContext;
-
-        if (modInfo != null)
-            modsManager.Switch(modInfo, toggleSwitch.IsOn);
+    private void LoadModList()
+    {
+        Task.Run(() =>
+        {
+            var modInfos = ModsManager.EnumerateMods().ToList();
+            App.DispatcherQueue.TryEnqueue(() => Mods = modInfos);
+        });
     }
 }

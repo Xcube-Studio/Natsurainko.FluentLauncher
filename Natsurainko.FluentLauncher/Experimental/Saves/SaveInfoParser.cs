@@ -17,6 +17,8 @@ internal static class SaveInfoParser
 
         await Task.Run(() => 
         {
+            var time = DateTime.Now;
+
             using var fileStream = File.OpenRead(Path.Combine(saveFolder, "level.dat"));
             using var nbtReader = new NbtReader(fileStream, NbtCompression.GZip);
 
@@ -27,12 +29,18 @@ internal static class SaveInfoParser
             saveInfo.AllowCommands = dataTagCompound["allowCommands"].AsBool();
             saveInfo.GameType = dataTagCompound["GameType"].AsInt();
             saveInfo.Version = dataTagCompound["Version"].AsTagCompound()["Name"].AsString();
-            saveInfo.Seed = dataTagCompound["WorldGenSettings"].AsTagCompound()["seed"].AsLong();
+
+            if (dataTagCompound.ContainsKey("WorldGenSettings"))
+                saveInfo.Seed = dataTagCompound["WorldGenSettings"].AsTagCompound()["seed"].AsLong();
+            else if (dataTagCompound.ContainsKey("RandomSeed"))
+                saveInfo.Seed = dataTagCompound["RandomSeed"].AsLong();
 
             saveInfo.LastPlayed = DateTimeOffset.FromUnixTimeMilliseconds(dataTagCompound["LastPlayed"].AsLong()).ToLocalTime().DateTime;
 
             if (File.Exists(Path.Combine(saveFolder, "icon.png"))) 
                 saveInfo.IconFilePath = Path.Combine(saveFolder, "icon.png");
+
+            var gap = DateTime.Now - time;
         });
 
         return saveInfo;

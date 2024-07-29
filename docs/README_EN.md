@@ -5,22 +5,22 @@
 ![](https://img.shields.io/github/contributors/Xcube-Studio/Natsurainko.FluentLauncher)
 ![](https://img.shields.io/github/commit-activity/y/Xcube-Studio/Natsurainko.FluentLauncher)
 
-Minecraft Java launcher based on .NET 7 and WinUI3 technologies.
+Minecraft Java launcher based on .NET 8 and WinUI3 technologies.
 Minecraft launcher for Windows 11
 Provides a clean and smooth visual experience
 
 ## Screenshots 🪟
-<img src="https://github.com/pdimu/pdimu/blob/main/image0_EN.png">
+<img src="docs/images/image5.png">
 
 ## Future Plans 📝
 
 | Functions | Status |
 | ---------------------------------------- | ------------------ |
-| Upgrade to CommunityToolkit 8.1 (awaiting release) | [ ] |
 | Asynchronising the startup process (waiting for FluentCore update) | [ ] |
-| Importing Game Packs | [ ] | Skin Management and 3D Preview
-| Skinning and 3D preview (need to discuss?)              | [ ] | NativeAOT support (need to discuss?)
+| Importing Game Packs | [ ] | 
 | NativeAOT support (awaiting Windows App SDK update) | [ ] |
+| Upgrade to CommunityToolkit 8.1 (awaiting release) | Preview Version Testing [ ] |
+| Skin Management and 3D Preview | Finished [x] |
 
 ## List of Functions ✨
 
@@ -50,8 +50,8 @@ Provides a clean and smooth visual experience
 
 ## Install this application ✈️
 
-#### *[.NET 7 Runtime](https://dotnet.microsoft.com/zh-cn/download/dotnet/7.0) must be installed (regardless of the source)*
-
+#### *[.NET 8 Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) must be installed (regardless of the source)*
+> Note: 2.2.9.0 and earlier versions are compiled with .net7.0, 2.3.0.0 (unreleased) will be compiled with .net8.0
 
 + Get our app from the Microsoft Store
 <a href="https://apps.microsoft.com/detail/Natsurianko.FluentLauncher/9p4nqqxq942p">
@@ -68,7 +68,7 @@ Provides a clean and smooth visual experience
 
 Compile Prerequisites:
 > + Install the .NET Desktop Development for Visual Studio 2022
-> + Install the [.NET 7 SDK](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks) development tool
+> + Install the [.NET SDK](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks) development tool
 > + Install the [Windows App SDK](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/set-up-your-development-environment?tabs=cs-vs-community%2Ccpp-vs-community%2Cvs-2022-17-1-a%2Cvs-2022-17-1-b) development environment and [Visual Studio extension](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/single-project-msix?tabs=csharp)
 
 After preparing the above environment

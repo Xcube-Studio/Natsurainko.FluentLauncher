@@ -1,0 +1,156 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Cores.Manage.ModPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    mc:Ignorable="d">
+
+    <ScrollViewer>
+        <Border Margin="40,0,40,25">
+            <StackPanel
+                MaxWidth="1000"
+                HorizontalAlignment="Stretch"
+                Spacing="{StaticResource SettingsCardSpacing}">
+                <StackPanel.ChildrenTransitions>
+                    <EntranceThemeTransition FromVerticalOffset="50" />
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                </StackPanel.ChildrenTransitions>
+
+                <controls:SettingsCard
+                    x:Uid="Cores_Manage_ModPage_Card1"
+                    ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
+                    Command="{Binding OpenModsFolderCommand}"
+                    Description="{Binding ModsFolder}"
+                    Header="Mods Folder"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
+                    IsClickEnabled="True" />
+                <controls:SettingsCard
+                    x:Uid="Cores_Manage_ModPage_Card2"
+                    Description="Even if the mods listed below exist, they will not be loaded"
+                    Foreground="{ThemeResource SystemErrorTextColor}"
+                    Header="This game does not have a mod loader or the modder does not support mods"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xE711;}"
+                    Visibility="{Binding NotSupportMod, Converter={ThemeResource BoolToVisibilityConverter}}" />
+
+                <TextBlock
+                    x:Uid="Cores_Manage_ModPage_T1"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Mods" />
+
+                <ItemsControl ItemsSource="{Binding Mods}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <controls:SettingsCard
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                PointerEntered="SettingsCard_PointerEntered"
+                                PointerExited="SettingsCard_PointerExited">
+                                <controls:SettingsCard.Header>
+                                    <Grid Background="Transparent">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="10" />
+                                            <ColumnDefinition Width="1*" />
+                                        </Grid.ColumnDefinitions>
+                                        <FontIcon
+                                            Width="32"
+                                            Height="32"
+                                            Glyph="&#xF158;" />
+                                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                            <TextBlock
+                                                FontWeight="SemiBold"
+                                                Text="{Binding DisplayName}"
+                                                TextTrimming="CharacterEllipsis" />
+                                            <TextBlock
+                                                x:Name="InfoText"
+                                                Margin="0,0,85,0"
+                                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                MaxLines="1"
+                                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                                Text="{Binding Converter={ThemeResource ModInfoConverter}}"
+                                                TextTrimming="CharacterEllipsis"
+                                                TextWrapping="NoWrap" />
+                                        </StackPanel>
+                                    </Grid>
+                                </controls:SettingsCard.Header>
+
+                                <StackPanel Orientation="Horizontal" Spacing="15">
+                                    <Button
+                                        Name="DeleteButton"
+                                        Background="{ThemeResource DeleteButtonBackground}"
+                                        BorderBrush="{ThemeResource DeleteButtonBorder}"
+                                        CommandParameter="{Binding}"
+                                        Style="{ThemeResource ButtonRevealStyle}">
+                                        <StackPanel Orientation="Horizontal" Spacing="5">
+                                            <FontIcon
+                                                FontSize="14"
+                                                Foreground="White"
+                                                Glyph="&#xe74d;" />
+                                            <TextBlock
+                                                x:Uid="Buttons_Delete"
+                                                Foreground="White"
+                                                Text="Delete" />
+                                        </StackPanel>
+
+                                        <i:Interaction.Behaviors>
+                                            <behaviors:AncestorBindingBehavior
+                                                AncestorType="ItemsControl"
+                                                Binding="{Binding DataContext.DeleteModCommand}"
+                                                TargetPropertyName="Command" />
+                                        </i:Interaction.Behaviors>
+                                    </Button>
+
+                                    <ToggleSwitch
+                                        Name="ToggleSwitch"
+                                        IsOn="{Binding IsEnabled, Mode=OneTime}"
+                                        Loaded="ToggleSwitch_Loaded" />
+                                </StackPanel>
+
+                                <i:Interaction.Behaviors>
+                                    <behaviors:PointerOverVisibleBehavior TargetElementName="DeleteButton" />
+                                </i:Interaction.Behaviors>
+                            </controls:SettingsCard>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <StackPanel
+                    Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="5">
+                    <FontIcon
+                        FontSize="72"
+                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                        Glyph="&#xe74c;" />
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock
+                            x:Uid="Cores_Manage_ModPage_Text1"
+                            Margin="10,0"
+                            VerticalAlignment="Center"
+                            FontSize="24"
+                            FontWeight="SemiBold"
+                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                            Text="No Mod" />
+                        <HyperlinkButton Margin="0,0,0,-5">
+                            <TextBlock
+                                x:Uid="Cores_Manage_ModPage_Text2"
+                                FontWeight="SemiBold"
+                                Text="Go To Downloads" />
+                        </HyperlinkButton>
+                    </StackPanel>
+
+                    <i:Interaction.Behaviors>
+                        <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{Binding Mods}" />
+                    </i:Interaction.Behaviors>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </ScrollViewer>
+</Page>

@@ -87,8 +87,8 @@ internal class LaunchService : DefaultLaunchService
         if (suitableJava == null)
             throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoSuitableJava").Replace("${version}", gameInfo.GetSuitableJavaVersion()));
 
-        var specialConfig = gameInfo.GetSpecialConfig(); // Game specific config
-        var launchAccount = GetLaunchAccount(specialConfig, _accountService)
+        var config = gameInfo.GetConfig(); // Game specific config
+        var launchAccount = GetLaunchAccount(config, _accountService)
             ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount")); // Determine which account to use
 
         Account Authenticate()
@@ -105,7 +105,7 @@ internal class LaunchService : DefaultLaunchService
                 else
                 {
                     _accountService.RefreshAccount(launchAccount).GetAwaiter().GetResult();
-                    return GetLaunchAccount(specialConfig, _accountService);
+                    return GetLaunchAccount(config, _accountService);
                 }
             }
             catch (Exception ex)
@@ -122,13 +122,13 @@ internal class LaunchService : DefaultLaunchService
         {
             Account = launchAccount,
             GameInfo = gameInfo,
-            GameDirectory = GetGameDirectory(gameInfo, specialConfig),
+            GameDirectory = GetGameDirectory(gameInfo, config),
             JavaPath = suitableJava,
             MaxMemory = maxMemory,
             MinMemory = minMemory,
             UseDemoUser = _settingsService.EnableDemoUser,
-            ExtraGameParameters = GetExtraGameParameters(specialConfig),
-            ExtraVmParameters = GetExtraVmParameters(specialConfig, launchAccount),
+            ExtraGameParameters = GetExtraGameParameters(config),
+            ExtraVmParameters = GetExtraVmParameters(config, launchAccount),
             CreateResourcesDownloader = (libs) => _downloadService.CreateResourcesDownloader
                 (gameInfo, libs)
         };
@@ -138,7 +138,7 @@ internal class LaunchService : DefaultLaunchService
 
         session.ProcessStarted += (s, e) =>
         {
-            var title = GameWindowTitle(specialConfig);
+            var title = GameWindowTitle(config);
             if (string.IsNullOrEmpty(title)) return;
 
             Task.Run(async () =>
@@ -183,7 +183,7 @@ internal class LaunchService : DefaultLaunchService
         return suits.First().Item1;
     }
 
-    private string GetGameDirectory(GameInfo gameInfo, GameSpecialConfig specialConfig)
+    private string GetGameDirectory(GameInfo gameInfo, GameConfig specialConfig)
     {
         if (specialConfig.EnableSpecialSetting)
         {
@@ -198,7 +198,7 @@ internal class LaunchService : DefaultLaunchService
         return gameInfo.MinecraftFolderPath;
     }
 
-    private string? GameWindowTitle(GameSpecialConfig specialConfig)
+    private string? GameWindowTitle(GameConfig specialConfig)
     {
         if (specialConfig.EnableSpecialSetting)
         {
@@ -214,7 +214,7 @@ internal class LaunchService : DefaultLaunchService
         return null;
     }
 
-    public static Account GetLaunchAccount(GameSpecialConfig specialConfig, AccountService _accountService)
+    public static Account GetLaunchAccount(GameConfig specialConfig, AccountService _accountService)
     {
         if (specialConfig.EnableSpecialSetting && specialConfig.EnableTargetedAccount && specialConfig.Account != null)
         {
@@ -241,7 +241,7 @@ internal class LaunchService : DefaultLaunchService
         return _accountService.ActiveAccount;
     }
 
-    private IEnumerable<string> GetExtraVmParameters(GameSpecialConfig specialConfig, Account account)
+    private IEnumerable<string> GetExtraVmParameters(GameConfig specialConfig, Account account)
     {
         if (account is YggdrasilAccount yggdrasil)
         {
@@ -259,7 +259,7 @@ internal class LaunchService : DefaultLaunchService
             yield return item;
     }
 
-    private IEnumerable<string> GetExtraGameParameters(GameSpecialConfig specialConfig)
+    private IEnumerable<string> GetExtraGameParameters(GameConfig specialConfig)
     {
         if (specialConfig.EnableSpecialSetting)
         {

@@ -14,7 +14,7 @@ internal class GameLocator : DefaultGameLocator
 
     protected override string GetName(GameInfo gameInfo, VersionJsonEntity jsonEntity)
     {
-        var specialConfig = gameInfo.GetSpecialConfig();
-        return string.IsNullOrEmpty(specialConfig.NickName) ? jsonEntity.Id : specialConfig.NickName;
+        var config = gameInfo.GetConfig();
+        return string.IsNullOrEmpty(config.NickName) ? jsonEntity.Id : config.NickName;
     }
 }

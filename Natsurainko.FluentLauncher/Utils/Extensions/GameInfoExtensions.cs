@@ -1,7 +1,6 @@
 ﻿using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
-using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Management.ModLoaders;
 using System;
@@ -16,42 +15,30 @@ namespace Natsurainko.FluentLauncher.Utils.Extensions;
 
 internal static class GameInfoExtensions
 {
-    public static GameSpecialConfig GetSpecialConfig(this GameInfo gameInfo)
+    public static GameConfig GetConfig(this GameInfo gameInfo)
     {
         var configGuid = new Guid(MD5.HashData(Encoding.UTF8.GetBytes($"{gameInfo.MinecraftFolderPath}:{gameInfo.AbsoluteId}:{gameInfo.Type}")));
-        var configsFolder = Path.Combine(LocalStorageService.LocalFolderPath, "CoreSpecialConfigs");
+        var configsFolder = Path.Combine(LocalStorageService.LocalFolderPath, "GameConfigsFolder");
 
-        if (!Directory.Exists(configsFolder)) Directory.CreateDirectory(configsFolder);
+        if (!Directory.Exists(configsFolder)) 
+            Directory.CreateDirectory(configsFolder);
 
         var configFile = Path.Combine(configsFolder, $"{configGuid}.json");
 
-        if (!File.Exists(configFile)) return new GameSpecialConfig { FilePath = configFile };
+        if (!File.Exists(configFile)) 
+            return new GameConfig { FilePath = configFile };
 
-        GameSpecialConfig coreProfile;
-        var json = JsonNode.Parse(File.ReadAllText(configFile));
+        GameConfig coreProfile;
 
-        var item = json["Account"];
-        Account account = null;
-
-        if (item != null)
-        {
-            var accountType = (AccountType)(item?["Type"].GetValue<int>());
-
-            account = accountType switch
-            {
-                AccountType.Offline => item.Deserialize<OfflineAccount>(),
-                AccountType.Microsoft => item.Deserialize<MicrosoftAccount>(),
-                AccountType.Yggdrasil => item.Deserialize<YggdrasilAccount>(),
-                _ => null
-            };
-
-            var obj = json.AsObject();
-            obj.Remove("Account");
-            coreProfile = obj.Deserialize<GameSpecialConfig>();
+        try 
+        { 
+            coreProfile = JsonNode.Parse(File.ReadAllText(configFile)).Deserialize<GameConfig>()!; 
         }
-        else coreProfile = json.Deserialize<GameSpecialConfig>();
+        catch 
+        {
+            coreProfile = new GameConfig(); 
+        }
 
-        coreProfile.Account = account;
         coreProfile.FilePath = configFile;
 
         return coreProfile;
@@ -75,11 +62,11 @@ internal static class GameInfoExtensions
 
     public static string GetGameDirectory(this GameInfo gameInfo)
     {
-        var specialConfig = gameInfo.GetSpecialConfig();
+        var config = gameInfo.GetConfig();
 
-        if (specialConfig.EnableSpecialSetting)
+        if (config.EnableSpecialSetting)
         {
-            if (specialConfig.EnableIndependencyCore)
+            if (config.EnableIndependencyCore)
                 return Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId);
             else return gameInfo.MinecraftFolderPath;
         }
@@ -90,12 +77,16 @@ internal static class GameInfoExtensions
         return gameInfo.MinecraftFolderPath;
     }
 
+    public static string GetModsDirectory(this GameInfo gameInfo) => Path.Combine(GetGameDirectory(gameInfo), "mods");
+
+    public static string GetSavesDirectory(this GameInfo gameInfo) => Path.Combine(GetGameDirectory(gameInfo), "saves");
+
     public static void UpdateLastLaunchTimeToNow(this GameInfo gameInfo)
     {
-        var specialConfig = gameInfo.GetSpecialConfig();
+        var config = gameInfo.GetConfig();
 
         // Update launch time
         var launchTime = DateTime.Now;
-        specialConfig.LastLaunchTime = launchTime;
+        config.LastLaunchTime = launchTime;
     }
 }

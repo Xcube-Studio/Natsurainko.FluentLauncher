@@ -48,10 +48,12 @@ pages.WithPage<Views.Home.HomePage, ViewModels.Home.HomeViewModel>("HomePage");
 
 // Cores page
 pages.WithPage<Views.Cores.CoresPage, ViewModels.Cores.CoresViewModel>("CoresPage");
-pages.WithPage<Views.Cores.ManageNavigationPage, ViewModels.Cores.ManageNavigationViewModel>("CoresManageNavigationPage");
-pages.WithPage<Views.Cores.Manage.CoreSettingsPage, ViewModels.Cores.Manage.CoreSettingsViewModel>("CoreSettingsPage");
-pages.WithPage<Views.Cores.Manage.CoreModsPage, ViewModels.Cores.Manage.CoreModsViewModel>("CoreModsPage");
-pages.WithPage<Views.Cores.Manage.CoreStatisticPage, ViewModels.Cores.Manage.CoreStatisticViewModel>("CoreStatisticPage");
+
+pages.WithPage<Views.Cores.Manage.NavigationPage, ViewModels.Cores.Manage.NavigationViewModel>("CoreManage/Navigation");
+pages.WithPage<Views.Cores.Manage.DefaultPage, ViewModels.Cores.Manage.DefaultViewModel>("CoreManage/Default");
+pages.WithPage<Views.Cores.Manage.ConfigPage, ViewModels.Cores.Manage.ConfigViewModel>("CoreManage/Config");
+pages.WithPage<Views.Cores.Manage.ModPage, ViewModels.Cores.Manage.ModViewModel>("CoreManage/Mod");
+pages.WithPage<Views.Cores.Manage.SavePage, ViewModels.Cores.Manage.SaveViewModel>("CoreManage/Save");
 
 // Activities page
 pages.WithPage<Views.Activities.ActivitiesNavigationPage, ViewModels.Activities.ActivitiesNavigationViewModel>("ActivitiesNavigationPage");

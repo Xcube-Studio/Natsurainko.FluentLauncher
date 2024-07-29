@@ -1,0 +1,65 @@
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using FluentLauncher.Infra.UI.Navigation;
+using Natsurainko.FluentLauncher.Utils.Extensions;
+using Nrk.FluentCore.Management;
+using Nrk.FluentCore.Management.Mods;
+using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Threading.Tasks;
+using Windows.System;
+
+#nullable disable
+namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
+
+public partial class ModViewModel : ObservableObject, INavigationAware
+{
+    private readonly INavigationService _navigationService;
+
+    public ModManager ModsManager { get; private set; }
+
+    public string ModsFolder { get; private set; }
+
+    public GameInfo GameInfo { get; private set; }
+
+    public bool NotSupportMod => !GameInfo.IsSupportMod();
+
+    public ObservableCollection<ModInfo> Mods { get; private set; } = [];
+
+    public ModViewModel(INavigationService navigationService)
+    {
+        _navigationService = navigationService;
+    }
+
+    void INavigationAware.OnNavigatedTo(object parameter)
+    {
+        GameInfo = parameter as GameInfo;
+        ModsFolder = GameInfo.GetModsDirectory();
+
+        if (!Directory.Exists(ModsFolder))
+            Directory.CreateDirectory(ModsFolder);
+
+        ModsManager = new ModManager(ModsFolder);
+
+        LoadModList();
+    }
+
+    [RelayCommand]
+    public async Task OpenModsFolder() => await Launcher.LaunchFolderPathAsync(ModsFolder);
+
+    [RelayCommand]
+    public void DeleteMod(ModInfo modInfo)
+    {
+        File.Delete(modInfo.AbsolutePath);
+        LoadModList();
+    }
+
+    private async void LoadModList()
+    {
+        Mods.Clear();
+
+        await foreach (var saveInfo in ModsManager.EnumerateModsAsync())
+            App.DispatcherQueue.TryEnqueue(() => Mods.Add(saveInfo));
+    }
+}

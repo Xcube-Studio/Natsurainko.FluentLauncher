@@ -1,0 +1,134 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Cores.Manage.SavePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    mc:Ignorable="d">
+
+    <ScrollViewer>
+        <Border Margin="40,0,40,25">
+            <StackPanel
+                MaxWidth="1000"
+                HorizontalAlignment="Stretch"
+                Spacing="{StaticResource SettingsCardSpacing}">
+                <StackPanel.ChildrenTransitions>
+                    <EntranceThemeTransition FromVerticalOffset="50" />
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                </StackPanel.ChildrenTransitions>
+
+                <controls:SettingsCard
+                    x:Uid="Cores_Manage_SavePage_Card1"
+                    ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
+                    Command="{Binding OpenSavesFolderCommand}"
+                    Description="{Binding SavesFolder}"
+                    Header="Saves Folder"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
+                    IsClickEnabled="True" />
+
+                <TextBlock
+                    x:Uid="Cores_Manage_SavePage_T1"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Saves" />
+
+                <ItemsRepeater ItemsSource="{Binding Saves}">
+                    <ItemsRepeater.ItemTemplate>
+                        <DataTemplate>
+                            <controls:SettingsCard
+                                ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
+                                CommandParameter="{Binding}"
+                                IsClickEnabled="True">
+                                <controls:SettingsCard.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="15" />
+                                            <ColumnDefinition Width="1*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border
+                                            Width="56"
+                                            Height="56"
+                                            Margin="2,2,0,0"
+                                            VerticalAlignment="Center"
+                                            BorderBrush="{ThemeResource IconBorder}"
+                                            BorderThickness="2"
+                                            CornerRadius="4">
+                                            <Border CornerRadius="4">
+                                                <Image>
+                                                    <i:Interaction.Behaviors>
+                                                        <behaviors:ImageSourceLoadBehavior ImageSourceFilePath="{Binding IconFilePath}" SourcePropertyName="Source" />
+                                                    </i:Interaction.Behaviors>
+                                                </Image>
+                                            </Border>
+                                        </Border>
+                                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                            <TextBlock
+                                                IsTextSelectionEnabled="True"
+                                                Text="{Binding LevelName}"
+                                                TextTrimming="CharacterEllipsis"
+                                                ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                                            <StackPanel Orientation="Horizontal" Spacing="5">
+                                                <TextBlock
+                                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                    IsTextSelectionEnabled="True"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}">
+                                                    <Run Text="{Binding FolderName}" />
+                                                    <Run>(</Run><Run Text="{Binding LastPlayed}" /><Run>)</Run>
+                                                </TextBlock>
+                                            </StackPanel>
+                                            <TextBlock
+                                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                IsTextSelectionEnabled="True"
+                                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                                Text="{Binding Converter={ThemeResource SaveInfoConverter}}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </controls:SettingsCard.Header>
+
+                                <i:Interaction.Behaviors>
+                                    <behaviors:AncestorBindingBehavior
+                                        AncestorType="ScrollViewer"
+                                        Binding="{Binding DataContext.OpenSaveFolderCommand}"
+                                        TargetPropertyName="Command" />
+                                </i:Interaction.Behaviors>
+                            </controls:SettingsCard>
+                        </DataTemplate>
+                    </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
+
+                <StackPanel
+                    Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="5">
+                    <FontIcon
+                        FontSize="72"
+                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                        Glyph="&#xe74c;" />
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock
+                            x:Uid="Cores_Manage_SavePage_Text1"
+                            Margin="10,0"
+                            VerticalAlignment="Center"
+                            FontSize="24"
+                            FontWeight="SemiBold"
+                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                            Text="No Save" />
+                    </StackPanel>
+
+                    <i:Interaction.Behaviors>
+                        <behaviors:EmptyListVisibleBehavior IsObservableCollection="True" ItemsSource="{Binding Saves}" />
+                    </i:Interaction.Behaviors>
+                </StackPanel>
+
+            </StackPanel>
+        </Border>
+    </ScrollViewer>
+</Page>

@@ -91,7 +91,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
 
         var list = SortByIndex.Equals(0)
             ? infos.OrderBy(x => x.Name).ToList()
-            : infos.OrderByDescending(x => x.GetSpecialConfig().LastLaunchTime).ToList();
+            : infos.OrderByDescending(x => x.GetConfig().LastLaunchTime).ToList();
 
         App.DispatcherQueue.TryEnqueue(() => DisplayGameInfos = list);
     }
@@ -100,7 +100,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     public void GoToSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Launch");
 
     [RelayCommand]
-    public void GoToCoreSettings(GameInfo gameInfo) => _navigationService.NavigateTo("CoresManageNavigationPage", gameInfo);
+    public void GoToCoreSettings(GameInfo gameInfo) => _navigationService.NavigateTo("CoreManage/Navigation", gameInfo);
 
     [RelayCommand]
     public void SearchAllMinecraft()

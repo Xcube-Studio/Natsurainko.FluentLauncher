@@ -49,4 +49,6 @@ internal partial class DefaultViewModel : SettingsViewModelBase, ISettingsViewMo
 
     [RelayCommand]
     void CardClick(string tag) => _navigationService.NavigateTo(tag);
+
+
 }

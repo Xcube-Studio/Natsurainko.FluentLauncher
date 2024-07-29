@@ -146,11 +146,11 @@ internal class DownloadService : DefaultDownloadService
             App.DispatcherQueue.SynchronousTryEnqueue(() => _gameService.RefreshGames());
 
             var gameInfo = _gameService.Games.First(x => x.AbsoluteId.Equals(info.AbsoluteId));
-            var specialConfig = gameInfo.GetSpecialConfig();
+            var config = gameInfo.GetConfig();
 
-            specialConfig.EnableSpecialSetting = info.EnableIndependencyCore || !string.IsNullOrEmpty(info.NickName);
-            specialConfig.EnableIndependencyCore = info.EnableIndependencyCore;
-            specialConfig.NickName = info.NickName;
+            config.EnableSpecialSetting = info.EnableIndependencyCore || !string.IsNullOrEmpty(info.NickName);
+            config.EnableIndependencyCore = info.EnableIndependencyCore;
+            config.NickName = info.NickName;
 
             @this.OnProgressChanged(1);
 

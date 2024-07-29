@@ -99,8 +99,9 @@ See the repository for details **[Xcube-Studio/FluentLauncher.Localisation](http
 * **natsurainko** - *startup kernel launcher*
 * **gavinY** - *starter Backend Architecture*
 * **xingxing520** - *Launcher release Microsoft Store Services*
-
 Other contributors and beta testers
+
+![Alt](https://repobeats.axiom.co/api/embed/0dcf1b6a60fa8c1c6cefe6042c482f59d2d60538.svg "Repobeats analytics image")
 
 *You can also see all the developers involved in the project in the contributors list. *#
 

@@ -101,10 +101,9 @@ https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-L
 * **natsurainko** - *启动核心 启动器*
 * **gavinY** - *启动器 后端架构*
 * **xingxing520** - *启动器发布 微软商店服务*
+等其他贡献者与参与测试人员
 
 ![Alt](https://repobeats.axiom.co/api/embed/0dcf1b6a60fa8c1c6cefe6042c482f59d2d60538.svg "Repobeats analytics image")
-
-等其他贡献者与参与测试人员
 
 *您也可以在贡献者名单中参看所有参与该项目的开发者。*
 

@@ -1,7 +1,6 @@
 ﻿using NbtToolkit.Binary;
 using System;
 using System.IO;
-using System.IO.Compression;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Experimental.Saves;
@@ -21,15 +20,8 @@ internal static class SaveInfoParser
             var time = DateTime.Now;
 
             using var fileStream = new FileStream(Path.Combine(saveFolder, "level.dat"), FileMode.Open, FileAccess.Read);
-            using var gzipStream = new GZipStream(fileStream, CompressionMode.Decompress);
-            using var memoryStream = new MemoryStream();
-            gzipStream.CopyTo(memoryStream);
-            byte[] bytes = memoryStream.ToArray();
+            using var _nbtReader = new NbtReader(fileStream, NbtCompression.GZip, true);
 
-            // Create a stream from the decompressed bytes
-            using var _stream = new MemoryStream(bytes);
-
-            using var _nbtReader = new NbtReader(_stream, NbtCompression.None, true);
             var rootTag = _nbtReader.ReadRootTag();
 
             var dataTagCompound = rootTag["Data"].AsTagCompound();

@@ -69,17 +69,22 @@
                                         </Border>
                                         <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                             <TextBlock
+                                                IsTextSelectionEnabled="True"
                                                 Text="{Binding LevelName}"
                                                 TextTrimming="CharacterEllipsis"
                                                 ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
                                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                                <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Style="{ThemeResource CaptionTextBlockStyle}">
+                                                <TextBlock
+                                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                    IsTextSelectionEnabled="True"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}">
                                                     <Run Text="{Binding FolderName}" />
                                                     <Run>(</Run><Run Text="{Binding LastPlayed}" /><Run>)</Run>
                                                 </TextBlock>
                                             </StackPanel>
                                             <TextBlock
                                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                IsTextSelectionEnabled="True"
                                                 Style="{ThemeResource CaptionTextBlockStyle}"
                                                 Text="{Binding Converter={ThemeResource SaveInfoConverter}}" />
                                         </StackPanel>

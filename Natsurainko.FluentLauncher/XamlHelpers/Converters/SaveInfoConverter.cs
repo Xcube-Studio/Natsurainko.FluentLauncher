@@ -21,6 +21,8 @@ public class SaveInfoConverter : IValueConverter
             tags.Add(ResourceUtils.GetValue("Converters", "_SaveCommands"));
 
         tags.Add(ResourceUtils.GetValue("Converters", "_SaveVersion").Replace("${version}", saveInfo.Version));
+
+        tags.Add($"Seed: {saveInfo.Seed}");
         return string.Join(", ", tags);
     }
 

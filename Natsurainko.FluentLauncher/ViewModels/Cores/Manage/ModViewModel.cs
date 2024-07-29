@@ -5,9 +5,8 @@ using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Management.Mods;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Windows.System;
 
@@ -18,7 +17,7 @@ public partial class ModViewModel : ObservableObject, INavigationAware
 {
     private readonly INavigationService _navigationService;
 
-    public DefaultModsManager ModsManager { get; private set; }
+    public ModManager ModsManager { get; private set; }
 
     public string ModsFolder { get; private set; }
 
@@ -26,8 +25,7 @@ public partial class ModViewModel : ObservableObject, INavigationAware
 
     public bool NotSupportMod => !GameInfo.IsSupportMod();
 
-    [ObservableProperty]
-    public IReadOnlyList<ModInfo> mods;
+    public ObservableCollection<ModInfo> Mods { get; private set; } = [];
 
     public ModViewModel(INavigationService navigationService)
     {
@@ -42,7 +40,7 @@ public partial class ModViewModel : ObservableObject, INavigationAware
         if (!Directory.Exists(ModsFolder))
             Directory.CreateDirectory(ModsFolder);
 
-        ModsManager = new DefaultModsManager(ModsFolder);
+        ModsManager = new ModManager(ModsFolder);
 
         LoadModList();
     }
@@ -57,12 +55,11 @@ public partial class ModViewModel : ObservableObject, INavigationAware
         LoadModList();
     }
 
-    private void LoadModList()
+    private async void LoadModList()
     {
-        Task.Run(() =>
-        {
-            var modInfos = ModsManager.EnumerateMods().ToList();
-            App.DispatcherQueue.TryEnqueue(() => Mods = modInfos);
-        });
+        Mods.Clear();
+
+        await foreach (var saveInfo in ModsManager.EnumerateModsAsync())
+            App.DispatcherQueue.TryEnqueue(() => Mods.Add(saveInfo));
     }
 }

@@ -10,7 +10,7 @@ Minecraft launcher for Windows 11
 Provides a clean and smooth visual experience
 
 ## Screenshots 🪟
-<img src="docs/images/image5.png">
+<img src="images/image5.png">
 
 ## Future Plans 📝
 

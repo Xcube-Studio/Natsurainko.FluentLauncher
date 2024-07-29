@@ -136,13 +136,19 @@
                     HeaderIcon="{xh:FontIcon Glyph=&#xE81E;}"
                     IsClickEnabled="True" />
 
-                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Storage stats" />
+                <TextBlock
+                    x:Uid="Cores_Manage_DefaultPage_T3"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Storage stats" />
 
-                <controls:SettingsCard Header="Storage space usage" HeaderIcon="{xh:FontIcon Glyph=&#xe7c3;}">
+                <controls:SettingsCard
+                    x:Uid="Cores_Manage_DefaultPage_Card5"
+                    Header="Storage space usage"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xe7c3;}">
                     <controls:SettingsCard.Description>
                         <TextBlock>
-                            <Run Text="Referenced" /> <Run Text="{Binding GameStorageInfo.LibrariesCount}" /> <Run Text="Libraries;" />
-                            <Run Text="Referenced" /> <Run Text="{Binding GameStorageInfo.AssetsCount}" /> <Run Text="Assets;" />
+                            <Run x:Uid="Cores_Manage_DefaultPage_Text1" Text="Referenced" /> <Run Text="{Binding GameStorageInfo.LibrariesCount}" /> <Run x:Uid="Cores_Manage_DefaultPage_Text2" Text="Libraries;" />
+                            <Run x:Uid="Cores_Manage_DefaultPage_Text1" Text="Referenced" /> <Run Text="{Binding GameStorageInfo.AssetsCount}" /> <Run x:Uid="Cores_Manage_DefaultPage_Text3" Text="Assets;" />
                         </TextBlock>
                     </controls:SettingsCard.Description>
                     <TextBlock Text="{Binding FormatSize}" />

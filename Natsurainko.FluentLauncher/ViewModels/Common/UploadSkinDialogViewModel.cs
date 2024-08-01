@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
-using Natsurainko.FluentLauncher.Services.Storage;
+using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Utils;

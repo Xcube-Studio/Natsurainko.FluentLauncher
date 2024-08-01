@@ -33,23 +33,6 @@
                         <FontIcon Glyph="&#xe896;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem
-                    x:Uid="Activities_ActivitiesNavigationPage_NV_Item3"
-                    Content="News"
-                    Tag="NewsPage">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xed0c;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem
-                    x:Uid="Activities_ActivitiesNavigationPage_NV_Item4"
-                    Content="Application"
-                    IsEnabled="False"
-                    Tag="Natsurainko.FluentLauncher.Views.Activities.ApplicationPage">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xe12a;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
             </NavigationView.MenuItems>
             <Frame x:Name="contentFrame" Navigated="ContentFrame_Navigated" />
         </NavigationView>

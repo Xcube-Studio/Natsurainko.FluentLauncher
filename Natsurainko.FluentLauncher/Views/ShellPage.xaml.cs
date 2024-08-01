@@ -11,8 +11,8 @@ using Natsurainko.FluentLauncher.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Windows.Graphics;
 using Windows.Foundation;
+using Windows.Graphics;
 
 namespace Natsurainko.FluentLauncher.Views;
 

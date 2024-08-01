@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Management.Downloader.Data;
@@ -6,9 +7,9 @@ using Nrk.FluentCore.Utils;
 using System;
 using System.Threading.Tasks;
 
-namespace Natsurainko.FluentLauncher.Services.Storage;
+namespace Natsurainko.FluentLauncher.Services.Network;
 
-internal class CacheSkinService 
+internal class CacheSkinService
 {
     private readonly LocalStorageService _localStorageService;
 

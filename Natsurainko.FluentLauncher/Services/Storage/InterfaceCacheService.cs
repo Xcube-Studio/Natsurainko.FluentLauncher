@@ -99,30 +99,6 @@ internal class InterfaceCacheService
             HttpUtility.UrlDecode(uri.Segments.Last().Replace(':', '-')));
     }
 
-    private Task<NewsData[]> _fetchNewsTask;
-    public Task<NewsData[]> FetchNews()
-    {
-        if (_fetchNewsTask != null)
-            return _fetchNewsTask;
-
-        _fetchNewsTask = Task.Run(() =>
-        {
-            var localFile = GetLocalFileOfInterface("https://launchercontent.mojang.com/news.json", autoRefresh: true);
-            if (string.IsNullOrEmpty(localFile))
-                throw new ArgumentNullException(nameof(localFile));
-
-            var entries = JsonNodeUtils.ParseFile(localFile)?["entries"]
-                ?? throw new JsonException("Failed to get news entries");
-
-            return entries
-                .AsArray()
-                .WhereNotNull()
-                .Select(x => NewsData.Deserialize(x)).ToArray();
-        });
-
-        return _fetchNewsTask;
-    }
-
     private Task<PublishData[]> _fetchMinecraftPublishesTask;
     public Task<PublishData[]> FetchMinecraftPublishes()
     {

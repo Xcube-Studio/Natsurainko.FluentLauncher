@@ -5,8 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Natsurainko.FluentLauncher;
 using Natsurainko.FluentLauncher.Services.Accounts;
-using Natsurainko.FluentLauncher.Services.Download;
 using Natsurainko.FluentLauncher.Services.Launch;
+using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.SystemServices;
@@ -59,7 +59,11 @@ pages.WithPage<Views.Cores.Manage.SavePage, ViewModels.Cores.Manage.SaveViewMode
 pages.WithPage<Views.Activities.ActivitiesNavigationPage, ViewModels.Activities.ActivitiesNavigationViewModel>("ActivitiesNavigationPage");
 pages.WithPage<Views.Activities.LaunchPage, ViewModels.Activities.LaunchViewModel>("LaunchTasksPage");
 pages.WithPage<Views.Activities.DownloadPage, ViewModels.Activities.DownloadViewModel>("DownloadTasksPage");
-pages.WithPage<Views.Activities.NewsPage, ViewModels.Activities.NewsViewModel>("NewsPage");
+
+// News page
+pages.WithPage<Views.News.NavigationPage, ViewModels.News.NavigationViewModel>("News/Navigation");
+pages.WithPage<Views.News.DefaultPage, ViewModels.News.DefaultViewModel>("News/Default");
+pages.WithPage<Views.News.NotePage, ViewModels.News.NoteViewModel>("News/Note");
 
 // Resources download page
 pages.WithPage<Views.Downloads.DownloadsPage, ViewModels.Downloads.DownloadsViewModel>("ResourcesDownloadPage");
@@ -100,7 +104,8 @@ services.AddSingleton<AuthenticationService>();
 services.AddSingleton<NotificationService>();
 services.AddSingleton<AppearanceService>();
 services.AddSingleton<CacheSkinService>();
-services.AddSingleton<InterfaceCacheService>();
+services.AddSingleton<CacheInterfaceService>();
+services.AddSingleton<InterfaceCacheService>(); // TODO: Remove this
 services.AddSingleton<JumpListService>();
 
 // ViewModels

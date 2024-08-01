@@ -1,0 +1,38 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.News.NotePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI.MarkdownTextBlock"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.News"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <TextBlock
+            Margin="40,15,40,25"
+            HorizontalAlignment="Center"
+            FontFamily="{ThemeResource MinecraftTen}"
+            Style="{ThemeResource TitleLargeTextBlockStyle}"
+            Text="{Binding PatchNoteData.Title}"
+            TextWrapping="WrapWholeWords" />
+        <WebView2
+            Grid.Row="1"
+            MaxWidth="1000"
+            Margin="30,0"
+            DefaultBackgroundColor="Transparent">
+            <i:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="Loaded">
+                    <actions:ModifiedInvokeCommandAction Command="{Binding LoadedEventCommand}" />
+                </core:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+        </WebView2>
+    </Grid>
+</Page>

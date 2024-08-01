@@ -21,7 +21,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading;
 
-namespace Natsurainko.FluentLauncher.Services.Download;
+namespace Natsurainko.FluentLauncher.Services.Network;
 
 internal class DownloadService : DefaultDownloadService
 {

@@ -275,6 +275,10 @@
                     Content="Download resources"
                     Icon="{xh:FontIcon Glyph=&#xe8f1;}"
                     Tag="ResourcesDownloadPage" />
+                <NavigationViewItem
+                    Content="Minecraft News"
+                    Icon="{xh:FontIcon Glyph=&#xe12a;}"
+                    Tag="News/Navigation" />
             </NavigationView.MenuItems>
 
             <NavigationView.FooterMenuItems>

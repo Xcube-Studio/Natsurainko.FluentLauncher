@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Models.UI;
-using Natsurainko.FluentLauncher.Services.Download;
+using Natsurainko.FluentLauncher.Services.Network;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;

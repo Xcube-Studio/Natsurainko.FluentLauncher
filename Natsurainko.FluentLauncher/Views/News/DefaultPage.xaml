@@ -1,0 +1,257 @@
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.News.DefaultPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animations="using:CommunityToolkit.WinUI.Animations"
+    xmlns:behaviors="using:CommunityToolkit.WinUI.Behaviors"
+    xmlns:bh="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.News"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:CommunityToolkit.WinUI.Media"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <LinearGradientBrush x:Key="TextControlElevationBorderBrush" MappingMode="Absolute" StartPoint="0,0" EndPoint="0,2">
+            <LinearGradientBrush.RelativeTransform>
+                <ScaleTransform CenterY="0.5" ScaleY="-1" />
+            </LinearGradientBrush.RelativeTransform>
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Offset="0.5" Color="{StaticResource ControlStrokeColorSecondary}" />
+                <GradientStop Offset="1.0" Color="{StaticResource ControlStrokeColorDefault}" />
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+        <StaticResource x:Key="TextControlBorderBrush" ResourceKey="TextControlElevationBorderBrush" />
+        <StaticResource x:Key="TextControlBorderBrushPointerOver" ResourceKey="TextControlElevationBorderBrush" />
+    </Page.Resources>
+
+    <ScrollViewer>
+        <Border Margin="40,0,40,25">
+            <StackPanel
+                MaxWidth="1000"
+                HorizontalAlignment="Stretch"
+                Spacing="{StaticResource SettingsCardSpacing}">
+
+                <TextBlock Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}" Text="Minecraft Update" />
+
+                <FlipView
+                    x:Name="FlipView"
+                    Height="500"
+                    BorderBrush="{ThemeResource TextControlElevationBorderBrush}"
+                    BorderThickness="1"
+                    ItemsSource="{Binding PatchNoteDatas}">
+                    <FlipView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid CornerRadius="4">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Image
+                                    Grid.RowSpan="2"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Source="{Binding ImageUrl}"
+                                    Stretch="UniformToFill" />
+
+                                <Grid Grid.Row="1">
+                                    <Border Margin="0,2,0,0">
+                                        <media:UIElementExtensions.VisualFactory>
+                                            <media:PipelineVisualFactory>
+                                                <media:BlurEffect x:Name="ImageBlurEffect" IsAnimatable="True" />
+                                            </media:PipelineVisualFactory>
+                                        </media:UIElementExtensions.VisualFactory>
+                                    </Border>
+                                    <StackPanel
+                                        Padding="25,10,25,25"
+                                        BorderBrush="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderThickness="0,2,0,0"
+                                        RequestedTheme="Dark"
+                                        Spacing="10">
+                                        <TextBlock
+                                            FontFamily="{ThemeResource MinecraftTen}"
+                                            Style="{ThemeResource TitleTextBlockStyle}"
+                                            Text="{Binding Title}"
+                                            TextWrapping="WrapWholeWords" />
+                                        <TextBlock Text="{Binding ShortText}" TextWrapping="WrapWholeWords" />
+
+                                        <Button
+                                            Height="32"
+                                            CommandParameter="{Binding}"
+                                            Style="{ThemeResource AccentButtonStyle}">
+                                            <StackPanel Orientation="Horizontal" Spacing="5">
+                                                <TextBlock Text="View Details" />
+                                                <FontIcon FontSize="14" Glyph="&#xe76c;" />
+                                            </StackPanel>
+
+                                            <i:Interaction.Behaviors>
+                                                <bh:AncestorBindingBehavior
+                                                    AncestorType="ScrollViewer"
+                                                    Binding="{Binding DataContext.ClickPatchNoteCommand}"
+                                                    TargetPropertyName="Command" />
+                                            </i:Interaction.Behaviors>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+
+                                <animations:Explicit.Animations>
+                                    <animations:AnimationSet x:Name="PointOutBlurAnimation">
+                                        <animations:BlurEffectAnimation
+                                            EasingMode="EaseOut"
+                                            EasingType="Linear"
+                                            Target="{Binding ElementName=ImageBlurEffect}"
+                                            From="5"
+                                            To="50"
+                                            Duration="0:0:0.15" />
+                                    </animations:AnimationSet>
+                                    <animations:AnimationSet x:Name="PointInBlurAnimation">
+                                        <animations:BlurEffectAnimation
+                                            EasingMode="EaseIn"
+                                            EasingType="Linear"
+                                            Target="{Binding ElementName=ImageBlurEffect}"
+                                            From="50"
+                                            To="5"
+                                            Duration="0:0:0.15" />
+                                    </animations:AnimationSet>
+                                </animations:Explicit.Animations>
+                                <i:Interaction.Behaviors>
+                                    <core:EventTriggerBehavior EventName="Loaded">
+                                        <behaviors:StartAnimationAction Animation="{Binding ElementName=PointOutBlurAnimation}" />
+                                    </core:EventTriggerBehavior>
+                                    <core:EventTriggerBehavior EventName="PointerExited">
+                                        <behaviors:StartAnimationAction Animation="{Binding ElementName=PointOutBlurAnimation}" />
+                                    </core:EventTriggerBehavior>
+                                    <core:EventTriggerBehavior EventName="PointerEntered">
+                                        <behaviors:StartAnimationAction Animation="{Binding ElementName=PointInBlurAnimation}" />
+                                    </core:EventTriggerBehavior>
+                                </i:Interaction.Behaviors>
+                            </Grid>
+                        </DataTemplate>
+                    </FlipView.ItemTemplate>
+                </FlipView>
+                <PipsPager
+                    x:Name="FlipViewPipsPager"
+                    HorizontalAlignment="Center"
+                    NumberOfPages="6"
+                    SelectedPageIndex="{x:Bind Path=FlipView.SelectedIndex, Mode=TwoWay}" />
+
+                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Minecraft News" />
+
+                <GridView ItemsSource="{Binding NewsDatas}">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid CornerRadius="4">
+                                <Image
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Stretch"
+                                    Source="{Binding ImageUrl}"
+                                    Stretch="UniformToFill" />
+
+                                <Grid>
+                                    <Border>
+                                        <media:UIElementExtensions.VisualFactory>
+                                            <media:PipelineVisualFactory>
+                                                <media:BlurEffect x:Name="ImageBlurEffect" IsAnimatable="True" />
+                                            </media:PipelineVisualFactory>
+                                        </media:UIElementExtensions.VisualFactory>
+                                    </Border>
+                                    <StackPanel
+                                        Padding="20"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        BorderBrush="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        RequestedTheme="Dark"
+                                        Spacing="10">
+                                        <TextBlock
+                                            FontFamily="{ThemeResource MinecraftTen}"
+                                            Style="{ThemeResource TitleTextBlockStyle}"
+                                            Text="{Binding Title}"
+                                            TextWrapping="WrapWholeWords" />
+                                        <TextBlock Text="{Binding Text}" TextWrapping="WrapWholeWords" />
+                                        <ItemsRepeater ItemsSource="{Binding Tags}">
+                                            <ItemsRepeater.Layout>
+                                                <controls:WrapLayout HorizontalSpacing="5" VerticalSpacing="5" />
+                                            </ItemsRepeater.Layout>
+                                            <ItemsRepeater.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border
+                                                        Padding="5,1"
+                                                        Background="{ThemeResource ButtonBackground}"
+                                                        BorderBrush="{ThemeResource ButtonBorderBrush}"
+                                                        BorderThickness="1"
+                                                        CornerRadius="2.5">
+                                                        <TextBlock
+                                                            Style="{ThemeResource CaptionTextBlockStyle}"
+                                                            Text="{Binding}"
+                                                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsRepeater.ItemTemplate>
+                                        </ItemsRepeater>
+
+                                        <HyperlinkButton
+                                            Height="32"
+                                            Background="{ThemeResource ButtonBackground}"
+                                            BorderBrush="{ThemeResource ButtonBorderBrush}"
+                                            BorderThickness="1"
+                                            NavigateUri="{Binding ReadMoreUrl}">
+                                            <StackPanel Orientation="Horizontal" Spacing="5">
+                                                <TextBlock Text="View Details" />
+                                                <FontIcon FontSize="14" Glyph="&#xE8A7;" />
+                                            </StackPanel>
+                                        </HyperlinkButton>
+                                    </StackPanel>
+                                </Grid>
+
+                                <animations:Explicit.Animations>
+                                    <animations:AnimationSet x:Name="PointOutBlurAnimation">
+                                        <animations:BlurEffectAnimation
+                                            EasingMode="EaseOut"
+                                            EasingType="Linear"
+                                            Target="{Binding ElementName=ImageBlurEffect}"
+                                            From="5"
+                                            To="50"
+                                            Duration="0:0:0.15" />
+                                    </animations:AnimationSet>
+                                    <animations:AnimationSet x:Name="PointInBlurAnimation">
+                                        <animations:BlurEffectAnimation
+                                            EasingMode="EaseIn"
+                                            EasingType="Linear"
+                                            Target="{Binding ElementName=ImageBlurEffect}"
+                                            From="50"
+                                            To="5"
+                                            Duration="0:0:0.15" />
+                                    </animations:AnimationSet>
+                                </animations:Explicit.Animations>
+                                <i:Interaction.Behaviors>
+                                    <core:EventTriggerBehavior EventName="Loaded">
+                                        <behaviors:StartAnimationAction Animation="{Binding ElementName=PointOutBlurAnimation}" />
+                                    </core:EventTriggerBehavior>
+                                    <core:EventTriggerBehavior EventName="PointerExited">
+                                        <behaviors:StartAnimationAction Animation="{Binding ElementName=PointOutBlurAnimation}" />
+                                    </core:EventTriggerBehavior>
+                                    <core:EventTriggerBehavior EventName="PointerEntered">
+                                        <behaviors:StartAnimationAction Animation="{Binding ElementName=PointInBlurAnimation}" />
+                                    </core:EventTriggerBehavior>
+                                </i:Interaction.Behaviors>
+                            </Grid>
+
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <controls:StaggeredPanel
+                                HorizontalAlignment="Stretch"
+                                ColumnSpacing="5"
+                                DesiredColumnWidth="250"
+                                RowSpacing="5" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                </GridView>
+            </StackPanel>
+        </Border>
+    </ScrollViewer>
+</Page>

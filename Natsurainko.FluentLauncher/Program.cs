@@ -111,10 +111,11 @@ services.AddSingleton<CacheSkinService>();
 services.AddSingleton<CacheInterfaceService>();
 services.AddSingleton<InterfaceCacheService>(); // TODO: Remove this
 services.AddSingleton<JumpListService>();
+services.AddSingleton<SearchProviderService>();
 
 // ModClient
 services.AddSingleton<ModrinthClient>();
-services.AddSingleton<CurseForgeClient>(x => new CurseForgeClient("$2a$10$Awb53b9gSOIJJkdV3Zrgp.CyFP.dI13QKbWn/4UZI4G4ff18WneB6"));
+services.AddSingleton<CurseForgeClient>(_ => new CurseForgeClient("$2a$10$Awb53b9gSOIJJkdV3Zrgp.CyFP.dI13QKbWn/4UZI4G4ff18WneB6"));
 
 // ViewModels
 services.AddSingleton<ViewModels.Activities.LaunchSessions>();

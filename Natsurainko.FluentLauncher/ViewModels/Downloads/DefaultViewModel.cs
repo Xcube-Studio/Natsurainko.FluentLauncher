@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Network;
+using Natsurainko.FluentLauncher.Services.UI;
 using Nrk.FluentCore.Management.Downloader.Data;
 using Nrk.FluentCore.Resources;
 using System.Collections.Generic;
@@ -17,6 +19,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 {
     private readonly INavigationService _navigationService;
     private readonly CacheInterfaceService _cacheInterfaceService;
+    private readonly SearchProviderService _searchProviderService;
 
     private readonly CurseForgeClient _curseForgeClient;
     private readonly ModrinthClient _modrinthClient;
@@ -24,6 +27,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     public DefaultViewModel(
         INavigationService navigationService, 
         CacheInterfaceService cacheInterfaceService,
+        SearchProviderService searchProviderService,
         CurseForgeClient curseForgeClient,
         ModrinthClient modrinthClient)
     {
@@ -31,6 +35,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         _cacheInterfaceService = cacheInterfaceService;
         _curseForgeClient = curseForgeClient;
         _modrinthClient = modrinthClient;
+        _searchProviderService = searchProviderService;
     }
 
     [ObservableProperty]
@@ -67,6 +72,8 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
         _curseForgeClient.SearchResourcesAsync(string.Empty).ContinueWith(ParseCurseForgeTask);
         _modrinthClient.SearchResourcesAsync(string.Empty).ContinueWith(ParseModrinthTask);
+
+        _searchProviderService.RegisterSuggestionProvider(this, ProviderSuggestions);
     } 
 
     void ParsePatchNotesTask(Task<string> task)
@@ -137,4 +144,65 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         var modrinthResources = task.Result.ToArray();
         App.DispatcherQueue.TryEnqueue(() => ModrinthResources = modrinthResources);
     }
+
+    IEnumerable<SearchProviderService.Suggestion> ProviderSuggestions(string searchText)
+    {
+        yield return new SearchProviderService.Suggestion
+        {
+            Title = $"Search Minecraft Version \"{searchText}\"",
+            Description = "Suggestions from the current page",
+            InvokeAction = text =>
+            {
+
+            }
+        };
+
+        yield return new SearchProviderService.Suggestion
+        {
+            Title = $"Search CurseForge Resources with name \"{searchText}\"",
+            Description = "Suggestions from the current page",
+            InvokeAction = text =>
+            {
+
+            }
+        };
+
+        yield return new SearchProviderService.Suggestion
+        {
+            Title = $"Search Modrinth Resources with name \"{searchText}\"",
+            Description = "Suggestions from the current page",
+            InvokeAction = text =>
+            {
+
+            }
+        };
+
+        foreach (var item in VersionManifestItems)
+        {
+            if (item.Id.Contains(searchText))
+            {
+                yield return new SearchProviderService.Suggestion
+                {
+                    Title = item.Id,
+                    Description = "Suggestions from the current page",
+                    SuggestionIconType = SearchProviderService.SuggestionIconType.UriIcon,
+                    Icon = string.Format("ms-appx:///Assets/Icons/{0}.png", item.Type switch
+                    {
+                        "release" => "grass_block_side",
+                        "snapshot" => "crafting_table_front",
+                        "old_beta" => "dirt_path_side",
+                        "old_alpha" => "dirt_path_side",
+                        _ => "grass_block_side"
+                    }),
+                    InvokeAction = text =>
+                    {
+
+                    }
+                };
+            }
+        }
+    }
+
+    [RelayCommand]
+    void Unloaded() => _searchProviderService.UnregisterSuggestionProvider(this);
 }

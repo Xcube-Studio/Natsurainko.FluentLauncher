@@ -26,6 +26,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
     private readonly SettingsService _settings = App.GetService<SettingsService>();
     private readonly AppearanceService _appearanceService = App.GetService<AppearanceService>();
+    private readonly SearchProviderService _searchProviderService = App.GetService<SearchProviderService>();
 
     public ShellPage()
     {
@@ -140,6 +141,9 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
     private void BackButton_Click(object sender, RoutedEventArgs e)
         => VM.NavigationService.GoBack();
+
+    private void AutoSuggestBox_Loaded(object sender, RoutedEventArgs e)
+         => _searchProviderService.BindingSearchBox(AutoSuggestBox);
 
     #endregion
 

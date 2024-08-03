@@ -3,7 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.Media"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
@@ -363,8 +365,8 @@
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Center"
                 VerticalContentAlignment="Center"
+                Loaded="AutoSuggestBox_Loaded"
                 PlaceholderText="Search..">
-
                 <AutoSuggestBox.Resources>
                     <LinearGradientBrush x:Key="TextControlElevationBorderBrush" MappingMode="Absolute" StartPoint="0,0" EndPoint="0,2">
                         <LinearGradientBrush.RelativeTransform>
@@ -389,6 +391,42 @@
                         </AnimatedIcon.FallbackIconSource>
                     </AnimatedIcon>
                 </AutoSuggestBox.QueryIcon>
+
+                <AutoSuggestBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid
+                                Width="32"
+                                Height="32"
+                                VerticalAlignment="Center"
+                                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                                BorderBrush="{ThemeResource IconBorder}"
+                                BorderThickness="1"
+                                CornerRadius="4">
+                                <Border CornerRadius="4">
+                                    <ContentControl
+                                        HorizontalContentAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        Content="{Binding Converter={ThemeResource SuggestionIconConverter}}" />
+                                </Border>
+                            </Grid>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding Title}" />
+                                <TextBlock
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                    Text="{Binding Description}" />
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </AutoSuggestBox.ItemTemplate>
             </AutoSuggestBox>
         </Grid>
     </Grid>

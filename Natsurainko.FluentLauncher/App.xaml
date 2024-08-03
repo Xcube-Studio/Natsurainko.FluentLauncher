@@ -43,6 +43,7 @@
             <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <converters:ResourceAuthorsConverter x:Key="ResourceAuthorsConverter" />
+            <converters:SuggestionIconConverter x:Key="SuggestionIconConverter" />
 
             <converters:RadioButtonSelectedIndexConverter x:Key="RadioButtonSelectedIndexConverter" />
 

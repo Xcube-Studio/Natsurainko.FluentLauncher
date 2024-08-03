@@ -111,6 +111,7 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
     public async void LoadImage()
     {
         if (isLoading 
+            || AssociatedObject == null
             || SourceProperty == null 
             || (!LoadFromInternet && !File.Exists(ImageSourceFilePath))
             || (LoadFromInternet && string.IsNullOrEmpty(ImageSourceUrl)))

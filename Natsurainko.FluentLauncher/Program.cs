@@ -67,6 +67,9 @@ pages.WithPage<Views.News.DefaultPage, ViewModels.News.DefaultViewModel>("News/D
 pages.WithPage<Views.News.NotePage, ViewModels.News.NoteViewModel>("News/Note");
 
 // Resources download page
+pages.WithPage<Views.Downloads.NavigationPage, ViewModels.Downloads.NavigationViewModel>("Download/Navigation");
+pages.WithPage<Views.Downloads.DefaultPage, ViewModels.Downloads.DefaultViewModel>("Download/Default");
+
 pages.WithPage<Views.Downloads.DownloadsPage, ViewModels.Downloads.DownloadsViewModel>("ResourcesDownloadPage");
 pages.WithPage<Views.Downloads.ResourcesSearchPage, ViewModels.Downloads.ResourcesSearchViewModel>("ResourcesSearchPage");
 pages.WithPage<Views.Downloads.CoreInstallWizardPage, ViewModels.Downloads.CoreInstallWizardViewModel>("CoreInstallWizardPage");

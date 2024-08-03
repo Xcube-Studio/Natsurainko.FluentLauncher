@@ -274,7 +274,7 @@
                     x:Uid="ShellPage_NV_Item_4"
                     Content="Download resources"
                     Icon="{xh:FontIcon Glyph=&#xe8f1;}"
-                    Tag="ResourcesDownloadPage" />
+                    Tag="Download/Navigation" />
                 <NavigationViewItem
                     Content="Minecraft News"
                     Icon="{xh:FontIcon Glyph=&#xe12a;}"

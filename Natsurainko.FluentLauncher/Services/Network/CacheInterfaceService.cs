@@ -21,7 +21,13 @@ internal class CacheInterfaceService
     public string VersionManifest => _settingsService.CurrentDownloadSource switch
     {
         "Bmclapi" => DownloadMirrors.Bmclapi.VersionManifestUrl,
-        _ => LauncherContentPatchNotes
+        _ => LauncherMetaVersionManifest
+    };
+
+    public string VersionManifestFileName => _settingsService.CurrentDownloadSource switch
+    {
+        "Bmclapi" => "cache-interfaces\\bmclapi2.bangbang93.com\\version_manifest_v2.json",
+        _ => "cache-interfaces\\piston-meta.mojang.com\\version_manifest_v2.json"
     };
 
     private readonly LocalStorageService _localStorageService;

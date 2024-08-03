@@ -53,8 +53,14 @@
                                     Grid.RowSpan="2"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    Source="{Binding ImageUrl}"
-                                    Stretch="UniformToFill" />
+                                    Stretch="UniformToFill">
+                                    <i:Interaction.Behaviors>
+                                        <bh:ImageSourceLoadBehavior
+                                            ImageSourceUrl="{Binding ImageUrl}"
+                                            LoadFromInternet="True"
+                                            SourcePropertyName="Source" />
+                                    </i:Interaction.Behaviors>
+                                </Image>
 
                                 <Grid Grid.Row="1">
                                     <Border Margin="0,2,0,0">
@@ -146,8 +152,14 @@
                                 <Image
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Stretch"
-                                    Source="{Binding ImageUrl}"
-                                    Stretch="UniformToFill" />
+                                    Stretch="UniformToFill">
+                                    <i:Interaction.Behaviors>
+                                        <bh:ImageSourceLoadBehavior
+                                            ImageSourceUrl="{Binding ImageUrl}"
+                                            LoadFromInternet="True"
+                                            SourcePropertyName="Source" />
+                                    </i:Interaction.Behaviors>
+                                </Image>
 
                                 <Grid>
                                     <Border>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.Xaml.Interactivity;
+using Natsurainko.FluentLauncher.Services.Network;
 using System;
 using System.IO;
 using System.Reflection;
@@ -11,6 +12,15 @@ namespace Natsurainko.FluentLauncher.XamlHelpers.Behaviors;
 public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
 {
     #region Properties
+
+    public bool LoadFromInternet
+    {
+        get { return (bool)GetValue(LoadFromInternetProperty); }
+        set { SetValue(LoadFromInternetProperty, value); }
+    }
+
+    public static readonly DependencyProperty LoadFromInternetProperty =
+        DependencyProperty.Register("LoadFromInternet", typeof(bool), typeof(ImageSourceLoadBehavior), new PropertyMetadata(false));
 
     public string SourcePropertyName
     {
@@ -30,7 +40,19 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
     public static readonly DependencyProperty ImageSourceFilePathProperty =
         DependencyProperty.Register("ImageSourceFilePath", typeof(string), typeof(ImageSourceLoadBehavior), new PropertyMetadata(null, OnImageSourceFilePathChanged));
 
+    public string ImageSourceUrl
+    {
+        get { return (string)GetValue(ImageSourceUrlProperty); }
+        set { SetValue(ImageSourceUrlProperty, value); }
+    }
+
+    public static readonly DependencyProperty ImageSourceUrlProperty =
+        DependencyProperty.Register("ImageSourceUrl", typeof(string), typeof(ImageSourceLoadBehavior), new PropertyMetadata(null, OnImageSourceUrlChanged));
+
     #endregion
+
+    private bool isLoading = false;
+    private readonly CacheInterfaceService _cacheInterfaceService = App.GetService<CacheInterfaceService>();
 
     public DependencyProperty SourceProperty { get; private set; }
 
@@ -39,7 +61,7 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
         base.OnAttached();
 
         SourceProperty = GetDependencyProperty(AssociatedObject.GetType(), SourcePropertyName);
-        LoadImage();
+        App.DispatcherQueue.TryEnqueue(LoadImage);
     }
 
     private static DependencyProperty GetDependencyProperty(Type type, string propertyName)
@@ -75,19 +97,38 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
         if (dependencyObject is not ImageSourceLoadBehavior behavior || behavior.AssociatedObject == null)
             return;
 
-        behavior.LoadImage();
+        App.DispatcherQueue.TryEnqueue(behavior.LoadImage);
+    }
+
+    private static void OnImageSourceUrlChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+    {
+        if (dependencyObject is not ImageSourceLoadBehavior behavior || behavior.AssociatedObject == null)
+            return;
+
+        App.DispatcherQueue.TryEnqueue(behavior.LoadImage);
     }
 
     public async void LoadImage()
     {
-        if (SourceProperty == null || !File.Exists(ImageSourceFilePath))
+        if (isLoading 
+            || SourceProperty == null 
+            || (!LoadFromInternet && !File.Exists(ImageSourceFilePath))
+            || (LoadFromInternet && string.IsNullOrEmpty(ImageSourceUrl)))
             return;
 
-        using var fileStream = File.OpenRead(ImageSourceFilePath);
+        isLoading = true;
+
+        using Stream imageDataStream = LoadFromInternet 
+            ? await _cacheInterfaceService.RequestStreamAsync(ImageSourceUrl, Services.Network.Data.InterfaceRequestMethod.Static)
+            : File.OpenRead(ImageSourceFilePath);
+
+        using var randomAccessStream = imageDataStream.AsRandomAccessStream();
 
         var bitmapImage = new BitmapImage();
-        await bitmapImage.SetSourceAsync(fileStream.AsRandomAccessStream());
+        await bitmapImage.SetSourceAsync(randomAccessStream);
 
         AssociatedObject.SetValue(SourceProperty, bitmapImage);
+
+        isLoading = false;
     }
 }

@@ -91,7 +91,7 @@ internal class CacheInterfaceService
             using var responseMessage = await HttpUtils.HttpClient.SendAsync(requestMessage);
 
             responseMessage.EnsureSuccessStatusCode();
-            var contentStream = await responseMessage.Content.ReadAsStreamAsync();
+            using var contentStream = await responseMessage.Content.ReadAsStreamAsync();
 
             if (writeToLocal)
             {
@@ -103,8 +103,7 @@ internal class CacheInterfaceService
                     await fileStream.WriteAsync(rentMemory.Memory[..readMemory]);
             }
 
-            contentStream.Position = 0;
-            return contentStream;
+            return File.OpenRead(fileInfo.FullName);
         }
 
         if (method == InterfaceRequestMethod.AlwaysLatest)

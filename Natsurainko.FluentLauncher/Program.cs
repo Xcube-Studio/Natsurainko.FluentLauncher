@@ -12,6 +12,7 @@ using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.SystemServices;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Nrk.FluentCore.Resources;
 using System;
 using ViewModels = Natsurainko.FluentLauncher.ViewModels;
 using Views = Natsurainko.FluentLauncher.Views;
@@ -107,6 +108,10 @@ services.AddSingleton<CacheSkinService>();
 services.AddSingleton<CacheInterfaceService>();
 services.AddSingleton<InterfaceCacheService>(); // TODO: Remove this
 services.AddSingleton<JumpListService>();
+
+// ModClient
+services.AddSingleton<ModrinthClient>();
+services.AddSingleton<CurseForgeClient>(x => new CurseForgeClient("$2a$10$Awb53b9gSOIJJkdV3Zrgp.CyFP.dI13QKbWn/4UZI4G4ff18WneB6"));
 
 // ViewModels
 services.AddSingleton<ViewModels.Activities.LaunchSessions>();

@@ -13,10 +13,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.Media"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    Unloaded="Page_Unloaded"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <core:EventTriggerBehavior EventName="Unloaded">
             <actions:ModifiedInvokeCommandAction Command="{Binding UnloadedCommand}" />
+        </core:EventTriggerBehavior>
+        <core:EventTriggerBehavior EventName="Loaded">
+            <actions:ModifiedInvokeCommandAction Command="{Binding LoadedCommand}" />
         </core:EventTriggerBehavior>
     </i:Interaction.Behaviors>
 
@@ -149,7 +153,10 @@
                         VerticalAlignment="Center"
                         Style="{ThemeResource BaseTextBlockStyle}"
                         Text="Minecraft Versions" />
-                    <HyperlinkButton HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <HyperlinkButton
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Command="{Binding SearchAllMinecarftCommand}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <FontIcon FontSize="14" Glyph="&#xe71d;" />
                             <TextBlock Text="Show All.." />
@@ -219,7 +226,10 @@
                         VerticalAlignment="Center"
                         Style="{ThemeResource BaseTextBlockStyle}"
                         Text="CurseForge Resources" />
-                    <HyperlinkButton HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <HyperlinkButton
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Command="{Binding SearchMoreCurseForgeCommand}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <FontIcon FontSize="14" Glyph="&#xe721;" />
                             <TextBlock Text="Search More.." />
@@ -328,7 +338,10 @@
                         VerticalAlignment="Center"
                         Style="{ThemeResource BaseTextBlockStyle}"
                         Text="Modrinth Resources" />
-                    <HyperlinkButton HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <HyperlinkButton
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Command="{Binding SearchMoreModrinthCommand}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <FontIcon FontSize="14" Glyph="&#xe721;" />
                             <TextBlock Text="Search More.." />

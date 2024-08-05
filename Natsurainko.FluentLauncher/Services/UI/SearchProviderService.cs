@@ -2,7 +2,6 @@
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.Services.UI;
@@ -13,7 +12,7 @@ internal partial class SearchProviderService : ObservableObject
 
     private Dictionary<Type, Func<string, IEnumerable<Suggestion>>> SuggestionProviders = new Dictionary<Type, Func<string, IEnumerable<Suggestion>>>();
 
-    private Type QueryReceiverOwner;
+    public Type QueryReceiverOwner { get; private set; }
     private Action<string> QueryReceiver;
 
     public void BindingSearchBox(AutoSuggestBox autoSuggestBox)
@@ -22,6 +21,8 @@ internal partial class SearchProviderService : ObservableObject
         _autoSuggestBox.SuggestionChosen += AutoSuggestBox_SuggestionChosen;
         _autoSuggestBox.TextChanged += AutoSuggestBox_TextChanged;
         _autoSuggestBox.QuerySubmitted += AutoSuggestBox_QuerySubmitted;
+
+        _autoSuggestBox.UpdateTextOnSelect = false;
     }
 
     #region AutoSuggestBox Events
@@ -45,7 +46,9 @@ internal partial class SearchProviderService : ObservableObject
     private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
     {
         if (args.SelectedItem is Suggestion suggestion)
-            suggestion.InvokeAction(sender.Text);
+        {
+            suggestion.InvokeAction();
+        }
     }
 
     private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -66,6 +69,9 @@ internal partial class SearchProviderService : ObservableObject
         SuggestionProviders.Remove(typeof(TProvider));
     }
 
+    public bool ContainsSuggestionProvider<TProvider>(TProvider provider)
+        => SuggestionProviders.ContainsKey(typeof(TProvider));
+
     public void RegisterQueryReceiver<TReceiver>(TReceiver provider, Action<string> action)
     {
         if (QueryReceiverOwner != null)
@@ -82,8 +88,6 @@ internal partial class SearchProviderService : ObservableObject
 
         QueryReceiverOwner = null;
         QueryReceiver = null;
-
-
     }
 
     public class Suggestion
@@ -96,7 +100,9 @@ internal partial class SearchProviderService : ObservableObject
 
         public string Icon { get; set; } = "\ue721";
 
-        public Action<string> InvokeAction { get; set; }
+        public Action InvokeAction { get; set; }
+
+        public object Parameter { get; set; }
     }
 
     public enum SuggestionIconType

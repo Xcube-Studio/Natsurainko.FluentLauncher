@@ -4,11 +4,11 @@ using System;
 
 namespace Natsurainko.FluentLauncher.Views.Downloads;
 
-public sealed partial class DefaultPage : Page, IBreadcrumbBarAware
+public sealed partial class SearchPage : Page, IBreadcrumbBarAware
 {
-    public string Route => "Download";
+    public string Route => "Search";
 
-    public DefaultPage()
+    public SearchPage()
     {
         this.InitializeComponent();
     }

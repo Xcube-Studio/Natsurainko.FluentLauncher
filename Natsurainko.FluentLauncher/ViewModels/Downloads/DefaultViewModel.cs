@@ -6,6 +6,7 @@ using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI;
 using Nrk.FluentCore.Management.Downloader.Data;
 using Nrk.FluentCore.Resources;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -36,6 +37,19 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         _curseForgeClient = curseForgeClient;
         _modrinthClient = modrinthClient;
         _searchProviderService = searchProviderService;
+    }
+
+    ~DefaultViewModel() 
+    {
+        PatchNoteDatas = null;
+        VersionManifestItems = null;
+        CurseForgeResources = null;
+        ModrinthResources = null;
+
+        PatchNotesJson = null;
+        VersionManifestJson = null;
+
+        GC.Collect();
     }
 
     [ObservableProperty]
@@ -72,8 +86,6 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
         _curseForgeClient.SearchResourcesAsync(string.Empty).ContinueWith(ParseCurseForgeTask);
         _modrinthClient.SearchResourcesAsync(string.Empty).ContinueWith(ParseModrinthTask);
-
-        _searchProviderService.RegisterSuggestionProvider(this, ProviderSuggestions);
     } 
 
     void ParsePatchNotesTask(Task<string> task)
@@ -151,30 +163,33 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         {
             Title = $"Search Minecraft Version \"{searchText}\"",
             Description = "Suggestions from the current page",
-            InvokeAction = text =>
+            InvokeAction = () => _navigationService.NavigateTo("Download/Search", new SearchOptions
             {
-
-            }
+                SearchText = searchText,
+                ResourceType = 1
+            })
         };
 
         yield return new SearchProviderService.Suggestion
         {
             Title = $"Search CurseForge Resources with name \"{searchText}\"",
             Description = "Suggestions from the current page",
-            InvokeAction = text =>
+            InvokeAction = () => _navigationService.NavigateTo("Download/Search", new SearchOptions
             {
-
-            }
+                SearchText = searchText,
+                ResourceSource = 1
+            })
         };
 
         yield return new SearchProviderService.Suggestion
         {
             Title = $"Search Modrinth Resources with name \"{searchText}\"",
             Description = "Suggestions from the current page",
-            InvokeAction = text =>
+            InvokeAction = () => _navigationService.NavigateTo("Download/Search", new SearchOptions
             {
-
-            }
+                SearchText = searchText,
+                ResourceSource = 2
+            })
         };
 
         foreach (var item in VersionManifestItems)
@@ -194,13 +209,33 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
                         "old_alpha" => "dirt_path_side",
                         _ => "grass_block_side"
                     }),
-                    InvokeAction = text =>
+                    InvokeAction = () =>
                     {
 
                     }
                 };
             }
         }
+    }
+
+    [RelayCommand]
+    void SearchAllMinecarft() => _navigationService.NavigateTo("Download/Search", new SearchOptions
+    {
+        SearchText = string.Empty,
+        ResourceType = 1
+    });
+
+    [RelayCommand]
+    void SearchMoreCurseForge() => _navigationService.NavigateTo("Download/Search", new SearchOptions { ResourceSource = 1 });
+
+    [RelayCommand]
+    void SearchMoreModrinth() => _navigationService.NavigateTo("Download/Search", new SearchOptions { ResourceSource = 2 });
+
+    [RelayCommand]
+    void Loaded() 
+    {
+        if (!_searchProviderService.ContainsSuggestionProvider(this))
+            _searchProviderService.RegisterSuggestionProvider(this, ProviderSuggestions);
     }
 
     [RelayCommand]

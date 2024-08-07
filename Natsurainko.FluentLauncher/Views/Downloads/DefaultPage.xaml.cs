@@ -15,7 +15,6 @@ public sealed partial class DefaultPage : Page, IBreadcrumbBarAware
 
     private void Page_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        this.DataContext = null;
         GC.Collect();
     }
 }

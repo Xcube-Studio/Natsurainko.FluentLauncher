@@ -2,9 +2,9 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace Natsurainko.FluentLauncher.Views.Common;
 
-public sealed partial class ResourceItemFilesDialog : ContentDialog
+public sealed partial class DownloadResourceDialog : ContentDialog
 {
-    public ResourceItemFilesDialog()
+    public DownloadResourceDialog()
     {
         this.XamlRoot = MainWindow.XamlRoot;
 

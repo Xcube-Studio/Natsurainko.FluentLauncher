@@ -25,4 +25,9 @@ internal class ResourceItemTemplateSelector : DataTemplateSelector
 
         return base.SelectTemplateCore(item);
     }
+
+    protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
+    {
+        return SelectTemplateCore(item);
+    }
 }

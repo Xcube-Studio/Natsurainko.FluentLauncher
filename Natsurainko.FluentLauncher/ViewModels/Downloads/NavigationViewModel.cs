@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
+using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Utils;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -23,7 +24,12 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
 
     void INavigationAware.OnNavigatedTo(object parameter)
     {
-        if (parameter is string pageKey)
+        if (parameter is SearchOptions)
+        {
+            Routes = new("Download/Search".Split('/'));
+            NavigateTo("Download/Search", parameter);
+        }
+        else if (parameter is string pageKey)
         {
             Routes = new(pageKey.Split('/'));
             NavigateTo(pageKey);

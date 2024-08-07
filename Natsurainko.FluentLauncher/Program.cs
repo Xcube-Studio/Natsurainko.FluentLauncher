@@ -70,11 +70,9 @@ pages.WithPage<Views.News.NotePage, ViewModels.News.NoteViewModel>("News/Note");
 pages.WithPage<Views.Downloads.NavigationPage, ViewModels.Downloads.NavigationViewModel>("Download/Navigation");
 pages.WithPage<Views.Downloads.DefaultPage, ViewModels.Downloads.DefaultViewModel>("Download/Default");
 pages.WithPage<Views.Downloads.SearchPage, ViewModels.Downloads.SearchViewModel>("Download/Search");
+pages.WithPage<Views.Downloads.DetailsPage, ViewModels.Downloads.DetailsViewModel>("Download/Details");
 
-pages.WithPage<Views.Downloads.DownloadsPage, ViewModels.Downloads.DownloadsViewModel>("ResourcesDownloadPage");
-pages.WithPage<Views.Downloads.ResourcesSearchPage, ViewModels.Downloads.ResourcesSearchViewModel>("ResourcesSearchPage");
 pages.WithPage<Views.Downloads.CoreInstallWizardPage, ViewModels.Downloads.CoreInstallWizardViewModel>("CoreInstallWizardPage");
-pages.WithPage<Views.Downloads.ResourceItemPage, ViewModels.Downloads.ResourceItemViewModel>("ResourceItemPage");
 
 // Settings
 pages.WithPage<Views.Settings.NavigationPage, ViewModels.Settings.NavigationViewModel>("Settings/Navigation");
@@ -116,7 +114,7 @@ services.AddSingleton<SearchProviderService>();
 
 // ModClient
 services.AddSingleton<ModrinthClient>();
-services.AddSingleton<CurseForgeClient>(_ => new CurseForgeClient("$2a$10$Awb53b9gSOIJJkdV3Zrgp.CyFP.dI13QKbWn/4UZI4G4ff18WneB6"));
+services.AddSingleton<CurseForgeClient>(_ => new CurseForgeClient("$2a$10$lf9.hHl3PMJ4d3BisICcAOX91uT/mM9/VPDfzpg7r3C/Y8cXIRTNm"));
 
 // ViewModels
 services.AddSingleton<ViewModels.Activities.LaunchSessions>();

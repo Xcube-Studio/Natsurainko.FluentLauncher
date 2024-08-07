@@ -4,6 +4,8 @@ using FluentLauncher.Infra.UI.Navigation;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.ViewModels.Common;
+using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Management.Downloader.Data;
 using Nrk.FluentCore.Resources;
 using System;
@@ -37,19 +39,6 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         _curseForgeClient = curseForgeClient;
         _modrinthClient = modrinthClient;
         _searchProviderService = searchProviderService;
-    }
-
-    ~DefaultViewModel() 
-    {
-        PatchNoteDatas = null;
-        VersionManifestItems = null;
-        CurseForgeResources = null;
-        ModrinthResources = null;
-
-        PatchNotesJson = null;
-        VersionManifestJson = null;
-
-        GC.Collect();
     }
 
     [ObservableProperty]
@@ -219,17 +208,19 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     }
 
     [RelayCommand]
-    void SearchAllMinecarft() => _navigationService.NavigateTo("Download/Search", new SearchOptions
-    {
-        SearchText = string.Empty,
-        ResourceType = 1
-    });
+    void SearchAllMinecarft() => _navigationService.NavigateTo("Download/Search", new SearchOptions { ResourceType = 1 });
 
     [RelayCommand]
     void SearchMoreCurseForge() => _navigationService.NavigateTo("Download/Search", new SearchOptions { ResourceSource = 1 });
 
     [RelayCommand]
     void SearchMoreModrinth() => _navigationService.NavigateTo("Download/Search", new SearchOptions { ResourceSource = 2 });
+
+    [RelayCommand]
+    async Task DownloadResource(object resource) => await new DownloadResourceDialog() { DataContext = new DownloadResourceDialogViewModel(resource, _navigationService) }.ShowAsync();
+
+    [RelayCommand]
+    void ResourceDetails(object resource) => _navigationService.NavigateTo("Download/Details", resource);
 
     [RelayCommand]
     void Loaded() 

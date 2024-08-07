@@ -9,13 +9,11 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:selector="using:Natsurainko.FluentLauncher.XamlHelpers.Selectors"
     Unloaded="Page_Unloaded"
     mc:Ignorable="d">
     <Page.Resources>
-
         <DataTemplate x:Key="MinecraftItemTemplate">
             <controls:SettingsCard
                 Padding="20,0"
@@ -62,7 +60,6 @@
                 </controls:SettingsCard.Header>
             </controls:SettingsCard>
         </DataTemplate>
-
         <DataTemplate x:Key="CurseForgeResourceTemplate">
             <controls:SettingsCard
                 Padding="20,15"
@@ -71,9 +68,6 @@
                 BorderThickness="1"
                 CommandParameter="{Binding}"
                 IsClickEnabled="True">
-                <i:Interaction.Behaviors>
-                    <behaviors:AncestorBindingBehavior AncestorType="ScrollViewer" TargetPropertyName="Command" />
-                </i:Interaction.Behaviors>
                 <controls:SettingsCard.Header>
                     <Grid Background="Transparent">
                         <Grid.ColumnDefinitions>
@@ -112,12 +106,25 @@
                         </StackPanel>
                     </Grid>
                 </controls:SettingsCard.Header>
-                <Button>
+                <Button CommandParameter="{Binding}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <FontIcon FontSize="14" Glyph="&#xe896;" />
                         <TextBlock Text="Download" />
                     </StackPanel>
+                    <i:Interaction.Behaviors>
+                        <behaviors:AncestorBindingBehavior
+                            AncestorType="ScrollViewer"
+                            Binding="{Binding DataContext.DownloadResourceCommand}"
+                            TargetPropertyName="Command" />
+                    </i:Interaction.Behaviors>
                 </Button>
+                <i:Interaction.Behaviors>
+                    <behaviors:AncestorBindingBehavior AncestorType="ScrollViewer" TargetPropertyName="Command" />
+                    <behaviors:AncestorBindingBehavior
+                        AncestorType="ScrollViewer"
+                        Binding="{Binding DataContext.ResourceDetailsCommand}"
+                        TargetPropertyName="Command" />
+                </i:Interaction.Behaviors>
             </controls:SettingsCard>
         </DataTemplate>
         <DataTemplate x:Key="ModrinthResourceTemplate">
@@ -128,9 +135,6 @@
                 BorderThickness="1"
                 CommandParameter="{Binding}"
                 IsClickEnabled="True">
-                <i:Interaction.Behaviors>
-                    <behaviors:AncestorBindingBehavior AncestorType="ScrollViewer" TargetPropertyName="Command" />
-                </i:Interaction.Behaviors>
                 <controls:SettingsCard.Header>
                     <Grid Background="Transparent">
                         <Grid.ColumnDefinitions>
@@ -169,12 +173,25 @@
                         </StackPanel>
                     </Grid>
                 </controls:SettingsCard.Header>
-                <Button>
+                <Button CommandParameter="{Binding}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <FontIcon FontSize="14" Glyph="&#xe896;" />
                         <TextBlock Text="Download" />
                     </StackPanel>
+                    <i:Interaction.Behaviors>
+                        <behaviors:AncestorBindingBehavior
+                            AncestorType="ScrollViewer"
+                            Binding="{Binding DataContext.DownloadResourceCommand}"
+                            TargetPropertyName="Command" />
+                    </i:Interaction.Behaviors>
                 </Button>
+                <i:Interaction.Behaviors>
+                    <behaviors:AncestorBindingBehavior AncestorType="ScrollViewer" TargetPropertyName="Command" />
+                    <behaviors:AncestorBindingBehavior
+                        AncestorType="ScrollViewer"
+                        Binding="{Binding DataContext.ResourceDetailsCommand}"
+                        TargetPropertyName="Command" />
+                </i:Interaction.Behaviors>
             </controls:SettingsCard>
         </DataTemplate>
 
@@ -248,9 +265,10 @@
                     <CheckBox
                         VerticalAlignment="Center"
                         Content="Enable Version Filter"
+                        IsChecked="{Binding EnableVersionFilter, Mode=TwoWay}"
                         Visibility="{Binding IsSearchMinecraft, Converter={ThemeResource InvertedBoolToVisibilityConverter}}" />
 
-                    <ContentControl IsEnabled="{Binding IsAllSource, Converter={ThemeResource InvertBoolConverter}}" Visibility="{Binding IsSearchMinecraft, Converter={ThemeResource InvertedBoolToVisibilityConverter}}">
+                    <ContentControl IsEnabled="{Binding EnableVersionFilter}" Visibility="{Binding IsSearchMinecraft, Converter={ThemeResource InvertedBoolToVisibilityConverter}}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <FontIcon
                                 FontSize="13"
@@ -259,13 +277,16 @@
                             <TextBlock
                                 VerticalAlignment="Center"
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                Text="Applicable Version: " />
+                                Text="Applicable Version:" />
                             <ComboBox ItemsSource="{Binding ResourceVersions}" SelectedItem="{Binding SelectedVersion, Mode=TwoWay}" />
                         </StackPanel>
                     </ContentControl>
                 </controls:WrapPanel>
 
-                <ItemsRepeater ItemTemplate="{ThemeResource ResourceItemTemplateSelector}" ItemsSource="{Binding SearchResult}">
+                <ItemsRepeater
+                    x:Name="ItemsRepeater"
+                    ItemTemplate="{ThemeResource ResourceItemTemplateSelector}"
+                    ItemsSource="{Binding SearchResult}">
                     <ItemsRepeater.Layout>
                         <StackLayout Spacing="4" />
                     </ItemsRepeater.Layout>

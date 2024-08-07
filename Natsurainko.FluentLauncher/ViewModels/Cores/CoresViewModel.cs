@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
 using FluentLauncher.Infra.UI.Navigation;
 using Natsurainko.FluentLauncher.Models.Download;
+using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
@@ -115,11 +116,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
             return;
         }
 
-        _navigationService.NavigateTo("ResourcesSearchPage", new ResourceSearchData
-        {
-            SearchInput = string.Empty,
-            ResourceType = 0
-        });
+        _navigationService.NavigateTo("Download/Navigation", new SearchOptions { ResourceType = 1 });
     }
 
     [RelayCommand]

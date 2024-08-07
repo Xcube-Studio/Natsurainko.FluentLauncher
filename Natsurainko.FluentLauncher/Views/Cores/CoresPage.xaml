@@ -11,6 +11,9 @@
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     Background="Transparent"
     mc:Ignorable="d">
+    <Page.Resources>
+        <converters:GameInfoConverter x:Key="GameInfoConverter" EnableShowModLoaderType="True" />
+    </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -18,7 +21,10 @@
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Margin="40,20" Spacing="15">
+        <StackPanel
+            MaxWidth="1000"
+            Margin="40,20"
+            Spacing="15">
             <TextBlock
                 x:Uid="Cores_CoresPage_Title"
                 Style="{ThemeResource TitleTextBlockStyle}"
@@ -68,7 +74,10 @@
         </StackPanel>
 
         <ScrollViewer Grid.Row="2" Padding="40,0">
-            <ItemsRepeater Margin="0,0,0,25" ItemsSource="{Binding DisplayGameInfos}">
+            <ItemsRepeater
+                MaxWidth="1000"
+                Margin="0,0,0,25"
+                ItemsSource="{Binding DisplayGameInfos}">
                 <ItemsRepeater.Layout>
                     <StackLayout Spacing="4" />
                 </ItemsRepeater.Layout>
@@ -100,14 +109,7 @@
                                             Text="{Binding Name}"
                                             TextTrimming="CharacterEllipsis"
                                             ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
-                                        <ItemsRepeater>
-                                            <ItemsRepeater.ItemsSource>
-                                                <Binding>
-                                                    <Binding.Converter>
-                                                        <converters:GameInfoConverter EnableShowModLoaderType="True" />
-                                                    </Binding.Converter>
-                                                </Binding>
-                                            </ItemsRepeater.ItemsSource>
+                                        <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource GameInfoConverter}}">
                                             <ItemsRepeater.Layout>
                                                 <controls:WrapLayout HorizontalSpacing="5" VerticalSpacing="5" />
                                             </ItemsRepeater.Layout>

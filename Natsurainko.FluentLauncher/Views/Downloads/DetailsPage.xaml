@@ -145,7 +145,7 @@
                                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                             Style="{ThemeResource CaptionTextBlockStyle}"
                                             TextTrimming="CharacterEllipsis">
-                                            <Run Text="Download Count:" />
+                                            <Run x:Uid="Downloads_DetailsPage_Text2" Text="Download Count:" />
                                             <Run Text="{Binding DownloadCount}" />
                                         </TextBlock>
                                     </StackPanel>
@@ -158,7 +158,7 @@
                                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                             Style="{ThemeResource CaptionTextBlockStyle}"
                                             TextTrimming="CharacterEllipsis">
-                                            <Run Text="Update Date:" />
+                                            <Run x:Uid="Downloads_DetailsPage_Text3" Text="Update Date:" />
                                             <Run Text="{Binding DateModified}" />
                                         </TextBlock>
                                     </StackPanel>
@@ -172,7 +172,7 @@
                                     <TextBlock x:Uid="Buttons_Download" Text="Download" />
                                 </Button>
                                 <HyperlinkButton Width="125" NavigateUri="{Binding WebLink}">
-                                    <TextBlock Text="Open in Browser" />
+                                    <TextBlock x:Uid="Downloads_DetailsPage_Text1" Text="Open in Browser" />
                                 </HyperlinkButton>
                             </StackPanel>
                         </Grid>
@@ -185,6 +185,7 @@
                 </Border>
 
                 <TextBlock
+                    x:Uid="Downloads_DetailsPage_T1"
                     Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
                     Text="Screenshots"
                     Visibility="{Binding HasScreenshot, Converter={ThemeResource BoolToVisibilityConverter}}" />
@@ -215,10 +216,13 @@
                     </FlipView.ItemTemplate>
                 </FlipView>
 
-                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Description" />
+                <TextBlock
+                    x:Uid="Downloads_DetailsPage_T2"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Description" />
 
                 <Border
-                    Height="500"
+                    MinHeight="500"
                     Padding="16"
                     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
                     BorderBrush="{ThemeResource SettingsCardBorderBrush}"

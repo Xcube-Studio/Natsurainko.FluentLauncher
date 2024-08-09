@@ -448,7 +448,7 @@
     <ContentDialog.Title>
         <StackPanel Margin="24,24,24,0">
             <TextBlock>
-                <Run Text="Download:" />
+                <Run x:Uid="Dialogs_DownloadResourceDialog_T" Text="Download:" />
                 <Run Text="{Binding ResourceName}" />
             </TextBlock>
         </StackPanel>
@@ -495,6 +495,7 @@
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Glyph="&#xE71C;" />
                     <TextBlock
+                        x:Uid="Dialogs_DownloadResourceDialog_Text1"
                         VerticalAlignment="Center"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Text="Version: " />
@@ -507,6 +508,7 @@
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Glyph="&#xE71C;" />
                     <TextBlock
+                        x:Uid="Dialogs_DownloadResourceDialog_Text2"
                         VerticalAlignment="Center"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Text="Mod Loader: " />
@@ -577,7 +579,7 @@
             <StackPanel Grid.Row="2" Spacing="2">
                 <CheckBox IsChecked="{Binding DownloadToCurrentGame, Mode=TwoWay}" Visibility="{Binding CheckBox1}">
                     <StackPanel DataContext="{Binding GameInfo}">
-                        <TextBlock Text="Install this mod for the currently selected game" />
+                        <TextBlock x:Uid="Dialogs_DownloadResourceDialog_Text3" Text="Install this mod for the currently selected game" />
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <TextBlock
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
@@ -603,10 +605,16 @@
                     </StackPanel>
                 </CheckBox>
                 <CheckBox IsChecked="{Binding DownloadToDesignated, Mode=TwoWay}" Visibility="{Binding CheckBox2}">
-                    <TextBlock Margin="0,-2,0,0" Text="Download to designated location" />
+                    <TextBlock
+                        x:Uid="Dialogs_DownloadResourceDialog_Text4"
+                        Margin="0,-2,0,0"
+                        Text="Download to designated location" />
                 </CheckBox>
                 <CheckBox IsChecked="{Binding IsModpack, Mode=TwoWay}" Visibility="{Binding CheckBox3}">
-                    <TextBlock Margin="0,-2,0,0" Text="This is a modpack, install it into the current .minecraft directory" />
+                    <TextBlock
+                        x:Uid="Dialogs_DownloadResourceDialog_Text5"
+                        Margin="0,-2,0,0"
+                        Text="This is a modpack, install it into the current .minecraft directory" />
                 </CheckBox>
 
                 <AutoSuggestBox Text="{Binding DesignatedFilePath, Mode=TwoWay}" Visibility="{Binding DownloadToDesignated, Converter={ThemeResource BoolToVisibilityConverter}}">

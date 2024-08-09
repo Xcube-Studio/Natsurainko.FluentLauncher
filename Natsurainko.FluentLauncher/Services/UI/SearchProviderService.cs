@@ -10,9 +10,9 @@ internal partial class SearchProviderService : ObservableObject
 {
     private AutoSuggestBox _autoSuggestBox;
 
-    private Dictionary<Type, Func<string, IEnumerable<Suggestion>>> SuggestionProviders = new Dictionary<Type, Func<string, IEnumerable<Suggestion>>>();
+    private Dictionary<object, Func<string, IEnumerable<Suggestion>>> SuggestionProviders = new Dictionary<object, Func<string, IEnumerable<Suggestion>>>();
 
-    public Type QueryReceiverOwner { get; private set; }
+    public object QueryReceiverOwner { get; private set; }
     private Action<string> QueryReceiver;
 
     public void BindingSearchBox(AutoSuggestBox autoSuggestBox)
@@ -53,6 +53,11 @@ internal partial class SearchProviderService : ObservableObject
 
     private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
+        if (args.ChosenSuggestion is Suggestion suggestion)
+        {
+            return;
+        }
+
         if (QueryReceiverOwner != null)
             QueryReceiver(sender.Text);
     }
@@ -61,33 +66,21 @@ internal partial class SearchProviderService : ObservableObject
 
     public void RegisterSuggestionProvider<TProvider>(TProvider provider, Func<string, IEnumerable<Suggestion>> func)
     {
-        SuggestionProviders.Add(typeof(TProvider), func);
+        SuggestionProviders.Add(provider, func);
     }
 
     public void UnregisterSuggestionProvider<TProvider>(TProvider provider)
     {
-        SuggestionProviders.Remove(typeof(TProvider));
+        SuggestionProviders.Remove(provider);
     }
 
     public bool ContainsSuggestionProvider<TProvider>(TProvider provider)
         => SuggestionProviders.ContainsKey(typeof(TProvider));
 
-    public void RegisterQueryReceiver<TReceiver>(TReceiver provider, Action<string> action)
+    public void OccupyQueryReceiver<TReceiver>(TReceiver provider, Action<string> action)
     {
-        if (QueryReceiverOwner != null)
-            throw new InvalidOperationException();
-
-        QueryReceiverOwner = typeof(TReceiver);
+        QueryReceiverOwner = provider;
         QueryReceiver = action;
-    }
-
-    public void UnregisterQueryReceiver<TReceiver>(TReceiver provider)
-    {
-        if (QueryReceiverOwner != typeof(TReceiver)) 
-            throw new InvalidOperationException();
-
-        QueryReceiverOwner = null;
-        QueryReceiver = null;
     }
 
     public class Suggestion

@@ -86,7 +86,10 @@
                 HorizontalAlignment="Stretch"
                 Spacing="{StaticResource SettingsCardSpacing}">
 
-                <TextBlock Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}" Text="Latest Minecraft" />
+                <TextBlock
+                    x:Uid="Downloads_DefaultPage_T1"
+                    Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
+                    Text="Latest Minecraft" />
 
                 <FlipView
                     x:Name="FlipView"
@@ -131,7 +134,7 @@
                                             Style="{ThemeResource AccentButtonStyle}">
                                             <StackPanel Orientation="Horizontal" Spacing="5">
                                                 <FontIcon FontSize="14" Glyph="&#xe896;" />
-                                                <TextBlock Text="Go Download" />
+                                                <TextBlock x:Uid="Downloads_DefaultPage_Text1" Text="Go Download" />
                                             </StackPanel>
                                         </Button>
                                     </StackPanel>
@@ -148,6 +151,7 @@
 
                 <Grid Margin="1,30,0,6">
                     <TextBlock
+                        x:Uid="Downloads_DefaultPage_T2"
                         VerticalAlignment="Center"
                         Style="{ThemeResource BaseTextBlockStyle}"
                         Text="Minecraft Versions" />
@@ -157,7 +161,7 @@
                         Command="{Binding SearchAllMinecarftCommand}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <FontIcon FontSize="14" Glyph="&#xe71d;" />
-                            <TextBlock Text="Show All.." />
+                            <TextBlock x:Uid="Downloads_DefaultPage_Text2" Text="Show All.." />
                         </StackPanel>
                     </HyperlinkButton>
                 </Grid>
@@ -220,6 +224,7 @@
 
                 <Grid Margin="1,30,0,6">
                     <TextBlock
+                        x:Uid="Downloads_DefaultPage_T3"
                         VerticalAlignment="Center"
                         Style="{ThemeResource BaseTextBlockStyle}"
                         Text="CurseForge Resources" />
@@ -229,7 +234,7 @@
                         Command="{Binding SearchMoreCurseForgeCommand}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <FontIcon FontSize="14" Glyph="&#xe721;" />
-                            <TextBlock Text="Search More.." />
+                            <TextBlock x:Uid="Downloads_DefaultPage_Text3" Text="Search More.." />
                         </StackPanel>
                     </HyperlinkButton>
                 </Grid>
@@ -325,7 +330,7 @@
                                         CommandParameter="{Binding}">
                                         <StackPanel Orientation="Horizontal" Spacing="10">
                                             <FontIcon FontSize="14" Glyph="&#xe896;" />
-                                            <TextBlock Text="Download" />
+                                            <TextBlock x:Uid="Buttons_Download" Text="Download" />
                                         </StackPanel>
                                         <i:Interaction.Behaviors>
                                             <bh:AncestorBindingBehavior
@@ -345,9 +350,11 @@
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>
                 </ItemsRepeater>
+                <ProgressRing IsActive="{Binding LoadingCurseForgeResource}" Visibility="{Binding LoadingCurseForgeResource, Converter={ThemeResource BoolToVisibilityConverter}}" />
 
                 <Grid Margin="1,30,0,6">
                     <TextBlock
+                        x:Uid="Downloads_DefaultPage_T4"
                         VerticalAlignment="Center"
                         Style="{ThemeResource BaseTextBlockStyle}"
                         Text="Modrinth Resources" />
@@ -357,7 +364,7 @@
                         Command="{Binding SearchMoreModrinthCommand}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <FontIcon FontSize="14" Glyph="&#xe721;" />
-                            <TextBlock Text="Search More.." />
+                            <TextBlock x:Uid="Downloads_DefaultPage_Text3" Text="Search More.." />
                         </StackPanel>
                     </HyperlinkButton>
                 </Grid>
@@ -444,7 +451,7 @@
                                         CommandParameter="{Binding}">
                                         <StackPanel Orientation="Horizontal" Spacing="10">
                                             <FontIcon FontSize="14" Glyph="&#xe896;" />
-                                            <TextBlock Text="Download" />
+                                            <TextBlock x:Uid="Buttons_Download" Text="Download" />
                                         </StackPanel>
                                         <i:Interaction.Behaviors>
                                             <bh:AncestorBindingBehavior
@@ -464,6 +471,7 @@
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>
                 </ItemsRepeater>
+                <ProgressRing IsActive="{Binding LoadingModrinthResource}" Visibility="{Binding LoadingModrinthResource, Converter={ThemeResource BoolToVisibilityConverter}}" />
             </StackPanel>
         </Border>
     </ScrollViewer>

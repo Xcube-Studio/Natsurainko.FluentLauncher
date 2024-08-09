@@ -53,6 +53,12 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     [ObservableProperty]
     private ModrinthResource[] modrinthResources;
 
+    [ObservableProperty]
+    private bool loadingCurseForgeResource = true;
+
+    [ObservableProperty]
+    private bool loadingModrinthResource = true;
+
     private string PatchNotesJson;
     private string VersionManifestJson;
 
@@ -132,7 +138,12 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         }
 
         var curseForgeResources = task.Result.Reverse().Take(6).ToArray();
-        App.DispatcherQueue.TryEnqueue(() => CurseForgeResources = curseForgeResources);
+
+        App.DispatcherQueue.TryEnqueue(() =>
+        {
+            CurseForgeResources = curseForgeResources;
+            LoadingCurseForgeResource = false;
+        });
     }
 
     void ParseModrinthTask(Task<IEnumerable<ModrinthResource>> task)
@@ -143,7 +154,11 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         }
 
         var modrinthResources = task.Result.ToArray();
-        App.DispatcherQueue.TryEnqueue(() => ModrinthResources = modrinthResources);
+        App.DispatcherQueue.TryEnqueue(() =>
+        {
+            ModrinthResources = modrinthResources;
+            LoadingModrinthResource = false;
+        });
     }
 
     IEnumerable<SearchProviderService.Suggestion> ProviderSuggestions(string searchText)
@@ -222,13 +237,21 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     [RelayCommand]
     void ResourceDetails(object resource) => _navigationService.NavigateTo("Download/Details", resource);
 
+    void QueryReceiver(string searchText) => _navigationService.NavigateTo("Download/Search", new SearchOptions { SearchText = searchText });
+
     [RelayCommand]
     void Loaded() 
     {
+        if (_searchProviderService.QueryReceiverOwner != this)
+            _searchProviderService.OccupyQueryReceiver(this, QueryReceiver);
+
         if (!_searchProviderService.ContainsSuggestionProvider(this))
             _searchProviderService.RegisterSuggestionProvider(this, ProviderSuggestions);
     }
 
     [RelayCommand]
-    void Unloaded() => _searchProviderService.UnregisterSuggestionProvider(this);
+    void Unloaded()
+    {
+        _searchProviderService.UnregisterSuggestionProvider(this);
+    }
 }

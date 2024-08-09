@@ -248,8 +248,8 @@ internal partial class SearchViewModel : ObservableObject, INavigationAware
     [RelayCommand]
     void Loaded()
     {
-        if (_searchProviderService.QueryReceiverOwner != typeof(SearchViewModel))
-            _searchProviderService.RegisterQueryReceiver(this, QueryReceiver);
+        if (_searchProviderService.QueryReceiverOwner != this)
+            _searchProviderService.OccupyQueryReceiver(this, QueryReceiver);
 
         if (!_searchProviderService.ContainsSuggestionProvider(this))
             _searchProviderService.RegisterSuggestionProvider(this, ProviderSuggestions);
@@ -258,7 +258,6 @@ internal partial class SearchViewModel : ObservableObject, INavigationAware
     [RelayCommand]
     void Unloaded() 
     {
-        _searchProviderService.UnregisterQueryReceiver(this);
         _searchProviderService.UnregisterSuggestionProvider(this);
     }
 }

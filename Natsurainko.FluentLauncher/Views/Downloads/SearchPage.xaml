@@ -11,6 +11,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:selector="using:Natsurainko.FluentLauncher.XamlHelpers.Selectors"
+    xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     Unloaded="Page_Unloaded"
     mc:Ignorable="d">
     <Page.Resources>
@@ -109,7 +110,7 @@
                 <Button CommandParameter="{Binding}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <FontIcon FontSize="14" Glyph="&#xe896;" />
-                        <TextBlock Text="Download" />
+                        <TextBlock x:Uid="Buttons_Download" Text="Download" />
                     </StackPanel>
                     <i:Interaction.Behaviors>
                         <behaviors:AncestorBindingBehavior
@@ -176,7 +177,7 @@
                 <Button CommandParameter="{Binding}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <FontIcon FontSize="14" Glyph="&#xe896;" />
-                        <TextBlock Text="Download" />
+                        <TextBlock x:Uid="Buttons_Download" Text="Download" />
                     </StackPanel>
                     <i:Interaction.Behaviors>
                         <behaviors:AncestorBindingBehavior
@@ -232,10 +233,11 @@
                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                             Glyph="&#xe721;" />
                         <TextBlock
+                            x:Uid="Downloads_SearchPage_Text1"
                             VerticalAlignment="Center"
                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                             Text="Resource Type: " />
-                        <ComboBox SelectedIndex="{Binding ResourceType, Mode=TwoWay}">
+                        <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items1}" SelectedIndex="{Binding ResourceType, Mode=TwoWay}">
                             <x:String>All</x:String>
                             <x:String>Minecraft</x:String>
                             <x:String>Modpack</x:String>
@@ -252,10 +254,11 @@
                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                             Glyph="&#xf6fa;" />
                         <TextBlock
+                            x:Uid="Downloads_SearchPage_Text2"
                             VerticalAlignment="Center"
                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                            Text="Resource Source: " />
-                        <ComboBox SelectedIndex="{Binding ResourceSource, Mode=TwoWay}">
+                            Text="Resource Source:" />
+                        <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items2}" SelectedIndex="{Binding ResourceSource, Mode=TwoWay}">
                             <x:String>All</x:String>
                             <x:String>CurseForge</x:String>
                             <x:String>Modrinth</x:String>
@@ -263,6 +266,7 @@
                     </StackPanel>
 
                     <CheckBox
+                        x:Uid="Downloads_SearchPage_CheckBox"
                         VerticalAlignment="Center"
                         Content="Enable Version Filter"
                         IsChecked="{Binding EnableVersionFilter, Mode=TwoWay}"
@@ -275,6 +279,7 @@
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Glyph="&#xe70f;" />
                             <TextBlock
+                                x:Uid="Downloads_SearchPage_Text3"
                                 VerticalAlignment="Center"
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Text="Applicable Version:" />

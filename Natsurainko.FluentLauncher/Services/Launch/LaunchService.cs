@@ -11,11 +11,11 @@ using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Environment;
 using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Management;
-using Nrk.FluentCore.Services.Launch;
 using Nrk.FluentCore.Utils;
 using PInvoke;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -24,14 +24,20 @@ using Windows.ApplicationModel;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
 
-internal class LaunchService : DefaultLaunchService
+internal class LaunchService
 {
     private readonly AuthenticationService _authenticationService;
     private readonly DownloadService _downloadService;
     private readonly NotificationService _notificationService;
     private readonly AccountService _accountService;
+    private readonly SettingsService _settingsService;
 
-    private SettingsService AppSettingsService => (SettingsService)_settingsService;
+    private SettingsService AppSettingsService => _settingsService;
+
+    protected readonly List<MinecraftSession> _sessions;
+    public ReadOnlyCollection<MinecraftSession> Sessions { get; }
+
+    public event EventHandler<MinecraftSession>? SessionCreated;
 
     public LaunchService(
         SettingsService settingsService,
@@ -40,12 +46,15 @@ internal class LaunchService : DefaultLaunchService
         AuthenticationService authenticationService,
         DownloadService downloadService,
         NotificationService notificationService)
-        : base(settingsService, gameService)
     {
+        _settingsService = settingsService;
         _authenticationService = authenticationService;
         _accountService = accountService;
         _downloadService = downloadService;
         _notificationService = notificationService;
+
+        _sessions = [];
+        Sessions = new(_sessions);
     }
 
     public async Task LaunchGame(GameInfo gameInfo)
@@ -69,8 +78,10 @@ internal class LaunchService : DefaultLaunchService
             _notificationService.NotifyWithoutContent(ex.Message);
         }
     }
+    protected void OnSessionCreated(MinecraftSession minecraftSession)
+        => this.SessionCreated?.Invoke(this, minecraftSession);
 
-    public override MinecraftSession CreateMinecraftSessionFromGameInfo(GameInfo gameInfo, Account? _)
+    public MinecraftSession CreateMinecraftSessionFromGameInfo(GameInfo gameInfo, Account? _)
     {
         Account? account = _accountService.ActiveAccount;
         if (account is null)

@@ -3,7 +3,6 @@ using FluentLauncher.Infra.Settings.Converters;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Management;
-using Nrk.FluentCore.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -14,7 +13,7 @@ using Windows.Storage;
 
 namespace Natsurainko.FluentLauncher.Services.Settings;
 
-public partial class SettingsService : SettingsContainer, IFluentCoreSettingsService
+public partial class SettingsService : SettingsContainer
 {
     #region New IFluentCoreSettingsService Property
 

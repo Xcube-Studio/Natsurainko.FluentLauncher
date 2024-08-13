@@ -147,7 +147,7 @@
                     </StackPanel>
 
                     <i:Interaction.Behaviors>
-                        <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{Binding Mods}" />
+                        <behaviors:EmptyListVisibleBehavior IsObservableCollection="True" ItemsSource="{Binding Mods}" />
                     </i:Interaction.Behaviors>
                 </StackPanel>
             </StackPanel>

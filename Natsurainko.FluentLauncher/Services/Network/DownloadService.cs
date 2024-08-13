@@ -6,6 +6,7 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
+using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Management.Downloader;
 using Nrk.FluentCore.Management.Downloader.Data;
@@ -23,14 +24,14 @@ using System.Threading;
 
 namespace Natsurainko.FluentLauncher.Services.Network;
 
-internal class DownloadService
+internal partial class DownloadService
 {
-    private new readonly SettingsService _settingsService;
+    private readonly SettingsService _settingsService;
     private readonly GameService _gameService;
     private readonly INavigationService _navigationService;
-    private readonly ObservableCollection<DownloadProcess> _downloadProcesses = new();
+    private readonly ObservableCollection<DownloadProcessViewModel> _downloadProcesses = new();
 
-    public ReadOnlyObservableCollection<DownloadProcess> DownloadProcesses { get; init; }
+    public ReadOnlyObservableCollection<DownloadProcessViewModel> DownloadProcesses { get; init; }
 
     public DownloadService(SettingsService settingsService, GameService gameService, INavigationService navigationService)
     {
@@ -41,61 +42,12 @@ internal class DownloadService
         DownloadProcesses = new(_downloadProcesses);
     }
 
-    private DefaultResourcesDownloader Base_CreateResourcesDownloader(GameInfo gameInfo,
-    IEnumerable<LibraryElement>? libraryElements = default,
-    IEnumerable<AssetElement>? assetElements = default,
-    DownloadMirrorSource? downloadMirrorSource = default)
-    {
-        List<LibraryElement> libraries = libraryElements?.ToList() ?? [];
-
-        if (libraryElements == null)
-        {
-            var libraryParser = new DefaultLibraryParser(gameInfo);
-            libraryParser.EnumerateLibraries(out var enabledLibraries, out var enabledNativesLibraries);
-
-            libraries = enabledLibraries.Union(enabledNativesLibraries).ToList();
-        }
-
-        if (assetElements == null)
-        {
-            var assetParser = new DefaultAssetParser(gameInfo);
-            var assetElement = assetParser.GetAssetIndexJson();
-            if (downloadMirrorSource != null)
-                assetElement.Url?.ReplaceFromDictionary(downloadMirrorSource.AssetsReplaceUrl);
-
-            if (!assetElement.VerifyFile())
-            {
-                var assetIndexDownloadTask = HttpUtils.DownloadElementAsync(assetElement);
-                assetIndexDownloadTask.Wait();
-
-                if (assetIndexDownloadTask.Result.IsFaulted)
-                    throw new System.Exception("依赖材质索引文件获取失败");
-            }
-
-            assetElements = assetParser.EnumerateAssets();
-        }
-
-        var jar = gameInfo.GetJarElement();
-        if (jar != null && !jar.VerifyFile())
-            libraries.Add(jar);
-
-        var defaultResourcesDownloader = new DefaultResourcesDownloader(gameInfo);
-
-        defaultResourcesDownloader.SetLibraryElements(libraries);
-        defaultResourcesDownloader.SetAssetsElements(assetElements);
-
-        if (downloadMirrorSource != null) defaultResourcesDownloader.SetDownloadMirror(downloadMirrorSource);
-
-        return defaultResourcesDownloader;
-    }
-
     public DefaultResourcesDownloader CreateResourcesDownloader(GameInfo gameInfo, IEnumerable<LibraryElement> libraryElements = null)
     {
         UpdateDownloadSettings();
 
         if (_settingsService.CurrentDownloadSource != "Mojang")
-            return Base_CreateResourcesDownloader(gameInfo, libraryElements, downloadMirrorSource:
-                _settingsService.CurrentDownloadSource.Equals("Mcbbs") ? DownloadMirrors.Mcbbs : DownloadMirrors.Bmclapi);
+            return Base_CreateResourcesDownloader(gameInfo, libraryElements, downloadMirrorSource: DownloadMirrors.Bmclapi);
 
         return Base_CreateResourcesDownloader(gameInfo, libraryElements);
     }
@@ -108,7 +60,7 @@ internal class DownloadService
 
     public void DownloadResourceFile(object file, string filePath)
     {
-        var process = new ResourceDownloadProcess(file, filePath);
+        var process = new FileDownloadProcessViewModel(file, filePath);
         _downloadProcesses.Insert(0, process);
         _ = process.Start();
     }
@@ -144,12 +96,12 @@ internal class DownloadService
             return title;
         }
 
-        var installProcess = new CoreInstallProcess() { Title = GetTitle() };
-        var firstToStart = new List<CoreInstallProcess.ProgressItem>();
+        var installProcess = new InstallProcessViewModel() { Title = GetTitle() };
+        var firstToStart = new List<InstallProcessViewModel.ProgressItem>();
 
         GameInfo inheritsFrom = _gameService.Games.FirstOrDefault(x => x.AbsoluteId.Equals(info.ManifestItem.Id));
 
-        var installVanillaGame = new CoreInstallProcess.ProgressItem(@this =>
+        var installVanillaGame = new InstallProcessViewModel.ProgressItem(@this =>
         {
             var downloadTask = HttpUtils.DownloadElementAsync(new DownloadElement
             {
@@ -168,7 +120,7 @@ internal class DownloadService
             inheritsFrom = _gameService.Games.FirstOrDefault(x => x.AbsoluteId.Equals(info.ManifestItem.Id));
 
         }, ResourceUtils.GetValue("Converters", "_ProgressItem_InstallVanilla").Replace("${id}", info.ManifestItem.Id), installProcess);
-        var completeResources = new CoreInstallProcess.ProgressItem(@this =>
+        var completeResources = new InstallProcessViewModel.ProgressItem(@this =>
         {
             int finished = 0;
             int total = 0;
@@ -189,7 +141,7 @@ internal class DownloadService
             resourcesDownloader.Download();
 
         }, ResourceUtils.GetValue("Converters", "_ProgressItem_CompleteResources"), installProcess);
-        var setCoreConfig = new CoreInstallProcess.ProgressItem(@this =>
+        var setCoreConfig = new InstallProcessViewModel.ProgressItem(@this =>
         {
             App.DispatcherQueue.SynchronousTryEnqueue(() => _gameService.RefreshGames());
 
@@ -217,7 +169,7 @@ internal class DownloadService
                 "cache-downloads",
                 $"{loaderFullName}.jar");
 
-            var runInstallExecutor = new CoreInstallProcess.ProgressItem(@this =>
+            var runInstallExecutor = new InstallProcessViewModel.ProgressItem(@this =>
             {
                 IModLoaderInstaller executor = info.PrimaryLoader.Type switch
                 {
@@ -264,7 +216,7 @@ internal class DownloadService
 
             if (!(info.PrimaryLoader.Type == ModLoaderType.Fabric || info.PrimaryLoader.Type == ModLoaderType.Quilt))
             {
-                var downloadInstallerPackage = new CoreInstallProcess.ProgressItem(@this =>
+                var downloadInstallerPackage = new InstallProcessViewModel.ProgressItem(@this =>
                 {
                     var downloadTask = HttpUtils.DownloadElementAsync(new DownloadElement
                     {
@@ -303,7 +255,7 @@ internal class DownloadService
                 ? Path.Combine(_gameService.ActiveMinecraftFolder, "versions", info.AbsoluteId, "mods", $"{loaderFullName}.jar")
                 : Path.Combine(_gameService.ActiveMinecraftFolder, "mods", $"{loaderFullName}.jar");
 
-            var downloadInstallerPackage = new CoreInstallProcess.ProgressItem(@this =>
+            var downloadInstallerPackage = new InstallProcessViewModel.ProgressItem(@this =>
             {
                 var downloadTask = HttpUtils.DownloadElementAsync(new DownloadElement
                 {
@@ -342,6 +294,57 @@ internal class DownloadService
         installProcess.Start();
     }
 }
+
+
+internal partial class DownloadService
+{
+    private DefaultResourcesDownloader Base_CreateResourcesDownloader(GameInfo gameInfo,
+    IEnumerable<LibraryElement>? libraryElements = default,
+    IEnumerable<AssetElement>? assetElements = default,
+    DownloadMirrorSource? downloadMirrorSource = default)
+    {
+        List<LibraryElement> libraries = libraryElements?.ToList() ?? [];
+
+        if (libraryElements == null)
+        {
+            var libraryParser = new DefaultLibraryParser(gameInfo);
+            libraryParser.EnumerateLibraries(out var enabledLibraries, out var enabledNativesLibraries);
+
+            libraries = enabledLibraries.Union(enabledNativesLibraries).ToList();
+        }
+
+        if (assetElements == null)
+        {
+            var assetParser = new DefaultAssetParser(gameInfo);
+            var assetElement = assetParser.GetAssetIndexJson();
+            if (downloadMirrorSource != null)
+                assetElement.Url?.ReplaceFromDictionary(downloadMirrorSource.AssetsReplaceUrl);
+
+            if (!assetElement.VerifyFile())
+            {
+                var assetIndexDownloadTask = HttpUtils.DownloadElementAsync(assetElement);
+                assetIndexDownloadTask.Wait();
+
+                if (assetIndexDownloadTask.Result.IsFaulted)
+                    throw new System.Exception("依赖材质索引文件获取失败");
+            }
+
+            assetElements = assetParser.EnumerateAssets();
+        }
+
+        var jar = gameInfo.GetJarElement();
+        if (jar != null && !jar.VerifyFile())
+            libraries.Add(jar);
+
+        var defaultResourcesDownloader = new DefaultResourcesDownloader(gameInfo);
+
+        defaultResourcesDownloader.SetLibraryElements(libraries);
+        defaultResourcesDownloader.SetAssetsElements(assetElements);
+
+        if (downloadMirrorSource != null) defaultResourcesDownloader.SetDownloadMirror(downloadMirrorSource);
+
+        return defaultResourcesDownloader;
+    }}
 
 internal static class IDownloadElementExtensions
 {

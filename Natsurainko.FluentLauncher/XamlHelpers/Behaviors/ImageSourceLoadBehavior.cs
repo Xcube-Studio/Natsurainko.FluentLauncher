@@ -111,6 +111,7 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
     public async void LoadImage()
     {
         if (isLoading 
+            || AssociatedObject == null
             || SourceProperty == null 
             || (!LoadFromInternet && !File.Exists(ImageSourceFilePath))
             || (LoadFromInternet && string.IsNullOrEmpty(ImageSourceUrl)))
@@ -127,7 +128,7 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
         var bitmapImage = new BitmapImage();
         await bitmapImage.SetSourceAsync(randomAccessStream);
 
-        AssociatedObject.SetValue(SourceProperty, bitmapImage);
+        AssociatedObject?.SetValue(SourceProperty, bitmapImage);
 
         isLoading = false;
     }

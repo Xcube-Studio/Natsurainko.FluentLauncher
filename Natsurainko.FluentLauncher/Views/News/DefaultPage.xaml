@@ -33,8 +33,15 @@
                 MaxWidth="1000"
                 HorizontalAlignment="Stretch"
                 Spacing="{StaticResource SettingsCardSpacing}">
+                <StackPanel.ChildrenTransitions>
+                    <EntranceThemeTransition FromVerticalOffset="50" />
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                </StackPanel.ChildrenTransitions>
 
-                <TextBlock Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}" Text="Minecraft Update" />
+                <TextBlock
+                    x:Uid="News_DefaultPage_T1"
+                    Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
+                    Text="Minecraft Update" />
 
                 <FlipView
                     x:Name="FlipView"
@@ -88,7 +95,7 @@
                                             CommandParameter="{Binding}"
                                             Style="{ThemeResource AccentButtonStyle}">
                                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                                <TextBlock Text="View Details" />
+                                                <TextBlock x:Uid="News_DefaultPage_Text1" Text="View Details" />
                                                 <FontIcon FontSize="14" Glyph="&#xe76c;" />
                                             </StackPanel>
 
@@ -143,7 +150,10 @@
                     NumberOfPages="6"
                     SelectedPageIndex="{x:Bind Path=FlipView.SelectedIndex, Mode=TwoWay}" />
 
-                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Minecraft News" />
+                <TextBlock
+                    x:Uid="News_DefaultPage_T2"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Minecraft News" />
 
                 <GridView ItemsSource="{Binding NewsDatas}">
                     <GridView.ItemTemplate>
@@ -210,7 +220,7 @@
                                             BorderThickness="1"
                                             NavigateUri="{Binding ReadMoreUrl}">
                                             <StackPanel Orientation="Horizontal" Spacing="5">
-                                                <TextBlock Text="View Details" />
+                                                <TextBlock x:Uid="News_DefaultPage_Text1" Text="View Details" />
                                                 <FontIcon FontSize="14" Glyph="&#xE8A7;" />
                                             </StackPanel>
                                         </HyperlinkButton>

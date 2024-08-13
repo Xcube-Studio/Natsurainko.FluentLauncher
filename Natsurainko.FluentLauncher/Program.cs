@@ -56,23 +56,24 @@ pages.WithPage<Views.Cores.Manage.ConfigPage, ViewModels.Cores.Manage.ConfigView
 pages.WithPage<Views.Cores.Manage.ModPage, ViewModels.Cores.Manage.ModViewModel>("CoreManage/Mod");
 pages.WithPage<Views.Cores.Manage.SavePage, ViewModels.Cores.Manage.SaveViewModel>("CoreManage/Save");
 
-// Activities page
-pages.WithPage<Views.Activities.ActivitiesNavigationPage, ViewModels.Activities.ActivitiesNavigationViewModel>("ActivitiesNavigationPage");
-pages.WithPage<Views.Activities.LaunchPage, ViewModels.Activities.LaunchViewModel>("LaunchTasksPage");
-pages.WithPage<Views.Activities.DownloadPage, ViewModels.Activities.DownloadViewModel>("DownloadTasksPage");
-
 // News page
 pages.WithPage<Views.News.NavigationPage, ViewModels.News.NavigationViewModel>("News/Navigation");
 pages.WithPage<Views.News.DefaultPage, ViewModels.News.DefaultViewModel>("News/Default");
 pages.WithPage<Views.News.NotePage, ViewModels.News.NoteViewModel>("News/Note");
 
 // Resources download page
-pages.WithPage<Views.Downloads.DownloadsPage, ViewModels.Downloads.DownloadsViewModel>("ResourcesDownloadPage");
-pages.WithPage<Views.Downloads.ResourcesSearchPage, ViewModels.Downloads.ResourcesSearchViewModel>("ResourcesSearchPage");
-pages.WithPage<Views.Downloads.CoreInstallWizardPage, ViewModels.Downloads.CoreInstallWizardViewModel>("CoreInstallWizardPage");
-pages.WithPage<Views.Downloads.ResourceItemPage, ViewModels.Downloads.ResourceItemViewModel>("ResourceItemPage");
+pages.WithPage<Views.Downloads.NavigationPage, ViewModels.Downloads.NavigationViewModel>("Download/Navigation");
+pages.WithPage<Views.Downloads.DefaultPage, ViewModels.Downloads.DefaultViewModel>("Download/Default");
+pages.WithPage<Views.Downloads.SearchPage, ViewModels.Downloads.SearchViewModel>("Download/Search");
+pages.WithPage<Views.Downloads.DetailsPage, ViewModels.Downloads.DetailsViewModel>("Download/Details");
 
-// Settings
+pages.WithPage<Views.Downloads.CoreInstallWizardPage, ViewModels.Downloads.CoreInstallWizardViewModel>("CoreInstallWizardPage");
+
+// Tasks page
+pages.WithPage<Views.Tasks.LaunchPage, ViewModels.Tasks.LaunchViewModel>("Tasks/Launch");
+pages.WithPage<Views.Tasks.DownloadPage, ViewModels.Tasks.DownloadViewModel>("Tasks/Download");
+
+// Settings page
 pages.WithPage<Views.Settings.NavigationPage, ViewModels.Settings.NavigationViewModel>("Settings/Navigation");
 pages.WithPage<Views.Settings.DefaultPage, ViewModels.Settings.DefaultViewModel>("Settings/Default");
 pages.WithPage<Views.Settings.LaunchPage, ViewModels.Settings.LaunchViewModel>("Settings/Launch");
@@ -108,13 +109,14 @@ services.AddSingleton<CacheSkinService>();
 services.AddSingleton<CacheInterfaceService>();
 services.AddSingleton<InterfaceCacheService>(); // TODO: Remove this
 services.AddSingleton<JumpListService>();
+services.AddSingleton<SearchProviderService>();
 
 // ModClient
 services.AddSingleton<ModrinthClient>();
-services.AddSingleton<CurseForgeClient>(x => new CurseForgeClient("$2a$10$Awb53b9gSOIJJkdV3Zrgp.CyFP.dI13QKbWn/4UZI4G4ff18WneB6"));
+services.AddSingleton<CurseForgeClient>(_ => new CurseForgeClient("$2a$10$lf9.hHl3PMJ4d3BisICcAOX91uT/mM9/VPDfzpg7r3C/Y8cXIRTNm"));
 
 // ViewModels
-services.AddSingleton<ViewModels.Activities.LaunchSessions>();
+services.AddSingleton<ViewModels.Tasks.LaunchSessions>();
 services.AddTransient<ViewModels.Common.SwitchAccountDialogViewModel>();
 
 #endregion

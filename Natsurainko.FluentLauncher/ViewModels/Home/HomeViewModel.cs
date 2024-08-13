@@ -63,7 +63,7 @@ internal partial class HomeViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanExecuteLaunch))]
     private async Task Launch()
     {
-        _navigationService.NavigateTo("ActivitiesNavigationPage", "LaunchTasksPage");
+        _navigationService.NavigateTo("Tasks/Launch");
         await Task.Run(() => _launchService.LaunchGame(ActiveGameInfo));
     }
 

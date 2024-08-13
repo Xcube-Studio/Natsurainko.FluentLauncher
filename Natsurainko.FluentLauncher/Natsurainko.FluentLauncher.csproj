@@ -35,7 +35,7 @@
   <ItemGroup>
     <!-- NuGet Packages -->
     <PackageReference Include="ColorCode.WinUI" Version="2.0.15" />
-    <PackageReference Include="CommunityToolkit.Labs.WinUI.Controls.MarkdownTextBlock" Version="0.1.240517-build.1678" />
+    <PackageReference Include="CommunityToolkit.Labs.WinUI.Controls.MarkdownTextBlock" Version="0.1.240801-build.1708" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.1.240606-rc" />
     <PackageReference Include="CommunityToolkit.WinUI.Behaviors" Version="8.1.240606-rc" />
@@ -44,6 +44,7 @@
     <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="8.1.240606-rc" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.1.240606-rc" />
     <PackageReference Include="CommunityToolkit.WinUI.Media" Version="8.1.240606-rc" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
     <PackageReference Include="HelixToolkit.SharpDX.Assimp" Version="2.25.0" />
     <PackageReference Include="HelixToolkit.WinUI" Version="2.25.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />

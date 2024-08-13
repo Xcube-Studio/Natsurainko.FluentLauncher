@@ -14,7 +14,7 @@ public class CompleteGameResourcesException : Exception
 
         foreach (var resource in resourcesDownloader.ErrorDownload)
         {
-            @string.AppendLine(Path.GetFileName(resource.DownloadElement.AbsolutePath) + " 下载失败");
+            @string.AppendLine(Path.GetFileName(resource.DownloadElement!.AbsolutePath) + " 下载失败");
         }
     }
 }

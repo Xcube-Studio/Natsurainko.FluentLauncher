@@ -1,11 +1,11 @@
 ﻿using FluentLauncher.Infra.UI.Windows;
 using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
-using Natsurainko.FluentLauncher.Components.Launch;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-using Natsurainko.FluentLauncher.ViewModels.Activities;
+using Natsurainko.FluentLauncher.ViewModels.Common;
+using Natsurainko.FluentLauncher.ViewModels.Tasks;
 using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Utils;

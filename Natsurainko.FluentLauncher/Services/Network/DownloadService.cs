@@ -11,19 +11,19 @@ using Nrk.FluentCore.Management.Downloader;
 using Nrk.FluentCore.Management.Downloader.Data;
 using Nrk.FluentCore.Management.ModLoaders;
 using Nrk.FluentCore.Management.Parsing;
-using Nrk.FluentCore.Services.Download;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text.Json;
 using System.Threading;
 
 namespace Natsurainko.FluentLauncher.Services.Network;
 
-internal class DownloadService : DefaultDownloadService
+internal class DownloadService
 {
     private new readonly SettingsService _settingsService;
     private readonly GameService _gameService;
@@ -32,7 +32,7 @@ internal class DownloadService : DefaultDownloadService
 
     public ReadOnlyObservableCollection<DownloadProcess> DownloadProcesses { get; init; }
 
-    public DownloadService(SettingsService settingsService, GameService gameService, INavigationService navigationService) : base(settingsService)
+    public DownloadService(SettingsService settingsService, GameService gameService, INavigationService navigationService)
     {
         _settingsService = settingsService;
         _navigationService = navigationService;
@@ -41,15 +41,63 @@ internal class DownloadService : DefaultDownloadService
         DownloadProcesses = new(_downloadProcesses);
     }
 
+    private DefaultResourcesDownloader Base_CreateResourcesDownloader(GameInfo gameInfo,
+    IEnumerable<LibraryElement>? libraryElements = default,
+    IEnumerable<AssetElement>? assetElements = default,
+    DownloadMirrorSource? downloadMirrorSource = default)
+    {
+        List<LibraryElement> libraries = libraryElements?.ToList() ?? [];
+
+        if (libraryElements == null)
+        {
+            var libraryParser = new DefaultLibraryParser(gameInfo);
+            libraryParser.EnumerateLibraries(out var enabledLibraries, out var enabledNativesLibraries);
+
+            libraries = enabledLibraries.Union(enabledNativesLibraries).ToList();
+        }
+
+        if (assetElements == null)
+        {
+            var assetParser = new DefaultAssetParser(gameInfo);
+            var assetElement = assetParser.GetAssetIndexJson();
+            if (downloadMirrorSource != null)
+                assetElement.Url?.ReplaceFromDictionary(downloadMirrorSource.AssetsReplaceUrl);
+
+            if (!assetElement.VerifyFile())
+            {
+                var assetIndexDownloadTask = HttpUtils.DownloadElementAsync(assetElement);
+                assetIndexDownloadTask.Wait();
+
+                if (assetIndexDownloadTask.Result.IsFaulted)
+                    throw new System.Exception("依赖材质索引文件获取失败");
+            }
+
+            assetElements = assetParser.EnumerateAssets();
+        }
+
+        var jar = gameInfo.GetJarElement();
+        if (jar != null && !jar.VerifyFile())
+            libraries.Add(jar);
+
+        var defaultResourcesDownloader = new DefaultResourcesDownloader(gameInfo);
+
+        defaultResourcesDownloader.SetLibraryElements(libraries);
+        defaultResourcesDownloader.SetAssetsElements(assetElements);
+
+        if (downloadMirrorSource != null) defaultResourcesDownloader.SetDownloadMirror(downloadMirrorSource);
+
+        return defaultResourcesDownloader;
+    }
+
     public DefaultResourcesDownloader CreateResourcesDownloader(GameInfo gameInfo, IEnumerable<LibraryElement> libraryElements = null)
     {
         UpdateDownloadSettings();
 
         if (_settingsService.CurrentDownloadSource != "Mojang")
-            return base.CreateResourcesDownloader(gameInfo, libraryElements, downloadMirrorSource:
+            return Base_CreateResourcesDownloader(gameInfo, libraryElements, downloadMirrorSource:
                 _settingsService.CurrentDownloadSource.Equals("Mcbbs") ? DownloadMirrors.Mcbbs : DownloadMirrors.Bmclapi);
 
-        return base.CreateResourcesDownloader(gameInfo, libraryElements);
+        return Base_CreateResourcesDownloader(gameInfo, libraryElements);
     }
 
     private void UpdateDownloadSettings()
@@ -292,5 +340,29 @@ internal class DownloadService : DefaultDownloadService
 
         _downloadProcesses.Insert(0, installProcess);
         installProcess.Start();
+    }
+}
+
+internal static class IDownloadElementExtensions
+{
+    /// <summary>
+    /// 验证文件
+    /// </summary>
+    /// <param name="element"></param>
+    /// <returns></returns>
+    public static bool VerifyFile(this IDownloadElement element)
+    {
+        if (!File.Exists(element.AbsolutePath))
+            return false;
+
+        if (!string.IsNullOrEmpty(element.Checksum))
+        {
+            using var fileStream = File.OpenRead(element.AbsolutePath);
+
+            return BitConverter.ToString(SHA1.HashData(fileStream)).Replace("-", string.Empty)
+                .ToLower().Equals(element.Checksum);
+        }
+
+        return true;
     }
 }

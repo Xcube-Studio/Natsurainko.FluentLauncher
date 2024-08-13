@@ -33,7 +33,7 @@ internal partial class DownloadService
 
     public ReadOnlyObservableCollection<DownloadProcessViewModel> DownloadProcesses { get; init; }
 
-    public DownloadService(SettingsService settingsService, GameService gameService, INavigationService navigationService) : base(settingsService)
+    public DownloadService(SettingsService settingsService, GameService gameService, INavigationService navigationService)
     {
         _settingsService = settingsService;
         _navigationService = navigationService;

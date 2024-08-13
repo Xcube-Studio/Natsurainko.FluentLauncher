@@ -36,7 +36,7 @@
             <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Launch Tasks" />
 
             <controls:WrapPanel HorizontalSpacing="15" VerticalSpacing="15">
-                <CheckBox Content="Display historical launch records" />
+                <CheckBox Content="Display historical launch records" IsEnabled="False" />
 
                 <StackPanel Orientation="Horizontal" Spacing="5">
                     <FontIcon
@@ -47,7 +47,7 @@
                         VerticalAlignment="Center"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Text="Time Range:" />
-                    <ComboBox>
+                    <ComboBox IsEnabled="False" SelectedIndex="0">
                         <x:String>Within a day</x:String>
                         <x:String>Nearly three days</x:String>
                         <x:String>Last week</x:String>

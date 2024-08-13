@@ -23,9 +23,6 @@
                 BorderThickness="1"
                 CommandParameter="{Binding}"
                 IsClickEnabled="True">
-                <i:Interaction.Behaviors>
-                    <behaviors:AncestorBindingBehavior AncestorType="ScrollViewer" TargetPropertyName="Command" />
-                </i:Interaction.Behaviors>
                 <controls:SettingsCard.Header>
                     <Grid Background="Transparent">
                         <Grid.ColumnDefinitions>
@@ -59,6 +56,13 @@
                         </StackPanel>
                     </Grid>
                 </controls:SettingsCard.Header>
+
+                <i:Interaction.Behaviors>
+                    <behaviors:AncestorBindingBehavior
+                        AncestorType="ScrollViewer"
+                        Binding="{Binding DataContext.CoreInstallWizardCommand}"
+                        TargetPropertyName="Command" />
+                </i:Interaction.Behaviors>
             </controls:SettingsCard>
         </DataTemplate>
         <DataTemplate x:Key="CurseForgeResourceTemplate">

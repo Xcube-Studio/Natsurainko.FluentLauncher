@@ -2,14 +2,15 @@
     x:Class="Natsurainko.FluentLauncher.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="using:Natsurainko.FluentLauncher.XamlHelpers.Converters">
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:converters="using:Natsurainko.FluentLauncher.XamlHelpers.Converters"
+    xmlns:selectors="using:Natsurainko.FluentLauncher.XamlHelpers.Selectors"
+    xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <ResourceDictionary Source="Dictionaries/NotifyStyleDictionary" />
-                <ResourceDictionary Source="Dictionaries/ResourceItemTemplateDictionary" />
-                <ResourceDictionary Source="Dictionaries/DownloadProcessTemplateDictionary" />
             </ResourceDictionary.MergedDictionaries>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
@@ -27,6 +28,7 @@
             </ResourceDictionary.ThemeDictionaries>
 
             <FontFamily x:Key="MinecraftTen">/Assets/MinecraftTen.ttf#Minecraft Ten</FontFamily>
+            <x:Double x:Key="SettingsCardSpacing">4</x:Double>
 
             <converters:AccountInfoConverter x:Key="AccountInfoConverter" />
 
@@ -47,6 +49,9 @@
 
             <converters:RadioButtonSelectedIndexConverter x:Key="RadioButtonSelectedIndexConverter" />
 
+            <converters:LaunchExpanderItemVisibilityConverter x:Key="LaunchExpanderItemVisibilityConverter" />
+            <converters:LaunchExpanderStepConverter x:Key="LaunchExpanderStepConverter" />
+
             <Style
                 x:Key="SettingsSectionHeaderTextBlockStyle"
                 BasedOn="{StaticResource BodyStrongTextBlockStyle}"
@@ -60,7 +65,493 @@
                 BasedOn="{StaticResource BodyStrongTextBlockStyle}"
                 TargetType="TextBlock" />
 
-            <x:Double x:Key="SettingsCardSpacing">4</x:Double>
+            <DataTemplate x:Key="LaunchSessionTemplate">
+                <controls:SettingsExpander
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xE737;}"
+                    IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
+
+                    <controls:SettingsExpander.Header>
+                        <TextBlock TextTrimming="CharacterEllipsis">
+                            <Run
+                                x:Uid="Activities_LaunchPage_Item_T"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Text="Launch Task" />
+                            <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
+                            <Run FontWeight="SemiBold" Text="{Binding GameInfo.AbsoluteId}" />
+                        </TextBlock>
+                    </controls:SettingsExpander.Header>
+
+                    <controls:SettingsExpander.Description>
+                        <TextBlock FontSize="13" TextTrimming="CharacterEllipsis">
+                            <Run
+                                x:Uid="Activities_LaunchPage_Item_TD"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Text="State" />
+                            <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
+                            <Run>
+                                <Run.Text>
+                                    <Binding Converter="{ThemeResource LaunchExpanderStepConverter}" Path="SessionState">
+                                        <Binding.ConverterParameter>
+                                            <x:String>StepName</x:String>
+                                        </Binding.ConverterParameter>
+                                    </Binding>
+                                </Run.Text>
+                            </Run>
+                        </TextBlock>
+                    </controls:SettingsExpander.Description>
+
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Visibility>
+                                <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="SessionState">
+                                    <Binding.ConverterParameter>
+                                        <x:String>0,1,2,3,4,5</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </controls:SettingsCard.Visibility>
+                            <controls:SettingsCard.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="15" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock HorizontalAlignment="Right">
+                                        <Run x:Uid="Activities_LaunchPage_Item_H1" Text="Progress: " />
+                                        <Run Text="{Binding ProgressText}" />
+                                    </TextBlock>
+                                    <ProgressBar
+                                        Grid.Column="2"
+                                        Width="300"
+                                        Maximum="1"
+                                        Value="{Binding Progress}" />
+                                </Grid>
+                            </controls:SettingsCard.Header>
+                        </controls:SettingsCard>
+
+                        <controls:SettingsCard Padding="25,15">
+                            <controls:SettingsCard.Visibility>
+                                <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="SessionState">
+                                    <Binding.ConverterParameter>
+                                        <x:String>0,1,2,3,4,5,8</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </controls:SettingsCard.Visibility>
+                            <controls:SettingsCard.Header>
+                                <ItemsRepeater ItemsSource="{Binding StepItems}">
+                                    <ItemsRepeater.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,3.75">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="10" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="10" />
+                                                    <ColumnDefinition Width="1*" />
+                                                </Grid.ColumnDefinitions>
+                                                <ProgressRing Width="16" Height="16">
+                                                    <ProgressRing.IsActive>
+                                                        <Binding Converter="{ThemeResource LaunchExpanderStepConverter}" Path="RunState">
+                                                            <Binding.ConverterParameter>
+                                                                <x:String>ProgressRingActive</x:String>
+                                                            </Binding.ConverterParameter>
+                                                        </Binding>
+                                                    </ProgressRing.IsActive>
+                                                </ProgressRing>
+                                                <FontIcon FontSize="16">
+                                                    <FontIcon.Visibility>
+                                                        <Binding Converter="{ThemeResource LaunchExpanderStepConverter}" Path="RunState">
+                                                            <Binding.ConverterParameter>
+                                                                <x:String>FontIconVisibility</x:String>
+                                                            </Binding.ConverterParameter>
+                                                        </Binding>
+                                                    </FontIcon.Visibility>
+                                                    <FontIcon.Glyph>
+                                                        <Binding Converter="{ThemeResource LaunchExpanderStepConverter}" Path="RunState">
+                                                            <Binding.ConverterParameter>
+                                                                <x:String>FontIcon</x:String>
+                                                            </Binding.ConverterParameter>
+                                                        </Binding>
+                                                    </FontIcon.Glyph>
+                                                </FontIcon>
+                                                <TextBlock
+                                                    Grid.Column="2"
+                                                    HorizontalAlignment="Right"
+                                                    FontWeight="{Binding ElementName=textBlock, Path=FontWeight}"
+                                                    Foreground="{Binding ElementName=textBlock, Path=Foreground}">
+                                                    <Run Text="{Binding FinishedTaskNumber}" />
+                                                    <Run Text="/" />
+                                                    <Run Text="{Binding TaskNumber}" />
+                                                </TextBlock>
+                                                <TextBlock Name="textBlock" Grid.Column="4">
+                                                    <TextBlock.Foreground>
+                                                        <Binding Converter="{ThemeResource LaunchExpanderStepConverter}" Path="RunState">
+                                                            <Binding.ConverterParameter>
+                                                                <x:String>FontForeground</x:String>
+                                                            </Binding.ConverterParameter>
+                                                        </Binding>
+                                                    </TextBlock.Foreground>
+                                                    <TextBlock.FontWeight>
+                                                        <Binding Converter="{ThemeResource LaunchExpanderStepConverter}" Path="RunState">
+                                                            <Binding.ConverterParameter>
+                                                                <x:String>FontWeight</x:String>
+                                                            </Binding.ConverterParameter>
+                                                        </Binding>
+                                                    </TextBlock.FontWeight>
+                                                    <TextBlock.Text>
+                                                        <Binding Converter="{ThemeResource LaunchExpanderStepConverter}" Path="Step">
+                                                            <Binding.ConverterParameter>
+                                                                <x:String>StepName</x:String>
+                                                            </Binding.ConverterParameter>
+                                                        </Binding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsRepeater.ItemTemplate>
+                                </ItemsRepeater>
+                            </controls:SettingsCard.Header>
+                        </controls:SettingsCard>
+
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Visibility>
+                                <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="SessionState">
+                                    <Binding.ConverterParameter>
+                                        <x:String>6,7,9,10</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </controls:SettingsCard.Visibility>
+
+                            <controls:SettingsCard.HeaderIcon>
+                                <FontIcon Glyph="&#xE73E;" />
+                            </controls:SettingsCard.HeaderIcon>
+                            <controls:SettingsCard.Header>
+                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" TextTrimming="CharacterEllipsis">
+                                    <Run Text="{Binding ProcessStartTime}" />
+                                    <Run Text=":" />
+                                    <Run x:Uid="Activities_LaunchPage_Item_H2" Text="Game launched successfully" />
+                                </TextBlock>
+                            </controls:SettingsCard.Header>
+                        </controls:SettingsCard>
+
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Visibility>
+                                <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="SessionState">
+                                    <Binding.ConverterParameter>
+                                        <x:String>7,9,10</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </controls:SettingsCard.Visibility>
+
+                            <controls:SettingsCard.HeaderIcon>
+                                <FontIcon>
+                                    <FontIcon.Glyph>
+                                        <Binding Converter="{ThemeResource LaunchExpanderStepConverter}" Path="SessionState">
+                                            <Binding.ConverterParameter>
+                                                <x:String>ExitFontIcon</x:String>
+                                            </Binding.ConverterParameter>
+                                        </Binding>
+                                    </FontIcon.Glyph>
+                                </FontIcon>
+                            </controls:SettingsCard.HeaderIcon>
+                            <controls:SettingsCard.Header>
+                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" TextTrimming="CharacterEllipsis">
+                                    <Run Text="{Binding ProcessExitTime}" />
+                                    <Run Text=":" />
+                                    <Run>
+                                        <Run.Text>
+                                            <Binding Converter="{ThemeResource LaunchExpanderStepConverter}" Path="SessionState">
+                                                <Binding.ConverterParameter>
+                                                    <x:String>StepName</x:String>
+                                                </Binding.ConverterParameter>
+                                            </Binding>
+                                        </Run.Text>
+                                    </Run>
+                                </TextBlock>
+                            </controls:SettingsCard.Header>
+                        </controls:SettingsCard>
+
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Visibility>
+                                <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="SessionState">
+                                    <Binding.ConverterParameter>
+                                        <x:String>6</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </controls:SettingsCard.Visibility>
+
+                            <controls:SettingsCard.Header>
+                                <TextBlock x:Uid="Activities_LaunchPage_Item_H3" Text="Game process management" />
+                            </controls:SettingsCard.Header>
+
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <Button Command="{Binding LoggerButtonCommand}">
+                                    <StackPanel Orientation="Horizontal" Spacing="5">
+                                        <FontIcon FontSize="14" Glyph="&#xf000;" />
+                                        <TextBlock x:Uid="Activities_LaunchPage_B1" Text="Open Log" />
+                                    </StackPanel>
+                                </Button>
+                                <Button Command="{Binding KillButtonCommand}">
+                                    <StackPanel Orientation="Horizontal" Spacing="5">
+                                        <FontIcon FontSize="14" Glyph="&#xe71a;" />
+                                        <TextBlock x:Uid="Activities_LaunchPage_B2" Text="Kill Process" />
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </controls:SettingsCard>
+
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Visibility>
+                                <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="SessionState">
+                                    <Binding.ConverterParameter>
+                                        <x:String>10</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </controls:SettingsCard.Visibility>
+
+                            <controls:SettingsCard.Header>
+                                <TextBlock x:Uid="Activities_LaunchPage_Item_H4" Text="Crash analysis report" />
+                            </controls:SettingsCard.Header>
+
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <Button Command="{Binding LoggerButtonCommand}">
+                                    <StackPanel Orientation="Horizontal" Spacing="5">
+                                        <FontIcon FontSize="14" Glyph="&#xf000;" />
+                                        <TextBlock x:Uid="Activities_LaunchPage_B1" Text="Open Log" />
+                                    </StackPanel>
+                                </Button>
+                                <Button IsEnabled="False">
+                                    <StackPanel Orientation="Horizontal" Spacing="5">
+                                        <FontIcon FontSize="14" Glyph="&#xf000;" />
+                                        <TextBlock x:Uid="Activities_LaunchPage_B3" Text="Open Report" />
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </controls:SettingsCard>
+
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Visibility>
+                                <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="SessionState">
+                                    <Binding.ConverterParameter>
+                                        <x:String>8</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </controls:SettingsCard.Visibility>
+
+                            <controls:SettingsCard.Header>
+                                <TextBlock TextWrapping="WrapWholeWords">
+                                    <Run x:Uid="Activities_LaunchPage_Item_H5" Text="Reason:" />
+                                    <Run Text="{Binding ExceptionReason}" />
+                                </TextBlock>
+                            </controls:SettingsCard.Header>
+
+                            <Button>
+                                <StackPanel Orientation="Horizontal" Spacing="5">
+                                    <FontIcon FontSize="14" Glyph="&#xf000;" />
+                                    <TextBlock x:Uid="Activities_LaunchPage_B4" Text="Show Details" />
+                                </StackPanel>
+                                <Button.Flyout>
+                                    <Flyout Placement="Left">
+                                        <RichTextBlock
+                                            MaxWidth="400"
+                                            DataContext="{Binding Exception}"
+                                            FontWeight="SemiBold">
+                                            <Paragraph>
+                                                <Run Text="Message:" />
+                                                <Run Text="{Binding Message}" />
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="HelpLink:" />
+                                                <Run Text="{Binding HelpLink}" />
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="========================================" />
+
+                                                <Run Text="InnerException:" />
+                                                <Run Text="{Binding InnerException}" />
+
+                                                <Run Text="========================================" />
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="Source:" />
+                                                <Run Text="{Binding Source}" />
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="StackTrace:" />
+                                                <Run Text="{Binding StackTrace}" />
+                                            </Paragraph>
+                                        </RichTextBlock>
+                                    </Flyout>
+                                </Button.Flyout>
+                            </Button>
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
+            </DataTemplate>
+            <DataTemplate x:Key="FileDownloadProcessTemplate">
+                <controls:SettingsExpander
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xE896;}"
+                    IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
+
+                    <controls:SettingsExpander.Header>
+                        <TextBlock TextTrimming="CharacterEllipsis">
+                            <Run
+                                x:Uid="Activities_DownloadPage_Item_T"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Text="Download Task" />
+                            <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
+                            <Run FontWeight="SemiBold" Text="{Binding Title}" />
+                        </TextBlock>
+                    </controls:SettingsExpander.Header>
+
+                    <controls:SettingsExpander.Description>
+                        <TextBlock FontSize="13" TextTrimming="CharacterEllipsis">
+                            <Run
+                                x:Uid="Activities_DownloadPage_Item_TD"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Text="State" />
+                            <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
+                            <Run Text="{Binding DisplayState}" />
+                        </TextBlock>
+                    </controls:SettingsExpander.Description>
+
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="15" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock HorizontalAlignment="Right">
+                                        <Run x:Uid="Activities_DownloadPage_Item_H1" Text="Progress: " />
+                                        <Run Text="{Binding ProgressText}" />
+                                    </TextBlock>
+                                    <ProgressBar
+                                        Grid.Column="2"
+                                        Width="300"
+                                        Maximum="1"
+                                        Value="{Binding Progress}" />
+                                </Grid>
+                            </controls:SettingsCard.Header>
+                        </controls:SettingsCard>
+
+                        <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE838;}">
+                            <controls:SettingsCard.Header>
+                                <TextBlock
+                                    x:Uid="Activities_DownloadPage_Item_H2"
+                                    Text="Open File Folder:"
+                                    TextTrimming="CharacterEllipsis" />
+                            </controls:SettingsCard.Header>
+                            <Button Command="{Binding OpenFolderCommand}">
+                                <TextBlock x:Uid="Buttons_Open" Text="Open" />
+                            </Button>
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
+            </DataTemplate>
+            <DataTemplate x:Key="InstllProcessTemplate">
+                <controls:SettingsExpander
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xE896;}"
+                    IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
+
+                    <controls:SettingsExpander.Header>
+                        <TextBlock TextTrimming="CharacterEllipsis">
+                            <Run
+                                x:Uid="Activities_DownloadPage_Item_T"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Text="Download Task" />
+                            <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
+                            <Run FontWeight="SemiBold" Text="{Binding Title}" />
+                        </TextBlock>
+                    </controls:SettingsExpander.Header>
+
+                    <controls:SettingsExpander.Description>
+                        <TextBlock FontSize="13" TextTrimming="CharacterEllipsis">
+                            <Run
+                                x:Uid="Activities_DownloadPage_Item_TD"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Text="State" />
+                            <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
+                            <Run Text="{Binding DisplayState}" />
+                        </TextBlock>
+                    </controls:SettingsExpander.Description>
+
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="15" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock HorizontalAlignment="Right">
+                                        <Run x:Uid="Activities_DownloadPage_Item_H1" Text="Progress: " />
+                                        <Run Text="{Binding ProgressText}" />
+                                    </TextBlock>
+                                    <ProgressBar
+                                        Grid.Column="2"
+                                        Width="300"
+                                        Maximum="1"
+                                        Value="{Binding Progress}" />
+                                </Grid>
+                            </controls:SettingsCard.Header>
+                        </controls:SettingsCard>
+
+                        <controls:SettingsCard Padding="25,15">
+                            <controls:SettingsCard.Header>
+                                <ItemsRepeater ItemsSource="{Binding Progresses}">
+                                    <ItemsRepeater.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,3.75">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="10" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="10" />
+                                                    <ColumnDefinition Width="1*" />
+                                                </Grid.ColumnDefinitions>
+                                                <ProgressRing
+                                                    Width="16"
+                                                    Height="16"
+                                                    IsActive="{Binding IsRunning}" />
+                                                <FontIcon
+                                                    FontSize="16"
+                                                    Glyph="{Binding FontIcon}"
+                                                    Visibility="{Binding FontIconVisibility}" />
+                                                <TextBlock
+                                                    Grid.Column="2"
+                                                    HorizontalAlignment="Right"
+                                                    FontWeight="{Binding ElementName=textBlock, Path=FontWeight}"
+                                                    Foreground="{Binding ElementName=textBlock, Path=Foreground}">
+                                                    <Run Text="{Binding Percentage}" />
+                                                </TextBlock>
+                                                <TextBlock
+                                                    Name="textBlock"
+                                                    Grid.Column="4"
+                                                    FontWeight="{Binding FontWeight}"
+                                                    Foreground="{Binding FontForeground}"
+                                                    Text="{Binding StepName}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsRepeater.ItemTemplate>
+                                </ItemsRepeater>
+                            </controls:SettingsCard.Header>
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -13,19 +13,15 @@ using Natsurainko.FluentLauncher.ViewModels.CoreInstallWizard;
 using Nrk.FluentCore.Management.Downloader.Data;
 using Nrk.FluentCore.Utils;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 
 internal partial class CoreInstallWizardViewModel : ObservableObject, INavigationAware
 {
     [ObservableProperty]
     private WizardViewModelBase currentFrameDataContext;
-
-    [ObservableProperty]
-    private int navigationViewSelectIndex = 0;
 
     [ObservableProperty]
     private string[] breadcrumbBarItemsSource;
@@ -40,8 +36,6 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
     private VersionManifestItem _manifestItem;
 
     private Frame _contentFrame;
-    private NavigationView _navigationView;
-
 
     public CoreInstallWizardViewModel(
         INavigationService navigationService,
@@ -57,12 +51,9 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
         _interfaceCacheService = interfaceCacheService;
     }
 
-    void INavigationAware.OnNavigatedTo(object? parameter)
+    void INavigationAware.OnNavigatedTo(object parameter)
     {
-        if (parameter is VersionManifestItem item)
-        {
-            _manifestItem = item;
-        }
+        _manifestItem = (parameter as VersionManifestItem) ?? throw new InvalidDataException();
     }
 
     [RelayCommand]
@@ -70,7 +61,6 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
     {
         var grid = args.As<Grid, object>().sender;
         _contentFrame = grid.FindName("contentFrame") as Frame;
-        _navigationView = grid.FindName("NavigationView") as NavigationView;
 
         BreadcrumbBarItemsSource = new string[]
         {
@@ -107,8 +97,6 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
             CurrentFrameDataContext.XamlPageType,
             null,
             new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-
-        NavigationViewSelectIndex++;
     }
 
     /// <summary>
@@ -125,8 +113,6 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
             CurrentFrameDataContext.XamlPageType,
             null,
             new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-
-        NavigationViewSelectIndex--;
     }
 
     /// <summary>
@@ -142,19 +128,6 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
 
         if (e.args.Index.Equals(0))
             _navigationService.GoBack();
-    }
-
-    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-    {
-        base.OnPropertyChanged(e);
-
-        if (e.PropertyName == nameof(NavigationViewSelectIndex))
-        {
-            var item = _navigationView.MenuItems.Cast<NavigationViewItem>().ToArray()[NavigationViewSelectIndex];
-
-            _navigationView.SelectedItem = item;
-            item.IsSelected = true;
-        }
     }
 
     private void Finish()
@@ -211,6 +184,6 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
         }
 
         _downloadService.InstallCore(installInfo);
-        _navigationService.NavigateTo("ActivitiesNavigationPage", "DownloadTasksPage");
+        _navigationService.NavigateTo("Tasks/Download");
     }
 }

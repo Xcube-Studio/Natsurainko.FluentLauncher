@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Natsurainko.FluentLauncher.Components.Launch;
 using Natsurainko.FluentLauncher.Services.Launch;
+using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.Launch;
 using System.Collections.ObjectModel;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Activities;
+namespace Natsurainko.FluentLauncher.ViewModels.Tasks;
 
 class LaunchSessions : ObservableObject
 {

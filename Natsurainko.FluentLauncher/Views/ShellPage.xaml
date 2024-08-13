@@ -268,11 +268,6 @@
                     Icon="{xh:FontIcon Glyph=&#xf158;}"
                     Tag="CoresPage" />
                 <NavigationViewItem
-                    x:Uid="ShellPage_NV_Item_3"
-                    Content="Activities"
-                    Icon="{xh:FontIcon Glyph=&#xE945;}"
-                    Tag="ActivitiesNavigationPage" />
-                <NavigationViewItem
                     x:Uid="ShellPage_NV_Item_4"
                     Content="Download resources"
                     Icon="{xh:FontIcon Glyph=&#xe8f1;}"
@@ -284,6 +279,14 @@
             </NavigationView.MenuItems>
 
             <NavigationView.FooterMenuItems>
+                <NavigationViewItem
+                    Content="Launch Tasks"
+                    Icon="{xh:FontIcon Glyph=&#xE945;}"
+                    Tag="Tasks/Launch" />
+                <NavigationViewItem
+                    Content="Download Tasks"
+                    Icon="{xh:FontIcon Glyph=&#xe896;}"
+                    Tag="Tasks/Download" />
                 <NavigationViewItem
                     x:Uid="ShellPage_NV_Item_5"
                     Content="Settings"

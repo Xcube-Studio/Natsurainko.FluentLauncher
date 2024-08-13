@@ -1,8 +1,9 @@
 ﻿using Natsurainko.FluentLauncher.Models.UI;
 using Nrk.FluentCore.Management.Downloader.Data;
 using System.Collections.Generic;
-using static Natsurainko.FluentLauncher.Models.UI.CoreInstallProcess;
+using static Natsurainko.FluentLauncher.ViewModels.Common.InstallProcessViewModel;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.Models.Download;
 
 internal record CoreInstallationInfo

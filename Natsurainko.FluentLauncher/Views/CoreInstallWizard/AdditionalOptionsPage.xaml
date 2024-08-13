@@ -7,7 +7,6 @@
     xmlns:coreinstallwizard="using:Natsurainko.FluentLauncher.ViewModels.CoreInstallWizard"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     x:Uid="CoreInstallWizard_AdditionalOptionsPage_Page"
     d:DataContext="{d:DesignInstance Type=coreinstallwizard:AdditionalOptionsViewModel}"
@@ -15,7 +14,7 @@
     Tag="Additional Install Options (3/3)"
     mc:Ignorable="d">
 
-    <ScrollViewer Padding="30,0" VerticalScrollBarVisibility="Auto">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
         <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
         <Border Margin="0,10">
             <StackPanel MaxWidth="1000" Spacing="4">

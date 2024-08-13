@@ -217,6 +217,13 @@
                                         </StackPanel>
                                     </Grid>
                                 </controls:SettingsCard.Header>
+
+                                <i:Interaction.Behaviors>
+                                    <bh:AncestorBindingBehavior
+                                        AncestorType="ScrollViewer"
+                                        Binding="{Binding DataContext.CoreInstallWizardCommand}"
+                                        TargetPropertyName="Command" />
+                                </i:Interaction.Behaviors>
                             </controls:SettingsCard>
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>

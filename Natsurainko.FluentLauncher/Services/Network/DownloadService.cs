@@ -6,6 +6,7 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
+using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Management.Downloader;
 using Nrk.FluentCore.Management.Downloader.Data;
@@ -28,9 +29,9 @@ internal class DownloadService : DefaultDownloadService
     private new readonly SettingsService _settingsService;
     private readonly GameService _gameService;
     private readonly INavigationService _navigationService;
-    private readonly ObservableCollection<DownloadProcess> _downloadProcesses = new();
+    private readonly ObservableCollection<DownloadProcessViewModel> _downloadProcesses = new();
 
-    public ReadOnlyObservableCollection<DownloadProcess> DownloadProcesses { get; init; }
+    public ReadOnlyObservableCollection<DownloadProcessViewModel> DownloadProcesses { get; init; }
 
     public DownloadService(SettingsService settingsService, GameService gameService, INavigationService navigationService) : base(settingsService)
     {
@@ -46,8 +47,7 @@ internal class DownloadService : DefaultDownloadService
         UpdateDownloadSettings();
 
         if (_settingsService.CurrentDownloadSource != "Mojang")
-            return base.CreateResourcesDownloader(gameInfo, libraryElements, downloadMirrorSource:
-                _settingsService.CurrentDownloadSource.Equals("Mcbbs") ? DownloadMirrors.Mcbbs : DownloadMirrors.Bmclapi);
+            return base.CreateResourcesDownloader(gameInfo, libraryElements, downloadMirrorSource: DownloadMirrors.Bmclapi);
 
         return base.CreateResourcesDownloader(gameInfo, libraryElements);
     }
@@ -60,7 +60,7 @@ internal class DownloadService : DefaultDownloadService
 
     public void DownloadResourceFile(object file, string filePath)
     {
-        var process = new ResourceDownloadProcess(file, filePath);
+        var process = new FileDownloadProcessViewModel(file, filePath);
         _downloadProcesses.Insert(0, process);
         _ = process.Start();
     }
@@ -96,12 +96,12 @@ internal class DownloadService : DefaultDownloadService
             return title;
         }
 
-        var installProcess = new CoreInstallProcess() { Title = GetTitle() };
-        var firstToStart = new List<CoreInstallProcess.ProgressItem>();
+        var installProcess = new InstallProcessViewModel() { Title = GetTitle() };
+        var firstToStart = new List<InstallProcessViewModel.ProgressItem>();
 
         GameInfo inheritsFrom = _gameService.Games.FirstOrDefault(x => x.AbsoluteId.Equals(info.ManifestItem.Id));
 
-        var installVanillaGame = new CoreInstallProcess.ProgressItem(@this =>
+        var installVanillaGame = new InstallProcessViewModel.ProgressItem(@this =>
         {
             var downloadTask = HttpUtils.DownloadElementAsync(new DownloadElement
             {
@@ -120,7 +120,7 @@ internal class DownloadService : DefaultDownloadService
             inheritsFrom = _gameService.Games.FirstOrDefault(x => x.AbsoluteId.Equals(info.ManifestItem.Id));
 
         }, ResourceUtils.GetValue("Converters", "_ProgressItem_InstallVanilla").Replace("${id}", info.ManifestItem.Id), installProcess);
-        var completeResources = new CoreInstallProcess.ProgressItem(@this =>
+        var completeResources = new InstallProcessViewModel.ProgressItem(@this =>
         {
             int finished = 0;
             int total = 0;
@@ -141,7 +141,7 @@ internal class DownloadService : DefaultDownloadService
             resourcesDownloader.Download();
 
         }, ResourceUtils.GetValue("Converters", "_ProgressItem_CompleteResources"), installProcess);
-        var setCoreConfig = new CoreInstallProcess.ProgressItem(@this =>
+        var setCoreConfig = new InstallProcessViewModel.ProgressItem(@this =>
         {
             App.DispatcherQueue.SynchronousTryEnqueue(() => _gameService.RefreshGames());
 
@@ -169,7 +169,7 @@ internal class DownloadService : DefaultDownloadService
                 "cache-downloads",
                 $"{loaderFullName}.jar");
 
-            var runInstallExecutor = new CoreInstallProcess.ProgressItem(@this =>
+            var runInstallExecutor = new InstallProcessViewModel.ProgressItem(@this =>
             {
                 IModLoaderInstaller executor = info.PrimaryLoader.Type switch
                 {
@@ -216,7 +216,7 @@ internal class DownloadService : DefaultDownloadService
 
             if (!(info.PrimaryLoader.Type == ModLoaderType.Fabric || info.PrimaryLoader.Type == ModLoaderType.Quilt))
             {
-                var downloadInstallerPackage = new CoreInstallProcess.ProgressItem(@this =>
+                var downloadInstallerPackage = new InstallProcessViewModel.ProgressItem(@this =>
                 {
                     var downloadTask = HttpUtils.DownloadElementAsync(new DownloadElement
                     {
@@ -255,7 +255,7 @@ internal class DownloadService : DefaultDownloadService
                 ? Path.Combine(_gameService.ActiveMinecraftFolder, "versions", info.AbsoluteId, "mods", $"{loaderFullName}.jar")
                 : Path.Combine(_gameService.ActiveMinecraftFolder, "mods", $"{loaderFullName}.jar");
 
-            var downloadInstallerPackage = new CoreInstallProcess.ProgressItem(@this =>
+            var downloadInstallerPackage = new InstallProcessViewModel.ProgressItem(@this =>
             {
                 var downloadTask = HttpUtils.DownloadElementAsync(new DownloadElement
                 {

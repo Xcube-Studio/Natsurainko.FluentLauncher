@@ -17,9 +17,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Text;
 
-namespace Natsurainko.FluentLauncher.Models.UI;
+#nullable disable
+namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
-internal partial class DownloadProcess : ObservableObject
+internal partial class DownloadProcessViewModel : ObservableObject
 {
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ProgressText))]
@@ -35,17 +36,18 @@ internal partial class DownloadProcess : ObservableObject
     private bool isExpanded = true;
 
     public string ProgressText => Progress.ToString("P1");
+
 }
 
-internal partial class ResourceDownloadProcess : DownloadProcess
+internal partial class FileDownloadProcessViewModel : DownloadProcessViewModel
 {
     [ObservableProperty]
-    private ResourceDownloadProcessState state;
+    private FileDownloadProcessState state;
 
     private readonly string _filePath;
     private readonly object _file;
 
-    public ResourceDownloadProcess(object file, string filePath)
+    public FileDownloadProcessViewModel(object file, string filePath)
     {
         _file = file;
         _filePath = filePath;
@@ -53,7 +55,7 @@ internal partial class ResourceDownloadProcess : DownloadProcess
 
     public Task Start() => Task.Run(async () =>
     {
-        App.DispatcherQueue.SynchronousTryEnqueue(() => State = ResourceDownloadProcessState.Created);
+        App.DispatcherQueue.SynchronousTryEnqueue(() => State = FileDownloadProcessState.Created);
 
         string url = default;
 
@@ -63,7 +65,7 @@ internal partial class ResourceDownloadProcess : DownloadProcess
 
         App.DispatcherQueue.SynchronousTryEnqueue(() =>
         {
-            State = ResourceDownloadProcessState.Downloading;
+            State = FileDownloadProcessState.Downloading;
             Title = Path.GetFileName(_filePath);
         });
 
@@ -72,13 +74,10 @@ internal partial class ResourceDownloadProcess : DownloadProcess
             AbsolutePath = _filePath,
             Url = url
         },
-        downloadSetting: new DownloadSetting
-        {
-            EnableLargeFileMultiPartDownload = false
-        },
+        downloadSetting: new DownloadSetting { EnableLargeFileMultiPartDownload = false },
         perSecondProgressChangedAction: pro => App.DispatcherQueue.TryEnqueue(() => Progress = pro));
 
-        App.DispatcherQueue.SynchronousTryEnqueue(() => State = downloadResult.IsFaulted ? ResourceDownloadProcessState.Faulted : ResourceDownloadProcessState.Finished);
+        App.DispatcherQueue.SynchronousTryEnqueue(() => State = downloadResult.IsFaulted ? FileDownloadProcessState.Faulted : FileDownloadProcessState.Finished);
     });
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -94,20 +93,28 @@ internal partial class ResourceDownloadProcess : DownloadProcess
     {
         using var process = Process.Start(new ProcessStartInfo("explorer.exe", $"/select,{_filePath}"));
     }
+
+    public enum FileDownloadProcessState
+    {
+        Created = 0,
+        Downloading = 1,
+        Finished = 2,
+        Faulted = 3,
+    }
 }
 
-internal partial class CoreInstallProcess : DownloadProcess
+internal partial class InstallProcessViewModel : DownloadProcessViewModel
 {
-    public List<ProgressItem> Progresses { get; } = new();
+    private Action<InstallProcessViewModel> _action;
 
-    private Action<CoreInstallProcess> _action;
-
-    public CoreInstallProcess()
+    public InstallProcessViewModel()
     {
         DisplayState = ResourceUtils.GetValue("Converters", "_CoreInstallProcessState_Created");
     }
 
-    public void SetStartAction(Action<CoreInstallProcess> action) => _action = action;
+    public List<ProgressItem> Progresses { get; } = new();
+
+    public void SetStartAction(Action<InstallProcessViewModel> action) => _action = action;
 
     public void Start()
     {
@@ -127,6 +134,26 @@ internal partial class CoreInstallProcess : DownloadProcess
 
     internal partial class ProgressItem : ObservableObject
     {
+        private ProgressItem _next;
+
+        private readonly Action<ProgressItem> _action;
+        private InstallProcessViewModel _installProcess;
+        private readonly bool _necessary;
+
+        public ProgressItem(Action<ProgressItem> action, string stepName)
+        {
+            _action = action;
+            StepName = stepName;
+        }
+
+        public ProgressItem(Action<ProgressItem> action, string stepName, InstallProcessViewModel installProcess, bool necessary = true)
+        {
+            _action = action;
+            _installProcess = installProcess;
+            _necessary = necessary;
+            StepName = stepName;
+        }
+
         [ObservableProperty]
         private string stepName;
 
@@ -161,31 +188,9 @@ internal partial class CoreInstallProcess : DownloadProcess
 
         public string Percentage => ProgressValue.ToString("P1");
 
-        private readonly Action<ProgressItem> _action;
-        private CoreInstallProcess _installProcess;
-        private readonly bool _necessary;
-
-        private ProgressItem _next;
-
-        public ProgressItem(Action<ProgressItem> action, string stepName)
-        {
-            _action = action;
-
-            StepName = stepName;
-        }
-
-        public ProgressItem(Action<ProgressItem> action, string stepName, CoreInstallProcess installProcess, bool necessary = true)
-        {
-            _action = action;
-            _installProcess = installProcess;
-            _necessary = necessary;
-
-            StepName = stepName;
-        }
-
         public void SetNext(ProgressItem progressItem) => _next = progressItem;
 
-        public void SetCoreInstallProcess(CoreInstallProcess coreInstallProcess) => _installProcess = coreInstallProcess;
+        public void SetCoreInstallProcess(InstallProcessViewModel coreInstallProcess) => _installProcess = coreInstallProcess;
 
         public Task Start()
         {

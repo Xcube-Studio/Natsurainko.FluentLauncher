@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Media;
-using Natsurainko.FluentLauncher.ViewModels.Activities;
 using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Management;
 using System;
@@ -14,8 +13,7 @@ using System.Threading;
 using Windows.ApplicationModel;
 using WinUIEx;
 
-namespace Natsurainko.FluentLauncher.Components.Launch;
-#nullable enable
+namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
 internal partial class LaunchSessionViewModel : ObservableObject
 {
@@ -66,14 +64,14 @@ internal partial class LaunchSessionViewModel : ObservableObject
             _gameLoggerOutputs.Add(GameLoggerOutput.Parse(e.Data));
     }
 
-    public LaunchExpanderStepItem[] StepItems { get; } = new[]
-    {
-        new LaunchExpanderStepItem { Step = MinecraftSessionState.Inspecting },
-        new LaunchExpanderStepItem { Step = MinecraftSessionState.Authenticating },
-        new LaunchExpanderStepItem { Step = MinecraftSessionState.CompletingResources },
-        new LaunchExpanderStepItem { Step = MinecraftSessionState.BuildingArguments },
-        new LaunchExpanderStepItem { Step = MinecraftSessionState.LaunchingProcess }
-    };
+    public LaunchStepItem[] StepItems { get; } =
+    [
+        new LaunchStepItem { Step = MinecraftSessionState.Inspecting },
+        new LaunchStepItem { Step = MinecraftSessionState.Authenticating },
+        new LaunchStepItem { Step = MinecraftSessionState.CompletingResources },
+        new LaunchStepItem { Step = MinecraftSessionState.BuildingArguments },
+        new LaunchStepItem { Step = MinecraftSessionState.LaunchingProcess }
+    ];
 
     [ObservableProperty]
     private bool isExpanded = true;
@@ -118,7 +116,7 @@ internal partial class LaunchSessionViewModel : ObservableObject
         if (1 <= state && state <= 5)
             StepItems[state - 1].RunState = 1;
 
-        if (newValue >= MinecraftSessionState.GameRunning) // Update start time for any state after GameRunning
+        if ((MinecraftSessionState)lastState == MinecraftSessionState.LaunchingProcess && newValue == MinecraftSessionState.GameRunning) // Update start time only for Process.Start()
             ProcessStartTime = $"[{DateTime.Now:HH:mm:ss}]";
 
         // Fault before the game is started
@@ -184,5 +182,21 @@ internal partial class LaunchSessionViewModel : ObservableObject
             window.Content = view;
             window.Show();
         });
+    }
+
+    public partial class LaunchStepItem : ObservableObject
+    {
+        public MinecraftSessionState Step { get; set; }
+
+        [ObservableProperty]
+        private int runState = 0; // 0 未开始, 1 进行中, 2 完成, -1 失败
+
+        [ObservableProperty]
+        private int taskNumber = 1;
+
+        [ObservableProperty]
+        public int finishedTaskNumber = 0;
+
+        internal void OnFinishedTaskNumberUpdate() => OnPropertyChanged(nameof(FinishedTaskNumber));
     }
 }

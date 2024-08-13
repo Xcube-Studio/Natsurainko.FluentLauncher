@@ -7,7 +7,7 @@ using Natsurainko.FluentLauncher.Services.SystemServices;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-using Natsurainko.FluentLauncher.ViewModels.Activities;
+using Natsurainko.FluentLauncher.ViewModels.Tasks;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Utils;

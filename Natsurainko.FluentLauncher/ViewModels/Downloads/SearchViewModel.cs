@@ -2,8 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
 using Natsurainko.FluentLauncher.Models.UI;
+using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Management.Downloader.Data;
@@ -22,24 +24,31 @@ namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 internal partial class SearchViewModel : ObservableObject, INavigationAware
 {
     private readonly INavigationService _navigationService;
+    private readonly GameService _gameService;
     private readonly CacheInterfaceService _cacheInterfaceService;
     private readonly SearchProviderService _searchProviderService;
+    private readonly NotificationService _notificationService;
 
     private readonly CurseForgeClient _curseForgeClient;
     private readonly ModrinthClient _modrinthClient;
 
     public SearchViewModel(
         INavigationService navigationService,
+        GameService gameService,
         CacheInterfaceService cacheInterfaceService,
         SearchProviderService searchProviderService,
+        NotificationService notificationService,
         CurseForgeClient curseForgeClient,
         ModrinthClient modrinthClient)
     {
         _navigationService = navigationService;
+        _gameService = gameService;
         _cacheInterfaceService = cacheInterfaceService;
+        _searchProviderService = searchProviderService;
+        _notificationService = notificationService;
+
         _curseForgeClient = curseForgeClient;
         _modrinthClient = modrinthClient;
-        _searchProviderService = searchProviderService;
     }
 
     [ObservableProperty]
@@ -244,6 +253,25 @@ internal partial class SearchViewModel : ObservableObject, INavigationAware
 
     [RelayCommand]
     void ResourceDetails(object resource) => _navigationService.NavigateTo("Download/Details", resource);
+
+    [RelayCommand]
+    public void GoToSettings() => _navigationService.Parent.NavigateTo("Settings/Navigation", "Settings/Launch");
+
+    [RelayCommand]
+    public void CoreInstallWizard(VersionManifestItem manifestItem)
+    {
+        if (string.IsNullOrEmpty(_gameService.ActiveMinecraftFolder))
+        {
+            _notificationService.NotifyWithSpecialContent(
+                ResourceUtils.GetValue("Notifications", "_NoMinecraftFolder"),
+                "NoMinecraftFolderNotifyTemplate",
+                GoToSettingsCommand, "\uE711");
+
+            return;
+        }
+
+        _navigationService.Parent.NavigateTo("CoreInstallWizardPage", manifestItem);
+    }
 
     [RelayCommand]
     void Loaded()

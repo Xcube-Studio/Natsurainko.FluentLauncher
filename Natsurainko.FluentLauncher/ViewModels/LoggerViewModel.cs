@@ -1,12 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Natsurainko.FluentLauncher.Classes.Data.Launch;
-using Natsurainko.FluentLauncher.Components.Launch;
+using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.Launch;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Pages;
 
 internal partial class LoggerViewModel : ObservableObject

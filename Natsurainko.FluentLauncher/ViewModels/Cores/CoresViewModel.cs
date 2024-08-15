@@ -10,6 +10,7 @@ using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Management;
+using Nrk.FluentCore.Management.Downloader.Data;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -28,6 +29,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     private readonly INavigationService _navigationService;
     private readonly GameService _gameService;
     private readonly NotificationService _notificationService;
+    private readonly SearchProviderService _searchProviderService;
 
     public ReadOnlyObservableCollection<GameInfo> GameInfos { get; init; }
 
@@ -35,12 +37,14 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
         GameService gameService,
         SettingsService settingsService,
         INavigationService navigationService,
-        NotificationService notificationService)
+        NotificationService notificationService,
+        SearchProviderService searchProviderService)
     {
         _gameService = gameService;
         _settingsService = settingsService;
         _navigationService = navigationService;
         _notificationService = notificationService;
+        _searchProviderService = searchProviderService;
 
         GameInfos = _gameService.Games;
 
@@ -97,6 +101,30 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
         App.DispatcherQueue.TryEnqueue(() => DisplayGameInfos = list);
     }
 
+    IEnumerable<SearchProviderService.Suggestion> ProviderSuggestions(string searchText)
+    {
+        yield return new SearchProviderService.Suggestion
+        {
+            Title = ResourceUtils.GetValue("SearchSuggest", "_T1").Replace("{searchText}", searchText),
+            Description = ResourceUtils.GetValue("SearchSuggest", "_D1"),
+            InvokeAction = () => _navigationService.NavigateTo("Download/Navigation", new SearchOptions
+            {
+                SearchText = searchText,
+                ResourceType = 1
+            })
+        };
+
+        foreach (var item in GameInfos)
+        {
+            if (item.Name.Contains(searchText))
+            {
+                yield return SuggestionHelper.FromGameInfo(item,
+                    ResourceUtils.GetValue("SearchSuggest", "_D3"), 
+                    () => _navigationService.NavigateTo("CoreManage/Navigation", item));
+            }
+        }
+    }
+
     [RelayCommand]
     public void GoToSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Launch");
 
@@ -124,5 +152,18 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     {
         if (Directory.Exists(ActiveMinecraftFolder))
             _ = Launcher.LaunchFolderPathAsync(ActiveMinecraftFolder);
+    }
+
+    [RelayCommand]
+    void Loaded()
+    {
+        if (!_searchProviderService.ContainsSuggestionProvider(this))
+            _searchProviderService.RegisterSuggestionProvider(this, ProviderSuggestions);
+    }
+
+    [RelayCommand]
+    void Unloaded()
+    {
+        _searchProviderService.UnregisterSuggestionProvider(this);
     }
 }

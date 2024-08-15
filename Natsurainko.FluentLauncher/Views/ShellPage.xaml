@@ -14,7 +14,7 @@
     mc:Ignorable="d">
     <Page.Resources>
         <CornerRadius x:Key="NavigationViewContentGridCornerRadius">0</CornerRadius>
-
+        <Thickness x:Key="BackgroundBorder">0,1,0,0</Thickness>
         <Style x:Key="PaneToggleButtonStyle" TargetType="Button">
             <Setter Property="FontSize" Value="16" />
             <Setter Property="FontFamily" Value="{StaticResource SymbolThemeFontFamily}" />
@@ -236,7 +236,7 @@
             Grid.Row="1"
             Background="{ThemeResource NavigationViewContentBackground}"
             BorderBrush="{ThemeResource NavigationViewContentGridBorderBrush}"
-            BorderThickness="0,1,0,0" />
+            BorderThickness="{ThemeResource BackgroundBorder}" />
 
         <NavigationView
             x:Name="NavigationViewControl"
@@ -246,6 +246,7 @@
             IsBackButtonVisible="Collapsed"
             IsSettingsVisible="False"
             ItemInvoked="NavigationViewControl_ItemInvoked"
+            OpenPaneLength="200"
             PaneClosing="NavigationViewControl_PaneClosing"
             PaneOpening="NavigationViewControl_PaneOpening">
             <NavigationView.Resources>
@@ -268,11 +269,12 @@
                     Icon="{xh:FontIcon Glyph=&#xf158;}"
                     Tag="CoresPage" />
                 <NavigationViewItem
-                    x:Uid="ShellPage_NV_Item_4"
+                    x:Uid="ShellPage_NV_Item_3"
                     Content="Download resources"
                     Icon="{xh:FontIcon Glyph=&#xe8f1;}"
                     Tag="Download/Navigation" />
                 <NavigationViewItem
+                    x:Uid="ShellPage_NV_Item_4"
                     Content="Minecraft News"
                     Icon="{xh:FontIcon Glyph=&#xe12a;}"
                     Tag="News/Navigation" />
@@ -280,15 +282,17 @@
 
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem
+                    x:Uid="ShellPage_NV_Item_5"
                     Content="Launch Tasks"
                     Icon="{xh:FontIcon Glyph=&#xE945;}"
                     Tag="Tasks/Launch" />
                 <NavigationViewItem
+                    x:Uid="ShellPage_NV_Item_6"
                     Content="Download Tasks"
                     Icon="{xh:FontIcon Glyph=&#xe896;}"
                     Tag="Tasks/Download" />
                 <NavigationViewItem
-                    x:Uid="ShellPage_NV_Item_5"
+                    x:Uid="ShellPage_NV_Item_7"
                     Content="Settings"
                     Tag="Settings/Navigation">
                     <NavigationViewItem.Icon>
@@ -362,6 +366,7 @@
 
             <AutoSuggestBox
                 x:Name="AutoSuggestBox"
+                x:Uid="ShellPage_AutoSuggestBox"
                 Grid.Column="2"
                 MaxWidth="380"
                 Margin="20,0,0,0"

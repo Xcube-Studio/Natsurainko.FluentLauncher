@@ -44,6 +44,8 @@ internal partial class FileDownloadProcessViewModel : DownloadProcessViewModel
     [ObservableProperty]
     private FileDownloadProcessState state;
 
+    private readonly CurseForgeClient curseForgeClient = App.GetService<CurseForgeClient>();
+
     private readonly string _filePath;
     private readonly object _file;
 
@@ -60,7 +62,7 @@ internal partial class FileDownloadProcessViewModel : DownloadProcessViewModel
         string url = default;
 
         url = _file is CurseForgeFile curseFile
-            ? await App.GetService<InterfaceCacheService>().CurseForgeClient.GetFileUrlAsync(curseFile)
+            ? await curseForgeClient.GetFileUrlAsync(curseFile)
             : ((ModrinthFile)_file).Url;
 
         App.DispatcherQueue.SynchronousTryEnqueue(() =>

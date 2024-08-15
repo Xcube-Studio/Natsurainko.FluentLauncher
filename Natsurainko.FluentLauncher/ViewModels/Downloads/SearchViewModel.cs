@@ -191,7 +191,9 @@ internal partial class SearchViewModel : ObservableObject, INavigationAware
         Task.Run(SearchTask).ContinueWith(task =>
         {
             if (task.IsFaulted)
-                ;
+            {
+
+            }
         });
     }
 
@@ -201,24 +203,9 @@ internal partial class SearchViewModel : ObservableObject, INavigationAware
         {
             foreach (var item in VersionManifestItems.Where(x => x.Id.Contains(searchText)).Take(2))
             {
-                yield return new SearchProviderService.Suggestion
-                {
-                    Title = item.Id,
-                    Description = "Suggestions from the current page",
-                    SuggestionIconType = SearchProviderService.SuggestionIconType.UriIcon,
-                    Icon = string.Format("ms-appx:///Assets/Icons/{0}.png", item.Type switch
-                    {
-                        "release" => "grass_block_side",
-                        "snapshot" => "crafting_table_front",
-                        "old_beta" => "dirt_path_side",
-                        "old_alpha" => "dirt_path_side",
-                        _ => "grass_block_side"
-                    }),
-                    InvokeAction = () =>
-                    {
-
-                    }
-                };
+                yield return SuggestionHelper.FromVersionManifestItem(item,
+                    ResourceUtils.GetValue("SearchSuggest", "_D2"),
+                    () => _navigationService.Parent.NavigateTo("CoreInstallWizardPage", item));
             }
         }
 
@@ -226,24 +213,9 @@ internal partial class SearchViewModel : ObservableObject, INavigationAware
         {
             foreach (var item in VersionManifestItems.Where(x => x.Id.Contains(searchText)).Take(5))
             {
-                yield return new SearchProviderService.Suggestion
-                {
-                    Title = item.Id,
-                    Description = "Suggestions from the current page",
-                    SuggestionIconType = SearchProviderService.SuggestionIconType.UriIcon,
-                    Icon = string.Format("ms-appx:///Assets/Icons/{0}.png", item.Type switch
-                    {
-                        "release" => "grass_block_side",
-                        "snapshot" => "crafting_table_front",
-                        "old_beta" => "dirt_path_side",
-                        "old_alpha" => "dirt_path_side",
-                        _ => "grass_block_side"
-                    }),
-                    InvokeAction = () =>
-                    {
-
-                    }
-                };
+                yield return SuggestionHelper.FromVersionManifestItem(item,
+                    ResourceUtils.GetValue("SearchSuggest", "_D2"),
+                    () => _navigationService.Parent.NavigateTo("CoreInstallWizardPage", item));
             }
         }
     }

@@ -11,6 +11,7 @@ using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.ViewModels.CoreInstallWizard;
 using Nrk.FluentCore.Management.Downloader.Data;
+using Nrk.FluentCore.Resources;
 using Nrk.FluentCore.Utils;
 using System.Collections.Generic;
 using System.IO;
@@ -32,7 +33,9 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
     private readonly DownloadService _downloadService;
     private readonly INavigationService _navigationService;
     private readonly GameService _gameService;
-    private readonly InterfaceCacheService _interfaceCacheService;
+
+    private readonly CurseForgeClient _curseForgeClient;
+
     private VersionManifestItem _manifestItem;
 
     private Frame _contentFrame;
@@ -42,13 +45,14 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
         NotificationService notificationService,
         DownloadService downloadService,
         GameService gameService,
-        InterfaceCacheService interfaceCacheService)
+        CurseForgeClient curseForgeClient)
     {
         _notificationService = notificationService;
         _downloadService = downloadService;
         _navigationService = navigationService;
         _gameService = gameService;
-        _interfaceCacheService = interfaceCacheService;
+
+        _curseForgeClient = curseForgeClient;
     }
 
     void INavigationAware.OnNavigatedTo(object parameter)
@@ -167,7 +171,7 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
 
             installInfo.AdditionalOptions.Add(new(async @this =>
             {
-                string fileUrl = await _interfaceCacheService.CurseForgeClient.GetFileUrlAsync(vm.OptiFabric);
+                string fileUrl = await _curseForgeClient.GetFileUrlAsync(vm.OptiFabric);
                 var downloadTask = HttpUtils.DownloadElementAsync(new DownloadElement
                 {
                     AbsolutePath = file,

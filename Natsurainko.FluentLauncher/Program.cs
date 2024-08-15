@@ -107,7 +107,6 @@ services.AddSingleton<NotificationService>();
 services.AddSingleton<AppearanceService>();
 services.AddSingleton<CacheSkinService>();
 services.AddSingleton<CacheInterfaceService>();
-services.AddSingleton<InterfaceCacheService>(); // TODO: Remove this
 services.AddSingleton<JumpListService>();
 services.AddSingleton<SearchProviderService>();
 

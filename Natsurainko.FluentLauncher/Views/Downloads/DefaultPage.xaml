@@ -13,15 +13,6 @@
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     Unloaded="Page_Unloaded"
     mc:Ignorable="d">
-    <i:Interaction.Behaviors>
-        <core:EventTriggerBehavior EventName="Unloaded">
-            <actions:ModifiedInvokeCommandAction Command="{Binding UnloadedCommand}" />
-        </core:EventTriggerBehavior>
-        <core:EventTriggerBehavior EventName="Loaded">
-            <actions:ModifiedInvokeCommandAction Command="{Binding LoadedCommand}" />
-        </core:EventTriggerBehavior>
-    </i:Interaction.Behaviors>
-
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.ThemeDictionaries>
@@ -78,6 +69,15 @@
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
     </Page.Resources>
+
+    <i:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="Unloaded">
+            <actions:ModifiedInvokeCommandAction Command="{Binding UnloadedCommand}" />
+        </core:EventTriggerBehavior>
+        <core:EventTriggerBehavior EventName="Loaded">
+            <actions:ModifiedInvokeCommandAction Command="{Binding LoadedCommand}" />
+        </core:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
 
     <ScrollViewer>
         <Border Margin="40,0,40,25">

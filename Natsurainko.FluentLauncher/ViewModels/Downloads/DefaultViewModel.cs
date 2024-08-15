@@ -174,9 +174,9 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     {
         yield return new SearchProviderService.Suggestion
         {
-            Title = $"Search Minecraft Version \"{searchText}\"",
-            Description = "Suggestions from the current page",
-            InvokeAction = () => _navigationService.NavigateTo("Download/Search", new SearchOptions
+            Title = ResourceUtils.GetValue("SearchSuggest", "_T1").Replace("{searchText}", searchText),
+            Description = ResourceUtils.GetValue("SearchSuggest", "_D1"),
+            InvokeAction = () => _navigationService.NavigateTo("Download/Navigation", new SearchOptions
             {
                 SearchText = searchText,
                 ResourceType = 1
@@ -185,8 +185,8 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
         yield return new SearchProviderService.Suggestion
         {
-            Title = $"Search CurseForge Resources with name \"{searchText}\"",
-            Description = "Suggestions from the current page",
+            Title = ResourceUtils.GetValue("SearchSuggest", "_T2").Replace("{searchText}", searchText),
+            Description = ResourceUtils.GetValue("SearchSuggest", "_D1"),
             InvokeAction = () => _navigationService.NavigateTo("Download/Search", new SearchOptions
             {
                 SearchText = searchText,
@@ -196,8 +196,8 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
         yield return new SearchProviderService.Suggestion
         {
-            Title = $"Search Modrinth Resources with name \"{searchText}\"",
-            Description = "Suggestions from the current page",
+            Title = ResourceUtils.GetValue("SearchSuggest", "_T3").Replace("{searchText}", searchText),
+            Description = ResourceUtils.GetValue("SearchSuggest", "_D1"),
             InvokeAction = () => _navigationService.NavigateTo("Download/Search", new SearchOptions
             {
                 SearchText = searchText,
@@ -209,24 +209,9 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         {
             if (item.Id.Contains(searchText))
             {
-                yield return new SearchProviderService.Suggestion
-                {
-                    Title = item.Id,
-                    Description = "Suggestions from the current page",
-                    SuggestionIconType = SearchProviderService.SuggestionIconType.UriIcon,
-                    Icon = string.Format("ms-appx:///Assets/Icons/{0}.png", item.Type switch
-                    {
-                        "release" => "grass_block_side",
-                        "snapshot" => "crafting_table_front",
-                        "old_beta" => "dirt_path_side",
-                        "old_alpha" => "dirt_path_side",
-                        _ => "grass_block_side"
-                    }),
-                    InvokeAction = () =>
-                    {
-
-                    }
-                };
+                yield return SuggestionHelper.FromVersionManifestItem(item,
+                    ResourceUtils.GetValue("SearchSuggest", "_D2"),
+                    () => _navigationService.Parent.NavigateTo("CoreInstallWizardPage", item));
             }
         }
     }

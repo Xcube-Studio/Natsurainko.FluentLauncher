@@ -1,22 +1,20 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Natsurainko.FluentLauncher.Models.Download;
-using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.CoreInstallWizard;
 using Nrk.FluentCore.Resources;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.CoreInstallWizard;
 
 internal partial class AdditionalOptionsViewModel : WizardViewModelBase
 {
-    public override bool CanNext => true;
-
-    public override bool CanPrevious => true;
-
     public readonly CoreInstallationInfo _coreInstallationInfo;
-    private readonly InterfaceCacheService _interfaceCacheService = App.GetService<InterfaceCacheService>();
+
+    private readonly CurseForgeClient curseForgeClient = App.GetService<CurseForgeClient>();
+    private readonly ModrinthClient modrinthClient = App.GetService<ModrinthClient>();
 
     public AdditionalOptionsViewModel(CoreInstallationInfo coreInstallationInfo)
     {
@@ -44,11 +42,15 @@ internal partial class AdditionalOptionsViewModel : WizardViewModelBase
     [ObservableProperty]
     private CurseForgeFile optiFabric;
 
+    public override bool CanNext => true;
+
+    public override bool CanPrevious => true;
+
     public void Init()
     {
         Task.Run(async () =>
         {
-            foreach (var item in await _interfaceCacheService.ModrinthClient.GetProjectVersionsAsync("P7dR8mSH"))
+            foreach (var item in await modrinthClient.GetProjectVersionsAsync("P7dR8mSH"))
             {
                 if (item.McVersion.Equals(_coreInstallationInfo.ManifestItem.Id))
                 {
@@ -60,7 +62,8 @@ internal partial class AdditionalOptionsViewModel : WizardViewModelBase
 
         Task.Run(async () =>
         {
-            var resource = await _interfaceCacheService.CurseForgeClient.GetResourceAsync(322385);
+            var resource = await curseForgeClient.GetResourceAsync(322385);
+
             foreach (var item in resource.Files)
             {
                 if (item.McVersion.Equals(_coreInstallationInfo.ManifestItem.Id))

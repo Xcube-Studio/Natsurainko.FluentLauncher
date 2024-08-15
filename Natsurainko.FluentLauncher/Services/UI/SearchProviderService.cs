@@ -1,5 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Controls;
+using Natsurainko.FluentLauncher.Services.Launch;
+using Nrk.FluentCore.Management;
+using Nrk.FluentCore.Management.Downloader.Data;
 using System;
 using System.Collections.Generic;
 
@@ -103,5 +106,46 @@ internal partial class SearchProviderService : ObservableObject
         Glyph = 0,
         UriIcon = 1,
         WebUrlIcon = 2
+    }
+}
+
+internal static class SuggestionHelper
+{
+    public static SearchProviderService.Suggestion FromGameInfo(GameInfo gameInfo, string description, Action action)
+    {
+        return new SearchProviderService.Suggestion
+        {
+            Title = gameInfo.Name,
+            Description = description,
+            SuggestionIconType = SearchProviderService.SuggestionIconType.UriIcon,
+            Icon = string.Format("ms-appx:///Assets/Icons/{0}.png", gameInfo.Type switch
+            {
+                "release" => "grass_block_side",
+                "snapshot" => "crafting_table_front",
+                "old_beta" => "dirt_path_side",
+                "old_alpha" => "dirt_path_side",
+                _ => "grass_block_side"
+            }),
+            InvokeAction = action
+        };
+    }
+
+    public static SearchProviderService.Suggestion FromVersionManifestItem(VersionManifestItem item, string description, Action action)
+    {
+        return new SearchProviderService.Suggestion
+        {
+            Title = item.Id,
+            Description = description,
+            SuggestionIconType = SearchProviderService.SuggestionIconType.UriIcon,
+            Icon = string.Format("ms-appx:///Assets/Icons/{0}.png", item.Type switch
+            {
+                "release" => "grass_block_side",
+                "snapshot" => "crafting_table_front",
+                "old_beta" => "dirt_path_side",
+                "old_alpha" => "dirt_path_side",
+                _ => "grass_block_side"
+            }),
+            InvokeAction = action
+        };
     }
 }

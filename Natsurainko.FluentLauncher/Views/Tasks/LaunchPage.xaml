@@ -33,10 +33,16 @@
             MaxWidth="1000"
             Margin="40,20"
             Spacing="15">
-            <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Launch Tasks" />
+            <TextBlock
+                x:Uid="Tasks_LaunchPage_Title"
+                Style="{ThemeResource TitleTextBlockStyle}"
+                Text="Launch Tasks" />
 
             <controls:WrapPanel HorizontalSpacing="15" VerticalSpacing="15">
-                <CheckBox Content="Display historical launch records" IsEnabled="False" />
+                <CheckBox
+                    x:Uid="Tasks_LaunchPage_CheckBox"
+                    Content="Show historical launch records"
+                    IsEnabled="False" />
 
                 <StackPanel Orientation="Horizontal" Spacing="5">
                     <FontIcon
@@ -44,15 +50,14 @@
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Glyph="&#xec92;" />
                     <TextBlock
+                        x:Uid="Tasks_LaunchPage_Text1"
                         VerticalAlignment="Center"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Text="Time Range:" />
-                    <ComboBox IsEnabled="False" SelectedIndex="0">
-                        <x:String>Within a day</x:String>
-                        <x:String>Nearly three days</x:String>
-                        <x:String>Last week</x:String>
-                        <x:String>All time</x:String>
-                    </ComboBox>
+                    <ComboBox
+                        IsEnabled="False"
+                        ItemsSource="{xh:ComboBox ResourceKey=_Items}"
+                        SelectedIndex="0" />
                 </StackPanel>
 
             </controls:WrapPanel>
@@ -83,14 +88,18 @@
                 Glyph="&#xe74c;" />
             <StackPanel VerticalAlignment="Center">
                 <TextBlock
+                    x:Uid="Tasks_LaunchPage_Text2"
                     Margin="10,0"
                     VerticalAlignment="Center"
                     FontSize="24"
                     FontWeight="SemiBold"
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                    Text="No Running Task" />
+                    Text="No Task" />
                 <HyperlinkButton Margin="0,0,0,-5">
-                    <TextBlock FontWeight="SemiBold" Text="Go to HomePage and launch a Game" />
+                    <TextBlock
+                        x:Uid="Tasks_LaunchPage_Text3"
+                        FontWeight="SemiBold"
+                        Text="Go to HomePage and launch a Game" />
                 </HyperlinkButton>
             </StackPanel>
 

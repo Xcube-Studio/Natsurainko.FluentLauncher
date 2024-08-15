@@ -2,14 +2,15 @@
     x:Class="Natsurainko.FluentLauncher.Views.Home.HomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
-
     <Page.Resources>
         <Style x:Key="DropDownButtonStyle" TargetType="DropDownButton">
             <Setter Property="Background" Value="{ThemeResource ButtonBackground}" />
@@ -158,6 +159,15 @@
             </Setter>
         </Style>
     </Page.Resources>
+
+    <i:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="Unloaded">
+            <actions:ModifiedInvokeCommandAction Command="{Binding UnloadedCommand}" />
+        </core:EventTriggerBehavior>
+        <core:EventTriggerBehavior EventName="Loaded">
+            <actions:ModifiedInvokeCommandAction Command="{Binding LoadedCommand}" />
+        </core:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
 
     <Grid x:Name="Grid">
         <Grid VerticalAlignment="Bottom">

@@ -27,7 +27,10 @@
             MaxWidth="1000"
             Margin="40,20"
             Spacing="15">
-            <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Download Tasks" />
+            <TextBlock
+                x:Uid="Tasks_DownloadPage_Title"
+                Style="{ThemeResource TitleTextBlockStyle}"
+                Text="Download Tasks" />
 
             <controls:WrapPanel HorizontalSpacing="15" VerticalSpacing="15" />
         </StackPanel>
@@ -57,14 +60,18 @@
                 Glyph="&#xe74c;" />
             <StackPanel VerticalAlignment="Center">
                 <TextBlock
+                    x:Uid="Tasks_DownloadPage_Text1"
                     Margin="10,0"
                     VerticalAlignment="Center"
                     FontSize="24"
                     FontWeight="SemiBold"
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                    Text="No Running Task" />
+                    Text="No Task" />
                 <HyperlinkButton Margin="0,0,0,-5">
-                    <TextBlock FontWeight="SemiBold" Text="Go to Download Page to download something" />
+                    <TextBlock
+                        x:Uid="Tasks_DownloadPage_Text2"
+                        FontWeight="SemiBold"
+                        Text="Go to Download Page to download something" />
                 </HyperlinkButton>
             </StackPanel>
 

@@ -1,6 +1,7 @@
 ﻿using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Management.ModLoaders;
 using System;
@@ -15,9 +16,9 @@ namespace Natsurainko.FluentLauncher.Utils.Extensions;
 
 internal static class MinecraftInstanceExtensions
 {
-    public static GameConfig GetConfig(this MinecraftInstance MinecraftInstance)
+    public static GameConfig GetConfig(this MinecraftInstance instance)
     {
-        var configGuid = new Guid(MD5.HashData(Encoding.UTF8.GetBytes($"{MinecraftInstance.MinecraftFolderPath}:{MinecraftInstance.AbsoluteId}:{MinecraftInstance.Type}")));
+        var configGuid = new Guid(MD5.HashData(Encoding.UTF8.GetBytes($"{instance.MinecraftFolderPath}:{instance.VersionFolderName}:{instance.Type}")));
         var configsFolder = Path.Combine(LocalStorageService.LocalFolderPath, "GameConfigsFolder");
 
         if (!Directory.Exists(configsFolder)) 
@@ -48,7 +49,7 @@ internal static class MinecraftInstanceExtensions
     {
         if (MinecraftInstance.IsVanilla) return false;
 
-        var loaders = MinecraftInstance.GetModLoaders().Select(x => x.LoaderType).ToArray();
+        var loaders = MinecraftInstance.GetModLoaders().Select(x => x.Type).ToArray();
 
         if (!(loaders.Contains(ModLoaderType.Forge) ||
             loaders.Contains(ModLoaderType.Fabric) ||
@@ -60,21 +61,21 @@ internal static class MinecraftInstanceExtensions
         return true;
     }
 
-    public static string GetGameDirectory(this MinecraftInstance MinecraftInstance)
+    public static string GetGameDirectory(this MinecraftInstance instance)
     {
-        var config = MinecraftInstance.GetConfig();
+        var config = instance.GetConfig();
 
         if (config.EnableSpecialSetting)
         {
             if (config.EnableIndependencyCore)
-                return Path.Combine(MinecraftInstance.MinecraftFolderPath, "versions", MinecraftInstance.AbsoluteId);
-            else return MinecraftInstance.MinecraftFolderPath;
+                return Path.Combine(instance.MinecraftFolderPath, "versions", instance.VersionFolderName);
+            else return instance.MinecraftFolderPath;
         }
 
         if (App.GetService<SettingsService>().EnableIndependencyCore)
-            return Path.Combine(MinecraftInstance.MinecraftFolderPath, "versions", MinecraftInstance.AbsoluteId);
+            return Path.Combine(instance.MinecraftFolderPath, "versions", instance.VersionFolderName);
 
-        return MinecraftInstance.MinecraftFolderPath;
+        return instance.MinecraftFolderPath;
     }
 
     public static string GetModsDirectory(this MinecraftInstance MinecraftInstance) => Path.Combine(GetGameDirectory(MinecraftInstance), "mods");

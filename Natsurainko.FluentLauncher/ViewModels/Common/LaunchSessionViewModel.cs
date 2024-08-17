@@ -3,6 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
+using Natsurainko.FluentLauncher.Services.UI;
+using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Management;
 using System;
@@ -124,17 +126,16 @@ internal partial class LaunchSessionViewModel : ObservableObject
 
         // Fault before the game is started
         if (newValue == MinecraftSessionState.Faulted)
+        {
             StepItems[lastState - 1].RunState = -1;
+        }
 
         // Session finished (exited, crashed, or killed)
         if (newValue == MinecraftSessionState.GameExited)
             IsExpanded = false;
 
         if (newValue == MinecraftSessionState.GameExited || newValue == MinecraftSessionState.GameCrashed || newValue == MinecraftSessionState.Killed)
-        {
             ProcessExitTime = $"[{DateTime.Now:HH:mm:ss}]";
-
-        }
 
         UpdateLaunchProgress();
     }
@@ -158,6 +159,14 @@ internal partial class LaunchSessionViewModel : ObservableObject
     }
 
     bool CanKillProcess() => SessionState == MinecraftSessionState.GameRunning;
+
+    public void OnExceptionThrow(Exception exception)
+    {
+        Exception = exception;
+        ExceptionReason = exception.Message;
+
+        ShowException();
+    }
 
     [RelayCommand(CanExecute = nameof(CanKillProcess))]
     public void KillProcess() => _launchSession.Kill();
@@ -204,6 +213,30 @@ internal partial class LaunchSessionViewModel : ObservableObject
         var dataPackage = new DataPackage();
         dataPackage.SetText(string.Join("\r\n", _launchSession.McProcess!.ArgumentList));
         Clipboard.SetContent(dataPackage);
+    }
+
+    [RelayCommand]
+    public void ShowException()
+    {
+        string errorDescriptionKey = string.Empty;
+
+        if (Exception is InvalidOperationException)
+        {
+
+        }
+        else if (Exception is YggdrasilAuthenticationException)
+        {
+            errorDescriptionKey = "_LaunchGameThrowYggdrasilAuthenticationException";
+        }
+        else if (Exception is MicrosoftAuthenticationException)
+        {
+            errorDescriptionKey = "_LaunchGameThrowMicrosoftAuthenticationException";
+        }
+
+        App.GetService<NotificationService>().NotifyException(
+            "_LaunchGameThrowException",
+            Exception,
+            errorDescriptionKey);
     }
 
     public partial class LaunchStepItem : ObservableObject

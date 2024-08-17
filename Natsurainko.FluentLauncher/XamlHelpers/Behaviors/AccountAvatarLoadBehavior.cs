@@ -75,6 +75,7 @@ internal class AccountAvatarLoadBehavior : DependencyObject, IBehavior
                         (await StorageFile.GetFileFromApplicationUriAsync(new Uri(filePath))).Path)), 
                 (int)border.ActualWidth, 
                 (int)border.ActualHeight);
+            ForegroundLayout.Source = null;
 
             ProgressRing.IsActive = false;
             return;

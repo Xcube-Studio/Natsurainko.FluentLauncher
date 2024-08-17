@@ -539,10 +539,10 @@
                             <StackPanel Grid.Column="2" Spacing="5">
                                 <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding FileName}" />
                                 <StackPanel Orientation="Horizontal" Spacing="5">
-                                    <Border
-                                        Padding="5,1"
-                                        Background="{ThemeResource AccentButtonBackground}"
-                                        CornerRadius="2.5">
+                                    <Border Padding="5,1" CornerRadius="2.5">
+                                        <Border.Background>
+                                            <SolidColorBrush Opacity="0.9" Color="{ThemeResource SystemAccentColor}" />
+                                        </Border.Background>
                                         <TextBlock
                                             Foreground="{ThemeResource AccentButtonForeground}"
                                             Style="{ThemeResource CaptionTextBlockStyle}"
@@ -553,10 +553,10 @@
                                     <ItemsRepeater ItemsSource="{Binding Loaders}">
                                         <ItemsRepeater.ItemTemplate>
                                             <DataTemplate>
-                                                <Border
-                                                    Padding="5,1"
-                                                    Background="{ThemeResource AccentButtonBackground}"
-                                                    CornerRadius="2.5">
+                                                <Border Padding="5,1" CornerRadius="2.5">
+                                                    <Border.Background>
+                                                        <SolidColorBrush Opacity="0.9" Color="{ThemeResource SystemAccentColor}" />
+                                                    </Border.Background>
                                                     <TextBlock
                                                         Foreground="{ThemeResource AccentButtonForeground}"
                                                         Style="{ThemeResource CaptionTextBlockStyle}"

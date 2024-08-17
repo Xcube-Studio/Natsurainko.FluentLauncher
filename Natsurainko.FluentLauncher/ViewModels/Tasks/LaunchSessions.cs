@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.Launch;
+using System;
 using System.Collections.ObjectModel;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Tasks;
@@ -10,14 +10,12 @@ class LaunchSessions : ObservableObject
 {
     public ObservableCollection<LaunchSessionViewModel> SessionViewModels = new();
 
-    public LaunchSessions(LaunchService launchService)
+    public LaunchSessionViewModel CreateLaunchSessionViewModel(MinecraftSession session, out Action<Exception> handleException)
     {
-        launchService.SessionCreated += LaunchService_SessionCreated;
-    }
-
-    private void LaunchService_SessionCreated(object? sender, MinecraftSession e)
-    {
-        var launchSessionViewModel = new LaunchSessionViewModel(e);
+        var launchSessionViewModel = new LaunchSessionViewModel(session);
         App.DispatcherQueue.TryEnqueue(() => SessionViewModels.Insert(0, launchSessionViewModel));
+
+        handleException = launchSessionViewModel.OnExceptionThrow;
+        return launchSessionViewModel;
     }
 }

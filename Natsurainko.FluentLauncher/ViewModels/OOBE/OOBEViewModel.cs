@@ -20,6 +20,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage.Pickers;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
 internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, ISettingsViewModel
@@ -73,7 +74,7 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
         "OOBEGetStartedPage"
     };
 
-    void INavigationAware.OnNavigatedTo(object? parameter)
+    void INavigationAware.OnNavigatedTo(object parameter)
     {
         _navigationService.NavigateTo("OOBELanguagePage"); // Default page
     }

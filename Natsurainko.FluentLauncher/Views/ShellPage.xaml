@@ -246,7 +246,7 @@
             IsBackButtonVisible="Collapsed"
             IsSettingsVisible="False"
             ItemInvoked="NavigationViewControl_ItemInvoked"
-            OpenPaneLength="200"
+            OpenPaneLength="210"
             PaneClosing="NavigationViewControl_PaneClosing"
             PaneOpening="NavigationViewControl_PaneOpening">
             <NavigationView.Resources>

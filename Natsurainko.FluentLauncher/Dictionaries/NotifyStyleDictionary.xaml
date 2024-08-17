@@ -118,16 +118,17 @@
             <StackPanel Padding="20,0" Spacing="10">
                 <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding Description}" />
                 <TextBlock
-                    MaxHeight="120"
+                    MaxHeight="200"
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                     Style="{ThemeResource CaptionTextBlockStyle}"
                     TextTrimming="CharacterEllipsis"
-                    TextWrapping="WrapWholeWords">
+                    TextWrapping="NoWrap">
                     <Run Text="{Binding ExceptionMessage}" />
                     <Run>...</Run>
                 </TextBlock>
                 <Grid>
                     <Button
+                        x:Uid="Notifications_ExceptionCopyButton"
                         HorizontalAlignment="Right"
                         Command="{Binding CopyCommand}"
                         Content="Copy Full Information"

@@ -1,5 +1,4 @@
-﻿using Natsurainko.FluentLauncher.Models;
-using Natsurainko.FluentLauncher.Models.Launch;
+﻿using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
@@ -7,6 +6,7 @@ using Natsurainko.FluentLauncher.Services.SystemServices;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
+using Natsurainko.FluentLauncher.ViewModels.Tasks;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Environment;
 using Nrk.FluentCore.Launch;
@@ -28,9 +28,9 @@ internal class LaunchService
 {
     private readonly AuthenticationService _authenticationService;
     private readonly DownloadService _downloadService;
-    private readonly NotificationService _notificationService;
     private readonly AccountService _accountService;
     private readonly SettingsService _settingsService;
+    private readonly LaunchSessions _launchSessions;
 
     private SettingsService AppSettingsService => _settingsService;
 
@@ -41,17 +41,16 @@ internal class LaunchService
 
     public LaunchService(
         SettingsService settingsService,
-        GameService gameService,
         AccountService accountService,
         AuthenticationService authenticationService,
         DownloadService downloadService,
-        NotificationService notificationService)
+        LaunchSessions launchSessions)
     {
         _settingsService = settingsService;
         _authenticationService = authenticationService;
         _accountService = accountService;
         _downloadService = downloadService;
-        _notificationService = notificationService;
+        _launchSessions = launchSessions;
 
         _sessions = [];
         Sessions = new(_sessions);
@@ -59,24 +58,61 @@ internal class LaunchService
 
     public async Task LaunchGame(GameInfo gameInfo)
     {
+        MinecraftSession? minecraftSession = null;
+        Action<Exception>? onExceptionThrow = null;
+
         try
         {
             Account? account = _accountService.ActiveAccount ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
 
-            var session = CreateMinecraftSessionFromGameInfo(gameInfo, account); // TODO: replace with ctor of MinecraftSession
-            _sessions.Add(session);
+            minecraftSession = CreateMinecraftSessionFromGameInfo(gameInfo, account); // TODO: replace with ctor of MinecraftSession
+            _sessions.Add(minecraftSession);
 
-            OnSessionCreated(session);
+            _launchSessions.CreateLaunchSessionViewModel(minecraftSession, out var handleException);
+            onExceptionThrow = handleException;
 
             gameInfo.UpdateLastLaunchTimeToNow();
             App.GetService<JumpListService>().UpdateJumpList(gameInfo);
 
-            await session.StartAsync();
+            await minecraftSession.StartAsync();
         }
         catch (Exception ex)
         {
-            _notificationService.NotifyWithoutContent(ex.Message);
+            (onExceptionThrow ?? OnExceptionThrow).Invoke(ex);
         }
+        finally
+        {
+            if (minecraftSession != null)
+            {
+                minecraftSession.ProcessExited += (object? sender, MinecraftProcessExitedEventArgs e) =>
+                {
+                    minecraftSession.McProcess?.Dispose();
+                };
+            }
+        }
+    }
+
+    private void OnExceptionThrow(Exception exception)
+    {
+        string errorDescriptionKey = string.Empty;
+
+        if (exception is InvalidOperationException)
+        {
+
+        }
+        else if (exception is YggdrasilAuthenticationException)
+        {
+            errorDescriptionKey = "_LaunchGameThrowYggdrasilAuthenticationException";
+        }
+        else if (exception is MicrosoftAuthenticationException)
+        {
+            errorDescriptionKey = "_LaunchGameThrowMicrosoftAuthenticationException";
+        }
+
+        App.GetService<NotificationService>().NotifyException(
+            "_LaunchGameThrowException",
+            exception,
+            errorDescriptionKey);
     }
 
     protected void OnSessionCreated(MinecraftSession minecraftSession)
@@ -120,9 +156,9 @@ internal class LaunchService
                     return GetLaunchAccount(config, _accountService);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new AuthenticateRefreshAccountException(ex);
+                throw;
             }
         }
 
@@ -148,6 +184,8 @@ internal class LaunchService
         if (AppSettingsService.AutoRefresh)
             session.RefreshAccountTask = new Task<Account>(Authenticate);
 
+        session.SkipNativesDecompression = CanSkipNativesDecompression(gameInfo);
+
         session.ProcessStarted += (s, e) =>
         {
             var title = GameWindowTitle(config);
@@ -168,6 +206,45 @@ internal class LaunchService
         };
 
         return session;
+    }
+
+    private bool CanSkipNativesDecompression(GameInfo gameInfo)
+    {
+        var nativesDirectory = new DirectoryInfo(Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId, "natives"));
+
+        if (!nativesDirectory.Exists) return false;
+
+        var files = nativesDirectory.GetFiles();
+        if (files.Length == 0) return false;
+
+        try
+        {
+            var processes = FileLockUtils.GetProcessesLockingFile(files.First().FullName);
+
+            foreach (var process in processes)
+            {
+                var arguments = process?.GetCommandLine();
+
+                if ((arguments?.Contains($"-Djava.library.path={nativesDirectory.FullName}")).GetValueOrDefault())
+                {
+                    processes.ForEach(p => p?.Dispose());
+                    return true;
+                }
+
+                process?.Dispose();
+            }
+        }
+        catch (Win32Exception ex) when ((uint)ex.ErrorCode == 0x80004005)
+        {
+            // Intentionally empty - no security access to the process.
+        }
+        catch (InvalidOperationException)
+        {
+            // Intentionally empty - the process exited before getting details.
+        }
+        catch (Exception) { /*  */ }
+
+        return false;
     }
 
     private string? GetSuitableJava(GameInfo gameInfo)

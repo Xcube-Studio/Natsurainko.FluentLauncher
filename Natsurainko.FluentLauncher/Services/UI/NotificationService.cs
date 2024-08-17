@@ -7,6 +7,7 @@ using Natsurainko.FluentLauncher.ViewModels.Notification;
 using System;
 using System.Threading.Tasks;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.Services.UI;
 
 public class NotificationService
@@ -27,15 +28,12 @@ public class NotificationService
 
     public void NotifyException(string errorTitleKey, Exception exception, string errorDescriptionKey = "")
     {
-        var exceptionViewModel = new NotifyExceptionViewModel
-        {
-            Exception = exception
-        };
+        var exceptionViewModel = new NotifyExceptionViewModel(exception);
 
         if (!string.IsNullOrEmpty(errorDescriptionKey))
-            exceptionViewModel.Description = ResourceUtils.GetValue("Notifications", errorDescriptionKey);
+            exceptionViewModel.Description = ResourceUtils.GetValue("Notifications", errorDescriptionKey) + "\r\n" + exceptionViewModel.Description;
 
-        NotifyWithSpecialContent(ResourceUtils.GetValue("Notifications", errorTitleKey), "ExceptionNotifyTemplate", exceptionViewModel, "\uE711", 20 * 1000);
+        NotifyWithSpecialContent(ResourceUtils.GetValue("Notifications", errorTitleKey), "ExceptionNotifyTemplate", exceptionViewModel, "\uE711", 60 * 1000);
     }
 
     public void NotifyMessage(string title, string text, string description = "", string icon = "\uE7E7", int delay = 5000)

@@ -2,6 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Media;
+using Nrk.FluentCore.Experimental.GameManagement;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Management;
 using System;
@@ -17,7 +19,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
 internal partial class LaunchSessionViewModel : ObservableObject
 {
-    private readonly MinecraftSession _launchSession;
+    private readonly MinecraftVersion _launchSession;
     private MinecraftInstance _MinecraftInstance => _launchSession.MinecraftInstance;
     public MinecraftInstance MinecraftInstance => _MinecraftInstance;
 

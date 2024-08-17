@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.ViewModels.Common;
+using Nrk.FluentCore.Experimental.GameManagement;
 using Nrk.FluentCore.Launch;
 using System.Collections.ObjectModel;
 
@@ -15,7 +16,7 @@ class LaunchSessions : ObservableObject
         launchService.SessionCreated += LaunchService_SessionCreated;
     }
 
-    private void LaunchService_SessionCreated(object? sender, MinecraftSession e)
+    private void LaunchService_SessionCreated(object? sender, MinecraftVersion e)
     {
         App.DispatcherQueue.TryEnqueue(() =>
         {

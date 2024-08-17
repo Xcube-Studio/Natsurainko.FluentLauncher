@@ -10,6 +10,7 @@ using Nrk.FluentCore.Management;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;

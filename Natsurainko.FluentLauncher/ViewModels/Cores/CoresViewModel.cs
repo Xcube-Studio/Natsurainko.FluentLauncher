@@ -9,6 +9,7 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Management;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -115,7 +116,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
 
         foreach (var item in MinecraftInstances)
         {
-            if (item.Name.Contains(searchText))
+            if (item.VersionFolderName.Contains(searchText))
             {
                 yield return SuggestionHelper.FromMinecraftInstance(item,
                     ResourceUtils.GetValue("SearchSuggest", "_D3"), 

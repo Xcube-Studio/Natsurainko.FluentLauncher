@@ -8,6 +8,7 @@ using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Authentication;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Management;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

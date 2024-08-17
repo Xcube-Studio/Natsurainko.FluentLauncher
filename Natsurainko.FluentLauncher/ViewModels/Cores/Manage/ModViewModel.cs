@@ -26,7 +26,7 @@ public partial class ModViewModel : ObservableObject, INavigationAware
 
     public bool NotSupportMod => !MinecraftInstance.IsSupportMod();
 
-    public ObservableCollection<ModInfo> Mods { get; private set; } = [];
+    public ObservableCollection<MinecraftMod> Mods { get; private set; } = [];
 
     public ModViewModel(INavigationService navigationService)
     {

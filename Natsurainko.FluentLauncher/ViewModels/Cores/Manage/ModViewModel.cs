@@ -50,7 +50,7 @@ public partial class ModViewModel : ObservableObject, INavigationAware
     public async Task OpenModsFolder() => await Launcher.LaunchFolderPathAsync(ModsFolder);
 
     [RelayCommand]
-    public void DeleteMod(ModInfo modInfo)
+    public void DeleteMod(MinecraftMod modInfo)
     {
         File.Delete(modInfo.AbsolutePath);
         LoadModList();

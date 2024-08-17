@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System;
 using Nrk.FluentCore.Experimental.GameManagement.Instances;
+using System.Linq;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
 
@@ -70,29 +71,8 @@ internal class GameService
 
     public virtual void OnActiveInstanceChanged(MinecraftInstance? oldGame, MinecraftInstance? newGame)
     {
-        _settingsService.ActiveMinecraftInstance = newGame;
+        _settingsService.ActiveInstanceId = newGame.VersionFolderName;
     }
-
-    // From DefaultGameService
-    //public virtual void WhenActiveMinecraftFolderChanged(string? oldFolder, string? newFolder)
-    //{
-    //    _settingsService.ActiveMinecraftFolder = newFolder;
-
-    //    if (newFolder == null)
-    //    {
-    //        _games.Clear();
-    //        ActivateGame(null);
-
-    //        return;
-    //    }
-
-    //    _locator = new DefaultGameLocator(newFolder);
-
-    //    //_versionsFolderWatcher?.Dispose(); 
-    //    //_versionsFolderWatcher = new FileSystemWatcher(ActiveMinecraftFolder);
-
-    //    RefreshGames();
-    //}
 
     public virtual void ActivateMinecraftFolder(string? folder)
     {
@@ -120,11 +100,17 @@ internal class GameService
         foreach (var game in _instanceParser.ParseAllInstances())
             _games.Add(game);
 
-        MinecraftInstance? MinecraftInstance = _settingsService.ActiveMinecraftInstance != null && _games.Contains(_settingsService.ActiveMinecraftInstance)
-            ? _settingsService.ActiveMinecraftInstance
-            : _games.Count > 0 ? _games[0] : null;
+        string? clientId = _settingsService.ActiveInstanceId;
+        MinecraftInstance? instance = null;
+        if (clientId is not null)
+        {
+            instance = _games.Where(i => i.VersionFolderName == clientId).FirstOrDefault();
+        }
 
-        ActivateGame(MinecraftInstance);
+        if (instance is null)
+            instance = _games.FirstOrDefault();
+        
+        ActivateGame(instance);
     }
 
     public virtual void AddMinecraftFolder(string folder)

@@ -7,6 +7,8 @@ using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Common;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
+using Nrk.FluentCore.Experimental.GameManagement.ModLoaders;
 using Nrk.FluentCore.Management;
 
 
@@ -42,14 +44,14 @@ internal partial class DownloadService
         DownloadProcesses = new(_downloadProcesses);
     }
 
-    public DefaultResourcesDownloader CreateResourcesDownloader(GameInfo gameInfo, IEnumerable<LibraryElement> libraryElements = null)
+    public DefaultResourcesDownloader CreateResourcesDownloader(MinecraftInstance MinecraftInstance, IEnumerable<LibraryElement> libraryElements = null)
     {
         UpdateDownloadSettings();
 
         if (_settingsService.CurrentDownloadSource != "Mojang")
-            return Base_CreateResourcesDownloader(gameInfo, libraryElements, downloadMirrorSource: DownloadMirrors.Bmclapi);
+            return Base_CreateResourcesDownloader(MinecraftInstance, libraryElements, downloadMirrorSource: DownloadMirrors.Bmclapi);
 
-        return Base_CreateResourcesDownloader(gameInfo, libraryElements);
+        return Base_CreateResourcesDownloader(MinecraftInstance, libraryElements);
     }
 
     private void UpdateDownloadSettings()
@@ -99,7 +101,7 @@ internal partial class DownloadService
         var installProcess = new InstallProcessViewModel() { Title = GetTitle() };
         var firstToStart = new List<InstallProcessViewModel.ProgressItem>();
 
-        GameInfo inheritsFrom = _gameService.Games.FirstOrDefault(x => x.AbsoluteId.Equals(info.ManifestItem.Id));
+        MinecraftInstance inheritsFrom = _gameService.Games.FirstOrDefault(x => x.AbsoluteId.Equals(info.ManifestItem.Id));
 
         var installVanillaGame = new InstallProcessViewModel.ProgressItem(@this =>
         {
@@ -145,8 +147,8 @@ internal partial class DownloadService
         {
             App.DispatcherQueue.SynchronousTryEnqueue(() => _gameService.RefreshGames());
 
-            var gameInfo = _gameService.Games.First(x => x.AbsoluteId.Equals(info.AbsoluteId));
-            var config = gameInfo.GetConfig();
+            var MinecraftInstance = _gameService.Games.First(x => x.AbsoluteId.Equals(info.AbsoluteId));
+            var config = MinecraftInstance.GetConfig();
 
             config.EnableSpecialSetting = info.EnableIndependencyCore || !string.IsNullOrEmpty(info.NickName);
             config.EnableIndependencyCore = info.EnableIndependencyCore;
@@ -298,7 +300,7 @@ internal partial class DownloadService
 
 internal partial class DownloadService
 {
-    private DefaultResourcesDownloader Base_CreateResourcesDownloader(GameInfo gameInfo,
+    private DefaultResourcesDownloader Base_CreateResourcesDownloader(MinecraftInstance MinecraftInstance,
     IEnumerable<LibraryElement>? libraryElements = default,
     IEnumerable<AssetElement>? assetElements = default,
     DownloadMirrorSource? downloadMirrorSource = default)
@@ -307,7 +309,7 @@ internal partial class DownloadService
 
         if (libraryElements == null)
         {
-            var libraryParser = new DefaultLibraryParser(gameInfo);
+            var libraryParser = new DefaultLibraryParser(MinecraftInstance);
             libraryParser.EnumerateLibraries(out var enabledLibraries, out var enabledNativesLibraries);
 
             libraries = enabledLibraries.Union(enabledNativesLibraries).ToList();
@@ -315,7 +317,7 @@ internal partial class DownloadService
 
         if (assetElements == null)
         {
-            var assetParser = new DefaultAssetParser(gameInfo);
+            var assetParser = new DefaultAssetParser(MinecraftInstance);
             var assetElement = assetParser.GetAssetIndexJson();
             if (downloadMirrorSource != null)
                 assetElement.Url?.ReplaceFromDictionary(downloadMirrorSource.AssetsReplaceUrl);
@@ -332,11 +334,11 @@ internal partial class DownloadService
             assetElements = assetParser.EnumerateAssets();
         }
 
-        var jar = gameInfo.GetJarElement();
+        var jar = MinecraftInstance.GetJarElement();
         if (jar != null && !jar.VerifyFile())
             libraries.Add(jar);
 
-        var defaultResourcesDownloader = new DefaultResourcesDownloader(gameInfo);
+        var defaultResourcesDownloader = new DefaultResourcesDownloader(MinecraftInstance);
 
         defaultResourcesDownloader.SetLibraryElements(libraries);
         defaultResourcesDownloader.SetAssetsElements(assetElements);

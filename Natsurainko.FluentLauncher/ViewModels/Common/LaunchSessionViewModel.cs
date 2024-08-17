@@ -18,8 +18,8 @@ namespace Natsurainko.FluentLauncher.ViewModels.Common;
 internal partial class LaunchSessionViewModel : ObservableObject
 {
     private readonly MinecraftSession _launchSession;
-    private GameInfo _gameInfo => _launchSession.GameInfo;
-    public GameInfo GameInfo => _gameInfo;
+    private MinecraftInstance _MinecraftInstance => _launchSession.MinecraftInstance;
+    public MinecraftInstance MinecraftInstance => _MinecraftInstance;
 
     public LaunchSessionViewModel(MinecraftSession session) : base()
     {
@@ -161,7 +161,7 @@ internal partial class LaunchSessionViewModel : ObservableObject
         {
             var window = new WindowEx();
 
-            window.Title = $"Logger - {_gameInfo.AbsoluteId}";
+            window.Title = $"Logger - {_MinecraftInstance.AbsoluteId}";
 
             window.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets/AppIcon.ico"));
             window.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;

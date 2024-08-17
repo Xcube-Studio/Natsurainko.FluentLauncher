@@ -12,7 +12,7 @@ public class GameIconConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is GameInfo game)
+        if (value is MinecraftInstance game)
             return new BitmapImage(new Uri(string.Format("ms-appx:///Assets/Icons/{0}.png", !game.IsVanilla ? "furnace_front" : game.Type switch
             {
                 "release" => "grass_block_side",

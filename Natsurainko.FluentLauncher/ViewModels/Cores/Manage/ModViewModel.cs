@@ -21,9 +21,9 @@ public partial class ModViewModel : ObservableObject, INavigationAware
 
     public string ModsFolder { get; private set; }
 
-    public GameInfo GameInfo { get; private set; }
+    public MinecraftInstance MinecraftInstance { get; private set; }
 
-    public bool NotSupportMod => !GameInfo.IsSupportMod();
+    public bool NotSupportMod => !MinecraftInstance.IsSupportMod();
 
     public ObservableCollection<ModInfo> Mods { get; private set; } = [];
 
@@ -34,8 +34,8 @@ public partial class ModViewModel : ObservableObject, INavigationAware
 
     void INavigationAware.OnNavigatedTo(object parameter)
     {
-        GameInfo = parameter as GameInfo;
-        ModsFolder = GameInfo.GetModsDirectory();
+        MinecraftInstance = parameter as MinecraftInstance;
+        ModsFolder = MinecraftInstance.GetModsDirectory();
 
         if (!Directory.Exists(ModsFolder))
             Directory.CreateDirectory(ModsFolder);

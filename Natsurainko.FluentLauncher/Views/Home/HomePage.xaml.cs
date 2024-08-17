@@ -20,7 +20,7 @@ public sealed partial class HomePage : Page
     private void Flyout_Opened(object sender, object e)
     {
         var vm = (HomeViewModel)DataContext;
-        listView.ScrollIntoView(vm.ActiveGameInfo);
+        listView.ScrollIntoView(vm.ActiveMinecraftInstance);
     }
 
     private void DropDownButton_Click(object sender, RoutedEventArgs e)

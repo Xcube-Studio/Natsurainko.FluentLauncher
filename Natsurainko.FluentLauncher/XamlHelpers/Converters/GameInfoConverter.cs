@@ -9,13 +9,13 @@ using System.Linq;
 #nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
-public class GameInfoConverter : IValueConverter
+public class MinecraftInstanceConverter : IValueConverter
 {
     public bool EnableShowModLoaderType { get; set; } = false;
 
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is GameInfo game)
+        if (value is MinecraftInstance game)
         {
             var strings = new List<string>
             {

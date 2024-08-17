@@ -9,6 +9,7 @@ using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Environment;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Utils;
@@ -31,8 +32,6 @@ internal class LaunchService
     private readonly NotificationService _notificationService;
     private readonly AccountService _accountService;
     private readonly SettingsService _settingsService;
-
-    private SettingsService AppSettingsService => _settingsService;
 
     protected readonly List<MinecraftSession> _sessions;
     public ReadOnlyCollection<MinecraftSession> Sessions { get; }
@@ -57,19 +56,19 @@ internal class LaunchService
         Sessions = new(_sessions);
     }
 
-    public async Task LaunchGame(GameInfo gameInfo)
+    public async Task LaunchGame(MinecraftInstance MinecraftInstance)
     {
         try
         {
             Account? account = _accountService.ActiveAccount ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
 
-            var session = CreateMinecraftSessionFromGameInfo(gameInfo, account); // TODO: replace with ctor of MinecraftSession
+            var session = CreateMinecraftSessionFromMinecraftInstance(MinecraftInstance, account); // TODO: replace with ctor of MinecraftSession
             _sessions.Add(session);
 
             OnSessionCreated(session);
 
-            gameInfo.UpdateLastLaunchTimeToNow();
-            App.GetService<JumpListService>().UpdateJumpList(gameInfo);
+            MinecraftInstance.UpdateLastLaunchTimeToNow();
+            App.GetService<JumpListService>().UpdateJumpList(MinecraftInstance);
 
             await session.StartAsync();
         }
@@ -81,7 +80,7 @@ internal class LaunchService
     protected void OnSessionCreated(MinecraftSession minecraftSession)
         => this.SessionCreated?.Invoke(this, minecraftSession);
 
-    public MinecraftSession CreateMinecraftSessionFromGameInfo(GameInfo gameInfo, Account? _)
+    public MinecraftSession CreateMinecraftSessionFromMinecraftInstance(MinecraftInstance instance, Account? _)
     {
         Account? account = _accountService.ActiveAccount;
         if (account is null)
@@ -94,11 +93,11 @@ internal class LaunchService
             throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoActiveJava"));
         // TODO: Do not localize exception message
 
-        suitableJava = AppSettingsService.EnableAutoJava ? GetSuitableJava(gameInfo) : _settingsService.ActiveJava;
+        suitableJava = _settingsService.EnableAutoJava ? GetSuitableJava(instance) : _settingsService.ActiveJava;
         if (suitableJava == null)
-            throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoSuitableJava").Replace("${version}", gameInfo.GetSuitableJavaVersion()));
+            throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoSuitableJava").Replace("${version}", instance.GetSuitableJavaVersion()));
 
-        var config = gameInfo.GetConfig(); // Game specific config
+        var config = instance.GetConfig(); // Game specific config
         var launchAccount = GetLaunchAccount(config, _accountService)
             ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount")); // Determine which account to use
 
@@ -125,15 +124,15 @@ internal class LaunchService
             }
         }
 
-        var (maxMemory, minMemory) = AppSettingsService.EnableAutoJava
+        var (maxMemory, minMemory) = _settingsService.EnableAutoJava
             ? MemoryUtils.CalculateJavaMemory()
             : (_settingsService.JavaMemory, _settingsService.JavaMemory);
 
         var session = new MinecraftSession() // Launch session
         {
             Account = launchAccount,
-            GameInfo = gameInfo,
-            GameDirectory = GetGameDirectory(gameInfo, config),
+            MinecraftInstance = instance,
+            GameDirectory = GetGameDirectory(instance, config),
             JavaPath = suitableJava,
             MaxMemory = maxMemory,
             MinMemory = minMemory,
@@ -141,10 +140,10 @@ internal class LaunchService
             ExtraGameParameters = GetExtraGameParameters(config),
             ExtraVmParameters = GetExtraVmParameters(config, launchAccount),
             CreateResourcesDownloader = (libs) => _downloadService.CreateResourcesDownloader
-                (gameInfo, libs)
+                (instance, libs)
         };
 
-        if (AppSettingsService.AutoRefresh)
+        if (_settingsService.AutoRefresh)
             session.RefreshAccountTask = new Task<Account>(Authenticate);
 
         session.ProcessStarted += (s, e) =>
@@ -169,11 +168,11 @@ internal class LaunchService
         return session;
     }
 
-    private string? GetSuitableJava(GameInfo gameInfo)
+    private string? GetSuitableJava(MinecraftInstance MinecraftInstance)
     {
         var regex = new Regex(@"^([a-zA-Z]:\\)([-\u4e00-\u9fa5\w\s.()~!@#$%^&()\[\]{}+=]+\\?)*$");
 
-        var javaVersion = gameInfo.GetSuitableJavaVersion();
+        var javaVersion = MinecraftInstance.GetSuitableJavaVersion();
         var suits = new List<(string, Version)>();
 
         foreach (var java in _settingsService.Javas)
@@ -194,19 +193,19 @@ internal class LaunchService
         return suits.First().Item1;
     }
 
-    private string GetGameDirectory(GameInfo gameInfo, GameConfig specialConfig)
+    private string GetGameDirectory(MinecraftInstance instance, GameConfig specialConfig)
     {
         if (specialConfig.EnableSpecialSetting)
         {
             if (specialConfig.EnableIndependencyCore)
-                return Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId);
-            else return gameInfo.MinecraftFolderPath;
+                return Path.Combine(instance.MinecraftFolderPath, "versions", instance.VersionFolderName);
+            else return instance.MinecraftFolderPath;
         }
 
-        if (AppSettingsService.EnableIndependencyCore)
-            return Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId);
+        if (_settingsService.EnableIndependencyCore)
+            return Path.Combine(instance.MinecraftFolderPath, "versions", instance.VersionFolderName);
 
-        return gameInfo.MinecraftFolderPath;
+        return instance.MinecraftFolderPath;
     }
 
     private string? GameWindowTitle(GameConfig specialConfig)
@@ -218,8 +217,8 @@ internal class LaunchService
         }
         else
         {
-            if (!string.IsNullOrEmpty(AppSettingsService.GameWindowTitle))
-                return AppSettingsService.GameWindowTitle;
+            if (!string.IsNullOrEmpty(_settingsService.GameWindowTitle))
+                return _settingsService.GameWindowTitle;
         }
 
         return null;
@@ -293,16 +292,16 @@ internal class LaunchService
         }
         else
         {
-            if (AppSettingsService.EnableFullScreen)
+            if (_settingsService.EnableFullScreen)
                 yield return "--fullscreen";
 
-            if (AppSettingsService.GameWindowWidth > 0)
-                yield return $"--width {AppSettingsService.GameWindowWidth}";
+            if (_settingsService.GameWindowWidth > 0)
+                yield return $"--width {_settingsService.GameWindowWidth}";
 
-            if (AppSettingsService.GameWindowHeight > 0)
-                yield return $"--height {AppSettingsService.GameWindowHeight}";
+            if (_settingsService.GameWindowHeight > 0)
+                yield return $"--height {_settingsService.GameWindowHeight}";
 
-            if (!string.IsNullOrEmpty(AppSettingsService.GameServerAddress))
+            if (!string.IsNullOrEmpty(_settingsService.GameServerAddress))
             {
                 specialConfig.ServerAddress.ParseServerAddress(out var host, out var port);
 

@@ -111,14 +111,14 @@ internal partial class SearchProviderService : ObservableObject
 
 internal static class SuggestionHelper
 {
-    public static SearchProviderService.Suggestion FromGameInfo(GameInfo gameInfo, string description, Action action)
+    public static SearchProviderService.Suggestion FromMinecraftInstance(MinecraftInstance MinecraftInstance, string description, Action action)
     {
         return new SearchProviderService.Suggestion
         {
-            Title = gameInfo.Name,
+            Title = MinecraftInstance.Name,
             Description = description,
             SuggestionIconType = SearchProviderService.SuggestionIconType.UriIcon,
-            Icon = string.Format("ms-appx:///Assets/Icons/{0}.png", gameInfo.Type switch
+            Icon = string.Format("ms-appx:///Assets/Icons/{0}.png", MinecraftInstance.Type switch
             {
                 "release" => "grass_block_side",
                 "snapshot" => "crafting_table_front",

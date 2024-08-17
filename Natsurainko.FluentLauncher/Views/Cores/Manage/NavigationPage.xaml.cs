@@ -21,6 +21,6 @@ public sealed partial class NavigationPage : Page, INavigationProvider
         VM.Routes.Add(breadcrumbBarAware!.Route);
 
         if (e.SourcePageType == typeof(DefaultPage))
-            VM.Routes.Add(VM.GameInfo.Name!);
+            VM.Routes.Add(VM.MinecraftInstance.Name!);
     }
 }

@@ -14,7 +14,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
 
 internal partial class SaveViewModel : ObservableObject, INavigationAware
 {
-    public GameInfo GameInfo { get; private set; }
+    public MinecraftInstance MinecraftInstance { get; private set; }
 
     public string SavesFolder { get; private set; }
 
@@ -22,8 +22,8 @@ internal partial class SaveViewModel : ObservableObject, INavigationAware
 
     async void INavigationAware.OnNavigatedTo(object parameter)
     {
-        GameInfo = parameter as GameInfo;
-        SavesFolder = GameInfo.GetSavesDirectory();
+        MinecraftInstance = parameter as MinecraftInstance;
+        SavesFolder = MinecraftInstance.GetSavesDirectory();
 
         var manager = new SaveManager(SavesFolder);
 

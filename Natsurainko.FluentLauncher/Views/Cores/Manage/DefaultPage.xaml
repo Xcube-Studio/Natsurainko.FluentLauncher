@@ -23,7 +23,7 @@
 
                 <controls:SettingsCard>
                     <controls:SettingsCard.Header>
-                        <Grid DataContext="{Binding GameInfo}">
+                        <Grid DataContext="{Binding MinecraftInstance}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="15" />
@@ -51,7 +51,7 @@
                                     <ItemsRepeater.ItemsSource>
                                         <Binding>
                                             <Binding.Converter>
-                                                <converters:GameInfoConverter EnableShowModLoaderType="True" />
+                                                <converters:MinecraftInstanceConverter EnableShowModLoaderType="True" />
                                             </Binding.Converter>
                                         </Binding>
                                     </ItemsRepeater.ItemsSource>

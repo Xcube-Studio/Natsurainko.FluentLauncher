@@ -19,7 +19,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.Home;
 
 internal partial class HomeViewModel : ObservableObject
 {
-    public ReadOnlyObservableCollection<GameInfo> GameInfos { get; private set; }
+    public ReadOnlyObservableCollection<MinecraftInstance> MinecraftInstances { get; private set; }
 
     private readonly GameService _gameService;
     private readonly AccountService _accountService;
@@ -42,15 +42,15 @@ internal partial class HomeViewModel : ObservableObject
 
         ActiveAccount = accountService.ActiveAccount;
 
-        GameInfos = _gameService.Games;
-        ActiveGameInfo = _gameService.ActiveGame;
+        MinecraftInstances = _gameService.Games;
+        ActiveMinecraftInstance = _gameService.ActiveGame;
     }
 
     public Visibility AccountTag => ActiveAccount is null ? Visibility.Collapsed : Visibility.Visible;
 
-    public string DropDownButtonDisplayText => ActiveGameInfo == null
+    public string DropDownButtonDisplayText => ActiveMinecraftInstance == null
         ? ResourceUtils.GetValue("Home", "HomePage", "_NoCore")
-        : ActiveGameInfo.Name;
+        : ActiveMinecraftInstance.Name;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(AccountTag))]
@@ -58,23 +58,23 @@ internal partial class HomeViewModel : ObservableObject
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(DropDownButtonDisplayText))]
-    private GameInfo activeGameInfo;
+    private MinecraftInstance activeMinecraftInstance;
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
 
-        if (e.PropertyName == nameof(ActiveGameInfo) && ActiveGameInfo is not null)
-            _gameService.ActivateGame(ActiveGameInfo);
+        if (e.PropertyName == nameof(ActiveMinecraftInstance) && ActiveMinecraftInstance is not null)
+            _gameService.ActivateGame(ActiveMinecraftInstance);
     }
 
-    private bool CanExecuteLaunch() => ActiveGameInfo is not null;
+    private bool CanExecuteLaunch() => ActiveMinecraftInstance is not null;
 
     [RelayCommand(CanExecute = nameof(CanExecuteLaunch))]
     private async Task Launch()
     {
         _navigationService.NavigateTo("Tasks/Launch");
-        await _launchService.LaunchGame(ActiveGameInfo);
+        await _launchService.LaunchGame(ActiveMinecraftInstance);
     }
 
     [RelayCommand]
@@ -96,15 +96,15 @@ internal partial class HomeViewModel : ObservableObject
             })
         };
 
-        foreach (var item in GameInfos)
+        foreach (var item in MinecraftInstances)
         {
             if (item.Name.Contains(searchText))
             {
-                yield return SuggestionHelper.FromGameInfo(item,
+                yield return SuggestionHelper.FromMinecraftInstance(item,
                     ResourceUtils.GetValue("SearchSuggest", "_D4"), async () =>
                     {
                         _navigationService.NavigateTo("Tasks/Launch");
-                        await _launchService.LaunchGame(ActiveGameInfo);
+                        await _launchService.LaunchGame(ActiveMinecraftInstance);
                     });
             }
         }

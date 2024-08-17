@@ -211,7 +211,7 @@
                                             <TextBlock
                                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                                 Style="{ThemeResource CaptionTextBlockStyle}"
-                                                Text="{Binding Converter={ThemeResource GameInfoConverter}}"
+                                                Text="{Binding Converter={ThemeResource MinecraftInstanceConverter}}"
                                                 TextTrimming="CharacterEllipsis"
                                                 TextWrapping="NoWrap" />
                                         </StackPanel>

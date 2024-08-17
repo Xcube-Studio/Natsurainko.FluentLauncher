@@ -19,7 +19,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     private readonly INavigationService _navigationService;
     private readonly GameService _gameService;
 
-    public GameInfo GameInfo { get; private set; }
+    public MinecraftInstance MinecraftInstance { get; private set; }
 
     public GameConfig GameConfig { get; private set; }
 
@@ -56,12 +56,12 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
     void INavigationAware.OnNavigatedTo(object parameter)
     {
-        GameInfo = parameter as GameInfo;
-        GameConfig = GameInfo.GetConfig();
+        MinecraftInstance = parameter as MinecraftInstance;
+        GameConfig = MinecraftInstance.GetConfig();
 
         Task.Run(() =>
         {
-            var gameStorageInfo = GameInfo.GetStorageInfo();
+            var gameStorageInfo = MinecraftInstance.GetStorageInfo();
             App.DispatcherQueue.TryEnqueue(() => GameStorageInfo = gameStorageInfo);
         });
 
@@ -72,19 +72,19 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     {
         if (e.PropertyName == "NickName" && !string.IsNullOrEmpty(GameConfig.NickName))
         {
-            if (GameInfo.Equals(_gameService.ActiveGame))
+            if (MinecraftInstance.Equals(_gameService.ActiveGame))
                 _gameService.ActiveGame.Name = GameConfig.NickName;
 
-            GameInfo.Name = GameConfig.NickName;
+            MinecraftInstance.Name = GameConfig.NickName;
         }
     }
 
     [RelayCommand]
-    void CardClick(string tag) => _navigationService.NavigateTo(tag, GameInfo);
+    void CardClick(string tag) => _navigationService.NavigateTo(tag, MinecraftInstance);
 
     [RelayCommand]
     public async Task DeleteGame() => await new DeleteGameDialog()
     {
-        DataContext = new DeleteGameDialogViewModel(GameInfo, _navigationService)
+        DataContext = new DeleteGameDialogViewModel(MinecraftInstance, _navigationService)
     }.ShowAsync();
 }

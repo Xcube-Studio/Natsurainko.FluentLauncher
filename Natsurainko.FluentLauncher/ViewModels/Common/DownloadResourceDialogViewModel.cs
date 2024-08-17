@@ -28,14 +28,14 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
     private readonly ModrinthClient _modrinthClient = App.GetService<ModrinthClient>();
     private readonly GameService _gameService = App.GetService<GameService>();
 
-    public GameInfo GameInfo { get; private set; }
+    public MinecraftInstance MinecraftInstance { get; private set; }
 
     public DownloadResourceDialogViewModel(object resource, INavigationService navigationService)
     {
         _resource = resource;
         _navigationService = navigationService;
 
-        GameInfo = _gameService.ActiveGame;
+        MinecraftInstance = _gameService.ActiveGame;
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)

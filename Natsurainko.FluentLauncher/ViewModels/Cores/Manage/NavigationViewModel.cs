@@ -18,7 +18,7 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
     [ObservableProperty]
     private ObservableCollection<string> routes;
 
-    public GameInfo GameInfo { get; private set; }
+    public MinecraftInstance MinecraftInstance { get; private set; }
 
     public string GameName { get; private set; } // 缓存游戏名称，防止昵称修改后名称对不上
 
@@ -29,11 +29,11 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
 
     void INavigationAware.OnNavigatedTo(object parameter)
     {
-        GameInfo = parameter as GameInfo;
-        GameName = GameInfo.Name;
+        MinecraftInstance = parameter as MinecraftInstance;
+        GameName = MinecraftInstance.Name;
 
         Routes = [];
-        _navigationService.NavigateTo("CoreManage/Default", GameInfo);
+        _navigationService.NavigateTo("CoreManage/Default", MinecraftInstance);
     }
 
     public void NavigateTo(string pageKey, object parameter = null)
@@ -59,8 +59,8 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
         if (breadcrumbBarItemClickedEventArgs.Item.ToString() == "CoreManage")
             _navigationService.Parent.NavigateTo("CoresPage");
         else if (breadcrumbBarItemClickedEventArgs.Item.ToString() == GameName)
-            NavigateTo("CoreManage/Default", GameInfo);
-        else NavigateTo(string.Join('/', Routes.ToArray()[..^1]).Replace($"/{GameName}/", "/"), GameInfo);
+            NavigateTo("CoreManage/Default", MinecraftInstance);
+        else NavigateTo(string.Join('/', Routes.ToArray()[..^1]).Replace($"/{GameName}/", "/"), MinecraftInstance);
     }
 
     [RelayCommand]

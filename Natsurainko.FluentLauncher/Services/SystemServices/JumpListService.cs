@@ -27,13 +27,13 @@ internal class JumpListService
         _launchService = launchService;
     }
 
-    private static async Task AddItem(GameInfo gameInfo)
+    private static async Task AddItem(MinecraftInstance MinecraftInstance)
     {
         var list = await JumpList.LoadCurrentAsync();
-        var itemArguments = JsonSerializer.Serialize(gameInfo).ConvertToBase64();
+        var itemArguments = JsonSerializer.Serialize(MinecraftInstance).ConvertToBase64();
 
         var jumpListItem = list.Items.Where(item =>
-            gameInfo == JsonSerializer.Deserialize<GameInfo>
+            MinecraftInstance == JsonSerializer.Deserialize<MinecraftInstance>
                 (item.Arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64())).FirstOrDefault();
 
         if (jumpListItem != null)
@@ -43,10 +43,10 @@ internal class JumpListService
         }
         else
         {
-            jumpListItem = JumpListItem.CreateWithArguments($"/quick-launch {itemArguments}", gameInfo.Name);
+            jumpListItem = JumpListItem.CreateWithArguments($"/quick-launch {itemArguments}", MinecraftInstance.Name);
 
             jumpListItem.GroupName = "Latest";
-            jumpListItem.Logo = new Uri(string.Format("ms-appx:///Assets/Icons/{0}.png", !gameInfo.IsVanilla ? "furnace_front" : gameInfo.Type switch
+            jumpListItem.Logo = new Uri(string.Format("ms-appx:///Assets/Icons/{0}.png", !MinecraftInstance.IsVanilla ? "furnace_front" : MinecraftInstance.Type switch
             {
                 "release" => "grass_block_side",
                 "snapshot" => "crafting_table_front",
@@ -65,11 +65,11 @@ internal class JumpListService
     {
         #region Init Launch & Display Elements
 
-        var gameInfo = JsonSerializer.Deserialize<GameInfo>(arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64())
+        var MinecraftInstance = JsonSerializer.Deserialize<MinecraftInstance>(arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64())
             ?? throw new InvalidOperationException();
 
-        string name = gameInfo.Name ?? "Minecraft";
-        string icon = string.Format("ms-appx:///Assets/Icons/{0}.png", !gameInfo.IsVanilla ? "furnace_front" : gameInfo.Type switch
+        string name = MinecraftInstance.Name ?? "Minecraft";
+        string icon = string.Format("ms-appx:///Assets/Icons/{0}.png", !MinecraftInstance.IsVanilla ? "furnace_front" : MinecraftInstance.Type switch
         {
             "release" => "grass_block_side",
             "snapshot" => "crafting_table_front",
@@ -122,12 +122,12 @@ internal class JumpListService
 
         #region Create Launch Session
 
-        var minecraftSession = _launchService.CreateMinecraftSessionFromGameInfo(gameInfo, null);
+        var minecraftSession = _launchService.CreateMinecraftSessionFromMinecraftInstance(MinecraftInstance, null);
         var sessionViewModel = new LaunchSessionViewModel(minecraftSession);
         App.GetService<LaunchSessions>().SessionViewModels.Insert(0, sessionViewModel);
 
-        gameInfo.UpdateLastLaunchTimeToNow();
-        UpdateJumpList(gameInfo);
+        MinecraftInstance.UpdateLastLaunchTimeToNow();
+        UpdateJumpList(MinecraftInstance);
 
         minecraftSession.StateChanged += MinecraftSession_StateChanged;
 
@@ -166,7 +166,7 @@ internal class JumpListService
             //    return;
 
             var data = new AppNotificationProgressData(sequence);
-            data.Title = gameInfo.Name;
+            data.Title = MinecraftInstance.Name;
             data.Value = sessionViewModel.Progress;
             data.ValueStringOverride = sessionViewModel.ProgressText;
             data.Status = ResourceUtils.GetValue("Converters", $"_LaunchState_{sessionViewModel.SessionState}");
@@ -183,9 +183,9 @@ internal class JumpListService
         await minecraftSession.StartAsync();
     }
 
-    public async void UpdateJumpList(GameInfo gameInfo)
+    public async void UpdateJumpList(MinecraftInstance MinecraftInstance)
     {
-        await AddItem(gameInfo);
+        await AddItem(MinecraftInstance);
 
         var list = await JumpList.LoadCurrentAsync();
 

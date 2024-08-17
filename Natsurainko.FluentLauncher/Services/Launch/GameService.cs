@@ -1,31 +1,29 @@
 ﻿using Natsurainko.FluentLauncher.Services.Settings;
-using Nrk.FluentCore.Management.GameLocator;
-using Nrk.FluentCore.Management;
 using System.Collections.ObjectModel;
 using System;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
 
 internal class GameService
 {
-
     #region Games 
 
-    protected GameInfo? _activeGame;
-    public GameInfo? ActiveGame
+    protected MinecraftInstance? _activeGame;
+    public MinecraftInstance? ActiveGame
     {
         get => _activeGame;
         protected set
         {
             if (_activeGame != value)
-                WhenActiveGameChanged(_activeGame, value);
+                OnActiveInstanceChanged(_activeGame, value);
 
             _activeGame = value;
         }
     }
 
-    protected ObservableCollection<GameInfo> _games;
-    public ReadOnlyObservableCollection<GameInfo> Games { get; }
+    protected ObservableCollection<MinecraftInstance> _games;
+    public ReadOnlyObservableCollection<MinecraftInstance> Games { get; }
 
     #endregion
 
@@ -38,7 +36,7 @@ internal class GameService
         protected set
         {
             if (_activeMinecraftFolder != value)
-                WhenActiveMinecraftFolderChanged(_activeMinecraftFolder, value);
+                OnActiveMinecraftFolderChanged(_activeMinecraftFolder, value);
 
             _activeMinecraftFolder = value;
         }
@@ -49,8 +47,9 @@ internal class GameService
 
     #endregion
 
-    protected DefaultGameLocator? _locator;
-    protected SettingsService _settingsService;
+    private readonly SettingsService _settingsService;
+
+    private MinecraftInstanceParser? _instanceParser;
 
     public GameService(SettingsService settingsService)
     {
@@ -69,9 +68,9 @@ internal class GameService
             : null);
     }
 
-    public virtual void WhenActiveGameChanged(GameInfo? oldGame, GameInfo? newGame)
+    public virtual void OnActiveInstanceChanged(MinecraftInstance? oldGame, MinecraftInstance? newGame)
     {
-        _settingsService.ActiveGameInfo = newGame;
+        _settingsService.ActiveMinecraftInstance = newGame;
     }
 
     // From DefaultGameService
@@ -103,29 +102,29 @@ internal class GameService
         ActiveMinecraftFolder = folder;
     }
 
-    public virtual void ActivateGame(GameInfo? gameInfo)
+    public virtual void ActivateGame(MinecraftInstance? MinecraftInstance)
     {
-        if (gameInfo != null && !_games.Contains(gameInfo))
-            throw new ArgumentException("Not an game managed by GameService", nameof(gameInfo));
+        if (MinecraftInstance != null && !_games.Contains(MinecraftInstance))
+            throw new ArgumentException("Not an game managed by GameService", nameof(MinecraftInstance));
 
-        ActiveGame = gameInfo;
+        ActiveGame = MinecraftInstance;
     }
 
     public virtual void RefreshGames()
     {
         _games.Clear();
 
-        if (_locator == null)
+        if (_instanceParser is null)
             throw new InvalidOperationException();
 
-        foreach (var game in _locator.EnumerateGames())
+        foreach (var game in _instanceParser.ParseAllInstances())
             _games.Add(game);
 
-        GameInfo? gameInfo = _settingsService.ActiveGameInfo != null && _games.Contains(_settingsService.ActiveGameInfo)
-            ? _settingsService.ActiveGameInfo
+        MinecraftInstance? MinecraftInstance = _settingsService.ActiveMinecraftInstance != null && _games.Contains(_settingsService.ActiveMinecraftInstance)
+            ? _settingsService.ActiveMinecraftInstance
             : _games.Count > 0 ? _games[0] : null;
 
-        ActivateGame(gameInfo);
+        ActivateGame(MinecraftInstance);
     }
 
     public virtual void AddMinecraftFolder(string folder)
@@ -142,7 +141,7 @@ internal class GameService
             ActivateMinecraftFolder(MinecraftFolders.Count > 0 ? MinecraftFolders[0] : null);
     }
 
-    public void WhenActiveMinecraftFolderChanged(string? oldFolder, string? newFolder)
+    public void OnActiveMinecraftFolderChanged(string? oldFolder, string? newFolder)
     {
         _settingsService.ActiveMinecraftFolder = newFolder;
 
@@ -154,7 +153,7 @@ internal class GameService
             return;
         }
 
-        _locator = new GameLocator(newFolder);
+        _instanceParser = new MinecraftInstanceParser(newFolder);
 
         RefreshGames();
     }

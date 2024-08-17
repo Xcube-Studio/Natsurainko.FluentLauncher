@@ -36,7 +36,7 @@
             <converters:JavaInfoConverter x:Key="JavaInfoConverter" />
 
             <converters:GameIconConverter x:Key="GameIconConverter" />
-            <converters:GameInfoConverter x:Key="GameInfoConverter" />
+            <converters:MinecraftInstanceConverter x:Key="MinecraftInstanceConverter" />
 
             <converters:ModInfoConverter x:Key="ModInfoConverter" />
             <converters:SaveInfoConverter x:Key="SaveInfoConverter" />
@@ -80,7 +80,7 @@
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Text="Launch Task" />
                             <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
-                            <Run FontWeight="SemiBold" Text="{Binding GameInfo.AbsoluteId}" />
+                            <Run FontWeight="SemiBold" Text="{Binding MinecraftInstance.AbsoluteId}" />
                         </TextBlock>
                     </controls:SettingsExpander.Header>
 

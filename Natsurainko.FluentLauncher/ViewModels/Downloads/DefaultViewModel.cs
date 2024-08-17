@@ -234,7 +234,26 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     void ResourceDetails(object resource) => _navigationService.NavigateTo("Download/Details", resource);
 
     [RelayCommand]
-    public void GoToSettings() => _navigationService.Parent.NavigateTo("Settings/Navigation", "Settings/Launch");
+    void GoToSettings() => _navigationService.Parent.NavigateTo("Settings/Navigation", "Settings/Launch");
+
+    [RelayCommand]
+    void FlipViewItemClicked(PatchNoteData patchNoteData)
+    {
+        if (string.IsNullOrEmpty(_gameService.ActiveMinecraftFolder))
+        {
+            _notificationService.NotifyWithSpecialContent(
+                ResourceUtils.GetValue("Notifications", "_NoMinecraftFolder"),
+                "NoMinecraftFolderNotifyTemplate",
+                GoToSettingsCommand, "\uE711");
+
+            return;
+        }
+
+        var manifestItem = VersionManifestItems.Where(x => x.Id.Equals(patchNoteData.Version)).FirstOrDefault();
+
+        if (manifestItem != null)
+            _navigationService.Parent.NavigateTo("CoreInstallWizardPage", manifestItem);
+    }
 
     [RelayCommand]
     public void CoreInstallWizard(VersionManifestItem manifestItem)

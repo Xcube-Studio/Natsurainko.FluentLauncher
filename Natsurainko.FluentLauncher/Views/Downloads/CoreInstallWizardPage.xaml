@@ -26,7 +26,10 @@
             </core:EventTriggerBehavior>
         </i:Interaction.Behaviors>
 
-        <StackPanel Margin="10,20,10,0" Padding="30,0">
+        <StackPanel
+            MaxWidth="1060"
+            Margin="10,20,10,0"
+            Padding="30,0">
             <BreadcrumbBar Margin="-10,0" ItemsSource="{Binding BreadcrumbBarItemsSource}">
                 <i:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="ItemClicked">
@@ -73,6 +76,7 @@
             Background="{ThemeResource NavigationViewContentGridBorderBrush}" />
         <Grid
             Grid.Row="3"
+            MaxWidth="1080"
             Padding="40,30"
             Background="Transparent">
             <Grid x:Name="CommandSpace" XYFocusKeyboardNavigation="Enabled">

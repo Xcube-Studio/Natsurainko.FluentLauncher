@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Management;
@@ -11,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.DataTransfer;
 using WinUIEx;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
@@ -18,15 +20,15 @@ namespace Natsurainko.FluentLauncher.ViewModels.Common;
 internal partial class LaunchSessionViewModel : ObservableObject
 {
     private readonly MinecraftSession _launchSession;
-    private GameInfo _gameInfo => _launchSession.GameInfo;
-    public GameInfo GameInfo => _gameInfo;
+
+    public GameInfo GameInfo { get; private set; }
 
     public LaunchSessionViewModel(MinecraftSession session) : base()
     {
         _launchSession = session;
+        GameInfo = session.GameInfo;
 
         // Handles all state changes
-        // !!!Event subscription issue: session might have already been started when this viewmodel is constructed
         session.StateChanged += (_, e) => App.DispatcherQueue.TryEnqueue
             (() => LaunchSessionStateChangedHandler(e));
 
@@ -77,6 +79,7 @@ internal partial class LaunchSessionViewModel : ObservableObject
     private bool isExpanded = true;
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(KillProcessCommand))]
     private MinecraftSessionState sessionState;
 
     [ObservableProperty]
@@ -128,7 +131,10 @@ internal partial class LaunchSessionViewModel : ObservableObject
             IsExpanded = false;
 
         if (newValue == MinecraftSessionState.GameExited || newValue == MinecraftSessionState.GameCrashed || newValue == MinecraftSessionState.Killed)
+        {
             ProcessExitTime = $"[{DateTime.Now:HH:mm:ss}]";
+
+        }
 
         UpdateLaunchProgress();
     }
@@ -151,37 +157,53 @@ internal partial class LaunchSessionViewModel : ObservableObject
         UpdateLaunchProgress();
     }
 
-    [RelayCommand]
-    public void KillButton() => _launchSession.Kill();
+    bool CanKillProcess() => SessionState == MinecraftSessionState.GameRunning;
+
+    [RelayCommand(CanExecute = nameof(CanKillProcess))]
+    public void KillProcess() => _launchSession.Kill();
 
     [RelayCommand]
-    public void LoggerButton()
+    public void ShowLogger()
     {
         App.DispatcherQueue.TryEnqueue(() =>
         {
+            var hoverColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
+            hoverColor.A = 35;
+
             var window = new WindowEx();
 
-            window.Title = $"Logger - {_gameInfo.AbsoluteId}";
-
+            window.Title = $"Logger - {GameInfo.AbsoluteId}";
             window.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets/AppIcon.ico"));
+
             window.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
-            window.AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
-            window.AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            window.AppWindow.TitleBar.ButtonBackgroundColor = window.AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            window.AppWindow.TitleBar.ButtonForegroundColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
+            window.AppWindow.TitleBar.ButtonHoverForegroundColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
+            window.AppWindow.TitleBar.ButtonHoverBackgroundColor = hoverColor;
             window.SystemBackdrop = Environment.OSVersion.Version.Build >= 22000
                ? new MicaBackdrop() { Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt }
                : new DesktopAcrylicBackdrop();
 
-            (window.MinWidth, window.MinHeight) = (516, 328);
-            (window.Width, window.Height) = (873, 612);
+            (window.MinWidth, window.MinHeight) = (525, 328);
+            (window.Width, window.Height) = (525, 612);
 
             var view = new Views.LoggerPage();
-            var viewModel = new ViewModels.Pages.LoggerViewModel(this, view);
+            var viewModel = new Pages.LoggerViewModel(this, view);
+
             viewModel.Title = window.Title;
             view.DataContext = viewModel;
 
             window.Content = view;
             window.Show();
         });
+    }
+
+    [RelayCommand]
+    public void CopyLaunchArguments()
+    {
+        var dataPackage = new DataPackage();
+        dataPackage.SetText(string.Join("\r\n", _launchSession.McProcess!.ArgumentList));
+        Clipboard.SetContent(dataPackage);
     }
 
     public partial class LaunchStepItem : ObservableObject

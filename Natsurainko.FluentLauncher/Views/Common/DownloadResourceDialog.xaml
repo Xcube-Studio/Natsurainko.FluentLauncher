@@ -577,7 +577,10 @@
             </ListView>
 
             <StackPanel Grid.Row="2" Spacing="2">
-                <CheckBox IsChecked="{Binding DownloadToCurrentGame, Mode=TwoWay}" Visibility="{Binding CheckBox1}">
+                <CheckBox
+                    HorizontalAlignment="Stretch"
+                    IsChecked="{Binding DownloadToCurrentGame, Mode=TwoWay}"
+                    Visibility="{Binding CheckBox1}">
                     <StackPanel DataContext="{Binding GameInfo}">
                         <TextBlock x:Uid="Dialogs_DownloadResourceDialog_Text3" Text="Install this mod for the currently selected game" />
                         <StackPanel Orientation="Horizontal" Spacing="5">
@@ -610,7 +613,10 @@
                         Margin="0,-2,0,0"
                         Text="Download to designated location" />
                 </CheckBox>
-                <CheckBox IsChecked="{Binding IsModpack, Mode=TwoWay}" Visibility="{Binding CheckBox3}">
+                <CheckBox
+                    IsChecked="{Binding IsModpack, Mode=TwoWay}"
+                    IsEnabled="False"
+                    Visibility="{Binding CheckBox3}">
                     <TextBlock
                         x:Uid="Dialogs_DownloadResourceDialog_Text5"
                         Margin="0,-2,0,0"

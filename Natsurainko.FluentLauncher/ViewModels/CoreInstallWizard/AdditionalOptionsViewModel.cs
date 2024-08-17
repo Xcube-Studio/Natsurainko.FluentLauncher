@@ -37,7 +37,13 @@ internal partial class AdditionalOptionsViewModel : WizardViewModelBase
     private bool enabledOptiFabric;
 
     [ObservableProperty]
+    private bool loadingFabricApi = true;
+
+    [ObservableProperty]
     private ModrinthFile fabricApi;
+
+    [ObservableProperty]
+    private bool loadingOptiFabric = true;
 
     [ObservableProperty]
     private CurseForgeFile optiFabric;
@@ -54,10 +60,17 @@ internal partial class AdditionalOptionsViewModel : WizardViewModelBase
             {
                 if (item.McVersion.Equals(_coreInstallationInfo.ManifestItem.Id))
                 {
-                    App.DispatcherQueue.TryEnqueue(() => FabricApi = item);
+                    App.DispatcherQueue.TryEnqueue(() =>
+                    {
+                        FabricApi = item;
+                        LoadingFabricApi = false;
+                    });
+
                     break;
                 }
             };
+
+            App.DispatcherQueue.TryEnqueue(() => LoadingFabricApi = false);
         });
 
         Task.Run(async () =>
@@ -68,10 +81,16 @@ internal partial class AdditionalOptionsViewModel : WizardViewModelBase
             {
                 if (item.McVersion.Equals(_coreInstallationInfo.ManifestItem.Id))
                 {
-                    App.DispatcherQueue.TryEnqueue(() => OptiFabric = item);
+                    App.DispatcherQueue.TryEnqueue(() =>
+                    {
+                        OptiFabric = item;
+                        LoadingOptiFabric = false;
+                    });
                     break;
                 }
             };
+
+            App.DispatcherQueue.TryEnqueue(() => LoadingOptiFabric = false);
         });
     }
 

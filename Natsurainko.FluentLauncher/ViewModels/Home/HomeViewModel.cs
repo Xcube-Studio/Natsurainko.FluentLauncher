@@ -104,7 +104,7 @@ internal partial class HomeViewModel : ObservableObject
                     ResourceUtils.GetValue("SearchSuggest", "_D4"), async () =>
                     {
                         _navigationService.NavigateTo("Tasks/Launch");
-                        await _launchService.LaunchGame(ActiveGameInfo);
+                        await _launchService.LaunchGame(item);
                     });
             }
         }

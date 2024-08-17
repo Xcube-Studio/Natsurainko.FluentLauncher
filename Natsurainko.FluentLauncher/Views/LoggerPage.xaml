@@ -36,25 +36,32 @@
                     Margin="15,0,0,0"
                     VerticalAlignment="Center"
                     FontSize="14"
-                    FontWeight="SemiBold"
-                    Opacity="0.8"
-                    Text="{Binding Title}" />
+                    Opacity="0.8">
+                    <Run x:Uid="LoggerPage_Title" Text="Logger" /> <Run Text="-" /> <Run Text="{Binding Title}" />
+                </TextBlock>
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Padding="15,10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="1*" MinWidth="10" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
                 <TextBlock
-                    Margin="10,0"
+                    x:Uid="LoggerPage_Text1"
+                    Grid.Column="0"
                     VerticalAlignment="Center"
                     FontWeight="SemiBold"
-                    Text="Enable Logger Level:" />
+                    Text="Logger Level Filter:" />
                 <StackPanel
-                    Margin="10,5"
+                    Grid.Column="2"
                     HorizontalAlignment="Right"
                     Orientation="Horizontal">
                     <ToggleButton
@@ -87,37 +94,49 @@
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="2">
-                <StackPanel Margin="10,5" HorizontalAlignment="Right">
+                <Button Command="{Binding ExportLogCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                        <FontIcon FontSize="14" Glyph="&#xe74e;" />
+                        <TextBlock x:Uid="LoggerPage_Text2" Text="Export Log File" />
+                    </StackPanel>
+                </Button>
+                <StackPanel HorizontalAlignment="Right">
                     <CheckBox
+                        x:Uid="LoggerPage_CheckBox"
                         Content="Auto Scroll to the End"
-                        FontWeight="SemiBold"
                         IsChecked="{Binding EnableAutoScroll, Mode=TwoWay}" />
                 </StackPanel>
             </Grid>
-            <ListView
-                x:Name="ListView"
+            <ScrollViewer
+                x:Name="ScrollViewer"
                 Grid.Row="1"
-                x:FieldModifier="public"
-                ItemsSource="{Binding FilterLoggerItems}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Rectangle
-                                Width="4"
-                                Margin="-8"
-                                HorizontalAlignment="Right"
-                                Fill="Red"
-                                Opacity="0.5"
-                                Visibility="{Binding ErrorVisibility}" />
-                            <ContentControl
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Content="{Binding RichTextBlock}"
-                                FontWeight="SemiBold" />
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                Margin="-15,0"
+                Padding="15,10"
+                x:FieldModifier="public">
+                <StackPanel>
+                    <ItemsRepeater ItemsSource="{Binding FilterLoggerItems}">
+                        <ItemsRepeater.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Rectangle
+                                        Width="4"
+                                        Margin="-8"
+                                        HorizontalAlignment="Right"
+                                        Fill="Red"
+                                        Opacity="0.5"
+                                        Visibility="{Binding ErrorVisibility}" />
+                                    <ContentControl
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Content="{Binding RichTextBlock}"
+                                        FontWeight="SemiBold" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsRepeater.ItemTemplate>
+                    </ItemsRepeater>
+                    <Border Height="150" />
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Page>

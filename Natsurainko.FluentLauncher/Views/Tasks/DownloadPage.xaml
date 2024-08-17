@@ -67,7 +67,7 @@
                     FontWeight="SemiBold"
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                     Text="No Task" />
-                <HyperlinkButton Margin="0,0,0,-5">
+                <HyperlinkButton Margin="0,0,0,-5" Command="{Binding GoToDownloadCommand}">
                     <TextBlock
                         x:Uid="Tasks_DownloadPage_Text2"
                         FontWeight="SemiBold"

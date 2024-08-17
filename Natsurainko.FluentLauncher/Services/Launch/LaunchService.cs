@@ -78,6 +78,7 @@ internal class LaunchService
             _notificationService.NotifyWithoutContent(ex.Message);
         }
     }
+
     protected void OnSessionCreated(MinecraftSession minecraftSession)
         => this.SessionCreated?.Invoke(this, minecraftSession);
 

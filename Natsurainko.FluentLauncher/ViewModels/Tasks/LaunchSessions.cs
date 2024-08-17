@@ -17,9 +17,7 @@ class LaunchSessions : ObservableObject
 
     private void LaunchService_SessionCreated(object? sender, MinecraftSession e)
     {
-        App.DispatcherQueue.TryEnqueue(() =>
-        {
-            SessionViewModels.Insert(0, new LaunchSessionViewModel(e));
-        });
+        var launchSessionViewModel = new LaunchSessionViewModel(e);
+        App.DispatcherQueue.TryEnqueue(() => SessionViewModels.Insert(0, launchSessionViewModel));
     }
 }

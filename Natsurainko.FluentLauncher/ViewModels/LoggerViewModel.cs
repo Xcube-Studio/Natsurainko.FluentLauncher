@@ -1,10 +1,15 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Classes.Data.Launch;
+using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.Launch;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 
 #nullable disable
@@ -23,8 +28,7 @@ internal partial class LoggerViewModel : ObservableObject
 
         if (!(launchProcess.SessionState == MinecraftSessionState.GameExited ||
             launchProcess.SessionState == MinecraftSessionState.Killed ||
-            launchProcess.SessionState == MinecraftSessionState.GameCrashed)
-            )
+            launchProcess.SessionState == MinecraftSessionState.GameCrashed))
             View.Unloaded += (_, e) => _gameLoggerOutputs.CollectionChanged -= LoggerItems_CollectionChanged;
 
         OnPropertyChanged();
@@ -54,6 +58,19 @@ internal partial class LoggerViewModel : ObservableObject
 
     public string Title { get; set; }
 
+    [RelayCommand]
+    void ExportLog()
+    {
+        var saveFileDialog = new SaveFileDialog { FileName = "latest.log" };
+
+        if (saveFileDialog.ShowDialog().GetValueOrDefault())
+            File.WriteAllLines(saveFileDialog.FileName, _gameLoggerOutputs.Select(x => x.FullData));
+
+        App.GetService<NotificationService>().NotifyWithoutContent(
+            ResourceUtils.GetValue("Notifications", "_ExportLog"),
+            icon: "\ue74e");
+    }
+
     private void LoggerItems_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
         var enums = new List<GameLoggerOutputLevel>();
@@ -74,8 +91,13 @@ internal partial class LoggerViewModel : ObservableObject
             enums.Add(GameLoggerOutputLevel.Debug);
 
         foreach (var item in e.NewItems)
+        {
             if (item is GameLoggerOutput GameLoggerOutput && enums.Contains(GameLoggerOutput.Level))
-                App.DispatcherQueue.TryEnqueue(() => FilterLoggerItems.Add(new LoggerItem(GameLoggerOutput)));
+            {
+                var loggerItem = new LoggerItem(GameLoggerOutput);
+                App.DispatcherQueue.TryEnqueue(() => FilterLoggerItems.Add(loggerItem));
+            }
+        }
 
         if (EnableAutoScroll)
             App.DispatcherQueue.TryEnqueue(ScrollToEnd);
@@ -117,14 +139,6 @@ internal partial class LoggerViewModel : ObservableObject
 
     private void ScrollToEnd()
     {
-        App.DispatcherQueue.TryEnqueue(() =>
-        {
-            try
-            {
-                View.ListView.SelectedIndex = View.ListView.Items.Count - 1;
-                View.ListView.ScrollIntoView(View.ListView.Items.Last());
-            }
-            catch { }
-        });
+        View.ScrollViewer.ScrollToVerticalOffset(View.ScrollViewer.ScrollableHeight);
     }
 }

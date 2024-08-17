@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Launch;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.Classes.Data.Launch;
 
 internal partial class LoggerItem : ObservableObject

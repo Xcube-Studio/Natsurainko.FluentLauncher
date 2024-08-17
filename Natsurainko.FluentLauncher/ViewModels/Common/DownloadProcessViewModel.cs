@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
-using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Management.Downloader.Data;
@@ -47,9 +46,9 @@ internal partial class FileDownloadProcessViewModel : DownloadProcessViewModel
     private readonly CurseForgeClient curseForgeClient = App.GetService<CurseForgeClient>();
 
     private readonly string _filePath;
-    private readonly object _file;
+    private readonly ResourceFileItem _file;
 
-    public FileDownloadProcessViewModel(object file, string filePath)
+    public FileDownloadProcessViewModel(ResourceFileItem file, string filePath)
     {
         _file = file;
         _filePath = filePath;
@@ -59,11 +58,7 @@ internal partial class FileDownloadProcessViewModel : DownloadProcessViewModel
     {
         App.DispatcherQueue.SynchronousTryEnqueue(() => State = FileDownloadProcessState.Created);
 
-        string url = default;
-
-        url = _file is CurseForgeFile curseFile
-            ? await curseForgeClient.GetFileUrlAsync(curseFile)
-            : ((ModrinthFile)_file).Url;
+        string url = await _file.GetUrl();
 
         App.DispatcherQueue.SynchronousTryEnqueue(() =>
         {

@@ -58,7 +58,7 @@ internal partial class DownloadService
         HttpUtils.DownloadSetting.MultiThreadsCount = _settingsService.MaxDownloadThreads;
     }
 
-    public void DownloadResourceFile(object file, string filePath)
+    public void DownloadResourceFile(ResourceFileItem file, string filePath)
     {
         var process = new FileDownloadProcessViewModel(file, filePath);
         _downloadProcesses.Insert(0, process);
@@ -294,7 +294,6 @@ internal partial class DownloadService
         installProcess.Start();
     }
 }
-
 
 internal partial class DownloadService
 {

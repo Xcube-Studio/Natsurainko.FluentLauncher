@@ -136,6 +136,13 @@
                                                 <FontIcon FontSize="14" Glyph="&#xe896;" />
                                                 <TextBlock x:Uid="Downloads_DefaultPage_Text1" Text="Go Download" />
                                             </StackPanel>
+
+                                            <i:Interaction.Behaviors>
+                                                <bh:AncestorBindingBehavior
+                                                    AncestorType="ScrollViewer"
+                                                    Binding="{Binding DataContext.FlipViewItemClickedCommand}"
+                                                    TargetPropertyName="Command" />
+                                            </i:Interaction.Behaviors>
                                         </Button>
                                     </StackPanel>
                                 </Grid>

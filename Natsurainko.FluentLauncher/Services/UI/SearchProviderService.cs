@@ -2,7 +2,7 @@
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Nrk.FluentCore.Management;
-using Nrk.FluentCore.Management.Downloader.Data;
+
 using System;
 using System.Collections.Generic;
 

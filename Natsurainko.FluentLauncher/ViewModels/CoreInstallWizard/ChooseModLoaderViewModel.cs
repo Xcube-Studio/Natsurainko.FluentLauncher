@@ -1,9 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Models.Download;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.CoreInstallWizard;
-using Nrk.FluentCore.Management.Downloader.Data;
+
 using Nrk.FluentCore.Management.ModLoaders;
 using Nrk.FluentCore.Resources;
 using System.Collections.Generic;

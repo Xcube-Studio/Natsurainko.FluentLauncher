@@ -1,7 +1,7 @@
 using Natsurainko.FluentLauncher.Services.Network.Data;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
-using Nrk.FluentCore.Management.Downloader;
+
 using Nrk.FluentCore.Utils;
 using System;
 using System.IO;

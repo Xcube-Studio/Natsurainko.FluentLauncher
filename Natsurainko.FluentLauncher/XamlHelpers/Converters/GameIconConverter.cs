@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Nrk.FluentCore.Management;
-using Nrk.FluentCore.Management.Downloader.Data;
+
 using Nrk.FluentCore.Management.ModLoaders;
 using System;
 

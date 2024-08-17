@@ -8,8 +8,8 @@ using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.Management;
-using Nrk.FluentCore.Management.Downloader;
-using Nrk.FluentCore.Management.Downloader.Data;
+
+
 using Nrk.FluentCore.Management.ModLoaders;
 using Nrk.FluentCore.Management.Parsing;
 using Nrk.FluentCore.Utils;

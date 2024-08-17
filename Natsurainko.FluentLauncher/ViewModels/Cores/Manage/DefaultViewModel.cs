@@ -62,7 +62,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
         Task.Run(() =>
         {
-            var gameStorageInfo = MinecraftInstance.GetStorageInfo();
+            var gameStorageInfo = MinecraftInstance.GetStatistics();
             App.DispatcherQueue.TryEnqueue(() => GameStorageInfo = gameStorageInfo);
         });
 

@@ -4,6 +4,7 @@ using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.XamlHelpers.Converters;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Management;
 using System.Collections.ObjectModel;
 using System.Linq;

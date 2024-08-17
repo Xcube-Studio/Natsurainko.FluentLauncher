@@ -71,7 +71,7 @@ internal class GameService
 
     public virtual void OnActiveInstanceChanged(MinecraftInstance? oldGame, MinecraftInstance? newGame)
     {
-        _settingsService.ActiveInstanceId = newGame.VersionFolderName;
+        _settingsService.ActiveInstanceId = newGame.InstanceId;
     }
 
     public virtual void ActivateMinecraftFolder(string? folder)
@@ -104,7 +104,7 @@ internal class GameService
         MinecraftInstance? instance = null;
         if (clientId is not null)
         {
-            instance = _games.Where(i => i.VersionFolderName == clientId).FirstOrDefault();
+            instance = _games.Where(i => i.InstanceId == clientId).FirstOrDefault();
         }
 
         if (instance is null)

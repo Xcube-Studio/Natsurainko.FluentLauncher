@@ -1,6 +1,7 @@
 ﻿using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
+using Nrk.FluentCore.Experimental.GameManagement;
 using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Management.ModLoaders;
@@ -18,7 +19,15 @@ internal static class MinecraftInstanceExtensions
 {
     public static GameConfig GetConfig(this MinecraftInstance instance)
     {
-        var configGuid = new Guid(MD5.HashData(Encoding.UTF8.GetBytes($"{instance.MinecraftFolderPath}:{instance.VersionFolderName}:{instance.Type}")));
+        string type = instance.Version.Type switch
+        {
+            MinecraftVersionType.Release => "release",
+            MinecraftVersionType.OldBeta => "old_beta",
+            MinecraftVersionType.OldAlpha => "old_alpha",
+            MinecraftVersionType.PreRelease or MinecraftVersionType.Snapshot => "snapshot",
+            _ => ""
+        };
+        var configGuid = new Guid(MD5.HashData(Encoding.UTF8.GetBytes($"{instance.MinecraftFolderPath}:{instance.InstanceId}:{type}")));
         var configsFolder = Path.Combine(LocalStorageService.LocalFolderPath, "GameConfigsFolder");
 
         if (!Directory.Exists(configsFolder)) 
@@ -68,12 +77,12 @@ internal static class MinecraftInstanceExtensions
         if (config.EnableSpecialSetting)
         {
             if (config.EnableIndependencyCore)
-                return Path.Combine(instance.MinecraftFolderPath, "versions", instance.VersionFolderName);
+                return Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId);
             else return instance.MinecraftFolderPath;
         }
 
         if (App.GetService<SettingsService>().EnableIndependencyCore)
-            return Path.Combine(instance.MinecraftFolderPath, "versions", instance.VersionFolderName);
+            return Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId);
 
         return instance.MinecraftFolderPath;
     }

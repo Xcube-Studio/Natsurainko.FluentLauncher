@@ -2,7 +2,7 @@
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Nrk.FluentCore.Authentication;
-
+using Nrk.FluentCore.Experimental.GameManagement.Downloader;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Threading.Tasks;
@@ -43,13 +43,10 @@ internal class CacheSkinService
         var skinFilePath = GetSkinFilePath(account);
         if (!string.IsNullOrEmpty(skinUrl))
         {
-            var downloadResult = await HttpUtils.DownloadElementAsync(new DownloadElement
-            {
-                AbsolutePath = skinFilePath,
-                Url = skinUrl,
-            });
+            
+            var downloadResult = await HttpUtils.Downloader.DownloadFileAsync(new(skinUrl, skinFilePath));
 
-            if (downloadResult.IsFaulted)
+            if (downloadResult.Type == DownloadResultType.Failed)
                 return false;
         }
         else return false;

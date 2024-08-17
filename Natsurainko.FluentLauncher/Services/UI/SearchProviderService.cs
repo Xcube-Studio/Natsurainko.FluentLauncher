@@ -118,7 +118,7 @@ internal static class SuggestionHelper
     {
         return new SearchProviderService.Suggestion
         {
-            Title = MinecraftInstance.VersionFolderName,
+            Title = MinecraftInstance.InstanceId,
             Description = description,
             SuggestionIconType = SearchProviderService.SuggestionIconType.UriIcon,
             Icon = string.Format("ms-appx:///Assets/Icons/{0}.png", MinecraftInstance.Version.Type switch

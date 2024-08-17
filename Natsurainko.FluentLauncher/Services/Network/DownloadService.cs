@@ -137,7 +137,7 @@ internal partial class DownloadService
         var installProcess = new InstallProcessViewModel() { Title = GetTitle() };
         var firstToStart = new List<InstallProcessViewModel.ProgressItem>();
 
-        MinecraftInstance inheritsFrom = _gameService.Games.FirstOrDefault(x => x.VersionFolderName.Equals(info.ManifestItem.Id));
+        MinecraftInstance inheritsFrom = _gameService.Games.FirstOrDefault(x => x.InstanceId.Equals(info.ManifestItem.Id));
 
         var installVanillaGame = new InstallProcessViewModel.ProgressItem(@this =>
         {
@@ -155,7 +155,7 @@ internal partial class DownloadService
             t.Dispose();
 
             App.DispatcherQueue.SynchronousTryEnqueue(() => _gameService.RefreshGames());
-            inheritsFrom = _gameService.Games.FirstOrDefault(x => x.VersionFolderName.Equals(info.ManifestItem.Id));
+            inheritsFrom = _gameService.Games.FirstOrDefault(x => x.InstanceId.Equals(info.ManifestItem.Id));
 
         }, ResourceUtils.GetValue("Converters", "_ProgressItem_InstallVanilla").Replace("${id}", info.ManifestItem.Id), installProcess);
         var completeResources = new InstallProcessViewModel.ProgressItem(@this =>
@@ -183,7 +183,7 @@ internal partial class DownloadService
         {
             App.DispatcherQueue.SynchronousTryEnqueue(() => _gameService.RefreshGames());
 
-            var instance = _gameService.Games.First(x => x.VersionFolderName.Equals(info.AbsoluteId));
+            var instance = _gameService.Games.First(x => x.InstanceId.Equals(info.AbsoluteId));
             var config = instance.GetConfig();
 
             config.EnableSpecialSetting = info.EnableIndependencyCore || !string.IsNullOrEmpty(info.NickName);

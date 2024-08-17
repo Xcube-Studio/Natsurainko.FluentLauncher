@@ -11,11 +11,13 @@ using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.ViewModels.CoreInstallWizard;
-
+using Nrk.FluentCore.Experimental.GameManagement.Downloader;
 using Nrk.FluentCore.Resources;
 using Nrk.FluentCore.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
@@ -149,18 +151,19 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
 
             installInfo.AdditionalOptions.Add(new(@this =>
             {
-                var downloadTask = HttpUtils.DownloadElementAsync(new DownloadElement
-                {
-                    AbsolutePath = file,
-                    Url = vm.FabricApi.Url
-                },
-                downloadSetting: new DownloadSetting
-                {
-                    EnableLargeFileMultiPartDownload = false
-                },
-                perSecondProgressChangedAction: @this.OnProgressChanged);
+                var downloadTask = _downloadService.Downloader.CreateDownloadTask(
+                    vm.FabricApi.Url,
+                    file);
 
-                downloadTask.Wait();
+                Timer t = new((_) =>
+                {
+                    if (downloadTask.TotalBytes is null)
+                        return;
+                    @this.OnProgressChanged(downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes);
+                }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+                downloadTask.StartAsync().Wait();
+                t.Dispose();
+
             }, stepInstallMod.Replace("${file}", vm.FabricApi.FileName)));
         }
 
@@ -173,18 +176,19 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
             installInfo.AdditionalOptions.Add(new(async @this =>
             {
                 string fileUrl = await _curseForgeClient.GetFileUrlAsync(vm.OptiFabric);
-                var downloadTask = HttpUtils.DownloadElementAsync(new DownloadElement
-                {
-                    AbsolutePath = file,
-                    Url = fileUrl
-                },
-                downloadSetting: new DownloadSetting
-                {
-                    EnableLargeFileMultiPartDownload = false
-                },
-                perSecondProgressChangedAction: @this.OnProgressChanged);
 
-                downloadTask.Wait();
+                var downloadTask = _downloadService.Downloader.CreateDownloadTask(
+                    fileUrl,
+                    file);
+
+                using Timer t = new((_) =>
+                {
+                    if (downloadTask.TotalBytes is null)
+                        return;
+                    @this.OnProgressChanged(downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes);
+                }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+                await downloadTask.StartAsync();
+
             }, stepInstallMod.Replace("${file}", vm.OptiFabric.FileName)));
         }
 

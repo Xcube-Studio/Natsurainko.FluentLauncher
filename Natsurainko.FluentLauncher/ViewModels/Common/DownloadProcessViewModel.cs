@@ -2,10 +2,11 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
+using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-
+using Nrk.FluentCore.Experimental.GameManagement.Downloader;
 using Nrk.FluentCore.Resources;
 using Nrk.FluentCore.Utils;
 using System;
@@ -14,10 +15,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI.Text;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
 internal partial class DownloadProcessViewModel : ObservableObject
@@ -71,15 +72,20 @@ internal partial class FileDownloadProcessViewModel : DownloadProcessViewModel
             Title = Path.GetFileName(_filePath);
         });
 
-        var downloadResult = await HttpUtils.DownloadElementAsync(new DownloadElement
-        {
-            AbsolutePath = _filePath,
-            Url = url
-        },
-        downloadSetting: new DownloadSetting { EnableLargeFileMultiPartDownload = false },
-        perSecondProgressChangedAction: pro => App.DispatcherQueue.TryEnqueue(() => Progress = pro));
+        var downloadTask = HttpUtils.Downloader.CreateDownloadTask(
+            url,
+            _filePath);
 
-        App.DispatcherQueue.SynchronousTryEnqueue(() => State = downloadResult.IsFaulted ? FileDownloadProcessState.Faulted : FileDownloadProcessState.Finished);
+        Timer t = new((_) =>
+        {
+            if (downloadTask.TotalBytes is null)
+                return;
+            Progress = downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes;
+        }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+        var downloadResult = await downloadTask.StartAsync();
+        t.Dispose();
+
+        App.DispatcherQueue.SynchronousTryEnqueue(() => State = downloadResult.Type == DownloadResultType.Failed ? FileDownloadProcessState.Faulted : FileDownloadProcessState.Finished);
     });
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)

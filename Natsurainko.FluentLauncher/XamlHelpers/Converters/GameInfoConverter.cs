@@ -1,5 +1,8 @@
 ﻿using Microsoft.UI.Xaml.Data;
+using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Utils;
+using Nrk.FluentCore.Experimental.GameManagement;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Management;
 
 using System;
@@ -19,19 +22,19 @@ public class MinecraftInstanceConverter : IValueConverter
         {
             var strings = new List<string>
             {
-                game.AbsoluteVersion ?? "Unknown Version",
-                ResourceUtils.GetValue("Converters", "_" + game.Type switch
+                game.InstanceId ?? "Unknown Version",
+                ResourceUtils.GetValue("Converters", "_" + game.Version.Type switch
                 {
-                    "release" => "Release",
-                    "snapshot" => "Snapshot",
-                    "old_beta" => "Old Beta",
-                    "old_alpha" => "Old Alpha",
+                    MinecraftVersionType.Release => "Release",
+                    MinecraftVersionType.Snapshot => "Snapshot",
+                    MinecraftVersionType.OldBeta => "Old Beta",
+                    MinecraftVersionType.OldAlpha => "Old Alpha",
                     _ => "Unknown"
-                }),
+                })
             };
 
             if (EnableShowModLoaderType)
-                strings.AddRange(game.GetModLoaders().Select(x => $"{x.LoaderType} {x.Version}"));
+                strings.AddRange(game.GetModLoaders().Select(x => $"{x.Type} {x.Version}"));
 
             return strings;
         }

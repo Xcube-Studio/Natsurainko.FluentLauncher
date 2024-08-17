@@ -9,6 +9,7 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
+using Nrk.FluentCore.Experimental.GameManagement;
 using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Management;
 using System.Collections.Generic;
@@ -87,9 +88,9 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
         {
             return FilterIndex switch
             {
-                1 => x.Type.Equals("release"),
-                2 => x.Type.Equals("snapshot"),
-                3 => x.Type.Contains("old"),
+                1 => x.Version.Type == MinecraftVersionType.Release,
+                2 => x.Version.Type == MinecraftVersionType.Snapshot,
+                3 => x.Version.Type == MinecraftVersionType.OldBeta || x.Version.Type == MinecraftVersionType.OldAlpha,
                 _ => true
             };
         });
@@ -116,7 +117,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
 
         foreach (var item in MinecraftInstances)
         {
-            if (item.VersionFolderName.Contains(searchText))
+            if (item.InstanceId.Contains(searchText))
             {
                 yield return SuggestionHelper.FromMinecraftInstance(item,
                     ResourceUtils.GetValue("SearchSuggest", "_D3"), 

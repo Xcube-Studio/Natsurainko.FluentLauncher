@@ -55,7 +55,7 @@ internal partial class DeleteGameDialogViewModel : ObservableObject
             return false;
         }
 
-        var directory = new DirectoryInfo(Path.Combine(_MinecraftInstance.MinecraftFolderPath, "versions", _MinecraftInstance.AbsoluteId));
+        var directory = new DirectoryInfo(Path.Combine(_MinecraftInstance.MinecraftFolderPath, "versions", _MinecraftInstance.InstanceId));
         var notificationService = App.GetService<NotificationService>();
 
         if (!ExistsOccupiedFile(directory))

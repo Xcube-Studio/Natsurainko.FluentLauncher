@@ -199,12 +199,12 @@ internal class LaunchService
         if (specialConfig.EnableSpecialSetting)
         {
             if (specialConfig.EnableIndependencyCore)
-                return Path.Combine(instance.MinecraftFolderPath, "versions", instance.VersionFolderName);
+                return Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId);
             else return instance.MinecraftFolderPath;
         }
 
         if (_settingsService.EnableIndependencyCore)
-            return Path.Combine(instance.MinecraftFolderPath, "versions", instance.VersionFolderName);
+            return Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId);
 
         return instance.MinecraftFolderPath;
     }

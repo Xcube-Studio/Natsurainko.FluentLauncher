@@ -6,7 +6,9 @@ using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.ViewModels.Tasks;
+using Nrk.FluentCore.Experimental.GameManagement;
 using Nrk.FluentCore.Experimental.GameManagement.Instances;
+using Nrk.FluentCore.Experimental.GameManagement.Launch;
 using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Utils;
@@ -28,13 +30,13 @@ internal class JumpListService
         _launchService = launchService;
     }
 
-    private static async Task AddItem(MinecraftInstance MinecraftInstance)
+    private static async Task AddItem(MinecraftInstance minecraftInstance)
     {
         var list = await JumpList.LoadCurrentAsync();
-        var itemArguments = JsonSerializer.Serialize(MinecraftInstance).ConvertToBase64();
+        var itemArguments = JsonSerializer.Serialize(minecraftInstance).ConvertToBase64();
 
         var jumpListItem = list.Items.Where(item =>
-            MinecraftInstance == JsonSerializer.Deserialize<MinecraftInstance>
+            minecraftInstance == JsonSerializer.Deserialize<MinecraftInstance>
                 (item.Arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64())).FirstOrDefault();
 
         if (jumpListItem != null)
@@ -44,15 +46,15 @@ internal class JumpListService
         }
         else
         {
-            jumpListItem = JumpListItem.CreateWithArguments($"/quick-launch {itemArguments}", MinecraftInstance.Name);
+            jumpListItem = JumpListItem.CreateWithArguments($"/quick-launch {itemArguments}", minecraftInstance.Name);
 
             jumpListItem.GroupName = "Latest";
-            jumpListItem.Logo = new Uri(string.Format("ms-appx:///Assets/Icons/{0}.png", !MinecraftInstance.IsVanilla ? "furnace_front" : MinecraftInstance.Type switch
+            jumpListItem.Logo = new Uri(string.Format("ms-appx:///Assets/Icons/{0}.png", !minecraftInstance.IsVanilla ? "furnace_front" : minecraftInstance.Version.Type switch
             {
-                "release" => "grass_block_side",
-                "snapshot" => "crafting_table_front",
-                "old_beta" => "dirt_path_side",
-                "old_alpha" => "dirt_path_side",
+                MinecraftVersionType.Release => "grass_block_side",
+                MinecraftVersionType.Snapshot => "crafting_table_front",
+                MinecraftVersionType.OldBeta => "dirt_path_side",
+                MinecraftVersionType.OldAlpha => "dirt_path_side",
                 _ => "grass_block_side"
             }), UriKind.RelativeOrAbsolute);
 
@@ -70,12 +72,12 @@ internal class JumpListService
             ?? throw new InvalidOperationException();
 
         string name = MinecraftInstance.Name ?? "Minecraft";
-        string icon = string.Format("ms-appx:///Assets/Icons/{0}.png", !MinecraftInstance.IsVanilla ? "furnace_front" : MinecraftInstance.Type switch
+        string icon = string.Format("ms-appx:///Assets/Icons/{0}.png", !MinecraftInstance.IsVanilla ? "furnace_front" : MinecraftInstance.Version.Type switch
         {
-            "release" => "grass_block_side",
-            "snapshot" => "crafting_table_front",
-            "old_beta" => "dirt_path_side",
-            "old_alpha" => "dirt_path_side",
+            MinecraftVersionType.Release => "grass_block_side",
+            MinecraftVersionType.Snapshot => "crafting_table_front",
+            MinecraftVersionType.OldBeta => "dirt_path_side",
+            MinecraftVersionType.OldAlpha => "dirt_path_side",
             _ => "grass_block_side"
         });
 

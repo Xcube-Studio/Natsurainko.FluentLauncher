@@ -8,7 +8,6 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using System.IO;
-using System.Threading.Tasks;
 using Windows.UI;
 
 #nullable disable
@@ -102,7 +101,7 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
         openFileDialog.Multiselect = false;
         openFileDialog.Filter = "Png Image File|*.png|JPG Image File|*.jpg|BMP Image File|*.bmp|All Files|*.*";
 
-        if (openFileDialog.ShowDialog().GetValueOrDefault(false)) 
+        if (openFileDialog.ShowDialog().GetValueOrDefault(false))
             ImageFilePath = openFileDialog.FileName;
     }
 }

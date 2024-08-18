@@ -15,7 +15,7 @@ internal static class SaveInfoParser
             Folder = saveFolder
         };
 
-        await Task.Run(() => 
+        await Task.Run(() =>
         {
             var time = DateTime.Now;
 
@@ -38,7 +38,7 @@ internal static class SaveInfoParser
 
             saveInfo.LastPlayed = DateTimeOffset.FromUnixTimeMilliseconds(dataTagCompound["LastPlayed"].AsLong()).ToLocalTime().DateTime;
 
-            if (File.Exists(Path.Combine(saveFolder, "icon.png"))) 
+            if (File.Exists(Path.Combine(saveFolder, "icon.png")))
                 saveInfo.IconFilePath = Path.Combine(saveFolder, "icon.png");
 
             var gap = DateTime.Now - time;

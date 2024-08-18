@@ -149,7 +149,7 @@ internal partial class ChooseModLoaderData : ObservableObject
 
                     var quilt = array.Select(x => new LoaderBuildData
                     {
-                        DisplayText = x["loader"]["version"].GetValue<string>(),
+                        DisplayText = x!["loader"]!["version"]!.GetValue<string>(),
                         Metadata = x
                     }).ToList();
 
@@ -160,8 +160,8 @@ internal partial class ChooseModLoaderData : ObservableObject
 
                     var neoForge = array.Select(x => new LoaderBuildData
                     {
-                        DisplayText = x["version"].GetValue<string>(),
-                        Metadata = x["version"]
+                        DisplayText = x["version"]!.GetValue<string>(),
+                        Metadata = x["version"]!
                     }).ToList();
 
                     neoForge.Sort((a, b) => a.DisplayText.CompareTo(b.DisplayText));
@@ -177,10 +177,10 @@ internal partial class ChooseModLoaderData : ObservableObject
         {
             IsLoading = false;
 
-            if (array.Any())
+            if (array!.Any())
             {
                 Items = loaders;
-                SelectedItem = loaders.First();
+                SelectedItem = loaders!.First();
                 IsSupported = true;
             }
 

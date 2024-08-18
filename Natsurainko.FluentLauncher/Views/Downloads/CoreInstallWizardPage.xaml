@@ -8,7 +8,6 @@
     xmlns:downloads="using:Natsurainko.FluentLauncher.ViewModels.Downloads"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     d:DataContext="{d:DesignInstance Type=downloads:CoreInstallWizardViewModel}"
     Background="Transparent"
     mc:Ignorable="d">

@@ -28,9 +28,9 @@ internal partial class HomeViewModel : ObservableObject
     private readonly SearchProviderService _searchProviderService;
 
     public HomeViewModel(
-        GameService gameService, 
-        AccountService accountService, 
-        LaunchService launchService, 
+        GameService gameService,
+        AccountService accountService,
+        LaunchService launchService,
         INavigationService navigationService,
         SearchProviderService searchProviderService)
     {

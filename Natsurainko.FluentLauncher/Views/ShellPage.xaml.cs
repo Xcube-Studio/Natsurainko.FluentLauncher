@@ -1,7 +1,6 @@
 using CommunityToolkit.WinUI.Media.Pipelines;
 using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Pages;
-using FluentLauncher.Infra.WinUI.Navigation;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
@@ -48,7 +47,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
     private async void Page_Loaded(object sender, RoutedEventArgs e)
     {
         App.MainWindow.SetTitleBar(AppTitleBar);
-        
+
         if (_settings.BackgroundMode == 3 && !VM._onNavigatedTo)
         {
             var sprite = await PipelineBuilder

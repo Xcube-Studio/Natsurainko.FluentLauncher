@@ -1,8 +1,8 @@
 ﻿using Natsurainko.FluentLauncher.Services.Settings;
-using Nrk.FluentCore.Management.GameLocator;
 using Nrk.FluentCore.Management;
-using System.Collections.ObjectModel;
+using Nrk.FluentCore.Management.GameLocator;
 using System;
+using System.Collections.ObjectModel;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
 

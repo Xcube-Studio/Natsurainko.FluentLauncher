@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
 internal partial class WizardViewModelBase : ObservableObject

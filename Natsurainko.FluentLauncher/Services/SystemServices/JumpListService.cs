@@ -140,13 +140,13 @@ internal class JumpListService
                     break;
                 case MinecraftSessionState.Faulted:
                 case MinecraftSessionState.GameCrashed:
-                    try 
-                    { 
+                    try
+                    {
                         App.DispatcherQueue.TryEnqueue(() =>
                         {
                             App.GetService<IActivationService>().ActivateWindow("MainWindow");
                             App.MainWindow.NavigateToLaunchTasksPage();
-                        }); 
+                        });
                     }
                     catch (Exception ex) { App.ProcessException(ex); }
                     break;

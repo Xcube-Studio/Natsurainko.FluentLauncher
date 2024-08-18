@@ -17,7 +17,7 @@ internal class CacheInterfaceService
     public const string LauncherMetaVersionManifest = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json";
     public const string LauncherContentPatchNotes = "https://launchercontent.mojang.com/v2/javaPatchNotes.json";
     public const string LauncherContentNews = "https://launchercontent.mojang.com/v2/news.json";
-    
+
     public string VersionManifest => _settingsService.CurrentDownloadSource switch
     {
         "Bmclapi" => DownloadMirrors.Bmclapi.VersionManifestUrl,
@@ -46,7 +46,7 @@ internal class CacheInterfaceService
     {
         var fileInfo = _localStorageService.GetFile(targetFileName ?? GetDefaultFileName(url));
 
-        if (!fileInfo.Directory!.Exists) 
+        if (!fileInfo.Directory!.Exists)
             fileInfo.Directory.Create();
 
         async Task<string> GetStringFromInterface(bool writeToLocal = false)
@@ -57,14 +57,14 @@ internal class CacheInterfaceService
             responseMessage.EnsureSuccessStatusCode();
             var content = await responseMessage.Content.ReadAsStringAsync();
 
-            if (writeToLocal) 
+            if (writeToLocal)
                 await File.WriteAllTextAsync(fileInfo.FullName, content);
 
             return content;
         }
 
         if (method == InterfaceRequestMethod.AlwaysLatest)
-           await GetStringFromInterface();
+            await GetStringFromInterface();
 
         if (fileInfo.Exists && method == InterfaceRequestMethod.Static)
             return await File.ReadAllTextAsync(fileInfo.FullName);
@@ -73,7 +73,7 @@ internal class CacheInterfaceService
         {
             _ = GetStringFromInterface(writeToLocal: true).ContinueWith(func);
 
-            return fileInfo.Exists 
+            return fileInfo.Exists
                 ? await File.ReadAllTextAsync(fileInfo.FullName)
                 : null;
         }

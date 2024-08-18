@@ -99,7 +99,7 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
                     ModelGeometry.Add(new MeshGeometryModel3D() { Material = material, Geometry = object3D.Geometry });
             });
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             _notificationService.NotifyException("_SkinDisplayExceptionT", ex, "_SkinDisplayExceptionD");
         }
@@ -128,6 +128,8 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
         if (ActiveAccount is MicrosoftAccount microsoft)
         {
             using var responseMessage = HttpUtils.HttpGet("https://api.minecraftservices.com/minecraft/profile", authorization);
+            responseMessage.EnsureSuccessStatusCode();
+
             var json = JsonNode.Parse(responseMessage.Content.ReadAsString())!["skins"]!
                 .AsArray().Where(item => (item!["state"]?.GetValue<string>().Equals("ACTIVE")).GetValueOrDefault()).FirstOrDefault();
 

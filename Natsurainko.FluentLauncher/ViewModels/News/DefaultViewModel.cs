@@ -47,7 +47,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             ParseNewsTask,
             "cache-interfaces\\launchercontent.mojang.com\\news.json")
         .ContinueWith(ParseNewsTask);
-    } 
+    }
 
     void ParsePatchNotesTask(Task<string> task)
     {
@@ -57,7 +57,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         }
 
         string patchNotesJson = task.Result;
-        if (string.IsNullOrEmpty(patchNotesJson) || PatchNotesJson == patchNotesJson) 
+        if (string.IsNullOrEmpty(patchNotesJson) || PatchNotesJson == patchNotesJson)
             return;
 
         var patchNotes = JsonNode.Parse(patchNotesJson)!["entries"].AsArray().Select(node =>
@@ -85,7 +85,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         }
 
         string newsJson = task.Result;
-        if (string.IsNullOrEmpty(newsJson) || NewsJson == newsJson) 
+        if (string.IsNullOrEmpty(newsJson) || NewsJson == newsJson)
             return;
 
         var newsDatas = JsonNode.Parse(newsJson)!["entries"].AsArray().Select(node =>
@@ -95,7 +95,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
             var tags = new List<string>([newsData.Date, newsData.Category]);
 
-            if (newsData.Tags != null) 
+            if (newsData.Tags != null)
                 tags.Add(newsData.Tag);
 
             newsData.Tags = tags.ToArray();

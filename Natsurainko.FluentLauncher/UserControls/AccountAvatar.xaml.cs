@@ -2,6 +2,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Nrk.FluentCore.Authentication;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.UserControls;
 
 public sealed partial class AccountAvatar : UserControl

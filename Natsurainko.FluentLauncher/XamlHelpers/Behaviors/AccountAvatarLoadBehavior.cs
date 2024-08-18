@@ -25,7 +25,7 @@ internal class AccountAvatarLoadBehavior : DependencyObject, IBehavior
     {
         get { return (Account)GetValue(AccountProperty); }
         set { SetValue(AccountProperty, value); }
-    } 
+    }
 
     public static readonly DependencyProperty AccountProperty =
         DependencyProperty.Register("Account", typeof(Account), typeof(AccountAvatarLoadBehavior), new PropertyMetadata(null, OnAccountChanged));
@@ -45,7 +45,7 @@ internal class AccountAvatarLoadBehavior : DependencyObject, IBehavior
 
     public void Attach(DependencyObject associatedObject)
     {
-        if (associatedObject is not Border) 
+        if (associatedObject is not Border)
             return;
 
         AssociatedObject = associatedObject;
@@ -55,7 +55,7 @@ internal class AccountAvatarLoadBehavior : DependencyObject, IBehavior
         border.Unloaded += Border_Unloaded;
     }
 
-    public void Detach() {  }
+    public void Detach() { }
 
     private async void RenderAvatar()
     {
@@ -72,8 +72,8 @@ internal class AccountAvatarLoadBehavior : DependencyObject, IBehavior
             BackgroundLayout.Source = await StretchImageSizeAsync(
                 new Bitmap(
                     System.Drawing.Image.FromFile(
-                        (await StorageFile.GetFileFromApplicationUriAsync(new Uri(filePath))).Path)), 
-                (int)border.ActualWidth, 
+                        (await StorageFile.GetFileFromApplicationUriAsync(new Uri(filePath))).Path)),
+                (int)border.ActualWidth,
                 (int)border.ActualHeight);
             ForegroundLayout.Source = null;
 
@@ -83,10 +83,7 @@ internal class AccountAvatarLoadBehavior : DependencyObject, IBehavior
 
         if (!File.Exists(filePath))
         {
-            _cacheSkinService.CacheSkinOfAccount(Account).ContinueWith(task => 
-            { 
-
-            });
+            _ = _cacheSkinService.CacheSkinOfAccount(Account);
             ProgressRing.IsActive = false;
             return;
         }

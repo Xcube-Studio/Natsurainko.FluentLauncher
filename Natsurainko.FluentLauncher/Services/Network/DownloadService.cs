@@ -343,7 +343,8 @@ internal partial class DownloadService
         if (downloadMirrorSource != null) defaultResourcesDownloader.SetDownloadMirror(downloadMirrorSource);
 
         return defaultResourcesDownloader;
-    }}
+    }
+}
 
 internal static class IDownloadElementExtensions
 {

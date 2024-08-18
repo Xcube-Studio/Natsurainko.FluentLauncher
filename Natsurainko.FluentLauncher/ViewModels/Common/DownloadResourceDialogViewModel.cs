@@ -116,7 +116,7 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
     [ObservableProperty]
     private Visibility checkBox3;
 
-    public bool CanConfirm 
+    public bool CanConfirm
     {
         get
         {
@@ -238,7 +238,7 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
         });
     }
 
-    void FilterFiles() => DisplayItems = [.. ResourceFileItems.Where(x => x.Version == SelectedVersion && ( x.Loaders.Contains("Any") || x.Loaders.Contains(SelectedLoader)))];
+    void FilterFiles() => DisplayItems = [.. ResourceFileItems.Where(x => x.Version == SelectedVersion && (x.Loaders.Contains("Any") || x.Loaders.Contains(SelectedLoader)))];
 }
 
 internal class ResourceFileItem

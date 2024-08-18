@@ -87,13 +87,13 @@ public partial class App : Application
             return;
         }
 
-        try 
+        try
         {
             IWindowService mainWindowService = App.GetService<IActivationService>().ActivateWindow("MainWindow");
         }
-        catch (Exception e) 
+        catch (Exception e)
         {
-            ProcessException(e); 
+            ProcessException(e);
         }
     }
 

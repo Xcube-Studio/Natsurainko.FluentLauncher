@@ -1,7 +1,7 @@
-using Microsoft.UI.Xaml.Markup;
 using Microsoft.UI.Xaml;
-using System.Linq;
+using Microsoft.UI.Xaml.Markup;
 using Natsurainko.FluentLauncher.Utils;
+using System.Linq;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers;

@@ -2,13 +2,10 @@
     x:Class="Natsurainko.FluentLauncher.Views.Tasks.DownloadPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:selectors="using:Natsurainko.FluentLauncher.XamlHelpers.Selectors"
-    xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers">
+    xmlns:selectors="using:Natsurainko.FluentLauncher.XamlHelpers.Selectors">
     <Page.Resources>
         <selectors:TaskTemplateSelector
             x:Key="TemplateSelector"

@@ -5,7 +5,7 @@ namespace Natsurainko.FluentLauncher.Experimental.Saves;
 
 internal record SaveInfo
 {
-    public string Folder {  get; set; }
+    public string Folder { get; set; }
 
     public string FolderName { get; set; }
 
@@ -13,11 +13,11 @@ internal record SaveInfo
 
     public string Version { get; set; }
 
-    public bool AllowCommands {  get; set; }
+    public bool AllowCommands { get; set; }
 
     public DateTime LastPlayed { get; set; }
 
-    public long Seed { get; set; } 
+    public long Seed { get; set; }
 
     public string IconFilePath { get; set; }
 

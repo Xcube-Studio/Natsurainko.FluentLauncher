@@ -32,7 +32,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     private readonly ModrinthClient _modrinthClient;
 
     public DefaultViewModel(
-        INavigationService navigationService, 
+        INavigationService navigationService,
         GameService gameService,
         CacheInterfaceService cacheInterfaceService,
         SearchProviderService searchProviderService,
@@ -90,7 +90,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
         _curseForgeClient.SearchResourcesAsync(string.Empty).ContinueWith(ParseCurseForgeTask);
         _modrinthClient.SearchResourcesAsync(string.Empty).ContinueWith(ParseModrinthTask);
-    } 
+    }
 
     void ParsePatchNotesTask(Task<string> task)
     {
@@ -100,7 +100,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         }
 
         string patchNotesJson = task.Result;
-        if (string.IsNullOrEmpty(patchNotesJson) || PatchNotesJson == patchNotesJson) 
+        if (string.IsNullOrEmpty(patchNotesJson) || PatchNotesJson == patchNotesJson)
             return;
 
         var patchNotes = JsonNode.Parse(patchNotesJson)!["entries"].AsArray().Select(node =>
@@ -276,7 +276,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     }
 
     [RelayCommand]
-    void Loaded() 
+    void Loaded()
     {
         if (_searchProviderService.QueryReceiverOwner != this)
             _searchProviderService.OccupyQueryReceiver(this, QueryReceiver);

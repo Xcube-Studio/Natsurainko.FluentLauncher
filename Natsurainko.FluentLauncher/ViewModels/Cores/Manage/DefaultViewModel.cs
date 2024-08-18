@@ -7,9 +7,9 @@ using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Management;
+using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using System;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
@@ -66,7 +66,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         });
 
         GameConfig.PropertyChanged += GameConfig_PropertyChanged;
-    } 
+    }
 
     private void GameConfig_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {

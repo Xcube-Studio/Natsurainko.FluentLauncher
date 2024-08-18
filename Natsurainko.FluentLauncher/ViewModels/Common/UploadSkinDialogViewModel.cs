@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Network;
+using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Utils;
@@ -18,17 +19,19 @@ public partial class UploadSkinDialogViewModel : ObservableObject
     private readonly Account _account;
     private ContentDialog _dialog;
 
+    private readonly NotificationService _notificationService = App.GetService<NotificationService>();
+
+    public UploadSkinDialogViewModel(Account account)
+    {
+        _account = account;
+    }
+
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(UploadCommand))]
     private string filePath;
 
     [ObservableProperty]
     private bool isSlimModel;
-
-    public UploadSkinDialogViewModel(Account account) 
-    {
-        _account = account;
-    }
 
     [RelayCommand]
     public void LoadEvent(object args)
@@ -51,13 +54,13 @@ public partial class UploadSkinDialogViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-
+            _notificationService.NotifyException("_SkinUploadException", ex);
         }
 
         App.DispatcherQueue.TryEnqueue(_dialog.Hide);
     }
 
-    [RelayCommand] 
+    [RelayCommand]
     public void BrowserFile()
     {
         var openFileDialog = new OpenFileDialog();

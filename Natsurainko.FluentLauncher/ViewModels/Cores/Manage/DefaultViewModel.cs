@@ -74,9 +74,9 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         if (e.PropertyName == "NickName" && !string.IsNullOrEmpty(GameConfig.NickName))
         {
             if (MinecraftInstance.Equals(_gameService.ActiveGame))
-                _gameService.ActiveGame.Name = GameConfig.NickName;
+                _gameService.ActiveGame.GetConfig().NickName = GameConfig.NickName;
 
-            MinecraftInstance.Name = GameConfig.NickName;
+            MinecraftInstance.GetConfig().NickName = GameConfig.NickName;
         }
     }
 

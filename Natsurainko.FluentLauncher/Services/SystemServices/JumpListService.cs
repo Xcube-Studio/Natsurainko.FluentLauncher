@@ -46,7 +46,7 @@ internal class JumpListService
         }
         else
         {
-            jumpListItem = JumpListItem.CreateWithArguments($"/quick-launch {itemArguments}", minecraftInstance.Name);
+            jumpListItem = JumpListItem.CreateWithArguments($"/quick-launch {itemArguments}", minecraftInstance.GetConfig().NickName);
 
             jumpListItem.GroupName = "Latest";
             jumpListItem.Logo = new Uri(string.Format("ms-appx:///Assets/Icons/{0}.png", !minecraftInstance.IsVanilla ? "furnace_front" : minecraftInstance.Version.Type switch
@@ -68,11 +68,11 @@ internal class JumpListService
     {
         #region Init Launch & Display Elements
 
-        var MinecraftInstance = JsonSerializer.Deserialize<MinecraftInstance>(arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64())
+        var minecraftInstance = JsonSerializer.Deserialize<MinecraftInstance>(arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64())
             ?? throw new InvalidOperationException();
 
-        string name = MinecraftInstance.Name ?? "Minecraft";
-        string icon = string.Format("ms-appx:///Assets/Icons/{0}.png", !MinecraftInstance.IsVanilla ? "furnace_front" : MinecraftInstance.Version.Type switch
+        string name = minecraftInstance.GetConfig().NickName ?? "Minecraft";
+        string icon = string.Format("ms-appx:///Assets/Icons/{0}.png", !minecraftInstance.IsVanilla ? "furnace_front" : minecraftInstance.Version.Type switch
         {
             MinecraftVersionType.Release => "grass_block_side",
             MinecraftVersionType.Snapshot => "crafting_table_front",
@@ -125,12 +125,12 @@ internal class JumpListService
 
         #region Create Launch Session
 
-        var minecraftSession = _launchService.CreateMinecraftSessionFromMinecraftInstance(MinecraftInstance, null);
+        var minecraftSession = _launchService.CreateMinecraftSessionFromMinecraftInstance(minecraftInstance, null);
         var sessionViewModel = new LaunchSessionViewModel(minecraftSession);
         App.GetService<LaunchSessions>().SessionViewModels.Insert(0, sessionViewModel);
 
-        MinecraftInstance.UpdateLastLaunchTimeToNow();
-        UpdateJumpList(MinecraftInstance);
+        minecraftInstance.UpdateLastLaunchTimeToNow();
+        UpdateJumpList(minecraftInstance);
 
         minecraftSession.StateChanged += MinecraftSession_StateChanged;
 
@@ -169,7 +169,7 @@ internal class JumpListService
             //    return;
 
             var data = new AppNotificationProgressData(sequence);
-            data.Title = MinecraftInstance.Name;
+            data.Title = minecraftInstance.GetConfig().NickName;
             data.Value = sessionViewModel.Progress;
             data.ValueStringOverride = sessionViewModel.ProgressText;
             data.Status = ResourceUtils.GetValue("Converters", $"_LaunchState_{sessionViewModel.SessionState}");

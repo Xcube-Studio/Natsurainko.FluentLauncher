@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.XamlHelpers.Converters;
 using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Management;
@@ -31,7 +32,7 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
     void INavigationAware.OnNavigatedTo(object parameter)
     {
         MinecraftInstance = parameter as MinecraftInstance;
-        GameName = MinecraftInstance.Name;
+        GameName = MinecraftInstance.GetConfig().NickName;
 
         Routes = [];
         _navigationService.NavigateTo("CoreManage/Default", MinecraftInstance);

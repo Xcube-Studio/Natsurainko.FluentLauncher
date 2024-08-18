@@ -7,6 +7,7 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Management;
@@ -51,7 +52,7 @@ internal partial class HomeViewModel : ObservableObject
 
     public string DropDownButtonDisplayText => ActiveMinecraftInstance == null
         ? ResourceUtils.GetValue("Home", "HomePage", "_NoCore")
-        : ActiveMinecraftInstance.Name;
+        : ActiveMinecraftInstance.GetConfig().NickName;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(AccountTag))]
@@ -99,7 +100,7 @@ internal partial class HomeViewModel : ObservableObject
 
         foreach (var item in MinecraftInstances)
         {
-            if (item.Name.Contains(searchText))
+            if (item.GetConfig().NickName.Contains(searchText))
             {
                 yield return SuggestionHelper.FromMinecraftInstance(item,
                     ResourceUtils.GetValue("SearchSuggest", "_D4"), async () =>

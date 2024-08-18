@@ -140,8 +140,7 @@ internal class LaunchService
             UseDemoUser = _settingsService.EnableDemoUser,
             ExtraGameParameters = GetExtraGameParameters(config),
             ExtraVmParameters = GetExtraVmParameters(config, launchAccount),
-            CreateResourcesDownloader = (libs) => _downloadService.CreateResourcesDownloader
-                (instance, libs)
+            CreateDependencyResolver = (libs) => _downloadService.CreateResourcesDownloader(instance, libs)
         };
 
         if (_settingsService.AutoRefresh)

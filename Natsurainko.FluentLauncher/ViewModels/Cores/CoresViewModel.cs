@@ -96,7 +96,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
         });
 
         var list = SortByIndex.Equals(0)
-            ? infos.OrderBy(x => x.Name).ToList()
+            ? infos.OrderBy(x => x.GetConfig().NickName).ToList()
             : infos.OrderByDescending(x => x.GetConfig().LastLaunchTime).ToList();
 
         App.DispatcherQueue.TryEnqueue(() => DisplayMinecraftInstances = list);

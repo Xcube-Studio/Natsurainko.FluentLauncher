@@ -21,7 +21,7 @@ internal partial class DeleteGameDialogViewModel : ObservableObject
 
     private ContentDialog _dialog;
 
-    public string Title => $"\"{_MinecraftInstance.Name}\"";
+    public string Title => $"\"{_MinecraftInstance.GetConfig().NickName}\"";
 
     [ObservableProperty]
     private bool deleteCoreSettings = true;

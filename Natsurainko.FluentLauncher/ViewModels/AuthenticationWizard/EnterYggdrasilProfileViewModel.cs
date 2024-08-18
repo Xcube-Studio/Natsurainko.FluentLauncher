@@ -3,11 +3,21 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 
 internal partial class EnterYggdrasilProfileViewModel : WizardViewModelBase
 {
+    private AuthenticationService _authenticationService;
+
     public override bool CanNext => !(string.IsNullOrEmpty(Url) || string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password));
+
+    public EnterYggdrasilProfileViewModel()
+    {
+        XamlPageType = typeof(EnterYggdrasilProfilePage);
+
+        _authenticationService = App.GetService<AuthenticationService>();
+    }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
@@ -20,15 +30,6 @@ internal partial class EnterYggdrasilProfileViewModel : WizardViewModelBase
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
     private string password;
-
-    private AuthenticationService _authenticationService;
-
-    public EnterYggdrasilProfileViewModel()
-    {
-        XamlPageType = typeof(EnterYggdrasilProfilePage);
-
-        _authenticationService = App.GetService<AuthenticationService>();
-    }
 
     public override WizardViewModelBase GetNextViewModel()
         => new ConfirmProfileViewModel(() => _authenticationService.LoginYggdrasilAsync(Url, Email, Password).GetAwaiter().GetResult())

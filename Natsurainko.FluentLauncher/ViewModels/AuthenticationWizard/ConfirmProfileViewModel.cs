@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml;
-using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
 using Nrk.FluentCore.Authentication;
@@ -10,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 
 internal partial class ConfirmProfileViewModel : WizardViewModelBase
@@ -24,29 +24,12 @@ internal partial class ConfirmProfileViewModel : WizardViewModelBase
 
     public ObservableCollection<Account> Accounts { get; init; }
 
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CanNext))]
-    private Visibility loading = Visibility.Collapsed;
-
-    [ObservableProperty]
-    private bool faulted;
-
-    [ObservableProperty]
-    private string faultedMessage;
-
-    [ObservableProperty]
-    private string loadingProgressText;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CanNext))]
-    private Account selectedAccount;
-
     public ConfirmProfileViewModel(Func<IEnumerable<Account>> authenticateAction)
     {
         XamlPageType = typeof(ConfirmProfilePage);
         _authenticateAction = authenticateAction;
 
-        Accounts = new();
+        Accounts = [];
 
         Task.Run(() =>
         {
@@ -92,4 +75,21 @@ internal partial class ConfirmProfileViewModel : WizardViewModelBase
             }
         });
     }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanNext))]
+    private Visibility loading = Visibility.Collapsed;
+
+    [ObservableProperty]
+    private bool faulted;
+
+    [ObservableProperty]
+    private string faultedMessage;
+
+    [ObservableProperty]
+    private string loadingProgressText;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanNext))]
+    private Account selectedAccount;
 }

@@ -166,6 +166,9 @@ internal class LaunchService
             ? MemoryUtils.CalculateJavaMemory()
             : (_settingsService.JavaMemory, _settingsService.JavaMemory);
 
+        if (JavaUtils.GetJavaInfo(suitableJava).Architecture != "x64" && maxMemory >= 512)
+            throw new Exception(ResourceUtils.GetValue("Exceptions", "_x86_JavaMemoryException"));
+
         var session = new MinecraftSession() // Launch session
         {
             Account = launchAccount,

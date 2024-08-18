@@ -6,6 +6,7 @@ using HelixToolkit.WinUI;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Authentication;
@@ -28,15 +29,18 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
     private readonly SettingsService _settingsService;
     private readonly AccountService _accountService;
     private readonly CacheSkinService _cacheSkinService;
+    private readonly NotificationService _notificationService;
 
     public SkinViewModel(
         SettingsService settingsService,
         AccountService accountService,
-        CacheSkinService cacheSkinService)
+        CacheSkinService cacheSkinService,
+        NotificationService notificationService)
     {
         _settingsService = settingsService;
         _accountService = accountService;
         _cacheSkinService = cacheSkinService;
+        _notificationService = notificationService;
 
         ActiveAccount = accountService.ActiveAccount!;
 
@@ -95,13 +99,13 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
                     ModelGeometry.Add(new MeshGeometryModel3D() { Material = material, Geometry = object3D.Geometry });
             });
         }
-        catch
+        catch(Exception ex)
         {
-
+            _notificationService.NotifyException("_SkinDisplayExceptionT", ex, "_SkinDisplayExceptionD");
         }
     }
 
-    public async Task<bool> IsSlimSkin()
+    public Task<bool> IsSlimSkin() => Task.Run(() =>
     {
         var authorization = new Tuple<string, string>("Bearer", ActiveAccount.AccessToken);
         var skinUrl = string.Empty;
@@ -114,25 +118,25 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
                 yggdrasil.Uuid.ToString("N").ToLower()
                 , authorization);
 
-            var jsonBase64 = JsonNode.Parse(responseMessage.Content.ReadAsString())["properties"][0]["value"];
-            var json = JsonNode.Parse(jsonBase64.GetValue<string>().ConvertFromBase64());
+            var jsonBase64 = JsonNode.Parse(responseMessage.Content.ReadAsString())!["properties"]![0]!["value"];
+            var json = JsonNode.Parse(jsonBase64!.GetValue<string>().ConvertFromBase64());
 
-            if (json["textures"]?["SKIN"]?["metadata"]?["model"].GetValue<string>() == "slim")
+            if (json!["textures"]?["SKIN"]?["metadata"]?["model"]!.GetValue<string>() == "slim")
                 return true;
         }
 
         if (ActiveAccount is MicrosoftAccount microsoft)
         {
             using var responseMessage = HttpUtils.HttpGet("https://api.minecraftservices.com/minecraft/profile", authorization);
-            var json = JsonNode.Parse(responseMessage.Content.ReadAsString())["skins"]
-                .AsArray().Where(item => (item["state"]?.GetValue<string>().Equals("ACTIVE")).GetValueOrDefault()).FirstOrDefault();
+            var json = JsonNode.Parse(responseMessage.Content.ReadAsString())!["skins"]!
+                .AsArray().Where(item => (item!["state"]?.GetValue<string>().Equals("ACTIVE")).GetValueOrDefault()).FirstOrDefault();
 
-            if (json["variant"]?.GetValue<string>() == "SLIM")
+            if (json!["variant"]?.GetValue<string>() == "SLIM")
                 return true;
         }
 
         return false;
-    }
+    });
 
     #endregion
 

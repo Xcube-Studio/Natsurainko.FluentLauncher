@@ -128,6 +128,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
         var folder = await folderPicker.PickSingleFolderAsync();
 
         if (folder != null)
+        {
             App.DispatcherQueue.TryEnqueue(() =>
             {
                 if (MinecraftFolders.Contains(folder.Path))
@@ -143,6 +144,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
                 _gameService.AddMinecraftFolder(folder.Path);
                 OnPropertyChanged(nameof(IsMinecraftFoldersEmpty));
             });
+        }
 
     });
 
@@ -183,13 +185,26 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
         openFileDialog.Filter = "Javaw Executable File|javaw.exe|Java Executable File|java.exe";
 
         if (openFileDialog.ShowDialog().GetValueOrDefault(false))
+        {
             App.DispatcherQueue.TryEnqueue(() =>
             {
+                if (Javas.Contains(openFileDialog.FileName))
+                {
+                    _notificationService.NotifyMessage(
+                        ResourceUtils.GetValue("Notifications", "_AddJavaExistedT"),
+                        ResourceUtils.GetValue("Notifications", "_AddJavaExistedD"),
+                        icon: "\uF89A");
+
+                    return;
+                }
+
+
                 Javas.Add(openFileDialog.FileName);
                 ActiveJava = openFileDialog.FileName;
 
                 OnPropertyChanged(nameof(IsJavasEmpty));
             });
+        }
     }
 
     [RelayCommand]

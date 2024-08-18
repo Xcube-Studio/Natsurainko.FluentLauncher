@@ -1,6 +1,7 @@
 using CommunityToolkit.WinUI.Media.Pipelines;
 using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Pages;
+using FluentLauncher.Infra.WinUI.Navigation;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
@@ -27,6 +28,8 @@ public sealed partial class ShellPage : Page, INavigationProvider
     private readonly SettingsService _settings = App.GetService<SettingsService>();
     private readonly AppearanceService _appearanceService = App.GetService<AppearanceService>();
     private readonly SearchProviderService _searchProviderService = App.GetService<SearchProviderService>();
+
+    private string currentPageKey = string.Empty;
 
     public ShellPage()
     {
@@ -90,7 +93,8 @@ public sealed partial class ShellPage : Page, INavigationProvider
         var pageTag = ((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()
             ?? throw new ArgumentNullException("The invoked item's tag is null.");
 
-        VM.NavigationService.NavigateTo(pageTag);
+        if (pageTag != currentPageKey)
+            VM.NavigationService.NavigateTo(pageTag);
     }
 
     private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
@@ -127,6 +131,8 @@ public sealed partial class ShellPage : Page, INavigationProvider
             {
                 NavigationViewControl.SelectedItem = item;
                 item.IsSelected = true;
+
+                currentPageKey = tag;
                 return;
             }
         }

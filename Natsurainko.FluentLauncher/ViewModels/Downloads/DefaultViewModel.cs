@@ -249,7 +249,11 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             return;
         }
 
-        var manifestItem = VersionManifestItems.Where(x => x.Id.Equals(patchNoteData.Version)).FirstOrDefault();
+        if (string.IsNullOrEmpty(VersionManifestJson))
+            return;
+
+        var manifestItem = JsonNode.Parse(VersionManifestJson)
+            .Deserialize<VersionManifestJsonEntity>().Versions.Where(x => x.Id.Equals(patchNoteData.Version)).FirstOrDefault();
 
         if (manifestItem != null)
             _navigationService.Parent.NavigateTo("CoreInstallWizardPage", manifestItem);

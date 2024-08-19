@@ -52,7 +52,7 @@ internal partial class HomeViewModel : ObservableObject
 
     public string DropDownButtonDisplayText => ActiveMinecraftInstance == null
         ? ResourceUtils.GetValue("Home", "HomePage", "_NoCore")
-        : ActiveMinecraftInstance.GetConfig().NickName;
+        : ActiveMinecraftInstance.GetConfig().NickName ?? ActiveMinecraftInstance.InstanceId;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(AccountTag))]

@@ -109,6 +109,7 @@ services.AddSingleton<CacheSkinService>();
 services.AddSingleton<CacheInterfaceService>();
 services.AddSingleton<JumpListService>();
 services.AddSingleton<SearchProviderService>();
+services.AddSingleton<InstanceConfigService>();
 
 // ModClient
 services.AddSingleton<ModrinthClient>();

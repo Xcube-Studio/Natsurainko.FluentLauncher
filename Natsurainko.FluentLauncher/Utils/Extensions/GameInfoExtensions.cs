@@ -17,43 +17,6 @@ namespace Natsurainko.FluentLauncher.Utils.Extensions;
 
 internal static class MinecraftInstanceExtensions
 {
-    public static GameConfig GetConfig(this MinecraftInstance instance)
-    {
-        string type = instance.Version.Type switch
-        {
-            MinecraftVersionType.Release => "release",
-            MinecraftVersionType.OldBeta => "old_beta",
-            MinecraftVersionType.OldAlpha => "old_alpha",
-            MinecraftVersionType.PreRelease or MinecraftVersionType.Snapshot => "snapshot",
-            _ => ""
-        };
-        var configGuid = new Guid(MD5.HashData(Encoding.UTF8.GetBytes($"{instance.MinecraftFolderPath}:{instance.InstanceId}:{type}")));
-        var configsFolder = Path.Combine(LocalStorageService.LocalFolderPath, "GameConfigsFolder");
-
-        if (!Directory.Exists(configsFolder))
-            Directory.CreateDirectory(configsFolder);
-
-        var configFile = Path.Combine(configsFolder, $"{configGuid}.json");
-
-        if (!File.Exists(configFile))
-            return new GameConfig { FilePath = configFile };
-
-        GameConfig coreProfile;
-
-        try
-        {
-            coreProfile = JsonNode.Parse(File.ReadAllText(configFile)).Deserialize<GameConfig>()!;
-        }
-        catch
-        {
-            coreProfile = new GameConfig();
-        }
-
-        coreProfile.FilePath = configFile;
-
-        return coreProfile;
-    }
-
     public static bool IsSupportMod(this MinecraftInstance MinecraftInstance)
     {
         if (MinecraftInstance.IsVanilla) return false;

@@ -65,8 +65,8 @@ internal class LaunchService
         {
             Account? account = _accountService.ActiveAccount ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
 
-            var session = CreateMinecraftSessionFromMinecraftInstance(MinecraftInstance, account); // TODO: replace with ctor of MinecraftSession
-            _sessions.Add(session);
+            minecraftSession = CreateMinecraftSessionFromMinecraftInstance(MinecraftInstance, account);
+            _sessions.Add(minecraftSession);
 
             _launchSessions.CreateLaunchSessionViewModel(minecraftSession, out var handleException);
             onExceptionThrow = handleException;

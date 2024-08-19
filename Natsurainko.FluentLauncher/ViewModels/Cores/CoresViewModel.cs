@@ -118,7 +118,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
         {
             if (item.InstanceId.Contains(searchText))
             {
-                yield return SuggestionHelper.FromGameInfo(item,
+                yield return SuggestionHelper.FromMinecraftInstance(item,
                     ResourceUtils.GetValue("SearchSuggest", "_D3"),
                     () => _navigationService.NavigateTo("CoreManage/Navigation", item));
             }

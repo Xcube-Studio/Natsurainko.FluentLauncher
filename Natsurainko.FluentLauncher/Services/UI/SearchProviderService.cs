@@ -5,7 +5,6 @@ using Natsurainko.FluentLauncher.Services.Launch;
 using Nrk.FluentCore.Experimental.GameManagement;
 using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Management;
-using Nrk.FluentCore.Management.Downloader.Data;
 using System;
 using System.Collections.Generic;
 

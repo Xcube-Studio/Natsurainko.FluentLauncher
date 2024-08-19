@@ -148,7 +148,7 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
         string fileName = string.Empty;
 
         if (DownloadToDesignated) fileName = DesignatedFilePath;
-        else if (DownloadToCurrentGame) fileName = Path.Combine(GameInfo.GetModsDirectory(), SelectedItem.FileName);
+        else if (DownloadToCurrentGame) fileName = Path.Combine(MinecraftInstance.GetModsDirectory(), SelectedItem.FileName);
 
         if (string.IsNullOrEmpty(fileName))
             throw new ArgumentException(nameof(fileName));

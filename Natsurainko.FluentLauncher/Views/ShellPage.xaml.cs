@@ -28,7 +28,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
     private readonly AppearanceService _appearanceService = App.GetService<AppearanceService>();
     private readonly SearchProviderService _searchProviderService = App.GetService<SearchProviderService>();
 
-    private string currentPageKey = string.Empty;
+    private bool isUpdatingNavigationItemSelection = false;
 
     public ShellPage()
     {
@@ -89,11 +89,13 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
     private void NavigationViewControl_ItemInvoked(NavigationView _, NavigationViewItemInvokedEventArgs args)
     {
+        if (isUpdatingNavigationItemSelection)
+            return;
+
         var pageTag = ((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()
             ?? throw new ArgumentNullException("The invoked item's tag is null.");
 
-        if (pageTag != currentPageKey)
-            VM.NavigationService.NavigateTo(pageTag);
+        VM.NavigationService.NavigateTo(pageTag);
     }
 
     private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
@@ -122,6 +124,8 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
     private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
     {
+        isUpdatingNavigationItemSelection = true;
+
         foreach (NavigationViewItem item in NavigationViewControl.MenuItems.Union(NavigationViewControl.FooterMenuItems).Cast<NavigationViewItem>())
         {
             string tag = item.GetTag();
@@ -129,12 +133,11 @@ public sealed partial class ShellPage : Page, INavigationProvider
             if (App.GetService<IPageProvider>().RegisteredPages[tag].PageType == e.SourcePageType)
             {
                 NavigationViewControl.SelectedItem = item;
-                item.IsSelected = true;
-
-                currentPageKey = tag;
-                return;
+                break;
             }
         }
+
+        isUpdatingNavigationItemSelection = false;
     }
 
     #endregion

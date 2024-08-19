@@ -96,7 +96,7 @@ internal partial class DownloadService
             64);
     }
 
-    public void DownloadResourceFile(object file, string filePath)
+    public void DownloadResourceFile(ResourceFileItem file, string filePath)
     {
         var process = new FileDownloadProcessViewModel(file, filePath);
         _downloadProcesses.Insert(0, process);

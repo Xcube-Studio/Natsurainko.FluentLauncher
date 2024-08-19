@@ -3,11 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
-    xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:media="using:CommunityToolkit.WinUI.Media"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     Loaded="Page_Loaded"
     SizeChanged="Page_SizeChanged"
@@ -246,7 +243,7 @@
             IsBackButtonVisible="Collapsed"
             IsSettingsVisible="False"
             ItemInvoked="NavigationViewControl_ItemInvoked"
-            OpenPaneLength="200"
+            OpenPaneLength="210"
             PaneClosing="NavigationViewControl_PaneClosing"
             PaneOpening="NavigationViewControl_PaneOpening">
             <NavigationView.Resources>

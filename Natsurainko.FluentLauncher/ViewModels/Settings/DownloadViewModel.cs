@@ -1,12 +1,12 @@
-﻿using FluentLauncher.Infra.Settings.Mvvm;
-using CommunityToolkit.Mvvm.ComponentModel;
-using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.ViewModels.Common;
-using Natsurainko.FluentLauncher.Services.Storage;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Windows.System;
+using FluentLauncher.Infra.Settings.Mvvm;
+using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.Storage;
+using Natsurainko.FluentLauncher.ViewModels.Common;
 using System;
 using System.Threading.Tasks;
+using Windows.System;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;

@@ -1,5 +1,5 @@
-﻿using FluentLauncher.Infra.Settings.Mvvm;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using FluentLauncher.Infra.Settings.Mvvm;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 

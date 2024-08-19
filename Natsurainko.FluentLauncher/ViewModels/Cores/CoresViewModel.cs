@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
 using FluentLauncher.Infra.UI.Navigation;
-using Natsurainko.FluentLauncher.Models.Download;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
@@ -71,7 +70,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     [ObservableProperty]
     private IEnumerable<MinecraftInstance> displayMinecraftInstances;
 
-    public string DisplayFolderPath => (string.IsNullOrEmpty(ActiveMinecraftFolder) || !Directory.Exists(ActiveMinecraftFolder)) 
+    public string DisplayFolderPath => (string.IsNullOrEmpty(ActiveMinecraftFolder) || !Directory.Exists(ActiveMinecraftFolder))
         ? ResourceUtils.GetValue("Cores", "CoresPage", "_FolderError")
         : ActiveMinecraftFolder;
 
@@ -119,8 +118,8 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
         {
             if (item.InstanceId.Contains(searchText))
             {
-                yield return SuggestionHelper.FromMinecraftInstance(item,
-                    ResourceUtils.GetValue("SearchSuggest", "_D3"), 
+                yield return SuggestionHelper.FromGameInfo(item,
+                    ResourceUtils.GetValue("SearchSuggest", "_D3"),
                     () => _navigationService.NavigateTo("CoreManage/Navigation", item));
             }
         }

@@ -8,12 +8,14 @@ namespace Natsurainko.FluentLauncher.ViewModels.Tasks;
 internal partial class LaunchViewModel : ObservableObject, INavigationAware
 {
     private readonly LaunchSessions _launchSessions;
+    private readonly INavigationService _navigationService;
 
     public ObservableCollection<object> Tasks { get; } = [];
 
-    public LaunchViewModel(LaunchSessions launchSessions)
+    public LaunchViewModel(LaunchSessions launchSessions, INavigationService navigationService)
     {
         _launchSessions = launchSessions;
+        _navigationService = navigationService;
 
         launchSessions.SessionViewModels.CollectionChanged += SessionViewModels_CollectionChanged;
 
@@ -23,11 +25,8 @@ internal partial class LaunchViewModel : ObservableObject, INavigationAware
 
     private void SessionViewModels_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
-        App.DispatcherQueue.TryEnqueue(() =>
-        {
-            foreach (var item in e.NewItems!)
-                Tasks.Insert(0, item);
-        });
+        foreach (var item in e.NewItems!)
+            App.DispatcherQueue.TryEnqueue(() => Tasks.Insert(0, item));
     }
 
     [RelayCommand]
@@ -35,4 +34,7 @@ internal partial class LaunchViewModel : ObservableObject, INavigationAware
     {
         _launchSessions.SessionViewModels.CollectionChanged -= SessionViewModels_CollectionChanged;
     }
+
+    [RelayCommand]
+    void GoToHome() => _navigationService.NavigateTo("HomePage");
 }

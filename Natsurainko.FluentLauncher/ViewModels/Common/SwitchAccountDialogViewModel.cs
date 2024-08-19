@@ -1,11 +1,12 @@
-﻿using FluentLauncher.Infra.Settings.Mvvm;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FluentLauncher.Infra.Settings.Mvvm;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Nrk.FluentCore.Authentication;
 using System.Collections.ObjectModel;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
 internal partial class SwitchAccountDialogViewModel : SettingsViewModelBase, ISettingsViewModel

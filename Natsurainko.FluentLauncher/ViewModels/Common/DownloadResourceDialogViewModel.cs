@@ -5,12 +5,16 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Launch;
+using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Experimental.GameManagement.Instances;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Resources;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,6 +32,7 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
     private readonly CurseForgeClient _curseForgeClient = App.GetService<CurseForgeClient>();
     private readonly ModrinthClient _modrinthClient = App.GetService<ModrinthClient>();
     private readonly GameService _gameService = App.GetService<GameService>();
+    private readonly DownloadService _downloadService = App.GetService<DownloadService>();
 
     public MinecraftInstance MinecraftInstance { get; private set; }
 
@@ -112,7 +117,7 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
     [ObservableProperty]
     private Visibility checkBox3;
 
-    public bool CanConfirm 
+    public bool CanConfirm
     {
         get
         {
@@ -140,7 +145,18 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
     [RelayCommand]
     public void Confirm()
     {
+        string fileName = string.Empty;
 
+        if (DownloadToDesignated) fileName = DesignatedFilePath;
+        else if (DownloadToCurrentGame) fileName = Path.Combine(GameInfo.GetModsDirectory(), SelectedItem.FileName);
+
+        if (string.IsNullOrEmpty(fileName))
+            throw new ArgumentException(nameof(fileName));
+
+        _downloadService.DownloadResourceFile(SelectedItem, fileName);
+        _dialog.Hide();
+
+        _navigationService.Parent.NavigateTo("Tasks/Download");
     }
 
     [RelayCommand]
@@ -223,20 +239,20 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
         });
     }
 
-    void FilterFiles() => DisplayItems = [.. ResourceFileItems.Where(x => x.Version == SelectedVersion && ( x.Loaders.Contains("Any") || x.Loaders.Contains(SelectedLoader)))];
+    void FilterFiles() => DisplayItems = [.. ResourceFileItems.Where(x => x.Version == SelectedVersion && (x.Loaders.Contains("Any") || x.Loaders.Contains(SelectedLoader)))];
+}
 
-    internal class ResourceFileItem
-    {
-        private readonly Task<string> getUrl;
+internal class ResourceFileItem
+{
+    private readonly Task<string> getUrl;
 
-        public ResourceFileItem(Task<string> func) => getUrl = func;
+    public ResourceFileItem(Task<string> func) => getUrl = func;
 
-        public string[] Loaders { get; set; }
+    public string[] Loaders { get; set; }
 
-        public string FileName { get; set; }
+    public string FileName { get; set; }
 
-        public string Version { get; set; }
+    public string Version { get; set; }
 
-        public Task<string> GetUrl() => getUrl;
-    }
+    public Task<string> GetUrl() => getUrl;
 }

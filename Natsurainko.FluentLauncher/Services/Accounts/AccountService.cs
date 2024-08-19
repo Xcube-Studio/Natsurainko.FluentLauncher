@@ -137,8 +137,8 @@ internal class AccountService
 
     public void AddAccount(Account account)
     {
-        if (Accounts.Where(x => x.Uuid.Equals(account.Uuid) && x.Type.Equals(account.Type)).Any())
-            throw new Exception("不可以存在两个账户类型和 Uuid 均相同的账户");
+        if (Accounts.Where(x => x.Type.Equals(account.Type) && x.Uuid.Equals(account.Uuid) && x.Name.Equals(account.Name)).Any())
+            throw new Exception("There cannot be two accounts with the same account type and name and UUID");
 
         _accounts.Add(account);
     }
@@ -186,10 +186,7 @@ internal class AccountService
         if (isActiveAccount)
             ActivateAccount(refreshedAccount);
 
-        App.GetService<CacheSkinService>().CacheSkinOfAccount(refreshedAccount).ContinueWith(task =>
-        {
-
-        });
+        App.GetService<CacheSkinService>().CacheSkinOfAccount(refreshedAccount);
     }
 
     public async Task RefreshActiveAccount()

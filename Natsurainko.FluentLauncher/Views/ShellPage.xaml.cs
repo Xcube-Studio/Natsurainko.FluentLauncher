@@ -28,6 +28,8 @@ public sealed partial class ShellPage : Page, INavigationProvider
     private readonly AppearanceService _appearanceService = App.GetService<AppearanceService>();
     private readonly SearchProviderService _searchProviderService = App.GetService<SearchProviderService>();
 
+    private string currentPageKey = string.Empty;
+
     public ShellPage()
     {
         _appearanceService.ApplyBackgroundBeforePageInit(this);
@@ -45,7 +47,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
     private async void Page_Loaded(object sender, RoutedEventArgs e)
     {
         App.MainWindow.SetTitleBar(AppTitleBar);
-        
+
         if (_settings.BackgroundMode == 3 && !VM._onNavigatedTo)
         {
             var sprite = await PipelineBuilder
@@ -90,7 +92,8 @@ public sealed partial class ShellPage : Page, INavigationProvider
         var pageTag = ((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()
             ?? throw new ArgumentNullException("The invoked item's tag is null.");
 
-        VM.NavigationService.NavigateTo(pageTag);
+        if (pageTag != currentPageKey)
+            VM.NavigationService.NavigateTo(pageTag);
     }
 
     private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
@@ -127,6 +130,8 @@ public sealed partial class ShellPage : Page, INavigationProvider
             {
                 NavigationViewControl.SelectedItem = item;
                 item.IsSelected = true;
+
+                currentPageKey = tag;
                 return;
             }
         }

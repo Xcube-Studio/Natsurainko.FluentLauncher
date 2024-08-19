@@ -2,8 +2,10 @@
     x:Class="Natsurainko.FluentLauncher.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:converters="using:Natsurainko.FluentLauncher.XamlHelpers.Converters"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:selectors="using:Natsurainko.FluentLauncher.XamlHelpers.Selectors"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers">
     <Application.Resources>
@@ -76,7 +78,7 @@
                     <controls:SettingsExpander.Header>
                         <TextBlock TextTrimming="CharacterEllipsis">
                             <Run
-                                x:Uid="Activities_LaunchPage_Item_T"
+                                x:Uid="Tasks_LaunchPage_Item_T"
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Text="Launch Task" />
                             <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
@@ -87,7 +89,7 @@
                     <controls:SettingsExpander.Description>
                         <TextBlock FontSize="13" TextTrimming="CharacterEllipsis">
                             <Run
-                                x:Uid="Activities_LaunchPage_Item_TD"
+                                x:Uid="Tasks_LaunchPage_Item_TD"
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Text="State" />
                             <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
@@ -113,23 +115,21 @@
                                 </Binding>
                             </controls:SettingsCard.Visibility>
                             <controls:SettingsCard.Header>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="15" />
-                                        <ColumnDefinition Width="1*" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock HorizontalAlignment="Right">
-                                        <Run x:Uid="Activities_LaunchPage_Item_H1" Text="Progress: " />
-                                        <Run Text="{Binding ProgressText}" />
-                                    </TextBlock>
-                                    <ProgressBar
-                                        Grid.Column="2"
-                                        Width="300"
-                                        Maximum="1"
-                                        Value="{Binding Progress}" />
-                                </Grid>
+                                <TextBlock HorizontalAlignment="Right">
+                                    <Run x:Uid="Tasks_LaunchPage_Item_H1" Text="Progress: " />
+                                    <Run Text="{Binding ProgressText}" />
+                                </TextBlock>
                             </controls:SettingsCard.Header>
+
+                            <ProgressBar
+                                Width="300"
+                                HorizontalAlignment="Stretch"
+                                Maximum="1"
+                                Value="{Binding Progress}">
+                                <i:Interaction.Behaviors>
+                                    <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
+                                </i:Interaction.Behaviors>
+                            </ProgressBar>
                         </controls:SettingsCard>
 
                         <controls:SettingsCard Padding="25,15">
@@ -232,7 +232,7 @@
                                 <TextBlock Style="{ThemeResource BaseTextBlockStyle}" TextTrimming="CharacterEllipsis">
                                     <Run Text="{Binding ProcessStartTime}" />
                                     <Run Text=":" />
-                                    <Run x:Uid="Activities_LaunchPage_Item_H2" Text="Game launched successfully" />
+                                    <Run x:Uid="Tasks_LaunchPage_Item_H2" Text="Game launched successfully" />
                                 </TextBlock>
                             </controls:SettingsCard.Header>
                         </controls:SettingsCard>
@@ -278,29 +278,41 @@
                             <controls:SettingsCard.Visibility>
                                 <Binding Converter="{ThemeResource LaunchExpanderItemVisibilityConverter}" Path="SessionState">
                                     <Binding.ConverterParameter>
-                                        <x:String>6</x:String>
+                                        <x:String>6,7,9,10</x:String>
                                     </Binding.ConverterParameter>
                                 </Binding>
                             </controls:SettingsCard.Visibility>
 
                             <controls:SettingsCard.Header>
-                                <TextBlock x:Uid="Activities_LaunchPage_Item_H3" Text="Game process management" />
+                                <TextBlock
+                                    x:Uid="Tasks_LaunchPage_Item_H3"
+                                    Text="Game process management"
+                                    TextTrimming="CharacterEllipsis" />
                             </controls:SettingsCard.Header>
 
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <Button Command="{Binding LoggerButtonCommand}">
+                            <controls:WrapPanel
+                                HorizontalSpacing="10"
+                                Orientation="Horizontal"
+                                VerticalSpacing="10">
+                                <Button Command="{Binding CopyLaunchArgumentsCommand}">
+                                    <StackPanel Orientation="Horizontal" Spacing="5">
+                                        <FontIcon FontSize="14" Glyph="&#xe8c8;" />
+                                        <TextBlock x:Uid="Tasks_LaunchPage_B5" Text="Copy Launch Arguments" />
+                                    </StackPanel>
+                                </Button>
+                                <Button Command="{Binding ShowLoggerCommand}">
                                     <StackPanel Orientation="Horizontal" Spacing="5">
                                         <FontIcon FontSize="14" Glyph="&#xf000;" />
-                                        <TextBlock x:Uid="Activities_LaunchPage_B1" Text="Open Log" />
+                                        <TextBlock x:Uid="Tasks_LaunchPage_B1" Text="Open Log" />
                                     </StackPanel>
                                 </Button>
-                                <Button Command="{Binding KillButtonCommand}">
+                                <Button Command="{Binding KillProcessCommand}">
                                     <StackPanel Orientation="Horizontal" Spacing="5">
                                         <FontIcon FontSize="14" Glyph="&#xe71a;" />
-                                        <TextBlock x:Uid="Activities_LaunchPage_B2" Text="Kill Process" />
+                                        <TextBlock x:Uid="Tasks_LaunchPage_B2" Text="Kill Process" />
                                     </StackPanel>
                                 </Button>
-                            </StackPanel>
+                            </controls:WrapPanel>
                         </controls:SettingsCard>
 
                         <controls:SettingsCard>
@@ -313,20 +325,20 @@
                             </controls:SettingsCard.Visibility>
 
                             <controls:SettingsCard.Header>
-                                <TextBlock x:Uid="Activities_LaunchPage_Item_H4" Text="Crash analysis report" />
+                                <TextBlock x:Uid="Tasks_LaunchPage_Item_H4" Text="Crash analysis report" />
                             </controls:SettingsCard.Header>
 
                             <StackPanel Orientation="Horizontal" Spacing="10">
                                 <Button Command="{Binding LoggerButtonCommand}">
                                     <StackPanel Orientation="Horizontal" Spacing="5">
                                         <FontIcon FontSize="14" Glyph="&#xf000;" />
-                                        <TextBlock x:Uid="Activities_LaunchPage_B1" Text="Open Log" />
+                                        <TextBlock x:Uid="Tasks_LaunchPage_B1" Text="Open Log" />
                                     </StackPanel>
                                 </Button>
                                 <Button IsEnabled="False">
                                     <StackPanel Orientation="Horizontal" Spacing="5">
                                         <FontIcon FontSize="14" Glyph="&#xf000;" />
-                                        <TextBlock x:Uid="Activities_LaunchPage_B3" Text="Open Report" />
+                                        <TextBlock x:Uid="Tasks_LaunchPage_B3" Text="Open Report" />
                                     </StackPanel>
                                 </Button>
                             </StackPanel>
@@ -343,49 +355,16 @@
 
                             <controls:SettingsCard.Header>
                                 <TextBlock TextWrapping="WrapWholeWords">
-                                    <Run x:Uid="Activities_LaunchPage_Item_H5" Text="Reason:" />
+                                    <Run x:Uid="Tasks_LaunchPage_Item_H5" Text="Reason:" />
                                     <Run Text="{Binding ExceptionReason}" />
                                 </TextBlock>
                             </controls:SettingsCard.Header>
 
-                            <Button>
+                            <Button Command="{Binding ShowExceptionCommand}">
                                 <StackPanel Orientation="Horizontal" Spacing="5">
                                     <FontIcon FontSize="14" Glyph="&#xf000;" />
-                                    <TextBlock x:Uid="Activities_LaunchPage_B4" Text="Show Details" />
+                                    <TextBlock x:Uid="Tasks_LaunchPage_B4" Text="Show Details" />
                                 </StackPanel>
-                                <Button.Flyout>
-                                    <Flyout Placement="Left">
-                                        <RichTextBlock
-                                            MaxWidth="400"
-                                            DataContext="{Binding Exception}"
-                                            FontWeight="SemiBold">
-                                            <Paragraph>
-                                                <Run Text="Message:" />
-                                                <Run Text="{Binding Message}" />
-                                            </Paragraph>
-                                            <Paragraph>
-                                                <Run Text="HelpLink:" />
-                                                <Run Text="{Binding HelpLink}" />
-                                            </Paragraph>
-                                            <Paragraph>
-                                                <Run Text="========================================" />
-
-                                                <Run Text="InnerException:" />
-                                                <Run Text="{Binding InnerException}" />
-
-                                                <Run Text="========================================" />
-                                            </Paragraph>
-                                            <Paragraph>
-                                                <Run Text="Source:" />
-                                                <Run Text="{Binding Source}" />
-                                            </Paragraph>
-                                            <Paragraph>
-                                                <Run Text="StackTrace:" />
-                                                <Run Text="{Binding StackTrace}" />
-                                            </Paragraph>
-                                        </RichTextBlock>
-                                    </Flyout>
-                                </Button.Flyout>
                             </Button>
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
@@ -402,7 +381,7 @@
                     <controls:SettingsExpander.Header>
                         <TextBlock TextTrimming="CharacterEllipsis">
                             <Run
-                                x:Uid="Activities_DownloadPage_Item_T"
+                                x:Uid="Tasks_DownloadPage_Item_T"
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Text="Download Task" />
                             <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
@@ -413,7 +392,7 @@
                     <controls:SettingsExpander.Description>
                         <TextBlock FontSize="13" TextTrimming="CharacterEllipsis">
                             <Run
-                                x:Uid="Activities_DownloadPage_Item_TD"
+                                x:Uid="Tasks_DownloadPage_Item_TD"
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Text="State" />
                             <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
@@ -424,29 +403,26 @@
                     <controls:SettingsExpander.Items>
                         <controls:SettingsCard>
                             <controls:SettingsCard.Header>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="15" />
-                                        <ColumnDefinition Width="1*" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock HorizontalAlignment="Right">
-                                        <Run x:Uid="Activities_DownloadPage_Item_H1" Text="Progress: " />
-                                        <Run Text="{Binding ProgressText}" />
-                                    </TextBlock>
-                                    <ProgressBar
-                                        Grid.Column="2"
-                                        Width="300"
-                                        Maximum="1"
-                                        Value="{Binding Progress}" />
-                                </Grid>
+                                <TextBlock>
+                                    <Run x:Uid="Tasks_DownloadPage_Item_H1" Text="Progress: " />
+                                    <Run Text="{Binding ProgressText}" />
+                                </TextBlock>
                             </controls:SettingsCard.Header>
+
+                            <ProgressBar
+                                Width="300"
+                                Maximum="1"
+                                Value="{Binding Progress}">
+                                <i:Interaction.Behaviors>
+                                    <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
+                                </i:Interaction.Behaviors>
+                            </ProgressBar>
                         </controls:SettingsCard>
 
                         <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE838;}">
                             <controls:SettingsCard.Header>
                                 <TextBlock
-                                    x:Uid="Activities_DownloadPage_Item_H2"
+                                    x:Uid="Tasks_DownloadPage_Item_H2"
                                     Text="Open File Folder:"
                                     TextTrimming="CharacterEllipsis" />
                             </controls:SettingsCard.Header>
@@ -468,7 +444,7 @@
                     <controls:SettingsExpander.Header>
                         <TextBlock TextTrimming="CharacterEllipsis">
                             <Run
-                                x:Uid="Activities_DownloadPage_Item_T"
+                                x:Uid="Tasks_DownloadPage_Item_T"
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Text="Download Task" />
                             <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
@@ -479,7 +455,7 @@
                     <controls:SettingsExpander.Description>
                         <TextBlock FontSize="13" TextTrimming="CharacterEllipsis">
                             <Run
-                                x:Uid="Activities_DownloadPage_Item_TD"
+                                x:Uid="Tasks_DownloadPage_Item_TD"
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Text="State" />
                             <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
@@ -490,23 +466,20 @@
                     <controls:SettingsExpander.Items>
                         <controls:SettingsCard>
                             <controls:SettingsCard.Header>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="15" />
-                                        <ColumnDefinition Width="1*" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock HorizontalAlignment="Right">
-                                        <Run x:Uid="Activities_DownloadPage_Item_H1" Text="Progress: " />
-                                        <Run Text="{Binding ProgressText}" />
-                                    </TextBlock>
-                                    <ProgressBar
-                                        Grid.Column="2"
-                                        Width="300"
-                                        Maximum="1"
-                                        Value="{Binding Progress}" />
-                                </Grid>
+                                <TextBlock>
+                                    <Run x:Uid="Tasks_DownloadPage_Item_H1" Text="Progress: " />
+                                    <Run Text="{Binding ProgressText}" />
+                                </TextBlock>
                             </controls:SettingsCard.Header>
+
+                            <ProgressBar
+                                Width="300"
+                                Maximum="1"
+                                Value="{Binding Progress}">
+                                <i:Interaction.Behaviors>
+                                    <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
+                                </i:Interaction.Behaviors>
+                            </ProgressBar>
                         </controls:SettingsCard>
 
                         <controls:SettingsCard Padding="25,15">

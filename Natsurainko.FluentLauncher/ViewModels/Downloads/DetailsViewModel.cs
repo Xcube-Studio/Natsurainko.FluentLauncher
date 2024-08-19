@@ -26,7 +26,7 @@ internal partial class DetailsViewModel : ObservableObject, INavigationAware
     private readonly ModrinthClient _modrinthClient;
 
     public DetailsViewModel(
-        INavigationService navigationService, 
+        INavigationService navigationService,
         CurseForgeClient curseForgeClient,
         ModrinthClient modrinthClient)
     {

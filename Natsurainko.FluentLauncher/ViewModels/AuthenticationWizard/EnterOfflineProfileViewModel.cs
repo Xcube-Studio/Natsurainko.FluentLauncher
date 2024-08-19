@@ -2,13 +2,30 @@
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
-using Nrk.FluentCore.Authentication;
 using System;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 
 internal partial class EnterOfflineProfileViewModel : WizardViewModelBase
 {
+    private readonly AuthenticationService _authenticationService;
+
+    public EnterOfflineProfileViewModel()
+    {
+        XamlPageType = typeof(EnterOfflineProfilePage);
+
+        _authenticationService = App.GetService<AuthenticationService>();
+    }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanNext))]
+    private string name;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanNext))]
+    private string uuid;
+
     public override bool CanNext
     {
         get
@@ -23,23 +40,6 @@ internal partial class EnterOfflineProfileViewModel : WizardViewModelBase
         }
     }
 
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CanNext))]
-    private string name;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CanNext))]
-    private string uuid;
-
-    private AuthenticationService _authenticationService;
-
-    public EnterOfflineProfileViewModel()
-    {
-        XamlPageType = typeof(EnterOfflineProfilePage);
-
-        _authenticationService = App.GetService<AuthenticationService>();
-    }
-
     public override WizardViewModelBase GetNextViewModel()
-        => new ConfirmProfileViewModel(() => new Account[] { _authenticationService.LoginOffline(Name, Uuid) });
+        => new ConfirmProfileViewModel(() => [_authenticationService.LoginOffline(Name, Uuid)]);
 }

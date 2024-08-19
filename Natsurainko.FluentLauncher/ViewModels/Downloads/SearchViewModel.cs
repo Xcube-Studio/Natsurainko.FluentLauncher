@@ -132,7 +132,7 @@ internal partial class SearchViewModel : ObservableObject, INavigationAware
 
     async void SearchTask()
     {
-        var version = EnableVersionFilter? SelectedVersion : null;
+        var version = EnableVersionFilter ? SelectedVersion : null;
 
         ObservableCollection<object> searchResult = [];
         App.DispatcherQueue.TryEnqueue(() => SearchResult = searchResult);
@@ -162,7 +162,7 @@ internal partial class SearchViewModel : ObservableObject, INavigationAware
                 foreach (var obj in modrinthResources)
                     App.DispatcherQueue.TryEnqueue(() => searchResult.Add(obj));
             }
-        } 
+        }
 
         if (ResourceType == 1)
         {
@@ -257,7 +257,7 @@ internal partial class SearchViewModel : ObservableObject, INavigationAware
     }
 
     [RelayCommand]
-    void Unloaded() 
+    void Unloaded()
     {
         _searchProviderService.UnregisterSuggestionProvider(this);
     }

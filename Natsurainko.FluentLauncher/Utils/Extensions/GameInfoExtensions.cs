@@ -30,23 +30,23 @@ internal static class MinecraftInstanceExtensions
         var configGuid = new Guid(MD5.HashData(Encoding.UTF8.GetBytes($"{instance.MinecraftFolderPath}:{instance.InstanceId}:{type}")));
         var configsFolder = Path.Combine(LocalStorageService.LocalFolderPath, "GameConfigsFolder");
 
-        if (!Directory.Exists(configsFolder)) 
+        if (!Directory.Exists(configsFolder))
             Directory.CreateDirectory(configsFolder);
 
         var configFile = Path.Combine(configsFolder, $"{configGuid}.json");
 
-        if (!File.Exists(configFile)) 
+        if (!File.Exists(configFile))
             return new GameConfig { FilePath = configFile };
 
         GameConfig coreProfile;
 
-        try 
-        { 
-            coreProfile = JsonNode.Parse(File.ReadAllText(configFile)).Deserialize<GameConfig>()!; 
-        }
-        catch 
+        try
         {
-            coreProfile = new GameConfig(); 
+            coreProfile = JsonNode.Parse(File.ReadAllText(configFile)).Deserialize<GameConfig>()!;
+        }
+        catch
+        {
+            coreProfile = new GameConfig();
         }
 
         coreProfile.FilePath = configFile;

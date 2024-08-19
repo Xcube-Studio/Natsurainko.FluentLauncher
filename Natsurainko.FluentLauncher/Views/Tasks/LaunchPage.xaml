@@ -38,7 +38,10 @@
                 Style="{ThemeResource TitleTextBlockStyle}"
                 Text="Launch Tasks" />
 
-            <controls:WrapPanel HorizontalSpacing="15" VerticalSpacing="15">
+            <controls:WrapPanel
+                HorizontalSpacing="15"
+                VerticalSpacing="15"
+                Visibility="Collapsed">
                 <CheckBox
                     x:Uid="Tasks_LaunchPage_CheckBox"
                     Content="Show historical launch records"
@@ -95,7 +98,7 @@
                     FontWeight="SemiBold"
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                     Text="No Task" />
-                <HyperlinkButton Margin="0,0,0,-5">
+                <HyperlinkButton Margin="0,0,0,-5" Command="{Binding GoToHomeCommand}">
                     <TextBlock
                         x:Uid="Tasks_LaunchPage_Text3"
                         FontWeight="SemiBold"

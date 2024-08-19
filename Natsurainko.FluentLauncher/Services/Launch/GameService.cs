@@ -1,4 +1,5 @@
 ﻿using Natsurainko.FluentLauncher.Services.Settings;
+using Nrk.FluentCore.Management;
 using System.Collections.ObjectModel;
 using System;
 using Nrk.FluentCore.Experimental.GameManagement.Instances;

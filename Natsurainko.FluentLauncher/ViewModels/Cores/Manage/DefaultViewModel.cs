@@ -67,7 +67,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         });
 
         GameConfig.PropertyChanged += GameConfig_PropertyChanged;
-    } 
+    }
 
     private void GameConfig_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {

@@ -6,6 +6,7 @@ using Natsurainko.FluentLauncher.Views.CoreInstallWizard;
 using System.Collections.Generic;
 using System.Linq;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.CoreInstallWizard;
 
 internal partial class EnterCoreSettingsViewModel : WizardViewModelBase

@@ -110,16 +110,16 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
 
     public async void LoadImage()
     {
-        if (isLoading 
+        if (isLoading
             || AssociatedObject == null
-            || SourceProperty == null 
+            || SourceProperty == null
             || (!LoadFromInternet && !File.Exists(ImageSourceFilePath))
             || (LoadFromInternet && string.IsNullOrEmpty(ImageSourceUrl)))
             return;
 
         isLoading = true;
 
-        using Stream imageDataStream = LoadFromInternet 
+        using Stream imageDataStream = LoadFromInternet
             ? await _cacheInterfaceService.RequestStreamAsync(ImageSourceUrl, Services.Network.Data.InterfaceRequestMethod.Static)
             : File.OpenRead(ImageSourceFilePath);
 

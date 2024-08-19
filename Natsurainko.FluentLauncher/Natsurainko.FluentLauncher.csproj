@@ -55,6 +55,7 @@
     <PackageReference Include="NbtToolkit" Version="0.1.2-beta" />
     <PackageReference Include="PInvoke.User32" Version="0.7.124" />
     <PackageReference Include="ReverseMarkdown" Version="4.6.0" />
+    <PackageReference Include="System.Management" Version="8.0.0" />
     <PackageReference Include="WindowsAPICodePack.Shell.CommonFileDialogs" Version="1.1.5" />
     <PackageReference Include="WinUIEx" Version="2.3.4" />
 

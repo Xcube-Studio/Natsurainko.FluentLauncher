@@ -21,7 +21,7 @@ internal class ResourceItemTemplateSelector : DataTemplateSelector
         else if (item is ModrinthResource)
             return Modrinth;
         if (item is VersionManifestItem)
-            return  Minecraft;
+            return Minecraft;
 
         return base.SelectTemplateCore(item);
     }

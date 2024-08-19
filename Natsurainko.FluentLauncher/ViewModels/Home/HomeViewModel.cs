@@ -30,9 +30,9 @@ internal partial class HomeViewModel : ObservableObject
     private readonly SearchProviderService _searchProviderService;
 
     public HomeViewModel(
-        GameService gameService, 
-        AccountService accountService, 
-        LaunchService launchService, 
+        GameService gameService,
+        AccountService accountService,
+        LaunchService launchService,
         INavigationService navigationService,
         SearchProviderService searchProviderService)
     {
@@ -106,7 +106,7 @@ internal partial class HomeViewModel : ObservableObject
                     ResourceUtils.GetValue("SearchSuggest", "_D4"), async () =>
                     {
                         _navigationService.NavigateTo("Tasks/Launch");
-                        await _launchService.LaunchGame(ActiveMinecraftInstance);
+                        await _launchService.LaunchGame(item);
                     });
             }
         }

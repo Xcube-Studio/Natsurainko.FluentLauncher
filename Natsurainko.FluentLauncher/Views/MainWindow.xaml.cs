@@ -26,7 +26,7 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
 
     public MainWindow(
         SettingsService settingsService,
-        NotificationService notificationService, 
+        NotificationService notificationService,
         INavigationService navigationService)
     {
         _settingsService = settingsService;

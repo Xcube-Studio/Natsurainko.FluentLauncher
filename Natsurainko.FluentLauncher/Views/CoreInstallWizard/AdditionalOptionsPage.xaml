@@ -7,12 +7,14 @@
     xmlns:coreinstallwizard="using:Natsurainko.FluentLauncher.ViewModels.CoreInstallWizard"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     x:Uid="CoreInstallWizard_AdditionalOptionsPage_Page"
     d:DataContext="{d:DesignInstance Type=coreinstallwizard:AdditionalOptionsViewModel}"
     Background="Transparent"
     Tag="Additional Install Options (3/3)"
     mc:Ignorable="d">
+    <Page.Resources>
+        <converters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" Inverted="True" />
+    </Page.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
@@ -56,28 +58,30 @@
                             </Grid>
                         </CheckBox>
                     </controls:SettingsCard.Header>
-                    <Grid>
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                            Style="{ThemeResource CaptionTextBlockStyle}"
-                            Text="Not Supported">
-                            <TextBlock.Visibility>
-                                <Binding Path="FabricApiAvailable">
-                                    <Binding.Converter>
-                                        <converters:BoolToVisibilityConverter Inverted="True" />
-                                    </Binding.Converter>
-                                </Binding>
-                            </TextBlock.Visibility>
-                        </TextBlock>
 
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                            Style="{ThemeResource CaptionTextBlockStyle}"
-                            Text="{Binding FabricApi.FileName}"
-                            Visibility="{Binding FabricApiAvailable, Converter={ThemeResource BoolToVisibilityConverter}}" />
-                    </Grid>
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <ProgressRing
+                            Width="16"
+                            Height="16"
+                            IsActive="{Binding LoadingFabricApi}"
+                            Visibility="{Binding LoadingFabricApi, Converter={ThemeResource BoolToVisibilityConverter}}" />
+
+                        <StackPanel Visibility="{Binding LoadingFabricApi, Converter={ThemeResource InvertedBoolToVisibilityConverter}}">
+                            <TextBlock
+                                x:Uid="CoreInstallWizard_AdditionalOptionsPage_Text1"
+                                VerticalAlignment="Center"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                Text="Unsupported"
+                                Visibility="{Binding FabricApiAvailable, Converter={ThemeResource InvertedBoolToVisibilityConverter}}" />
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                Text="{Binding FabricApi.FileName}"
+                                Visibility="{Binding FabricApiAvailable, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                        </StackPanel>
+                    </StackPanel>
                 </controls:SettingsCard>
 
                 <controls:SettingsCard IsEnabled="{Binding OptiFabricAvailable}">
@@ -111,31 +115,31 @@
                             </Grid>
                         </CheckBox>
                     </controls:SettingsCard.Header>
-                    <Grid>
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                            Style="{ThemeResource CaptionTextBlockStyle}"
-                            Text="Not Supported">
-                            <TextBlock.Visibility>
-                                <Binding Path="OptiFabricAvailable">
-                                    <Binding.Converter>
-                                        <converters:BoolToVisibilityConverter Inverted="True" />
-                                    </Binding.Converter>
-                                </Binding>
-                            </TextBlock.Visibility>
-                        </TextBlock>
 
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                            Style="{ThemeResource CaptionTextBlockStyle}"
-                            Text="{Binding OptiFabric.FileName}"
-                            Visibility="{Binding OptiFabricAvailable, Converter={ThemeResource BoolToVisibilityConverter}}" />
-                    </Grid>
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <ProgressRing
+                            Width="16"
+                            Height="16"
+                            IsActive="{Binding LoadingOptiFabric}"
+                            Visibility="{Binding LoadingOptiFabric, Converter={ThemeResource BoolToVisibilityConverter}}" />
 
+                        <StackPanel Visibility="{Binding LoadingOptiFabric, Converter={ThemeResource InvertedBoolToVisibilityConverter}}">
+                            <TextBlock
+                                x:Uid="CoreInstallWizard_AdditionalOptionsPage_Text1"
+                                VerticalAlignment="Center"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                Text="Unsupported"
+                                Visibility="{Binding OptiFabricAvailable, Converter={ThemeResource InvertedBoolToVisibilityConverter}}" />
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                Text="{Binding OptiFabric.FileName}"
+                                Visibility="{Binding OptiFabricAvailable, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                        </StackPanel>
+                    </StackPanel>
                 </controls:SettingsCard>
-
             </StackPanel>
         </Border>
     </ScrollViewer>

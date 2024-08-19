@@ -6,9 +6,12 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
+using Nrk.FluentCore.Authentication;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
 internal partial class AuthenticationWizardDialogViewModel : ObservableObject
@@ -101,6 +104,33 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
     {
         var vm = CurrentFrameDataContext as ConfirmProfileViewModel;
         var account = vm.SelectedAccount;
+
+        var existedAccounts = _accountService.Accounts.Where(x =>
+        {
+            if (x.Uuid.Equals(account.Uuid)
+                && x.Name.Equals(account.Name)
+                && x.Type.Equals(account.Type))
+            {
+                if (account is YggdrasilAccount yggdrasilAccount)
+                    return ((YggdrasilAccount)x).YggdrasilServerUrl.Equals(yggdrasilAccount.YggdrasilServerUrl);
+
+                return true;
+            }
+
+            return false;
+        }).ToArray();
+
+        if (existedAccounts.Length != 0)
+        {
+            foreach (var item in existedAccounts)
+            {
+                _accountService.RemoveAccount(item, true);
+            }
+
+            _notificationService.NotifyWithoutContent(
+                ResourceUtils.GetValue("Notifications", "_AccountExisted"),
+                icon: "\uecc5");
+        }
 
         _accountService.AddAccount(account);
         _accountService.ActivateAccount(account);

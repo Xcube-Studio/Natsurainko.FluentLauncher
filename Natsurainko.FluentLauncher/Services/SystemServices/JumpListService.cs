@@ -14,8 +14,10 @@ using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Utils;
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Windows.UI.StartScreen;
 
@@ -24,20 +26,65 @@ namespace Natsurainko.FluentLauncher.Services.SystemServices;
 internal class JumpListService
 {
     private readonly LaunchService _launchService;
+    private readonly GameService _gameService;
 
-    public JumpListService(LaunchService launchService)
+    public JumpListService(LaunchService launchService, GameService gameService)
     {
         _launchService = launchService;
+        _gameService = gameService;
     }
+
+    #region Jumplist argument and MinecraftInstance conversion
+
+    private static string InstanceToJumplistArg(MinecraftInstance instance)
+    {
+        // Do not change property names (compatibility with legacy GameInfo)
+        var argJson = new JsonObject();
+        argJson["AbsoluteId"] = instance.InstanceId;
+        argJson["MinecraftFolderPath"] = instance.MinecraftFolderPath;
+        return "/quick-launch " + argJson.ToJsonString().ConvertToBase64();
+    }
+
+    private static (string mcFolderPath, string instanceId) ParseJumplistArg(string argument)
+    {
+        string argJson = argument.Remove("/quick-launch ".Length).ConvertFromBase64();
+        string? mcFolderPath = null, instanceId = null;
+        try
+        {
+            var argJsonNode = JsonNode.Parse(argJson)
+                ?? throw new JsonException();
+            mcFolderPath = argJsonNode["MinecraftFolderPath"]?.GetValue<string>();
+            instanceId = argJsonNode["AbsoluteId"]?.GetValue<string>();
+            if (mcFolderPath is null || instanceId is null)
+                throw new FormatException();
+        }
+        catch (Exception e) when (e is JsonException || e is FormatException)
+        {
+            throw new InvalidDataException($"Invalid jumplist argument: {argJson}");
+        }
+        return (mcFolderPath, instanceId);
+    }
+
+    private static MinecraftInstance JumplistArgToInstance(string argument)
+    {
+        var (mcFolderPath, instanceId) = ParseJumplistArg(argument);
+        var instanceDir = new DirectoryInfo(Path.Combine(mcFolderPath, "versions", instanceId));
+        return MinecraftInstance.Parse(instanceDir);
+    }
+
+    #endregion
 
     private static async Task AddItem(MinecraftInstance minecraftInstance)
     {
         var list = await JumpList.LoadCurrentAsync();
-        var itemArguments = JsonSerializer.Serialize(minecraftInstance).ConvertToBase64();
+        var itemArguments = InstanceToJumplistArg(minecraftInstance);
 
         var jumpListItem = list.Items.Where(item =>
-            minecraftInstance == JsonSerializer.Deserialize<MinecraftInstance>
-                (item.Arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64())).FirstOrDefault();
+        {
+            var (mcFolderPath, instanceId) = ParseJumplistArg(item.Arguments);
+            return minecraftInstance.MinecraftFolderPath == mcFolderPath &&
+                minecraftInstance.InstanceId == instanceId;
+        }).FirstOrDefault();
 
         if (jumpListItem != null)
         {
@@ -46,7 +93,7 @@ internal class JumpListService
         }
         else
         {
-            jumpListItem = JumpListItem.CreateWithArguments($"/quick-launch {itemArguments}", minecraftInstance.GetConfig().NickName);
+            jumpListItem = JumpListItem.CreateWithArguments(itemArguments, minecraftInstance.GetConfig().NickName);
 
             jumpListItem.GroupName = "Latest";
             jumpListItem.Logo = new Uri(string.Format("ms-appx:///Assets/Icons/{0}.png", !minecraftInstance.IsVanilla ? "furnace_front" : minecraftInstance.Version.Type switch
@@ -64,12 +111,11 @@ internal class JumpListService
         await list.SaveAsync();
     }
 
-    public async void LaunchFromJumpList(string arguments)
+    public async Task LaunchFromJumpList(string arguments)
     {
         #region Init Launch & Display Elements
 
-        var minecraftInstance = JsonSerializer.Deserialize<MinecraftInstance>(arguments.Replace("/quick-launch ", string.Empty).ConvertFromBase64())
-            ?? throw new InvalidOperationException();
+        var minecraftInstance = JumplistArgToInstance(arguments);
 
         string name = minecraftInstance.GetConfig().NickName ?? "Minecraft";
         string icon = string.Format("ms-appx:///Assets/Icons/{0}.png", !minecraftInstance.IsVanilla ? "furnace_front" : minecraftInstance.Version.Type switch
@@ -130,7 +176,7 @@ internal class JumpListService
         App.GetService<LaunchSessions>().SessionViewModels.Insert(0, sessionViewModel);
 
         minecraftInstance.UpdateLastLaunchTimeToNow();
-        UpdateJumpList(minecraftInstance);
+        await UpdateJumpList(minecraftInstance);
 
         minecraftSession.StateChanged += MinecraftSession_StateChanged;
 
@@ -186,7 +232,7 @@ internal class JumpListService
         await minecraftSession.StartAsync();
     }
 
-    public async void UpdateJumpList(MinecraftInstance MinecraftInstance)
+    public async Task UpdateJumpList(MinecraftInstance MinecraftInstance)
     {
         await AddItem(MinecraftInstance);
 

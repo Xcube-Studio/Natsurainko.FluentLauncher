@@ -1,7 +1,10 @@
 ﻿using Microsoft.UI.Xaml.Data;
+using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Utils;
+using Nrk.FluentCore.Experimental.GameManagement;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Management;
-using Nrk.FluentCore.Management.Downloader.Data;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,29 +12,29 @@ using System.Linq;
 #nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
-public class GameInfoConverter : IValueConverter
+public class MinecraftInstanceConverter : IValueConverter
 {
     public bool EnableShowModLoaderType { get; set; } = false;
 
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is GameInfo game)
+        if (value is MinecraftInstance game)
         {
             var strings = new List<string>
             {
-                game.AbsoluteVersion ?? "Unknown Version",
-                ResourceUtils.GetValue("Converters", "_" + game.Type switch
+                game.InstanceId ?? "Unknown Version",
+                ResourceUtils.GetValue("Converters", "_" + game.Version.Type switch
                 {
-                    "release" => "Release",
-                    "snapshot" => "Snapshot",
-                    "old_beta" => "Old Beta",
-                    "old_alpha" => "Old Alpha",
+                    MinecraftVersionType.Release => "Release",
+                    MinecraftVersionType.Snapshot => "Snapshot",
+                    MinecraftVersionType.OldBeta => "Old Beta",
+                    MinecraftVersionType.OldAlpha => "Old Alpha",
                     _ => "Unknown"
-                }),
+                })
             };
 
             if (EnableShowModLoaderType)
-                strings.AddRange(game.GetModLoaders().Select(x => $"{x.LoaderType} {x.Version}"));
+                strings.AddRange(game.GetModLoaders().Select(x => $"{x.Type} {x.Version}"));
 
             return strings;
         }

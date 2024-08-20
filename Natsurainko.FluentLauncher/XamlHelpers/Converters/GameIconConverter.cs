@@ -1,24 +1,26 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Imaging;
+using Natsurainko.FluentLauncher.Models;
+using Nrk.FluentCore.Experimental.GameManagement;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Management;
-using Nrk.FluentCore.Management.Downloader.Data;
+
 using Nrk.FluentCore.Management.ModLoaders;
 using System;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
 public class GameIconConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is GameInfo game)
-            return new BitmapImage(new Uri(string.Format("ms-appx:///Assets/Icons/{0}.png", !game.IsVanilla ? "furnace_front" : game.Type switch
+        if (value is MinecraftInstance game)
+            return new BitmapImage(new Uri(string.Format("ms-appx:///Assets/Icons/{0}.png", !game.IsVanilla ? "furnace_front" : game.Version.Type switch
             {
-                "release" => "grass_block_side",
-                "snapshot" => "crafting_table_front",
-                "old_beta" => "dirt_path_side",
-                "old_alpha" => "dirt_path_side",
+                MinecraftVersionType.Release => "grass_block_side",
+                MinecraftVersionType.Snapshot => "crafting_table_front",
+                MinecraftVersionType.OldBeta => "dirt_path_side",
+                MinecraftVersionType.OldAlpha => "dirt_path_side",
                 _ => "grass_block_side"
             }), UriKind.RelativeOrAbsolute));
 

@@ -7,6 +7,7 @@ using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Authentication;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Management;
 using System;
 using System.Collections.ObjectModel;
@@ -25,7 +26,7 @@ internal partial class ConfigViewModel : ObservableObject, INavigationAware
 
     public ObservableCollection<string> VmArguments { get; private set; }
 
-    public GameInfo GameInfo { get; private set; }
+    public MinecraftInstance MinecraftInstance { get; private set; }
 
     public GameConfig GameConfig { get; private set; }
 
@@ -39,8 +40,8 @@ internal partial class ConfigViewModel : ObservableObject, INavigationAware
 
     void INavigationAware.OnNavigatedTo(object parameter)
     {
-        GameInfo = parameter as GameInfo;
-        GameConfig = GameInfo.GetConfig();
+        MinecraftInstance = parameter as MinecraftInstance;
+        GameConfig = MinecraftInstance.GetConfig();
         VmArguments = new(GameConfig.VmParameters ?? []);
 
         LoadTargetedAccount();

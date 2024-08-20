@@ -8,6 +8,8 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
+using Nrk.FluentCore.Experimental.GameManagement;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Management;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -29,7 +31,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     private readonly NotificationService _notificationService;
     private readonly SearchProviderService _searchProviderService;
 
-    public ReadOnlyObservableCollection<GameInfo> GameInfos { get; init; }
+    public ReadOnlyObservableCollection<MinecraftInstance> MinecraftInstances { get; init; }
 
     public CoresViewModel(
         GameService gameService,
@@ -44,11 +46,11 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
         _notificationService = notificationService;
         _searchProviderService = searchProviderService;
 
-        GameInfos = _gameService.Games;
+        MinecraftInstances = _gameService.Games;
 
         (this as ISettingsViewModel).InitializeSettings();
 
-        Task.Run(UpdateDisplayGameInfos);
+        Task.Run(UpdateDisplayMinecraftInstances);
         PropertyChanged += OnPropertyChanged;
     }
 
@@ -66,7 +68,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     private int sortByIndex;
 
     [ObservableProperty]
-    private IEnumerable<GameInfo> displayGameInfos;
+    private IEnumerable<MinecraftInstance> displayMinecraftInstances;
 
     public string DisplayFolderPath => (string.IsNullOrEmpty(ActiveMinecraftFolder) || !Directory.Exists(ActiveMinecraftFolder))
         ? ResourceUtils.GetValue("Cores", "CoresPage", "_FolderError")
@@ -76,27 +78,27 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     {
         if (e.PropertyName == nameof(FilterIndex) ||
             e.PropertyName == nameof(SortByIndex))
-            Task.Run(UpdateDisplayGameInfos);
+            Task.Run(UpdateDisplayMinecraftInstances);
     }
 
-    private void UpdateDisplayGameInfos()
+    private void UpdateDisplayMinecraftInstances()
     {
-        var infos = GameInfos.Where(x =>
+        var infos = MinecraftInstances.Where(x =>
         {
             return FilterIndex switch
             {
-                1 => x.Type.Equals("release"),
-                2 => x.Type.Equals("snapshot"),
-                3 => x.Type.Contains("old"),
+                1 => x.Version.Type == MinecraftVersionType.Release,
+                2 => x.Version.Type == MinecraftVersionType.Snapshot,
+                3 => x.Version.Type == MinecraftVersionType.OldBeta || x.Version.Type == MinecraftVersionType.OldAlpha,
                 _ => true
             };
         });
 
         var list = SortByIndex.Equals(0)
-            ? infos.OrderBy(x => x.Name).ToList()
+            ? infos.OrderBy(x => x.GetConfig().NickName).ToList()
             : infos.OrderByDescending(x => x.GetConfig().LastLaunchTime).ToList();
 
-        App.DispatcherQueue.TryEnqueue(() => DisplayGameInfos = list);
+        App.DispatcherQueue.TryEnqueue(() => DisplayMinecraftInstances = list);
     }
 
     IEnumerable<SearchProviderService.Suggestion> ProviderSuggestions(string searchText)
@@ -112,11 +114,11 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
             })
         };
 
-        foreach (var item in GameInfos)
+        foreach (var item in MinecraftInstances)
         {
-            if (item.Name.Contains(searchText))
+            if (item.InstanceId.Contains(searchText))
             {
-                yield return SuggestionHelper.FromGameInfo(item,
+                yield return SuggestionHelper.FromMinecraftInstance(item,
                     ResourceUtils.GetValue("SearchSuggest", "_D3"),
                     () => _navigationService.NavigateTo("CoreManage/Navigation", item));
             }
@@ -127,7 +129,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     public void GoToSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Launch");
 
     [RelayCommand]
-    public void GoToCoreSettings(GameInfo gameInfo) => _navigationService.NavigateTo("CoreManage/Navigation", gameInfo);
+    public void GoToCoreSettings(MinecraftInstance MinecraftInstance) => _navigationService.NavigateTo("CoreManage/Navigation", MinecraftInstance);
 
     [RelayCommand]
     public void SearchAllMinecraft()

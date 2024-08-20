@@ -7,6 +7,7 @@ using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Utils;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Resources;
@@ -33,14 +34,14 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
     private readonly GameService _gameService = App.GetService<GameService>();
     private readonly DownloadService _downloadService = App.GetService<DownloadService>();
 
-    public GameInfo GameInfo { get; private set; }
+    public MinecraftInstance MinecraftInstance { get; private set; }
 
     public DownloadResourceDialogViewModel(object resource, INavigationService navigationService)
     {
         _resource = resource;
         _navigationService = navigationService;
 
-        GameInfo = _gameService.ActiveGame;
+        MinecraftInstance = _gameService.ActiveGame;
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -147,7 +148,7 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
         string fileName = string.Empty;
 
         if (DownloadToDesignated) fileName = DesignatedFilePath;
-        else if (DownloadToCurrentGame) fileName = Path.Combine(GameInfo.GetModsDirectory(), SelectedItem.FileName);
+        else if (DownloadToCurrentGame) fileName = Path.Combine(MinecraftInstance.GetModsDirectory(), SelectedItem.FileName);
 
         if (string.IsNullOrEmpty(fileName))
             throw new ArgumentException(nameof(fileName));

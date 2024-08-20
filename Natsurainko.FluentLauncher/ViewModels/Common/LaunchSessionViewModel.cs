@@ -5,6 +5,9 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using Natsurainko.FluentLauncher.Services.UI;
 using Nrk.FluentCore.Authentication;
+using Nrk.FluentCore.Experimental.GameManagement;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
+using Nrk.FluentCore.Experimental.GameManagement.Launch;
 using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Management;
 using System;
@@ -23,12 +26,12 @@ internal partial class LaunchSessionViewModel : ObservableObject
 {
     private readonly MinecraftSession _launchSession;
 
-    public GameInfo GameInfo { get; private set; }
+    public MinecraftInstance MinecraftInstance { get; private set; }
 
     public LaunchSessionViewModel(MinecraftSession session) : base()
     {
         _launchSession = session;
-        GameInfo = session.GameInfo;
+        MinecraftInstance = session.MinecraftInstance;
 
         // Handles all state changes
         session.StateChanged += (_, e) => App.DispatcherQueue.TryEnqueue
@@ -181,7 +184,8 @@ internal partial class LaunchSessionViewModel : ObservableObject
 
             var window = new WindowEx();
 
-            window.Title = $"Logger - {GameInfo.AbsoluteId}";
+            window.Title = $"Logger - {MinecraftInstance.InstanceId}";
+
             window.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets/AppIcon.ico"));
 
             window.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;

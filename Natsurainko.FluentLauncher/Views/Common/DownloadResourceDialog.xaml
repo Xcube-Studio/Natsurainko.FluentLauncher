@@ -15,7 +15,7 @@
     mc:Ignorable="d">
     <ContentDialog.Resources>
         <Thickness x:Key="ContentDialogPadding">0</Thickness>
-        <converters:GameInfoConverter x:Key="GameInfoConverter" EnableShowModLoaderType="True" />
+        <converters:MinecraftInstanceConverter x:Key="MinecraftInstanceConverter" EnableShowModLoaderType="True" />
         <converters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" Inverted="True" />
 
         <Style TargetType="CheckBox">
@@ -581,7 +581,7 @@
                     HorizontalAlignment="Stretch"
                     IsChecked="{Binding DownloadToCurrentGame, Mode=TwoWay}"
                     Visibility="{Binding CheckBox1}">
-                    <StackPanel DataContext="{Binding GameInfo}">
+                    <StackPanel DataContext="{Binding MinecraftInstance}">
                         <TextBlock x:Uid="Dialogs_DownloadResourceDialog_Text3" Text="Install this mod for the currently selected game" />
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <TextBlock
@@ -590,7 +590,7 @@
                                 TextTrimming="CharacterEllipsis">
                                 <Run Text="{Binding Name}" /><Run Text="," />
                             </TextBlock>
-                            <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource GameInfoConverter}}">
+                            <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource MinecraftInstanceConverter}}">
                                 <ItemsRepeater.Layout>
                                     <controls:WrapLayout HorizontalSpacing="5" VerticalSpacing="5" />
                                 </ItemsRepeater.Layout>

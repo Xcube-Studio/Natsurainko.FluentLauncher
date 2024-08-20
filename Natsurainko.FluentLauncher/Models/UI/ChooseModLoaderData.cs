@@ -1,8 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-using Nrk.FluentCore.Management.Downloader;
-using Nrk.FluentCore.Management.Downloader.Data;
+using Nrk.FluentCore.Experimental.GameManagement.Downloader;
 using Nrk.FluentCore.Management.ModLoaders;
 using Nrk.FluentCore.Utils;
 using System;
@@ -65,9 +64,9 @@ internal partial class ChooseModLoaderData : ObservableObject
     {
         var url = Type switch
         {
-            ModLoaderType.NeoForge => $"{DownloadMirrors.Bmclapi.Domain}/neoforge/list/{_manifestItem.Id}",
-            ModLoaderType.Forge => $"{DownloadMirrors.Bmclapi.Domain}/forge/minecraft/{_manifestItem.Id}",
-            ModLoaderType.OptiFine => $"{DownloadMirrors.Bmclapi.Domain}/optifine/{_manifestItem.Id}",
+            ModLoaderType.NeoForge => $"https://bmclapi2.bangbang93.com/neoforge/list/{_manifestItem.Id}",
+            ModLoaderType.Forge => $"https://bmclapi2.bangbang93.com/forge/minecraft/{_manifestItem.Id}",
+            ModLoaderType.OptiFine => $"https://bmclapi2.bangbang93.com/optifine/{_manifestItem.Id}",
             ModLoaderType.Fabric => $"https://meta.fabricmc.net/v2/versions/loader/{_manifestItem.Id}",
             ModLoaderType.Quilt => $"https://meta.quiltmc.org/v3/versions/loader/{_manifestItem.Id}",
             _ => throw new NotImplementedException()

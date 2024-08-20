@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Natsurainko.FluentLauncher.ViewModels.Common;
+using Nrk.FluentCore.Experimental.GameManagement;
+using Nrk.FluentCore.Experimental.GameManagement.Launch;
 using Nrk.FluentCore.Launch;
 using System;
 using System.Collections.ObjectModel;

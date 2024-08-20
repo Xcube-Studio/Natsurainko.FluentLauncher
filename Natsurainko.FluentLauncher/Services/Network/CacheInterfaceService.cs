@@ -1,7 +1,7 @@
 using Natsurainko.FluentLauncher.Services.Network.Data;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
-using Nrk.FluentCore.Management.Downloader;
+
 using Nrk.FluentCore.Utils;
 using System;
 using System.IO;
@@ -20,7 +20,7 @@ internal class CacheInterfaceService
 
     public string VersionManifest => _settingsService.CurrentDownloadSource switch
     {
-        "Bmclapi" => DownloadMirrors.Bmclapi.VersionManifestUrl,
+        "Bmclapi" => "https://bmclapi2.bangbang93.com/mc/game/version_manifest_v2.json",
         _ => LauncherMetaVersionManifest
     };
 

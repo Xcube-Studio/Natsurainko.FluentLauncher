@@ -6,6 +6,7 @@ using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Management;
 using System.IO;
 using System.Threading.Tasks;
@@ -15,19 +16,19 @@ namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
 internal partial class DeleteGameDialogViewModel : ObservableObject
 {
-    private readonly GameInfo _gameInfo;
+    private readonly MinecraftInstance _MinecraftInstance;
     private readonly INavigationService _navigationService;
 
     private ContentDialog _dialog;
 
-    public string Title => $"\"{_gameInfo.Name}\"";
+    public string Title => $"\"{_MinecraftInstance.GetConfig().NickName}\"";
 
     [ObservableProperty]
     private bool deleteCoreSettings = true;
 
-    public DeleteGameDialogViewModel(GameInfo gameInfo, INavigationService navigationService)
+    public DeleteGameDialogViewModel(MinecraftInstance MinecraftInstance, INavigationService navigationService)
     {
-        _gameInfo = gameInfo;
+        _MinecraftInstance = MinecraftInstance;
         _navigationService = navigationService;
     }
 
@@ -54,16 +55,16 @@ internal partial class DeleteGameDialogViewModel : ObservableObject
             return false;
         }
 
-        var directory = new DirectoryInfo(Path.Combine(_gameInfo.MinecraftFolderPath, "versions", _gameInfo.AbsoluteId));
+        var directory = new DirectoryInfo(Path.Combine(_MinecraftInstance.MinecraftFolderPath, "versions", _MinecraftInstance.InstanceId));
         var notificationService = App.GetService<NotificationService>();
 
         if (!ExistsOccupiedFile(directory))
         {
-            _gameInfo.Delete();
+            _MinecraftInstance.Delete();
 
             if (DeleteCoreSettings)
             {
-                var file = _gameInfo.GetConfig().FilePath;
+                var file = _MinecraftInstance.GetConfig().FilePath;
                 if (File.Exists(file)) File.Delete(file);
             }
 

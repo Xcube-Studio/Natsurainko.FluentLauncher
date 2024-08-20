@@ -262,8 +262,8 @@
                                     MaxWidth="425"
                                     MaxHeight="250"
                                     Margin="-10,-7.5"
-                                    ItemsSource="{Binding GameInfos}"
-                                    SelectedItem="{Binding ActiveGameInfo, Mode=TwoWay}">
+                                    ItemsSource="{Binding MinecraftInstances}"
+                                    SelectedItem="{Binding ActiveMinecraftInstance, Mode=TwoWay}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <Grid
@@ -293,7 +293,7 @@
                                                         TextTrimming="CharacterEllipsis"
                                                         TextWrapping="NoWrap"
                                                         ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
-                                                    <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource GameInfoConverter}}">
+                                                    <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource MinecraftInstanceConverter}}">
                                                         <ItemsRepeater.Layout>
                                                             <StackLayout Orientation="Horizontal" Spacing="5" />
                                                         </ItemsRepeater.Layout>
@@ -341,7 +341,7 @@
                                     </StackPanel>
 
                                     <i:Interaction.Behaviors>
-                                        <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{Binding GameInfos}" />
+                                        <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{Binding MinecraftInstances}" />
                                     </i:Interaction.Behaviors>
                                 </StackPanel>
 

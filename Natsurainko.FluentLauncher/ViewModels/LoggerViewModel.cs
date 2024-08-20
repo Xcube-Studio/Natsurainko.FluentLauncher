@@ -5,6 +5,7 @@ using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
+using Nrk.FluentCore.Experimental.GameManagement.Launch;
 using Nrk.FluentCore.Launch;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

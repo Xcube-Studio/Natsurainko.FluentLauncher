@@ -2,8 +2,9 @@
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils.Extensions;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
+using Nrk.FluentCore.Experimental.GameManagement.Mods;
 using Nrk.FluentCore.Management;
-using Nrk.FluentCore.Management.Mods;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -21,11 +22,11 @@ public partial class ModViewModel : ObservableObject, INavigationAware
 
     public string ModsFolder { get; private set; }
 
-    public GameInfo GameInfo { get; private set; }
+    public MinecraftInstance MinecraftInstance { get; private set; }
 
-    public bool NotSupportMod => !GameInfo.IsSupportMod();
+    public bool NotSupportMod => !MinecraftInstance.IsSupportMod();
 
-    public ObservableCollection<ModInfo> Mods { get; private set; } = [];
+    public ObservableCollection<MinecraftMod> Mods { get; private set; } = [];
 
     public ModViewModel(INavigationService navigationService)
     {
@@ -34,8 +35,8 @@ public partial class ModViewModel : ObservableObject, INavigationAware
 
     void INavigationAware.OnNavigatedTo(object parameter)
     {
-        GameInfo = parameter as GameInfo;
-        ModsFolder = GameInfo.GetModsDirectory();
+        MinecraftInstance = parameter as MinecraftInstance;
+        ModsFolder = MinecraftInstance.GetModsDirectory();
 
         if (!Directory.Exists(ModsFolder))
             Directory.CreateDirectory(ModsFolder);
@@ -49,7 +50,7 @@ public partial class ModViewModel : ObservableObject, INavigationAware
     public async Task OpenModsFolder() => await Launcher.LaunchFolderPathAsync(ModsFolder);
 
     [RelayCommand]
-    public void DeleteMod(ModInfo modInfo)
+    public void DeleteMod(MinecraftMod modInfo)
     {
         File.Delete(modInfo.AbsolutePath);
         LoadModList();

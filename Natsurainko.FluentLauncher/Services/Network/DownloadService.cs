@@ -7,9 +7,15 @@ using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Common;
+using Nrk.FluentCore.Experimental.GameManagement.Dependencies;
+using Nrk.FluentCore.Experimental.GameManagement.Downloader;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
+using Nrk.FluentCore.Experimental.GameManagement.ModLoaders;
+using Nrk.FluentCore.Experimental.GameManagement.ModLoaders.Fabric;
+using Nrk.FluentCore.Experimental.GameManagement.ModLoaders.Forge;
+using Nrk.FluentCore.Experimental.GameManagement.ModLoaders.OptiFine;
+using Nrk.FluentCore.Experimental.GameManagement.ModLoaders.Quilt;
 using Nrk.FluentCore.Management;
-using Nrk.FluentCore.Management.Downloader;
-using Nrk.FluentCore.Management.Downloader.Data;
 using Nrk.FluentCore.Management.ModLoaders;
 using Nrk.FluentCore.Management.Parsing;
 using Nrk.FluentCore.Utils;
@@ -31,6 +37,9 @@ internal partial class DownloadService
     private readonly INavigationService _navigationService;
     private readonly ObservableCollection<DownloadProcessViewModel> _downloadProcesses = new();
 
+    private MultipartDownloader _downloader = new MultipartDownloader(HttpUtils.HttpClient, 1024 * 1024, 8, 64);
+    public IDownloader Downloader { get => _downloader; }
+
     public ReadOnlyObservableCollection<DownloadProcessViewModel> DownloadProcesses { get; init; }
 
     public DownloadService(SettingsService settingsService, GameService gameService, INavigationService navigationService)
@@ -42,20 +51,49 @@ internal partial class DownloadService
         DownloadProcesses = new(_downloadProcesses);
     }
 
-    public DefaultResourcesDownloader CreateResourcesDownloader(GameInfo gameInfo, IEnumerable<LibraryElement> libraryElements = null)
+    public DependencyResolver CreateResourcesDownloader(MinecraftInstance instance, IEnumerable<MinecraftLibrary>? libraryElements = null)
     {
         UpdateDownloadSettings();
 
-        if (_settingsService.CurrentDownloadSource != "Mojang")
-            return Base_CreateResourcesDownloader(gameInfo, libraryElements, downloadMirrorSource: DownloadMirrors.Bmclapi);
+        // TODO: Move this part to DependencyResolver
+        List<MinecraftDependency> dependencies = new();
+        if (libraryElements is not null)
+            dependencies.AddRange(libraryElements);
 
-        return Base_CreateResourcesDownloader(gameInfo, libraryElements);
+        if (libraryElements == null)
+        {
+            var (libs, nativeLibs) = instance.GetRequiredLibraries();
+            dependencies.AddRange(libs.Union(nativeLibs));
+        }
+
+        var assetElement = instance.GetAssetIndex();
+
+        if (!DependencyResolver.VerifyDependencyAsync(assetElement).GetAwaiter().GetResult())
+        {
+            var result = _downloader.CreateDownloadTask(assetElement.Url, assetElement.FullPath).StartAsync().GetAwaiter().GetResult();
+
+            if (result.Type == DownloadResultType.Failed)
+                throw new System.Exception("依赖材质索引文件获取失败");
+        }
+
+        var assetElements = instance.GetRequiredAssets();
+        dependencies.AddRange(assetElements);
+
+        var jar = instance.GetJarElement();
+        if (jar != null && !DependencyResolver.VerifyDependencyAsync(jar).GetAwaiter().GetResult())
+            dependencies.Add(jar);
+
+        DependencyResolver depResolver = new(dependencies);
+        return depResolver;
     }
 
     private void UpdateDownloadSettings()
     {
-        HttpUtils.DownloadSetting.EnableLargeFileMultiPartDownload = _settingsService.EnableFragmentDownload;
-        HttpUtils.DownloadSetting.MultiThreadsCount = _settingsService.MaxDownloadThreads;
+        _downloader = new MultipartDownloader(
+            HttpUtils.HttpClient,
+            1024 * 1024,
+            _settingsService.EnableFragmentDownload ? _settingsService.MaxDownloadThreads : 1,
+            64);
     }
 
     public void DownloadResourceFile(ResourceFileItem file, string filePath)
@@ -69,7 +107,7 @@ internal partial class DownloadService
     {
         string GetModLoaderPackageDownloadUrl(ChooseModLoaderData loaderData)
         {
-            var downloadUrl = DownloadMirrors.Bmclapi.Domain;
+            var downloadUrl = "https://bmclapi2.bangbang93.com/";
             var metadata = loaderData.SelectedItem.Metadata;
 
             downloadUrl = loaderData.Type switch
@@ -99,25 +137,25 @@ internal partial class DownloadService
         var installProcess = new InstallProcessViewModel() { Title = GetTitle() };
         var firstToStart = new List<InstallProcessViewModel.ProgressItem>();
 
-        GameInfo inheritsFrom = _gameService.Games.FirstOrDefault(x => x.AbsoluteId.Equals(info.ManifestItem.Id));
+        MinecraftInstance inheritsFrom = _gameService.Games.FirstOrDefault(x => x.InstanceId.Equals(info.ManifestItem.Id));
 
         var installVanillaGame = new InstallProcessViewModel.ProgressItem(@this =>
         {
-            var downloadTask = HttpUtils.DownloadElementAsync(new DownloadElement
-            {
-                AbsolutePath = Path.Combine(_gameService.ActiveMinecraftFolder, "versions", info.ManifestItem.Id, $"{info.ManifestItem.Id}.json"),
-                Url = info.ManifestItem.Url
-            },
-            downloadSetting: new DownloadSetting
-            {
-                EnableLargeFileMultiPartDownload = false
-            },
-            perSecondProgressChangedAction: @this.OnProgressChanged);
+            var downloadTask = _downloader.CreateDownloadTask(
+                info.ManifestItem.Url,
+                Path.Combine(_gameService.ActiveMinecraftFolder, "versions", info.ManifestItem.Id, $"{info.ManifestItem.Id}.json"));
 
-            downloadTask.Wait();
+            Timer t = new((_) =>
+            {
+                if (downloadTask.TotalBytes is null)
+                    return;
+                @this.OnProgressChanged(downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes);
+            }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+            downloadTask.StartAsync().Wait();
+            t.Dispose();
 
             App.DispatcherQueue.SynchronousTryEnqueue(() => _gameService.RefreshGames());
-            inheritsFrom = _gameService.Games.FirstOrDefault(x => x.AbsoluteId.Equals(info.ManifestItem.Id));
+            inheritsFrom = _gameService.Games.FirstOrDefault(x => x.InstanceId.Equals(info.ManifestItem.Id));
 
         }, ResourceUtils.GetValue("Converters", "_ProgressItem_InstallVanilla").Replace("${id}", info.ManifestItem.Id), installProcess);
         var completeResources = new InstallProcessViewModel.ProgressItem(@this =>
@@ -127,26 +165,26 @@ internal partial class DownloadService
 
             var resourcesDownloader = CreateResourcesDownloader(inheritsFrom);
 
-            resourcesDownloader.SingleFileDownloaded += (_, _) =>
+            resourcesDownloader.DependencyDownloaded += (_, _) =>
             {
                 Interlocked.Increment(ref finished);
                 @this.OnProgressChanged((double)finished / total);
             };
-            resourcesDownloader.DownloadElementsPosted += (_, count) => App.DispatcherQueue.TryEnqueue(() =>
+            resourcesDownloader.InvalidDependenciesDetermined += (_, deps) => App.DispatcherQueue.TryEnqueue(() =>
             {
-                total = count;
+                total = deps.Count();
                 @this.OnProgressChanged(total != 0 ? (double)finished / total : 1);
             });
 
-            resourcesDownloader.Download();
+            resourcesDownloader.VerifyAndDownloadDependenciesAsync(_downloader, 10).GetAwaiter().GetResult();
 
         }, ResourceUtils.GetValue("Converters", "_ProgressItem_CompleteResources"), installProcess);
         var setCoreConfig = new InstallProcessViewModel.ProgressItem(@this =>
         {
             App.DispatcherQueue.SynchronousTryEnqueue(() => _gameService.RefreshGames());
 
-            var gameInfo = _gameService.Games.First(x => x.AbsoluteId.Equals(info.AbsoluteId));
-            var config = gameInfo.GetConfig();
+            var instance = _gameService.Games.First(x => x.InstanceId.Equals(info.AbsoluteId));
+            var config = instance.GetConfig();
 
             config.EnableSpecialSetting = info.EnableIndependencyCore || !string.IsNullOrEmpty(info.NickName);
             config.EnableIndependencyCore = info.EnableIndependencyCore;
@@ -173,37 +211,37 @@ internal partial class DownloadService
             {
                 IModLoaderInstaller executor = info.PrimaryLoader.Type switch
                 {
-                    ModLoaderType.Forge => new ForgeInstaller
+                    ModLoaderType.Forge => new ForgeInstaller(_downloader)
                     {
                         AbsoluteId = info.AbsoluteId,
-                        InheritedFrom = inheritsFrom,
+                        InheritedInstance = inheritsFrom,
                         JavaPath = _settingsService.ActiveJava,
                         PackageFilePath = primaryLoaderFile
                     },
-                    ModLoaderType.NeoForge => new ForgeInstaller
+                    ModLoaderType.NeoForge => new ForgeInstaller(_downloader)
                     {
                         AbsoluteId = info.AbsoluteId,
-                        InheritedFrom = inheritsFrom,
+                        InheritedInstance = inheritsFrom,
                         JavaPath = _settingsService.ActiveJava,
                         PackageFilePath = primaryLoaderFile
                     },
                     ModLoaderType.OptiFine => new OptiFineInstaller
                     {
                         AbsoluteId = info.AbsoluteId,
-                        InheritedFrom = inheritsFrom,
+                        InheritedInstance = inheritsFrom,
                         JavaPath = _settingsService.ActiveJava,
                         PackageFilePath = primaryLoaderFile
                     },
-                    ModLoaderType.Fabric => new FabricInstaller
+                    ModLoaderType.Fabric => new FabricInstaller(_downloader)
                     {
                         AbsoluteId = info.AbsoluteId,
-                        InheritedFrom = inheritsFrom,
+                        InheritedInstance = inheritsFrom,
                         FabricBuild = info.PrimaryLoader.SelectedItem.Metadata.Deserialize<FabricInstallBuild>()
                     },
-                    ModLoaderType.Quilt => new QuiltInstaller
+                    ModLoaderType.Quilt => new QuiltInstaller(_downloader)
                     {
                         AbsoluteId = info.AbsoluteId,
-                        InheritedFrom = inheritsFrom,
+                        InheritedInstance = inheritsFrom,
                         QuiltBuild = info.PrimaryLoader.SelectedItem.Metadata.Deserialize<QuiltInstallBuild>()
                     },
                     _ => throw new NotImplementedException()
@@ -218,19 +256,15 @@ internal partial class DownloadService
             {
                 var downloadInstallerPackage = new InstallProcessViewModel.ProgressItem(@this =>
                 {
-                    var downloadTask = HttpUtils.DownloadElementAsync(new DownloadElement
+                    var downloadTask = _downloader.CreateDownloadTask(GetModLoaderPackageDownloadUrl(info.PrimaryLoader), primaryLoaderFile);
+                    Timer t = new((_) =>
                     {
-                        AbsolutePath = primaryLoaderFile,
-                        Url = GetModLoaderPackageDownloadUrl(info.PrimaryLoader)
-                    },
-                    downloadSetting: new DownloadSetting
-                    {
-                        EnableLargeFileMultiPartDownload = false
-                    },
-                    perSecondProgressChangedAction: @this.OnProgressChanged);
-
-                    downloadTask.Wait();
-
+                        if (downloadTask.TotalBytes is null)
+                            return;
+                        @this.OnProgressChanged(downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes);
+                    }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+                    downloadTask.StartAsync().Wait();
+                    t.Dispose();
                 }, ResourceUtils.GetValue("Converters", "_ProgressItem_DownloadPackage").Replace("${loader}", loaderFullName), installProcess);
 
                 installProcess.Progresses.Add(downloadInstallerPackage);
@@ -257,18 +291,15 @@ internal partial class DownloadService
 
             var downloadInstallerPackage = new InstallProcessViewModel.ProgressItem(@this =>
             {
-                var downloadTask = HttpUtils.DownloadElementAsync(new DownloadElement
+                var downloadTask = _downloader.CreateDownloadTask(GetModLoaderPackageDownloadUrl(info.SecondaryLoader), secondaryLoaderFile);
+                Timer t = new((_) =>
                 {
-                    AbsolutePath = secondaryLoaderFile,
-                    Url = GetModLoaderPackageDownloadUrl(info.SecondaryLoader)
-                },
-                downloadSetting: new DownloadSetting
-                {
-                    EnableLargeFileMultiPartDownload = false
-                },
-                perSecondProgressChangedAction: @this.OnProgressChanged);
-
-                downloadTask.Wait();
+                    if (downloadTask.TotalBytes is null)
+                        return;
+                    @this.OnProgressChanged(downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes);
+                }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+                downloadTask.StartAsync().Wait();
+                t.Dispose();
             }, ResourceUtils.GetValue("Converters", "_ProgressItem_DownloadPackage").Replace("${loader}", loaderFullName), installProcess);
 
             installProcess.Progresses.Add(downloadInstallerPackage);
@@ -292,80 +323,5 @@ internal partial class DownloadService
 
         _downloadProcesses.Insert(0, installProcess);
         installProcess.Start();
-    }
-}
-
-internal partial class DownloadService
-{
-    private DefaultResourcesDownloader Base_CreateResourcesDownloader(GameInfo gameInfo,
-    IEnumerable<LibraryElement>? libraryElements = default,
-    IEnumerable<AssetElement>? assetElements = default,
-    DownloadMirrorSource? downloadMirrorSource = default)
-    {
-        List<LibraryElement> libraries = libraryElements?.ToList() ?? [];
-
-        if (libraryElements == null)
-        {
-            var libraryParser = new DefaultLibraryParser(gameInfo);
-            libraryParser.EnumerateLibraries(out var enabledLibraries, out var enabledNativesLibraries);
-
-            libraries = enabledLibraries.Union(enabledNativesLibraries).ToList();
-        }
-
-        if (assetElements == null)
-        {
-            var assetParser = new DefaultAssetParser(gameInfo);
-            var assetElement = assetParser.GetAssetIndexJson();
-            if (downloadMirrorSource != null)
-                assetElement.Url?.ReplaceFromDictionary(downloadMirrorSource.AssetsReplaceUrl);
-
-            if (!assetElement.VerifyFile())
-            {
-                var assetIndexDownloadTask = HttpUtils.DownloadElementAsync(assetElement);
-                assetIndexDownloadTask.Wait();
-
-                if (assetIndexDownloadTask.Result.IsFaulted)
-                    throw new System.Exception("依赖材质索引文件获取失败");
-            }
-
-            assetElements = assetParser.EnumerateAssets();
-        }
-
-        var jar = gameInfo.GetJarElement();
-        if (jar != null && !jar.VerifyFile())
-            libraries.Add(jar);
-
-        var defaultResourcesDownloader = new DefaultResourcesDownloader(gameInfo);
-
-        defaultResourcesDownloader.SetLibraryElements(libraries);
-        defaultResourcesDownloader.SetAssetsElements(assetElements);
-
-        if (downloadMirrorSource != null) defaultResourcesDownloader.SetDownloadMirror(downloadMirrorSource);
-
-        return defaultResourcesDownloader;
-    }
-}
-
-internal static class IDownloadElementExtensions
-{
-    /// <summary>
-    /// 验证文件
-    /// </summary>
-    /// <param name="element"></param>
-    /// <returns></returns>
-    public static bool VerifyFile(this IDownloadElement element)
-    {
-        if (!File.Exists(element.AbsolutePath))
-            return false;
-
-        if (!string.IsNullOrEmpty(element.Checksum))
-        {
-            using var fileStream = File.OpenRead(element.AbsolutePath);
-
-            return BitConverter.ToString(SHA1.HashData(fileStream)).Replace("-", string.Empty)
-                .ToLower().Equals(element.Checksum);
-        }
-
-        return true;
     }
 }

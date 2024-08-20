@@ -2,7 +2,7 @@ using CommunityToolkit.WinUI.Controls;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
-using Nrk.FluentCore.Management.Mods;
+using Nrk.FluentCore.Experimental.GameManagement.Mods;
 
 namespace Natsurainko.FluentLauncher.Views.Cores.Manage;
 
@@ -40,7 +40,7 @@ public sealed partial class ModPage : Page, IBreadcrumbBarAware
         void ToggleSwitch_Toggled(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
             var toggleSwitch = (ToggleSwitch)sender;
-            var modInfo = (ModInfo)toggleSwitch.DataContext;
+            var modInfo = (MinecraftMod)toggleSwitch.DataContext;
             var modsManager = ((ModViewModel)DataContext).ModsManager;
 
             if (modInfo != null)

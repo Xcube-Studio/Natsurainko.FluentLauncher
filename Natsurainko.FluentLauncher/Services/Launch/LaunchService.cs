@@ -9,6 +9,8 @@ using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Tasks;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Environment;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
+using Nrk.FluentCore.Experimental.GameManagement.Launch;
 using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Utils;
@@ -32,8 +34,6 @@ internal class LaunchService
     private readonly SettingsService _settingsService;
     private readonly LaunchSessions _launchSessions;
 
-    private SettingsService AppSettingsService => _settingsService;
-
     protected readonly List<MinecraftSession> _sessions;
     public ReadOnlyCollection<MinecraftSession> Sessions { get; }
 
@@ -56,7 +56,7 @@ internal class LaunchService
         Sessions = new(_sessions);
     }
 
-    public async Task LaunchGame(GameInfo gameInfo)
+    public async Task LaunchGame(MinecraftInstance MinecraftInstance)
     {
         MinecraftSession? minecraftSession = null;
         Action<Exception>? onExceptionThrow = null;
@@ -65,14 +65,14 @@ internal class LaunchService
         {
             Account? account = _accountService.ActiveAccount ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
 
-            minecraftSession = CreateMinecraftSessionFromGameInfo(gameInfo, account); // TODO: replace with ctor of MinecraftSession
+            minecraftSession = CreateMinecraftSessionFromMinecraftInstance(MinecraftInstance, account);
             _sessions.Add(minecraftSession);
 
             _launchSessions.CreateLaunchSessionViewModel(minecraftSession, out var handleException);
             onExceptionThrow = handleException;
 
-            gameInfo.UpdateLastLaunchTimeToNow();
-            App.GetService<JumpListService>().UpdateJumpList(gameInfo);
+            MinecraftInstance.UpdateLastLaunchTimeToNow();
+            App.GetService<JumpListService>().UpdateJumpList(MinecraftInstance);
 
             await minecraftSession.StartAsync();
         }
@@ -118,7 +118,7 @@ internal class LaunchService
     protected void OnSessionCreated(MinecraftSession minecraftSession)
         => this.SessionCreated?.Invoke(this, minecraftSession);
 
-    public MinecraftSession CreateMinecraftSessionFromGameInfo(GameInfo gameInfo, Account? _)
+    public MinecraftSession CreateMinecraftSessionFromMinecraftInstance(MinecraftInstance instance, Account? _)
     {
         Account? account = _accountService.ActiveAccount;
         if (account is null)
@@ -131,11 +131,11 @@ internal class LaunchService
             throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoActiveJava"));
         // TODO: Do not localize exception message
 
-        suitableJava = AppSettingsService.EnableAutoJava ? GetSuitableJava(gameInfo) : _settingsService.ActiveJava;
+        suitableJava = _settingsService.EnableAutoJava ? GetSuitableJava(instance) : _settingsService.ActiveJava;
         if (suitableJava == null)
-            throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoSuitableJava").Replace("${version}", gameInfo.GetSuitableJavaVersion()));
+            throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoSuitableJava").Replace("${version}", instance.GetSuitableJavaVersion()));
 
-        var config = gameInfo.GetConfig(); // Game specific config
+        var config = instance.GetConfig(); // Game specific config
         var launchAccount = GetLaunchAccount(config, _accountService)
             ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount")); // Determine which account to use
 
@@ -162,7 +162,7 @@ internal class LaunchService
             }
         }
 
-        var (maxMemory, minMemory) = AppSettingsService.EnableAutoJava
+        var (maxMemory, minMemory) = _settingsService.EnableAutoJava
             ? MemoryUtils.CalculateJavaMemory()
             : (_settingsService.JavaMemory, _settingsService.JavaMemory);
 
@@ -172,22 +172,21 @@ internal class LaunchService
         var session = new MinecraftSession() // Launch session
         {
             Account = launchAccount,
-            GameInfo = gameInfo,
-            GameDirectory = GetGameDirectory(gameInfo, config),
+            MinecraftInstance = instance,
+            GameDirectory = GetGameDirectory(instance, config),
             JavaPath = suitableJava,
             MaxMemory = maxMemory,
             MinMemory = minMemory,
             UseDemoUser = _settingsService.EnableDemoUser,
             ExtraGameParameters = GetExtraGameParameters(config),
             ExtraVmParameters = GetExtraVmParameters(config, launchAccount),
-            CreateResourcesDownloader = (libs) => _downloadService.CreateResourcesDownloader
-                (gameInfo, libs)
+            CreateDependencyResolver = (libs) => _downloadService.CreateResourcesDownloader(instance, libs)
         };
 
-        if (AppSettingsService.AutoRefresh)
+        if (_settingsService.AutoRefresh)
             session.RefreshAccountTask = new Task<Account>(Authenticate);
 
-        session.SkipNativesDecompression = CanSkipNativesDecompression(gameInfo);
+        session.SkipNativesDecompression = CanSkipNativesDecompression(instance);
 
         session.ProcessStarted += (s, e) =>
         {
@@ -211,9 +210,9 @@ internal class LaunchService
         return session;
     }
 
-    private bool CanSkipNativesDecompression(GameInfo gameInfo)
+    private bool CanSkipNativesDecompression(MinecraftInstance instance)
     {
-        var nativesDirectory = new DirectoryInfo(Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId, "natives"));
+        var nativesDirectory = new DirectoryInfo(Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId, "natives"));
 
         if (!nativesDirectory.Exists) return false;
 
@@ -250,11 +249,11 @@ internal class LaunchService
         return false;
     }
 
-    private string? GetSuitableJava(GameInfo gameInfo)
+    private string? GetSuitableJava(MinecraftInstance MinecraftInstance)
     {
         var regex = new Regex(@"^([a-zA-Z]:\\)([-\u4e00-\u9fa5\w\s.()~!@#$%^&()\[\]{}+=]+\\?)*$");
 
-        var javaVersion = gameInfo.GetSuitableJavaVersion();
+        var javaVersion = MinecraftInstance.GetSuitableJavaVersion();
         var suits = new List<(string, Version)>();
 
         foreach (var java in _settingsService.Javas)
@@ -275,19 +274,19 @@ internal class LaunchService
         return suits.First().Item1;
     }
 
-    private string GetGameDirectory(GameInfo gameInfo, GameConfig specialConfig)
+    private string GetGameDirectory(MinecraftInstance instance, GameConfig specialConfig)
     {
         if (specialConfig.EnableSpecialSetting)
         {
             if (specialConfig.EnableIndependencyCore)
-                return Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId);
-            else return gameInfo.MinecraftFolderPath;
+                return Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId);
+            else return instance.MinecraftFolderPath;
         }
 
-        if (AppSettingsService.EnableIndependencyCore)
-            return Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId);
+        if (_settingsService.EnableIndependencyCore)
+            return Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId);
 
-        return gameInfo.MinecraftFolderPath;
+        return instance.MinecraftFolderPath;
     }
 
     private string? GameWindowTitle(GameConfig specialConfig)
@@ -299,8 +298,8 @@ internal class LaunchService
         }
         else
         {
-            if (!string.IsNullOrEmpty(AppSettingsService.GameWindowTitle))
-                return AppSettingsService.GameWindowTitle;
+            if (!string.IsNullOrEmpty(_settingsService.GameWindowTitle))
+                return _settingsService.GameWindowTitle;
         }
 
         return null;
@@ -374,16 +373,16 @@ internal class LaunchService
         }
         else
         {
-            if (AppSettingsService.EnableFullScreen)
+            if (_settingsService.EnableFullScreen)
                 yield return "--fullscreen";
 
-            if (AppSettingsService.GameWindowWidth > 0)
-                yield return $"--width {AppSettingsService.GameWindowWidth}";
+            if (_settingsService.GameWindowWidth > 0)
+                yield return $"--width {_settingsService.GameWindowWidth}";
 
-            if (AppSettingsService.GameWindowHeight > 0)
-                yield return $"--height {AppSettingsService.GameWindowHeight}";
+            if (_settingsService.GameWindowHeight > 0)
+                yield return $"--height {_settingsService.GameWindowHeight}";
 
-            if (!string.IsNullOrEmpty(AppSettingsService.GameServerAddress))
+            if (!string.IsNullOrEmpty(_settingsService.GameServerAddress))
             {
                 specialConfig.ServerAddress.ParseServerAddress(out var host, out var port);
 

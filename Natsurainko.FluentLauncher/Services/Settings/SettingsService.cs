@@ -21,7 +21,8 @@ public partial class SettingsService : SettingsContainer
     public ObservableCollection<string> Javas { get; private set; } = new();
 
     [SettingItem(typeof(string), "ActiveMinecraftFolder", Default = "", Converter = typeof(JsonStringConverter<string>))]
-    [SettingItem(typeof(GameInfo), "ActiveGameInfo", Converter = typeof(JsonStringConverter<GameInfo>))]
+    //[SettingItem(typeof(GameInfo), "ActiveGameInfo", Converter = typeof(JsonStringConverter<GameInfo>))]
+    [SettingItem(typeof(string), "ActiveInstanceId")]
     [SettingItem(typeof(string), "ActiveJava", Default = "", Converter = typeof(JsonStringConverter<string>))]
     [SettingItem(typeof(int), "JavaMemory", Default = 1024, Converter = typeof(JsonStringConverter<int>))]
 
@@ -92,20 +93,26 @@ public partial class SettingsService : SettingsContainer
 
     private void Migrate()
     {
-        if (this.CurrentDownloadSource == "Mcbbs")
-            this.CurrentDownloadSource = "Bmclapi";
+        if (CurrentDownloadSource == "Mcbbs")
+            CurrentDownloadSource = "Bmclapi";
 
         // ApplicationData.Current.LocalSettings.Values["SettingsVersion"] = 1u; // TODO: testing only, to be removed
         if (SettingsVersion == 0u) // Version 0: Before Release 2.1.8.0
         {
             MigrateFrom_2_1_8_0();
-            SettingsVersion = 1;
+            SettingsVersion = 1u;
         }
 
-        if (SettingsVersion == 1) // Version 0: Before Release 2.1.13.0
+        if (SettingsVersion == 1u) // Version 1: Before Release 2.1.13.0
         {
             MigrateFrom_2_1_13_0();
-            SettingsVersion = 2;
+            SettingsVersion = 2u;
+        }
+
+        if (SettingsVersion == 2u) // Version 2: Before Release 2.3.0.0
+        {
+            MigrateFrom_2_3_0_0();
+            SettingsVersion = 3u;
         }
 
         //if (SettingsVersion == 1) // Version 1: Release vNext
@@ -172,5 +179,28 @@ public partial class SettingsService : SettingsContainer
             appsettings.Values["ActiveAccountUuid"] = currentAccountUuid;
         }
         //appsettings.Values.Remove("CurrentAccount"); // TODO: Uncomment this after testing
+    }
+
+    private static void MigrateFrom_2_3_0_0()
+    {
+        if (!MsixPackageUtils.IsPackaged)
+            return;
+
+        var appsettings = ApplicationData.Current.LocalSettings;
+
+        // Store the client id of the active MinecraftInstance/GameInfo instead of its serialized JSON
+        string accountsJson = appsettings.Values["ActiveGameInfo"] as string ?? "null";
+        JsonNode? clientIdNode = JsonNode.Parse(accountsJson)?["AbsoluteId"];
+        if (clientIdNode is null) return;
+
+        string? clientId = null;
+        try
+        {
+            clientId = clientIdNode.GetValue<string>();
+        }
+        catch (Exception) { }
+
+        if (clientId is not null)
+            appsettings.Values["ActiveInstanceId"] = clientId;
     }
 }

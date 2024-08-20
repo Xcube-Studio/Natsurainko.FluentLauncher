@@ -14,7 +14,7 @@
     Background="Transparent"
     mc:Ignorable="d">
     <Page.Resources>
-        <converters:GameInfoConverter x:Key="GameInfoConverter" EnableShowModLoaderType="True" />
+        <converters:MinecraftInstanceConverter x:Key="MinecraftInstanceConverter" EnableShowModLoaderType="True" />
     </Page.Resources>
 
     <i:Interaction.Behaviors>
@@ -88,7 +88,7 @@
             <ItemsRepeater
                 MaxWidth="1000"
                 Margin="0,0,0,25"
-                ItemsSource="{Binding DisplayGameInfos}">
+                ItemsSource="{Binding DisplayMinecraftInstances}">
                 <ItemsRepeater.Layout>
                     <StackLayout Spacing="4" />
                 </ItemsRepeater.Layout>
@@ -120,7 +120,7 @@
                                             Text="{Binding Name}"
                                             TextTrimming="CharacterEllipsis"
                                             ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
-                                        <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource GameInfoConverter}}">
+                                        <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource MinecraftInstanceConverter}}">
                                             <ItemsRepeater.Layout>
                                                 <controls:WrapLayout HorizontalSpacing="5" VerticalSpacing="5" />
                                             </ItemsRepeater.Layout>
@@ -182,7 +182,7 @@
             </StackPanel>
 
             <i:Interaction.Behaviors>
-                <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{Binding DisplayGameInfos}" />
+                <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{Binding DisplayMinecraftInstances}" />
             </i:Interaction.Behaviors>
         </StackPanel>
     </Grid>

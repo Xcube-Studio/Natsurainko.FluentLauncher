@@ -1,5 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Nrk.FluentCore.Management.Mods;
+using Nrk.FluentCore.Experimental.GameManagement.Mods;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +12,7 @@ internal class ModInfoConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is ModInfo mod)
+        if (value is MinecraftMod mod)
         {
             if (mod.DisplayName.Equals(Path.GetFileNameWithoutExtension(mod.AbsolutePath)))
                 return "Unable to parse mod details";

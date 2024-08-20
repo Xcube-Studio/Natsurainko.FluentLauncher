@@ -1,6 +1,8 @@
 ﻿using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
+using Nrk.FluentCore.Experimental.GameManagement;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Management.ModLoaders;
 using System;
@@ -13,42 +15,13 @@ using System.Text.Json.Nodes;
 
 namespace Natsurainko.FluentLauncher.Utils.Extensions;
 
-internal static class GameInfoExtensions
+internal static class MinecraftInstanceExtensions
 {
-    public static GameConfig GetConfig(this GameInfo gameInfo)
+    public static bool IsSupportMod(this MinecraftInstance MinecraftInstance)
     {
-        var configGuid = new Guid(MD5.HashData(Encoding.UTF8.GetBytes($"{gameInfo.MinecraftFolderPath}:{gameInfo.AbsoluteId}:{gameInfo.Type}")));
-        var configsFolder = Path.Combine(LocalStorageService.LocalFolderPath, "GameConfigsFolder");
+        if (MinecraftInstance.IsVanilla) return false;
 
-        if (!Directory.Exists(configsFolder))
-            Directory.CreateDirectory(configsFolder);
-
-        var configFile = Path.Combine(configsFolder, $"{configGuid}.json");
-
-        if (!File.Exists(configFile))
-            return new GameConfig { FilePath = configFile };
-
-        GameConfig coreProfile;
-
-        try
-        {
-            coreProfile = JsonNode.Parse(File.ReadAllText(configFile)).Deserialize<GameConfig>()!;
-        }
-        catch
-        {
-            coreProfile = new GameConfig();
-        }
-
-        coreProfile.FilePath = configFile;
-
-        return coreProfile;
-    }
-
-    public static bool IsSupportMod(this GameInfo gameInfo)
-    {
-        if (gameInfo.IsVanilla) return false;
-
-        var loaders = gameInfo.GetModLoaders().Select(x => x.LoaderType).ToArray();
+        var loaders = MinecraftInstance.GetModLoaders().Select(x => x.Type).ToArray();
 
         if (!(loaders.Contains(ModLoaderType.Forge) ||
             loaders.Contains(ModLoaderType.Fabric) ||
@@ -60,30 +33,30 @@ internal static class GameInfoExtensions
         return true;
     }
 
-    public static string GetGameDirectory(this GameInfo gameInfo)
+    public static string GetGameDirectory(this MinecraftInstance instance)
     {
-        var config = gameInfo.GetConfig();
+        var config = instance.GetConfig();
 
         if (config.EnableSpecialSetting)
         {
             if (config.EnableIndependencyCore)
-                return Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId);
-            else return gameInfo.MinecraftFolderPath;
+                return Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId);
+            else return instance.MinecraftFolderPath;
         }
 
         if (App.GetService<SettingsService>().EnableIndependencyCore)
-            return Path.Combine(gameInfo.MinecraftFolderPath, "versions", gameInfo.AbsoluteId);
+            return Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId);
 
-        return gameInfo.MinecraftFolderPath;
+        return instance.MinecraftFolderPath;
     }
 
-    public static string GetModsDirectory(this GameInfo gameInfo) => Path.Combine(GetGameDirectory(gameInfo), "mods");
+    public static string GetModsDirectory(this MinecraftInstance MinecraftInstance) => Path.Combine(GetGameDirectory(MinecraftInstance), "mods");
 
-    public static string GetSavesDirectory(this GameInfo gameInfo) => Path.Combine(GetGameDirectory(gameInfo), "saves");
+    public static string GetSavesDirectory(this MinecraftInstance MinecraftInstance) => Path.Combine(GetGameDirectory(MinecraftInstance), "saves");
 
-    public static void UpdateLastLaunchTimeToNow(this GameInfo gameInfo)
+    public static void UpdateLastLaunchTimeToNow(this MinecraftInstance MinecraftInstance)
     {
-        var config = gameInfo.GetConfig();
+        var config = MinecraftInstance.GetConfig();
 
         // Update launch time
         var launchTime = DateTime.Now;

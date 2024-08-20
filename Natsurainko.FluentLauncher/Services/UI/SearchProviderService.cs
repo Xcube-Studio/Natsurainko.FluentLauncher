@@ -1,7 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Controls;
+using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Services.Launch;
+using Nrk.FluentCore.Experimental.GameManagement;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Management;
-using Nrk.FluentCore.Management.Downloader.Data;
 using System;
 using System.Collections.Generic;
 
@@ -110,19 +113,19 @@ internal partial class SearchProviderService : ObservableObject
 
 internal static class SuggestionHelper
 {
-    public static SearchProviderService.Suggestion FromGameInfo(GameInfo gameInfo, string description, Action action)
+    public static SearchProviderService.Suggestion FromMinecraftInstance(MinecraftInstance MinecraftInstance, string description, Action action)
     {
         return new SearchProviderService.Suggestion
         {
-            Title = gameInfo.Name,
+            Title = MinecraftInstance.InstanceId,
             Description = description,
             SuggestionIconType = SearchProviderService.SuggestionIconType.UriIcon,
-            Icon = string.Format("ms-appx:///Assets/Icons/{0}.png", gameInfo.Type switch
+            Icon = string.Format("ms-appx:///Assets/Icons/{0}.png", MinecraftInstance.Version.Type switch
             {
-                "release" => "grass_block_side",
-                "snapshot" => "crafting_table_front",
-                "old_beta" => "dirt_path_side",
-                "old_alpha" => "dirt_path_side",
+                MinecraftVersionType.Release => "grass_block_side",
+                MinecraftVersionType.Snapshot => "crafting_table_front",
+                MinecraftVersionType.OldBeta => "dirt_path_side",
+                MinecraftVersionType.OldAlpha => "dirt_path_side",
                 _ => "grass_block_side"
             }),
             InvokeAction = action

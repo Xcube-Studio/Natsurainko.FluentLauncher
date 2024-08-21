@@ -232,7 +232,7 @@ internal class JumpListService
         await minecraftSession.StartAsync();
     }
 
-    public async Task UpdateJumpList(MinecraftInstance MinecraftInstance)
+    public static async Task UpdateJumpListAsync(MinecraftInstance MinecraftInstance)
     {
         await AddItem(MinecraftInstance);
 

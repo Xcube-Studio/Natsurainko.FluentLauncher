@@ -56,7 +56,7 @@ internal class LaunchService
         Sessions = new(_sessions);
     }
 
-    public async Task LaunchGame(MinecraftInstance MinecraftInstance)
+    public async Task LaunchGame(MinecraftInstance mcInstance)
     {
         MinecraftSession? minecraftSession = null;
         Action<Exception>? onExceptionThrow = null;
@@ -65,14 +65,14 @@ internal class LaunchService
         {
             Account? account = _accountService.ActiveAccount ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
 
-            minecraftSession = CreateMinecraftSessionFromMinecraftInstance(MinecraftInstance, account);
+            minecraftSession = CreateMinecraftSessionFromMinecraftInstance(mcInstance, account);
             _sessions.Add(minecraftSession);
 
             _launchSessions.CreateLaunchSessionViewModel(minecraftSession, out var handleException);
             onExceptionThrow = handleException;
 
-            MinecraftInstance.UpdateLastLaunchTimeToNow();
-            App.GetService<JumpListService>().UpdateJumpList(MinecraftInstance);
+            mcInstance.UpdateLastLaunchTimeToNow();
+            await JumpListService.UpdateJumpListAsync(mcInstance);
 
             await minecraftSession.StartAsync();
         }

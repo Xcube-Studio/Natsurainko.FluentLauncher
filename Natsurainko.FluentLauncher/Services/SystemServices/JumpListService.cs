@@ -47,7 +47,8 @@ internal class JumpListService
 
     private static (string mcFolderPath, string instanceId) ParseJumplistArg(string argument)
     {
-        string argJson = argument.Remove("/quick-launch ".Length).ConvertFromBase64();
+        string argJson = argument["/quick-launch ".Length..];
+        argJson = argJson.ConvertFromBase64();
         string? mcFolderPath = null, instanceId = null;
         try
         {

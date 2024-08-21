@@ -9,6 +9,7 @@ using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Tasks;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Environment;
+using Nrk.FluentCore.Experimental.GameManagement.Dependencies;
 using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Experimental.GameManagement.Launch;
 using Nrk.FluentCore.Launch;
@@ -180,7 +181,7 @@ internal class LaunchService
             UseDemoUser = _settingsService.EnableDemoUser,
             ExtraGameParameters = GetExtraGameParameters(config),
             ExtraVmParameters = GetExtraVmParameters(config, launchAccount),
-            CreateDependencyResolver = (libs) => _downloadService.CreateResourcesDownloader(instance, libs)
+            CreateDependencyResolver = (_) => new DependencyResolver(instance)
         };
 
         if (_settingsService.AutoRefresh)

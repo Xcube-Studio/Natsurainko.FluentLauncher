@@ -176,7 +176,7 @@ internal class JumpListService
         App.GetService<LaunchSessions>().SessionViewModels.Insert(0, sessionViewModel);
 
         minecraftInstance.UpdateLastLaunchTimeToNow();
-        await UpdateJumpList(minecraftInstance);
+        await UpdateJumpListAsync(minecraftInstance);
 
         minecraftSession.StateChanged += MinecraftSession_StateChanged;
 

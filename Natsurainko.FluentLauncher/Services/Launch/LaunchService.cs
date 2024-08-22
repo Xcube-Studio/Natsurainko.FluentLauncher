@@ -9,6 +9,7 @@ using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Tasks;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Environment;
+using Nrk.FluentCore.Experimental.GameManagement.Dependencies;
 using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Experimental.GameManagement.Launch;
 using Nrk.FluentCore.Launch;
@@ -56,7 +57,7 @@ internal class LaunchService
         Sessions = new(_sessions);
     }
 
-    public async Task LaunchGame(MinecraftInstance MinecraftInstance)
+    public async Task LaunchGame(MinecraftInstance mcInstance)
     {
         MinecraftSession? minecraftSession = null;
         Action<Exception>? onExceptionThrow = null;
@@ -65,14 +66,14 @@ internal class LaunchService
         {
             Account? account = _accountService.ActiveAccount ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
 
-            minecraftSession = CreateMinecraftSessionFromMinecraftInstance(MinecraftInstance, account);
+            minecraftSession = CreateMinecraftSessionFromMinecraftInstance(mcInstance, account);
             _sessions.Add(minecraftSession);
 
             _launchSessions.CreateLaunchSessionViewModel(minecraftSession, out var handleException);
             onExceptionThrow = handleException;
 
-            MinecraftInstance.UpdateLastLaunchTimeToNow();
-            App.GetService<JumpListService>().UpdateJumpList(MinecraftInstance);
+            mcInstance.UpdateLastLaunchTimeToNow();
+            await JumpListService.UpdateJumpListAsync(mcInstance);
 
             await minecraftSession.StartAsync();
         }
@@ -180,7 +181,7 @@ internal class LaunchService
             UseDemoUser = _settingsService.EnableDemoUser,
             ExtraGameParameters = GetExtraGameParameters(config),
             ExtraVmParameters = GetExtraVmParameters(config, launchAccount),
-            CreateDependencyResolver = (libs) => _downloadService.CreateResourcesDownloader(instance, libs)
+            CreateDependencyResolver = (_) => new DependencyResolver(instance)
         };
 
         if (_settingsService.AutoRefresh)

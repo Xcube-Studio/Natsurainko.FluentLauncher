@@ -49,51 +49,8 @@ internal partial class DownloadService
         _gameService = gameService;
 
         DownloadProcesses = new(_downloadProcesses);
-    }
 
-    public DependencyResolver CreateResourcesDownloader(MinecraftInstance instance, IEnumerable<MinecraftLibrary>? libraryElements = null)
-    {
-        UpdateDownloadSettings();
-
-        // TODO: Move this part to DependencyResolver
-        List<MinecraftDependency> dependencies = new();
-        if (libraryElements is not null)
-            dependencies.AddRange(libraryElements);
-
-        if (libraryElements == null)
-        {
-            var (libs, nativeLibs) = instance.GetRequiredLibraries();
-            dependencies.AddRange(libs.Union(nativeLibs));
-        }
-
-        var assetElement = instance.GetAssetIndex();
-
-        if (!DependencyResolver.VerifyDependencyAsync(assetElement).GetAwaiter().GetResult())
-        {
-            var result = _downloader.CreateDownloadTask(assetElement.Url, assetElement.FullPath).StartAsync().GetAwaiter().GetResult();
-
-            if (result.Type == DownloadResultType.Failed)
-                throw new System.Exception("依赖材质索引文件获取失败");
-        }
-
-        var assetElements = instance.GetRequiredAssets();
-        dependencies.AddRange(assetElements);
-
-        var jar = instance.GetJarElement();
-        if (jar != null && !DependencyResolver.VerifyDependencyAsync(jar).GetAwaiter().GetResult())
-            dependencies.Add(jar);
-
-        DependencyResolver depResolver = new(dependencies);
-        return depResolver;
-    }
-
-    private void UpdateDownloadSettings()
-    {
-        _downloader = new MultipartDownloader(
-            HttpUtils.HttpClient,
-            1024 * 1024,
-            _settingsService.EnableFragmentDownload ? _settingsService.MaxDownloadThreads : 1,
-            64);
+        // TODO: 注册下载设置变化事件
     }
 
     public void DownloadResourceFile(ResourceFileItem file, string filePath)
@@ -163,7 +120,7 @@ internal partial class DownloadService
             int finished = 0;
             int total = 0;
 
-            var resourcesDownloader = CreateResourcesDownloader(inheritsFrom);
+            var resourcesDownloader = new DependencyResolver(inheritsFrom);
 
             resourcesDownloader.DependencyDownloaded += (_, _) =>
             {

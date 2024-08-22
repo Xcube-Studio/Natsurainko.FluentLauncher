@@ -47,7 +47,8 @@ internal class JumpListService
 
     private static (string mcFolderPath, string instanceId) ParseJumplistArg(string argument)
     {
-        string argJson = argument.Remove("/quick-launch ".Length).ConvertFromBase64();
+        string argJson = argument["/quick-launch ".Length..];
+        argJson = argJson.ConvertFromBase64();
         string? mcFolderPath = null, instanceId = null;
         try
         {
@@ -176,7 +177,7 @@ internal class JumpListService
         App.GetService<LaunchSessions>().SessionViewModels.Insert(0, sessionViewModel);
 
         minecraftInstance.UpdateLastLaunchTimeToNow();
-        await UpdateJumpList(minecraftInstance);
+        await UpdateJumpListAsync(minecraftInstance);
 
         minecraftSession.StateChanged += MinecraftSession_StateChanged;
 
@@ -232,7 +233,7 @@ internal class JumpListService
         await minecraftSession.StartAsync();
     }
 
-    public async Task UpdateJumpList(MinecraftInstance MinecraftInstance)
+    public static async Task UpdateJumpListAsync(MinecraftInstance MinecraftInstance)
     {
         await AddItem(MinecraftInstance);
 

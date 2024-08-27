@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
@@ -61,14 +62,9 @@ internal class LaunchService
             instance.UpdateLastLaunchTimeToNow();
             await JumpListService.UpdateJumpListAsync(instance);
 
-            // 2. Check settings
+            // 2. Check environment
 
-            // 2.1. Account
-            Account? account = _accountService.ActiveAccount;
-            if (account is null)
-                throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
-
-            // 2.2. Java path
+            // 2.1. Java path
             string? suitableJava = null;
 
             if (string.IsNullOrEmpty(_settingsService.ActiveJava))
@@ -78,7 +74,7 @@ internal class LaunchService
             if (suitableJava == null)
                 throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoSuitableJava").Replace("${version}", instance.GetSuitableJavaVersion()));
 
-            // 2.3. Java memory
+            // 2.2. Java memory
             var (maxMemory, minMemory) = _settingsService.EnableAutoJava
                 ? MemoryUtils.CalculateJavaMemory()
                 : (_settingsService.JavaMemory, _settingsService.JavaMemory);
@@ -86,25 +82,27 @@ internal class LaunchService
             if (JavaUtils.GetJavaInfo(suitableJava).Architecture != "x64" && maxMemory >= 512) // QUESTION: >= 512 or > 1024?
                 throw new Exception(ResourceUtils.GetValue("Exceptions", "_x86_JavaMemoryException"));
 
-            // 2.4. Instance config
-            var config = instance.GetConfig();
-            var launchAccount = GetLaunchAccount(config, _accountService)
+            // 3. Get account
+            GameConfig config = instance.GetConfig();
+            Account? account = GetLaunchAccount(config, _accountService)
                 ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount")); // Determine which account to use
 
-            // 3. Refresh account
-            await RefreshAccountAsync(launchAccount, config);
+            if (account is null)
+                throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
+
+            await RefreshAccountAsync(account, config);
 
             // 4. Resolve dependencies
             await ResolveDependenciesAsync(instance);
 
             // 5. Start MinecraftProcess
-            var (libs, _) = instance.GetRequiredLibraries();
+            (IEnumerable<MinecraftLibrary> libs, _) = instance.GetRequiredLibraries();
             MinecraftProcess mcProcess = new MinecraftProcessBuilder(instance)
                 .SetLibraries(libs)
-                .SetAccountSettings(launchAccount, _settingsService.EnableDemoUser)
+                .SetAccountSettings(account, _settingsService.EnableDemoUser)
                 .SetJavaSettings(suitableJava, maxMemory, minMemory)
                 .SetGameDirectory(GetGameDirectory(instance, config))
-                .AddVmArguments(GetExtraVmParameters(config, launchAccount))
+                .AddVmArguments(GetExtraVmParameters(config, account))
                 .AddGameArguments(GetExtraGameParameters(config))
                 .Build();
 
@@ -402,7 +400,7 @@ internal class LaunchService
         return null;
     }
 
-    public static Account GetLaunchAccount(GameConfig specialConfig, AccountService _accountService)
+    public static Account? GetLaunchAccount(GameConfig specialConfig, AccountService _accountService)
     {
         if (specialConfig.EnableSpecialSetting && specialConfig.EnableTargetedAccount && specialConfig.Account != null)
         {
@@ -421,9 +419,7 @@ internal class LaunchService
                 return true;
             });
 
-            if (matchAccount.Any())
-                return matchAccount.First();
-            else throw new Exception("Can't find target account");
+            return matchAccount.FirstOrDefault();
         }
 
         return _accountService.ActiveAccount;

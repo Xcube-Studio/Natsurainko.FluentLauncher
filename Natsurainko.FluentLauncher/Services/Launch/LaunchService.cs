@@ -39,7 +39,7 @@ internal class LaunchService
     private readonly AccountService _accountService;
     private readonly SettingsService _settingsService;
 
-    public ObservableCollection<LaunchSessionViewModel> Sessions { get; } = new();
+    public ObservableCollection<LaunchSessionViewModel> LaunchSessions { get; } = new();
 
     public LaunchService(
         SettingsService settingsService,

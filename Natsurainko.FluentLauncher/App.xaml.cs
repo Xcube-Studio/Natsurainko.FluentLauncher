@@ -50,7 +50,6 @@ public partial class App : Application
 
         App.GetService<MessengerService>().SubscribeEvents();
         App.GetService<AppearanceService>().ApplyDisplayTheme();
-        App.GetService<LaunchSessions>(); // TODO: Move to UI services ; Init global launch sessions collection
 
         // Global exception handler
         UnhandledException += (_, e) =>

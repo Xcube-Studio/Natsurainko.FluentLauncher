@@ -24,6 +24,7 @@ using ReverseMarkdown;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Principal;
@@ -64,11 +65,13 @@ internal class LaunchService
 
     public async Task LaunchAsync(
         MinecraftInstance instance,
-        IProgress<object>? progress = null,
+        IProgress<LaunchProgress>? progress = null,
         CancellationToken cancellationToken = default)
     {
         try
         {
+            progress?.Report(new (LaunchSessionState.Inspecting, null, null, null));
+
             // 1. Update Jumplist
             instance.UpdateLastLaunchTimeToNow();
             await JumpListService.UpdateJumpListAsync(instance);
@@ -94,6 +97,8 @@ internal class LaunchService
                 throw new Exception(ResourceUtils.GetValue("Exceptions", "_x86_JavaMemoryException"));
 
             // 3. Get account
+            progress?.Report(new(LaunchSessionState.Authenticating, null, null, null));
+
             GameConfig config = instance.GetConfig();
             Account? account = GetLaunchAccount(config, _accountService)
                 ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount")); // Determine which account to use
@@ -104,9 +109,11 @@ internal class LaunchService
             await RefreshAccountAsync(account, config);
 
             // 4. Resolve dependencies
-            await ResolveDependenciesAsync(instance);
+            await ResolveDependenciesAsync(instance, progress);
 
             // 5. Start MinecraftProcess
+            progress?.Report(new(LaunchSessionState.BuildingArguments, null, null, null));
+
             (IEnumerable<MinecraftLibrary> libs, _) = instance.GetRequiredLibraries();
             MinecraftProcess mcProcess = new MinecraftProcessBuilder(instance)
                 .SetLibraries(libs)
@@ -120,10 +127,12 @@ internal class LaunchService
             mcProcess.Exited += (_, _) => mcProcess.Dispose();
 
             mcProcess.Start();
+
+            progress?.Report(new(LaunchSessionState.GameRunning, null, mcProcess, null));
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            // Report exception using IProgress
+            progress?.Report(new(LaunchSessionState.Faulted, null, null, e));
         }
     }
 
@@ -141,7 +150,7 @@ internal class LaunchService
         }
     }
 
-    private async Task ResolveDependenciesAsync(MinecraftInstance instance)
+    private async Task ResolveDependenciesAsync(MinecraftInstance instance, IProgress<LaunchProgress>? progress)
     {
         var resolver = new DependencyResolver(instance);
         // TODO: report download progress
@@ -149,6 +158,7 @@ internal class LaunchService
         //    SingleFileDownloaded?.Invoke(resourcesDownloader, new EventArgs());
         //resourcesDownloader.InvalidDependenciesDetermined += (_, deps) =>
         //    DownloadElementsPosted?.Invoke(resourcesDownloader, deps.Count());
+        progress?.Report(new(LaunchSessionState.CompletingResources, resolver, null, null));
 
         var downloadResult = await resolver.VerifyAndDownloadDependenciesAsync();
         if (downloadResult.Failed.Count > 0)
@@ -163,65 +173,6 @@ internal class LaunchService
                 Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId, "natives"),
                 nativeLibs.Select(x => x.FullPath));
         }
-    }
-
-    //public async Task LaunchGame(MinecraftInstance mcInstance)
-    //{
-    //    MinecraftSession? minecraftSession = null;
-    //    Action<Exception>? onExceptionThrow = null;
-
-    //    try
-    //    {
-    //        Account? account = _accountService.ActiveAccount ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
-
-    //        minecraftSession = CreateMinecraftSessionFromMinecraftInstance(mcInstance, account);
-    //        _sessions.Add(minecraftSession);
-
-    //        _launchSessions.CreateLaunchSessionViewModel(minecraftSession, out var handleException);
-    //        onExceptionThrow = handleException;
-
-    //        mcInstance.UpdateLastLaunchTimeToNow();
-    //        await JumpListService.UpdateJumpListAsync(mcInstance);
-
-    //        await minecraftSession.StartAsync();
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        (onExceptionThrow ?? OnExceptionThrow).Invoke(ex);
-    //    }
-    //    finally
-    //    {
-    //        if (minecraftSession != null)
-    //        {
-    //            minecraftSession.ProcessExited += (object? sender, MinecraftProcessExitedEventArgs e) =>
-    //            {
-    //                minecraftSession.McProcess?.Dispose();
-    //            };
-    //        }
-    //    }
-    //}
-
-    private void OnExceptionThrow(Exception exception)
-    {
-        string errorDescriptionKey = string.Empty;
-
-        if (exception is InvalidOperationException)
-        {
-
-        }
-        else if (exception is YggdrasilAuthenticationException)
-        {
-            errorDescriptionKey = "_LaunchGameThrowYggdrasilAuthenticationException";
-        }
-        else if (exception is MicrosoftAuthenticationException)
-        {
-            errorDescriptionKey = "_LaunchGameThrowMicrosoftAuthenticationException";
-        }
-
-        App.GetService<NotificationService>().NotifyException(
-            "_LaunchGameThrowException",
-            exception,
-            errorDescriptionKey);
     }
 
     public MinecraftSession CreateMinecraftSessionFromMinecraftInstance(MinecraftInstance instance, Account? _)
@@ -495,4 +446,27 @@ internal class LaunchService
             }
         }
     }
+}
+
+public record struct LaunchProgress(
+    LaunchSessionState State,
+    DependencyResolver? DependencyResolver,
+    MinecraftProcess? MinecraftProcess,
+    Exception? Exception);
+
+public enum LaunchSessionState
+{
+    // Launch sequence
+    Created = 0,
+    Inspecting = 1,
+    Authenticating = 2,
+    CompletingResources = 3,
+    BuildingArguments = 4,
+    LaunchingProcess = 5,
+    GameRunning = 6,
+
+    GameExited = 7, // Game exited normally (exit code == 0)
+    Faulted = 8, // Failure before game started
+    Killed = 9, // Game killed by user
+    GameCrashed = 10 // Game crashed (exit code != 0)
 }

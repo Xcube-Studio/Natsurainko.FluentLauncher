@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
+using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Experimental.GameManagement;
@@ -22,7 +23,7 @@ using WinUIEx;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
-internal partial class LaunchSessionViewModel : ObservableObject, IProgress<object>
+internal partial class LaunchSessionViewModel : ObservableObject, IProgress<LaunchProgress>
 {
     private readonly CancellationTokenSource _launchCancellationTokenSource = new();
     private MinecraftProcess? _mcProcess;
@@ -246,9 +247,12 @@ internal partial class LaunchSessionViewModel : ObservableObject, IProgress<obje
             errorDescriptionKey);
     }
 
-    public void Report(object value)
+    public void Report(LaunchProgress progress)
     {
-        throw new NotImplementedException();
+        if (progress.State == LaunchSessionState.Faulted)
+        {
+            OnExceptionThrow(progress.Exception!);
+        }
     }
 
     public partial class LaunchStepItem : ObservableObject

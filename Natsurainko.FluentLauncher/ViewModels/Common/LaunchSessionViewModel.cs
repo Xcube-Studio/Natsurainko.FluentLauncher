@@ -7,6 +7,7 @@ using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Experimental.GameManagement;
+using Nrk.FluentCore.Experimental.GameManagement.Dependencies;
 using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Experimental.GameManagement.Launch;
 using Nrk.FluentCore.Launch;
@@ -249,7 +250,31 @@ internal partial class LaunchSessionViewModel : ObservableObject, IProgress<Laun
 
     public void Report(LaunchProgress progress)
     {
-        if (progress.State == LaunchSessionState.Faulted)
+        if (progress.State == LaunchSessionState.Inspecting)
+        {
+
+        }
+        else if (progress.State == LaunchSessionState.Authenticating)
+        {
+
+        }
+        else if (progress.State == LaunchSessionState.CompletingResources)
+        {
+            DependencyResolver dependencyResolver = progress.DependencyResolver!;
+        }
+        else if (progress.State == LaunchSessionState.BuildingArguments)
+        {
+
+        }
+        else if (progress.State == LaunchSessionState.LaunchingProcess)
+        {
+            MinecraftProcess mcProcess = progress.MinecraftProcess!;
+        }
+        else if (progress.State == LaunchSessionState.GameRunning)
+        {
+
+        }
+        else if (progress.State == LaunchSessionState.Faulted)
         {
             OnExceptionThrow(progress.Exception!);
         }

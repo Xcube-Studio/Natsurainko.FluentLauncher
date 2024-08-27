@@ -82,7 +82,7 @@ public partial class App : Application
 
         if (cmdargs.Length > 1 && cmdargs[1].Equals("/quick-launch"))
         {
-            App.GetService<JumpListService>().LaunchFromJumpList(cmdargs[2]);
+            App.GetService<JumpListService>().LaunchFromJumpListAsync(cmdargs[2]);
             return;
         }
 

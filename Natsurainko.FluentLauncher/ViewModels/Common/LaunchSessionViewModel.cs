@@ -22,31 +22,34 @@ using WinUIEx;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
-internal partial class LaunchSessionViewModel : ObservableObject
+internal partial class LaunchSessionViewModel : ObservableObject, IProgress<object>
 {
-    private readonly MinecraftSession _launchSession;
+    private readonly CancellationTokenSource _launchCancellationTokenSource = new();
+    private MinecraftProcess? _mcProcess;
 
     public MinecraftInstance MinecraftInstance { get; private set; }
 
-    public LaunchSessionViewModel(MinecraftSession session) : base()
+    public CancellationToken LaunchCancellationToken { get => _launchCancellationTokenSource.Token; }
+
+    public LaunchSessionViewModel(MinecraftInstance instance)
     {
-        _launchSession = session;
-        MinecraftInstance = session.MinecraftInstance;
+        MinecraftInstance = instance;
+        //_mcProcess = mcProcess;
 
-        // Handles all state changes
-        session.StateChanged += (_, e) => App.DispatcherQueue.TryEnqueue
-            (() => LaunchSessionStateChangedHandler(e));
+        //// Handles all state changes
+        //session.StateChanged += (_, e) => App.DispatcherQueue.TryEnqueue
+        //    (() => LaunchSessionStateChangedHandler(e));
 
-        // Retrieve the process output streams
-        session.OutputDataReceived += McProcess_OutputDataReceived;
-        session.ErrorDataReceived += McProcess_ErrorDataReceived;
+        //// Retrieve the process output streams
+        //session.OutputDataReceived += McProcess_OutputDataReceived;
+        //session.ErrorDataReceived += McProcess_ErrorDataReceived;
 
-        session.SingleFileDownloaded += (_, _) => App.DispatcherQueue.TryEnqueue(UpdateDownloadProgress);
-        session.DownloadElementsPosted += (_, count) => App.DispatcherQueue.TryEnqueue(() =>
-        {
-            StepItems[2].TaskNumber = count;
-            UpdateLaunchProgress();
-        });
+        //session.SingleFileDownloaded += (_, _) => App.DispatcherQueue.TryEnqueue(UpdateDownloadProgress);
+        //session.DownloadElementsPosted += (_, count) => App.DispatcherQueue.TryEnqueue(() =>
+        //{
+        //    StepItems[2].TaskNumber = count;
+        //    UpdateLaunchProgress();
+        //});
 
         // TODO: show exception when falted
 
@@ -172,7 +175,7 @@ internal partial class LaunchSessionViewModel : ObservableObject
     }
 
     [RelayCommand(CanExecute = nameof(CanKillProcess))]
-    public void KillProcess() => _launchSession.Kill();
+    public void KillProcess() => _mcProcess!.Kill(); // not null when game is running
 
     [RelayCommand]
     public void ShowLogger()
@@ -215,7 +218,7 @@ internal partial class LaunchSessionViewModel : ObservableObject
     public void CopyLaunchArguments()
     {
         var dataPackage = new DataPackage();
-        dataPackage.SetText(string.Join("\r\n", _launchSession.McProcess!.ArgumentList));
+        dataPackage.SetText(string.Join("\r\n", _mcProcess.ArgumentList));
         Clipboard.SetContent(dataPackage);
     }
 
@@ -241,6 +244,11 @@ internal partial class LaunchSessionViewModel : ObservableObject
             "_LaunchGameThrowException",
             Exception,
             errorDescriptionKey);
+    }
+
+    public void Report(object value)
+    {
+        throw new NotImplementedException();
     }
 
     public partial class LaunchStepItem : ObservableObject

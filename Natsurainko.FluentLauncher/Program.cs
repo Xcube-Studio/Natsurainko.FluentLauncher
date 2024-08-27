@@ -116,7 +116,6 @@ services.AddSingleton<ModrinthClient>();
 services.AddSingleton<CurseForgeClient>(_ => new CurseForgeClient("$2a$10$lf9.hHl3PMJ4d3BisICcAOX91uT/mM9/VPDfzpg7r3C/Y8cXIRTNm"));
 
 // ViewModels
-services.AddSingleton<ViewModels.Tasks.LaunchSessions>();
 services.AddTransient<ViewModels.Common.SwitchAccountDialogViewModel>();
 
 #endregion

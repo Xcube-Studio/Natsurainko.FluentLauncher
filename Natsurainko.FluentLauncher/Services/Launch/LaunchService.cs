@@ -28,6 +28,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 
@@ -54,7 +55,17 @@ internal class LaunchService
         _downloadService = downloadService;
     }
 
-    public async Task LaunchAsync(MinecraftInstance instance)
+    public async Task LaunchFromUIAsync(MinecraftInstance instance)
+    {
+        var viewModel = new LaunchSessionViewModel(instance);
+        LaunchSessions.Insert(0, viewModel);
+        await LaunchAsync(instance, viewModel, viewModel.LaunchCancellationToken);
+    }
+
+    public async Task LaunchAsync(
+        MinecraftInstance instance,
+        IProgress<object>? progress = null,
+        CancellationToken cancellationToken = default)
     {
         try
         {

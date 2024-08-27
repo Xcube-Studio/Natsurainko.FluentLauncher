@@ -76,7 +76,7 @@ internal partial class HomeViewModel : ObservableObject
     private async Task Launch()
     {
         _navigationService.NavigateTo("Tasks/Launch");
-        await _launchService.LaunchAsync(ActiveMinecraftInstance);
+        await _launchService.LaunchFromUIAsync(ActiveMinecraftInstance);
     }
 
     [RelayCommand]
@@ -106,7 +106,7 @@ internal partial class HomeViewModel : ObservableObject
                     ResourceUtils.GetValue("SearchSuggest", "_D4"), async () =>
                     {
                         _navigationService.NavigateTo("Tasks/Launch");
-                        await _launchService.LaunchAsync(item);
+                        await _launchService.LaunchFromUIAsync(item);
                     });
             }
         }

@@ -26,12 +26,10 @@ namespace Natsurainko.FluentLauncher.Services.SystemServices;
 internal class JumpListService
 {
     private readonly LaunchService _launchService;
-    private readonly GameService _gameService;
 
-    public JumpListService(LaunchService launchService, GameService gameService)
+    public JumpListService(LaunchService launchService)
     {
         _launchService = launchService;
-        _gameService = gameService;
     }
 
     #region Jumplist argument and MinecraftInstance conversion
@@ -112,7 +110,7 @@ internal class JumpListService
         await list.SaveAsync();
     }
 
-    public async Task LaunchFromJumpList(string arguments)
+    public async Task LaunchFromJumpListAsync(string arguments)
     {
         #region Init Launch & Display Elements
 
@@ -172,14 +170,16 @@ internal class JumpListService
 
         #region Create Launch Session
 
-        var minecraftSession = _launchService.CreateMinecraftSessionFromMinecraftInstance(minecraftInstance, null);
-        var sessionViewModel = new LaunchSessionViewModel(minecraftSession);
-        App.GetService<LaunchSessions>().SessionViewModels.Insert(0, sessionViewModel);
+        var viewModel = new LaunchSessionViewModel(minecraftInstance);
+        _launchService.LaunchSessions.Insert(0, viewModel);
+        await _launchService.LaunchAsync(minecraftInstance, viewModel, viewModel.LaunchCancellationToken);
 
-        minecraftInstance.UpdateLastLaunchTimeToNow();
-        await UpdateJumpListAsync(minecraftInstance);
+        #endregion
 
-        minecraftSession.StateChanged += MinecraftSession_StateChanged;
+        // TODO: handle progress update
+        //minecraftSession.StateChanged += MinecraftSession_StateChanged;
+
+        #region Progress Update
 
         void MinecraftSession_StateChanged(object? sender, MinecraftSessionStateChagnedEventArgs e)
         {
@@ -203,34 +203,28 @@ internal class JumpListService
             }
         }
 
-        #endregion
+        //uint sequence = 1;
+        //sessionViewModel.PropertyChanged += SessionViewModel_PropertyChanged;
 
-        #region Progress Update
+        //void SessionViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        //{
+        //    //if (e.PropertyName != "Progress" && e.PropertyName != "SessionState")
+        //    //    return;
 
-        uint sequence = 1;
-        sessionViewModel.PropertyChanged += SessionViewModel_PropertyChanged;
+        //    var data = new AppNotificationProgressData(sequence);
+        //    data.Title = minecraftInstance.GetConfig().NickName;
+        //    data.Value = sessionViewModel.Progress;
+        //    data.ValueStringOverride = sessionViewModel.ProgressText;
+        //    data.Status = ResourceUtils.GetValue("Converters", $"_LaunchState_{sessionViewModel.SessionState}");
 
-        void SessionViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            //if (e.PropertyName != "Progress" && e.PropertyName != "SessionState")
-            //    return;
+        //    appNotification.Progress = data;
+        //    var result = AppNotificationManager.Default.UpdateAsync(data, guid.ToString(), guid.ToString())
+        //        .GetAwaiter().GetResult();
 
-            var data = new AppNotificationProgressData(sequence);
-            data.Title = minecraftInstance.GetConfig().NickName;
-            data.Value = sessionViewModel.Progress;
-            data.ValueStringOverride = sessionViewModel.ProgressText;
-            data.Status = ResourceUtils.GetValue("Converters", $"_LaunchState_{sessionViewModel.SessionState}");
-
-            appNotification.Progress = data;
-            var result = AppNotificationManager.Default.UpdateAsync(data, guid.ToString(), guid.ToString())
-                .GetAwaiter().GetResult();
-
-            sequence++;
-        }
+        //    sequence++;
+        //}
 
         #endregion
-
-        await minecraftSession.StartAsync();
     }
 
     public static async Task UpdateJumpListAsync(MinecraftInstance MinecraftInstance)

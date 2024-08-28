@@ -6,22 +6,29 @@ using Natsurainko.FluentLauncher.Services.SystemServices;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
+using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.ViewModels.Tasks;
+using Natsurainko.FluentLauncher.Views.OOBE;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Environment;
 using Nrk.FluentCore.Experimental.GameManagement.Dependencies;
 using Nrk.FluentCore.Experimental.GameManagement.Instances;
-using Nrk.FluentCore.Experimental.GameManagement.Launch;
+using Nrk.FluentCore.Experimental.Launch;
 using Nrk.FluentCore.Launch;
+using Nrk.FluentCore.Launch.Exceptions;
 using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Utils;
 using PInvoke;
+using ReverseMarkdown;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 
@@ -33,182 +40,154 @@ internal class LaunchService
     private readonly DownloadService _downloadService;
     private readonly AccountService _accountService;
     private readonly SettingsService _settingsService;
-    private readonly LaunchSessions _launchSessions;
 
-    protected readonly List<MinecraftSession> _sessions;
-    public ReadOnlyCollection<MinecraftSession> Sessions { get; }
-
-    public event EventHandler<MinecraftSession>? SessionCreated;
+    public ObservableCollection<LaunchSessionViewModel> LaunchSessions { get; } = new();
 
     public LaunchService(
         SettingsService settingsService,
         AccountService accountService,
         AuthenticationService authenticationService,
-        DownloadService downloadService,
-        LaunchSessions launchSessions)
+        DownloadService downloadService)
     {
         _settingsService = settingsService;
         _authenticationService = authenticationService;
         _accountService = accountService;
         _downloadService = downloadService;
-        _launchSessions = launchSessions;
-
-        _sessions = [];
-        Sessions = new(_sessions);
     }
 
-    public async Task LaunchGame(MinecraftInstance mcInstance)
+    public async Task LaunchFromUIAsync(MinecraftInstance instance)
     {
-        MinecraftSession? minecraftSession = null;
-        Action<Exception>? onExceptionThrow = null;
+        var viewModel = new LaunchSessionViewModel(instance);
+        LaunchSessions.Insert(0, viewModel);
+        await LaunchAsync(instance, viewModel, viewModel.LaunchCancellationToken);
+    }
 
+    public async Task LaunchAsync(
+        MinecraftInstance instance,
+        IProgress<LaunchProgress>? progress = null,
+        CancellationToken cancellationToken = default)
+    {
         try
         {
-            Account? account = _accountService.ActiveAccount ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
+            progress?.Report(new (LaunchSessionState.Inspecting, null, null, null));
 
-            minecraftSession = CreateMinecraftSessionFromMinecraftInstance(mcInstance, account);
-            _sessions.Add(minecraftSession);
+            // 1. Update Jumplist
+            instance.UpdateLastLaunchTimeToNow();
+            await JumpListService.UpdateJumpListAsync(instance);
 
-            _launchSessions.CreateLaunchSessionViewModel(minecraftSession, out var handleException);
-            onExceptionThrow = handleException;
+            // 2. Check environment
+            cancellationToken.ThrowIfCancellationRequested();
 
-            mcInstance.UpdateLastLaunchTimeToNow();
-            await JumpListService.UpdateJumpListAsync(mcInstance);
+            // 2.1. Java path
+            string? suitableJava = null;
 
-            await minecraftSession.StartAsync();
-        }
-        catch (Exception ex)
-        {
-            (onExceptionThrow ?? OnExceptionThrow).Invoke(ex);
-        }
-        finally
-        {
-            if (minecraftSession != null)
+            if (string.IsNullOrEmpty(_settingsService.ActiveJava))
+                throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoActiveJava"));
+
+            suitableJava = _settingsService.EnableAutoJava ? GetSuitableJava(instance) : _settingsService.ActiveJava;
+            if (suitableJava == null)
+                throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoSuitableJava").Replace("${version}", instance.GetSuitableJavaVersion()));
+
+            // 2.2. Java memory
+            var (maxMemory, minMemory) = _settingsService.EnableAutoJava
+                ? MemoryUtils.CalculateJavaMemory()
+                : (_settingsService.JavaMemory, _settingsService.JavaMemory);
+
+            if (JavaUtils.GetJavaInfo(suitableJava).Architecture != "x64" && maxMemory >= 512) // QUESTION: >= 512 or > 1024?
+                throw new Exception(ResourceUtils.GetValue("Exceptions", "_x86_JavaMemoryException"));
+
+            // 3. Get account
+            cancellationToken.ThrowIfCancellationRequested();
+            progress?.Report(new(LaunchSessionState.Authenticating, null, null, null));
+
+            GameConfig config = instance.GetConfig();
+            Account? account = GetLaunchAccount(config, _accountService)
+                ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount")); // Determine which account to use
+
+            if (account is null)
+                throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
+
+            await RefreshAccountAsync(account, config);
+
+            // 4. Resolve dependencies
+            cancellationToken.ThrowIfCancellationRequested();
+            await ResolveDependenciesAsync(instance, progress, cancellationToken);
+
+            // 5. Start MinecraftProcess
+            cancellationToken.ThrowIfCancellationRequested();
+            progress?.Report(new(LaunchSessionState.BuildingArguments, null, null, null));
+
+            MinecraftProcess mcProcess = new MinecraftProcessBuilder(instance)
+                .SetAccountSettings(account, _settingsService.EnableDemoUser)
+                .SetJavaSettings(suitableJava, maxMemory, minMemory)
+                .SetGameDirectory(GetGameDirectory(instance, config))
+                .AddVmArguments(GetExtraVmParameters(config, account))
+                .AddGameArguments(GetExtraGameParameters(config))
+                .Build();
+
+            mcProcess.Exited += (_, _) => mcProcess.Dispose();
+            mcProcess.Started += (_, _) =>
             {
-                minecraftSession.ProcessExited += (object? sender, MinecraftProcessExitedEventArgs e) =>
+                var title = GameWindowTitle(config);
+                if (string.IsNullOrEmpty(title)) return;
+
+                Task.Run(async () =>
                 {
-                    minecraftSession.McProcess?.Dispose();
-                };
-            }
-        }
-    }
-
-    private void OnExceptionThrow(Exception exception)
-    {
-        string errorDescriptionKey = string.Empty;
-
-        if (exception is InvalidOperationException)
-        {
-
-        }
-        else if (exception is YggdrasilAuthenticationException)
-        {
-            errorDescriptionKey = "_LaunchGameThrowYggdrasilAuthenticationException";
-        }
-        else if (exception is MicrosoftAuthenticationException)
-        {
-            errorDescriptionKey = "_LaunchGameThrowMicrosoftAuthenticationException";
-        }
-
-        App.GetService<NotificationService>().NotifyException(
-            "_LaunchGameThrowException",
-            exception,
-            errorDescriptionKey);
-    }
-
-    protected void OnSessionCreated(MinecraftSession minecraftSession)
-        => this.SessionCreated?.Invoke(this, minecraftSession);
-
-    public MinecraftSession CreateMinecraftSessionFromMinecraftInstance(MinecraftInstance instance, Account? _)
-    {
-        Account? account = _accountService.ActiveAccount;
-        if (account is null)
-            throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
-
-        // Java
-        string? suitableJava = null;
-
-        if (string.IsNullOrEmpty(_settingsService.ActiveJava))
-            throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoActiveJava"));
-        // TODO: Do not localize exception message
-
-        suitableJava = _settingsService.EnableAutoJava ? GetSuitableJava(instance) : _settingsService.ActiveJava;
-        if (suitableJava == null)
-            throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoSuitableJava").Replace("${version}", instance.GetSuitableJavaVersion()));
-
-        var config = instance.GetConfig(); // Game specific config
-        var launchAccount = GetLaunchAccount(config, _accountService)
-            ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount")); // Determine which account to use
-
-        Account Authenticate()
-        {
-            // TODO: refactor to remove dependency on AuthenticationService, and AccountService.
-            // Call FluentCore to refresh account directly.
-            try
-            {
-                if (launchAccount.Equals(_accountService.ActiveAccount))
-                {
-                    _accountService.RefreshActiveAccount().GetAwaiter().GetResult();
-                    return _accountService.ActiveAccount;
-                }
-                else
-                {
-                    _accountService.RefreshAccount(launchAccount).GetAwaiter().GetResult();
-                    return GetLaunchAccount(config, _accountService);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        var (maxMemory, minMemory) = _settingsService.EnableAutoJava
-            ? MemoryUtils.CalculateJavaMemory()
-            : (_settingsService.JavaMemory, _settingsService.JavaMemory);
-
-        if (JavaUtils.GetJavaInfo(suitableJava).Architecture != "x64" && maxMemory >= 512)
-            throw new Exception(ResourceUtils.GetValue("Exceptions", "_x86_JavaMemoryException"));
-
-        var session = new MinecraftSession() // Launch session
-        {
-            Account = launchAccount,
-            MinecraftInstance = instance,
-            GameDirectory = GetGameDirectory(instance, config),
-            JavaPath = suitableJava,
-            MaxMemory = maxMemory,
-            MinMemory = minMemory,
-            UseDemoUser = _settingsService.EnableDemoUser,
-            ExtraGameParameters = GetExtraGameParameters(config),
-            ExtraVmParameters = GetExtraVmParameters(config, launchAccount),
-            CreateDependencyResolver = (_) => new DependencyResolver(instance)
-        };
-
-        if (_settingsService.AutoRefresh)
-            session.RefreshAccountTask = new Task<Account>(Authenticate);
-
-        session.SkipNativesDecompression = CanSkipNativesDecompression(instance);
-
-        session.ProcessStarted += (s, e) =>
-        {
-            var title = GameWindowTitle(config);
-            if (string.IsNullOrEmpty(title)) return;
-
-            Task.Run(async () =>
-            {
-                try
-                {
-                    while (session.State == MinecraftSessionState.GameRunning)
+                    try
                     {
-                        User32.SetWindowText(session.GetProcessMainWindowHandle(), title);
-                        await Task.Delay(1000);
+                        while (mcProcess.State == MinecraftProcessState.Running)
+                        {
+                            User32.SetWindowText(mcProcess.MainWindowHandle, title);
+                            await Task.Delay(1000);
+                        }
                     }
-                }
-                catch { }
-            });
-        };
+                    catch { }
+                });
+            };
 
-        return session;
+            progress?.Report(new(LaunchSessionState.LaunchingProcess, null, mcProcess, null));
+            mcProcess.Start();
+
+            progress?.Report(new(LaunchSessionState.GameRunning, null, null, null));
+        }
+        catch (Exception e)
+        {
+            progress?.Report(new(LaunchSessionState.Faulted, null, null, e));
+        }
+    }
+
+    private async Task<Account> RefreshAccountAsync(Account account, GameConfig config)
+    {
+        if (account.Equals(_accountService.ActiveAccount))
+        {
+            await _accountService.RefreshActiveAccount();
+            return _accountService.ActiveAccount;
+        }
+        else
+        {
+            await _accountService.RefreshAccount(account);
+            return GetLaunchAccount(config, _accountService);
+        }
+    }
+
+    private async Task ResolveDependenciesAsync(MinecraftInstance instance, IProgress<LaunchProgress>? progress, CancellationToken cancellationToken)
+    {
+        var resolver = new DependencyResolver(instance);
+        progress?.Report(new(LaunchSessionState.CompletingResources, resolver, null, null));
+
+        var downloadResult = await resolver.VerifyAndDownloadDependenciesAsync(_downloadService.Downloader, 10, cancellationToken);
+        if (downloadResult.Failed.Count > 0)
+            throw new IncompleteGameResourcesException(downloadResult.Failed.Select(r => r.Item2));
+
+        // TODO: 考虑集成到DependencyResolver?
+        // Natives decompression
+        if (!CanSkipNativesDecompression(instance))
+        {
+            var (_, nativeLibs) = instance.GetRequiredLibraries();
+            UnzipUtils.BatchUnzip(
+                Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId, "natives"),
+                nativeLibs.Select(x => x.FullPath));
+        }
     }
 
     private bool CanSkipNativesDecompression(MinecraftInstance instance)
@@ -306,7 +285,7 @@ internal class LaunchService
         return null;
     }
 
-    public static Account GetLaunchAccount(GameConfig specialConfig, AccountService _accountService)
+    public static Account? GetLaunchAccount(GameConfig specialConfig, AccountService _accountService)
     {
         if (specialConfig.EnableSpecialSetting && specialConfig.EnableTargetedAccount && specialConfig.Account != null)
         {
@@ -325,9 +304,7 @@ internal class LaunchService
                 return true;
             });
 
-            if (matchAccount.Any())
-                return matchAccount.First();
-            else throw new Exception("Can't find target account");
+            return matchAccount.FirstOrDefault();
         }
 
         return _accountService.ActiveAccount;
@@ -392,4 +369,27 @@ internal class LaunchService
             }
         }
     }
+}
+
+public record struct LaunchProgress(
+    LaunchSessionState State,
+    DependencyResolver? DependencyResolver,
+    MinecraftProcess? MinecraftProcess,
+    Exception? Exception);
+
+public enum LaunchSessionState
+{
+    // Launch sequence
+    Created = 0,
+    Inspecting = 1,
+    Authenticating = 2,
+    CompletingResources = 3,
+    BuildingArguments = 4,
+    LaunchingProcess = 5,
+    GameRunning = 6,
+
+    GameExited = 7, // Game exited normally (exit code == 0)
+    Faulted = 8, // Failure before game started
+    Killed = 9, // Game killed by user
+    GameCrashed = 10 // Game crashed (exit code != 0)
 }

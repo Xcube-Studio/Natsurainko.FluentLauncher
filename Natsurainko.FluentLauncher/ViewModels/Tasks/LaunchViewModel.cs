@@ -1,38 +1,22 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
+using Natsurainko.FluentLauncher.Services.Launch;
+using Natsurainko.FluentLauncher.ViewModels.Common;
 using System.Collections.ObjectModel;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Tasks;
 
 internal partial class LaunchViewModel : ObservableObject, INavigationAware
 {
-    private readonly LaunchSessions _launchSessions;
     private readonly INavigationService _navigationService;
 
-    public ObservableCollection<object> Tasks { get; } = [];
+    public ReadOnlyObservableCollection<LaunchSessionViewModel> Tasks { get; }
 
-    public LaunchViewModel(LaunchSessions launchSessions, INavigationService navigationService)
+    public LaunchViewModel(LaunchService launchService, INavigationService navigationService)
     {
-        _launchSessions = launchSessions;
         _navigationService = navigationService;
-
-        launchSessions.SessionViewModels.CollectionChanged += SessionViewModels_CollectionChanged;
-
-        foreach (var item in launchSessions.SessionViewModels)
-            Tasks.Add(item);
-    }
-
-    private void SessionViewModels_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-    {
-        foreach (var item in e.NewItems!)
-            App.DispatcherQueue.TryEnqueue(() => Tasks.Insert(0, item));
-    }
-
-    [RelayCommand]
-    void Unloaded()
-    {
-        _launchSessions.SessionViewModels.CollectionChanged -= SessionViewModels_CollectionChanged;
+        Tasks = new(launchService.LaunchSessions);
     }
 
     [RelayCommand]

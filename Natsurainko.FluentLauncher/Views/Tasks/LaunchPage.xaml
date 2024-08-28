@@ -17,12 +17,6 @@
             LaunchSession="{StaticResource LaunchSessionTemplate}" />
     </Page.Resources>
 
-    <i:Interaction.Behaviors>
-        <core:EventTriggerBehavior EventName="Unloaded">
-            <actions:ModifiedInvokeCommandAction Command="{Binding UnloadedCommand}" />
-        </core:EventTriggerBehavior>
-    </i:Interaction.Behaviors>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

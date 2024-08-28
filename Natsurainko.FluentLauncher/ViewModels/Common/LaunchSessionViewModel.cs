@@ -3,11 +3,12 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
+using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Experimental.GameManagement;
+using Nrk.FluentCore.Experimental.GameManagement.Dependencies;
 using Nrk.FluentCore.Experimental.GameManagement.Instances;
-using Nrk.FluentCore.Experimental.GameManagement.Launch;
 using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Management;
 using System;
@@ -19,44 +20,23 @@ using System.Threading;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using WinUIEx;
+using static System.Windows.Forms.AxHost;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
-internal partial class LaunchSessionViewModel : ObservableObject
+internal partial class LaunchSessionViewModel : ObservableObject, IProgress<LaunchProgress>
 {
-    private readonly MinecraftSession _launchSession;
+    private readonly CancellationTokenSource _launchCancellationTokenSource = new();
+    private MinecraftProcess? _mcProcess;
+    private bool _isMcProcessKilled = false;
 
     public MinecraftInstance MinecraftInstance { get; private set; }
 
-    public LaunchSessionViewModel(MinecraftSession session) : base()
+    public CancellationToken LaunchCancellationToken { get => _launchCancellationTokenSource.Token; }
+
+    public LaunchSessionViewModel(MinecraftInstance instance)
     {
-        _launchSession = session;
-        MinecraftInstance = session.MinecraftInstance;
-
-        // Handles all state changes
-        session.StateChanged += (_, e) => App.DispatcherQueue.TryEnqueue
-            (() => LaunchSessionStateChangedHandler(e));
-
-        // Retrieve the process output streams
-        session.OutputDataReceived += McProcess_OutputDataReceived;
-        session.ErrorDataReceived += McProcess_ErrorDataReceived;
-
-        session.SingleFileDownloaded += (_, _) => App.DispatcherQueue.TryEnqueue(UpdateDownloadProgress);
-        session.DownloadElementsPosted += (_, count) => App.DispatcherQueue.TryEnqueue(() =>
-        {
-            StepItems[2].TaskNumber = count;
-            UpdateLaunchProgress();
-        });
-
-        // TODO: show exception when falted
-
-        //State = MinecraftSessionState.Faulted;
-        //_mcProcess?.Dispose();
-        //App.DispatcherQueue.TryEnqueue(() =>
-        //{
-        //    Exception = ex;
-        //    ExceptionReason = Exception.Message;
-        //});
+        MinecraftInstance = instance;
     }
 
     private void McProcess_ErrorDataReceived(object sender, DataReceivedEventArgs e)
@@ -73,11 +53,11 @@ internal partial class LaunchSessionViewModel : ObservableObject
 
     public LaunchStepItem[] StepItems { get; } =
     [
-        new LaunchStepItem { Step = MinecraftSessionState.Inspecting },
-        new LaunchStepItem { Step = MinecraftSessionState.Authenticating },
-        new LaunchStepItem { Step = MinecraftSessionState.CompletingResources },
-        new LaunchStepItem { Step = MinecraftSessionState.BuildingArguments },
-        new LaunchStepItem { Step = MinecraftSessionState.LaunchingProcess }
+        new LaunchStepItem { Step = LaunchSessionState.Inspecting },
+        new LaunchStepItem { Step = LaunchSessionState.Authenticating },
+        new LaunchStepItem { Step = LaunchSessionState.CompletingResources },
+        new LaunchStepItem { Step = LaunchSessionState.BuildingArguments },
+        new LaunchStepItem { Step = LaunchSessionState.LaunchingProcess }
     ];
 
     [ObservableProperty]
@@ -85,7 +65,7 @@ internal partial class LaunchSessionViewModel : ObservableObject
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(KillProcessCommand))]
-    private MinecraftSessionState sessionState;
+    private LaunchSessionState sessionState;
 
     [ObservableProperty]
     private string? processStartTime;
@@ -107,43 +87,104 @@ internal partial class LaunchSessionViewModel : ObservableObject
 
     public string ProgressText => Progress.ToString("P1");
 
-    private void LaunchSessionStateChangedHandler(MinecraftSessionStateChagnedEventArgs e)
+    public void Report(LaunchProgress progress)
     {
-        SessionState = e.NewState;
-
-        int state = (int)SessionState;
-        int lastState = (int)e.OldState;
-        MinecraftSessionState newValue = e.NewState;
-
-        if (2 <= state && state <= 6)
+        if (progress.State == LaunchSessionState.Inspecting)
         {
-            StepItems[lastState - 1].RunState = 2;
-            if (state != 4) StepItems[lastState - 1].FinishedTaskNumber = 1;
+            StepItems[0].RunState = 1;
+            SessionState = LaunchSessionState.Inspecting;
         }
-
-        if (1 <= state && state <= 5)
-            StepItems[state - 1].RunState = 1;
-
-        if ((MinecraftSessionState)lastState == MinecraftSessionState.LaunchingProcess && newValue == MinecraftSessionState.GameRunning) // Update start time only for Process.Start()
-            ProcessStartTime = $"[{DateTime.Now:HH:mm:ss}]";
-
-        // Fault before the game is started
-        if (newValue == MinecraftSessionState.Faulted)
+        else if (progress.State == LaunchSessionState.Authenticating)
         {
-            StepItems[lastState - 1].RunState = -1;
+            StepItems[1].RunState = 1;
+            StepItems[0].RunState = 2;
+            StepItems[0].FinishedTaskNumber = 1;
+            SessionState = LaunchSessionState.Authenticating;
         }
+        else if (progress.State == LaunchSessionState.CompletingResources)
+        {
+            StepItems[2].RunState = 1;
+            StepItems[1].RunState = 2;
+            StepItems[1].FinishedTaskNumber = 1;
+            SessionState = LaunchSessionState.CompletingResources;
 
-        // Session finished (exited, crashed, or killed)
-        if (newValue == MinecraftSessionState.GameExited)
-            IsExpanded = false;
+            DependencyResolver dependencyResolver = progress.DependencyResolver!;
+            dependencyResolver.DependencyDownloaded += (_, _)
+                => App.DispatcherQueue.TryEnqueue(UpdateDownloadProgress);
+            dependencyResolver.InvalidDependenciesDetermined += (_, invalidItems) =>
+            {
+                App.DispatcherQueue.TryEnqueue(() =>
+                {
+                    StepItems[2].TaskNumber = invalidItems.Count();
+                    UpdateLaunchProgress();
+                });
+            };
+        }
+        else if (progress.State == LaunchSessionState.BuildingArguments)
+        {
+            StepItems[3].RunState = 1;
+            StepItems[2].RunState = 2;
+            SessionState = LaunchSessionState.BuildingArguments;
+        }
+        else if (progress.State == LaunchSessionState.LaunchingProcess)
+        {
+            StepItems[4].RunState = 1;
+            StepItems[3].RunState = 2;
+            StepItems[3].FinishedTaskNumber = 1;
+            SessionState = LaunchSessionState.LaunchingProcess;
 
-        if (newValue == MinecraftSessionState.GameExited || newValue == MinecraftSessionState.GameCrashed || newValue == MinecraftSessionState.Killed)
-            ProcessExitTime = $"[{DateTime.Now:HH:mm:ss}]";
+            MinecraftProcess mcProcess = progress.MinecraftProcess!;
+            mcProcess.OutputDataReceived += McProcess_OutputDataReceived;
+            mcProcess.ErrorDataReceived += McProcess_ErrorDataReceived;
+            mcProcess.Exited += (_, e) =>
+            {
+                App.DispatcherQueue.TryEnqueue(() =>
+                {
+                    ProcessExitTime = $"[{DateTime.Now:HH:mm:ss}]";
+                    if (e.ExitCode == 0) // exited normally
+                    {
+                        IsExpanded = false;
+                        SessionState = LaunchSessionState.GameExited;
+                    }
+                    else if (_isMcProcessKilled)
+                    {
+                        SessionState = LaunchSessionState.Killed;
+                    }
+                    else
+                    {
+                        SessionState = LaunchSessionState.GameCrashed;
+                    }
+                });
+            };
+            _mcProcess = mcProcess;
+        }
+        else if (progress.State == LaunchSessionState.GameRunning)
+        {
+            StepItems[4].RunState = 2;
+            SessionState = LaunchSessionState.GameRunning;
+
+            App.DispatcherQueue.TryEnqueue(() =>
+            {
+                ProcessStartTime = $"[{DateTime.Now:HH:mm:ss}]";
+            });
+        }
+        else if (progress.State == LaunchSessionState.Faulted)
+        {
+            StepItems[(int)SessionState - 1].RunState = -1;
+            SessionState = LaunchSessionState.Faulted;
+
+            _mcProcess?.Dispose();
+
+            var exception = progress.Exception!;
+            Exception = exception;
+            ExceptionReason = exception.Message;
+            ShowException();
+        }
 
         UpdateLaunchProgress();
     }
 
-    internal void UpdateLaunchProgress()
+    private void UpdateLaunchProgress()
     {
         int total = StepItems.Select(x => x.TaskNumber).Sum();
         int finished = StepItems.Select(x => x.FinishedTaskNumber).Sum();
@@ -151,7 +192,7 @@ internal partial class LaunchSessionViewModel : ObservableObject
         Progress = (double)finished / total;
     }
 
-    internal void UpdateDownloadProgress()
+    private void UpdateDownloadProgress()
     {
 #pragma warning disable MVVMTK0034 // Direct field reference to [ObservableProperty] backing field
         Interlocked.Increment(ref StepItems[2].finishedTaskNumber);
@@ -161,18 +202,14 @@ internal partial class LaunchSessionViewModel : ObservableObject
         UpdateLaunchProgress();
     }
 
-    bool CanKillProcess() => SessionState == MinecraftSessionState.GameRunning;
+    private bool IsGameRunning() => SessionState == LaunchSessionState.GameRunning;
 
-    public void OnExceptionThrow(Exception exception)
+    [RelayCommand(CanExecute = nameof(IsGameRunning))]
+    public void KillProcess()
     {
-        Exception = exception;
-        ExceptionReason = exception.Message;
-
-        ShowException();
+        _isMcProcessKilled = true;
+        _mcProcess!.Kill(); // not null when game is running
     }
-
-    [RelayCommand(CanExecute = nameof(CanKillProcess))]
-    public void KillProcess() => _launchSession.Kill();
 
     [RelayCommand]
     public void ShowLogger()
@@ -211,11 +248,11 @@ internal partial class LaunchSessionViewModel : ObservableObject
         });
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(IsGameRunning))]
     public void CopyLaunchArguments()
     {
         var dataPackage = new DataPackage();
-        dataPackage.SetText(string.Join("\r\n", _launchSession.McProcess!.ArgumentList));
+        dataPackage.SetText(string.Join("\r\n", _mcProcess!.ArgumentList));
         Clipboard.SetContent(dataPackage);
     }
 
@@ -245,7 +282,7 @@ internal partial class LaunchSessionViewModel : ObservableObject
 
     public partial class LaunchStepItem : ObservableObject
     {
-        public MinecraftSessionState Step { get; set; }
+        public LaunchSessionState Step { get; set; }
 
         [ObservableProperty]
         private int runState = 0; // 0 未开始, 1 进行中, 2 完成, -1 失败

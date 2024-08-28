@@ -1,9 +1,8 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Experimental.GameManagement;
+using Nrk.FluentCore.Experimental.GameManagement.Installer.Data;
 using Nrk.FluentCore.Experimental.GameManagement.Instances;
-using Nrk.FluentCore.Management;
 
 using System;
 using System.Collections.Generic;
@@ -22,7 +21,7 @@ public class MinecraftInstanceConverter : IValueConverter
         {
             var strings = new List<string>
             {
-                game.InstanceId ?? "Unknown Version",
+                game.Version.VersionId,
                 ResourceUtils.GetValue("Converters", "_" + game.Version.Type switch
                 {
                     MinecraftVersionType.Release => "Release",

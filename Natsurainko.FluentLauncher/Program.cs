@@ -49,6 +49,7 @@ pages.WithPage<Views.Home.HomePage, ViewModels.Home.HomeViewModel>("HomePage");
 
 // Cores page
 pages.WithPage<Views.Cores.CoresPage, ViewModels.Cores.CoresViewModel>("CoresPage");
+pages.WithPage<Views.Cores.Install.WizardPage, ViewModels.Cores.Install.WizardViewModel>("Cores/Install");
 
 pages.WithPage<Views.Cores.Manage.NavigationPage, ViewModels.Cores.Manage.NavigationViewModel>("CoreManage/Navigation");
 pages.WithPage<Views.Cores.Manage.DefaultPage, ViewModels.Cores.Manage.DefaultViewModel>("CoreManage/Default");
@@ -66,8 +67,6 @@ pages.WithPage<Views.Downloads.NavigationPage, ViewModels.Downloads.NavigationVi
 pages.WithPage<Views.Downloads.DefaultPage, ViewModels.Downloads.DefaultViewModel>("Download/Default");
 pages.WithPage<Views.Downloads.SearchPage, ViewModels.Downloads.SearchViewModel>("Download/Search");
 pages.WithPage<Views.Downloads.DetailsPage, ViewModels.Downloads.DetailsViewModel>("Download/Details");
-
-pages.WithPage<Views.Downloads.CoreInstallWizardPage, ViewModels.Downloads.CoreInstallWizardViewModel>("CoreInstallWizardPage");
 
 // Tasks page
 pages.WithPage<Views.Tasks.LaunchPage, ViewModels.Tasks.LaunchViewModel>("Tasks/Launch");
@@ -107,7 +106,7 @@ services.AddSingleton<NotificationService>();
 services.AddSingleton<AppearanceService>();
 services.AddSingleton<CacheSkinService>();
 services.AddSingleton<CacheInterfaceService>();
-services.AddSingleton<JumpListService>();
+//services.AddSingleton<JumpListService>();
 services.AddSingleton<SearchProviderService>();
 services.AddSingleton<InstanceConfigService>();
 

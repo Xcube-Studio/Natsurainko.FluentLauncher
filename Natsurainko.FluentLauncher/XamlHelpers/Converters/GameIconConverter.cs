@@ -1,13 +1,12 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Imaging;
-using Natsurainko.FluentLauncher.Models;
 using Nrk.FluentCore.Experimental.GameManagement;
+using Nrk.FluentCore.Experimental.GameManagement.Installer.Data;
 using Nrk.FluentCore.Experimental.GameManagement.Instances;
-using Nrk.FluentCore.Management;
-
-using Nrk.FluentCore.Management.ModLoaders;
+using Nrk.FluentCore.Experimental.GameManagement.ModLoaders;
 using System;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
 public class GameIconConverter : IValueConverter

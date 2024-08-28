@@ -3,25 +3,20 @@ using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
-using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
-using Natsurainko.FluentLauncher.ViewModels.CoreInstallWizard;
-using Nrk.FluentCore.Experimental.GameManagement.Downloader;
+using Nrk.FluentCore.Experimental.GameManagement.Installer.Data;
 using Nrk.FluentCore.Resources;
-using Nrk.FluentCore.Utils;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 
 #nullable disable
-namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
+namespace Natsurainko.FluentLauncher.ViewModels.Cores.Install;
 
-internal partial class CoreInstallWizardViewModel : ObservableObject, INavigationAware
+internal partial class WizardViewModel : ObservableObject, INavigationAware
 {
     [ObservableProperty]
     private WizardViewModelBase currentFrameDataContext;
@@ -42,7 +37,7 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
 
     private Frame _contentFrame;
 
-    public CoreInstallWizardViewModel(
+    public WizardViewModel(
         INavigationService navigationService,
         NotificationService notificationService,
         DownloadService downloadService,
@@ -74,7 +69,7 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
             _manifestItem.Id
         };
 
-        CurrentFrameDataContext = new ChooseModLoaderViewModel(_manifestItem);
+        CurrentFrameDataContext = new ChooseViewModel(_manifestItem);
 
         _contentFrame.Navigate(
             CurrentFrameDataContext.XamlPageType,
@@ -88,7 +83,7 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
     [RelayCommand]
     public void Next()
     {
-        if (CurrentFrameDataContext.GetType().Equals(typeof(AdditionalOptionsViewModel)))
+        if (CurrentFrameDataContext.GetType().Equals(typeof(OptionsViewModel)))
         {
             Finish();
             return;
@@ -138,60 +133,25 @@ internal partial class CoreInstallWizardViewModel : ObservableObject, INavigatio
 
     private void Finish()
     {
-        var vm = (AdditionalOptionsViewModel)this.CurrentFrameDataContext;
-        var installInfo = vm._coreInstallationInfo;
+        var vm = (OptionsViewModel)this.CurrentFrameDataContext;
+        var installInfo = vm._installConfig;
         var stepInstallMod = ResourceUtils.GetValue("Converters", "_ProgressItem_InstallMod");
+
+        string gameDir = installInfo.EnableIndependencyInstance
+            ? Path.Combine(_gameService.ActiveMinecraftFolder, "versions", installInfo.InstanceId, "mods")
+            : Path.Combine(_gameService.ActiveMinecraftFolder, "mods");
 
         if (vm.EnabledFabricApi)
         {
-            var file = installInfo.EnableIndependencyCore
-                ? Path.Combine(_gameService.ActiveMinecraftFolder, "versions", installInfo.AbsoluteId, "mods", vm.FabricApi.FileName)
-                : Path.Combine(_gameService.ActiveMinecraftFolder, "mods", vm.FabricApi.FileName);
-
-            installInfo.AdditionalOptions.Add(new(@this =>
-            {
-                var downloadTask = _downloadService.Downloader.CreateDownloadTask(
-                    vm.FabricApi.Url,
-                    file);
-
-                Timer t = new((_) =>
-                {
-                    if (downloadTask.TotalBytes is null)
-                        return;
-                    @this.OnProgressChanged(downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes);
-                }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
-                downloadTask.StartAsync().Wait();
-                t.Dispose();
-
-            }, stepInstallMod.Replace("${file}", vm.FabricApi.FileName)));
+            string modFilePath = Path.Combine(gameDir, vm.FabricApi.FileName);
         }
 
         if (vm.EnabledOptiFabric)
         {
-            var file = installInfo.EnableIndependencyCore
-                ? Path.Combine(_gameService.ActiveMinecraftFolder, "versions", installInfo.AbsoluteId, "mods", vm.OptiFabric.FileName)
-                : Path.Combine(_gameService.ActiveMinecraftFolder, "mods", vm.OptiFabric.FileName);
-
-            installInfo.AdditionalOptions.Add(new(async @this =>
-            {
-                string fileUrl = await _curseForgeClient.GetFileUrlAsync(vm.OptiFabric);
-
-                var downloadTask = _downloadService.Downloader.CreateDownloadTask(
-                    fileUrl,
-                    file);
-
-                using Timer t = new((_) =>
-                {
-                    if (downloadTask.TotalBytes is null)
-                        return;
-                    @this.OnProgressChanged(downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes);
-                }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
-                await downloadTask.StartAsync();
-
-            }, stepInstallMod.Replace("${file}", vm.OptiFabric.FileName)));
+            string modFilePath = Path.Combine(gameDir, vm.OptiFabric.FileName);
         }
 
-        _downloadService.InstallCore(installInfo);
+        _downloadService.InstallInstance(installInfo);
         _navigationService.NavigateTo("Tasks/Download");
     }
 }

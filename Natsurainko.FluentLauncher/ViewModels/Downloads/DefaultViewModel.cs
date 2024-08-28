@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
-using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
@@ -9,7 +8,7 @@ using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.Common;
-
+using Nrk.FluentCore.Experimental.GameManagement.Installer.Data;
 using Nrk.FluentCore.Resources;
 using System;
 using System.Collections.Generic;
@@ -133,7 +132,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             return;
 
         var manifestItems = JsonNode.Parse(versionManifestJson)
-            .Deserialize<VersionManifestJsonEntity>().Versions.Take(3).ToArray();
+            .Deserialize<VersionManifestJsonObject>().Versions.Take(3).ToArray();
 
         App.DispatcherQueue.TryEnqueue(() => VersionManifestItems = manifestItems);
 
@@ -212,7 +211,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             {
                 yield return SuggestionHelper.FromVersionManifestItem(item,
                     ResourceUtils.GetValue("SearchSuggest", "_D2"),
-                    () => _navigationService.Parent.NavigateTo("CoreInstallWizardPage", item));
+                    () => _navigationService.Parent.NavigateTo("Cores/Install", item));
             }
         }
     }
@@ -254,10 +253,10 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             return;
 
         var manifestItem = JsonNode.Parse(VersionManifestJson)
-            .Deserialize<VersionManifestJsonEntity>().Versions.Where(x => x.Id.Equals(patchNoteData.Version)).FirstOrDefault();
+            .Deserialize<VersionManifestJsonObject>().Versions.Where(x => x.Id.Equals(patchNoteData.Version)).FirstOrDefault();
 
         if (manifestItem != null)
-            _navigationService.Parent.NavigateTo("CoreInstallWizardPage", manifestItem);
+            _navigationService.Parent.NavigateTo("Cores/Install", manifestItem);
     }
 
     [RelayCommand]
@@ -273,7 +272,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             return;
         }
 
-        _navigationService.Parent.NavigateTo("CoreInstallWizardPage", manifestItem);
+        _navigationService.Parent.NavigateTo("Cores/Install", manifestItem);
     }
 
     [RelayCommand]

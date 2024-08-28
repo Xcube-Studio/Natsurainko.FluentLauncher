@@ -6,10 +6,10 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
+using Natsurainko.FluentLauncher.Services.Network.Data;
 using Natsurainko.FluentLauncher.Utils;
-using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-using Nrk.FluentCore.Management;
+using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Resources;
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.Common;
 internal partial class DownloadResourceDialogViewModel : ObservableObject
 {
     private ContentDialog _dialog;
-    private ResourceFileItem[] ResourceFileItems;
+    private GameResourceFile[] ResourceFileItems;
 
     private readonly object _resource;
     private readonly INavigationService _navigationService;
@@ -86,11 +86,11 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
     private string resourceName;
 
     [ObservableProperty]
-    private ResourceFileItem[] displayItems;
+    private GameResourceFile[] displayItems;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanConfirm))]
-    private ResourceFileItem selectedItem;
+    private GameResourceFile selectedItem;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanConfirm))]
@@ -176,7 +176,7 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
     {
         string resourceName = string.Empty;
 
-        var fileItems = new List<ResourceFileItem>();
+        var fileItems = new List<GameResourceFile>();
         var loaders = new List<string>();
         var versions = new List<string>();
 
@@ -194,7 +194,7 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
                 if (!versions.Contains(x.McVersion))
                     versions.Add(x.McVersion);
 
-                fileItems.Add(new ResourceFileItem(_curseForgeClient.GetFileUrlAsync(x))
+                fileItems.Add(new GameResourceFile(_curseForgeClient.GetFileUrlAsync(x))
                 {
                     FileName = x.FileName,
                     Version = x.McVersion,
@@ -215,7 +215,7 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
                 if (!versions.Contains(x.McVersion))
                     versions.Add(x.McVersion);
 
-                fileItems.Add(new ResourceFileItem(Task.FromResult(x.Url))
+                fileItems.Add(new GameResourceFile(Task.FromResult(x.Url))
                 {
                     FileName = x.FileName,
                     Version = x.McVersion,
@@ -240,19 +240,4 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
     }
 
     void FilterFiles() => DisplayItems = [.. ResourceFileItems.Where(x => x.Version == SelectedVersion && (x.Loaders.Contains("Any") || x.Loaders.Contains(SelectedLoader)))];
-}
-
-internal class ResourceFileItem
-{
-    private readonly Task<string> getUrl;
-
-    public ResourceFileItem(Task<string> func) => getUrl = func;
-
-    public string[] Loaders { get; set; }
-
-    public string FileName { get; set; }
-
-    public string Version { get; set; }
-
-    public Task<string> GetUrl() => getUrl;
 }

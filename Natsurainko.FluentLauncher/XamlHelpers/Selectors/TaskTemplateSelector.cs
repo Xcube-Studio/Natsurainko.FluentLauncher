@@ -9,18 +9,18 @@ internal class TaskTemplateSelector : DataTemplateSelector
 {
     public DataTemplate LaunchSession { get; set; }
 
-    public DataTemplate FileDownloadProcess { get; set; }
+    public DataTemplate DownloadGameResourceTask { get; set; }
 
-    public DataTemplate InstallProcess { get; set; }
+    public DataTemplate InstallInstanceTask { get; set; }
 
     protected override DataTemplate SelectTemplateCore(object item)
     {
         if (item is LaunchSessionViewModel)
             return LaunchSession;
-        else if (item is FileDownloadProcessViewModel)
-            return FileDownloadProcess;
-        else if (item is InstallProcessViewModel)
-            return InstallProcess;
+        else if (item is DownloadGameResourceTaskViewModel)
+            return DownloadGameResourceTask;
+        else if (item is InstallInstanceTaskViewModel)
+            return InstallInstanceTask;
 
         return base.SelectTemplateCore(item);
     }

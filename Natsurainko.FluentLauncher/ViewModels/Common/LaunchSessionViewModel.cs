@@ -6,11 +6,9 @@ using Microsoft.UI.Xaml.Media;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI;
 using Nrk.FluentCore.Authentication;
-using Nrk.FluentCore.Experimental.GameManagement;
 using Nrk.FluentCore.Experimental.GameManagement.Dependencies;
 using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Launch;
-using Nrk.FluentCore.Management;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -20,7 +18,6 @@ using System.Threading;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using WinUIEx;
-using static System.Windows.Forms.AxHost;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 

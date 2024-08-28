@@ -1,28 +1,33 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Natsurainko.FluentLauncher.Models.Download;
+using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.ViewModels.Common;
-using Natsurainko.FluentLauncher.Views.CoreInstallWizard;
+using Natsurainko.FluentLauncher.Views.Cores.Install;
 using Nrk.FluentCore.Resources;
+using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
 #nullable disable
-namespace Natsurainko.FluentLauncher.ViewModels.CoreInstallWizard;
+namespace Natsurainko.FluentLauncher.ViewModels.Cores.Install;
 
-internal partial class AdditionalOptionsViewModel : WizardViewModelBase
+internal partial class OptionsViewModel : WizardViewModelBase
 {
-    public readonly CoreInstallationInfo _coreInstallationInfo;
-
     private readonly CurseForgeClient curseForgeClient = App.GetService<CurseForgeClient>();
     private readonly ModrinthClient modrinthClient = App.GetService<ModrinthClient>();
+    public readonly InstanceInstallConfig _installConfig;
 
-    public AdditionalOptionsViewModel(CoreInstallationInfo coreInstallationInfo)
+    public OptionsViewModel(InstanceInstallConfig instanceInstallConfig)
     {
-        XamlPageType = typeof(AdditionalOptionsPage);
+        XamlPageType = typeof(OptionsPage);
 
-        _coreInstallationInfo = coreInstallationInfo;
+        _installConfig = instanceInstallConfig;
         Init();
     }
+
+    #region Properties
+    public override bool CanNext => true;
+
+    public override bool CanPrevious => true;
 
     [ObservableProperty]
     private bool fabricApiAvailable;
@@ -47,18 +52,17 @@ internal partial class AdditionalOptionsViewModel : WizardViewModelBase
 
     [ObservableProperty]
     private CurseForgeFile optiFabric;
-
-    public override bool CanNext => true;
-
-    public override bool CanPrevious => true;
+    #endregion
 
     public void Init()
     {
+        string vanillaId = _installConfig.ManifestItem.Id;
+
         Task.Run(async () =>
         {
             foreach (var item in await modrinthClient.GetProjectVersionsAsync("P7dR8mSH"))
             {
-                if (item.McVersion.Equals(_coreInstallationInfo.ManifestItem.Id))
+                if (item.McVersion.Equals(vanillaId))
                 {
                     App.DispatcherQueue.TryEnqueue(() =>
                     {
@@ -79,7 +83,7 @@ internal partial class AdditionalOptionsViewModel : WizardViewModelBase
 
             foreach (var item in resource.Files)
             {
-                if (item.McVersion.Equals(_coreInstallationInfo.ManifestItem.Id))
+                if (item.McVersion.Equals(vanillaId))
                 {
                     App.DispatcherQueue.TryEnqueue(() =>
                     {

@@ -117,7 +117,7 @@
                                     <StackPanel Grid.Column="2" Spacing="5">
                                         <TextBlock
                                             FontWeight="SemiBold"
-                                            Text="{Binding Name}"
+                                            Text="{Binding InstanceId}"
                                             TextTrimming="CharacterEllipsis"
                                             ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
                                         <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource MinecraftInstanceConverter}}">

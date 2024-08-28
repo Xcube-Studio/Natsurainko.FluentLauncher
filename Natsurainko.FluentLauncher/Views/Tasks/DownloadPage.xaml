@@ -9,8 +9,8 @@
     <Page.Resources>
         <selectors:TaskTemplateSelector
             x:Key="TemplateSelector"
-            FileDownloadProcess="{StaticResource FileDownloadProcessTemplate}"
-            InstallProcess="{StaticResource InstllProcessTemplate}"
+            DownloadGameResourceTask="{StaticResource DownloadGameResourceTaskTemplate}"
+            InstallInstanceTask="{StaticResource InstallInstanceTaskTemplate}"
             LaunchSession="{StaticResource LaunchSessionTemplate}" />
     </Page.Resources>
 

@@ -1,17 +1,9 @@
-﻿using Natsurainko.FluentLauncher.Models.Launch;
-using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.Services.Storage;
-using Nrk.FluentCore.Experimental.GameManagement;
+﻿using Natsurainko.FluentLauncher.Services.Settings;
 using Nrk.FluentCore.Experimental.GameManagement.Instances;
-using Nrk.FluentCore.Management;
-using Nrk.FluentCore.Management.ModLoaders;
+using Nrk.FluentCore.Experimental.GameManagement.ModLoaders;
 using System;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
 
 namespace Natsurainko.FluentLauncher.Utils.Extensions;
 

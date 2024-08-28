@@ -1,19 +1,39 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.Utils.Extensions;
+using Nrk.FluentCore.Experimental.GameManagement.Installer.Data;
 using Nrk.FluentCore.Experimental.GameManagement.ModLoaders;
-using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.Models.UI;
 
-internal partial class ChooseModLoaderData : ObservableObject
+public partial class ChooseModLoaderData : ObservableObject
 {
+    private readonly VersionManifestItem _manifestItem;
+    private readonly List<ChooseModLoaderData> _chooseModLoaders;
+
+    private readonly CacheInterfaceService cacheInterfaceService = App.GetService<CacheInterfaceService>();
+
+    public ChooseModLoaderData(ModLoaderType type, VersionManifestItem manifestItem, List<ChooseModLoaderData> chooseModLoaders)
+    {
+        Type = type;
+        Description = ResourceUtils.GetValue("CoreInstallWizard", "ChooseModLoaderPage", $"_{Type}");
+
+        _manifestItem = manifestItem;
+        _chooseModLoaders = chooseModLoaders;
+
+        Task.Run(LoadInstallDatas);
+    }
+
+    #region Properties
+
     [ObservableProperty]
     private ModLoaderType type;
 
@@ -31,22 +51,6 @@ internal partial class ChooseModLoaderData : ObservableObject
     [ObservableProperty]
     private bool isLoading = true;
 
-    public bool IsEnable => IsSupported && IsCompatible;
-
-    public readonly VersionManifestItem _manifestItem;
-    private readonly List<ChooseModLoaderData> _chooseModLoaders;
-
-    public ChooseModLoaderData(ModLoaderType type, VersionManifestItem manifestItem, List<ChooseModLoaderData> chooseModLoaders)
-    {
-        Type = type;
-        Description = ResourceUtils.GetValue("CoreInstallWizard", "ChooseModLoaderPage", $"_{Type}");
-
-        _manifestItem = manifestItem;
-        _chooseModLoaders = chooseModLoaders;
-
-        Init();
-    }
-
     [ObservableProperty]
     private string description;
 
@@ -54,14 +58,18 @@ internal partial class ChooseModLoaderData : ObservableObject
     private string displayText = ResourceUtils.GetValue("CoreInstallWizard", "ChooseModLoaderPage", "_Loading");
 
     [ObservableProperty]
-    private IEnumerable<LoaderBuildData>? items;
+    private object[] installDatas;
 
     [ObservableProperty]
-    private LoaderBuildData? selectedItem;
+    private object selectedInstallData;
 
-    private void Init() => Task.Run(() =>
+    public bool IsEnable => IsSupported && IsCompatible;
+
+    #endregion
+
+    async void LoadInstallDatas()
     {
-        var url = Type switch
+        string requestUrl = Type switch
         {
             ModLoaderType.NeoForge => $"https://bmclapi2.bangbang93.com/neoforge/list/{_manifestItem.Id}",
             ModLoaderType.Forge => $"https://bmclapi2.bangbang93.com/forge/minecraft/{_manifestItem.Id}",
@@ -71,120 +79,31 @@ internal partial class ChooseModLoaderData : ObservableObject
             _ => throw new NotImplementedException()
         };
 
-        using var responseMessage = HttpUtils.HttpGet(url);
-        responseMessage.EnsureSuccessStatusCode();
+        string jsonContent = await cacheInterfaceService.RequestStringAsync(requestUrl, Services.Network.Data.InterfaceRequestMethod.AlwaysLatest);
 
-        var array = responseMessage.Content.ReadAsString()
-            .ToJsonNode()?
-            .AsArray()
-            .WhereNotNull();
-        IEnumerable<LoaderBuildData>? loaders = null;
-
-        if (array is not null && array.Any())
+        object[] installDatas = Type switch
         {
-            switch (Type)
-            {
-                case ModLoaderType.Forge:
-
-                    var forge = array.Select(x =>
-                    {
-                        var displayText = x["version"]?.GetValue<string>();
-                        var metadata = x["build"];
-                        if (displayText is null || metadata is null)
-                            throw new Exception("Invalid forge data");
-
-                        return new LoaderBuildData
-                        {
-                            DisplayText = displayText,
-                            Metadata = metadata
-                        };
-                    }).WhereNotNull().ToList();
-
-                    forge.Sort((a, b) => a.Metadata.GetValue<int>().CompareTo(b.Metadata.GetValue<int>()));
-                    forge.Reverse();
-
-                    loaders = forge;
-
-                    break;
-                case ModLoaderType.Fabric:
-
-                    var fabric = array.Select(x =>
-                    {
-                        var displayText = x["loader"]?["version"]?.GetValue<string>();
-                        if (displayText is null)
-                            throw new Exception("Invalid fabric data");
-
-                        return new LoaderBuildData
-                        {
-                            DisplayText = displayText,
-                            Metadata = x
-                        };
-                    }).ToList();
-
-                    loaders = fabric;
-
-                    break;
-                case ModLoaderType.OptiFine:
-
-                    var optifine = array.Select(x =>
-                    {
-                        var type = x["type"]?.GetValue<string>();
-                        var patch = x["patch"]?.GetValue<string>();
-                        if (type is null || patch is null)
-                            throw new Exception("Invalid optifine data");
-
-                        return new LoaderBuildData
-                        {
-                            DisplayText = $"{type}_{patch}",
-                            Metadata = x
-                        };
-                    }).ToList();
-
-                    loaders = optifine;
-
-                    break;
-                case ModLoaderType.Quilt:
-
-                    var quilt = array.Select(x => new LoaderBuildData
-                    {
-                        DisplayText = x!["loader"]!["version"]!.GetValue<string>(),
-                        Metadata = x
-                    }).ToList();
-
-                    loaders = quilt;
-
-                    break;
-                case ModLoaderType.NeoForge:
-
-                    var neoForge = array.Select(x => new LoaderBuildData
-                    {
-                        DisplayText = x["version"]!.GetValue<string>(),
-                        Metadata = x["version"]!
-                    }).ToList();
-
-                    neoForge.Sort((a, b) => a.DisplayText.CompareTo(b.DisplayText));
-                    neoForge.Reverse();
-
-                    loaders = neoForge;
-
-                    break;
-            }
-        }
+            ModLoaderType.NeoForge => JsonNode.Parse(jsonContent).Deserialize<ForgeInstallData[]>()!,
+            ModLoaderType.Forge => JsonNode.Parse(jsonContent).Deserialize<ForgeInstallData[]>()!,
+            ModLoaderType.OptiFine => JsonNode.Parse(jsonContent).Deserialize<OptiFineInstallData[]>()!,
+            ModLoaderType.Fabric => JsonNode.Parse(jsonContent).Deserialize<FabricInstallData[]>()!,
+            ModLoaderType.Quilt => JsonNode.Parse(jsonContent).Deserialize<QuiltInstallData[]>()!,
+            _ => throw new InvalidOperationException()
+        };
 
         App.DispatcherQueue.TryEnqueue(() =>
         {
             IsLoading = false;
 
-            if (array!.Any())
+            if (installDatas.Length != 0)
             {
-                Items = loaders;
-                SelectedItem = loaders!.First();
+                InstallDatas = installDatas;
+                SelectedInstallData = InstallDatas.FirstOrDefault();
                 IsSupported = true;
             }
-
-            if (!IsSupported) DisplayText = ResourceUtils.GetValue("CoreInstallWizard", "ChooseModLoaderPage", "_NotSupported"); ;
+            else DisplayText = ResourceUtils.GetValue("CoreInstallWizard", "ChooseModLoaderPage", "_NotSupported");
         });
-    });
+    }
 
     public void HandleCompatible()
     {
@@ -235,12 +154,5 @@ internal partial class ChooseModLoaderData : ObservableObject
 
         if (e.PropertyName == nameof(IsChecked))
             _chooseModLoaders.ForEach(x => x.HandleCompatible());
-    }
-
-    public class LoaderBuildData
-    {
-        public required string DisplayText { get; set; }
-
-        public required JsonNode Metadata { get; set; }
     }
 }

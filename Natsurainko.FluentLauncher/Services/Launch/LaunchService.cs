@@ -3,12 +3,9 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.SystemServices;
-using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Common;
-using Natsurainko.FluentLauncher.ViewModels.Tasks;
-using Natsurainko.FluentLauncher.Views.OOBE;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Environment;
 using Nrk.FluentCore.Experimental.GameManagement.Dependencies;
@@ -16,17 +13,13 @@ using Nrk.FluentCore.Experimental.GameManagement.Instances;
 using Nrk.FluentCore.Experimental.Launch;
 using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Launch.Exceptions;
-using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Utils;
 using PInvoke;
-using ReverseMarkdown;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -73,7 +66,7 @@ internal class LaunchService
 
             // 1. Update Jumplist
             instance.UpdateLastLaunchTimeToNow();
-            await JumpListService.UpdateJumpListAsync(instance);
+            //await JumpListService.UpdateJumpListAsync(instance);
 
             // 2. Check environment
             cancellationToken.ThrowIfCancellationRequested();
@@ -107,7 +100,7 @@ internal class LaunchService
             if (account is null)
                 throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
 
-            await RefreshAccountAsync(account, config);
+            var refreshedAccount = await RefreshAccountAsync(account, config);
 
             // 4. Resolve dependencies
             cancellationToken.ThrowIfCancellationRequested();
@@ -118,7 +111,7 @@ internal class LaunchService
             progress?.Report(new(LaunchSessionState.BuildingArguments, null, null, null));
 
             MinecraftProcess mcProcess = new MinecraftProcessBuilder(instance)
-                .SetAccountSettings(account, _settingsService.EnableDemoUser)
+                .SetAccountSettings(refreshedAccount, _settingsService.EnableDemoUser)
                 .SetJavaSettings(suitableJava, maxMemory, minMemory)
                 .SetGameDirectory(GetGameDirectory(instance, config))
                 .AddVmArguments(GetExtraVmParameters(config, account))

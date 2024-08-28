@@ -1,7 +1,6 @@
 using Natsurainko.FluentLauncher.Services.Network.Data;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
-
 using Nrk.FluentCore.Utils;
 using System;
 using System.IO;
@@ -64,7 +63,7 @@ internal class CacheInterfaceService
         }
 
         if (method == InterfaceRequestMethod.AlwaysLatest)
-            await GetStringFromInterface();
+            return await GetStringFromInterface();
 
         if (fileInfo.Exists && method == InterfaceRequestMethod.Static)
             return await File.ReadAllTextAsync(fileInfo.FullName);
@@ -113,7 +112,7 @@ internal class CacheInterfaceService
         }
 
         if (method == InterfaceRequestMethod.AlwaysLatest)
-            await GetStreamFromInterface();
+            return await GetStreamFromInterface();
 
         if (fileInfo.Exists && method == InterfaceRequestMethod.Static)
             return File.OpenRead(fileInfo.FullName);

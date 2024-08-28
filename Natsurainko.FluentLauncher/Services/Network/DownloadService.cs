@@ -1,32 +1,23 @@
 ﻿using FluentLauncher.Infra.UI.Navigation;
-using Natsurainko.FluentLauncher.Models.Download;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
+using Natsurainko.FluentLauncher.Services.Network.Data;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.Services.Storage;
-using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Common;
-using Nrk.FluentCore.Experimental.GameManagement.Dependencies;
 using Nrk.FluentCore.Experimental.GameManagement.Downloader;
-using Nrk.FluentCore.Experimental.GameManagement.Instances;
+using Nrk.FluentCore.Experimental.GameManagement.Installer;
+using Nrk.FluentCore.Experimental.GameManagement.Installer.Data;
 using Nrk.FluentCore.Experimental.GameManagement.ModLoaders;
-using Nrk.FluentCore.Experimental.GameManagement.ModLoaders.Fabric;
-using Nrk.FluentCore.Experimental.GameManagement.ModLoaders.Forge;
-using Nrk.FluentCore.Experimental.GameManagement.ModLoaders.OptiFine;
-using Nrk.FluentCore.Experimental.GameManagement.ModLoaders.Quilt;
-using Nrk.FluentCore.Management;
-using Nrk.FluentCore.Management.ModLoaders;
-using Nrk.FluentCore.Management.Parsing;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text.Json;
-using System.Threading;
+using static Nrk.FluentCore.Experimental.GameManagement.Installer.FabricInstanceInstaller;
+using static Nrk.FluentCore.Experimental.GameManagement.Installer.ForgeInstanceInstaller;
+using static Nrk.FluentCore.Experimental.GameManagement.Installer.OptiFineInstanceInstaller;
+using static Nrk.FluentCore.Experimental.GameManagement.Installer.QuiltInstanceInstaller;
+using static Nrk.FluentCore.Experimental.GameManagement.Installer.VanillaInstanceInstaller;
 
 namespace Natsurainko.FluentLauncher.Services.Network;
 
@@ -35,12 +26,12 @@ internal partial class DownloadService
     private readonly SettingsService _settingsService;
     private readonly GameService _gameService;
     private readonly INavigationService _navigationService;
-    private readonly ObservableCollection<DownloadProcessViewModel> _downloadProcesses = new();
+    private readonly ObservableCollection<TaskViewModel> _downloadProcesses = [];
+    private MultipartDownloader _downloader = new(HttpUtils.HttpClient, 1024 * 1024, 8, 64);
 
-    private MultipartDownloader _downloader = new MultipartDownloader(HttpUtils.HttpClient, 1024 * 1024, 8, 64);
     public IDownloader Downloader { get => _downloader; }
 
-    public ReadOnlyObservableCollection<DownloadProcessViewModel> DownloadProcesses { get; init; }
+    public ReadOnlyObservableCollection<TaskViewModel> DownloadProcesses { get; }
 
     public DownloadService(SettingsService settingsService, GameService gameService, INavigationService navigationService)
     {
@@ -53,232 +44,161 @@ internal partial class DownloadService
         // TODO: 注册下载设置变化事件
     }
 
-    public void DownloadResourceFile(ResourceFileItem file, string filePath)
+    public void DownloadResourceFile(GameResourceFile file, string filePath)
     {
-        var process = new FileDownloadProcessViewModel(file, filePath);
-        _downloadProcesses.Insert(0, process);
-        _ = process.Start();
+        var taskViewModel = new DownloadGameResourceTaskViewModel(file, filePath);
+        _downloadProcesses.Insert(0, taskViewModel);
+        taskViewModel.Start();
     }
 
-    public void InstallCore(CoreInstallationInfo info)
+    public void InstallInstance(InstanceInstallConfig config)
     {
-        string GetModLoaderPackageDownloadUrl(ChooseModLoaderData loaderData)
+        var taskViewModel = new InstallInstanceTaskViewModel(
+            GetInstanceInstaller(config, out var installationStageViews),
+            config.InstanceId,
+            installationStageViews);
+
+        _downloadProcesses.Insert(0, taskViewModel);
+        taskViewModel.Start();
+    }
+
+    IInstanceInstaller GetInstanceInstaller(
+        InstanceInstallConfig instanceInstallConfig,
+        out IReadOnlyList<InstallationStageViewModel> installationStageViews)
+    {
+        var versionManifestItem = instanceInstallConfig.ManifestItem;
+        string minecraftFolder = _settingsService.ActiveMinecraftFolder ?? throw new InvalidOperationException();
+        string javaPath = _settingsService.ActiveJava;
+
+        if (instanceInstallConfig.PrimaryLoader == null)
         {
-            var downloadUrl = "https://bmclapi2.bangbang93.com/";
-            var metadata = loaderData.SelectedItem.Metadata;
+            InstallationViewModel<VanillaInstallationStage> installationViewModel = new();
+            installationStageViews = [.. installationViewModel.Stages.Values];
 
-            downloadUrl = loaderData.Type switch
+            return new VanillaInstanceInstaller
             {
-                ModLoaderType.Forge => $"{downloadUrl}/forge/download/{metadata.GetValue<int>()}",
-                ModLoaderType.NeoForge => $"{downloadUrl}/neoforge/version/{metadata.GetValue<string>()}/download/installer.jar",
-                ModLoaderType.OptiFine => $"{downloadUrl}/optifine/{metadata["mcversion"].GetValue<string>()}/{metadata["type"].GetValue<string>()}/{metadata["patch"].GetValue<string>()}",
-                _ => throw new NotImplementedException()
+                CheckAllDependencies = true,
+                DownloadMirror = DownloadMirrors.BmclApi,
+                McVersionManifestItem = versionManifestItem,
+                MinecraftFolder = minecraftFolder,
+                Progress = installationViewModel
             };
-
-            return downloadUrl;
         }
 
-        string GetTitle()
+        ModLoaderType modLoaderType = instanceInstallConfig.PrimaryLoader.Type;
+        object selectedInstallData = instanceInstallConfig.PrimaryLoader.SelectedInstallData;
+
+        installationStageViews = GetInstallationViewModel(modLoaderType, out var vanillaStagesViewModel, out var stagesViewModel);
+
+        IInstanceInstaller installer = modLoaderType switch
         {
-            var title = info.ManifestItem.Id;
+            ModLoaderType.Forge => new ForgeInstanceInstaller()
+            {
+                //DownloadMirror = DownloadMirrors.BmclApi,
+                McVersionManifestItem = versionManifestItem,
+                MinecraftFolder = minecraftFolder,
+                CheckAllDependencies = true,
+                InstallData = (ForgeInstallData)selectedInstallData,
+                Progress = (InstallationViewModel<ForgeInstallationStage>)stagesViewModel,
+                VanillaInstallationProgress = vanillaStagesViewModel,
+                JavaPath = javaPath,
+                IsNeoForgeInstaller = false
+            },
+            ModLoaderType.NeoForge => new ForgeInstanceInstaller()
+            {
+                //DownloadMirror = DownloadMirrors.BmclApi,
+                McVersionManifestItem = versionManifestItem,
+                MinecraftFolder = minecraftFolder,
+                CheckAllDependencies = true,
+                InstallData = (ForgeInstallData)selectedInstallData,
+                Progress = (InstallationViewModel<ForgeInstallationStage>)stagesViewModel,
+                VanillaInstallationProgress = vanillaStagesViewModel,
+                JavaPath = javaPath,
+                IsNeoForgeInstaller = true
+            },
+            ModLoaderType.OptiFine => new OptiFineInstanceInstaller()
+            {
+                DownloadMirror = DownloadMirrors.BmclApi,
+                McVersionManifestItem = versionManifestItem,
+                MinecraftFolder = minecraftFolder,
+                CheckAllDependencies = true,
+                InstallData = (OptiFineInstallData)selectedInstallData,
+                Progress = (InstallationViewModel<OptiFineInstallationStage>)stagesViewModel,
+                VanillaInstallationProgress = vanillaStagesViewModel,
+                JavaPath = javaPath
+            },
+            ModLoaderType.Fabric => new FabricInstanceInstaller()
+            {
+                DownloadMirror = DownloadMirrors.BmclApi,
+                McVersionManifestItem = versionManifestItem,
+                MinecraftFolder = minecraftFolder,
+                CheckAllDependencies = true,
+                InstallData = (FabricInstallData)selectedInstallData,
+                Progress = (InstallationViewModel<FabricInstallationStage>)stagesViewModel,
+                VanillaInstallationProgress = vanillaStagesViewModel
+            },
+            ModLoaderType.Quilt => new QuiltInstanceInstaller()
+            {
+                DownloadMirror = DownloadMirrors.BmclApi,
+                McVersionManifestItem = versionManifestItem,
+                MinecraftFolder = minecraftFolder,
+                CheckAllDependencies = true,
+                InstallData = (QuiltInstallData)selectedInstallData,
+                Progress = (InstallationViewModel<QuiltInstallationStage>)stagesViewModel,
+                VanillaInstallationProgress = vanillaStagesViewModel
+            },
+            _ => throw new InvalidOperationException()
+        };
 
-            if (info.PrimaryLoader != null)
-                title += $", {info.PrimaryLoader.Type} {info.PrimaryLoader.SelectedItem.DisplayText}";
+        return installer;
+    }
 
-            if (info.SecondaryLoader != null)
-                title += $", {info.SecondaryLoader.Type} {info.SecondaryLoader.SelectedItem.DisplayText}";
-
-            return title;
-        }
-
-        var installProcess = new InstallProcessViewModel() { Title = GetTitle() };
-        var firstToStart = new List<InstallProcessViewModel.ProgressItem>();
-
-        MinecraftInstance inheritsFrom = _gameService.Games.FirstOrDefault(x => x.InstanceId.Equals(info.ManifestItem.Id));
-
-        var installVanillaGame = new InstallProcessViewModel.ProgressItem(@this =>
+    List<InstallationStageViewModel> GetInstallationViewModel(
+        ModLoaderType modLoaderType,
+        out InstallationViewModel<VanillaInstallationStage> vanillaStagesViewModel,
+        out object stagesViewModel)
         {
-            var downloadTask = _downloader.CreateDownloadTask(
-                info.ManifestItem.Url,
-                Path.Combine(_gameService.ActiveMinecraftFolder, "versions", info.ManifestItem.Id, $"{info.ManifestItem.Id}.json"));
+            List<InstallationStageViewModel> stageViewModels = new();
+            vanillaStagesViewModel = new();
 
-            Timer t = new((_) =>
+            if (modLoaderType == ModLoaderType.Quilt)
             {
-                if (downloadTask.TotalBytes is null)
-                    return;
-                @this.OnProgressChanged(downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes);
-            }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
-            downloadTask.StartAsync().Wait();
-            t.Dispose();
+                InstallationViewModel<QuiltInstallationStage> installationViewModel = new();
 
-            App.DispatcherQueue.SynchronousTryEnqueue(() => _gameService.RefreshGames());
-            inheritsFrom = _gameService.Games.FirstOrDefault(x => x.InstanceId.Equals(info.ManifestItem.Id));
+                stageViewModels.AddRange(installationViewModel.Stages.Values);
+                stageViewModels.InsertRange(1, vanillaStagesViewModel.Stages.Values);
 
-        }, ResourceUtils.GetValue("Converters", "_ProgressItem_InstallVanilla").Replace("${id}", info.ManifestItem.Id), installProcess);
-        var completeResources = new InstallProcessViewModel.ProgressItem(@this =>
-        {
-            int finished = 0;
-            int total = 0;
-
-            var resourcesDownloader = new DependencyResolver(inheritsFrom);
-
-            resourcesDownloader.DependencyDownloaded += (_, _) =>
-            {
-                Interlocked.Increment(ref finished);
-                @this.OnProgressChanged((double)finished / total);
-            };
-            resourcesDownloader.InvalidDependenciesDetermined += (_, deps) => App.DispatcherQueue.TryEnqueue(() =>
-            {
-                total = deps.Count();
-                @this.OnProgressChanged(total != 0 ? (double)finished / total : 1);
-            });
-
-            resourcesDownloader.VerifyAndDownloadDependenciesAsync(_downloader, 10).GetAwaiter().GetResult();
-
-        }, ResourceUtils.GetValue("Converters", "_ProgressItem_CompleteResources"), installProcess);
-        var setCoreConfig = new InstallProcessViewModel.ProgressItem(@this =>
-        {
-            App.DispatcherQueue.SynchronousTryEnqueue(() => _gameService.RefreshGames());
-
-            var instance = _gameService.Games.First(x => x.InstanceId.Equals(info.AbsoluteId));
-            var config = instance.GetConfig();
-
-            config.EnableSpecialSetting = info.EnableIndependencyCore || !string.IsNullOrEmpty(info.NickName);
-            config.EnableIndependencyCore = info.EnableIndependencyCore;
-            config.NickName = info.NickName;
-
-            @this.OnProgressChanged(1);
-
-        }, ResourceUtils.GetValue("Converters", "_ProgressItem_ApplySettings"), installProcess);
-
-        firstToStart.Add(installVanillaGame);
-        installProcess.Progresses.Add(installVanillaGame);
-        installProcess.Progresses.Add(completeResources);
-
-        if (info.PrimaryLoader != null)
-        {
-            var loaderFullName = $"{info.PrimaryLoader.Type}_{info.PrimaryLoader.SelectedItem.DisplayText}";
-
-            var primaryLoaderFile = Path.Combine(
-                LocalStorageService.LocalFolderPath,
-                "cache-downloads",
-                $"{loaderFullName}.jar");
-
-            var runInstallExecutor = new InstallProcessViewModel.ProgressItem(@this =>
-            {
-                IModLoaderInstaller executor = info.PrimaryLoader.Type switch
-                {
-                    ModLoaderType.Forge => new ForgeInstaller(_downloader)
-                    {
-                        AbsoluteId = info.AbsoluteId,
-                        InheritedInstance = inheritsFrom,
-                        JavaPath = _settingsService.ActiveJava,
-                        PackageFilePath = primaryLoaderFile
-                    },
-                    ModLoaderType.NeoForge => new ForgeInstaller(_downloader)
-                    {
-                        AbsoluteId = info.AbsoluteId,
-                        InheritedInstance = inheritsFrom,
-                        JavaPath = _settingsService.ActiveJava,
-                        PackageFilePath = primaryLoaderFile
-                    },
-                    ModLoaderType.OptiFine => new OptiFineInstaller
-                    {
-                        AbsoluteId = info.AbsoluteId,
-                        InheritedInstance = inheritsFrom,
-                        JavaPath = _settingsService.ActiveJava,
-                        PackageFilePath = primaryLoaderFile
-                    },
-                    ModLoaderType.Fabric => new FabricInstaller(_downloader)
-                    {
-                        AbsoluteId = info.AbsoluteId,
-                        InheritedInstance = inheritsFrom,
-                        FabricBuild = info.PrimaryLoader.SelectedItem.Metadata.Deserialize<FabricInstallBuild>()
-                    },
-                    ModLoaderType.Quilt => new QuiltInstaller(_downloader)
-                    {
-                        AbsoluteId = info.AbsoluteId,
-                        InheritedInstance = inheritsFrom,
-                        QuiltBuild = info.PrimaryLoader.SelectedItem.Metadata.Deserialize<QuiltInstallBuild>()
-                    },
-                    _ => throw new NotImplementedException()
-                };
-
-                executor.ProgressChanged += (_, e) => @this.OnProgressChanged(e);
-                var task = executor.ExecuteAsync();
-                task.Wait();
-            }, ResourceUtils.GetValue("Converters", "_ProgressItem_RunExecutor").Replace("${type}", info.PrimaryLoader.Type.ToString()), installProcess);
-
-            if (!(info.PrimaryLoader.Type == ModLoaderType.Fabric || info.PrimaryLoader.Type == ModLoaderType.Quilt))
-            {
-                var downloadInstallerPackage = new InstallProcessViewModel.ProgressItem(@this =>
-                {
-                    var downloadTask = _downloader.CreateDownloadTask(GetModLoaderPackageDownloadUrl(info.PrimaryLoader), primaryLoaderFile);
-                    Timer t = new((_) =>
-                    {
-                        if (downloadTask.TotalBytes is null)
-                            return;
-                        @this.OnProgressChanged(downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes);
-                    }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
-                    downloadTask.StartAsync().Wait();
-                    t.Dispose();
-                }, ResourceUtils.GetValue("Converters", "_ProgressItem_DownloadPackage").Replace("${loader}", loaderFullName), installProcess);
-
-                installProcess.Progresses.Add(downloadInstallerPackage);
-
-                completeResources.SetNext(downloadInstallerPackage);
-                downloadInstallerPackage.SetNext(runInstallExecutor);
+                stagesViewModel = installationViewModel;
             }
-            else completeResources.SetNext(runInstallExecutor);
-
-            runInstallExecutor.SetNext(setCoreConfig);
-            installProcess.Progresses.Add(runInstallExecutor);
-        }
-        else completeResources.SetNext(setCoreConfig);
-
-        installProcess.Progresses.Add(setCoreConfig);
-
-        if (info.SecondaryLoader != null)
-        {
-            var loaderFullName = $"{info.SecondaryLoader.Type}_{info.SecondaryLoader.SelectedItem.DisplayText}";
-
-            var secondaryLoaderFile = info.EnableIndependencyCore
-                ? Path.Combine(_gameService.ActiveMinecraftFolder, "versions", info.AbsoluteId, "mods", $"{loaderFullName}.jar")
-                : Path.Combine(_gameService.ActiveMinecraftFolder, "mods", $"{loaderFullName}.jar");
-
-            var downloadInstallerPackage = new InstallProcessViewModel.ProgressItem(@this =>
+            else if (modLoaderType == ModLoaderType.Fabric)
             {
-                var downloadTask = _downloader.CreateDownloadTask(GetModLoaderPackageDownloadUrl(info.SecondaryLoader), secondaryLoaderFile);
-                Timer t = new((_) =>
-                {
-                    if (downloadTask.TotalBytes is null)
-                        return;
-                    @this.OnProgressChanged(downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes);
-                }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
-                downloadTask.StartAsync().Wait();
-                t.Dispose();
-            }, ResourceUtils.GetValue("Converters", "_ProgressItem_DownloadPackage").Replace("${loader}", loaderFullName), installProcess);
+                InstallationViewModel<FabricInstallationStage> installationViewModel = new();
 
-            installProcess.Progresses.Add(downloadInstallerPackage);
-            firstToStart.Add(downloadInstallerPackage);
+                stageViewModels.AddRange(installationViewModel.Stages.Values);
+                stageViewModels.InsertRange(1, vanillaStagesViewModel.Stages.Values);
+
+                stagesViewModel = installationViewModel;
+            }
+            else if (modLoaderType == ModLoaderType.Forge || modLoaderType == ModLoaderType.NeoForge)
+            {
+                InstallationViewModel<ForgeInstallationStage> installationViewModel = new();
+
+                stageViewModels.AddRange(installationViewModel.Stages.Values);
+                stageViewModels.InsertRange(1, vanillaStagesViewModel.Stages.Values);
+
+                stagesViewModel = installationViewModel;
+            }
+            else if (modLoaderType == ModLoaderType.OptiFine)
+            {
+                InstallationViewModel<OptiFineInstallationStage> installationViewModel = new();
+
+                stageViewModels.AddRange(installationViewModel.Stages.Values);
+                stageViewModels.InsertRange(1, vanillaStagesViewModel.Stages.Values);
+
+                stagesViewModel = installationViewModel;
+            }
+            else throw new InvalidOperationException();
+
+            return stageViewModels;
         }
-
-        installVanillaGame.SetNext(completeResources);
-
-        foreach (var item in info.AdditionalOptions)
-        {
-            item.SetCoreInstallProcess(installProcess);
-            installProcess.Progresses.Add(item);
-            firstToStart.Add(item);
-        }
-
-        installProcess.SetStartAction(@this =>
-        {
-            foreach (var progress in firstToStart)
-                progress.Start();
-        });
-
-        _downloadProcesses.Insert(0, installProcess);
-        installProcess.Start();
-    }
 }

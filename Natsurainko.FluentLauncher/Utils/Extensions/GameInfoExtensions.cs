@@ -1,10 +1,10 @@
 ﻿using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
-using Nrk.FluentCore.Experimental.GameManagement;
-using Nrk.FluentCore.Experimental.GameManagement.Instances;
+using Nrk.FluentCore.GameManagement;
+using Nrk.FluentCore.GameManagement.Installer;
+using Nrk.FluentCore.GameManagement.Instances;
 using Nrk.FluentCore.Management;
-using Nrk.FluentCore.Management.ModLoaders;
 using System;
 using System.IO;
 using System.Linq;
@@ -17,11 +17,11 @@ namespace Natsurainko.FluentLauncher.Utils.Extensions;
 
 internal static class MinecraftInstanceExtensions
 {
-    public static bool IsSupportMod(this MinecraftInstance MinecraftInstance)
+    public static bool IsSupportMod(this MinecraftInstance instance)
     {
-        if (MinecraftInstance.IsVanilla) return false;
+        if (instance.IsVanilla) return false;
 
-        var loaders = MinecraftInstance.GetModLoaders().Select(x => x.Type).ToArray();
+        var loaders = instance.GetModLoaders().Select(x => x.Type).ToArray();
 
         if (!(loaders.Contains(ModLoaderType.Forge) ||
             loaders.Contains(ModLoaderType.Fabric) ||
@@ -50,13 +50,13 @@ internal static class MinecraftInstanceExtensions
         return instance.MinecraftFolderPath;
     }
 
-    public static string GetModsDirectory(this MinecraftInstance MinecraftInstance) => Path.Combine(GetGameDirectory(MinecraftInstance), "mods");
+    public static string GetModsDirectory(this MinecraftInstance instance) => Path.Combine(GetGameDirectory(instance), "mods");
 
-    public static string GetSavesDirectory(this MinecraftInstance MinecraftInstance) => Path.Combine(GetGameDirectory(MinecraftInstance), "saves");
+    public static string GetSavesDirectory(this MinecraftInstance instance) => Path.Combine(GetGameDirectory(instance), "saves");
 
-    public static void UpdateLastLaunchTimeToNow(this MinecraftInstance MinecraftInstance)
+    public static void UpdateLastLaunchTimeToNow(this MinecraftInstance instance)
     {
-        var config = MinecraftInstance.GetConfig();
+        var config = instance.GetConfig();
 
         // Update launch time
         var launchTime = DateTime.Now;

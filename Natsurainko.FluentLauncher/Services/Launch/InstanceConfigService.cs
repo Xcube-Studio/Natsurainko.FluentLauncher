@@ -1,7 +1,7 @@
 ﻿using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Storage;
-using Nrk.FluentCore.Experimental.GameManagement;
-using Nrk.FluentCore.Experimental.GameManagement.Instances;
+using Nrk.FluentCore.GameManagement;
+using Nrk.FluentCore.GameManagement.Instances;
 using System;
 using System.Collections.Generic;
 using System.IO;

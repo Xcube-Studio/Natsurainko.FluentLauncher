@@ -1,5 +1,5 @@
 ﻿using Natsurainko.FluentLauncher.Models.UI;
-
+using Nrk.FluentCore.GameManagement.Installer;
 using System.Collections.Generic;
 using static Natsurainko.FluentLauncher.ViewModels.Common.InstallProcessViewModel;
 

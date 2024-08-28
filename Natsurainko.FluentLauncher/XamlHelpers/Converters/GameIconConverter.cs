@@ -1,11 +1,9 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Natsurainko.FluentLauncher.Models;
-using Nrk.FluentCore.Experimental.GameManagement;
-using Nrk.FluentCore.Experimental.GameManagement.Instances;
-using Nrk.FluentCore.Management;
-
-using Nrk.FluentCore.Management.ModLoaders;
+using Nrk.FluentCore.GameManagement;
+using Nrk.FluentCore.GameManagement.Installer;
+using Nrk.FluentCore.GameManagement.Instances;
 using System;
 
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;

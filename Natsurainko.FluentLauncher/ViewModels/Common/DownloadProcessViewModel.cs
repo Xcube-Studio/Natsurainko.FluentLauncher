@@ -6,7 +6,7 @@ using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-using Nrk.FluentCore.Experimental.GameManagement.Downloader;
+using Nrk.FluentCore.GameManagement.Downloader;
 using Nrk.FluentCore.Resources;
 using Nrk.FluentCore.Utils;
 using System;

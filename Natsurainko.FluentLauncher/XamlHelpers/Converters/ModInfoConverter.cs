@@ -1,5 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Nrk.FluentCore.Experimental.GameManagement.Mods;
+using Nrk.FluentCore.GameManagement.Mods;
 using System;
 using System.Collections.Generic;
 using System.IO;

@@ -4,8 +4,7 @@ using Natsurainko.FluentLauncher.Models.Download;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.CoreInstallWizard;
-
-using Nrk.FluentCore.Management.ModLoaders;
+using Nrk.FluentCore.GameManagement.Installer;
 using System.Collections.Generic;
 using System.Linq;
 

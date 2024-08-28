@@ -2,8 +2,9 @@
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Launch;
-using Nrk.FluentCore.Experimental.GameManagement;
-using Nrk.FluentCore.Experimental.GameManagement.Instances;
+using Nrk.FluentCore.GameManagement;
+using Nrk.FluentCore.GameManagement.Installer;
+using Nrk.FluentCore.GameManagement.Instances;
 using Nrk.FluentCore.Management;
 using System;
 using System.Collections.Generic;
@@ -113,14 +114,14 @@ internal partial class SearchProviderService : ObservableObject
 
 internal static class SuggestionHelper
 {
-    public static SearchProviderService.Suggestion FromMinecraftInstance(MinecraftInstance MinecraftInstance, string description, Action action)
+    public static SearchProviderService.Suggestion FromMinecraftInstance(MinecraftInstance instance, string description, Action action)
     {
         return new SearchProviderService.Suggestion
         {
-            Title = MinecraftInstance.InstanceId,
+            Title = instance.InstanceId,
             Description = description,
             SuggestionIconType = SearchProviderService.SuggestionIconType.UriIcon,
-            Icon = string.Format("ms-appx:///Assets/Icons/{0}.png", MinecraftInstance.Version.Type switch
+            Icon = string.Format("ms-appx:///Assets/Icons/{0}.png", instance.Version.Type switch
             {
                 MinecraftVersionType.Release => "grass_block_side",
                 MinecraftVersionType.Snapshot => "crafting_table_front",

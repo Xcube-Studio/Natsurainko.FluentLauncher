@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Data;
-using Nrk.FluentCore.Experimental.GameManagement.Launch;
+using Natsurainko.FluentLauncher.Services.Launch;
 using Nrk.FluentCore.Launch;
 using System;
 using System.Linq;
@@ -15,7 +15,7 @@ internal class LaunchExpanderItemVisibilityConverter : IValueConverter
         string express = parameter.ToString();
         var states = express.Split(',').Select(x => int.Parse(x)).ToArray();
 
-        if (value is MinecraftSessionState state && states.Contains((int)state))
+        if (value is LaunchSessionState state && states.Contains((int)state))
             return Visibility.Visible;
 
         return Visibility.Collapsed;

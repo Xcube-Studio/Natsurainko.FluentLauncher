@@ -9,7 +9,7 @@ using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.Common;
-
+using Nrk.FluentCore.GameManagement.Installer;
 using Nrk.FluentCore.Resources;
 using System;
 using System.Collections.Generic;
@@ -116,7 +116,7 @@ internal partial class SearchViewModel : ObservableObject, INavigationAware
             return;
 
         var manifestItems = JsonNode.Parse(versionManifestJson)
-            .Deserialize<VersionManifestJsonEntity>().Versions.ToArray();
+            .Deserialize<VersionManifestJsonObject>().Versions.ToArray();
 
         VersionManifestItems = manifestItems;
         VersionManifestJson = versionManifestJson;

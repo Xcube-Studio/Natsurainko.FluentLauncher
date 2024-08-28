@@ -7,7 +7,7 @@ using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Utils;
-using Nrk.FluentCore.Experimental.GameManagement.Instances;
+using Nrk.FluentCore.GameManagement.Instances;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Resources;

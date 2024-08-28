@@ -2,8 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-using Nrk.FluentCore.Experimental.GameManagement.Instances;
-using Nrk.FluentCore.Experimental.GameManagement.Mods;
+using Nrk.FluentCore.GameManagement.Instances;
+using Nrk.FluentCore.GameManagement.Mods;
 using Nrk.FluentCore.Management;
 using System;
 using System.Collections.ObjectModel;

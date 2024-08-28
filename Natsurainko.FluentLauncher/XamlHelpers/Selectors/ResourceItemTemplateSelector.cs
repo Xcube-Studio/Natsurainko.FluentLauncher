@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Models;
+using Nrk.FluentCore.GameManagement.Installer;
 using Nrk.FluentCore.Resources;
 
 #nullable disable

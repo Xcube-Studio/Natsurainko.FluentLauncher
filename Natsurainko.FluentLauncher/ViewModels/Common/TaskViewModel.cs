@@ -333,6 +333,18 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
             ? Path.Combine(minecraftFolder, "versions", _instanceInstallConfig.InstanceId, "mods")
             : Path.Combine(minecraftFolder, "mods");
 
+        if(_instanceInstallConfig.SecondaryLoader?.SelectedInstallData is OptiFineInstallData installData)
+        {
+            var gameResourceFile = new GameResourceFile(Task.FromResult($"https://bmclapi2.bangbang93.com/optifine/{_instanceInstallConfig.ManifestItem.Id}/{installData.Type}/{installData.Patch}"))
+            {
+                FileName = installData.FileName,
+                Loaders = [ModLoaderType.OptiFine.ToString()],
+                Version = _instanceInstallConfig.ManifestItem.Id
+            };
+
+            downloadService.DownloadResourceFile(gameResourceFile, Path.Combine(modsFolder, gameResourceFile.FileName));
+        }
+
         foreach (var item in _instanceInstallConfig.AdditionalResources)
             downloadService.DownloadResourceFile(item, Path.Combine(modsFolder, item.FileName));
 

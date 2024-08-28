@@ -22,17 +22,15 @@ internal partial class DownloadService
 {
     private readonly SettingsService _settingsService;
     private readonly GameService _gameService;
-    private readonly INavigationService _navigationService;
-    private MultipartDownloader _downloader = new(HttpUtils.HttpClient, 1024 * 1024, 8, 64);
+    private readonly MultipartDownloader _downloader = new(HttpUtils.HttpClient, 1024 * 1024, 8, 64);
 
     public IDownloader Downloader { get => _downloader; }
 
     public ObservableCollection<TaskViewModel> DownloadTasks { get; } = [];
 
-    public DownloadService(SettingsService settingsService, GameService gameService, INavigationService navigationService)
+    public DownloadService(SettingsService settingsService, GameService gameService)
     {
         _settingsService = settingsService;
-        _navigationService = navigationService;
         _gameService = gameService;
 
         // TODO: 注册下载设置变化事件

@@ -1,5 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Natsurainko.FluentLauncher.Models.UI;
+using Natsurainko.FluentLauncher.Services.Launch;
+using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Network.Data;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement.Downloader;
@@ -9,6 +12,7 @@ using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,13 +29,16 @@ public enum TaskState
     Canceling
 }
 
-internal partial class TaskViewModel : ObservableObject
+internal abstract partial class TaskViewModel : ObservableObject
 {
     protected readonly CancellationTokenSource _tokenSource = new();
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
+    [NotifyPropertyChangedFor(nameof(CanCancel))]
     [NotifyPropertyChangedFor(nameof(TaskIcon))]
+    [NotifyPropertyChangedFor(nameof(ProgressShowPaused))]
+    [NotifyPropertyChangedFor(nameof(ProgressShowError))]
     private TaskState taskState = TaskState.Prepared;
 
     [ObservableProperty]
@@ -44,12 +51,53 @@ internal partial class TaskViewModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(ProgressPercentage))]
     private double progress = 0;
 
+    [ObservableProperty]
+    private string timeUsage;
+
+    [ObservableProperty]
+    public bool progressBarIsIndeterminate = true;
+
+    public bool ProgressShowError => TaskState == TaskState.Failed;
+
+    public bool ProgressShowPaused => TaskState == TaskState.Cancelled;
+
     public string ProgressPercentage => Progress.ToString("P1");
 
     public bool CanCancel => TaskState == TaskState.Running;
 
-    public string TaskIcon => (this.TaskState == TaskState.Failed
-                || this.TaskState == TaskState.Cancelled) ? "\ue711" : "\ue896";
+    public string TaskIcon => TaskState switch
+    {
+        TaskState.Failed => "\ue711",
+        TaskState.Cancelled => "\ue711",
+        TaskState.Finished => "\ue73e",
+        _ => "\ue896",
+    };
+
+
+    public Stopwatch Stopwatch = new Stopwatch();
+
+    public virtual void Start()
+    {
+        System.Timers.Timer timer = new System.Timers.Timer(TimeSpan.FromSeconds(1));
+        timer.Elapsed += (object sender, System.Timers.ElapsedEventArgs e) =>
+        {
+            App.DispatcherQueue.TryEnqueue(() => TimeUsage = Stopwatch.Elapsed.ToString("hh\\:mm\\:ss"));
+
+            if (this.TaskState == TaskState.Failed || this.TaskState == TaskState.Finished || this.TaskState == TaskState.Cancelled)
+            {
+                Stopwatch.Stop();
+
+                timer.Stop();
+                timer.Dispose();
+            }
+        };
+
+        Stopwatch.Start();
+        Task.Run(timer.Start);
+        Task.Run(Run);
+    }
+
+    protected abstract void Run();
 
     [RelayCommand(CanExecute = nameof(CanCancel))]
     void Cancel()
@@ -61,32 +109,55 @@ internal partial class TaskViewModel : ObservableObject
 
 #region Download Task
 
-internal partial class DownloadGameResourceTaskViewModel
-    (GameResourceFile resourceFile, string filePath) : TaskViewModel
+internal partial class DownloadGameResourceTaskViewModel : TaskViewModel
 {
-    private readonly string _filePath = filePath;
-    private readonly GameResourceFile _resourceFile = resourceFile;
+    private readonly string _filePath;
+    private readonly GameResourceFile _resourceFile;
 
-    public void Start() => Task.Run(Run);
-
-    async void Run()
+    public DownloadGameResourceTaskViewModel(GameResourceFile resourceFile, string filePath)
     {
-        App.DispatcherQueue.SynchronousTryEnqueue(() => TaskState = TaskState.Running);
+        _filePath = filePath;
+        _resourceFile = resourceFile;
+
+        TaskTitle = resourceFile.FileName;
+    }
+
+    protected override async void Run()
+    {
+        App.DispatcherQueue.TryEnqueue(() => TaskState = TaskState.Running);
 
         string url = await _resourceFile.GetUrl();
-        var downloadTask = HttpUtils.Downloader.CreateDownloadTask(url, _filePath);
 
-        using Timer t = new((_) =>
+        var downloadTask = HttpUtils.Downloader.CreateDownloadTask(url, _filePath);
+        downloadTask.FileSizeReceived += (long? obj) =>
+        {
+            if (obj != null)
+                App.DispatcherQueue.TryEnqueue(() => ProgressBarIsIndeterminate = false);
+        };
+
+        void TimerInvoker(object _)
         {
             if (downloadTask.TotalBytes is null)
                 return;
 
-            App.DispatcherQueue.TryEnqueue(() => Progress = downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes);
-        }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+            App.DispatcherQueue.SynchronousTryEnqueue(() => Progress =
+                (double)downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes);
+        }
+
+        using Timer t = new(TimerInvoker, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
 
         var downloadResult = await downloadTask.StartAsync(_tokenSource.Token);
+        TimerInvoker(null);
 
-        App.DispatcherQueue.SynchronousTryEnqueue(() => TaskState = downloadResult.Type == DownloadResultType.Failed ? TaskState.Failed : TaskState.Finished);
+        App.DispatcherQueue.TryEnqueue(() =>
+        {
+            TaskState = downloadResult.Type switch
+            {
+                DownloadResultType.Failed => TaskState.Failed,
+                DownloadResultType.Cancelled => TaskState.Cancelled,
+                DownloadResultType.Successful => TaskState.Finished,
+            };
+        });
 
         //if (downloadResult.Exception != null)
         //    App.GetService<NotificationService>().NotifyException("", downloadResult.Exception);
@@ -188,26 +259,30 @@ partial class InstallationStageViewModel : ObservableObject
     }
 }
 
-internal class InstallInstanceTaskViewModel : TaskViewModel
+internal partial class InstallInstanceTaskViewModel : TaskViewModel
 {
     private readonly IInstanceInstaller _installer;
+    private readonly InstanceInstallConfig _instanceInstallConfig;
 
     public IEnumerable<InstallationStageViewModel> StageViewModels { get; }
 
     public InstallInstanceTaskViewModel(
         IInstanceInstaller instanceInstaller,
-        string instanceId,
+        InstanceInstallConfig instanceInstallConfig,
         IEnumerable<InstallationStageViewModel> stageViewModels)
     {
         _installer = instanceInstaller;
-        StageViewModels = stageViewModels;
+        _instanceInstallConfig = instanceInstallConfig;
 
-        TaskTitle = $"Install Instance: {instanceId}";
+        StageViewModels = stageViewModels;
+        TaskTitle = _instanceInstallConfig.InstanceId;
+        IsExpanded = true;
     }
 
-    public void Start() => Task.Run(Run);
+    [ObservableProperty]
+    private bool canLaunch = false;
 
-    async void Run()
+    protected override async void Run()
     {
         App.DispatcherQueue.SynchronousTryEnqueue(() => TaskState = TaskState.Running);
         MinecraftInstance instance = null;
@@ -232,7 +307,48 @@ internal class InstallInstanceTaskViewModel : TaskViewModel
             resultState = TaskState.Failed;
         }
 
-        App.DispatcherQueue.SynchronousTryEnqueue(() => TaskState = resultState);
+        App.DispatcherQueue.SynchronousTryEnqueue(() =>
+        {
+            ProgressBarIsIndeterminate = false;
+            Progress = 1;
+
+            TaskState = resultState;
+            CanLaunch = resultState == TaskState.Finished;
+        });
+
+        if (resultState == TaskState.Finished && instance != null)
+            FinishTask(instance);
+    }
+
+    void FinishTask(MinecraftInstance minecraftInstance)
+    {
+        var downloadService = App.GetService<DownloadService>();
+        var instanceConfigService = App.GetService<InstanceConfigService>();
+        var gameService = App.GetService<GameService>();
+
+        gameService.RefreshGames();
+
+        string minecraftFolder = gameService.ActiveMinecraftFolder;
+        string modsFolder = _instanceInstallConfig.EnableIndependencyInstance
+            ? Path.Combine(minecraftFolder, "versions", _instanceInstallConfig.InstanceId, "mods")
+            : Path.Combine(minecraftFolder, "mods");
+
+        foreach (var item in _instanceInstallConfig.AdditionalResources)
+            downloadService.DownloadResourceFile(item, Path.Combine(modsFolder, item.FileName));
+
+        var config = instanceConfigService.GetConfig(minecraftInstance);
+
+        if (_instanceInstallConfig.EnableIndependencyInstance)
+        {
+            config.EnableIndependencyCore = true;
+            config.EnableSpecialSetting = true;
+        }
+
+        if (!string.IsNullOrEmpty(_instanceInstallConfig.NickName))
+        {
+            config.NickName = _instanceInstallConfig.NickName;
+            config.EnableSpecialSetting = true;
+        }
     }
 }
 

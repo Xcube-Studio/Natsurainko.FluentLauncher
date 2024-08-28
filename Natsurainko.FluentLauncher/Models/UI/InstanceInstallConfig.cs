@@ -1,9 +1,11 @@
-﻿using Nrk.FluentCore.GameManagement.Installer;
+﻿using Natsurainko.FluentLauncher.Services.Network.Data;
+using Nrk.FluentCore.GameManagement.Installer;
+using System.Collections.Generic;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.Models.UI;
 
-public class InstanceInstallConfig
+internal class InstanceInstallConfig
 {
     public string InstanceId { get; set; }
 
@@ -17,5 +19,5 @@ public class InstanceInstallConfig
 
     public VersionManifestItem ManifestItem { get; set; }
 
-    //public List<ProgressItem> AdditionalOptions { get; set; } = new();
+    public List<GameResourceFile> AdditionalResources { get; set; } = [];
 }

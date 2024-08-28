@@ -103,9 +103,6 @@
   <ItemGroup>
     <Resource Remove="Views\Settings\SkinPage.xaml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\CoreInstallWizard\" />
-  </ItemGroup>
 
   <!-- Multilingual App Toolkit
   <PropertyGroup Label="MultilingualAppToolkit">

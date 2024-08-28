@@ -12,6 +12,13 @@ namespace Natsurainko.FluentLauncher.Models.Launch;
 
 internal partial class GameConfig : ObservableObject
 {
+    private readonly static JsonSerializerOptions JsonSerializerOptions = new()
+    {
+        IncludeFields = false,
+        WriteIndented = true,
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+    };
+
     [JsonIgnore]
     public string FilePath { get; set; }
 
@@ -56,11 +63,6 @@ internal partial class GameConfig : ObservableObject
         base.OnPropertyChanged(e);
 
         if (!string.IsNullOrEmpty(FilePath))
-            File.WriteAllText(FilePath, JsonSerializer.Serialize(this, new JsonSerializerOptions
-            {
-                IncludeFields = false,
-                WriteIndented = true,
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-            }));
+            File.WriteAllText(FilePath, JsonSerializer.Serialize(this, JsonSerializerOptions));
     }
 }

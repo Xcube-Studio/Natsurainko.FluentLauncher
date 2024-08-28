@@ -6,12 +6,11 @@ using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.Common;
-using Nrk.FluentCore.Management;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using System;
 using Nrk.FluentCore.GameManagement;
 using Nrk.FluentCore.GameManagement.Instances;
+using System;
+using System.ComponentModel;
+using System.Threading.Tasks;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
@@ -23,7 +22,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
     public MinecraftInstance MinecraftInstance { get; private set; }
 
-    public GameConfig GameConfig { get; private set; }
+    public GameConfig InstanceConfig { get; private set; }
 
     public DefaultViewModel(GameService gameService, INavigationService navigationService)
     {
@@ -59,7 +58,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     void INavigationAware.OnNavigatedTo(object parameter)
     {
         MinecraftInstance = parameter as MinecraftInstance;
-        GameConfig = MinecraftInstance.GetConfig();
+        InstanceConfig = MinecraftInstance.GetConfig();
 
         Task.Run(() =>
         {
@@ -67,17 +66,17 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             App.DispatcherQueue.TryEnqueue(() => GameStorageInfo = gameStorageInfo);
         });
 
-        GameConfig.PropertyChanged += GameConfig_PropertyChanged;
+        InstanceConfig.PropertyChanged += InstanceConfig_PropertyChanged;
     }
 
-    private void GameConfig_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    private void InstanceConfig_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == "NickName" && !string.IsNullOrEmpty(GameConfig.NickName))
+        if (e.PropertyName == "NickName" && !string.IsNullOrEmpty(InstanceConfig.NickName))
         {
             if (MinecraftInstance.Equals(_gameService.ActiveGame))
-                _gameService.ActiveGame.GetConfig().NickName = GameConfig.NickName;
+                _gameService.ActiveGame.GetConfig().NickName = InstanceConfig.NickName;
 
-            MinecraftInstance.GetConfig().NickName = GameConfig.NickName;
+            MinecraftInstance.GetConfig().NickName = InstanceConfig.NickName;
         }
     }
 

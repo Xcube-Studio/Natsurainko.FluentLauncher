@@ -44,7 +44,7 @@
                             <StackPanel Grid.Column="2" Spacing="5">
                                 <TextBlock
                                     FontWeight="SemiBold"
-                                    Text="{Binding AbsoluteId}"
+                                    Text="{Binding InstanceId}"
                                     TextTrimming="CharacterEllipsis"
                                     ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
                                 <ItemsRepeater>
@@ -101,7 +101,7 @@
                     Description="Only as a display name, the actual Id will not be modified"
                     Header="Core Nickname"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE8AC;}">
-                    <TextBox Width="150" Text="{Binding GameConfig.NickName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox Width="150" Text="{Binding InstanceConfig.NickName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </controls:SettingsCard>
 
                 <controls:SettingsCard

@@ -312,134 +312,201 @@
         </controls:SettingsExpander>
     </DataTemplate>
     <DataTemplate x:Key="DownloadGameResourceTaskTemplate">
-        <controls:SettingsExpander
+        <Expander
+            MinHeight="0"
+            Padding="16,10"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Stretch"
-            VerticalContentAlignment="Stretch"
-            HeaderIcon="{xh:FontIcon Glyph=&#xE896;}"
-            IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
+            IsExpanded="{Binding IsExpanded}">
+            <Expander.Header>
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-            <controls:SettingsExpander.Header>
-                <TextBlock TextTrimming="CharacterEllipsis">
-                    <Run
-                        x:Uid="Tasks_DownloadPage_Item_T"
-                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                        Text="Download Task" />
-                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
-                    <Run FontWeight="SemiBold" Text="{Binding TaskTitle}" />
-                </TextBlock>
-            </controls:SettingsExpander.Header>
+                    <FontIcon Glyph="{Binding TaskIcon}" />
 
-            <controls:SettingsExpander.Description>
-                <TextBlock FontSize="13" TextTrimming="CharacterEllipsis">
-                    <Run
-                        x:Uid="Tasks_DownloadPage_Item_TD"
-                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                        Text="State" />
-                    <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
-                    <Run Text="{Binding TaskState}" />
-                </TextBlock>
-            </controls:SettingsExpander.Description>
+                    <StackPanel
+                        Grid.Column="2"
+                        Padding="0,15"
+                        Spacing="4">
 
-            <controls:SettingsExpander.Items>
-                <controls:SettingsCard>
-                    <controls:SettingsCard.Header>
-                        <TextBlock>
-                            <Run x:Uid="Tasks_DownloadPage_Item_H1" Text="Progress: " />
-                            <Run Text="{Binding ProgressText}" />
+                        <TextBlock Style="{ThemeResource BaseTextBlockStyle}">
+                            <Run Text="Download Resource:" /> <Run Text="{Binding TaskTitle}" />
                         </TextBlock>
-                    </controls:SettingsCard.Header>
 
-                    <ProgressBar
-                        Width="300"
-                        Maximum="1"
-                        Value="{Binding Progress}">
-                        <i:Interaction.Behaviors>
-                            <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
-                        </i:Interaction.Behaviors>
-                    </ProgressBar>
-                </controls:SettingsCard>
+                        <Border Background="{ThemeResource ProgressBarBackgroundThemeBrush}" CornerRadius="1">
+                            <ProgressBar
+                                Background="Transparent"
+                                IsIndeterminate="{Binding ProgressBarIsIndeterminate}"
+                                Maximum="1"
+                                ShowError="{Binding ProgressShowError}"
+                                ShowPaused="{Binding ProgressShowPaused}"
+                                Value="{Binding Progress}" />
+                        </Border>
 
-                <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE838;}">
-                    <controls:SettingsCard.Header>
-                        <TextBlock
-                            x:Uid="Tasks_DownloadPage_Item_H2"
-                            Text="Open File Folder:"
-                            TextTrimming="CharacterEllipsis" />
-                    </controls:SettingsCard.Header>
-                    <Button Command="{Binding OpenFolderCommand}">
-                        <TextBlock x:Uid="Buttons_Open" Text="Open" />
-                    </Button>
-                </controls:SettingsCard>
-            </controls:SettingsExpander.Items>
-        </controls:SettingsExpander>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                Text="{Binding TaskState}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap" />
+                            <StackPanel
+                                Grid.Column="2"
+                                Orientation="Horizontal"
+                                Spacing="10">
+                                <TextBlock
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                    Text="{Binding TimeUsage}" />
+                                <TextBlock
+                                    Grid.Column="2"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                    Text="{Binding ProgressPercentage}"
+                                    Visibility="{Binding ProgressBarIsIndeterminate, Converter={ThemeResource InvertedBoolToVisibilityConverter}}" />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="4" Orientation="Horizontal">
+                        <Button
+                            Command="{Binding CancelCommand}"
+                            Content="Cancel"
+                            Visibility="{Binding CanCancel, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                    </StackPanel>
+                </Grid>
+            </Expander.Header>
+        </Expander>
     </DataTemplate>
     <DataTemplate x:Key="InstallInstanceTaskTemplate">
-        <controls:SettingsExpander
+        <Expander
+            MinHeight="0"
+            Padding="16,10"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Stretch"
-            VerticalContentAlignment="Stretch"
-            IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
-            <controls:SettingsExpander.HeaderIcon>
-                <FontIcon Glyph="{Binding TaskIcon}" />
-            </controls:SettingsExpander.HeaderIcon>
+            IsExpanded="{Binding IsExpanded}">
+            <Expander.Header>
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-            <controls:SettingsExpander.Header>
-                <TextBlock TextTrimming="CharacterEllipsis">
-                    <Run FontWeight="SemiBold" Text="{Binding TaskTitle}" />
-                </TextBlock>
-            </controls:SettingsExpander.Header>
+                    <FontIcon Glyph="{Binding TaskIcon}" />
 
-            <controls:SettingsExpander.Description>
-                <TextBlock
-                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                    Style="{ThemeResource CaptionTextBlockStyle}"
-                    Text="{Binding TaskState}"
-                    TextTrimming="CharacterEllipsis" />
-            </controls:SettingsExpander.Description>
+                    <StackPanel
+                        Grid.Column="2"
+                        Padding="0,15"
+                        Spacing="4">
 
-            <controls:SettingsExpander.Items>
-                <controls:SettingsCard>
-                    <controls:SettingsCard.Header>
-                        <ItemsRepeater ItemsSource="{Binding StageViewModels}">
-                            <ItemsRepeater.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Margin="0,3.75">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="10" />
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="10" />
-                                            <ColumnDefinition Width="1*" />
-                                        </Grid.ColumnDefinitions>
-                                        <ProgressRing
-                                            Width="16"
-                                            Height="16"
-                                            IsActive="{Binding IsRunning}" />
-                                        <FontIcon
-                                            FontSize="16"
-                                            Glyph="{Binding FontIcon}"
-                                            Visibility="{Binding IsRunning, Converter={ThemeResource InvertedBoolToVisibilityConverter}}" />
-                                        <TextBlock Grid.Column="2" HorizontalAlignment="Right">
-                                            <Run Text="{Binding FinishedTasks}" />
-                                            <Run Text="/" />
-                                            <Run Text="{Binding TotalTasks}" />
-                                        </TextBlock>
-                                        <TextBlock
-                                            Grid.Column="4"
-                                            FontWeight="{Binding FontWeight}"
-                                            Foreground="{Binding FontForeground}"
-                                            Text="{Binding TaskName}" />
-                                    </Grid>
-                                </DataTemplate>
-                            </ItemsRepeater.ItemTemplate>
-                        </ItemsRepeater>
-                    </controls:SettingsCard.Header>
-                </controls:SettingsCard>
-            </controls:SettingsExpander.Items>
+                        <TextBlock Style="{ThemeResource BaseTextBlockStyle}">
+                            <Run Text="Install Instance:" /> <Run Text="{Binding TaskTitle}" />
+                        </TextBlock>
 
-            <Button Command="{Binding CancelCommand}" Content="Cancel" />
-        </controls:SettingsExpander>
+                        <Border Background="{ThemeResource ProgressBarBackgroundThemeBrush}" CornerRadius="1">
+                            <ProgressBar
+                                Background="Transparent"
+                                IsIndeterminate="{Binding ProgressBarIsIndeterminate}"
+                                Maximum="1"
+                                ShowError="{Binding ProgressShowError}"
+                                ShowPaused="{Binding ProgressShowPaused}"
+                                Value="{Binding Progress}" />
+                        </Border>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                Text="{Binding TaskState}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap" />
+                            <StackPanel
+                                Grid.Column="2"
+                                Orientation="Horizontal"
+                                Spacing="10">
+                                <TextBlock
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                    Text="{Binding TimeUsage}" />
+                                <TextBlock
+                                    Grid.Column="2"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                    Text="{Binding ProgressPercentage}"
+                                    Visibility="{Binding ProgressBarIsIndeterminate, Converter={ThemeResource InvertedBoolToVisibilityConverter}}" />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel
+                        Grid.Column="4"
+                        Orientation="Horizontal"
+                        Spacing="5">
+                        <Button
+                            Command="{Binding CancelCommand}"
+                            Content="Cancel"
+                            Visibility="{Binding CanCancel, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                        <Button
+                            Content="Launch"
+                            Style="{ThemeResource AccentButtonStyle}"
+                            Visibility="{Binding CanLaunch, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                    </StackPanel>
+                </Grid>
+            </Expander.Header>
+
+            <ItemsRepeater Margin="30,5" ItemsSource="{Binding StageViewModels}">
+                <ItemsRepeater.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,3.75">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <ProgressRing
+                                Width="16"
+                                Height="16"
+                                IsActive="{Binding IsRunning}" />
+                            <FontIcon
+                                FontSize="16"
+                                Glyph="{Binding FontIcon}"
+                                Visibility="{Binding IsRunning, Converter={ThemeResource InvertedBoolToVisibilityConverter}}" />
+                            <TextBlock Grid.Column="2" HorizontalAlignment="Right">
+                                <Run Text="{Binding FinishedTasks}" />
+                                <Run Text="/" />
+                                <Run Text="{Binding TotalTasks}" />
+                            </TextBlock>
+                            <TextBlock
+                                Grid.Column="4"
+                                FontWeight="{Binding FontWeight}"
+                                Foreground="{Binding FontForeground}"
+                                Text="{Binding TaskName}" />
+                        </Grid>
+                    </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+        </Expander>
     </DataTemplate>
 
 </ResourceDictionary>

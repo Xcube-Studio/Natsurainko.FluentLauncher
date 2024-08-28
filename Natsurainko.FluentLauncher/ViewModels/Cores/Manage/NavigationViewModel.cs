@@ -3,10 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.XamlHelpers.Converters;
 using Nrk.FluentCore.GameManagement.Instances;
-using Nrk.FluentCore.Management;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -22,7 +20,7 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
 
     public MinecraftInstance MinecraftInstance { get; private set; }
 
-    public string GameName { get; private set; } // 缓存游戏名称，防止昵称修改后名称对不上
+    public string InstanceId { get; private set; } // 缓存游戏名称，防止昵称修改后名称对不上
 
     public NavigationViewModel(INavigationService navigationService)
     {
@@ -32,7 +30,7 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
     void INavigationAware.OnNavigatedTo(object parameter)
     {
         MinecraftInstance = parameter as MinecraftInstance;
-        GameName = MinecraftInstance.GetConfig().NickName;
+        InstanceId = MinecraftInstance.InstanceId;
 
         Routes = [];
         _navigationService.NavigateTo("CoreManage/Default", MinecraftInstance);
@@ -44,12 +42,12 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
 
         if (pageKey == "CoreManage/Default")
         {
-            Routes = new(["CoreManage", GameName]);
+            Routes = new(["CoreManage", InstanceId]);
         }
         else
         {
             Routes = new(pageKey.Split('/'));
-            Routes.Insert(1, GameName);
+            Routes.Insert(1, InstanceId);
         }
     }
 
@@ -60,9 +58,9 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
 
         if (breadcrumbBarItemClickedEventArgs.Item.ToString() == "CoreManage")
             _navigationService.Parent.NavigateTo("CoresPage");
-        else if (breadcrumbBarItemClickedEventArgs.Item.ToString() == GameName)
+        else if (breadcrumbBarItemClickedEventArgs.Item.ToString() == InstanceId)
             NavigateTo("CoreManage/Default", MinecraftInstance);
-        else NavigateTo(string.Join('/', Routes.ToArray()[..^1]).Replace($"/{GameName}/", "/"), MinecraftInstance);
+        else NavigateTo(string.Join('/', Routes.ToArray()[..^1]).Replace($"/{InstanceId}/", "/"), MinecraftInstance);
     }
 
     [RelayCommand]
@@ -71,6 +69,6 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
         var breadcrumbBar = args.As<BreadcrumbBar, object>().sender;
         var converter = breadcrumbBar.Resources["BreadcrumbBarLocalizationConverter"] as BreadcrumbBarLocalizationConverter;
 
-        converter.IgnoredText.Add(GameName);
+        converter.IgnoredText.Add(InstanceId);
     }
 }

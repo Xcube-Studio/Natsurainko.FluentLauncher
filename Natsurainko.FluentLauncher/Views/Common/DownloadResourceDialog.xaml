@@ -447,7 +447,7 @@
     </ContentDialog.Resources>
     <ContentDialog.Title>
         <StackPanel Margin="24,24,24,0">
-            <TextBlock>
+            <TextBlock TextTrimming="CharacterEllipsis">
                 <Run x:Uid="Dialogs_DownloadResourceDialog_T" Text="Download:" />
                 <Run Text="{Binding ResourceName}" />
             </TextBlock>
@@ -479,7 +479,6 @@
         </i:Interaction.Behaviors>
 
         <Grid
-            Width="480"
             Height="Auto"
             Padding="24,0,24,20"
             Background="Transparent">
@@ -488,7 +487,10 @@
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <controls:WrapPanel HorizontalSpacing="15" VerticalSpacing="15">
+            <controls:WrapPanel
+                HorizontalAlignment="Stretch"
+                HorizontalSpacing="15"
+                VerticalSpacing="15">
                 <StackPanel Orientation="Horizontal" Spacing="5">
                     <FontIcon
                         FontSize="13"
@@ -588,7 +590,7 @@
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
                                 TextTrimming="CharacterEllipsis">
-                                <Run Text="{Binding Name}" /><Run Text="," />
+                                <Run Text="{Binding InstanceId}" /><Run Text="," />
                             </TextBlock>
                             <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource MinecraftInstanceConverter}}">
                                 <ItemsRepeater.Layout>

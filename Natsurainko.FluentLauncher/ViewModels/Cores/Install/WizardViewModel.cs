@@ -12,6 +12,7 @@ using Nrk.FluentCore.GameManagement.Installer;
 using Nrk.FluentCore.Resources;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Cores.Install;
@@ -63,11 +64,11 @@ internal partial class WizardViewModel : ObservableObject, INavigationAware
         var grid = args.As<Grid, object>().sender;
         _contentFrame = grid.FindName("contentFrame") as Frame;
 
-        BreadcrumbBarItemsSource = new string[]
-        {
+        BreadcrumbBarItemsSource =
+        [
             ResourceUtils.GetValue("Downloads", "CoreInstallWizardPage", "_BreadcrumbBar_First"),
             _manifestItem.Id
-        };
+        ];
 
         CurrentFrameDataContext = new ChooseViewModel(_manifestItem);
 
@@ -134,24 +135,31 @@ internal partial class WizardViewModel : ObservableObject, INavigationAware
     private void Finish()
     {
         var vm = (OptionsViewModel)this.CurrentFrameDataContext;
-        var installInfo = vm._installConfig;
-        var stepInstallMod = ResourceUtils.GetValue("Converters", "_ProgressItem_InstallMod");
-
-        string gameDir = installInfo.EnableIndependencyInstance
-            ? Path.Combine(_gameService.ActiveMinecraftFolder, "versions", installInfo.InstanceId, "mods")
-            : Path.Combine(_gameService.ActiveMinecraftFolder, "mods");
+        var instanceInstallConfig = vm._installConfig;
 
         if (vm.EnabledFabricApi)
         {
-            string modFilePath = Path.Combine(gameDir, vm.FabricApi.FileName);
+            instanceInstallConfig.AdditionalResources.Add(
+                new Services.Network.Data.GameResourceFile(Task.FromResult(vm.FabricApi.Url))
+                {
+                    FileName = vm.FabricApi.FileName,
+                    Loaders = vm.FabricApi.Loaders,
+                    Version = vm.FabricApi.McVersion
+                });
         }
 
         if (vm.EnabledOptiFabric)
         {
-            string modFilePath = Path.Combine(gameDir, vm.OptiFabric.FileName);
+            instanceInstallConfig.AdditionalResources.Add(
+                new Services.Network.Data.GameResourceFile(_curseForgeClient.GetFileUrlAsync(vm.OptiFabric))
+                {
+                    FileName = vm.OptiFabric.FileName,
+                    Loaders = [vm.OptiFabric.ModLoaderType.ToString()],
+                    Version = vm.OptiFabric.McVersion
+                });
         }
 
-        _downloadService.InstallInstance(installInfo);
+        _downloadService.InstallInstance(instanceInstallConfig);
         _navigationService.NavigateTo("Tasks/Download");
     }
 }

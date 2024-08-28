@@ -10,7 +10,6 @@ using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.GameManagement.Instances;
-using Nrk.FluentCore.Management;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -100,7 +99,7 @@ internal partial class HomeViewModel : ObservableObject
 
         foreach (var item in MinecraftInstances)
         {
-            if (item.GetConfig().NickName.Contains(searchText))
+            if (item.InstanceId.Contains(searchText))
             {
                 yield return SuggestionHelper.FromMinecraftInstance(item,
                     ResourceUtils.GetValue("SearchSuggest", "_D4"), async () =>

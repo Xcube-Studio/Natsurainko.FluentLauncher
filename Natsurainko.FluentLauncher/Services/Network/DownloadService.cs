@@ -23,12 +23,11 @@ internal partial class DownloadService
     private readonly SettingsService _settingsService;
     private readonly GameService _gameService;
     private readonly INavigationService _navigationService;
-    private readonly ObservableCollection<TaskViewModel> _downloadProcesses = [];
     private MultipartDownloader _downloader = new(HttpUtils.HttpClient, 1024 * 1024, 8, 64);
 
     public IDownloader Downloader { get => _downloader; }
 
-    public ReadOnlyObservableCollection<TaskViewModel> DownloadProcesses { get; }
+    public ObservableCollection<TaskViewModel> DownloadTasks { get; } = [];
 
     public DownloadService(SettingsService settingsService, GameService gameService, INavigationService navigationService)
     {
@@ -36,15 +35,14 @@ internal partial class DownloadService
         _navigationService = navigationService;
         _gameService = gameService;
 
-        DownloadProcesses = new(_downloadProcesses);
-
         // TODO: 注册下载设置变化事件
     }
 
     public void DownloadResourceFile(GameResourceFile file, string filePath)
     {
         var taskViewModel = new DownloadGameResourceTaskViewModel(file, filePath);
-        _downloadProcesses.Insert(0, taskViewModel);
+        App.DispatcherQueue.TryEnqueue(() => DownloadTasks.Insert(0, taskViewModel));
+
         taskViewModel.Start();
     }
 
@@ -52,10 +50,10 @@ internal partial class DownloadService
     {
         var taskViewModel = new InstallInstanceTaskViewModel(
             GetInstanceInstaller(config, out var installationStageViews),
-            config.InstanceId,
+            config,
             installationStageViews);
+        App.DispatcherQueue.TryEnqueue(() => DownloadTasks.Insert(0, taskViewModel));
 
-        _downloadProcesses.Insert(0, taskViewModel);
         taskViewModel.Start();
     }
 
@@ -66,6 +64,7 @@ internal partial class DownloadService
         var versionManifestItem = instanceInstallConfig.ManifestItem;
         string minecraftFolder = _settingsService.ActiveMinecraftFolder ?? throw new InvalidOperationException();
         string javaPath = _settingsService.ActiveJava;
+        string customizedInstanceId = instanceInstallConfig.InstanceId ?? throw new InvalidOperationException();
 
         if (instanceInstallConfig.PrimaryLoader == null)
         {
@@ -99,7 +98,8 @@ internal partial class DownloadService
                 Progress = (InstallationViewModel<ForgeInstallationStage>)stagesViewModel,
                 VanillaInstallationProgress = vanillaStagesViewModel,
                 JavaPath = javaPath,
-                IsNeoForgeInstaller = false
+                IsNeoForgeInstaller = false,
+                CustomizedInstanceId = customizedInstanceId
             },
             ModLoaderType.NeoForge => new ForgeInstanceInstaller()
             {
@@ -111,7 +111,8 @@ internal partial class DownloadService
                 Progress = (InstallationViewModel<ForgeInstallationStage>)stagesViewModel,
                 VanillaInstallationProgress = vanillaStagesViewModel,
                 JavaPath = javaPath,
-                IsNeoForgeInstaller = true
+                IsNeoForgeInstaller = true,
+                CustomizedInstanceId = customizedInstanceId
             },
             ModLoaderType.OptiFine => new OptiFineInstanceInstaller()
             {
@@ -122,7 +123,8 @@ internal partial class DownloadService
                 InstallData = (OptiFineInstallData)selectedInstallData,
                 Progress = (InstallationViewModel<OptiFineInstallationStage>)stagesViewModel,
                 VanillaInstallationProgress = vanillaStagesViewModel,
-                JavaPath = javaPath
+                JavaPath = javaPath,
+                CustomizedInstanceId = customizedInstanceId
             },
             ModLoaderType.Fabric => new FabricInstanceInstaller()
             {
@@ -132,7 +134,8 @@ internal partial class DownloadService
                 CheckAllDependencies = true,
                 InstallData = (FabricInstallData)selectedInstallData,
                 Progress = (InstallationViewModel<FabricInstallationStage>)stagesViewModel,
-                VanillaInstallationProgress = vanillaStagesViewModel
+                VanillaInstallationProgress = vanillaStagesViewModel,
+                CustomizedInstanceId = customizedInstanceId
             },
             ModLoaderType.Quilt => new QuiltInstanceInstaller()
             {
@@ -142,7 +145,8 @@ internal partial class DownloadService
                 CheckAllDependencies = true,
                 InstallData = (QuiltInstallData)selectedInstallData,
                 Progress = (InstallationViewModel<QuiltInstallationStage>)stagesViewModel,
-                VanillaInstallationProgress = vanillaStagesViewModel
+                VanillaInstallationProgress = vanillaStagesViewModel,
+                CustomizedInstanceId = customizedInstanceId
             },
             _ => throw new InvalidOperationException()
         };

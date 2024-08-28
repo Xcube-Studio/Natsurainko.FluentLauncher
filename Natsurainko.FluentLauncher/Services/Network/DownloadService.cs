@@ -4,20 +4,17 @@ using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network.Data;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.ViewModels.Common;
-using Nrk.FluentCore.Experimental.GameManagement.Downloader;
-using Nrk.FluentCore.Experimental.GameManagement.Installer;
-using Nrk.FluentCore.Experimental.GameManagement.Installer.Data;
-using Nrk.FluentCore.Experimental.GameManagement.ModLoaders;
+using Nrk.FluentCore.GameManagement.Downloader;
+using Nrk.FluentCore.GameManagement.Installer;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using static Nrk.FluentCore.Experimental.GameManagement.Installer.FabricInstanceInstaller;
-using static Nrk.FluentCore.Experimental.GameManagement.Installer.ForgeInstanceInstaller;
-using static Nrk.FluentCore.Experimental.GameManagement.Installer.OptiFineInstanceInstaller;
-using static Nrk.FluentCore.Experimental.GameManagement.Installer.QuiltInstanceInstaller;
-using static Nrk.FluentCore.Experimental.GameManagement.Installer.VanillaInstanceInstaller;
+using static Nrk.FluentCore.GameManagement.Installer.FabricInstanceInstaller;
+using static Nrk.FluentCore.GameManagement.Installer.ForgeInstanceInstaller;
+using static Nrk.FluentCore.GameManagement.Installer.OptiFineInstanceInstaller;
+using static Nrk.FluentCore.GameManagement.Installer.QuiltInstanceInstaller;
+using static Nrk.FluentCore.GameManagement.Installer.VanillaInstanceInstaller;
 
 namespace Natsurainko.FluentLauncher.Services.Network;
 

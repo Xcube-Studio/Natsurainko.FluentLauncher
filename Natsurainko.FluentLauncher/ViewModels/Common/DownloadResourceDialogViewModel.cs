@@ -9,7 +9,7 @@ using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Network.Data;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-using Nrk.FluentCore.Experimental.GameManagement.Instances;
+using Nrk.FluentCore.GameManagement.Instances;
 using Nrk.FluentCore.Resources;
 using System;
 using System.Collections.Generic;

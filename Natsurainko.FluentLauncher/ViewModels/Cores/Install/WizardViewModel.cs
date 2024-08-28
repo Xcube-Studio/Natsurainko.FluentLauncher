@@ -8,7 +8,7 @@ using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
-using Nrk.FluentCore.Experimental.GameManagement.Installer.Data;
+using Nrk.FluentCore.GameManagement.Installer;
 using Nrk.FluentCore.Resources;
 using System.Collections.Generic;
 using System.IO;

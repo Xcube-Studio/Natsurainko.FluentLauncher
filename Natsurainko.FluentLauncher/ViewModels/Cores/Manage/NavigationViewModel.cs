@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.XamlHelpers.Converters;
-using Nrk.FluentCore.Experimental.GameManagement.Instances;
+using Nrk.FluentCore.GameManagement.Instances;
 using Nrk.FluentCore.Management;
 using System.Collections.ObjectModel;
 using System.Linq;

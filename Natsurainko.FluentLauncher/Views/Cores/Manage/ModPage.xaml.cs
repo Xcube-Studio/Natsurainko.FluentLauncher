@@ -2,7 +2,7 @@ using CommunityToolkit.WinUI.Controls;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
-using Nrk.FluentCore.Experimental.GameManagement.Mods;
+using Nrk.FluentCore.GameManagement.Mods;
 
 namespace Natsurainko.FluentLauncher.Views.Cores.Manage;
 

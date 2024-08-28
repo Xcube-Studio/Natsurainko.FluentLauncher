@@ -1,9 +1,8 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Imaging;
-using Nrk.FluentCore.Experimental.GameManagement;
-using Nrk.FluentCore.Experimental.GameManagement.Installer.Data;
-using Nrk.FluentCore.Experimental.GameManagement.Instances;
-using Nrk.FluentCore.Experimental.GameManagement.ModLoaders;
+using Nrk.FluentCore.GameManagement;
+using Nrk.FluentCore.GameManagement.Installer;
+using Nrk.FluentCore.GameManagement.Instances;
 using System;
 
 #nullable disable

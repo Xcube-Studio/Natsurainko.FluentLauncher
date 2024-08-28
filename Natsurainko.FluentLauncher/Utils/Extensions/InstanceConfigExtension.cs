@@ -1,6 +1,6 @@
 ﻿using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Launch;
-using Nrk.FluentCore.Experimental.GameManagement.Instances;
+using Nrk.FluentCore.GameManagement.Instances;
 using System;
 using System.Collections.Generic;
 using System.Linq;

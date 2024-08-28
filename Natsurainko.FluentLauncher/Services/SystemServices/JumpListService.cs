@@ -6,8 +6,8 @@ using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.ViewModels.Tasks;
-using Nrk.FluentCore.Experimental.GameManagement;
-using Nrk.FluentCore.Experimental.GameManagement.Instances;
+using Nrk.FluentCore.GameManagement;
+using Nrk.FluentCore.GameManagement.Instances;
 using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Management;
 using Nrk.FluentCore.Utils;
@@ -201,6 +201,28 @@ namespace Natsurainko.FluentLauncher.Services.SystemServices;
 //                    break;
 //            }
 //        }
+
+        //void MinecraftSession_StateChanged(object? sender, MinecraftSessionStateChagnedEventArgs e)
+        //{
+        //    switch (e.NewState)
+        //    {
+        //        case MinecraftSessionState.GameExited:
+        //            Task.Delay(1500).ContinueWith(task => System.Diagnostics.Process.GetCurrentProcess().Kill());
+        //            break;
+        //        case MinecraftSessionState.Faulted:
+        //        case MinecraftSessionState.GameCrashed:
+        //            try
+        //            {
+        //                App.DispatcherQueue.TryEnqueue(() =>
+        //                {
+        //                    App.GetService<IActivationService>().ActivateWindow("MainWindow");
+        //                    App.MainWindow.NavigateToLaunchTasksPage();
+        //                });
+        //            }
+        //            catch (Exception ex) { App.ProcessException(ex); }
+        //            break;
+        //    }
+        //}
 
 //        //uint sequence = 1;
 //        //sessionViewModel.PropertyChanged += SessionViewModel_PropertyChanged;

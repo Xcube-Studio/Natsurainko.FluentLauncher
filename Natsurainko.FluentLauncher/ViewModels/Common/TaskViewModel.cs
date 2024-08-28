@@ -2,9 +2,9 @@
 using CommunityToolkit.Mvvm.Input;
 using Natsurainko.FluentLauncher.Services.Network.Data;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-using Nrk.FluentCore.Experimental.GameManagement.Downloader;
-using Nrk.FluentCore.Experimental.GameManagement.Installer;
-using Nrk.FluentCore.Experimental.GameManagement.Instances;
+using Nrk.FluentCore.GameManagement.Downloader;
+using Nrk.FluentCore.GameManagement.Installer;
+using Nrk.FluentCore.GameManagement.Instances;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;

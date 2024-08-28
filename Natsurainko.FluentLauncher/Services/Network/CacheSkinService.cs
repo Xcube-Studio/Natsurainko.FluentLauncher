@@ -2,7 +2,7 @@
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Nrk.FluentCore.Authentication;
-using Nrk.FluentCore.Experimental.GameManagement.Downloader;
+using Nrk.FluentCore.GameManagement.Downloader;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Threading.Tasks;

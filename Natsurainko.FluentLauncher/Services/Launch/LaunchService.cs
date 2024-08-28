@@ -76,6 +76,7 @@ internal class LaunchService
             await JumpListService.UpdateJumpListAsync(instance);
 
             // 2. Check environment
+            cancellationToken.ThrowIfCancellationRequested();
 
             // 2.1. Java path
             string? suitableJava = null;
@@ -96,6 +97,7 @@ internal class LaunchService
                 throw new Exception(ResourceUtils.GetValue("Exceptions", "_x86_JavaMemoryException"));
 
             // 3. Get account
+            cancellationToken.ThrowIfCancellationRequested();
             progress?.Report(new(LaunchSessionState.Authenticating, null, null, null));
 
             GameConfig config = instance.GetConfig();
@@ -108,9 +110,11 @@ internal class LaunchService
             await RefreshAccountAsync(account, config);
 
             // 4. Resolve dependencies
-            await ResolveDependenciesAsync(instance, progress);
+            cancellationToken.ThrowIfCancellationRequested();
+            await ResolveDependenciesAsync(instance, progress, cancellationToken);
 
             // 5. Start MinecraftProcess
+            cancellationToken.ThrowIfCancellationRequested();
             progress?.Report(new(LaunchSessionState.BuildingArguments, null, null, null));
 
             MinecraftProcess mcProcess = new MinecraftProcessBuilder(instance)
@@ -166,12 +170,12 @@ internal class LaunchService
         }
     }
 
-    private async Task ResolveDependenciesAsync(MinecraftInstance instance, IProgress<LaunchProgress>? progress)
+    private async Task ResolveDependenciesAsync(MinecraftInstance instance, IProgress<LaunchProgress>? progress, CancellationToken cancellationToken)
     {
         var resolver = new DependencyResolver(instance);
         progress?.Report(new(LaunchSessionState.CompletingResources, resolver, null, null));
 
-        var downloadResult = await resolver.VerifyAndDownloadDependenciesAsync();
+        var downloadResult = await resolver.VerifyAndDownloadDependenciesAsync(_downloadService.Downloader, 10, cancellationToken);
         if (downloadResult.Failed.Count > 0)
             throw new IncompleteGameResourcesException(downloadResult.Failed.Select(r => r.Item2));
 

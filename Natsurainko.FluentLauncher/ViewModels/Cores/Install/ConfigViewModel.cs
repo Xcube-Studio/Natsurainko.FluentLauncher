@@ -3,8 +3,7 @@ using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.Cores.Install;
-using Nrk.FluentCore.Experimental.GameManagement.Installer.Data;
-using Nrk.FluentCore.Experimental.GameManagement.ModLoaders;
+using Nrk.FluentCore.GameManagement.Installer;
 using System.Collections.Generic;
 using System.Linq;
 

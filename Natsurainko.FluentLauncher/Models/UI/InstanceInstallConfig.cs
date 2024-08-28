@@ -1,4 +1,4 @@
-﻿using Nrk.FluentCore.Experimental.GameManagement.Installer.Data;
+﻿using Nrk.FluentCore.GameManagement.Installer;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.Models.UI;

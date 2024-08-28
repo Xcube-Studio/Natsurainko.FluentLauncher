@@ -1,5 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Nrk.FluentCore.Experimental.GameManagement.Installer.Data;
+using Nrk.FluentCore.GameManagement.Installer;
 using System;
 
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;

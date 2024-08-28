@@ -1,8 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-using Nrk.FluentCore.Experimental.GameManagement.Downloader;
-using Nrk.FluentCore.Management.ModLoaders;
+using Nrk.FluentCore.Experimental.GameManagement.ModLoaders;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;

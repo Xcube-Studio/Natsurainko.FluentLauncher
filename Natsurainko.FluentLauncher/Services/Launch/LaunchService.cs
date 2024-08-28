@@ -169,11 +169,6 @@ internal class LaunchService
     private async Task ResolveDependenciesAsync(MinecraftInstance instance, IProgress<LaunchProgress>? progress)
     {
         var resolver = new DependencyResolver(instance);
-        // TODO: report download progress
-        //resourcesDownloader.DependencyDownloaded += (_, e) =>
-        //    SingleFileDownloaded?.Invoke(resourcesDownloader, new EventArgs());
-        //resourcesDownloader.InvalidDependenciesDetermined += (_, deps) =>
-        //    DownloadElementsPosted?.Invoke(resourcesDownloader, deps.Count());
         progress?.Report(new(LaunchSessionState.CompletingResources, resolver, null, null));
 
         var downloadResult = await resolver.VerifyAndDownloadDependenciesAsync();

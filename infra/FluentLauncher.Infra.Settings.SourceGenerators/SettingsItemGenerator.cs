@@ -70,27 +70,6 @@ public class SettingsItemSourceGenerator : IIncrementalGenerator
                 string propName = propSymbol.Name;
                 SettingItemInfo settingItemInfo = new(propTypeName, propName, nullability, settingItemAttribute);
 
-                //string? settingKey;
-                //string? converter;
-                //string? defaultValue;
-                
-                //foreach (var pair in settingItemAttribute.NamedArguments)
-                //{
-                //    string argName = pair.Key;
-                //    TypedConstant value = pair.Value;
-                //    if (argName == "Key")
-                //    {
-                //        settingKey = value.ToCSharpString();
-                //    }
-                //    else if (argName == "Converter")
-                //    {
-                //        converter = value.ToCSharpString();
-                //    }
-                //    else if (argName == "Default")
-                //    {
-                //        defaultValue = value.ToCSharpString();
-                //    }
-                //}
                 return (classInfo, settingItemInfo);
             }
         );
@@ -151,7 +130,7 @@ public class SettingsItemSourceGenerator : IIncrementalGenerator
             if (item.Key == "Default")
                 defaultValue = $", {item.Value.ToCSharpString()}";
             else if (item.Key == "Converter")
-                converter = $", {item.Value.ToCSharpString()}";
+                converter = $", typeof(global::{item.Value.Value!.ToString()})";
         }
 
         // If default value is not provided, the property is nullable

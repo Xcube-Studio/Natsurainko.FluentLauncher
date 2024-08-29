@@ -23,7 +23,7 @@
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Text="Launch Task" />
                     <Run Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">:</Run>
-                    <Run FontWeight="SemiBold" Text="{Binding MinecraftInstance.AbsoluteId}" />
+                    <Run FontWeight="SemiBold" Text="{Binding MinecraftInstance.InstanceId}" />
                 </TextBlock>
             </controls:SettingsExpander.Header>
 
@@ -270,12 +270,6 @@
                     </controls:SettingsCard.Header>
 
                     <StackPanel Orientation="Horizontal" Spacing="10">
-                        <Button Command="{Binding LoggerButtonCommand}">
-                            <StackPanel Orientation="Horizontal" Spacing="5">
-                                <FontIcon FontSize="14" Glyph="&#xf000;" />
-                                <TextBlock x:Uid="Tasks_LaunchPage_B1" Text="Open Log" />
-                            </StackPanel>
-                        </Button>
                         <Button IsEnabled="False">
                             <StackPanel Orientation="Horizontal" Spacing="5">
                                 <FontIcon FontSize="14" Glyph="&#xf000;" />

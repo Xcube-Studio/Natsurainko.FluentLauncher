@@ -35,7 +35,7 @@ class LocalStorageService
     /// <param name="path">Path of the directory in the local app data store</param>
     /// <returns>true if path referts to an existing directory</returns>
     public bool HasDirectory(string path)
-        => Directory.Exists(Path.Combine(Path.GetDirectoryName(path), path));
+        => Directory.Exists(Path.Combine(Path.GetDirectoryName(path)!, path));
 
     /// <summary>
     /// Get a file in the local app data store. <br/>

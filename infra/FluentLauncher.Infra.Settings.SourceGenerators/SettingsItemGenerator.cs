@@ -1,22 +1,35 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
 namespace FluentLauncher.Infra.Settings.SourceGenerators;
 
-[Generator(LanguageNames.CSharp)]
-public class SettingsItemSourceGenerator : ISourceGenerator
-{
-    Compilation _compilation;
+internal record struct SettingsContainerClassInfo(string Namespace, string ClassName);
+internal record struct SettingItemInfo(
+    string TypeName,
+    string PropertyName,
+    NullableAnnotation Nullability,
+    AttributeData Attribute);
 
+[Generator(LanguageNames.CSharp)]
+public class SettingsItemSourceGenerator : IIncrementalGenerator
+{
     public SettingsItemSourceGenerator()
     {
 #if DEBUG
@@ -27,233 +40,546 @@ public class SettingsItemSourceGenerator : ISourceGenerator
 #endif
     }
 
-    public void Initialize(GeneratorInitializationContext context)
+    public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        context.RegisterForSyntaxNotifications(() => new SettingsContainerSyntaxReceiver());
-    }
+        var properties = context.SyntaxProvider.ForAttributeWithMetadataName(
+            "FluentLauncher.Infra.Settings.SettingItemAttribute",
+            static (node, _) => node is PropertyDeclarationSyntax { Parent: ClassDeclarationSyntax },
+            static (ctx, token) =>
+            {
+                // Requires C# 13 partial properties
+                if (!(((CSharpCompilation)ctx.SemanticModel.Compilation).LanguageVersion >= LanguageVersion.CSharp13))
+                    return default;
 
-    string GetFullNameFromTypeOfExpression(TypeOfExpressionSyntax typeofExpression)
-    {
-        var semanticModel = _compilation.GetSemanticModel(typeofExpression.SyntaxTree);
-        var typeInfo = semanticModel.GetTypeInfo(typeofExpression.Type);
+                PropertyDeclarationSyntax propDeclaration = (PropertyDeclarationSyntax)ctx.TargetNode;
+                IPropertySymbol propSymbol = (IPropertySymbol)ctx.TargetSymbol;
 
-        return GetFullNameFromTypeSymbol(typeInfo.Type);
-    }
+                SymbolDisplayFormat displayFormat = new(typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
 
-    string GetFullNameFromTypeSymbol(ITypeSymbol typeSymbol)
-    {
-        string @namespace = typeSymbol.ContainingNamespace.ToDisplayString();
-        string typeName = typeSymbol.Name;
+                // Extract class info
+                INamedTypeSymbol settingsContainerClass = propSymbol.ContainingType;
+                string containingNamespace = settingsContainerClass.ContainingNamespace.ToDisplayString(displayFormat);
+                string className = settingsContainerClass.Name;
+                SettingsContainerClassInfo classInfo = new(containingNamespace, className);
 
-        string genericArgs = "";
-        if (typeSymbol is INamedTypeSymbol namedTypeSymbol && namedTypeSymbol.IsGenericType)
+                token.ThrowIfCancellationRequested();
+
+                // Extract property info
+                AttributeData settingItemAttribute = ctx.Attributes[0]; // SettingItem does not allow multiple
+                string propTypeName = propSymbol.Type.ToDisplayString(displayFormat);
+                NullableAnnotation nullability = propSymbol.NullableAnnotation;
+                string propName = propSymbol.Name;
+                SettingItemInfo settingItemInfo = new(propTypeName, propName, nullability, settingItemAttribute);
+
+                //string? settingKey;
+                //string? converter;
+                //string? defaultValue;
+                
+                //foreach (var pair in settingItemAttribute.NamedArguments)
+                //{
+                //    string argName = pair.Key;
+                //    TypedConstant value = pair.Value;
+                //    if (argName == "Key")
+                //    {
+                //        settingKey = value.ToCSharpString();
+                //    }
+                //    else if (argName == "Converter")
+                //    {
+                //        converter = value.ToCSharpString();
+                //    }
+                //    else if (argName == "Default")
+                //    {
+                //        defaultValue = value.ToCSharpString();
+                //    }
+                //}
+                return (classInfo, settingItemInfo);
+            }
+        );
+
+        var groupedItems =
+            properties.GroupBy(
+                static item=>item.Left,
+                static item=>item.Right
+            );
+
+        context.RegisterSourceOutput(groupedItems, static (ctx, item) =>
         {
-            var typeArgs = namedTypeSymbol.TypeArguments.Select(typeArg => GetFullNameFromTypeSymbol(typeArg));
-            genericArgs = $"<{string.Join(", ", typeArgs)}>";
-        }
+            var classInfo = item.Key;
+            var itemInfos = item.Right;
 
-        return $"global::{@namespace}.{typeName}{genericArgs}";
+            string namespaceName = classInfo.Namespace;
+            string className = classInfo.ClassName;
+            var filename = $"{namespaceName}.{className}.g.cs";
+
+            StringBuilder membersBuilder = new();
+            foreach (var itemInfo in itemInfos)
+            {
+                GenerateSettingItem(itemInfo, membersBuilder);
+            }
+
+            var source = $$"""
+                                // <auto-generated/>
+                                #pragma warning disable
+                                #nullable enable
+
+                                namespace {{namespaceName}}
+                                {
+                                    partial class {{className}}
+                                    {
+                                {{membersBuilder}}
+
+                                //        protected override void InitializeContainers()
+                                //        {
+                                //initBuilder
+                                //        }
+                                    }
+                                }
+                                """;
+
+            ctx.AddSource(filename, membersBuilder.ToString());
+        });
     }
 
-
-    void GenerateSettingItem(AttributeSyntax attributeSyntax, StringBuilder memberBuilder)
+    private static void GenerateSettingItem(SettingItemInfo settingItemInfo, StringBuilder memberBuilder)
     {
-        var semanticModel = _compilation.GetSemanticModel(attributeSyntax.SyntaxTree);
-
-        var arguments = attributeSyntax.ArgumentList.Arguments;
-        if (arguments.Count < 2) return;
-
-        // Parse property type
-        var propertyTypeOfExpression = arguments[0].Expression as TypeOfExpressionSyntax;
-        var propertyType = GetFullNameFromTypeOfExpression(propertyTypeOfExpression);
-
-        // Parse property name
-        string propertyName = arguments[1].Expression.ToString().Trim('"');
+        AttributeData attribute = settingItemInfo.Attribute;
 
         string defaultValue = "";
         string converter = "";
 
         // Parse default value and converter
-        for (int i = 2; i < arguments.Count; i++)
+        foreach(var item in attribute.NamedArguments)
         {
-            if (arguments[i].NameEquals?.Name.ToString() == "Default")
-            {
-                defaultValue = $", {arguments[i].Expression.ToString().Trim()}";
-            }
-            else if (arguments[i].NameEquals?.Name.ToString() == "Converter")
-            {
-                var converterTypeofExpression = arguments[i].Expression as TypeOfExpressionSyntax;
-                string converterName = GetFullNameFromTypeOfExpression(converterTypeofExpression);
-                converter = $", global::FluentLauncher.Infra.Settings.Converters.DataTypeConverters.GetConverter(typeof({converterName}))";
-            }
+            if (item.Key == "Default")
+                defaultValue = item.Value.ToCSharpString();
+            else if (item.Key == "Converter")
+                converter = item.Value.ToCSharpString();
         }
 
         // If default value is not provided, the property is nullable
-        string nullable = string.IsNullOrEmpty(defaultValue) ? "?" : "";
+        string propTypeName = settingItemInfo.TypeName;
+        string propIdentifierName = settingItemInfo.PropertyName;
+
+        string nullable = settingItemInfo.Nullability == NullableAnnotation.Annotated ? "?" : "";
 
         memberBuilder.Append($$"""
-                        public {{propertyType}}{{nullable}} {{propertyName}}
+                        public {{propTypeName}}{{nullable}} {{propIdentifierName}}
                         {
-                            get => GetValue<{{propertyType}}{{nullable}}>(nameof({{propertyName}}){{defaultValue}}{{converter}});
-                            set => SetValue<{{propertyType}}>(nameof({{propertyName}}), value, {{propertyName}}Changed{{converter}});
+                            get => GetValue<{{propTypeName}}{{nullable}}>(nameof({{propIdentifierName}}){{defaultValue}}{{converter}});
+                            set => SetValue<{{propTypeName}}>(nameof({{propIdentifierName}}), value, {{propIdentifierName}}Changed{{converter}});
                         }
 
-                        public event global::FluentLauncher.Infra.Settings.SettingChangedEventHandler? {{propertyName}}Changed;
+                        public event global::FluentLauncher.Infra.Settings.SettingChangedEventHandler? {{propIdentifierName}}Changed;
 
 
                 """);
-    }
-
-    void GenerateSettingsContainer(AttributeSyntax attributeSyntax, StringBuilder membersBuilder, StringBuilder initBuilder)
-    {
-        var arguments = attributeSyntax.ArgumentList.Arguments;
-        if (arguments.Count < 2) return;
-
-        // Parse property type
-        string propertyType = arguments[0].Expression.ToString();
-        propertyType = propertyType.Substring("typeof(".Length, propertyType.Length - 1 - "typeof(".Length); // Remove typeof()
-
-        // Parse property name
-        string propertyName = arguments[1].Expression.ToString().Trim('"');
-
-        // Generate code
-        membersBuilder.Append($$"""
-                        public {{propertyType}} {{propertyName}} { get; private set; } = null!;
-
-                """);
-
-        initBuilder.Append($$"""
-                        {{propertyName}} = new {{propertyType}}(Storage, "{{propertyName}}", this);
-
-                """);
-    }
-
-    void GenerateSettingsCollection(AttributeSyntax attributeSyntax, StringBuilder membersBuilder, StringBuilder initBuilder)
-    {
-        var arguments = attributeSyntax.ArgumentList.Arguments;
-        if (arguments.Count < 2) return;
-
-        // Parse property type
-        string elementType = GetFullNameFromTypeOfExpression(arguments[0].Expression as TypeOfExpressionSyntax);
-
-        // Parse property name
-        string propertyName = arguments[1].Expression.ToString().Trim('"');
-
-        // Parse converter
-        string converter = "";
-        if (arguments.Count > 2)
-        {
-            var converterTypeofExpression = arguments[2].Expression as TypeOfExpressionSyntax;
-            string converterName = GetFullNameFromTypeOfExpression(converterTypeofExpression);
-            converter = $", global::FluentLauncher.Infra.Settings.Converters.DataTypeConverters.GetConverter(typeof({converterName}))";
-        }
-
-        // Generate code
-        membersBuilder.Append($$"""
-                        public global::FluentLauncher.Infra.Settings.SettingsCollection<{{elementType}}> {{propertyName}} { get; private set; } = null!;
-
-                """);
-
-        initBuilder.Append($$"""
-                            {{propertyName}} = new global::FluentLauncher.Infra.Settings.SettingsCollection<{{elementType}}>(Storage, "{{propertyName}}"{{converter}});
-
-                """);
-    }
-
-    public void Execute(GeneratorExecutionContext context)
-    {
-        var syntaxReceiver = (SettingsContainerSyntaxReceiver)context.SyntaxReceiver;
-        _compilation = context.Compilation;
-        
-        foreach (var (classDeclaration, constructorAttributes) in syntaxReceiver.SettingsContainerConstructorAttributes)
-        {
-            INamedTypeSymbol classSymbol = (INamedTypeSymbol)_compilation
-                .GetSemanticModel(classDeclaration.SyntaxTree)
-                .GetDeclaredSymbol(classDeclaration);
-
-            string className = classSymbol.Name;
-            string namespaceName = classSymbol.ContainingNamespace.ToDisplayString();
-
-            var membersBuilder = new StringBuilder();
-            var initBuilder = new StringBuilder();
-            foreach (var attributeInfo in constructorAttributes)
-            {
-                string attributeName = attributeInfo.Name.ToString();
-                if (attributeName.EndsWith("Attribute"))
-                    attributeName = attributeName.Substring(0, attributeName.Length - "Attribute".Length);
-
-                if (attributeName == "SettingItem")
-                    GenerateSettingItem(attributeInfo, membersBuilder);
-                else if (attributeName == "SettingsContainer")
-                    GenerateSettingsContainer(attributeInfo, membersBuilder, initBuilder);
-                else if (attributeName == "SettingsCollection")
-                    GenerateSettingsCollection(attributeInfo, membersBuilder, initBuilder);
-            }
-
-            var source = $$"""
-                    // <auto-generated/>
-                    #pragma warning disable
-                    #nullable enable
-
-                    namespace {{namespaceName}}
-                    {
-                        partial class {{className}}
-                        {
-                    {{membersBuilder}}
-
-                            protected override void InitializeContainers()
-                            {
-                    {{initBuilder}}
-                            }
-                        }
-                    }
-                    """;
-
-            context.AddSource($"{namespaceName}.{className}.g.cs", SourceText.From(source, Encoding.UTF8));
-        }
     }
 }
 
-internal class SettingsContainerSyntaxReceiver : ISyntaxReceiver
+
+/// <summary>
+/// Extension methods for <see cref="IncrementalValuesProvider{TValues}"/>.
+/// </summary>
+internal static class IncrementalValuesProviderExtensions
 {
-    public List<(ClassDeclarationSyntax Node, List<AttributeSyntax> Attributes)> SettingsContainerConstructorAttributes { get; } = new List<(ClassDeclarationSyntax Node, List<AttributeSyntax> Attributes)>();
-
-    private readonly string[] settingAttributes = new string[] 
+    /// <summary>
+    /// Groups items in a given <see cref="IncrementalValuesProvider{TValue}"/> sequence by a specified key.
+    /// </summary>
+    /// <typeparam name="TLeft">The type of left items in each tuple.</typeparam>
+    /// <typeparam name="TRight">The type of right items in each tuple.</typeparam>
+    /// <typeparam name="TKey">The type of resulting key elements.</typeparam>
+    /// <typeparam name="TElement">The type of resulting projected elements.</typeparam>
+    /// <param name="source">The input <see cref="IncrementalValuesProvider{TValues}"/> instance.</param>
+    /// <param name="keySelector">The key selection <see cref="Func{T, TResult}"/>.</param>
+    /// <param name="elementSelector">The element selection <see cref="Func{T, TResult}"/>.</param>
+    /// <returns>An <see cref="IncrementalValuesProvider{TValues}"/> with the grouped results.</returns>
+    public static IncrementalValuesProvider<(TKey Key, EquatableArray<TElement> Right)> GroupBy<TLeft, TRight, TKey, TElement>(
+        this IncrementalValuesProvider<(TLeft Left, TRight Right)> source,
+        Func<(TLeft Left, TRight Right), TKey> keySelector,
+        Func<(TLeft Left, TRight Right), TElement> elementSelector)
+        where TLeft : IEquatable<TLeft>
+        where TRight : IEquatable<TRight>
+        where TKey : IEquatable<TKey>
+        where TElement : IEquatable<TElement>
     {
-        "SettingItem", "SettingItemAttribute",
-        "SettingsContainer", "SettingsContainerAttribute",
-        "SettingsCollection", "SettingsCollectionAttribute"
-    };
-
-    public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
-    {
-        if (syntaxNode is ClassDeclarationSyntax classDeclarationSyntax)
+        return source.Collect().SelectMany((item, token) =>
         {
-            // Check if the class inherits SettingsContainer
-            bool isSettingsContainer = 
-                classDeclarationSyntax?.BaseList?.Types
-                .Where(type => (type.Type as IdentifierNameSyntax)?
-                    .Identifier
-                    .Text == "SettingsContainer")
-                .Any() ?? false;
+            Dictionary<TKey, ImmutableArray<TElement>.Builder> map = new();
 
-            if (!isSettingsContainer) return;
-
-            // Find attributes of the constructor
-            var constructors = classDeclarationSyntax.DescendantNodes().OfType<ConstructorDeclarationSyntax>();
-
-            foreach (ConstructorDeclarationSyntax constructor in constructors)
+            foreach ((TLeft, TRight) pair in item)
             {
-                List<AttributeSyntax> attributes = constructor.AttributeLists
-                    .SelectMany(attributeList => attributeList.Attributes)                      // Flatten the list of constructor attributes
-                    .Where(attribute => settingAttributes.Contains(attribute.Name.ToString()))  // Filter supported attributes
-                    .ToList();
+                TKey key = keySelector(pair);
+                TElement element = elementSelector(pair);
 
-                if (attributes.Count != 0)
+                if (!map.TryGetValue(key, out ImmutableArray<TElement>.Builder builder))
                 {
-                    SettingsContainerConstructorAttributes.Add((classDeclarationSyntax, attributes));
+                    builder = ImmutableArray.CreateBuilder<TElement>();
+
+                    map.Add(key, builder);
+                }
+
+                builder.Add(element);
+            }
+
+            token.ThrowIfCancellationRequested();
+
+            ImmutableArray<(TKey Key, EquatableArray<TElement> Elements)>.Builder result =
+                ImmutableArray.CreateBuilder<(TKey, EquatableArray<TElement>)>();
+
+            foreach (KeyValuePair<TKey, ImmutableArray<TElement>.Builder> entry in map)
+            {
+                result.Add((entry.Key, entry.Value.ToImmutable()));
+            }
+
+            return result;
+        });
+    }
+}
+
+/// <summary>
+/// An immutable, equatable array. This is equivalent to <see cref="ImmutableArray{T}"/> but with value equality support.
+/// </summary>
+/// <typeparam name="T">The type of values in the array.</typeparam>
+internal readonly struct EquatableArray<T> : IEquatable<EquatableArray<T>>, IEnumerable<T>
+    where T : IEquatable<T>
+{
+    /// <summary>
+    /// The underlying <typeparamref name="T"/> array.
+    /// </summary>
+    private readonly T[]? array;
+
+    /// <summary>
+    /// Creates a new <see cref="EquatableArray{T}"/> instance.
+    /// </summary>
+    /// <param name="array">The input <see cref="ImmutableArray{T}"/> to wrap.</param>
+    public EquatableArray(ImmutableArray<T> array)
+    {
+        this.array = Unsafe.As<ImmutableArray<T>, T[]?>(ref array);
+    }
+
+    /// <summary>
+    /// Gets a reference to an item at a specified position within the array.
+    /// </summary>
+    /// <param name="index">The index of the item to retrieve a reference to.</param>
+    /// <returns>A reference to an item at a specified position within the array.</returns>
+    public ref readonly T this[int index]
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => ref AsImmutableArray().ItemRef(index);
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether the current array is empty.
+    /// </summary>
+    public bool IsEmpty
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => AsImmutableArray().IsEmpty;
+    }
+
+    /// <sinheritdoc/>
+    public bool Equals(EquatableArray<T> array)
+    {
+        return AsSpan().SequenceEqual(array.AsSpan());
+    }
+
+    /// <sinheritdoc/>
+    public override bool Equals(/*[NotNullWhen(true)]*/ object? obj)
+    {
+        return obj is EquatableArray<T> array && Equals(this, array);
+    }
+
+    /// <sinheritdoc/>
+    public override int GetHashCode()
+    {
+        if (this.array is not T[] array)
+        {
+            return 0;
+        }
+
+        HashCode hashCode = default;
+
+        foreach (T item in array)
+        {
+            hashCode.Add(item);
+        }
+
+        return hashCode.ToHashCode();
+    }
+
+    /// <summary>
+    /// Gets an <see cref="ImmutableArray{T}"/> instance from the current <see cref="EquatableArray{T}"/>.
+    /// </summary>
+    /// <returns>The <see cref="ImmutableArray{T}"/> from the current <see cref="EquatableArray{T}"/>.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ImmutableArray<T> AsImmutableArray()
+    {
+        return Unsafe.As<T[]?, ImmutableArray<T>>(ref Unsafe.AsRef(in this.array));
+    }
+
+    /// <summary>
+    /// Creates an <see cref="EquatableArray{T}"/> instance from a given <see cref="ImmutableArray{T}"/>.
+    /// </summary>
+    /// <param name="array">The input <see cref="ImmutableArray{T}"/> instance.</param>
+    /// <returns>An <see cref="EquatableArray{T}"/> instance from a given <see cref="ImmutableArray{T}"/>.</returns>
+    public static EquatableArray<T> FromImmutableArray(ImmutableArray<T> array)
+    {
+        return new(array);
+    }
+
+    /// <summary>
+    /// Returns a <see cref="ReadOnlySpan{T}"/> wrapping the current items.
+    /// </summary>
+    /// <returns>A <see cref="ReadOnlySpan{T}"/> wrapping the current items.</returns>
+    public ReadOnlySpan<T> AsSpan()
+    {
+        return AsImmutableArray().AsSpan();
+    }
+
+    /// <summary>
+    /// Copies the contents of this <see cref="EquatableArray{T}"/> instance to a mutable array.
+    /// </summary>
+    /// <returns>The newly instantiated array.</returns>
+    public T[] ToArray()
+    {
+        return AsImmutableArray().ToArray();
+    }
+
+    /// <summary>
+    /// Gets an <see cref="ImmutableArray{T}.Enumerator"/> value to traverse items in the current array.
+    /// </summary>
+    /// <returns>An <see cref="ImmutableArray{T}.Enumerator"/> value to traverse items in the current array.</returns>
+    public ImmutableArray<T>.Enumerator GetEnumerator()
+    {
+        return AsImmutableArray().GetEnumerator();
+    }
+
+    /// <sinheritdoc/>
+    IEnumerator<T> IEnumerable<T>.GetEnumerator()
+    {
+        return ((IEnumerable<T>)AsImmutableArray()).GetEnumerator();
+    }
+
+    /// <sinheritdoc/>
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return ((IEnumerable)AsImmutableArray()).GetEnumerator();
+    }
+
+    /// <summary>
+    /// Implicitly converts an <see cref="ImmutableArray{T}"/> to <see cref="EquatableArray{T}"/>.
+    /// </summary>
+    /// <returns>An <see cref="EquatableArray{T}"/> instance from a given <see cref="ImmutableArray{T}"/>.</returns>
+    public static implicit operator EquatableArray<T>(ImmutableArray<T> array)
+    {
+        return FromImmutableArray(array);
+    }
+
+    /// <summary>
+    /// Implicitly converts an <see cref="EquatableArray{T}"/> to <see cref="ImmutableArray{T}"/>.
+    /// </summary>
+    /// <returns>An <see cref="ImmutableArray{T}"/> instance from a given <see cref="EquatableArray{T}"/>.</returns>
+    public static implicit operator ImmutableArray<T>(EquatableArray<T> array)
+    {
+        return array.AsImmutableArray();
+    }
+
+    /// <summary>
+    /// Checks whether two <see cref="EquatableArray{T}"/> values are the same.
+    /// </summary>
+    /// <param name="left">The first <see cref="EquatableArray{T}"/> value.</param>
+    /// <param name="right">The second <see cref="EquatableArray{T}"/> value.</param>
+    /// <returns>Whether <paramref name="left"/> and <paramref name="right"/> are equal.</returns>
+    public static bool operator ==(EquatableArray<T> left, EquatableArray<T> right)
+    {
+        return left.Equals(right);
+    }
+
+    /// <summary>
+    /// Checks whether two <see cref="EquatableArray{T}"/> values are not the same.
+    /// </summary>
+    /// <param name="left">The first <see cref="EquatableArray{T}"/> value.</param>
+    /// <param name="right">The second <see cref="EquatableArray{T}"/> value.</param>
+    /// <returns>Whether <paramref name="left"/> and <paramref name="right"/> are not equal.</returns>
+    public static bool operator !=(EquatableArray<T> left, EquatableArray<T> right)
+    {
+        return !left.Equals(right);
+    }
+}
+
+/// <summary>
+/// A polyfill type that mirrors some methods from <see cref="HashCode"/> on .NET 6.
+/// </summary>
+internal struct HashCode
+{
+    private const uint Prime1 = 2654435761U;
+    private const uint Prime2 = 2246822519U;
+    private const uint Prime3 = 3266489917U;
+    private const uint Prime4 = 668265263U;
+    private const uint Prime5 = 374761393U;
+
+    private static readonly uint seed = GenerateGlobalSeed();
+
+    private uint v1, v2, v3, v4;
+    private uint queue1, queue2, queue3;
+    private uint length;
+
+    /// <summary>
+    /// Initializes the default seed.
+    /// </summary>
+    /// <returns>A random seed.</returns>
+    private static unsafe uint GenerateGlobalSeed()
+    {
+        byte[] bytes = new byte[4];
+
+        using (RandomNumberGenerator generator = RandomNumberGenerator.Create())
+        {
+            generator.GetBytes(bytes);
+        }
+
+        return BitConverter.ToUInt32(bytes, 0);
+    }
+
+    /// <summary>
+    /// Adds a single value to the current hash.
+    /// </summary>
+    /// <typeparam name="T">The type of the value to add into the hash code.</typeparam>
+    /// <param name="value">The value to add into the hash code.</param>
+    public void Add<T>(T value)
+    {
+        Add(value?.GetHashCode() ?? 0);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void Initialize(out uint v1, out uint v2, out uint v3, out uint v4)
+    {
+        v1 = seed + Prime1 + Prime2;
+        v2 = seed + Prime2;
+        v3 = seed;
+        v4 = seed - Prime1;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static uint Round(uint hash, uint input)
+    {
+        return RotateLeft(hash + input * Prime2, 13) * Prime1;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static uint QueueRound(uint hash, uint queuedValue)
+    {
+        return RotateLeft(hash + queuedValue * Prime3, 17) * Prime4;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static uint MixState(uint v1, uint v2, uint v3, uint v4)
+    {
+        return RotateLeft(v1, 1) + RotateLeft(v2, 7) + RotateLeft(v3, 12) + RotateLeft(v4, 18);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static uint MixEmptyState()
+    {
+        return seed + Prime5;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static uint MixFinal(uint hash)
+    {
+        hash ^= hash >> 15;
+        hash *= Prime2;
+        hash ^= hash >> 13;
+        hash *= Prime3;
+        hash ^= hash >> 16;
+
+        return hash;
+    }
+
+    private void Add(int value)
+    {
+        uint val = (uint)value;
+        uint previousLength = this.length++;
+        uint position = previousLength % 4;
+
+        if (position == 0)
+        {
+            this.queue1 = val;
+        }
+        else if (position == 1)
+        {
+            this.queue2 = val;
+        }
+        else if (position == 2)
+        {
+            this.queue3 = val;
+        }
+        else
+        {
+            if (previousLength == 3)
+            {
+                Initialize(out this.v1, out this.v2, out this.v3, out this.v4);
+            }
+
+            this.v1 = Round(this.v1, this.queue1);
+            this.v2 = Round(this.v2, this.queue2);
+            this.v3 = Round(this.v3, this.queue3);
+            this.v4 = Round(this.v4, val);
+        }
+    }
+
+    /// <summary>
+    /// Gets the resulting hashcode from the current instance.
+    /// </summary>
+    /// <returns>The resulting hashcode from the current instance.</returns>
+    public int ToHashCode()
+    {
+        uint length = this.length;
+        uint position = length % 4;
+        uint hash = length < 4 ? MixEmptyState() : MixState(this.v1, this.v2, this.v3, this.v4);
+
+        hash += length * 4;
+
+        if (position > 0)
+        {
+            hash = QueueRound(hash, this.queue1);
+
+            if (position > 1)
+            {
+                hash = QueueRound(hash, this.queue2);
+
+                if (position > 2)
+                {
+                    hash = QueueRound(hash, this.queue3);
                 }
             }
         }
+
+        hash = MixFinal(hash);
+
+        return (int)hash;
+    }
+
+    /// <inheritdoc/>
+    [Obsolete("HashCode is a mutable struct and should not be compared with other HashCodes. Use ToHashCode to retrieve the computed hash code.", error: true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public override int GetHashCode() => throw new NotSupportedException();
+
+    /// <inheritdoc/>
+    [Obsolete("HashCode is a mutable struct and should not be compared with other HashCodes.", error: true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public override bool Equals(object? obj) => throw new NotSupportedException();
+
+    /// <summary>
+    /// Rotates the specified value left by the specified number of bits.
+    /// Similar in behavior to the x86 instruction ROL.
+    /// </summary>
+    /// <param name="value">The value to rotate.</param>
+    /// <param name="offset">The number of bits to rotate by.
+    /// Any value outside the range [0..31] is treated as congruent mod 32.</param>
+    /// <returns>The rotated value.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static uint RotateLeft(uint value, int offset)
+    {
+        return (value << offset) | (value >> (32 - offset));
     }
 }

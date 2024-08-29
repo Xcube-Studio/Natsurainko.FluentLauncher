@@ -48,7 +48,7 @@ public class SettingsItemSourceGenerator : IIncrementalGenerator
             static (ctx, token) =>
             {
                 // Requires C# 13 partial properties
-                if (!(((CSharpCompilation)ctx.SemanticModel.Compilation).LanguageVersion >= LanguageVersion.CSharp13))
+                if (!(((CSharpCompilation)ctx.SemanticModel.Compilation).LanguageVersion >= LanguageVersion.Preview))
                     return default;
 
                 PropertyDeclarationSyntax propDeclaration = (PropertyDeclarationSyntax)ctx.TargetNode;
@@ -136,7 +136,7 @@ public class SettingsItemSourceGenerator : IIncrementalGenerator
                                 }
                                 """;
 
-            ctx.AddSource(filename, membersBuilder.ToString());
+            ctx.AddSource(filename, source);
         });
     }
 
@@ -163,7 +163,7 @@ public class SettingsItemSourceGenerator : IIncrementalGenerator
         string nullable = settingItemInfo.Nullability == NullableAnnotation.Annotated ? "?" : "";
 
         memberBuilder.Append($$"""
-                        public {{propTypeName}}{{nullable}} {{propIdentifierName}}
+                        public partial {{propTypeName}}{{nullable}} {{propIdentifierName}}
                         {
                             get => GetValue<{{propTypeName}}{{nullable}}>(nameof({{propIdentifierName}}){{defaultValue}}{{converter}});
                             set => SetValue<{{propTypeName}}>(nameof({{propIdentifierName}}), value, {{propIdentifierName}}Changed{{converter}});

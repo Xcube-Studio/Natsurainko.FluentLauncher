@@ -14,7 +14,7 @@
     Background="Transparent"
     mc:Ignorable="d">
     <Page.Resources>
-        <converters:MinecraftInstanceConverter x:Key="MinecraftInstanceConverter" EnableShowModLoaderType="True" />
+        <converters:InstanceDescriptionConverter x:Key="InstanceDescriptionConverter" EnableShowModLoaderType="True" />
     </Page.Resources>
 
     <i:Interaction.Behaviors>
@@ -111,7 +111,7 @@
                                         BorderThickness="2"
                                         CornerRadius="4">
                                         <Border CornerRadius="4">
-                                            <Image Source="{Binding Converter={ThemeResource GameIconConverter}}" />
+                                            <Image Source="{Binding Converter={ThemeResource InstanceIconConverter}}" />
                                         </Border>
                                     </Border>
                                     <StackPanel Grid.Column="2" Spacing="5">
@@ -120,7 +120,7 @@
                                             Text="{Binding InstanceId}"
                                             TextTrimming="CharacterEllipsis"
                                             ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
-                                        <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource MinecraftInstanceConverter}}">
+                                        <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource InstanceDescriptionConverter}}">
                                             <ItemsRepeater.Layout>
                                                 <controls:WrapLayout HorizontalSpacing="5" VerticalSpacing="5" />
                                             </ItemsRepeater.Layout>

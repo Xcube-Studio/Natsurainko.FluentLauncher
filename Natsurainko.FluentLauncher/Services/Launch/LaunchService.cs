@@ -92,7 +92,7 @@ internal class LaunchService
             cancellationToken.ThrowIfCancellationRequested();
             progress?.Report(new(LaunchSessionState.Authenticating, null, null, null));
 
-            GameConfig config = instance.GetConfig();
+            InstanceConfig config = instance.GetConfig();
             Account? account = GetLaunchAccount(config, _accountService)
                 ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount")); // Determine which account to use
 
@@ -148,7 +148,7 @@ internal class LaunchService
         }
     }
 
-    private async Task<Account> RefreshAccountAsync(Account account, GameConfig config)
+    private async Task<Account> RefreshAccountAsync(Account account, InstanceConfig config)
     {
         if (account.Equals(_accountService.ActiveAccount))
         {
@@ -246,7 +246,7 @@ internal class LaunchService
         return suits.First().Item1;
     }
 
-    private string GetGameDirectory(MinecraftInstance instance, GameConfig specialConfig)
+    private string GetGameDirectory(MinecraftInstance instance, InstanceConfig specialConfig)
     {
         if (specialConfig.EnableSpecialSetting)
         {
@@ -261,7 +261,7 @@ internal class LaunchService
         return instance.MinecraftFolderPath;
     }
 
-    private string? GameWindowTitle(GameConfig specialConfig)
+    private string? GameWindowTitle(InstanceConfig specialConfig)
     {
         if (specialConfig.EnableSpecialSetting)
         {
@@ -277,7 +277,7 @@ internal class LaunchService
         return null;
     }
 
-    public static Account? GetLaunchAccount(GameConfig specialConfig, AccountService _accountService)
+    public static Account? GetLaunchAccount(InstanceConfig specialConfig, AccountService _accountService)
     {
         if (specialConfig.EnableSpecialSetting && specialConfig.EnableTargetedAccount && specialConfig.Account != null)
         {
@@ -302,7 +302,7 @@ internal class LaunchService
         return _accountService.ActiveAccount;
     }
 
-    private IEnumerable<string> GetExtraVmParameters(GameConfig specialConfig, Account account)
+    private IEnumerable<string> GetExtraVmParameters(InstanceConfig specialConfig, Account account)
     {
         if (account is YggdrasilAccount yggdrasil)
         {
@@ -320,7 +320,7 @@ internal class LaunchService
             yield return item;
     }
 
-    private IEnumerable<string> GetExtraGameParameters(GameConfig specialConfig)
+    private IEnumerable<string> GetExtraGameParameters(InstanceConfig specialConfig)
     {
         if (specialConfig.EnableSpecialSetting)
         {

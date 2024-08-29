@@ -10,7 +10,7 @@ using System.Text.Json.Serialization;
 #nullable disable
 namespace Natsurainko.FluentLauncher.Models.Launch;
 
-internal partial class GameConfig : ObservableObject
+internal partial class InstanceConfig : ObservableObject
 {
     private readonly static JsonSerializerOptions JsonSerializerOptions = new()
     {

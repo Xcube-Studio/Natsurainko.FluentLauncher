@@ -14,15 +14,15 @@ namespace Natsurainko.FluentLauncher.Services.Launch;
 
 class InstanceConfigService
 {
-    private readonly Dictionary<(string mcFolderPath, string instanceId), GameConfig> _instanceConfig = new();
+    private readonly Dictionary<(string mcFolderPath, string instanceId), InstanceConfig> _instanceConfig = new();
 
-    public GameConfig GetConfig(MinecraftInstance instance)
+    public InstanceConfig GetConfig(MinecraftInstance instance)
     {
         var key = (instance.MinecraftFolderPath, instance.InstanceId);
 
         // Return the instance config if it is already loaded
-        if (_instanceConfig.ContainsKey(key))
-            return _instanceConfig[key];
+        if (_instanceConfig.TryGetValue(key, out InstanceConfig? value))
+            return value;
 
         // Load and cache instance config
         string type = instance.Version.Type switch
@@ -42,17 +42,17 @@ class InstanceConfigService
         var configFile = Path.Combine(configsFolder, $"{configGuid}.json");
 
         if (!File.Exists(configFile))
-            return new GameConfig { FilePath = configFile };
+            return new InstanceConfig { FilePath = configFile };
 
-        GameConfig instanceConfig;
+        InstanceConfig instanceConfig;
 
         try
         {
-            instanceConfig = JsonNode.Parse(File.ReadAllText(configFile)).Deserialize<GameConfig>()!;
+            instanceConfig = JsonNode.Parse(File.ReadAllText(configFile)).Deserialize<InstanceConfig>()!;
         }
         catch
         {
-            instanceConfig = new GameConfig();
+            instanceConfig = new InstanceConfig();
         }
 
         instanceConfig.FilePath = configFile;

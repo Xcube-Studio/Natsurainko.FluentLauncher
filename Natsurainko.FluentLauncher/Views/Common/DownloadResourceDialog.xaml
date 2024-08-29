@@ -15,7 +15,7 @@
     mc:Ignorable="d">
     <ContentDialog.Resources>
         <Thickness x:Key="ContentDialogPadding">0</Thickness>
-        <converters:MinecraftInstanceConverter x:Key="MinecraftInstanceConverter" EnableShowModLoaderType="True" />
+        <converters:InstanceDescriptionConverter x:Key="InstanceDescriptionConverter" EnableShowModLoaderType="True" />
         <converters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" Inverted="True" />
 
         <Style TargetType="CheckBox">
@@ -592,7 +592,7 @@
                                 TextTrimming="CharacterEllipsis">
                                 <Run Text="{Binding InstanceId}" /><Run Text="," />
                             </TextBlock>
-                            <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource MinecraftInstanceConverter}}">
+                            <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource InstanceDescriptionConverter}}">
                                 <ItemsRepeater.Layout>
                                     <controls:WrapLayout HorizontalSpacing="5" VerticalSpacing="5" />
                                 </ItemsRepeater.Layout>

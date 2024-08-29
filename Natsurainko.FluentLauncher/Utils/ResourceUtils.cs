@@ -10,13 +10,13 @@ internal static class ResourceUtils
 {
     private static readonly ResourceManager resourceManager = new();
 
-    public static List<string> Languages = new()
-    {
+    public static List<string> Languages =
+    [
         "en-US, English",
         "ru-RU, Русский",
         "zh-Hans, 简体中文",
         "zh-Hant, 繁體中文"
-    };
+    ];
 
     public static string GetValue(params string[] strings)
     {

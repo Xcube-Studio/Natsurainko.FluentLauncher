@@ -283,7 +283,7 @@
                                                     BorderThickness="2"
                                                     CornerRadius="4">
                                                     <Border CornerRadius="4">
-                                                        <Image Source="{Binding Converter={ThemeResource GameIconConverter}}" />
+                                                        <Image Source="{Binding Converter={ThemeResource InstanceIconConverter}}" />
                                                     </Border>
                                                 </Border>
                                                 <StackPanel Grid.Column="2" VerticalAlignment="Center">
@@ -293,7 +293,7 @@
                                                         TextTrimming="CharacterEllipsis"
                                                         TextWrapping="NoWrap"
                                                         ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
-                                                    <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource MinecraftInstanceConverter}}">
+                                                    <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource InstanceDescriptionConverter}}">
                                                         <ItemsRepeater.Layout>
                                                             <StackLayout Orientation="Horizontal" Spacing="5" />
                                                         </ItemsRepeater.Layout>

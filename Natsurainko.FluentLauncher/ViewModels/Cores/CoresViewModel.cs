@@ -10,7 +10,6 @@ using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement;
 using Nrk.FluentCore.GameManagement.Instances;
-using Nrk.FluentCore.Management;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -94,9 +93,9 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
             };
         });
 
-        var list = SortByIndex.Equals(0)
-            ? infos.OrderBy(x => x.GetConfig().NickName).ToList()
-            : infos.OrderByDescending(x => x.GetConfig().LastLaunchTime).ToList();
+        IReadOnlyList<MinecraftInstance> list = SortByIndex.Equals(0)
+            ? [.. infos.OrderBy(x => x.InstanceId)]
+            : [..infos.OrderByDescending(x => x.GetConfig().LastLaunchTime)];
 
         App.DispatcherQueue.TryEnqueue(() => DisplayMinecraftInstances = list);
     }

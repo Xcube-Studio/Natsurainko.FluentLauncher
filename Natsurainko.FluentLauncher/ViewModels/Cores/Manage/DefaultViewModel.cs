@@ -22,7 +22,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
     public MinecraftInstance MinecraftInstance { get; private set; }
 
-    public GameConfig InstanceConfig { get; private set; }
+    public InstanceConfig InstanceConfig { get; private set; }
 
     public DefaultViewModel(GameService gameService, INavigationService navigationService)
     {
@@ -84,8 +84,8 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     void CardClick(string tag) => _navigationService.NavigateTo(tag, MinecraftInstance);
 
     [RelayCommand]
-    public async Task DeleteGame() => await new DeleteGameDialog()
+    public async Task DeleteGame() => await new DeleteInstanceDialog()
     {
-        DataContext = new DeleteGameDialogViewModel(MinecraftInstance, _navigationService)
+        DataContext = new DeleteInstanceDialogViewModel(MinecraftInstance, _navigationService)
     }.ShowAsync();
 }

@@ -34,8 +34,8 @@
             <converters:JavaIconConverter x:Key="JavaIconConverter" />
             <converters:JavaInfoConverter x:Key="JavaInfoConverter" />
 
-            <converters:GameIconConverter x:Key="GameIconConverter" />
-            <converters:MinecraftInstanceConverter x:Key="MinecraftInstanceConverter" />
+            <converters:InstanceIconConverter x:Key="InstanceIconConverter" />
+            <converters:InstanceDescriptionConverter x:Key="InstanceDescriptionConverter" />
             <converters:InstallDataLoaderVersionConverter x:Key="InstallDataLoaderVersionConverter" />
 
             <converters:ModInfoConverter x:Key="ModInfoConverter" />

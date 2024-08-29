@@ -1,13 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
-using Natsurainko.FluentLauncher.Classes.Data.Launch;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.Launch;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -24,6 +24,7 @@ internal partial class LoggerViewModel : ObservableObject
     {
         _gameLoggerOutputs = launchProcess._gameLoggerOutputs;
         _gameLoggerOutputs.CollectionChanged += LoggerItems_CollectionChanged;
+        EnabledLevel.CollectionChanged += EnabledLevel_CollectionChanged;
 
         View = view;
 
@@ -53,7 +54,9 @@ internal partial class LoggerViewModel : ObservableObject
     [ObservableProperty]
     private bool enableAutoScroll = true;
 
-    public ObservableCollection<LoggerItem> FilterLoggerItems { get; } = new();
+    public ObservableCollection<LoggerItem> FilterLoggerItems { get; } = [];
+
+    private ObservableCollection<GameLoggerOutputLevel> EnabledLevel { get; } = [];
 
     public Views.LoggerPage View { get; set; }
 
@@ -72,28 +75,20 @@ internal partial class LoggerViewModel : ObservableObject
             icon: "\ue74e");
     }
 
+    private void EnabledLevel_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+        FilterLoggerItems.Clear();
+
+        foreach (var item in _gameLoggerOutputs)
+            if (EnabledLevel.Contains(item.Level))
+                FilterLoggerItems.Add(new LoggerItem(item));
+    }
+
     private void LoggerItems_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
-        var enums = new List<GameLoggerOutputLevel>();
-
-        if (Info)
-            enums.Add(GameLoggerOutputLevel.Info);
-
-        if (Warn)
-            enums.Add(GameLoggerOutputLevel.Warn);
-
-        if (Error)
-            enums.Add(GameLoggerOutputLevel.Error);
-
-        if (Fatal)
-            enums.Add(GameLoggerOutputLevel.Fatal);
-
-        if (Debug)
-            enums.Add(GameLoggerOutputLevel.Debug);
-
         foreach (var item in e.NewItems)
         {
-            if (item is GameLoggerOutput GameLoggerOutput && enums.Contains(GameLoggerOutput.Level))
+            if (item is GameLoggerOutput GameLoggerOutput && EnabledLevel.Contains(GameLoggerOutput.Level))
             {
                 var loggerItem = new LoggerItem(GameLoggerOutput);
                 App.DispatcherQueue.TryEnqueue(() => FilterLoggerItems.Add(loggerItem));
@@ -108,38 +103,67 @@ internal partial class LoggerViewModel : ObservableObject
     {
         base.OnPropertyChanged(e);
 
-        if (e.PropertyName != nameof(FilterLoggerItems))
+        if (Info)
         {
-            var enums = new List<GameLoggerOutputLevel>();
-
-            if (Info)
-                enums.Add(GameLoggerOutputLevel.Info);
-
-            if (Warn)
-                enums.Add(GameLoggerOutputLevel.Warn);
-
-            if (Error)
-                enums.Add(GameLoggerOutputLevel.Error);
-
-            if (Fatal)
-                enums.Add(GameLoggerOutputLevel.Fatal);
-
-            if (Debug)
-                enums.Add(GameLoggerOutputLevel.Debug);
-
-            FilterLoggerItems.Clear();
-
-            foreach (var item in _gameLoggerOutputs)
-                if (enums.Contains(item.Level))
-                    FilterLoggerItems.Add(new LoggerItem(item));
+            if (!EnabledLevel.Contains(GameLoggerOutputLevel.Info))
+                EnabledLevel.Add(GameLoggerOutputLevel.Info);
         }
+        else EnabledLevel.Remove(GameLoggerOutputLevel.Info);
+
+        if (Warn)
+        {
+            if (!EnabledLevel.Contains(GameLoggerOutputLevel.Warn))
+                EnabledLevel.Add(GameLoggerOutputLevel.Warn);
+        }
+        else EnabledLevel.Remove(GameLoggerOutputLevel.Warn);
+
+        if (Error)
+        {
+            if (!EnabledLevel.Contains(GameLoggerOutputLevel.Error))
+                EnabledLevel.Add(GameLoggerOutputLevel.Error);
+        }
+        else EnabledLevel.Remove(GameLoggerOutputLevel.Error);
+
+        if (Fatal)
+        {
+            if (!EnabledLevel.Contains(GameLoggerOutputLevel.Fatal))
+                EnabledLevel.Add(GameLoggerOutputLevel.Fatal);
+        }
+        else EnabledLevel.Remove(GameLoggerOutputLevel.Fatal);
+
+        if (Debug)
+        {
+            if (!EnabledLevel.Contains(GameLoggerOutputLevel.Debug))
+                EnabledLevel.Add(GameLoggerOutputLevel.Debug);
+        }
+        else EnabledLevel.Remove(GameLoggerOutputLevel.Debug);
 
         if (EnableAutoScroll)
             ScrollToEnd();
     }
 
-    private void ScrollToEnd()
+    private void ScrollToEnd() => View.ScrollViewer.ScrollToVerticalOffset(View.ScrollViewer.ScrollableHeight);
+
+    internal partial class LoggerItem : ObservableObject
     {
-        View.ScrollViewer.ScrollToVerticalOffset(View.ScrollViewer.ScrollableHeight);
+        public LoggerItem(GameLoggerOutput output)
+        {
+            App.DispatcherQueue.TryEnqueue(() =>
+            {
+                var richTextBlock = new RichTextBlock();
+                LoggerColorLightLanguage.Formatter.FormatRichTextBlock(output.FullData, new LoggerColorLightLanguage(), richTextBlock);
+                RichTextBlock = richTextBlock;
+            });
+
+            ErrorVisibility = (output.Level == GameLoggerOutputLevel.Error || output.Level == GameLoggerOutputLevel.Fatal)
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+        }
+
+        [ObservableProperty]
+        private RichTextBlock richTextBlock;
+
+        [ObservableProperty]
+        private Visibility errorVisibility;
     }
 }

@@ -8,7 +8,6 @@ using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.GameManagement.Instances;
-using Nrk.FluentCore.Management;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -28,7 +27,7 @@ internal partial class ConfigViewModel : ObservableObject, INavigationAware
 
     public MinecraftInstance MinecraftInstance { get; private set; }
 
-    public GameConfig GameConfig { get; private set; }
+    public InstanceConfig InstanceConfig { get; private set; }
 
     [ObservableProperty]
     private Account targetedAccount;
@@ -41,8 +40,8 @@ internal partial class ConfigViewModel : ObservableObject, INavigationAware
     void INavigationAware.OnNavigatedTo(object parameter)
     {
         MinecraftInstance = parameter as MinecraftInstance;
-        GameConfig = MinecraftInstance.GetConfig();
-        VmArguments = new(GameConfig.VmParameters ?? []);
+        InstanceConfig = MinecraftInstance.GetConfig();
+        VmArguments = new(InstanceConfig.VmParameters ?? []);
 
         LoadTargetedAccount();
 
@@ -51,7 +50,7 @@ internal partial class ConfigViewModel : ObservableObject, INavigationAware
 
     private void LoadTargetedAccount()
     {
-        var requestAccount = GameConfig.Account;
+        var requestAccount = InstanceConfig.Account;
 
         if (requestAccount == null) return;
 
@@ -84,14 +83,14 @@ internal partial class ConfigViewModel : ObservableObject, INavigationAware
             DataContext = new AddVmArgumentDialogViewModel(VmArguments.Add)
         }.ShowAsync();
 
-        GameConfig.VmParameters = VmArguments.ToArray();
+        InstanceConfig.VmParameters = VmArguments.ToArray();
     }
 
     [RelayCommand]
     public void RemoveArgument(string arg)
     {
         VmArguments.Remove(arg);
-        GameConfig.VmParameters = VmArguments.ToArray();
+        InstanceConfig.VmParameters = VmArguments.ToArray();
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -100,6 +99,6 @@ internal partial class ConfigViewModel : ObservableObject, INavigationAware
         if (!inited) return;
 
         if (e.PropertyName == nameof(TargetedAccount))
-            GameConfig.Account = TargetedAccount;
+            InstanceConfig.Account = TargetedAccount;
     }
 }

@@ -38,7 +38,7 @@
                                 BorderThickness="2"
                                 CornerRadius="4">
                                 <Border CornerRadius="4">
-                                    <Image Source="{Binding Converter={ThemeResource GameIconConverter}}" />
+                                    <Image Source="{Binding Converter={ThemeResource InstanceIconConverter}}" />
                                 </Border>
                             </Border>
                             <StackPanel Grid.Column="2" Spacing="5">
@@ -51,7 +51,7 @@
                                     <ItemsRepeater.ItemsSource>
                                         <Binding>
                                             <Binding.Converter>
-                                                <converters:MinecraftInstanceConverter EnableShowModLoaderType="True" />
+                                                <converters:InstanceDescriptionConverter EnableShowModLoaderType="True" />
                                             </Binding.Converter>
                                         </Binding>
                                     </ItemsRepeater.ItemsSource>

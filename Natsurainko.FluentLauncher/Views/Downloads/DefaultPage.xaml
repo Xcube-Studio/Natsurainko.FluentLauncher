@@ -206,7 +206,7 @@
                                             BorderThickness="2"
                                             CornerRadius="4">
                                             <Border CornerRadius="4">
-                                                <Image Source="{Binding Converter={ThemeResource GameIconConverter}}" />
+                                                <Image Source="{Binding Converter={ThemeResource InstanceIconConverter}}" />
                                             </Border>
                                         </Border>
                                         <StackPanel Grid.Column="2" VerticalAlignment="Center">
@@ -218,7 +218,7 @@
                                             <TextBlock
                                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                                 Style="{ThemeResource CaptionTextBlockStyle}"
-                                                Text="{Binding Converter={ThemeResource MinecraftInstanceConverter}}"
+                                                Text="{Binding Converter={ThemeResource InstanceDescriptionConverter}}"
                                                 TextTrimming="CharacterEllipsis"
                                                 TextWrapping="NoWrap" />
                                         </StackPanel>

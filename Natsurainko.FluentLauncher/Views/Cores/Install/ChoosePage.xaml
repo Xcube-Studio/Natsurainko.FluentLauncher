@@ -43,7 +43,7 @@
                                                 BorderThickness="2"
                                                 CornerRadius="4">
                                                 <Border CornerRadius="4">
-                                                    <Image Source="{Binding Type, Converter={ThemeResource GameIconConverter}}" />
+                                                    <Image Source="{Binding Type, Converter={ThemeResource InstanceIconConverter}}" />
                                                 </Border>
                                             </Border>
                                             <StackPanel Grid.Column="2">

@@ -10,7 +10,7 @@ using Nrk.FluentCore.GameManagement.Installer;
 #nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
-public class MinecraftInstanceConverter : IValueConverter
+public class InstanceDescriptionConverter : IValueConverter
 {
     public bool EnableShowModLoaderType { get; set; } = false;
 

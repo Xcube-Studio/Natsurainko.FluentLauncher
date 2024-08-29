@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
+#nullable disable
 namespace Natsurainko.FluentLauncher.Utils;
 
 internal class FileLockUtils

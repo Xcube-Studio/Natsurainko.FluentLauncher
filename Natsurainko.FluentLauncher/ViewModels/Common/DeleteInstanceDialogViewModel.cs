@@ -8,26 +8,25 @@ using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement;
 using Nrk.FluentCore.GameManagement.Instances;
-using Nrk.FluentCore.Management;
 using System.IO;
 using System.Threading.Tasks;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
-internal partial class DeleteGameDialogViewModel : ObservableObject
+internal partial class DeleteInstanceDialogViewModel : ObservableObject
 {
     private readonly MinecraftInstance _MinecraftInstance;
     private readonly INavigationService _navigationService;
 
     private ContentDialog _dialog;
 
-    public string Title => $"\"{_MinecraftInstance.GetConfig().NickName}\"";
+    public string Title => $"\"{_MinecraftInstance.InstanceId}\"";
 
     [ObservableProperty]
     private bool deleteCoreSettings = true;
 
-    public DeleteGameDialogViewModel(MinecraftInstance MinecraftInstance, INavigationService navigationService)
+    public DeleteInstanceDialogViewModel(MinecraftInstance MinecraftInstance, INavigationService navigationService)
     {
         _MinecraftInstance = MinecraftInstance;
         _navigationService = navigationService;

@@ -27,13 +27,13 @@
                     Description="Only if you enable this item, the following settings will take effect"
                     Header="Enable specific core settings"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
-                    <ToggleSwitch IsOn="{Binding GameConfig.EnableSpecialSetting, Mode=TwoWay}" />
+                    <ToggleSwitch IsOn="{Binding InstanceConfig.EnableSpecialSetting, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
                 <ContentControl
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Stretch"
-                    IsEnabled="{Binding GameConfig.EnableSpecialSetting}">
+                    IsEnabled="{Binding InstanceConfig.EnableSpecialSetting}">
                     <StackPanel Spacing="4">
                         <TextBlock
                             x:Uid="Cores_Manage_ConfigPage_T1"
@@ -45,7 +45,7 @@
                             Description="The game will run at versions\${version} directory"
                             Header="Core independent"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
-                            <ToggleSwitch IsOn="{Binding GameConfig.EnableIndependencyCore, Mode=TwoWay}" />
+                            <ToggleSwitch IsOn="{Binding InstanceConfig.EnableIndependencyCore, Mode=TwoWay}" />
                         </controls:SettingsCard>
 
                         <controls:SettingsCard
@@ -53,7 +53,7 @@
                             Description="Automatic full screen mode after entering the game"
                             Header="Full Screen Mode"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE740;}">
-                            <ToggleSwitch IsOn="{Binding GameConfig.EnableFullScreen, Mode=TwoWay}" />
+                            <ToggleSwitch IsOn="{Binding InstanceConfig.EnableFullScreen, Mode=TwoWay}" />
                         </controls:SettingsCard>
 
                         <controls:SettingsCard
@@ -65,12 +65,12 @@
                                 <NumberBox
                                     Width="100"
                                     Minimum="0"
-                                    Value="{Binding GameConfig.GameWindowWidth, Mode=TwoWay}" />
+                                    Value="{Binding InstanceConfig.GameWindowWidth, Mode=TwoWay}" />
                                 <FontIcon FontSize="14" Glyph="&#xe947;" />
                                 <NumberBox
                                     Width="100"
                                     Minimum="0"
-                                    Value="{Binding GameConfig.GameWindowHeight, Mode=TwoWay}" />
+                                    Value="{Binding InstanceConfig.GameWindowHeight, Mode=TwoWay}" />
                             </StackPanel>
                         </controls:SettingsCard>
 
@@ -79,7 +79,7 @@
                             Description="The server address to connect after entering the game"
                             Header="Server Address"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE967;}">
-                            <TextBox Width="400" Text="{Binding GameConfig.ServerAddress, Mode=TwoWay}">
+                            <TextBox Width="400" Text="{Binding InstanceConfig.ServerAddress, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                                 </i:Interaction.Behaviors>
@@ -90,7 +90,7 @@
                             x:Uid="Cores_Manage_ConfigPage_Card6"
                             Header="Game Window Title"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE76F;}">
-                            <TextBox Width="400" Text="{Binding GameConfig.GameWindowTitle, Mode=TwoWay}">
+                            <TextBox Width="400" Text="{Binding InstanceConfig.GameWindowTitle, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                                 </i:Interaction.Behaviors>
@@ -158,7 +158,7 @@
                                         <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                                     </i:Interaction.Behaviors>
                                 </ComboBox>
-                                <ToggleSwitch Name="AccountToggleSwitch" IsOn="{Binding GameConfig.EnableTargetedAccount, Mode=TwoWay}" />
+                                <ToggleSwitch Name="AccountToggleSwitch" IsOn="{Binding InstanceConfig.EnableTargetedAccount, Mode=TwoWay}" />
                             </StackPanel>
                         </controls:SettingsCard>
 

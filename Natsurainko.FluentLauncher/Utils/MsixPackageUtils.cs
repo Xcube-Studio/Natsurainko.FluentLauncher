@@ -1,6 +1,7 @@
 ﻿using System;
 
 namespace Natsurainko.FluentLauncher.Utils;
+
 internal static class MsixPackageUtils
 {
     public static bool IsPackaged { get; }

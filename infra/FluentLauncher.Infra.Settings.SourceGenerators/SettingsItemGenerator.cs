@@ -55,11 +55,6 @@ public class SettingsItemSourceGenerator : IIncrementalGenerator
                 PropertyDeclarationSyntax propDeclaration = (PropertyDeclarationSyntax)ctx.TargetNode;
                 IPropertySymbol propSymbol = (IPropertySymbol)ctx.TargetSymbol;
 
-                SymbolDisplayFormat displayFormat = new(
-                    globalNamespaceStyle: SymbolDisplayGlobalNamespaceStyle.Included,
-                    typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
-                    genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters);
-
                 // Extract class info
                 INamedTypeSymbol settingsContainerClass = propSymbol.ContainingType;
                 string containingNamespace = settingsContainerClass.ContainingNamespace.ToDisplayString();
@@ -70,7 +65,7 @@ public class SettingsItemSourceGenerator : IIncrementalGenerator
 
                 // Extract property info
                 AttributeData settingItemAttribute = ctx.Attributes[0]; // SettingItem does not allow multiple
-                string propTypeName = propSymbol.Type.ToDisplayString(displayFormat);
+                string propTypeName = propSymbol.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.AddMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier));
                 NullableAnnotation nullability = propSymbol.NullableAnnotation;
                 string propName = propSymbol.Name;
                 SettingItemInfo settingItemInfo = new(propTypeName, propName, nullability, settingItemAttribute);
@@ -163,12 +158,12 @@ public class SettingsItemSourceGenerator : IIncrementalGenerator
         string propTypeName = settingItemInfo.TypeName;
         string propIdentifierName = settingItemInfo.PropertyName;
 
-        string nullable = settingItemInfo.Nullability == NullableAnnotation.Annotated ? "?" : "";
+        //string nullable = settingItemInfo.Nullability == NullableAnnotation.Annotated ? "?" : "";
 
         memberBuilder.Append($$"""
-                        public partial {{propTypeName}}{{nullable}} {{propIdentifierName}}
+                        public partial {{propTypeName}} {{propIdentifierName}}
                         {
-                            get => GetValue<{{propTypeName}}{{nullable}}>(nameof({{propIdentifierName}}){{defaultValue}}{{converter}});
+                            get => GetValue<{{propTypeName}}>(nameof({{propIdentifierName}}){{defaultValue}}{{converter}});
                             set => SetValue<{{propTypeName}}>(nameof({{propIdentifierName}}), value, {{propIdentifierName}}Changed{{converter}});
                         }
 

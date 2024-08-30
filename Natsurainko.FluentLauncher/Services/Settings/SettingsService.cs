@@ -36,7 +36,7 @@ public partial class SettingsService : SettingsContainer
     #endregion
 
     [SettingItem(Default = true, Converter = typeof(JsonStringConverter<bool>))]
-    public bool EnableAutoMemory { get; set; }
+    public partial bool EnableAutoMemory { get; set; }
 
     [SettingItem(Default = true, Converter = typeof(JsonStringConverter<bool>))]
     public partial bool EnableAutoJava { get; set; }

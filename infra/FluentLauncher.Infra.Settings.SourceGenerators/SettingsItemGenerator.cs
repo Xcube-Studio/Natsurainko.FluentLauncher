@@ -130,14 +130,12 @@ public class SettingsItemSourceGenerator : IIncrementalGenerator
             if (item.Key == "Default")
                 defaultValue = $", {item.Value.ToCSharpString()}";
             else if (item.Key == "Converter")
-                converter = $", typeof(global::{item.Value.Value!.ToString()})";
+                converter = $", global::FluentLauncher.Infra.Settings.Converters.DataTypeConverters.GetConverter(typeof(global::{item.Value.Value}))";
         }
 
         // If default value is not provided, the property is nullable
         string propTypeName = settingItemInfo.TypeName;
         string propIdentifierName = settingItemInfo.PropertyName;
-
-        //string nullable = settingItemInfo.Nullability == NullableAnnotation.Annotated ? "?" : "";
 
         memberBuilder.Append($$"""
                         public partial {{propTypeName}} {{propIdentifierName}}

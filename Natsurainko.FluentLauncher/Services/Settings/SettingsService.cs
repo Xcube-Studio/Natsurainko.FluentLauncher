@@ -66,7 +66,7 @@ public partial class SettingsService : SettingsContainer
     public partial bool AutoRefresh { get; set; }
 
     [SettingItem]
-    public partial Guid ActiveAccountUuid { get; set; }
+    public partial Guid? ActiveAccountUuid { get; set; }
 
     [SettingItem(Default = "Mojang", Converter = typeof(JsonStringConverter<string>))]
     public partial string CurrentDownloadSource { get; set; }

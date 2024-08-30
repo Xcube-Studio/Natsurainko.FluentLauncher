@@ -20,53 +20,120 @@ public partial class SettingsService : SettingsContainer
     public ObservableCollection<string> MinecraftFolders { get; private set; } = new();
     public ObservableCollection<string> Javas { get; private set; } = new();
 
-    [SettingItem(typeof(string), "ActiveMinecraftFolder", Default = "", Converter = typeof(JsonStringConverter<string>))]
+    [SettingItem(Default = "", Converter = typeof(JsonStringConverter<string>))]
+    public partial string ActiveMinecraftFolder { get; set; }
+
     //[SettingItem(typeof(GameInfo), "ActiveGameInfo", Converter = typeof(JsonStringConverter<GameInfo>))]
-    [SettingItem(typeof(string), "ActiveInstanceId")]
-    [SettingItem(typeof(string), "ActiveJava", Default = "", Converter = typeof(JsonStringConverter<string>))]
-    [SettingItem(typeof(int), "JavaMemory", Default = 1024, Converter = typeof(JsonStringConverter<int>))]
+    [SettingItem]
+    public partial string? ActiveInstanceId { get; set; }
+
+    [SettingItem(Default = "", Converter = typeof(JsonStringConverter<string>))]
+    public partial string ActiveJava { get; set; }
+
+    [SettingItem(Default = 1024, Converter = typeof(JsonStringConverter<int>))]
+    public partial int JavaMemory { get; set; }
 
     #endregion
 
-    [SettingItem(typeof(bool), "EnableAutoMemory", Default = true, Converter = typeof(JsonStringConverter<bool>))]
-    [SettingItem(typeof(bool), "EnableAutoJava", Default = true, Converter = typeof(JsonStringConverter<bool>))]
+    [SettingItem(Default = true, Converter = typeof(JsonStringConverter<bool>))]
+    public partial bool EnableAutoMemory { get; set; }
 
-    [SettingItem(typeof(bool), "EnableFullScreen", Default = false, Converter = typeof(JsonStringConverter<bool>))]
-    [SettingItem(typeof(bool), "EnableIndependencyCore", Default = false, Converter = typeof(JsonStringConverter<bool>))]
-    [SettingItem(typeof(string), "GameServerAddress", Default = "", Converter = typeof(JsonStringConverter<string>))]
-    [SettingItem(typeof(int), "GameWindowHeight", Default = 480, Converter = typeof(JsonStringConverter<int>))]
-    [SettingItem(typeof(int), "GameWindowWidth", Default = 854, Converter = typeof(JsonStringConverter<int>))]
-    [SettingItem(typeof(string), "GameWindowTitle", Default = "", Converter = typeof(JsonStringConverter<string>))]
+    [SettingItem(Default = true, Converter = typeof(JsonStringConverter<bool>))]
+    public partial bool EnableAutoJava { get; set; }
 
-    [SettingItem(typeof(bool), "EnableDemoUser", Default = false, Converter = typeof(JsonStringConverter<bool>))]
-    [SettingItem(typeof(bool), "AutoRefresh", Default = true, Converter = typeof(JsonStringConverter<bool>))]
-    [SettingItem(typeof(Guid), "ActiveAccountUuid")]
+    [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
+    public partial bool EnableFullScreen { get; set; }
 
-    [SettingItem(typeof(string), "CurrentDownloadSource", Default = "Mojang", Converter = typeof(JsonStringConverter<string>))]
-    [SettingItem(typeof(bool), "EnableFragmentDownload", Default = true, Converter = typeof(JsonStringConverter<bool>))]
-    [SettingItem(typeof(int), "MaxDownloadThreads", Default = 128, Converter = typeof(JsonStringConverter<int>))]
+    [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
+    public partial bool EnableIndependencyCore { get; set; }
 
-    [SettingItem(typeof(string), "CurrentLanguage", Default = "en-US, English", Converter = typeof(JsonStringConverter<string>))] // TODO: remove default value; set to system language if null
-    [SettingItem(typeof(int), "NavigationViewDisplayMode", Default = 0, Converter = typeof(JsonStringConverter<int>))] //TODO: remove this
-    [SettingItem(typeof(bool), "NavigationViewIsPaneOpen", Default = false, Converter = typeof(JsonStringConverter<bool>))]
-    [SettingItem(typeof(int), "DisplayTheme", Default = 0, Converter = typeof(JsonStringConverter<int>))]
-    [SettingItem(typeof(int), "BackgroundMode", Default = 1, Converter = typeof(JsonStringConverter<int>))]
-    [SettingItem(typeof(int), "MicaKind", Default = 0, Converter = typeof(JsonStringConverter<int>))]
-    [SettingItem(typeof(string), "ImageFilePath", Default = "", Converter = typeof(JsonStringConverter<string>))]
-    [SettingItem(typeof(int), "SolidSelectedIndex", Default = 0, Converter = typeof(JsonStringConverter<int>))]
-    [SettingItem(typeof(Windows.UI.Color), "CustomBackgroundColor", Converter = typeof(JsonStringConverter<Windows.UI.Color>))]
-    [SettingItem(typeof(Windows.UI.Color), "CustomThemeColor", Converter = typeof(JsonStringConverter<Windows.UI.Color>))]
-    [SettingItem(typeof(bool), "UseSystemAccentColor", Default = true, Converter = typeof(JsonStringConverter<bool>))]
+    [SettingItem(Default = "", Converter = typeof(JsonStringConverter<string>))]
+    public partial string GameServerAddress { get; set; }
 
-    [SettingItem(typeof(double), "AppWindowHeight", Default = 500, Converter = typeof(JsonStringConverter<double>))]
-    [SettingItem(typeof(double), "AppWindowWidth", Default = 950, Converter = typeof(JsonStringConverter<double>))]
-    [SettingItem(typeof(WinUIEx.WindowState), "AppWindowState", Default = WinUIEx.WindowState.Normal, Converter = typeof(JsonStringConverter<WinUIEx.WindowState>))]
-    [SettingItem(typeof(bool), "FinishGuide", Default = false, Converter = typeof(JsonStringConverter<bool>))]
+    [SettingItem(Default = 480, Converter = typeof(JsonStringConverter<int>))]
+    public partial int GameWindowHeight { get; set; }
 
-    [SettingItem(typeof(int), "CoresSortByIndex", Default = 0, Converter = typeof(JsonStringConverter<int>))]
-    [SettingItem(typeof(int), "CoresFilterIndex", Default = 0, Converter = typeof(JsonStringConverter<int>))]
+    [SettingItem(Default = 854, Converter = typeof(JsonStringConverter<int>))]
+    public partial int GameWindowWidth { get; set; }
 
-    [SettingItem(typeof(uint), "SettingsVersion", Default = 0u)]
+    [SettingItem(Default = "", Converter = typeof(JsonStringConverter<string>))]
+    public partial string GameWindowTitle { get; set; }
+
+    [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
+    public partial bool EnableDemoUser { get; set; }
+
+    [SettingItem(Default = true, Converter = typeof(JsonStringConverter<bool>))]
+    public partial bool AutoRefresh { get; set; }
+
+    [SettingItem]
+    public partial Guid? ActiveAccountUuid { get; set; }
+
+    [SettingItem(Default = "Mojang", Converter = typeof(JsonStringConverter<string>))]
+    public partial string CurrentDownloadSource { get; set; }
+
+    [SettingItem(Default = true, Converter = typeof(JsonStringConverter<bool>))]
+    public partial bool EnableFragmentDownload { get; set; }
+
+    [SettingItem(Default = 128, Converter = typeof(JsonStringConverter<int>))]
+    public partial int MaxDownloadThreads { get; set; }
+
+    [SettingItem(Default = "en-US, English", Converter = typeof(JsonStringConverter<string>))] // TODO: remove default value; set to system language if null
+    public partial string CurrentLanguage { get; set; }
+
+    [SettingItem(Default = 0, Converter = typeof(JsonStringConverter<int>))] //TODO: remove this
+    public partial int NavigationViewDisplayMode { get; set; }
+
+    [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
+    public partial bool NavigationViewIsPaneOpen { get; set; }
+
+    [SettingItem(Default = 0, Converter = typeof(JsonStringConverter<int>))]
+    public partial int DisplayTheme { get; set; }
+
+    [SettingItem(Default = 1, Converter = typeof(JsonStringConverter<int>))]
+    public partial int BackgroundMode { get; set; }
+
+    [SettingItem(Default = 0, Converter = typeof(JsonStringConverter<int>))]
+    public partial int MicaKind { get; set; }
+
+    [SettingItem(Default = "", Converter = typeof(JsonStringConverter<string>))]
+    public partial string ImageFilePath { get; set; }
+
+    [SettingItem(Default = 0, Converter = typeof(JsonStringConverter<int>))]
+    public partial int SolidSelectedIndex { get; set; }
+
+    [SettingItem(Converter = typeof(JsonStringConverter<Windows.UI.Color>))]
+    public partial Windows.UI.Color? CustomBackgroundColor { get; set; }
+
+    [SettingItem(Converter = typeof(JsonStringConverter<Windows.UI.Color>))]
+    public partial Windows.UI.Color? CustomThemeColor { get; set; }
+
+    [SettingItem(Default = true, Converter = typeof(JsonStringConverter<bool>))]
+    public partial bool UseSystemAccentColor { get; set; }
+
+
+    [SettingItem(Default = 500, Converter = typeof(JsonStringConverter<double>))]
+    public partial double AppWindowHeight { get; set; }
+
+    [SettingItem(Default = 950, Converter = typeof(JsonStringConverter<double>))]
+    public partial double AppWindowWidth { get; set; }
+
+    [SettingItem(Default = WinUIEx.WindowState.Normal, Converter = typeof(JsonStringConverter<WinUIEx.WindowState>))]
+    public partial WinUIEx.WindowState AppWindowState { get; set; }
+
+    [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
+    public partial bool FinishGuide { get; set; }
+
+
+    [SettingItem(Default = 0, Converter = typeof(JsonStringConverter<int>))]
+    public partial int CoresSortByIndex { get; set; }
+
+    [SettingItem(Default = 0, Converter = typeof(JsonStringConverter<int>))]
+    public partial int CoresFilterIndex { get; set; }
+
+    [SettingItem(Default = 0u)]
+    public partial uint SettingsVersion { get; set; }
+
+
     public SettingsService(ISettingsStorage storage) : base(storage)
     {
         var appsettings = ApplicationData.Current.LocalSettings;

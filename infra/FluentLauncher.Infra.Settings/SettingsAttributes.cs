@@ -9,17 +9,14 @@ namespace FluentLauncher.Infra.Settings
     /// <summary>
     /// Must be applied to properties of a class which extends SettingsManagerBase
     /// </summary>
-    [AttributeUsage(AttributeTargets.Constructor, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class SettingItemAttribute : Attribute
     {
         /// <summary>
         /// Key of the setting item
         /// </summary>
-        public string Key { get; }
-        /// <summary>
-        /// Type of the property when accessed
-        /// </summary>
-        public Type Type { get; }
+        [Obsolete]
+        public string? Key { get; init; }
         /// <summary>
         /// An optional converter to convert the value stored in the storage to the type of the property.<br/>If not specified, type casting will be used.
         /// </summary>
@@ -34,10 +31,8 @@ namespace FluentLauncher.Infra.Settings
         /// </summary>
         /// <param name="key">Key of the setting item</param>
         /// <param name="type">Data type of the value stored</param>
-        public SettingItemAttribute(Type type, string key)
+        public SettingItemAttribute()
         {
-            Key = key;
-            Type = type;
         }
 
     }

@@ -62,10 +62,11 @@ public class SettingsItemSourceGenerator : IIncrementalGenerator
                 SettingsContainerClassInfo classInfo = new(containingNamespace, className);
 
                 token.ThrowIfCancellationRequested();
-
                 // Extract property info
                 AttributeData settingItemAttribute = ctx.Attributes[0]; // SettingItem does not allow multiple
-                string propTypeName = propSymbol.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.AddMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier));
+                string propTypeName = propSymbol.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                if (propSymbol.Type.IsValueType && propTypeName.EndsWith("?")) // Get non-nullable type for value types
+                    propTypeName = propTypeName.Substring(0, propTypeName.Length - 1);
                 NullableAnnotation nullability = propSymbol.NullableAnnotation;
                 string propName = propSymbol.Name;
                 SettingItemInfo settingItemInfo = new(propTypeName, propName, nullability, settingItemAttribute);
@@ -136,11 +137,12 @@ public class SettingsItemSourceGenerator : IIncrementalGenerator
         // If default value is not provided, the property is nullable
         string propTypeName = settingItemInfo.TypeName;
         string propIdentifierName = settingItemInfo.PropertyName;
+        string nullable = settingItemInfo.Nullability == NullableAnnotation.Annotated ? "?" : "";
 
         memberBuilder.Append($$"""
-                        public partial {{propTypeName}} {{propIdentifierName}}
+                        public partial {{propTypeName}}{{nullable}} {{propIdentifierName}}
                         {
-                            get => GetValue<{{propTypeName}}>(nameof({{propIdentifierName}}){{defaultValue}}{{converter}});
+                            get => GetValue<{{propTypeName}}{{nullable}}>(nameof({{propIdentifierName}}){{defaultValue}}{{converter}});
                             set => SetValue<{{propTypeName}}>(nameof({{propIdentifierName}}), value, {{propIdentifierName}}Changed{{converter}});
                         }
 

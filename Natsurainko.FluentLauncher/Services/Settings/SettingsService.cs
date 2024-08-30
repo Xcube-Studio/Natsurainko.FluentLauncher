@@ -121,7 +121,7 @@ public partial class SettingsService : SettingsContainer
     public partial WinUIEx.WindowState AppWindowState { get; set; }
 
     [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
-    public partial bool FinisheGuide { get; set; }
+    public partial bool FinishGuide { get; set; }
 
 
     [SettingItem(Default = 0, Converter = typeof(JsonStringConverter<int>))]

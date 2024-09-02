@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ public interface IDataTypeConverter
 
 public static class DataTypeConverters
 {
-    public static Dictionary<Type, IDataTypeConverter> Converters { get; } = new();
+    private static Dictionary<Type, IDataTypeConverter> _converters { get; } = new();
 
     /// <summary>
     /// Returns an instance of the converter for the specified type.
@@ -36,19 +37,19 @@ public static class DataTypeConverters
     /// <remarks>
     /// Singletons of the converters are stored in the Converters dictionary.
     /// </remarks>
-    public static IDataTypeConverter GetConverter(Type type)
+    public static IDataTypeConverter GetConverter([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] Type type)
     {
         // Checks if type is IDataTypeConverter
         if (typeof(IDataTypeConverter).IsAssignableFrom(type))
         {
             // Checks if the converter is already registered
-            if (!Converters.ContainsKey(type))
+            if (!_converters.ContainsKey(type))
             {
                 // Creates an instance of the converter
                 var converter = (IDataTypeConverter)Activator.CreateInstance(type)!;
-                Converters.Add(type, converter);
+                _converters.Add(type, converter);
             }
-            return Converters[type];
+            return _converters[type];
         }
         else
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace FluentLauncher.Infra.Settings.Converters;
@@ -19,6 +20,14 @@ public class JsonStringConverter<T> : IDataTypeConverter
     /// <inheritdoc/>
     public Type TargetType => typeof(T);
 
+    private readonly JsonSerializerContext _serializerContext;
+
+    public JsonStringConverter()
+    {
+        if (JsonStringConverterConfig.SerializerContext is null)
+            throw new InvalidOperationException("JsonSerializerContext is not available.");
+        _serializerContext = JsonStringConverterConfig.SerializerContext;
+    }
 
     /// <summary>
     /// Returns the type used in the application
@@ -30,10 +39,10 @@ public class JsonStringConverter<T> : IDataTypeConverter
     /// <inheritdoc/>
     object? IDataTypeConverter.Convert(object? source)
     {
-        if (source is not string json)
+        if (source is not string json || JsonStringConverterConfig.SerializerContext is null)
             return null;
 
-        return JsonSerializer.Deserialize(json, TargetType);
+        return JsonSerializer.Deserialize(json, TargetType, _serializerContext);
     }
 
     /// <summary>
@@ -49,6 +58,11 @@ public class JsonStringConverter<T> : IDataTypeConverter
         if (target is not T)
             return null;
 
-        return JsonSerializer.Serialize(target, TargetType);
+        return JsonSerializer.Serialize(target, TargetType, _serializerContext);
     }
+}
+
+public static class JsonStringConverterConfig
+{
+    public static JsonSerializerContext? SerializerContext { get; set; }
 }

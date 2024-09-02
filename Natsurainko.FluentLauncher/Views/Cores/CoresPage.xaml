@@ -34,7 +34,7 @@
 
         <StackPanel
             MaxWidth="1000"
-            Margin="40,20"
+            Margin="{ThemeResource PageMarginWithStackPanel}"
             Spacing="15">
             <TextBlock
                 x:Uid="Cores_CoresPage_Title"
@@ -84,10 +84,10 @@
             </controls:WrapPanel>
         </StackPanel>
 
-        <ScrollViewer Grid.Row="2" Padding="40,0">
+        <ScrollViewer Grid.Row="2" Padding="{ThemeResource PagePaddingWithScrollViewer}">
             <ItemsRepeater
                 MaxWidth="1000"
-                Margin="0,0,0,25"
+                Margin="{ThemeResource PageEndMarginWithScrollViewer}"
                 ItemsSource="{Binding DisplayMinecraftInstances}">
                 <ItemsRepeater.Layout>
                     <StackLayout Spacing="4" />

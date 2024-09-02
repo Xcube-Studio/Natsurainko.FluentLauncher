@@ -1,20 +1,32 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Network.Data;
+using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils.Extensions;
+using Nrk.FluentCore.Exceptions;
 using Nrk.FluentCore.GameManagement.Downloader;
 using Nrk.FluentCore.GameManagement.Installer;
 using Nrk.FluentCore.GameManagement.Instances;
+using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
+using Windows.ApplicationModel.DataTransfer;
+using WinUIEx;
+using static Natsurainko.FluentLauncher.Services.Launch.LaunchProgress;
+using static Natsurainko.FluentLauncher.ViewModels.Common.LaunchStageProgress;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
@@ -32,6 +44,7 @@ public enum TaskState
 internal abstract partial class TaskViewModel : ObservableObject
 {
     protected readonly CancellationTokenSource _tokenSource = new();
+    public readonly Stopwatch Stopwatch = new();
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
@@ -55,7 +68,10 @@ internal abstract partial class TaskViewModel : ObservableObject
     private string timeUsage;
 
     [ObservableProperty]
-    public bool progressBarIsIndeterminate = true;
+    private bool progressBarIsIndeterminate = true;
+
+    [ObservableProperty]
+    public Visibility progressBarVisibility = Visibility.Visible;
 
     public bool ProgressShowError => TaskState == TaskState.Failed;
 
@@ -63,18 +79,9 @@ internal abstract partial class TaskViewModel : ObservableObject
 
     public string ProgressPercentage => Progress.ToString("P1");
 
-    public bool CanCancel => TaskState == TaskState.Running;
+    public virtual bool CanCancel => TaskState == TaskState.Running;
 
-    public string TaskIcon => TaskState switch
-    {
-        TaskState.Failed => "\ue711",
-        TaskState.Cancelled => "\ue711",
-        TaskState.Finished => "\ue73e",
-        _ => "\ue896",
-    };
-
-
-    public Stopwatch Stopwatch = new Stopwatch();
+    public abstract string TaskIcon { get; }
 
     public virtual void Start()
     {
@@ -121,6 +128,14 @@ internal partial class DownloadGameResourceTaskViewModel : TaskViewModel
 
         TaskTitle = resourceFile.FileName;
     }
+
+    public override string TaskIcon => TaskState switch
+    {
+        TaskState.Failed => "\ue711",
+        TaskState.Cancelled => "\ue711",
+        TaskState.Finished => "\ue73e",
+        _ => "\ue896",
+    };
 
     protected override async void Run()
     {
@@ -282,6 +297,14 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
     [ObservableProperty]
     private bool canLaunch = false;
 
+    public override string TaskIcon => TaskState switch
+    {
+        TaskState.Failed => "\ue711",
+        TaskState.Cancelled => "\ue711",
+        TaskState.Finished => "\ue73e",
+        _ => "\ue896",
+    };
+
     protected override async void Run()
     {
         App.DispatcherQueue.SynchronousTryEnqueue(() => TaskState = TaskState.Running);
@@ -362,6 +385,358 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
             config.EnableSpecialSetting = true;
         }
     }
+}
+
+#endregion
+
+#region Launch Task
+
+class LaunchProgressViewModel : IProgress<LaunchProgress>
+{
+    public Dictionary<LaunchStage, LaunchStageViewModel> Stages { get; } = [];
+
+    public LaunchProgressViewModel()
+    {
+        foreach (var name in Enum.GetNames(typeof(LaunchStage)))
+            Stages.Add((LaunchStage)Enum.Parse(typeof(LaunchStage), name), new LaunchStageViewModel { TaskName = name });
+    }
+
+    public void Report(LaunchProgress value)
+    {
+        var vm = Stages[value.Stage];
+        App.DispatcherQueue.TryEnqueue(() => vm.UpdateProgress(value.StageProgress));
+    }
+}
+
+partial class LaunchStageViewModel : ObservableObject
+{
+    [ObservableProperty]
+    private string taskName = string.Empty;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsRunning))]
+    [NotifyPropertyChangedFor(nameof(FontIcon))]
+    private TaskState state = TaskState.Prepared;
+
+    [ObservableProperty]
+    private int totalTasks = 1;
+
+    public int FinishedTasks
+    {
+        get => _finishedTasks;
+        set
+        {
+            _finishedTasks = value;
+            OnPropertyChanged(nameof(FinishedTasks));
+        }
+    }
+    private int _finishedTasks = 0;
+
+    public bool IsRunning => State == TaskState.Running;
+
+    public string FontIcon => State switch
+    {
+        TaskState.Cancelled => "\ue73c",
+        TaskState.Finished => "\ue73e",
+        TaskState.Failed => "\ue711",
+        _ => "\ue73c",
+    };
+
+    public void UpdateProgress(LaunchStageProgress payload)
+    {
+        switch (payload.Type)
+        {
+            case LaunchStageProgressType.Starting:
+                State = TaskState.Running;
+                break;
+
+            case LaunchStageProgressType.UpdateTotalTasks:
+                TotalTasks = (int)payload.TotalTasks!;
+                break;
+            case LaunchStageProgressType.UpdateFinishedTasks:
+                FinishedTasks = (int)payload.FinishedTasks!;
+                break;
+            case LaunchStageProgressType.IncrementFinishedTasks:
+                Interlocked.Increment(ref _finishedTasks);
+                OnPropertyChanged(nameof(FinishedTasks));
+                break;
+
+            case LaunchStageProgressType.Finished:
+                State = TaskState.Finished;
+                FinishedTasks = TotalTasks;
+                break;
+            case LaunchStageProgressType.Failed:
+                State = TaskState.Failed;
+                break;
+
+            default:
+                break;
+        }
+    }
+}
+
+readonly record struct LaunchStageProgress(
+    LaunchStageProgressType Type,
+    int? FinishedTasks,
+    int? TotalTasks)
+{
+    internal static LaunchStageProgress Starting()
+        => new(LaunchStageProgressType.Starting, null, null);
+    internal static LaunchStageProgress UpdateTotalTasks(int totalTasks)
+        => new(LaunchStageProgressType.UpdateTotalTasks, null, totalTasks);
+    internal static LaunchStageProgress UpdateFinishedTasks(int finishedTasks)
+        => new(LaunchStageProgressType.UpdateFinishedTasks, finishedTasks, null);
+    internal static LaunchStageProgress IncrementFinishedTasks()
+        => new(LaunchStageProgressType.IncrementFinishedTasks, null, null);
+    internal static LaunchStageProgress Finished()
+        => new(LaunchStageProgressType.Finished, null, null);
+    internal static LaunchStageProgress Failed()
+        => new(LaunchStageProgressType.Failed, null, null);
+
+    internal static LaunchStageProgress Skiped()
+        => new(LaunchStageProgressType.Skiped, null, null);
+
+    public enum LaunchStageProgressType
+    {
+        Starting,
+
+        UpdateTotalTasks,
+        UpdateFinishedTasks,
+        IncrementFinishedTasks,
+
+        Finished,
+        Skiped,
+        Failed,
+    }
+}
+
+internal partial class LaunchTaskViewModel : TaskViewModel
+{
+    private readonly MinecraftInstance _instance;
+    private readonly LaunchProgressViewModel launchProgressViewModel = new();
+    private bool _isMcProcessKilled = false;
+
+    public IEnumerable<LaunchStageViewModel> StageViewModels { get; }
+
+    public MinecraftProcess McProcess { get; private set; }
+
+    public Exception Exception { get; private set; }
+
+    public ObservableCollection<GameLoggerOutput> Logger { get; } = [];
+
+    public LaunchTaskViewModel(MinecraftInstance instance)
+    {
+        _instance = instance;
+
+        StageViewModels = launchProgressViewModel.Stages.Values;
+        TaskTitle = _instance.InstanceId;
+        IsExpanded = true;
+    }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanCancel))]
+    [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
+    private bool isLaunching = true;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsGameRunning))]
+    [NotifyCanExecuteChangedFor(nameof(KillProcessCommand))]
+    private bool processLaunched;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsGameRunning))]
+    [NotifyCanExecuteChangedFor(nameof(KillProcessCommand))]
+    private bool processExited;
+
+    [ObservableProperty]
+    private bool showException = false;
+
+    [ObservableProperty]
+    private bool crashed = false;
+
+    [ObservableProperty]
+    private string exceptionReason;
+
+    public override bool CanCancel => IsLaunching;
+
+    public bool IsGameRunning => ProcessLaunched && !ProcessExited;
+
+    public override string TaskIcon => TaskState switch
+    {
+        TaskState.Failed => "\ue711",
+        TaskState.Cancelled => "\ue711",
+        TaskState.Finished => "\ue73e",
+        _ => "\ue945",
+    };
+
+    protected override async void Run()
+    {
+        App.DispatcherQueue.TryEnqueue(() => TaskState = TaskState.Running);
+        TaskState resultState = TaskState.Running;
+
+        try
+        {
+            McProcess = await App.GetService<LaunchService>().LaunchAsync(
+                _instance, 
+                Process_OutputDataReceived,
+                Process_ErrorDataReceived,
+                launchProgressViewModel, _tokenSource.Token);
+        }
+        catch (AggregateException aggregateException)
+        {
+            if (aggregateException.InnerException is OperationCanceledException)
+            {
+                resultState = TaskState.Cancelled;
+            }
+        }
+        catch (OperationCanceledException ex)
+        {
+            resultState = TaskState.Cancelled;
+            Exception = ex;
+
+            App.DispatcherQueue.TryEnqueue(() =>
+            {
+                ShowException = true;
+                ExceptionReason = ex.Message;
+            });
+        }
+        catch (Exception ex)
+        {
+            resultState = TaskState.Failed;
+            Exception = ex;
+
+            App.DispatcherQueue.TryEnqueue(() =>
+            {
+                ShowException = true;
+                ExceptionReason = ex.Message;
+            });
+            NotifyException();
+        }
+
+        if (resultState == TaskState.Running)
+            AfterLaunchedProcess();
+
+        App.DispatcherQueue.TryEnqueue(() =>
+        {
+            ProgressBarIsIndeterminate = false;
+            Progress = 1;
+
+            IsLaunching = false;
+            TaskState = resultState;
+        });
+    }
+
+    void AfterLaunchedProcess()
+    {
+        App.DispatcherQueue.TryEnqueue(() => ProcessLaunched = true);
+
+        McProcess.Process.Exited += Process_Exited;
+    }
+
+    void Process_Exited(object sender, EventArgs e)
+    {
+        App.DispatcherQueue.TryEnqueue(() =>
+        {
+            ProcessExited = true;
+            Crashed = McProcess.Process.ExitCode == 0;
+            TaskState = _isMcProcessKilled 
+                ? TaskState.Finished
+                : Crashed
+                    ? TaskState.Finished 
+                    : TaskState.Failed;
+
+            McProcess.Dispose();
+        });
+    }
+
+    void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+    {
+        if (!string.IsNullOrEmpty(e.Data))
+            Logger.Add(GameLoggerOutput.Parse(e.Data, true));
+    }
+
+    void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
+    {
+        if (!string.IsNullOrEmpty(e.Data))
+            Logger.Add(GameLoggerOutput.Parse(e.Data));
+    }
+
+    [RelayCommand]
+    void ShowLogger()
+    {
+        App.DispatcherQueue.TryEnqueue(() =>
+        {
+            var hoverColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
+            hoverColor.A = 35;
+
+            var window = new WindowEx();
+
+            window.Title = $"Logger - {_instance.InstanceId}";
+
+            window.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets/AppIcon.ico"));
+
+            window.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
+            window.AppWindow.TitleBar.ButtonBackgroundColor = window.AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            window.AppWindow.TitleBar.ButtonForegroundColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
+            window.AppWindow.TitleBar.ButtonHoverForegroundColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
+            window.AppWindow.TitleBar.ButtonHoverBackgroundColor = hoverColor;
+            window.SystemBackdrop = Environment.OSVersion.Version.Build >= 22000
+               ? new MicaBackdrop() { Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt }
+               : new DesktopAcrylicBackdrop();
+
+            (window.MinWidth, window.MinHeight) = (525, 328);
+            (window.Width, window.Height) = (525, 612);
+
+            var view = new Views.LoggerPage();
+            var viewModel = new Pages.LoggerViewModel(this, view);
+
+            viewModel.Title = window.Title;
+            view.DataContext = viewModel;
+
+            window.Content = view;
+            window.Show();
+        });
+    }
+
+    [RelayCommand(CanExecute = nameof(IsGameRunning))]
+    public void KillProcess()
+    {
+        _isMcProcessKilled = true;
+        McProcess!.Kill(); // not null when game is running
+    }
+
+    [RelayCommand]
+    void CopyLaunchArguments()
+    {
+        var dataPackage = new DataPackage();
+        dataPackage.SetText(string.Join("\r\n", McProcess!.ArgumentList));
+        Clipboard.SetContent(dataPackage);
+    }
+
+    [RelayCommand]
+    void NotifyException()
+    {
+        string errorDescriptionKey = string.Empty;
+
+        if (Exception is InvalidOperationException)
+        {
+
+        }
+        else if (Exception is YggdrasilAuthenticationException)
+        {
+            errorDescriptionKey = "_LaunchGameThrowYggdrasilAuthenticationException";
+        }
+        else if (Exception is MicrosoftAuthenticationException)
+        {
+            errorDescriptionKey = "_LaunchGameThrowMicrosoftAuthenticationException";
+        }
+
+        App.GetService<NotificationService>().NotifyException(
+            "_LaunchGameThrowException",
+            Exception,
+            errorDescriptionKey);
+    }
+
 }
 
 #endregion

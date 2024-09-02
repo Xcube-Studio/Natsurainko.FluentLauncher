@@ -29,6 +29,18 @@
             <FontFamily x:Key="MinecraftTen">/Assets/MinecraftTen.ttf#Minecraft Ten</FontFamily>
             <x:Double x:Key="SettingsCardSpacing">4</x:Double>
 
+            <Thickness x:Key="PageMarginWithBreadcrumbBar">30,15</Thickness>
+            <Thickness x:Key="PageMarginWithBorder">40,0,40,25</Thickness>
+            <Thickness x:Key="PageMarginWithStackPanel">40,20</Thickness>
+            <Thickness x:Key="PagePaddingWithScrollViewer">40,0</Thickness>
+            <Thickness x:Key="PageEndMarginWithScrollViewer">0,0,0,25</Thickness>
+
+            <Thickness x:Key="PagePaddingWithInstallWizardPageGrid">40,30</Thickness>
+            <Thickness x:Key="PagePaddingWithInstallWizardPageStackPanel">30,0</Thickness>
+            <Thickness x:Key="PagePaddingWithInstallWizardPageFrame">40,15,40,0</Thickness>
+            <Thickness x:Key="PageMarginWithInstallWizardPageStackPanel">10,20,10,0</Thickness>
+
+
             <converters:AccountInfoConverter x:Key="AccountInfoConverter" />
 
             <converters:JavaIconConverter x:Key="JavaIconConverter" />

@@ -105,20 +105,7 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
         var vm = CurrentFrameDataContext as ConfirmProfileViewModel;
         var account = vm.SelectedAccount;
 
-        var existedAccounts = _accountService.Accounts.Where(x =>
-        {
-            if (x.Uuid.Equals(account.Uuid)
-                && x.Name.Equals(account.Name)
-                && x.Type.Equals(account.Type))
-            {
-                if (account is YggdrasilAccount yggdrasilAccount)
-                    return ((YggdrasilAccount)x).YggdrasilServerUrl.Equals(yggdrasilAccount.YggdrasilServerUrl);
-
-                return true;
-            }
-
-            return false;
-        }).ToArray();
+        var existedAccounts = _accountService.Accounts.Where(x => x.Equals(account)).ToArray();
 
         if (existedAccounts.Length != 0)
         {

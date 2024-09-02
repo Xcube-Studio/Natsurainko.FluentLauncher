@@ -11,12 +11,12 @@ internal partial class LaunchViewModel : ObservableObject, INavigationAware
 {
     private readonly INavigationService _navigationService;
 
-    public ReadOnlyObservableCollection<LaunchSessionViewModel> Tasks { get; }
+    public ReadOnlyObservableCollection<LaunchTaskViewModel> Tasks { get; }
 
     public LaunchViewModel(LaunchService launchService, INavigationService navigationService)
     {
         _navigationService = navigationService;
-        Tasks = new(launchService.LaunchSessions);
+        Tasks = new(launchService.LaunchTasks);
     }
 
     [RelayCommand]

@@ -46,13 +46,4 @@ internal static class MinecraftInstanceExtensions
     public static string GetModsDirectory(this MinecraftInstance instance) => Path.Combine(GetGameDirectory(instance), "mods");
 
     public static string GetSavesDirectory(this MinecraftInstance instance) => Path.Combine(GetGameDirectory(instance), "saves");
-
-    public static void UpdateLastLaunchTimeToNow(this MinecraftInstance instance)
-    {
-        var config = instance.GetConfig();
-
-        // Update launch time
-        var launchTime = DateTime.Now;
-        config.LastLaunchTime = launchTime;
-    }
 }

@@ -11,7 +11,7 @@
             x:Key="TemplateSelector"
             DownloadGameResourceTask="{StaticResource DownloadGameResourceTaskTemplate}"
             InstallInstanceTask="{StaticResource InstallInstanceTaskTemplate}"
-            LaunchSession="{StaticResource LaunchSessionTemplate}" />
+            LaunchTask="{StaticResource LaunchTaskTemplate}" />
     </Page.Resources>
 
     <Grid>
@@ -22,7 +22,7 @@
 
         <StackPanel
             MaxWidth="1000"
-            Margin="40,20"
+            Margin="{ThemeResource PageMarginWithStackPanel}"
             Spacing="15">
             <TextBlock
                 x:Uid="Tasks_DownloadPage_Title"
@@ -32,10 +32,10 @@
             <controls:WrapPanel HorizontalSpacing="15" VerticalSpacing="15" />
         </StackPanel>
 
-        <ScrollViewer Grid.Row="2" Padding="40,0">
+        <ScrollViewer Grid.Row="2" Padding="{ThemeResource PagePaddingWithScrollViewer}">
             <ItemsRepeater
                 MaxWidth="1000"
-                Margin="0,0,0,25"
+                Margin="{ThemeResource PageEndMarginWithScrollViewer}"
                 ItemTemplate="{ThemeResource TemplateSelector}"
                 ItemsSource="{Binding Tasks}">
                 <ItemsRepeater.Layout>

@@ -19,7 +19,7 @@
         <BreadcrumbBar
             Grid.Row="0"
             MaxWidth="1020"
-            Margin="30,15"
+            Margin="{ThemeResource PageMarginWithBreadcrumbBar}"
             ItemsSource="{Binding Routes}">
             <BreadcrumbBar.Resources>
                 <converters:BreadcrumbBarLocalizationConverter x:Key="BreadcrumbBarLocalizationConverter" BasePath="News_NavigationPage" />

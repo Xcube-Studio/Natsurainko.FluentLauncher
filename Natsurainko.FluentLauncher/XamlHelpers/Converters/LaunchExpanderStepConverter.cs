@@ -37,7 +37,7 @@ internal class LaunchExpanderStepConverter : IValueConverter
             },
             "FontIconVisibility" => (int)value == 1 ? Visibility.Collapsed : Visibility.Visible,
             "ProgressRingActive" => (int)value == 1,
-            "ExitFontIcon" => (LaunchSessionState)value == LaunchSessionState.GameCrashed ? "\uE711" : "\uE73E",
+            //"ExitFontIcon" => (LaunchSessionState)value == LaunchSessionState.GameCrashed ? "\uE711" : "\uE73E",
             _ => null
         };
     }

@@ -81,14 +81,14 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     [RelayCommand]
     public async Task Refresh()
     {
-        var refreshTask = _accountService.RefreshActiveAccount();
-        await refreshTask;
-
-        if (refreshTask.IsFaulted)
-            _notificationService.NotifyException("_AccountRefreshFailedTitle", refreshTask.Exception, "_AccountRefreshFailedDescription");
-        else _notificationService.NotifyMessage(
-            ResourceUtils.GetValue("Notifications", "_AccountRefreshedTitle"),
-            ResourceUtils.GetValue("Notifications", "_AccountRefreshedDescription").Replace("${name}", _accountService.ActiveAccount.Name));
+        await _accountService.RefreshAccountAsync(ActiveAccount).ContinueWith(task => 
+        {
+            if (task.IsFaulted)
+                _notificationService.NotifyException("_AccountRefreshFailedTitle", task.Exception, "_AccountRefreshFailedDescription");
+            else _notificationService.NotifyMessage(
+                ResourceUtils.GetValue("Notifications", "_AccountRefreshedTitle"),
+                ResourceUtils.GetValue("Notifications", "_AccountRefreshedDescription").Replace("${name}", _accountService.ActiveAccount.Name));
+        });
     }
 
     [RelayCommand]

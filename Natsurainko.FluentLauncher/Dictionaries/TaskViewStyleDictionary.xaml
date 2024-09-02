@@ -491,15 +491,184 @@
                                 <Run Text="/" />
                                 <Run Text="{Binding TotalTasks}" />
                             </TextBlock>
-                            <TextBlock
-                                Grid.Column="4"
-                                FontWeight="{Binding FontWeight}"
-                                Foreground="{Binding FontForeground}"
-                                Text="{Binding TaskName}" />
+                            <TextBlock Grid.Column="4" Text="{Binding TaskName}" />
                         </Grid>
                     </DataTemplate>
                 </ItemsRepeater.ItemTemplate>
             </ItemsRepeater>
+        </Expander>
+    </DataTemplate>
+    <DataTemplate x:Key="LaunchTaskTemplate">
+        <Expander
+            MinHeight="0"
+            Padding="16,10"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
+            IsExpanded="{Binding IsExpanded}">
+            <Expander.Header>
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <FontIcon Glyph="{Binding TaskIcon}" />
+
+                    <StackPanel
+                        Grid.Column="2"
+                        Padding="0,15"
+                        Spacing="4">
+
+                        <TextBlock Style="{ThemeResource BaseTextBlockStyle}">
+                            <Run Text="Launch Minecraft:" /> <Run Text="{Binding TaskTitle}" />
+                        </TextBlock>
+
+                        <Border Background="{ThemeResource ProgressBarBackgroundThemeBrush}" CornerRadius="1">
+                            <ProgressBar
+                                Background="Transparent"
+                                IsIndeterminate="{Binding ProgressBarIsIndeterminate}"
+                                Maximum="1"
+                                ShowError="{Binding ProgressShowError}"
+                                ShowPaused="{Binding ProgressShowPaused}"
+                                Value="{Binding Progress}" />
+                        </Border>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                Text="{Binding TaskState}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap" />
+                            <StackPanel
+                                Grid.Column="2"
+                                Orientation="Horizontal"
+                                Spacing="10">
+                                <TextBlock
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                    Text="{Binding TimeUsage}" />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel
+                        Grid.Column="4"
+                        Orientation="Horizontal"
+                        Spacing="5">
+                        <Button
+                            Command="{Binding CancelCommand}"
+                            Content="Cancel"
+                            Visibility="{Binding CanCancel, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                    </StackPanel>
+                </Grid>
+            </Expander.Header>
+
+            <StackPanel Padding="30,5" Spacing="5">
+                <ItemsRepeater ItemsSource="{Binding StageViewModels}" Visibility="{Binding IsLaunching, Converter={ThemeResource BoolToVisibilityConverter}}">
+                    <ItemsRepeater.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,3.75">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <ProgressRing
+                                    Width="16"
+                                    Height="16"
+                                    IsActive="{Binding IsRunning}" />
+                                <FontIcon
+                                    FontSize="16"
+                                    Glyph="{Binding FontIcon}"
+                                    Visibility="{Binding IsRunning, Converter={ThemeResource InvertedBoolToVisibilityConverter}}" />
+                                <TextBlock Grid.Column="2" HorizontalAlignment="Right">
+                                    <Run Text="{Binding FinishedTasks}" />
+                                    <Run Text="/" />
+                                    <Run Text="{Binding TotalTasks}" />
+                                </TextBlock>
+                                <TextBlock Grid.Column="4" Text="{Binding TaskName}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
+
+                <Grid Visibility="{Binding ProcessLaunched, Converter={ThemeResource BoolToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        x:Uid="Tasks_LaunchPage_Item_H3"
+                        VerticalAlignment="Center"
+                        Text="Game process management"
+                        TextTrimming="CharacterEllipsis" />
+
+                    <controls:WrapPanel
+                        Grid.Column="2"
+                        HorizontalAlignment="Right"
+                        HorizontalSpacing="10"
+                        Orientation="Horizontal"
+                        VerticalSpacing="10">
+                        <Button Command="{Binding CopyLaunchArgumentsCommand}">
+                            <StackPanel Orientation="Horizontal" Spacing="5">
+                                <FontIcon FontSize="14" Glyph="&#xe8c8;" />
+                                <TextBlock x:Uid="Tasks_LaunchPage_B5" Text="Copy Launch Arguments" />
+                            </StackPanel>
+                        </Button>
+                        <Button Command="{Binding ShowLoggerCommand}">
+                            <StackPanel Orientation="Horizontal" Spacing="5">
+                                <FontIcon FontSize="14" Glyph="&#xf000;" />
+                                <TextBlock x:Uid="Tasks_LaunchPage_B1" Text="Open Log" />
+                            </StackPanel>
+                        </Button>
+                        <Button Command="{Binding KillProcessCommand}">
+                            <StackPanel Orientation="Horizontal" Spacing="5">
+                                <FontIcon FontSize="14" Glyph="&#xe71a;" />
+                                <TextBlock x:Uid="Tasks_LaunchPage_B2" Text="Kill Process" />
+                            </StackPanel>
+                        </Button>
+                    </controls:WrapPanel>
+                </Grid>
+
+                <Grid Visibility="{Binding ShowException, Converter={ThemeResource BoolToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        TextTrimming="CharacterEllipsis"
+                        TextWrapping="WrapWholeWords">
+                        <Run x:Uid="Tasks_LaunchPage_Item_H5" Text="Reason:" />
+                        <Run Text="{Binding ExceptionReason}" />
+                    </TextBlock>
+
+                    <Button
+                        Grid.Column="2"
+                        HorizontalAlignment="Right"
+                        Command="{Binding ShowExceptionCommand}">
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <FontIcon FontSize="14" Glyph="&#xf000;" />
+                            <TextBlock x:Uid="Tasks_LaunchPage_B4" Text="Show Details" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </StackPanel>
         </Expander>
     </DataTemplate>
 

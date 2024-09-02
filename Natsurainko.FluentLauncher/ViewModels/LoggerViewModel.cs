@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
-using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
@@ -20,19 +19,17 @@ internal partial class LoggerViewModel : ObservableObject
 {
     private readonly ObservableCollection<GameLoggerOutput> _gameLoggerOutputs;
 
-    public LoggerViewModel(LaunchSessionViewModel launchProcess, Views.LoggerPage view)
+    public LoggerViewModel(LaunchTaskViewModel launchTaskViewModel, Views.LoggerPage view)
     {
-        _gameLoggerOutputs = launchProcess._gameLoggerOutputs;
+        _gameLoggerOutputs = launchTaskViewModel.Logger;
         _gameLoggerOutputs.CollectionChanged += LoggerItems_CollectionChanged;
         EnabledLevel.CollectionChanged += EnabledLevel_CollectionChanged;
 
         View = view;
-
-        if (!(launchProcess.SessionState == LaunchSessionState.GameExited ||
-            launchProcess.SessionState == LaunchSessionState.Killed ||
-            launchProcess.SessionState == LaunchSessionState.GameCrashed))
+        
+        if (launchTaskViewModel.McProcess.State != MinecraftProcessState.Exited)
             View.Unloaded += (_, e) => _gameLoggerOutputs.CollectionChanged -= LoggerItems_CollectionChanged;
-
+        
         OnPropertyChanged();
     }
 

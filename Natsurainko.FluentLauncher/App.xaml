@@ -53,15 +53,13 @@
             <converters:ModInfoConverter x:Key="ModInfoConverter" />
             <converters:SaveInfoConverter x:Key="SaveInfoConverter" />
 
-            <converters:ColorHexCodeConverter x:Key="ColorHexCodeConverter" />
             <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <converters:ColorHexCodeConverter x:Key="ColorHexCodeConverter" />
+
             <converters:ResourceAuthorsConverter x:Key="ResourceAuthorsConverter" />
             <converters:SuggestionIconConverter x:Key="SuggestionIconConverter" />
             <converters:RadioButtonSelectedIndexConverter x:Key="RadioButtonSelectedIndexConverter" />
-
-            <converters:LaunchExpanderItemVisibilityConverter x:Key="LaunchExpanderItemVisibilityConverter" />
-            <converters:LaunchExpanderStepConverter x:Key="LaunchExpanderStepConverter" />
 
             <Style
                 x:Key="SettingsSectionHeaderTextBlockStyle"

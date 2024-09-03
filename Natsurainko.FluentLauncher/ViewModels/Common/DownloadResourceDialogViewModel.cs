@@ -172,7 +172,7 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
             DesignatedFilePath = saveFileDialog.FileName;
     }
 
-    async void ParseResource()
+    async Task ParseResource()
     {
         string resourceName = string.Empty;
 

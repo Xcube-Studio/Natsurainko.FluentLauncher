@@ -8,6 +8,7 @@ using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Network.Data;
 using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Exceptions;
 using Nrk.FluentCore.GameManagement.Downloader;
@@ -52,6 +53,7 @@ internal abstract partial class TaskViewModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(TaskIcon))]
     [NotifyPropertyChangedFor(nameof(ProgressShowPaused))]
     [NotifyPropertyChangedFor(nameof(ProgressShowError))]
+    [NotifyPropertyChangedFor(nameof(CancelButtonVisibility))]
     private TaskState taskState = TaskState.Prepared;
 
     [ObservableProperty]
@@ -71,7 +73,11 @@ internal abstract partial class TaskViewModel : ObservableObject
     private bool progressBarIsIndeterminate = true;
 
     [ObservableProperty]
-    public Visibility progressBarVisibility = Visibility.Visible;
+    private Visibility progressBarVisibility = Visibility.Visible;
+
+    public Visibility CancelButtonVisibility => (TaskState == TaskState.Cancelled || TaskState == TaskState.Finished || TaskState == TaskState.Failed) 
+        ? Visibility.Collapsed 
+        : Visibility.Visible;
 
     public bool ProgressShowError => TaskState == TaskState.Failed;
 
@@ -85,7 +91,7 @@ internal abstract partial class TaskViewModel : ObservableObject
 
     public virtual void Start()
     {
-        System.Timers.Timer timer = new System.Timers.Timer(TimeSpan.FromSeconds(1));
+        System.Timers.Timer timer = new(TimeSpan.FromSeconds(1));
         timer.Elapsed += (object sender, System.Timers.ElapsedEventArgs e) =>
         {
             App.DispatcherQueue.TryEnqueue(() => TimeUsage = Stopwatch.Elapsed.ToString("hh\\:mm\\:ss"));
@@ -398,7 +404,8 @@ class LaunchProgressViewModel : IProgress<LaunchProgress>
     public LaunchProgressViewModel()
     {
         foreach (var name in Enum.GetNames(typeof(LaunchStage)))
-            Stages.Add((LaunchStage)Enum.Parse(typeof(LaunchStage), name), new LaunchStageViewModel { TaskName = name });
+            Stages.Add((LaunchStage)Enum.Parse(typeof(LaunchStage), name), new LaunchStageViewModel 
+                { TaskName = ResourceUtils.GetValue("Tasks", "LaunchPage", $"_TaskName_{name}") });
     }
 
     public void Report(LaunchProgress value)
@@ -557,7 +564,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     [ObservableProperty]
     private string exceptionReason;
 
-    public override bool CanCancel => IsLaunching;
+    public override bool CanCancel => IsLaunching && TaskState != TaskState.Canceling;
 
     public bool IsGameRunning => ProcessLaunched && !ProcessExited;
 

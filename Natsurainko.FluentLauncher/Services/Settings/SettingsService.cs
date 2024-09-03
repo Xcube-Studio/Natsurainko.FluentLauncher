@@ -134,13 +134,11 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(Default = 0u)]
     public partial uint SettingsVersion { get; set; }
 
-    static SettingsService()
-    {
-        JsonStringConverterConfig.SerializerContext = SetingsJsonSerializerContext.Default;
-    }
-
     public SettingsService(ISettingsStorage storage) : base(storage)
     {
+        // Configure JsonSerializerContext for NativeAOT-compatible JsonStringConverter
+        JsonStringConverterConfig.SerializerContext = SetingsJsonSerializerContext.Default;
+
         var appsettings = ApplicationData.Current.LocalSettings;
 
         // Migrate settings data structures from old versions

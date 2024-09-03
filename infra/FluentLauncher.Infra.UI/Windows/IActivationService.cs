@@ -1,9 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FluentLauncher.Infra.UI.Windows;
 
-public record WindowDescriptor(Type WindowType, bool AllowMultiInstances = false);
+public record WindowDescriptor
+{
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+    public Type WindowType { get; init; }
+
+    public bool AllowMultiInstances { get; init; }
+
+    public WindowDescriptor(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type windowType,
+        bool allowMultiInstances = false)
+    {
+        WindowType = windowType;
+        AllowMultiInstances = allowMultiInstances;
+    }
+}
 
 /// <summary>
 /// A service for activating app windows.

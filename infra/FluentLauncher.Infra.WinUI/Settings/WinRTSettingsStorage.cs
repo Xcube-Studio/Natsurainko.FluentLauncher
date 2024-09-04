@@ -4,6 +4,7 @@ using Windows.Foundation;
 using System;
 using System.Collections.Generic;
 using FluentLauncher.Infra.Settings;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FluentLauncher.Infra.WinUI.Settings;
 
@@ -97,11 +98,11 @@ public class WinRTSettingsStorage : ISettingsStorage
     // so there is no need to use generic types.
 
     /// <inheritdoc/>
-    public T GetValue<T>(string path) where T : notnull
+    public T GetValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string path) where T : notnull
         => (T)GetValue(path, typeof(T));
 
     /// <inheritdoc/>
-    public object GetValue(string path, Type type)
+    public object GetValue(string path, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type type)
     {
         (ApplicationDataContainer? container, string key) = GetContainerAndKey(path);
 
@@ -127,7 +128,7 @@ public class WinRTSettingsStorage : ISettingsStorage
             else // If the array is empty, it is stored as null in the ApplicationDataContainer.
             {
                 // Return an empty array of the correct type.
-                return Array.CreateInstance(elementType, 0);
+                return Activator.CreateInstance(type, 0)!;
             }
         }
 

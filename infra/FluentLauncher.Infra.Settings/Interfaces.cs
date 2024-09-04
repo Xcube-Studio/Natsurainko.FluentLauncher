@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,7 +54,7 @@ public interface ISettingsStorage
     /// <exception cref="KeyNotFoundException">Throws if the key is not found</exception>
     /// <remarks>If a type converter is specified, the storage provider will be responsible for converting the type stored
     /// <br/> into T when the item is accessed, and converting T into the type used in storage.</remarks>
-    T GetValue<T>(string path) where T : notnull;
+    T GetValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string path) where T : notnull;
 
     /// <summary>
     /// Obtains the value of a setting item from the storage
@@ -61,7 +62,7 @@ public interface ISettingsStorage
     /// <param name="path">A unique path that locates the item in the storage</param>
     /// <param name="type">Type of the value expected<br/>This may be used when dealing with special types such as arrays.</param>
     /// <returns></returns>
-    object GetValue(string path, Type type);
+    object GetValue(string path, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type type);
 
     /// <summary>
     /// Sets a setting item to a new value in the storage

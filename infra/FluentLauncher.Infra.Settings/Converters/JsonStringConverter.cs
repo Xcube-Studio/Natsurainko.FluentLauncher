@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -12,12 +13,14 @@ namespace FluentLauncher.Infra.Settings.Converters;
 /// Converts a string to a type T using JSON serialization
 /// </summary>
 /// <typeparam name="T">Type used in the application</typeparam>
-public class JsonStringConverter<T> : IDataTypeConverter
+public class JsonStringConverter<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T> : IDataTypeConverter
 {
     /// <inheritdoc/>
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
     public Type SourceType => typeof(string);
 
     /// <inheritdoc/>
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
     public Type TargetType => typeof(T);
 
     private readonly JsonSerializerContext _serializerContext;

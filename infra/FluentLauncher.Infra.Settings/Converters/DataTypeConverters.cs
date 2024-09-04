@@ -16,10 +16,12 @@ public interface IDataTypeConverter
     /// <summary>
     /// Type stored in the storage
     /// </summary>
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
     Type SourceType { get; }
     /// <summary>
     /// Type used in the application
     /// </summary>
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
     Type TargetType { get; }
 
     object? Convert(object? source);

@@ -77,7 +77,7 @@ public abstract class SettingsContainer : ISettingsContainer
 
     #region GetValue<T>
 
-    protected T? GetValue<T>(string key, IDataTypeConverter? converter = null)
+    protected T? GetValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string key, IDataTypeConverter? converter = null)
     {
         var path = GetPathFromKey(key);
 
@@ -113,7 +113,7 @@ public abstract class SettingsContainer : ISettingsContainer
     /// <param name="key"></param>
     /// <param name="defaultValue">Cannot be null; the setting item is removed if set to null.</param>
     /// <returns></returns>
-    protected T GetValue<T>(string key, T defaultValue, IDataTypeConverter? converter = null) where T : notnull
+    protected T GetValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string key, T defaultValue, IDataTypeConverter? converter = null) where T : notnull
     {
         if (defaultValue is null)
             throw new ArgumentNullException(nameof(defaultValue));
@@ -146,7 +146,7 @@ public abstract class SettingsContainer : ISettingsContainer
 
     #region SetValue<T>
 
-    private void _setValue<T>(string key,
+    private void _setValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string key,
                               T value,
                               SettingChangedEventHandler? _event,
                               IDataTypeConverter? converter = null) where T : notnull
@@ -197,7 +197,7 @@ public abstract class SettingsContainer : ISettingsContainer
     /// <param name="key"></param>
     /// <param name="value"></param>
     /// <param name="_event"></param>
-    protected void SetValue<T>(string key,
+    protected void SetValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string key,
                                T? value,
                                SettingChangedEventHandler? _event,
                                IDataTypeConverter? converter = null) where T : struct
@@ -217,7 +217,7 @@ public abstract class SettingsContainer : ISettingsContainer
     /// <param name="key"></param>
     /// <param name="value"></param>
     /// <param name="_event"></param>
-    protected void SetValue<T>(string key,
+    protected void SetValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string key,
                                T? value,
                                SettingChangedEventHandler? _event,
                                IDataTypeConverter? converter = null) where T : class

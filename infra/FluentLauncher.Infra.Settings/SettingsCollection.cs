@@ -12,13 +12,14 @@ using FluentLauncher.Infra.Settings.Converters;
 namespace FluentLauncher.Infra.Settings;
 
 // Cannot store null values in a collection
-[RequiresDynamicCode("Requires dynamic code for converters")] // TODO: Redesign IDataTypeConverter to support generic types
+// TODO: Redesign IDataTypeConverter to support generic types
+[RequiresDynamicCode("Requires dynamic code for converters")]
+[RequiresUnreferencedCode("Requires dynamic code for converters")]
 public class SettingsCollection<T> : ObservableCollection<T> where T : notnull
 {
     private readonly ISettingsStorage _settingsStorage;
     private readonly IDataTypeConverter? _typeConverter;
     private readonly string _storagePath;
-
 
     public SettingsCollection(ISettingsStorage settingsStorage, string storagePath, IDataTypeConverter? typeConverter = null)
     {

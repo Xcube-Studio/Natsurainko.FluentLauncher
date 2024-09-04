@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
 using Nrk.FluentCore.Authentication;
+using Nrk.FluentCore.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

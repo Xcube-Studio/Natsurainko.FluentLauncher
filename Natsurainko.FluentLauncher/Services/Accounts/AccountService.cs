@@ -161,23 +161,22 @@ internal class AccountService
         ActiveAccount = account;
     }
 
-    public async Task RefreshAccount(Account account)
+    public async Task<Account> RefreshAccountAsync(Account account)
     {
         // RefreshAsync account
         Account refreshedAccount = account switch
         {
             MicrosoftAccount microsoftAccount => await _authService.RefreshAsync(microsoftAccount),
             YggdrasilAccount yggdrasilAccount => (await _authService.RefreshAsync(yggdrasilAccount))
-                .First(acc => acc.Uuid.Equals(account.Uuid)),
+                .First(acc => acc.Equals(account)),
             OfflineAccount offlineAccount => _authService.Refresh(offlineAccount),
 
             _ => throw new InvalidOperationException("Unknown account type")
         };
 
         // Update stored account
-        Account? oldAccount = Accounts.Where(x => x.Uuid.Equals(account.Uuid) && x.Type.Equals(account.Type)).FirstOrDefault();
-        if (oldAccount == null)
-            throw new Exception($"{account} does not exist in AccountService");
+        Account? oldAccount = Accounts.FirstOrDefault(x => x.Equals(account)) 
+            ?? throw new Exception($"{account} does not exist in AccountService");
 
         bool isActiveAccount = ActiveAccount == oldAccount;
         RemoveAccount(oldAccount, true);
@@ -186,15 +185,8 @@ internal class AccountService
         if (isActiveAccount)
             ActivateAccount(refreshedAccount);
 
-        App.GetService<CacheSkinService>().CacheSkinOfAccount(refreshedAccount);
+        _ = App.GetService<CacheSkinService>().CacheSkinOfAccount(refreshedAccount);
+
+        return refreshedAccount;
     }
-
-    public async Task RefreshActiveAccount()
-    {
-        if (ActiveAccount is null)
-            return;
-
-        await RefreshAccount(ActiveAccount);
-    }
-
 }

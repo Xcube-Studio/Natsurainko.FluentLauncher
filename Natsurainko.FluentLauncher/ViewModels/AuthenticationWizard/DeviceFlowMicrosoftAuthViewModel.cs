@@ -4,6 +4,7 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
 using Nrk.FluentCore.Authentication;
+using Nrk.FluentCore.Exceptions;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

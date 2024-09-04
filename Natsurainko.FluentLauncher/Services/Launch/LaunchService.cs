@@ -7,6 +7,7 @@ using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Environment;
+using Nrk.FluentCore.Exceptions;
 using Nrk.FluentCore.Experimental.Launch;
 using Nrk.FluentCore.GameManagement;
 using Nrk.FluentCore.GameManagement.Dependencies;
@@ -17,159 +18,341 @@ using PInvoke;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
 
+using static Natsurainko.FluentLauncher.Services.Launch.LaunchProgress;
+using PreCheckData = (
+    string Java,
+    string GameDirectory,
+    int MaxMemory,
+    int MinMemory,
+    Account Account,
+    string[] ExtraVmParameters,
+    string[] ExtraGameParameters,
+    string? GameWindowTitle);
+
 internal class LaunchService
 {
-    private readonly AuthenticationService _authenticationService;
     private readonly DownloadService _downloadService;
     private readonly AccountService _accountService;
     private readonly SettingsService _settingsService;
 
-    public ObservableCollection<LaunchSessionViewModel> LaunchSessions { get; } = new();
+    public ObservableCollection<LaunchTaskViewModel> LaunchTasks { get; } = [];
 
     public LaunchService(
         SettingsService settingsService,
         AccountService accountService,
-        AuthenticationService authenticationService,
         DownloadService downloadService)
     {
         _settingsService = settingsService;
-        _authenticationService = authenticationService;
         _accountService = accountService;
         _downloadService = downloadService;
     }
 
-    public async Task LaunchFromUIAsync(MinecraftInstance instance)
+    public void LaunchFromUI(MinecraftInstance instance)
     {
-        var viewModel = new LaunchSessionViewModel(instance);
-        LaunchSessions.Insert(0, viewModel);
-        await LaunchAsync(instance, viewModel, viewModel.LaunchCancellationToken);
+        var viewModel = new LaunchTaskViewModel(instance);
+        App.DispatcherQueue.TryEnqueue(() => LaunchTasks.Insert(0, viewModel));
+
+        viewModel.Start();
     }
 
-    public async Task LaunchAsync(
+    public async Task<MinecraftProcess> LaunchAsync(
         MinecraftInstance instance,
+        DataReceivedEventHandler? outputDataReceivedHandler = null,
+        DataReceivedEventHandler? errorDataReceivedHandler = null,
         IProgress<LaunchProgress>? progress = null,
         CancellationToken cancellationToken = default)
     {
+        MinecraftProcess? minecraftProcess = null;
+        LaunchStage stage = LaunchStage.CheckNeeds;
+
         try
         {
-            progress?.Report(new (LaunchSessionState.Inspecting, null, null, null));
-
-            // 1. Update Jumplist
-            instance.UpdateLastLaunchTimeToNow();
-            //await JumpListService.UpdateJumpListAsync(instance);
-
-            // 2. Check environment
-            cancellationToken.ThrowIfCancellationRequested();
-
-            // 2.1. Java path
-            string? suitableJava = null;
-
-            if (string.IsNullOrEmpty(_settingsService.ActiveJava))
-                throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoActiveJava"));
-
-            suitableJava = _settingsService.EnableAutoJava ? GetSuitableJava(instance) : _settingsService.ActiveJava;
-            if (suitableJava == null)
-                throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoSuitableJava").Replace("${version}", instance.GetSuitableJavaVersion()));
-
-            // 2.2. Java memory
-            var (maxMemory, minMemory) = _settingsService.EnableAutoJava
-                ? MemoryUtils.CalculateJavaMemory()
-                : (_settingsService.JavaMemory, _settingsService.JavaMemory);
-
-            if (JavaUtils.GetJavaInfo(suitableJava).Architecture != "x64" && maxMemory >= 512) // QUESTION: >= 512 or > 1024?
-                throw new Exception(ResourceUtils.GetValue("Exceptions", "_x86_JavaMemoryException"));
-
-            // 3. Get account
-            cancellationToken.ThrowIfCancellationRequested();
-            progress?.Report(new(LaunchSessionState.Authenticating, null, null, null));
-
             InstanceConfig config = instance.GetConfig();
-            Account? account = GetLaunchAccount(config, _accountService)
-                ?? throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount")); // Determine which account to use
+            config.LastLaunchTime = DateTime.Now;
 
-            if (account is null)
-                throw new Exception(ResourceUtils.GetValue("Exceptions", "_NoAccount"));
+            var preCheckData = await PreCheckLaunchNeeds(instance, config, cancellationToken, progress);
 
-            var refreshedAccount = await RefreshAccountAsync(account, config);
+            stage = LaunchStage.Authenticate;
+            preCheckData = await RefreshAccount(preCheckData, cancellationToken, progress);
 
-            // 4. Resolve dependencies
-            cancellationToken.ThrowIfCancellationRequested();
-            await ResolveDependenciesAsync(instance, progress, cancellationToken);
+            stage = LaunchStage.CompleteResources;
+            await ResolveDependencies(instance, cancellationToken, progress);
 
-            // 5. Start MinecraftProcess
-            cancellationToken.ThrowIfCancellationRequested();
-            progress?.Report(new(LaunchSessionState.BuildingArguments, null, null, null));
+            stage = LaunchStage.BuildArguments;
+            minecraftProcess = BuildProcess(instance, preCheckData, cancellationToken, progress);
 
-            MinecraftProcess mcProcess = new MinecraftProcessBuilder(instance)
-                .SetAccountSettings(refreshedAccount, _settingsService.EnableDemoUser)
-                .SetJavaSettings(suitableJava, maxMemory, minMemory)
-                .SetGameDirectory(GetGameDirectory(instance, config))
-                .AddVmArguments(GetExtraVmParameters(config, account))
-                .AddGameArguments(GetExtraGameParameters(config))
-                .Build();
-
-            mcProcess.Exited += (_, _) => mcProcess.Dispose();
-            mcProcess.Started += (_, _) =>
-            {
-                var title = GameWindowTitle(config);
-                if (string.IsNullOrEmpty(title)) return;
-
-                Task.Run(async () =>
-                {
-                    try
-                    {
-                        while (mcProcess.State == MinecraftProcessState.Running)
-                        {
-                            User32.SetWindowText(mcProcess.MainWindowHandle, title);
-                            await Task.Delay(1000);
-                        }
-                    }
-                    catch { }
-                });
-            };
-
-            progress?.Report(new(LaunchSessionState.LaunchingProcess, null, mcProcess, null));
-            mcProcess.Start();
-
-            progress?.Report(new(LaunchSessionState.GameRunning, null, null, null));
+            stage = LaunchStage.CompleteResources;
+            LaunchProcess(minecraftProcess, cancellationToken, progress, outputDataReceivedHandler, errorDataReceivedHandler);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            progress?.Report(new(LaunchSessionState.Faulted, null, null, e));
+            minecraftProcess?.Dispose();
+
+            progress?.Report(new(stage, LaunchStageProgress.Failed()));
+            throw;
         }
+
+        return minecraftProcess;
     }
 
-    private async Task<Account> RefreshAccountAsync(Account account, InstanceConfig config)
+    async Task<PreCheckData> PreCheckLaunchNeeds(
+        MinecraftInstance instance,
+        InstanceConfig specialConfig,
+        CancellationToken cancellationToken,
+        IProgress<LaunchProgress>? progress)
     {
-        if (account.Equals(_accountService.ActiveAccount))
+        cancellationToken.ThrowIfCancellationRequested();
+        progress?.Report(new(
+            LaunchStage.CheckNeeds,
+            LaunchStageProgress.Starting()
+        ));
+
+        var preCheckData = new PreCheckData();
+
+        #region GameDirectory
+
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (specialConfig.EnableSpecialSetting)
         {
-            await _accountService.RefreshActiveAccount();
-            return _accountService.ActiveAccount;
+            preCheckData.GameDirectory = specialConfig.EnableIndependencyCore
+                ? Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId)
+                : instance.MinecraftFolderPath;
         }
         else
         {
-            await _accountService.RefreshAccount(account);
-            return GetLaunchAccount(config, _accountService);
+            preCheckData.GameDirectory = _settingsService.EnableIndependencyCore
+                ? Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId)
+                : instance.MinecraftFolderPath;
         }
+
+        if (!PathUtils.IsValidPath(preCheckData.GameDirectory) || !Directory.Exists(preCheckData.GameDirectory))
+            throw new Exception($"This is not a valid path, or the path does not exist: ({nameof(preCheckData.GameDirectory)}): {preCheckData.GameDirectory}");
+
+        #endregion
+
+        #region Java
+
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (_settingsService.Javas.Count == 0)
+            throw new Exception("No Java added to the launch settings");
+        if (!_settingsService.EnableAutoJava && string.IsNullOrEmpty(_settingsService.ActiveJava))
+            throw new Exception("Automatic Java selection is not enabled, but no Java is manually enabled.");
+
+        if (_settingsService.EnableAutoJava)
+        {
+            var targetJavaVersion = instance.GetSuitableJavaVersion();
+
+            var javaInfos = _settingsService.Javas.Select(JavaUtils.GetJavaInfo).ToArray();
+            var possiblyAvailableJavas = targetJavaVersion == null
+                ? javaInfos
+                : javaInfos.Where(x => x.Version.Major.ToString().Equals(targetJavaVersion)).ToArray();
+
+            if (possiblyAvailableJavas.Length == 0)
+                throw new Exception($"No suitable version of Java found to start this game, version {targetJavaVersion} is required");
+
+            preCheckData.Java = possiblyAvailableJavas.MaxBy(x => x.Version)!.FilePath;
+        }
+        else preCheckData.Java = _settingsService.ActiveJava;
+
+        if (!PathUtils.IsValidPath(preCheckData.Java) || !File.Exists(preCheckData.Java))
+            throw new Exception($"This is not a valid path, or the path does not exist: ({nameof(preCheckData.Java)}): {preCheckData.Java}");
+
+        #endregion
+
+        #region JavaMemory
+
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var javaInfo = JavaUtils.GetJavaInfo(preCheckData.Java);
+
+        var (maxMemory, minMemory) = _settingsService.EnableAutoMemory
+            ? MemoryUtils.CalculateJavaMemory()
+            : (_settingsService.JavaMemory, _settingsService.JavaMemory);
+
+        // QUESTION: >= 512 or > 1024?
+        // 经过实际测试经过实际测试，在使用 x86 的 Java 时候，
+        // 设置 1024MB（甚至更小）内存时依旧会报错，在设置 512 MB 的才能启动，
+        // 具体阈值在大约多少内存我还未进行测量，所以我在内存设置大于 512 MB 时就阻止启动
+        // （一些其他的启动器现在已经禁止了使用 x86 Java 启动游戏）
+        if (javaInfo.Architecture != "x64" && maxMemory >= 512)
+            throw new Exception("Using a 32-bit Java, but have allocated more than 1(or 0.5) GB of memory. " +
+                "Please use a 64-bit Java, or turn off automatic memory allocation and manually allocate less than 1(or 0.5) GB of memory.");
+
+        preCheckData.MaxMemory = maxMemory;
+        preCheckData.MinMemory = minMemory;
+
+        #endregion
+
+        #region Account
+
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (specialConfig.EnableSpecialSetting && specialConfig.EnableTargetedAccount && specialConfig.Account != null)
+        {
+            preCheckData.Account = _accountService.Accounts.First(x => x.Equals(specialConfig.Account))
+                ?? throw new Exception("The game specifies an account to launch, but that account cannot be found in the current account list");
+        }
+        else preCheckData.Account = _accountService.ActiveAccount
+                ?? throw new Exception("No account selected");
+
+        #endregion
+
+        #region ExtraGameParameters
+
+        cancellationToken.ThrowIfCancellationRequested();
+
+        IEnumerable<string> GetExtraGameParameters()
+        {
+            if (specialConfig.EnableSpecialSetting)
+            {
+                if (specialConfig.EnableFullScreen) yield return "--fullscreen";
+                if (specialConfig.GameWindowWidth > 0) yield return $"--width {specialConfig.GameWindowWidth}";
+                if (specialConfig.GameWindowHeight > 0) yield return $"--height {specialConfig.GameWindowHeight}";
+
+                if (!string.IsNullOrEmpty(specialConfig.ServerAddress))
+                {
+                    specialConfig.ServerAddress.ParseServerAddress(out var host, out var port);
+
+                    yield return $"--server {host}";
+                    yield return $"--port {port}";
+                }
+            }
+            else
+            {
+                if (_settingsService.EnableFullScreen) yield return "--fullscreen";
+                if (_settingsService.GameWindowWidth > 0) yield return $"--width {_settingsService.GameWindowWidth}";
+                if (_settingsService.GameWindowHeight > 0) yield return $"--height {_settingsService.GameWindowHeight}";
+
+                if (!string.IsNullOrEmpty(_settingsService.GameServerAddress))
+                {
+                    specialConfig.ServerAddress.ParseServerAddress(out var host, out var port);
+
+                    yield return $"--server {host}";
+                    yield return $"--port {port}";
+                }
+            }
+        }
+        preCheckData.ExtraGameParameters = GetExtraGameParameters().ToArray();
+
+        #endregion
+
+        #region ExtraVmParameters
+
+        cancellationToken.ThrowIfCancellationRequested();
+
+        async IAsyncEnumerable<string> GetExtraVmParameters(CancellationToken cancellationToken)
+        {
+            if (preCheckData.Account is YggdrasilAccount yggdrasil)
+            {
+                var content = await HttpUtils.HttpClient.GetStringAsync(yggdrasil.YggdrasilServerUrl, cancellationToken);
+
+                yield return $"-javaagent:{Path.Combine(Package.Current.InstalledLocation.Path, "Assets", "Libs", "authlib-injector-1.2.5.jar").ToPathParameter()}={yggdrasil.YggdrasilServerUrl}";
+                yield return "-Dauthlibinjector.side=client";
+                yield return $"-Dauthlibinjector.yggdrasil.prefetched={content.ConvertToBase64()}";
+            }
+
+            if (specialConfig.EnableSpecialSetting && specialConfig.VmParameters != null)
+            {
+                foreach (var item in specialConfig.VmParameters)
+                    yield return item;
+            }
+        }
+
+        var extraVmParameters = new List<string>();
+
+        await foreach (var args in GetExtraVmParameters(cancellationToken))
+            extraVmParameters.Add(args);
+        preCheckData.ExtraVmParameters = [.. extraVmParameters];
+
+        #endregion
+
+        #region GameWindowTitle
+
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (specialConfig.EnableSpecialSetting)
+        {
+            preCheckData.GameWindowTitle = !string.IsNullOrEmpty(specialConfig.GameWindowTitle)
+                ? specialConfig.GameWindowTitle
+                : null;
+        }
+        else
+        {
+            preCheckData.GameWindowTitle = !string.IsNullOrEmpty(_settingsService.GameWindowTitle)
+                ? _settingsService.GameWindowTitle
+                : null;
+        }
+
+        #endregion
+
+        progress?.Report(new(
+            LaunchStage.CheckNeeds,
+            LaunchStageProgress.Finished()
+        ));
+
+        return preCheckData;
     }
 
-    private async Task ResolveDependenciesAsync(MinecraftInstance instance, IProgress<LaunchProgress>? progress, CancellationToken cancellationToken)
+    async Task<PreCheckData> RefreshAccount(
+        PreCheckData preCheckData,
+        CancellationToken cancellationToken,
+        IProgress<LaunchProgress>? progress)
     {
-        var resolver = new DependencyResolver(instance);
-        progress?.Report(new(LaunchSessionState.CompletingResources, resolver, null, null));
+        cancellationToken.ThrowIfCancellationRequested();
+        progress?.Report(new(
+            LaunchStage.Authenticate,
+            LaunchStageProgress.Starting()
+        ));
 
-        var downloadResult = await resolver.VerifyAndDownloadDependenciesAsync(_downloadService.Downloader, 10, cancellationToken);
-        if (downloadResult.Failed.Count > 0)
-            throw new IncompleteGameResourcesException(downloadResult.Failed.Select(r => r.Item2));
+        preCheckData.Account = await _accountService.RefreshAccountAsync(preCheckData.Account);
+
+        progress?.Report(new(
+            LaunchStage.Authenticate,
+            LaunchStageProgress.Finished()
+        ));
+
+        return preCheckData;
+    }
+
+    async Task ResolveDependencies(
+        MinecraftInstance instance, 
+        CancellationToken cancellationToken,
+        IProgress<LaunchProgress>? progress)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        progress?.Report(new(
+            LaunchStage.CompleteResources,
+            LaunchStageProgress.Starting()
+        ));
+
+        var dependencyResolver = new DependencyResolver(instance);
+
+        dependencyResolver.InvalidDependenciesDetermined += (_, e)
+            => progress?.Report(new(
+                LaunchStage.CompleteResources,
+                LaunchStageProgress.UpdateTotalTasks(e.Count())
+            ));
+        dependencyResolver.DependencyDownloaded += (_, _)
+            => progress?.Report(new(
+                LaunchStage.CompleteResources,
+                LaunchStageProgress.IncrementFinishedTasks()
+            ));
+
+        var groupDownloadResult = await dependencyResolver.VerifyAndDownloadDependenciesAsync(_downloadService.Downloader, 10, cancellationToken);
+
+        if (groupDownloadResult.Failed.Count > 0)
+            throw new IncompleteDependenciesException(groupDownloadResult.Failed, "Some dependent files encountered errors during download");
 
         // TODO: 考虑集成到DependencyResolver?
         // Natives decompression
@@ -180,9 +363,87 @@ internal class LaunchService
                 Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId, "natives"),
                 nativeLibs.Select(x => x.FullPath));
         }
+
+        progress?.Report(new(
+            LaunchStage.CompleteResources,
+            LaunchStageProgress.Finished()
+        ));
     }
 
-    private bool CanSkipNativesDecompression(MinecraftInstance instance)
+    MinecraftProcess BuildProcess(
+        MinecraftInstance instance,
+        PreCheckData preCheckData, 
+        CancellationToken cancellationToken,
+        IProgress<LaunchProgress>? progress)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        progress?.Report(new(
+            LaunchStage.BuildArguments,
+            LaunchStageProgress.Starting()
+        ));
+
+        MinecraftProcess mcProcess = new MinecraftProcessBuilder(instance)
+            .SetGameDirectory(preCheckData.GameDirectory)
+            .SetJavaSettings(preCheckData.Java, preCheckData.MaxMemory, preCheckData.MinMemory)
+            .SetAccountSettings(preCheckData.Account, _settingsService.EnableDemoUser)
+            .AddVmArguments(preCheckData.ExtraVmParameters)
+            .AddGameArguments(preCheckData.ExtraGameParameters)
+            .Build();
+
+        mcProcess.Started += (_, _) =>
+        {
+            if (string.IsNullOrEmpty(preCheckData.GameWindowTitle))
+                return;
+
+            Task.Run(async () =>
+            {
+                try
+                {
+                    while (mcProcess.State == MinecraftProcessState.Running)
+                    {
+                        User32.SetWindowText(mcProcess.MainWindowHandle, preCheckData.GameWindowTitle);
+                        await Task.Delay(1000);
+                    }
+                }
+                finally { }
+            });
+        };
+
+        progress?.Report(new(
+            LaunchStage.BuildArguments,
+            LaunchStageProgress.Finished()
+        ));
+
+        return mcProcess;
+    }
+
+    static void LaunchProcess(
+        MinecraftProcess mcProcess,
+        CancellationToken cancellationToken,
+        IProgress<LaunchProgress>? progress,
+        DataReceivedEventHandler? outputDataReceivedHandler = null,
+        DataReceivedEventHandler? errorDataReceivedHandler = null)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        progress?.Report(new(
+            LaunchStage.LaunchProcess,
+            LaunchStageProgress.Starting()
+        ));
+
+        if (outputDataReceivedHandler != null)
+            mcProcess.OutputDataReceived += outputDataReceivedHandler;
+        if (errorDataReceivedHandler != null)
+            mcProcess.ErrorDataReceived += errorDataReceivedHandler;
+
+        mcProcess.Start();
+
+        progress?.Report(new(
+            LaunchStage.LaunchProcess,
+            LaunchStageProgress.Finished()
+        ));
+    }
+
+    private static bool CanSkipNativesDecompression(MinecraftInstance instance)
     {
         var nativesDirectory = new DirectoryInfo(Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId, "natives"));
 
@@ -220,149 +481,24 @@ internal class LaunchService
 
         return false;
     }
-
-    private string? GetSuitableJava(MinecraftInstance MinecraftInstance)
-    {
-        var regex = new Regex(@"^([a-zA-Z]:\\)([-\u4e00-\u9fa5\w\s.()~!@#$%^&()\[\]{}+=]+\\?)*$");
-
-        var javaVersion = MinecraftInstance.GetSuitableJavaVersion();
-        var suits = new List<(string, Version)>();
-
-        foreach (var java in _settingsService.Javas)
-        {
-            if (!regex.IsMatch(java) || !File.Exists(java)) continue;
-
-            var info = JavaUtils.GetJavaInfo(java);
-            if (info.Version.Major.ToString().Equals(javaVersion))
-            {
-                suits.Add((java, info.Version));
-                suits.Sort((a, b) => -a.Item2.CompareTo(b.Item2));
-            }
-        }
-
-        if (!suits.Any())
-            return null;
-
-        return suits.First().Item1;
-    }
-
-    private string GetGameDirectory(MinecraftInstance instance, InstanceConfig specialConfig)
-    {
-        if (specialConfig.EnableSpecialSetting)
-        {
-            if (specialConfig.EnableIndependencyCore)
-                return Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId);
-            else return instance.MinecraftFolderPath;
-        }
-
-        if (_settingsService.EnableIndependencyCore)
-            return Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId);
-
-        return instance.MinecraftFolderPath;
-    }
-
-    private string? GameWindowTitle(InstanceConfig specialConfig)
-    {
-        if (specialConfig.EnableSpecialSetting)
-        {
-            if (!string.IsNullOrEmpty(specialConfig.GameWindowTitle))
-                return specialConfig.GameWindowTitle;
-        }
-        else
-        {
-            if (!string.IsNullOrEmpty(_settingsService.GameWindowTitle))
-                return _settingsService.GameWindowTitle;
-        }
-
-        return null;
-    }
-
-    public static Account? GetLaunchAccount(InstanceConfig specialConfig, AccountService _accountService)
-    {
-        if (specialConfig.EnableSpecialSetting && specialConfig.EnableTargetedAccount && specialConfig.Account != null)
-        {
-            var matchAccount = _accountService.Accounts.Where(account =>
-            {
-                if (!account.Type.Equals(specialConfig.Account.Type)) return false;
-                if (!account.Uuid.Equals(specialConfig.Account.Uuid)) return false;
-                if (!account.Name.Equals(specialConfig.Account.Name)) return false;
-
-                if (specialConfig.Account is YggdrasilAccount yggdrasil)
-                {
-                    if (!((YggdrasilAccount)account).YggdrasilServerUrl.Equals(yggdrasil.YggdrasilServerUrl))
-                        return false;
-                }
-
-                return true;
-            });
-
-            return matchAccount.FirstOrDefault();
-        }
-
-        return _accountService.ActiveAccount;
-    }
-
-    private IEnumerable<string> GetExtraVmParameters(InstanceConfig specialConfig, Account account)
-    {
-        if (account is YggdrasilAccount yggdrasil)
-        {
-            using var res = HttpUtils.HttpGet(yggdrasil.YggdrasilServerUrl);
-
-            yield return $"-javaagent:{Path.Combine(Package.Current.InstalledLocation.Path, "Assets", "Libs", "authlib-injector-1.2.5.jar").ToPathParameter()}={yggdrasil.YggdrasilServerUrl}";
-            yield return "-Dauthlibinjector.side=client";
-            yield return $"-Dauthlibinjector.yggdrasil.prefetched={(res.Content.ReadAsString()).ConvertToBase64()}";
-        }
-
-        if (!specialConfig.EnableSpecialSetting || specialConfig.VmParameters == null)
-            yield break;
-
-        foreach (var item in specialConfig.VmParameters)
-            yield return item;
-    }
-
-    private IEnumerable<string> GetExtraGameParameters(InstanceConfig specialConfig)
-    {
-        if (specialConfig.EnableSpecialSetting)
-        {
-            if (specialConfig.EnableFullScreen)
-                yield return "--fullscreen";
-
-            if (specialConfig.GameWindowWidth > 0)
-                yield return $"--width {specialConfig.GameWindowWidth}";
-
-            if (specialConfig.GameWindowHeight > 0)
-                yield return $"--height {specialConfig.GameWindowHeight}";
-
-            if (!string.IsNullOrEmpty(specialConfig.ServerAddress))
-            {
-                specialConfig.ServerAddress.ParseServerAddress(out var host, out var port);
-
-                yield return $"--server {host}";
-                yield return $"--port {port}";
-            }
-        }
-        else
-        {
-            if (_settingsService.EnableFullScreen)
-                yield return "--fullscreen";
-
-            if (_settingsService.GameWindowWidth > 0)
-                yield return $"--width {_settingsService.GameWindowWidth}";
-
-            if (_settingsService.GameWindowHeight > 0)
-                yield return $"--height {_settingsService.GameWindowHeight}";
-
-            if (!string.IsNullOrEmpty(_settingsService.GameServerAddress))
-            {
-                specialConfig.ServerAddress.ParseServerAddress(out var host, out var port);
-
-                yield return $"--server {host}";
-                yield return $"--port {port}";
-            }
-        }
-    }
 }
 
+record struct LaunchProgress(
+    LaunchStage Stage,
+    LaunchStageProgress StageProgress)
+{
+    public enum LaunchStage
+    {
+        CheckNeeds,
+        Authenticate,
+        CompleteResources,
+        BuildArguments,
+        LaunchProcess
+    }
+};
+
+
+/*
 public record struct LaunchProgress(
     LaunchSessionState State,
     DependencyResolver? DependencyResolver,
@@ -384,4 +520,4 @@ public enum LaunchSessionState
     Faulted = 8, // Failure before game started
     Killed = 9, // Game killed by user
     GameCrashed = 10 // Game crashed (exit code != 0)
-}
+}*/

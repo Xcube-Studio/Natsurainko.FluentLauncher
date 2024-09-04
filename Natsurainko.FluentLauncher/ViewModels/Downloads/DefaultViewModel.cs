@@ -176,7 +176,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         {
             Title = ResourceUtils.GetValue("SearchSuggest", "_T1").Replace("{searchText}", searchText),
             Description = ResourceUtils.GetValue("SearchSuggest", "_D1"),
-            InvokeAction = () => _navigationService.NavigateTo("Download/Navigation", new SearchOptions
+            InvokeAction = () => _navigationService.NavigateTo("Download/Search", new SearchOptions
             {
                 SearchText = searchText,
                 ResourceType = 1

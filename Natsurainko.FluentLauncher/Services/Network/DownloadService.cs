@@ -1,5 +1,4 @@
-﻿using FluentLauncher.Infra.UI.Navigation;
-using Natsurainko.FluentLauncher.Models.UI;
+﻿using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network.Data;
 using Natsurainko.FluentLauncher.Services.Settings;

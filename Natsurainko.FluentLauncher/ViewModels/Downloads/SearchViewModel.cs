@@ -129,7 +129,7 @@ internal partial class SearchViewModel : ObservableObject, INavigationAware
         });
     }
 
-    async void SearchTask()
+    async Task SearchTask()
     {
         var version = EnableVersionFilter ? SelectedVersion : null;
 

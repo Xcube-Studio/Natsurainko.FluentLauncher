@@ -12,7 +12,7 @@
     mc:Ignorable="d">
 
     <ScrollViewer>
-        <Border Margin="40,0,40,25">
+        <Border Margin="{ThemeResource PageMarginWithBorder}">
             <StackPanel
                 MaxWidth="1000"
                 HorizontalAlignment="Stretch"

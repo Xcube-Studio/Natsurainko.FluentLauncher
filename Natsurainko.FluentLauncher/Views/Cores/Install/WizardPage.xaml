@@ -26,8 +26,8 @@
 
         <StackPanel
             MaxWidth="1060"
-            Margin="10,20,10,0"
-            Padding="30,0">
+            Margin="{ThemeResource PageMarginWithInstallWizardPageStackPanel}"
+            Padding="{ThemeResource PagePaddingWithInstallWizardPageStackPanel}">
             <BreadcrumbBar Margin="-10,0" ItemsSource="{Binding BreadcrumbBarItemsSource}">
                 <i:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="ItemClicked">
@@ -54,7 +54,7 @@
         <Frame
             x:Name="contentFrame"
             Grid.Row="1"
-            Padding="40,15,40,0"
+            Padding="{ThemeResource PagePaddingWithInstallWizardPageFrame}"
             DataContext="{Binding CurrentFrameDataContext}">
             <Frame.ContentTransitions>
                 <TransitionCollection>
@@ -75,7 +75,7 @@
         <Grid
             Grid.Row="3"
             MaxWidth="1080"
-            Padding="40,30"
+            Padding="{ThemeResource PagePaddingWithInstallWizardPageGrid}"
             Background="Transparent">
             <Grid x:Name="CommandSpace" XYFocusKeyboardNavigation="Enabled">
                 <Grid.ColumnDefinitions>

@@ -7,7 +7,7 @@ namespace Natsurainko.FluentLauncher.XamlHelpers.Selectors;
 
 internal class TaskTemplateSelector : DataTemplateSelector
 {
-    public DataTemplate LaunchSession { get; set; }
+    public DataTemplate LaunchTask { get; set; }
 
     public DataTemplate DownloadGameResourceTask { get; set; }
 
@@ -15,8 +15,8 @@ internal class TaskTemplateSelector : DataTemplateSelector
 
     protected override DataTemplate SelectTemplateCore(object item)
     {
-        if (item is LaunchSessionViewModel)
-            return LaunchSession;
+        if (item is LaunchTaskViewModel)
+            return LaunchTask;
         else if (item is DownloadGameResourceTaskViewModel)
             return DownloadGameResourceTask;
         else if (item is InstallInstanceTaskViewModel)

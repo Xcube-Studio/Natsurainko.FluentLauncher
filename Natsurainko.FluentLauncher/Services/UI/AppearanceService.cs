@@ -83,9 +83,21 @@ internal class AppearanceService
         }
     }
 
-    public void ApplyThemeColorBeforePageInit(ShellPage page)
+    public void ApplyThemeColorBeforePageInit()
     {
         App.Current.Resources["RawSystemAccentColor"] = App.Current.Resources["SystemAccentColor"];
+
+        // 窄边框模式
+        //App.Current.Resources["PageMarginWithBorder"] = new Thickness(20, 0, 20, 20);
+        //App.Current.Resources["PageMarginWithBreadcrumbBar"] = new Thickness(10, 0, 10, 10);
+        //App.Current.Resources["PageMarginWithStackPanel"] = new Thickness(20, 0, 20, 20);
+        //App.Current.Resources["PagePaddingWithScrollViewer"] = new Thickness(20, 0, 20, 0);
+        //App.Current.Resources["PageEndMarginWithScrollViewer"] = new Thickness(0, 0, 0, 20);
+
+        //App.Current.Resources["PagePaddingWithInstallWizardPageGrid"] = new Thickness(20);
+        //App.Current.Resources["PagePaddingWithInstallWizardPageStackPanel"] = new Thickness(10);
+        //App.Current.Resources["PagePaddingWithInstallWizardPageFrame"] = new Thickness(20, 0, 20, 0);
+        //App.Current.Resources["PageMarginWithInstallWizardPageStackPanel"] = new Thickness(10, 0, 10, 0);
 
         if (!_settingsService.UseSystemAccentColor)
         {

@@ -66,7 +66,7 @@ public partial class ChooseModLoaderData : ObservableObject
 
     #endregion
 
-    async void LoadInstallDatas()
+    async Task LoadInstallDatas()
     {
         string requestUrl = Type switch
         {

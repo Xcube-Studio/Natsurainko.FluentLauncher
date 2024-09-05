@@ -1,14 +1,13 @@
 ﻿using System.Diagnostics;
 using System.Management;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.Utils.Extensions;
 
 internal static class ProcessExtensions
 {
-    public static string GetCommandLine(this Process process)
+    public static string? GetCommandLine(this Process process)
     {
-        string cmdLine = null;
+        string? cmdLine = null;
         using (var searcher = new ManagementObjectSearcher(
           $"SELECT CommandLine FROM Win32_Process WHERE ProcessId = {process.Id}"))
         {

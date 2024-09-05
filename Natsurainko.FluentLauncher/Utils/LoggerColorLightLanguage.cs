@@ -2,7 +2,6 @@
 using ColorCode.Styling;
 using System.Collections.Generic;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.Utils;
 
 internal class LoggerColorLightLanguage : ILanguage
@@ -65,7 +64,7 @@ internal class LoggerColorLightLanguage : ILanguage
 
     public string CssClassName => "logger";
 
-    public string FirstLinePattern => null;
+    public string? FirstLinePattern => null;
 
     public IList<LanguageRule> Rules => 
     [

@@ -1,7 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using System;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.Utils.Extensions;
 
 internal static class ControlExtensions

@@ -68,27 +68,36 @@ public partial class ChooseModLoaderData : ObservableObject
 
     async Task LoadInstallDatas()
     {
-        string requestUrl = Type switch
-        {
-            ModLoaderType.NeoForge => $"https://bmclapi2.bangbang93.com/neoforge/list/{_manifestItem.Id}",
-            ModLoaderType.Forge => $"https://bmclapi2.bangbang93.com/forge/minecraft/{_manifestItem.Id}",
-            ModLoaderType.OptiFine => $"https://bmclapi2.bangbang93.com/optifine/{_manifestItem.Id}",
-            ModLoaderType.Fabric => $"https://meta.fabricmc.net/v2/versions/loader/{_manifestItem.Id}",
-            ModLoaderType.Quilt => $"https://meta.quiltmc.org/v3/versions/loader/{_manifestItem.Id}",
-            _ => throw new NotImplementedException()
-        };
+        object[] installDatas = [];
 
-        string jsonContent = await cacheInterfaceService.RequestStringAsync(requestUrl, Services.Network.Data.InterfaceRequestMethod.AlwaysLatest);
-
-        object[] installDatas = Type switch
+        try
         {
-            ModLoaderType.NeoForge => JsonNode.Parse(jsonContent).Deserialize<ForgeInstallData[]>()!,
-            ModLoaderType.Forge => JsonNode.Parse(jsonContent).Deserialize<ForgeInstallData[]>()!,
-            ModLoaderType.OptiFine => JsonNode.Parse(jsonContent).Deserialize<OptiFineInstallData[]>()!,
-            ModLoaderType.Fabric => JsonNode.Parse(jsonContent).Deserialize<FabricInstallData[]>()!,
-            ModLoaderType.Quilt => JsonNode.Parse(jsonContent).Deserialize<QuiltInstallData[]>()!,
-            _ => throw new InvalidOperationException()
-        };
+            string requestUrl = Type switch
+            {
+                ModLoaderType.NeoForge => $"https://bmclapi2.bangbang93.com/neoforge/list/{_manifestItem.Id}",
+                ModLoaderType.Forge => $"https://bmclapi2.bangbang93.com/forge/minecraft/{_manifestItem.Id}",
+                ModLoaderType.OptiFine => $"https://bmclapi2.bangbang93.com/optifine/{_manifestItem.Id}",
+                ModLoaderType.Fabric => $"https://meta.fabricmc.net/v2/versions/loader/{_manifestItem.Id}",
+                ModLoaderType.Quilt => $"https://meta.quiltmc.org/v3/versions/loader/{_manifestItem.Id}",
+                _ => throw new NotImplementedException()
+            };
+
+            string jsonContent = await cacheInterfaceService.RequestStringAsync(requestUrl, Services.Network.Data.InterfaceRequestMethod.AlwaysLatest);
+
+            installDatas = Type switch
+            {
+                ModLoaderType.NeoForge => JsonNode.Parse(jsonContent).Deserialize<ForgeInstallData[]>()!,
+                ModLoaderType.Forge => JsonNode.Parse(jsonContent).Deserialize<ForgeInstallData[]>()!,
+                ModLoaderType.OptiFine => JsonNode.Parse(jsonContent).Deserialize<OptiFineInstallData[]>()!,
+                ModLoaderType.Fabric => JsonNode.Parse(jsonContent).Deserialize<FabricInstallData[]>()!,
+                ModLoaderType.Quilt => JsonNode.Parse(jsonContent).Deserialize<QuiltInstallData[]>()!,
+                _ => throw new InvalidOperationException()
+            };
+        }
+        catch (Exception)
+        {
+
+        }
 
         App.DispatcherQueue.TryEnqueue(() =>
         {

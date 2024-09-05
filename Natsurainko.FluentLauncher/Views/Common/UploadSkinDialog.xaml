@@ -49,15 +49,11 @@
                 <AutoSuggestBox
                     x:Uid="Dialogs_UploadSkinDialog_Box"
                     Header="Skin File Path"
+                    QuerySubmitted="AutoSuggestBox_QuerySubmitted"
                     Text="{Binding FilePath, Mode=TwoWay}">
                     <AutoSuggestBox.QueryIcon>
                         <FontIcon FontSize="14" Glyph="&#xED43;" />
                     </AutoSuggestBox.QueryIcon>
-                    <i:Interaction.Behaviors>
-                        <core:EventTriggerBehavior EventName="QuerySubmitted">
-                            <actions:ModifiedInvokeCommandAction Command="{Binding BrowserFileCommand}" />
-                        </core:EventTriggerBehavior>
-                    </i:Interaction.Behaviors>
                 </AutoSuggestBox>
                 <CheckBox
                     x:Uid="Dialogs_UploadSkinDialog_CheckBox"

@@ -60,7 +60,6 @@ public partial class UploadSkinDialogViewModel : ObservableObject
         App.DispatcherQueue.TryEnqueue(_dialog.Hide);
     }
 
-    [RelayCommand]
     public void BrowserFile()
     {
         var openFileDialog = new OpenFileDialog();

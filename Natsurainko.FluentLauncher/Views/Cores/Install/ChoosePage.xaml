@@ -20,11 +20,8 @@
                     <RepositionThemeTransition IsStaggeringEnabled="False" />
                 </StackPanel.ChildrenTransitions>
 
-                <ListView
-                    Margin="-15,0"
-                    ItemsSource="{Binding ModLoaderDatas}"
-                    SelectionMode="None">
-                    <ListView.ItemTemplate>
+                <ItemsRepeater ItemsSource="{Binding ModLoaderDatas}">
+                    <ItemsRepeater.ItemTemplate>
                         <DataTemplate>
                             <controls:SettingsCard Margin="0,2" IsEnabled="{Binding IsEnable}">
                                 <controls:SettingsCard.Header>
@@ -90,8 +87,8 @@
                                 </Grid>
                             </controls:SettingsCard>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
             </StackPanel>
 
         </Border>

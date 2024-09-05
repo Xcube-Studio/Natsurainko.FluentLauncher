@@ -107,8 +107,7 @@ internal class GameService
             instance = _games.Where(i => i.InstanceId == clientId).FirstOrDefault();
         }
 
-        if (instance is null)
-            instance = _games.FirstOrDefault();
+        instance ??= _games.FirstOrDefault();
         
         ActivateGame(instance);
     }

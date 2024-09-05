@@ -44,14 +44,9 @@ public class JsonStringConverter<[DynamicallyAccessedMembers(DynamicallyAccessed
     /// </summary>
     /// <param name="target"></param>
     /// <returns></returns>
-    public string Convert(T target)
-    {
-        return JsonSerializer.Serialize(target, typeof(T), _serializerContext);
-    }
-
     public string ConvertFrom(T? target)
     {
-        throw new NotImplementedException();
+        return JsonSerializer.Serialize(target, typeof(T), _serializerContext);
     }
 }
 

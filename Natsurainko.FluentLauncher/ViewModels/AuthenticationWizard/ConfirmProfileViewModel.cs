@@ -10,7 +10,6 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 
 internal partial class ConfirmProfileViewModel : WizardViewModelBase
@@ -64,7 +63,7 @@ internal partial class ConfirmProfileViewModel : WizardViewModelBase
 
                         builder.AppendLine(task.Exception.InnerException.StackTrace);
                     }
-                    else
+                    else if (task.Exception.InnerException != null)
                     {
                         builder.AppendLine(task.Exception.InnerException.Message);
                         builder.AppendLine(task.Exception.InnerException.HelpLink);
@@ -85,12 +84,12 @@ internal partial class ConfirmProfileViewModel : WizardViewModelBase
     private bool faulted;
 
     [ObservableProperty]
-    private string faultedMessage;
+    private string? faultedMessage;
 
     [ObservableProperty]
-    private string loadingProgressText;
+    private string? loadingProgressText;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
-    private Account selectedAccount;
+    private Account? selectedAccount;
 }

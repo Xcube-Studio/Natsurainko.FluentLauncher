@@ -11,32 +11,39 @@ using Nrk.FluentCore.GameManagement.Instances;
 using System.IO;
 using System.Threading.Tasks;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
 internal partial class DeleteInstanceDialogViewModel : ObservableObject
 {
-    private readonly MinecraftInstance _MinecraftInstance;
+    private readonly MinecraftInstance _minecraftInstance;
     private readonly INavigationService _navigationService;
+    private readonly NotificationService _notificationService;
+    private readonly GameService _gameService;
 
-    private ContentDialog _dialog;
+    private ContentDialog _dialog = null!; // Set in LoadEvent
 
-    public string Title => $"\"{_MinecraftInstance.InstanceId}\"";
+    public string Title => $"\"{_minecraftInstance.InstanceId}\"";
 
     [ObservableProperty]
     private bool deleteCoreSettings = true;
 
-    public DeleteInstanceDialogViewModel(MinecraftInstance MinecraftInstance, INavigationService navigationService)
+    public DeleteInstanceDialogViewModel(
+        MinecraftInstance minecraftInstance,
+        INavigationService navigationService,
+        NotificationService notificationService,
+        GameService gameService)
     {
-        _MinecraftInstance = MinecraftInstance;
+        _minecraftInstance = minecraftInstance;
         _navigationService = navigationService;
+        _notificationService = notificationService;
+        _gameService = gameService;
     }
 
     [RelayCommand]
     public void LoadEvent(object args)
     {
         var grid = args.As<Grid, object>().sender;
-        _dialog = grid.FindName("Dialog") as ContentDialog;
+        _dialog = (ContentDialog)grid.FindName("Dialog");
     }
 
     [RelayCommand]
@@ -55,29 +62,27 @@ internal partial class DeleteInstanceDialogViewModel : ObservableObject
             return false;
         }
 
-        var directory = new DirectoryInfo(Path.Combine(_MinecraftInstance.MinecraftFolderPath, "versions", _MinecraftInstance.InstanceId));
-        var notificationService = App.GetService<NotificationService>();
+        var directory = new DirectoryInfo(Path.Combine(_minecraftInstance.MinecraftFolderPath, "versions", _minecraftInstance.InstanceId));
 
         if (!ExistsOccupiedFile(directory))
         {
-            _MinecraftInstance.Delete();
+            _minecraftInstance.Delete();
 
             if (DeleteCoreSettings)
             {
-                var file = _MinecraftInstance.GetConfig().FilePath;
+                var file = _minecraftInstance.GetConfig().FilePath;
                 if (File.Exists(file)) File.Delete(file);
             }
 
             App.DispatcherQueue.TryEnqueue(() =>
             {
-                var gameService = App.GetService<GameService>();
-                gameService.RefreshGames();
+                _gameService.RefreshGames();
 
                 _dialog.Hide();
                 _navigationService.Parent!.NavigateTo("CoresPage");
             });
 
-            notificationService.NotifyWithoutContent(
+            _notificationService.NotifyWithoutContent(
                 ResourceUtils.GetValue("Notifications", "_DeleteGameTitle"),
                 icon: "\uE73E");
         }
@@ -85,7 +90,7 @@ internal partial class DeleteInstanceDialogViewModel : ObservableObject
         {
             App.DispatcherQueue.TryEnqueue(() => _dialog.Hide());
 
-            notificationService.NotifyMessage(
+            _notificationService.NotifyMessage(
                 ResourceUtils.GetValue("Notifications", "_DeleteGameFailedT"),
                 ResourceUtils.GetValue("Notifications", "_DeleteGameFailedD"),
                 icon: "\uE711");

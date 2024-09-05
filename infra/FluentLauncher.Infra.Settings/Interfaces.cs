@@ -62,7 +62,7 @@ public interface ISettingsStorage
     /// <param name="path">A unique path that locates the item in the storage</param>
     /// <param name="type">Type of the value expected<br/>This may be used when dealing with special types such as arrays.</param>
     /// <returns></returns>
-    object GetValue(string path, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type type);
+    //object GetValue(string path, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type type);
 
     /// <summary>
     /// Sets a setting item to a new value in the storage
@@ -79,5 +79,5 @@ public interface ISettingsStorage
     /// <param name="value">The new value</param>
     /// <param name="type">Type of the value</param>
     /// <returns></returns>
-    void SetValue(string path, object value, Type type);
+    //void SetValue(string path, object value, Type type);
 }

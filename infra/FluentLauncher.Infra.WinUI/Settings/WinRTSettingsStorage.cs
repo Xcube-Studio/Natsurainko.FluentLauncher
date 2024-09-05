@@ -98,17 +98,15 @@ public class WinRTSettingsStorage : ISettingsStorage
     // so there is no need to use generic types.
 
     /// <inheritdoc/>
-    public T GetValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string path) where T : notnull
-        => (T)GetValue(path, typeof(T));
-
-    /// <inheritdoc/>
-    public object GetValue(string path, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type type)
+    public T GetValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string path)
+        where T : notnull
     {
         (ApplicationDataContainer? container, string key) = GetContainerAndKey(path);
+        Type type = typeof(T);
 
         if (type.IsArray)
         {
-            Type elementType = type.GetElementType()!;
+            Type elementType = typeof(T).GetElementType()!;
 
             if (!IsTypeSupported(elementType))
                 throw new InvalidOperationException($"Type {elementType} is not supported by {nameof(WinRTSettingsStorage)}");
@@ -117,7 +115,7 @@ public class WinRTSettingsStorage : ISettingsStorage
             if (container is not null && container.Values.ContainsKey(key))
             {
                 // If the key exists, return the stored array, which is never empty.
-                object value = container.Values[key];
+                T value = (T)container.Values[key];
 
                 // Check that the stored value is an array of the correct type.
                 if (value.GetType().GetElementType() != elementType)
@@ -128,7 +126,7 @@ public class WinRTSettingsStorage : ISettingsStorage
             else // If the array is empty, it is stored as null in the ApplicationDataContainer.
             {
                 // Return an empty array of the correct type.
-                return Activator.CreateInstance(type, 0)!;
+                return (T)Activator.CreateInstance(typeof(T), 0)!;
             }
         }
 
@@ -146,10 +144,10 @@ public class WinRTSettingsStorage : ISettingsStorage
         {
             // Retrieve enums as their integral types
             var integralValue = container.Values[key];
-            return Enum.ToObject(type, integralValue);
+            return (T)Enum.ToObject(type, integralValue);
         }
 
-        return container.Values[key];
+        return (T)container.Values[key];
     }
 
     #endregion

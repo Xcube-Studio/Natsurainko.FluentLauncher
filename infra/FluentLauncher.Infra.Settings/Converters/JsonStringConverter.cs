@@ -13,16 +13,8 @@ namespace FluentLauncher.Infra.Settings.Converters;
 /// Converts a string to a type T using JSON serialization
 /// </summary>
 /// <typeparam name="T">Type used in the application</typeparam>
-public class JsonStringConverter<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T> : IDataTypeConverter
+public class JsonStringConverter<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T> : IDataTypeConverter<string, T?>
 {
-    /// <inheritdoc/>
-    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
-    public Type SourceType => typeof(string);
-
-    /// <inheritdoc/>
-    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
-    public Type TargetType => typeof(T);
-
     private readonly JsonSerializerContext _serializerContext;
 
     public JsonStringConverter()
@@ -32,20 +24,19 @@ public class JsonStringConverter<[DynamicallyAccessedMembers(DynamicallyAccessed
         _serializerContext = JsonStringConverterConfig.SerializerContext;
     }
 
+    public static IDataTypeConverter<string, T?> Instance { get; } = new JsonStringConverter<T>();
+
     /// <summary>
     /// Returns the type used in the application
     /// </summary>
     /// <param name="source"></param>
     /// <returns></returns>
-    public T? Convert(string json) => (T?)((IDataTypeConverter)this).Convert(json);
-    
-    /// <inheritdoc/>
-    object? IDataTypeConverter.Convert(object? source)
+    public T? Convert(string json)
     {
-        if (source is not string json || JsonStringConverterConfig.SerializerContext is null)
-            return null;
+        if (json is null || JsonStringConverterConfig.SerializerContext is null)
+            return default;
 
-        return JsonSerializer.Deserialize(json, TargetType, _serializerContext);
+        return (T?)JsonSerializer.Deserialize(json, typeof(T), _serializerContext);
     }
 
     /// <summary>
@@ -53,15 +44,14 @@ public class JsonStringConverter<[DynamicallyAccessedMembers(DynamicallyAccessed
     /// </summary>
     /// <param name="target"></param>
     /// <returns></returns>
-    public string? Convert(T target) => (string?)((IDataTypeConverter)this).ConvertFrom(target);
-
-    /// <inheritdoc/>
-    object? IDataTypeConverter.ConvertFrom(object? target)
+    public string Convert(T target)
     {
-        if (target is not T)
-            return null;
+        return JsonSerializer.Serialize(target, typeof(T), _serializerContext);
+    }
 
-        return JsonSerializer.Serialize(target, TargetType, _serializerContext);
+    public string ConvertFrom(T? target)
+    {
+        throw new NotImplementedException();
     }
 }
 

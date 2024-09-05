@@ -77,33 +77,30 @@ public abstract class SettingsContainer : ISettingsContainer
 
     #region GetValue<T>
 
-    protected T? GetValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string key, IDataTypeConverter? converter = null)
+    protected T? GetValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string key)
+        where T : notnull
     {
         var path = GetPathFromKey(key);
 
         if (!Storage.Contains(path))
-        {
             return default(T?); // null
-        }
 
         Type type = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
+        return Storage.GetValue<T>(path);
+    }
+
+    protected T? GetValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TSource>(string key, IDataTypeConverter<TSource, T> converter)
+        where T: notnull
+        where TSource: notnull
+    {
+        var path = GetPathFromKey(key);
+
+        if (!Storage.Contains(path))
+            return default(T?); // null
 
         // If a type converter is given, use it to convert the value; otherwise, return the value as the type stored
-        if (converter is not null)
-        {
-            if (converter.TargetType == type)
-            {
-                object value = Storage.GetValue(path, converter.SourceType);
-                if (value.GetType() == converter.SourceType)
-                    return (T?)converter.Convert(value);
-            }
-
-            throw new ArgumentException($"Typer converter given cannot convert to {type}", nameof(converter));
-        }
-        else
-        {
-            return (T)Storage.GetValue(path, type);
-        }
+        TSource value = Storage.GetValue<TSource>(path);
+        return (T?)converter.Convert(value);
     }
 
     /// <summary>
@@ -113,29 +110,52 @@ public abstract class SettingsContainer : ISettingsContainer
     /// <param name="key"></param>
     /// <param name="defaultValue">Cannot be null; the setting item is removed if set to null.</param>
     /// <returns></returns>
-    protected T GetValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string key, T defaultValue, IDataTypeConverter? converter = null) where T : notnull
+    protected T GetValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TSource>(string key, T defaultValue, IDataTypeConverter<TSource, T> converter)
+        where T : notnull
+        where TSource : notnull
     {
         if (defaultValue is null)
             throw new ArgumentNullException(nameof(defaultValue));
 
-        if (converter is not null && converter.TargetType != typeof(T))
-            throw new ArgumentException($"Type converter given cannot convert to {typeof(T)}", nameof(converter));
-
         var path = GetPathFromKey(key);
 
-        object defaultValueConverted = converter?.ConvertFrom(defaultValue) ?? defaultValue;
+        TSource defaultValueConverted = converter.ConvertFrom(defaultValue);
 
         if (!Storage.Contains(path)) // key is not found
         {
-            Storage.SetValue(path, defaultValueConverted, defaultValueConverted.GetType());
+            Storage.SetValue(path, defaultValueConverted);
             return defaultValue;
         }
 
         // Try to get the value from the storage
-        T? value = GetValue<T>(key, converter);
+        T? value = GetValue(key, converter);
         if (value is null) 
         {
-            Storage.SetValue(path, defaultValueConverted, defaultValueConverted.GetType());
+            Storage.SetValue(path, defaultValueConverted);
+            return defaultValue;
+        }
+
+        return value;
+    }
+
+    protected T GetValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string key, T defaultValue) where T : notnull
+    {
+        if (defaultValue is null)
+            throw new ArgumentNullException(nameof(defaultValue));
+
+        var path = GetPathFromKey(key);
+
+        if (!Storage.Contains(path)) // key is not found
+        {
+            Storage.SetValue(path, defaultValue);
+            return defaultValue;
+        }
+
+        // Try to get the value from the storage
+        T? value = GetValue<T>(key);
+        if (value is null)
+        {
+            Storage.SetValue(path, defaultValue);
             return defaultValue;
         }
 
@@ -146,44 +166,44 @@ public abstract class SettingsContainer : ISettingsContainer
 
     #region SetValue<T>
 
-    private void _setValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string key,
+    private void SetValueInternal<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TSource>(string key,
                               T value,
                               SettingChangedEventHandler? _event,
-                              IDataTypeConverter? converter = null) where T : notnull
+                              IDataTypeConverter<TSource, T> converter)
+        where T : notnull
+        where TSource: notnull
     {
         var path = GetPathFromKey(key);
-        object? currentValue;
-        if (converter is not null)
-        {
-            if (typeof(T) != converter.TargetType)
-                throw new ArgumentException($"Type converter given cannot convert from {typeof(T)}", nameof(converter));
-            currentValue = Storage.Contains(path) ? Storage.GetValue(path, converter.SourceType) : null;
-        }
-        else
-        {
-            currentValue = Storage.Contains(path) ? Storage.GetValue<T>(path) : null;
-        }
+        T? currentValue = Storage.Contains(path) ? converter.Convert(Storage.GetValue<TSource>(path)) : default;
 
         if (value.Equals(currentValue))
             return;
 
         // Only set the value when the new value is different
-        if (converter is not null) // Convert value from T using the converter
-        {
-            if (typeof(T) != converter.TargetType)
-                throw new ArgumentException($"Type converter given cannot convert from {typeof(T)}", nameof(converter));
+        object? convertedValue = converter.ConvertFrom(value);
+        if(convertedValue is null)
+            Storage.DeleteItem(path);
+        else
+            Storage.SetValue(path, convertedValue);
 
-            object? convertedValue = converter.ConvertFrom(value);
+        // Notify a setting item has been changed
+        _event?.Invoke(this, new SettingChangedEventArgs(path, value));
+        SettingsChanged?.Invoke(this, new SettingChangedEventArgs(path, value));
+    }
 
-            if(convertedValue is null)
-                Storage.DeleteItem(path);
-            else
-                Storage.SetValue(path, convertedValue);
-        }
-        else // No converter is given; store the value as type T.
-        {
-            Storage.SetValue<T>(path, value);
-        }
+    private void SetValueInternal<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string key,
+                              T value,
+                              SettingChangedEventHandler? _event)
+        where T : notnull
+    {
+        var path = GetPathFromKey(key);
+        T? currentValue = Storage.Contains(path) ? Storage.GetValue<T>(path) : default;
+
+        if (value.Equals(currentValue))
+            return;
+
+        // No converter is given; store the value as type T.
+        Storage.SetValue<T>(path, value);
 
         // Notify a setting item has been changed
         _event?.Invoke(this, new SettingChangedEventArgs(path, value));
@@ -197,17 +217,34 @@ public abstract class SettingsContainer : ISettingsContainer
     /// <param name="key"></param>
     /// <param name="value"></param>
     /// <param name="_event"></param>
-    protected void SetValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string key,
+    protected void SetValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TSource>(string key,
                                T? value,
                                SettingChangedEventHandler? _event,
-                               IDataTypeConverter? converter = null) where T : struct
+                               IDataTypeConverter<TSource, T> converter)
+        where T : struct
+        where TSource : notnull
     {
         if (value is null)
         {
             Storage.DeleteItem(key);
             return;
         }
-        _setValue<T>(key, (T)value, _event, converter);
+
+        SetValueInternal<T, TSource>(key, (T)value, _event, converter);
+    }
+
+    protected void SetValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string key,
+                           T? value,
+                           SettingChangedEventHandler? _event)
+        where T : struct
+    {
+        if (value is null)
+        {
+            Storage.DeleteItem(key);
+            return;
+        }
+
+        SetValueInternal<T>(key, (T)value, _event);
     }
 
     /// <summary>
@@ -217,17 +254,32 @@ public abstract class SettingsContainer : ISettingsContainer
     /// <param name="key"></param>
     /// <param name="value"></param>
     /// <param name="_event"></param>
-    protected void SetValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string key,
+    protected void SetValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TSource>(string key,
                                T? value,
                                SettingChangedEventHandler? _event,
-                               IDataTypeConverter? converter = null) where T : class
+                               IDataTypeConverter<TSource, T> converter)
+        where T : class
+        where TSource : notnull
     {
         if (value is null)
         {
             Storage.DeleteItem(key);
             return;
         }
-        _setValue<T>(key, value, _event, converter);
+        SetValueInternal<T, TSource>(key, value, _event, converter);
+    }
+
+    protected void SetValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string key,
+                           T? value,
+                           SettingChangedEventHandler? _event)
+    where T : class
+    {
+        if (value is null)
+        {
+            Storage.DeleteItem(key);
+            return;
+        }
+        SetValueInternal<T>(key, value, _event);
     }
 
     #endregion SetValue<T>

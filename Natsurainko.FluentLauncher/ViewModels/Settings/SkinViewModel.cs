@@ -52,13 +52,13 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
     [ObservableProperty]
     private Account activeAccount;
 
-    public ObservableElement3DCollection ModelGeometry { get; private set; } = new ObservableElement3DCollection();
+    public ObservableElement3DCollection ModelGeometry { get; private set; } = [];
 
     public bool IsYggdrasilAccount => ActiveAccount.Type == AccountType.Yggdrasil;
 
     #region Skin 3D Model Load
 
-    public async void LoadModel()
+    public async Task LoadModel()
     {
         try
         {

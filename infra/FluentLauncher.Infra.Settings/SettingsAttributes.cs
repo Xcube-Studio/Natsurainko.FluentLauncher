@@ -13,11 +13,6 @@ namespace FluentLauncher.Infra.Settings
     public class SettingItemAttribute : Attribute
     {
         /// <summary>
-        /// Key of the setting item
-        /// </summary>
-        [Obsolete]
-        public string? Key { get; init; }
-        /// <summary>
         /// An optional converter to convert the value stored in the storage to the type of the property.<br/>If not specified, type casting will be used.
         /// </summary>
         public Type? Converter { get; init; }

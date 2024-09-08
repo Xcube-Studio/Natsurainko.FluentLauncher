@@ -124,14 +124,26 @@ public class SettingsItemSourceGenerator : IIncrementalGenerator
 
         string defaultValue = "";
         string converter = "";
+        string sourceTypeName = "";
 
         // Parse default value and converter
         foreach(var item in attribute.NamedArguments)
         {
             if (item.Key == "Default")
+            {
                 defaultValue = $", {item.Value.ToCSharpString()}";
+            }
             else if (item.Key == "Converter")
-                converter = $", global::FluentLauncher.Infra.Settings.Converters.DataTypeConverters.GetConverter(typeof(global::{item.Value.Value}))";
+            {
+                if (item.Value.Value is not ITypeSymbol converterType)
+                    continue;
+                INamedTypeSymbol? interfaceType = converterType.Interfaces.FirstOrDefault(syn => syn.Name.Contains("IDataTypeConverter"));
+                if (interfaceType is null) continue;
+                ITypeSymbol sourceType = interfaceType.TypeArguments[0];
+
+                sourceTypeName = $", {sourceType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}";
+                converter = $", global::{item.Value.Value}.Instance";
+            }
         }
 
         // If default value is not provided, the property is nullable
@@ -142,8 +154,8 @@ public class SettingsItemSourceGenerator : IIncrementalGenerator
         memberBuilder.Append($$"""
                         public partial {{propTypeName}}{{nullable}} {{propIdentifierName}}
                         {
-                            get => GetValue<{{propTypeName}}{{nullable}}>(nameof({{propIdentifierName}}){{defaultValue}}{{converter}});
-                            set => SetValue<{{propTypeName}}>(nameof({{propIdentifierName}}), value, {{propIdentifierName}}Changed{{converter}});
+                            get => GetValue<{{propTypeName}}{{sourceTypeName}}>(nameof({{propIdentifierName}}){{defaultValue}}{{converter}});
+                            set => SetValue<{{propTypeName}}{{sourceTypeName}}>(nameof({{propIdentifierName}}), value, {{propIdentifierName}}Changed{{converter}});
                         }
 
                         public event global::FluentLauncher.Infra.Settings.SettingChangedEventHandler? {{propIdentifierName}}Changed;

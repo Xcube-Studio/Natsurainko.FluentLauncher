@@ -159,7 +159,6 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
         _navigationService.Parent.NavigateTo("Tasks/Download");
     }
 
-    [RelayCommand]
     public void SaveFile()
     {
         var saveFileDialog = new SaveFileDialog

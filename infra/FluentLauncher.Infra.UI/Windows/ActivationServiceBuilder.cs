@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FluentLauncher.Infra.UI.Windows;
 
@@ -25,7 +26,7 @@ public abstract class ActivationServiceBuilder<TService, TWindowBase>
     /// <param name="key">Key of the window</param>
     /// <param name="windowType">Type of the window</param>
     /// <param name="multiInstance">Whether multiple instances of the window is allowed</param>
-    public ActivationServiceBuilder<TService, TWindowBase> WithWindow(string key, Type windowType, bool multiInstance)
+    public ActivationServiceBuilder<TService, TWindowBase> WithWindow(string key, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type windowType, bool multiInstance)
     {
         if (!windowType.IsSubclassOf(typeof(TWindowBase)))
             throw new ArgumentException($"Type {windowType} is not a subclass of {typeof(TWindowBase)}");
@@ -34,16 +35,16 @@ public abstract class ActivationServiceBuilder<TService, TWindowBase>
         return this;
     }
 
-    public ActivationServiceBuilder<TService, TWindowBase> AddSingleInstanceWindow(string key, Type windowType)
+    public ActivationServiceBuilder<TService, TWindowBase> AddSingleInstanceWindow(string key, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type windowType)
         => WithWindow(key, windowType, false);
 
-    public ActivationServiceBuilder<TService, TWindowBase> AddSingleInstanceWindow<TWindow>(string key)
+    public ActivationServiceBuilder<TService, TWindowBase> AddSingleInstanceWindow<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TWindow>(string key)
         => AddSingleInstanceWindow(key, typeof(TWindow));
 
-    public ActivationServiceBuilder<TService, TWindowBase> AddMultiInstanceWindow(string key, Type windowType)
+    public ActivationServiceBuilder<TService, TWindowBase> AddMultiInstanceWindow(string key, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type windowType)
         => WithWindow(key, windowType, true);
 
-    public ActivationServiceBuilder<TService, TWindowBase> AddMultiInstanceWindow<TWindow>(string key)
+    public ActivationServiceBuilder<TService, TWindowBase> AddMultiInstanceWindow<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TWindow>(string key)
         => AddMultiInstanceWindow(key, typeof(TWindow));
 
     public abstract IActivationService Build(IServiceProvider serviceProvider);

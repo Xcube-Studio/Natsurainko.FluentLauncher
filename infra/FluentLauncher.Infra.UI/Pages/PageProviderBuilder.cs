@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FluentLauncher.Infra.UI.Pages;
 
@@ -11,13 +12,16 @@ public abstract class PageProviderBuilder<TPageProvider, TPageBase> where TPageP
 
     public PageProviderBuilder() { }
 
-    public PageProviderBuilder<TPageProvider, TPageBase> WithPage<TPage, TViewModel>(string key)
+    public PageProviderBuilder<TPageProvider, TPageBase> WithPage<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TPage, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TViewModel>(string key)
         => WithPage(key, typeof(TPage), typeof(TViewModel));
 
-    public PageProviderBuilder<TPageProvider, TPageBase> WithPage<TPage>(string key)
+    public PageProviderBuilder<TPageProvider, TPageBase> WithPage<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TPage>(string key)
         => WithPage(key, typeof(TPage));
 
-    public PageProviderBuilder<TPageProvider, TPageBase> WithPage(string key, Type pageType, Type? viewModelType = null)
+    public PageProviderBuilder<TPageProvider, TPageBase> WithPage(
+        string key,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type pageType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type? viewModelType = null)
     {
         _registeredPages.Add(key, new PageDescriptor(pageType, viewModelType));
         return this;

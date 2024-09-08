@@ -119,17 +119,26 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
 
         isLoading = true;
 
-        using Stream imageDataStream = LoadFromInternet
-            ? await _cacheInterfaceService.RequestStreamAsync(ImageSourceUrl, Services.Network.Data.InterfaceRequestMethod.Static)
-            : File.OpenRead(ImageSourceFilePath);
+        try
+        {
+            using Stream imageDataStream = LoadFromInternet
+                ? await _cacheInterfaceService.RequestStreamAsync(ImageSourceUrl, Services.Network.Data.InterfaceRequestMethod.Static)
+                : File.OpenRead(ImageSourceFilePath);
 
-        using var randomAccessStream = imageDataStream.AsRandomAccessStream();
+            using var randomAccessStream = imageDataStream.AsRandomAccessStream();
 
-        var bitmapImage = new BitmapImage();
-        await bitmapImage.SetSourceAsync(randomAccessStream);
+            var bitmapImage = new BitmapImage();
+            await bitmapImage.SetSourceAsync(randomAccessStream);
 
-        AssociatedObject?.SetValue(SourceProperty, bitmapImage);
-
-        isLoading = false;
+            AssociatedObject?.SetValue(SourceProperty, bitmapImage);
+        }
+        catch (Exception) 
+        {
+            AssociatedObject?.SetValue(SourceProperty, null);
+        }
+        finally
+        {
+            isLoading = false;
+        }
     }
 }

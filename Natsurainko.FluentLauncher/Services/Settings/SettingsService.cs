@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using Windows.Storage;
 
 namespace Natsurainko.FluentLauncher.Services.Settings;
@@ -133,9 +134,11 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(Default = 0u)]
     public partial uint SettingsVersion { get; set; }
 
-
     public SettingsService(ISettingsStorage storage) : base(storage)
     {
+        // Configure JsonSerializerContext for NativeAOT-compatible JsonStringConverter
+        JsonStringConverterConfig.SerializerContext = SetingsJsonSerializerContext.Default;
+
         var appsettings = ApplicationData.Current.LocalSettings;
 
         // Migrate settings data structures from old versions
@@ -270,4 +273,16 @@ public partial class SettingsService : SettingsContainer
         if (clientId is not null)
             appsettings.Values["ActiveInstanceId"] = clientId;
     }
+}
+
+[JsonSerializable(typeof(int))]
+[JsonSerializable(typeof(uint))]
+[JsonSerializable(typeof(bool))]
+[JsonSerializable(typeof(float))]
+[JsonSerializable(typeof(double))]
+[JsonSerializable(typeof(string))]
+[JsonSerializable(typeof(Windows.UI.Color))]
+[JsonSerializable(typeof(WinUIEx.WindowState))]
+internal partial class SetingsJsonSerializerContext : JsonSerializerContext
+{
 }

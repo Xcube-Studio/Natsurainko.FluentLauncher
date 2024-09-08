@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace FluentLauncher.Infra.Settings.Converters;
@@ -11,29 +13,30 @@ namespace FluentLauncher.Infra.Settings.Converters;
 /// Converts a string to a type T using JSON serialization
 /// </summary>
 /// <typeparam name="T">Type used in the application</typeparam>
-public class JsonStringConverter<T> : IDataTypeConverter
+public class JsonStringConverter<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T> : IDataTypeConverter<string, T?>
 {
-    /// <inheritdoc/>
-    public Type SourceType => typeof(string);
+    private readonly JsonSerializerContext _serializerContext;
 
-    /// <inheritdoc/>
-    public Type TargetType => typeof(T);
+    public JsonStringConverter()
+    {
+        if (JsonStringConverterConfig.SerializerContext is null)
+            throw new InvalidOperationException("JsonSerializerContext is not available.");
+        _serializerContext = JsonStringConverterConfig.SerializerContext;
+    }
 
+    public static IDataTypeConverter<string, T?> Instance { get; } = new JsonStringConverter<T>();
 
     /// <summary>
     /// Returns the type used in the application
     /// </summary>
     /// <param name="source"></param>
     /// <returns></returns>
-    public T? Convert(string json) => (T?)((IDataTypeConverter)this).Convert(json);
-    
-    /// <inheritdoc/>
-    object? IDataTypeConverter.Convert(object? source)
+    public T? Convert(string json)
     {
-        if (source is not string json)
-            return null;
+        if (json is null || JsonStringConverterConfig.SerializerContext is null)
+            return default;
 
-        return JsonSerializer.Deserialize(json, TargetType);
+        return (T?)JsonSerializer.Deserialize(json, typeof(T), _serializerContext);
     }
 
     /// <summary>
@@ -41,14 +44,13 @@ public class JsonStringConverter<T> : IDataTypeConverter
     /// </summary>
     /// <param name="target"></param>
     /// <returns></returns>
-    public string? Convert(T target) => (string?)((IDataTypeConverter)this).ConvertFrom(target);
-
-    /// <inheritdoc/>
-    object? IDataTypeConverter.ConvertFrom(object? target)
+    public string ConvertFrom(T? target)
     {
-        if (target is not T)
-            return null;
-
-        return JsonSerializer.Serialize(target, TargetType);
+        return JsonSerializer.Serialize(target, typeof(T), _serializerContext);
     }
+}
+
+public static class JsonStringConverterConfig
+{
+    public static JsonSerializerContext? SerializerContext { get; set; }
 }

@@ -82,6 +82,37 @@
                     </StackPanel>
                 </Grid>
             </Expander.Header>
+
+            <StackPanel Padding="30,5" Spacing="5">
+                <Grid Visibility="{Binding ShowException, Converter={ThemeResource BoolToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        TextTrimming="CharacterEllipsis"
+                        TextWrapping="WrapWholeWords">
+                        <Run x:Uid="Tasks_LaunchPage_Item_H5" Text="Reason:" />
+                        <Run Text="{Binding ExceptionReason}" />
+                    </TextBlock>
+
+                    <Button
+                        Grid.Column="2"
+                        HorizontalAlignment="Right"
+                        Command="{Binding NotifyExceptionCommand}">
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <FontIcon FontSize="14" Glyph="&#xf000;" />
+                            <TextBlock
+                                x:Uid="Tasks_LaunchPage_B4"
+                                Text="Show Details"
+                                TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </StackPanel>
         </Expander>
     </DataTemplate>
     <DataTemplate x:Key="InstallInstanceTaskTemplate">
@@ -166,35 +197,69 @@
                 </Grid>
             </Expander.Header>
 
-            <ItemsRepeater Margin="30,5" ItemsSource="{Binding StageViewModels}">
-                <ItemsRepeater.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Margin="0,3.75">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="1*" />
-                            </Grid.ColumnDefinitions>
-                            <ProgressRing
-                                Width="16"
-                                Height="16"
-                                IsActive="{Binding IsRunning}" />
-                            <FontIcon
-                                FontSize="16"
-                                Glyph="{Binding FontIcon}"
-                                Visibility="{Binding IsRunning, Converter={ThemeResource InvertedBoolToVisibilityConverter}}" />
-                            <TextBlock Grid.Column="2" HorizontalAlignment="Right">
-                                <Run Text="{Binding FinishedTasks}" />
-                                <Run Text="/" />
-                                <Run Text="{Binding TotalTasks}" />
-                            </TextBlock>
-                            <TextBlock Grid.Column="4" Text="{Binding TaskName}" />
-                        </Grid>
-                    </DataTemplate>
-                </ItemsRepeater.ItemTemplate>
-            </ItemsRepeater>
+            <StackPanel Padding="30,5" Spacing="5">
+                <ItemsRepeater ItemsSource="{Binding StageViewModels}">
+                    <ItemsRepeater.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,3.75">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <ProgressRing
+                                    Width="16"
+                                    Height="16"
+                                    IsActive="{Binding IsRunning}" />
+                                <FontIcon
+                                    FontSize="16"
+                                    Glyph="{Binding FontIcon}"
+                                    Visibility="{Binding IsRunning, Converter={ThemeResource InvertedBoolToVisibilityConverter}}" />
+                                <TextBlock Grid.Column="2" HorizontalAlignment="Right">
+                                    <Run Text="{Binding FinishedTasks}" />
+                                    <Run Text="/" />
+                                    <Run Text="{Binding TotalTasks}" />
+                                </TextBlock>
+                                <TextBlock
+                                    Grid.Column="4"
+                                    Text="{Binding TaskName}"
+                                    TextTrimming="CharacterEllipsis" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
+
+                <Grid Visibility="{Binding ShowException, Converter={ThemeResource BoolToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        TextTrimming="CharacterEllipsis"
+                        TextWrapping="WrapWholeWords">
+                        <Run x:Uid="Tasks_LaunchPage_Item_H5" Text="Reason:" />
+                        <Run Text="{Binding ExceptionReason}" />
+                    </TextBlock>
+
+                    <Button
+                        Grid.Column="2"
+                        HorizontalAlignment="Right"
+                        Command="{Binding NotifyExceptionCommand}">
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <FontIcon FontSize="14" Glyph="&#xf000;" />
+                            <TextBlock
+                                x:Uid="Tasks_LaunchPage_B4"
+                                Text="Show Details"
+                                TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </StackPanel>
         </Expander>
     </DataTemplate>
     <DataTemplate x:Key="LaunchTaskTemplate">
@@ -295,7 +360,10 @@
                                     <Run Text="/" />
                                     <Run Text="{Binding TotalTasks}" />
                                 </TextBlock>
-                                <TextBlock Grid.Column="4" Text="{Binding TaskName}" />
+                                <TextBlock
+                                    Grid.Column="4"
+                                    Text="{Binding TaskName}"
+                                    TextTrimming="CharacterEllipsis" />
                             </Grid>
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>

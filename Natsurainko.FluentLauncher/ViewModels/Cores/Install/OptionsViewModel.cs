@@ -74,8 +74,7 @@ internal partial class OptionsViewModel : WizardViewModelBase
                 }
             };
 
-            App.DispatcherQueue.TryEnqueue(() => LoadingFabricApi = false);
-        });
+        }).ContinueWith(x => App.DispatcherQueue.TryEnqueue(() => LoadingFabricApi = false));
 
         Task.Run(async () =>
         {
@@ -90,12 +89,10 @@ internal partial class OptionsViewModel : WizardViewModelBase
                         OptiFabric = item;
                         LoadingOptiFabric = false;
                     });
-                    break;
+                    return;
                 }
             };
-
-            App.DispatcherQueue.TryEnqueue(() => LoadingOptiFabric = false);
-        });
+        }).ContinueWith(x => App.DispatcherQueue.TryEnqueue(() => LoadingOptiFabric = false));
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)

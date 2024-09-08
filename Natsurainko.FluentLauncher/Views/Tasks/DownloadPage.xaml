@@ -29,7 +29,10 @@
                 Style="{ThemeResource TitleTextBlockStyle}"
                 Text="Download Tasks" />
 
-            <controls:WrapPanel HorizontalSpacing="15" VerticalSpacing="15" />
+            <controls:WrapPanel
+                HorizontalSpacing="15"
+                VerticalSpacing="15"
+                Visibility="Collapsed" />
         </StackPanel>
 
         <ScrollViewer Grid.Row="2" Padding="{ThemeResource PagePaddingWithScrollViewer}">

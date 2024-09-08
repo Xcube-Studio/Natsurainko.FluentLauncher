@@ -75,6 +75,12 @@ internal abstract partial class TaskViewModel : ObservableObject
     [ObservableProperty]
     private Visibility progressBarVisibility = Visibility.Visible;
 
+    [ObservableProperty]
+    private bool showException = false;
+
+    [ObservableProperty]
+    private string exceptionReason;
+
     public Visibility CancelButtonVisibility => (TaskState == TaskState.Cancelled || TaskState == TaskState.Finished || TaskState == TaskState.Failed) 
         ? Visibility.Collapsed 
         : Visibility.Visible;
@@ -88,6 +94,8 @@ internal abstract partial class TaskViewModel : ObservableObject
     public virtual bool CanCancel => TaskState == TaskState.Running;
 
     public abstract string TaskIcon { get; }
+
+    public Exception Exception { get; protected set; }
 
     public virtual void Start()
     {
@@ -118,6 +126,7 @@ internal abstract partial class TaskViewModel : ObservableObject
         _tokenSource.Cancel();
         TaskState = TaskState.Canceling;
     }
+
 }
 
 #region Download Task
@@ -132,6 +141,7 @@ internal partial class DownloadGameResourceTaskViewModel : TaskViewModel
         _filePath = filePath;
         _resourceFile = resourceFile;
 
+        IsExpanded = false;
         TaskTitle = resourceFile.FileName;
     }
 
@@ -146,48 +156,79 @@ internal partial class DownloadGameResourceTaskViewModel : TaskViewModel
     protected override async void Run()
     {
         App.DispatcherQueue.TryEnqueue(() => TaskState = TaskState.Running);
+        Timer timer = null;
 
-        string url = await _resourceFile.GetUrl();
-
-        var downloadTask = HttpUtils.Downloader.CreateDownloadTask(url, _filePath);
-        downloadTask.FileSizeReceived += (long? obj) =>
+        try
         {
-            if (obj != null)
-                App.DispatcherQueue.TryEnqueue(() => ProgressBarIsIndeterminate = false);
-        };
+            string url = await _resourceFile.GetUrl();
 
-        void TimerInvoker(object _)
-        {
-            if (downloadTask.TotalBytes is null)
-                return;
-
-            App.DispatcherQueue.SynchronousTryEnqueue(() => Progress =
-                (double)downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes);
-        }
-
-        using Timer t = new(TimerInvoker, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
-
-        var downloadResult = await downloadTask.StartAsync(_tokenSource.Token);
-        TimerInvoker(null);
-
-        App.DispatcherQueue.TryEnqueue(() =>
-        {
-            TaskState = downloadResult.Type switch
+            var downloadTask = HttpUtils.Downloader.CreateDownloadTask(url, _filePath);
+            downloadTask.FileSizeReceived += (long? obj) =>
             {
-                DownloadResultType.Failed => TaskState.Failed,
-                DownloadResultType.Cancelled => TaskState.Cancelled,
-                DownloadResultType.Successful => TaskState.Finished,
+                if (obj != null)
+                    App.DispatcherQueue.TryEnqueue(() => ProgressBarIsIndeterminate = false);
             };
-        });
 
-        //if (downloadResult.Exception != null)
-        //    App.GetService<NotificationService>().NotifyException("", downloadResult.Exception);
+            void TimerInvoker(object _)
+            {
+                if (downloadTask.TotalBytes is null)
+                    return;
+
+                App.DispatcherQueue.SynchronousTryEnqueue(() => Progress =
+                    (double)downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes);
+            }
+
+            timer = new(TimerInvoker, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+
+            var downloadResult = await downloadTask.StartAsync(_tokenSource.Token);
+            TimerInvoker(null);
+
+            App.DispatcherQueue.TryEnqueue(() =>
+            {
+                TaskState = downloadResult.Type switch
+                {
+                    DownloadResultType.Failed => TaskState.Failed,
+                    DownloadResultType.Cancelled => TaskState.Cancelled,
+                    DownloadResultType.Successful => TaskState.Finished,
+                };
+
+                if (downloadResult.Exception is not null)
+                {
+                    Exception = downloadResult.Exception;
+                    ShowException = true;
+                    ExceptionReason = downloadResult.Exception.Message;
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            App.DispatcherQueue.TryEnqueue(() =>
+            {
+                TaskState = TaskState.Failed;
+                Exception = ex;
+
+                ShowException = true;
+                ExceptionReason = ex.Message;
+
+                NotifyException();
+            });
+        }
+        finally
+        {
+            timer?.Dispose();
+        }
     }
 
     [RelayCommand]
     void OpenFolder()
     {
         using var process = Process.Start(new ProcessStartInfo("explorer.exe", $"/select,{_filePath}"));
+    }
+
+    [RelayCommand]
+    void NotifyException()
+    {
+
     }
 }
 
@@ -313,7 +354,7 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
 
     protected override async void Run()
     {
-        App.DispatcherQueue.SynchronousTryEnqueue(() => TaskState = TaskState.Running);
+        App.DispatcherQueue.TryEnqueue(() => TaskState = TaskState.Running);
         MinecraftInstance instance = null;
         TaskState resultState = TaskState.Finished;
 
@@ -323,20 +364,31 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
         }
         catch (AggregateException aggregateException)
         {
-            if (aggregateException.InnerException is OperationCanceledException)
+            if (aggregateException.InnerException is OperationCanceledException canceledException)
             {
                 resultState = TaskState.Cancelled;
+                Exception = canceledException;
+
+                App.DispatcherQueue.TryEnqueue(() =>
+                {
+                    ShowException = true;
+                    ExceptionReason = canceledException.Message;
+                });
             }
         }
         catch (Exception ex)
         {
-            //if (downloadResult.Exception != null)
-            //    App.GetService<NotificationService>().NotifyException("", downloadResult.Exception);
-
             resultState = TaskState.Failed;
+            Exception = ex;
+
+            App.DispatcherQueue.TryEnqueue(() =>
+            {
+                ShowException = true;
+                ExceptionReason = ex.Message;
+            });
         }
 
-        App.DispatcherQueue.SynchronousTryEnqueue(() =>
+        App.DispatcherQueue.TryEnqueue(() =>
         {
             ProgressBarIsIndeterminate = false;
             Progress = 1;
@@ -390,6 +442,12 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
             config.NickName = _instanceInstallConfig.NickName;
             config.EnableSpecialSetting = true;
         }
+    }
+
+    [RelayCommand]
+    void NotifyException()
+    {
+
     }
 }
 
@@ -527,8 +585,6 @@ internal partial class LaunchTaskViewModel : TaskViewModel
 
     public MinecraftProcess McProcess { get; private set; }
 
-    public Exception Exception { get; private set; }
-
     public ObservableCollection<GameLoggerOutput> Logger { get; } = [];
 
     public LaunchTaskViewModel(MinecraftInstance instance)
@@ -556,13 +612,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     private bool processExited;
 
     [ObservableProperty]
-    private bool showException = false;
-
-    [ObservableProperty]
     private bool crashed = false;
-
-    [ObservableProperty]
-    private string exceptionReason;
 
     public override bool CanCancel => IsLaunching && TaskState != TaskState.Canceling;
 
@@ -617,6 +667,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
                 ShowException = true;
                 ExceptionReason = ex.Message;
             });
+
             NotifyException();
         }
 
@@ -743,7 +794,6 @@ internal partial class LaunchTaskViewModel : TaskViewModel
             Exception,
             errorDescriptionKey);
     }
-
 }
 
 #endregion

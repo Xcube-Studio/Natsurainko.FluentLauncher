@@ -29,9 +29,6 @@ internal partial class InstanceConfig : ObservableObject
     private bool enableSpecialSetting;
 
     [ObservableProperty]
-    private DateTime? lastLaunchTime;
-
-    [ObservableProperty]
     private bool enableIndependencyCore;
 
     [ObservableProperty]
@@ -57,6 +54,18 @@ internal partial class InstanceConfig : ObservableObject
 
     [ObservableProperty]
     private IEnumerable<string> vmParameters;
+
+
+    private DateTime? lastLaunchTime;
+
+    public DateTime? LastLaunchTime
+    {
+        get => lastLaunchTime;
+        set
+        {
+            App.DispatcherQueue.TryEnqueue(() => SetProperty(ref lastLaunchTime, value));
+        }
+    }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {

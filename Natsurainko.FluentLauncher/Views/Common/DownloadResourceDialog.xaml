@@ -625,16 +625,13 @@
                         Text="This is a modpack, install it into the current .minecraft directory" />
                 </CheckBox>
 
-                <AutoSuggestBox Text="{Binding DesignatedFilePath, Mode=TwoWay}" Visibility="{Binding DownloadToDesignated, Converter={ThemeResource BoolToVisibilityConverter}}">
+                <AutoSuggestBox
+                    QuerySubmitted="AutoSuggestBox_QuerySubmitted"
+                    Text="{Binding DesignatedFilePath, Mode=TwoWay}"
+                    Visibility="{Binding DownloadToDesignated, Converter={ThemeResource BoolToVisibilityConverter}}">
                     <AutoSuggestBox.QueryIcon>
                         <FontIcon FontSize="14" Glyph="&#xED43;" />
                     </AutoSuggestBox.QueryIcon>
-
-                    <i:Interaction.Behaviors>
-                        <core:EventTriggerBehavior EventName="QuerySubmitted">
-                            <actions:ModifiedInvokeCommandAction Command="{Binding SaveFileCommand}" />
-                        </core:EventTriggerBehavior>
-                    </i:Interaction.Behaviors>
                 </AutoSuggestBox>
             </StackPanel>
         </Grid>

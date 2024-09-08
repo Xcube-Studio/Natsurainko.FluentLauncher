@@ -105,12 +105,28 @@ internal partial class DetailsViewModel : ObservableObject, INavigationAware
     [RelayCommand]
     public async Task MarkdownTextBlockLoadedEvent(object args)
     {
-        var sender = args.As<MarkdownTextBlock, object>().sender;
+        var sender = args.As<object, object>().sender;
 
-        if (_resource is ModrinthResource modrinthResource)
+        if (sender is MarkdownTextBlock markdownText)
         {
-            var markdown = await _modrinthClient.GetResourceDescriptionAsync(modrinthResource.Id);
-            App.DispatcherQueue.TryEnqueue(() => sender.Text = markdown);
+            if (_resource is ModrinthResource modrinthResource)
+            {
+                var markdown = await _modrinthClient.GetResourceDescriptionAsync(modrinthResource.Id);
+                App.DispatcherQueue.TryEnqueue(() => markdownText.Text = markdown);
+            }
+        }
+
+        if (sender is CommunityToolkit.Labs.WinUI.MarkdownTextBlock.MarkdownTextBlock markdownTextBlock)
+        {
+            if (_resource is ModrinthResource modrinthResource)
+            {
+                var markdown = await _modrinthClient.GetResourceDescriptionAsync(modrinthResource.Id);
+                App.DispatcherQueue.TryEnqueue(() =>
+                {
+                    markdownTextBlock.Config = new CommunityToolkit.Labs.WinUI.MarkdownTextBlock.MarkdownConfig();
+                    markdownTextBlock.Text = markdown;
+                });
+            }
         }
     }
 

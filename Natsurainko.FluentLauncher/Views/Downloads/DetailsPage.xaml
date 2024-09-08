@@ -8,6 +8,7 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI.MarkdownTextBlock"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:old_controls="using:CommunityToolkit.WinUI.UI.Controls"
     Background="Transparent"
@@ -235,6 +236,16 @@
                                 </core:EventTriggerBehavior>
                             </i:Interaction.Behaviors>
                         </old_controls:MarkdownTextBlock>
+
+                        <!--
+                        <labs:MarkdownTextBlock>
+                            <i:Interaction.Behaviors>
+                                <core:EventTriggerBehavior EventName="Loaded">
+                                    <actions:ModifiedInvokeCommandAction Command="{Binding MarkdownTextBlockLoadedEventCommand}" />
+                                </core:EventTriggerBehavior>
+                            </i:Interaction.Behaviors>
+                        </labs:MarkdownTextBlock>
+                        -->
 
                         <WebView2 DefaultBackgroundColor="Transparent" Visibility="{Binding IsHtmlDescription, Converter={ThemeResource BoolToVisibilityConverter}}">
                             <i:Interaction.Behaviors>

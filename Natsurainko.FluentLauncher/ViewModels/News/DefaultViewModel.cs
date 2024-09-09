@@ -62,7 +62,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
         var patchNotes = JsonNode.Parse(patchNotesJson)!["entries"].AsArray().Select(node =>
         {
-            var patchNote = node.Deserialize<PatchNoteData>();
+            var patchNote = node.Deserialize(FLSerializerContext.Default.PatchNoteData);
             patchNote.ImageUrl = $"https://launchercontent.mojang.com{node["image"]!["url"].GetValue<string>()}";
 
             return patchNote;
@@ -90,7 +90,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
         var newsDatas = JsonNode.Parse(newsJson)!["entries"].AsArray().Select(node =>
         {
-            var newsData = node.Deserialize<NewsData>();
+            var newsData = node.Deserialize(FLSerializerContext.Default.NewsData);
             newsData.ImageUrl = $"https://launchercontent.mojang.com{node["newsPageImage"]!["url"].GetValue<string>()}";
 
             var tags = new List<string>([newsData.Date, newsData.Category]);

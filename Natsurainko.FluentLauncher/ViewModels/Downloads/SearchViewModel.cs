@@ -115,7 +115,9 @@ internal partial class SearchViewModel : ObservableObject, INavigationAware
             return;
 
         var manifestItems = JsonNode.Parse(versionManifestJson)
-            .Deserialize<VersionManifestJsonObject>().Versions.ToArray();
+            .Deserialize(FLSerializerContext.Default.VersionManifestJsonObject)
+            .Versions
+            .ToArray();
 
         VersionManifestItems = manifestItems;
         VersionManifestJson = versionManifestJson;

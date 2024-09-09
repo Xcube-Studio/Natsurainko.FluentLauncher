@@ -105,7 +105,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
         var patchNotes = JsonNode.Parse(patchNotesJson)!["entries"].AsArray().Select(node =>
         {
-            var patchNote = node.Deserialize<PatchNoteData>();
+            var patchNote = node.Deserialize(FLSerializerContext.Default.PatchNoteData);
             patchNote.ImageUrl = $"https://launchercontent.mojang.com{node["image"]!["url"].GetValue<string>()}";
 
             return patchNote;
@@ -132,7 +132,9 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             return;
 
         var manifestItems = JsonNode.Parse(versionManifestJson)
-            .Deserialize<VersionManifestJsonObject>().Versions.Take(3).ToArray();
+            .Deserialize(FLSerializerContext.Default.VersionManifestJsonObject)
+            .Versions.Take(3)
+            .ToArray();
 
         App.DispatcherQueue.TryEnqueue(() => VersionManifestItems = manifestItems);
 
@@ -253,7 +255,10 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             return;
 
         var manifestItem = JsonNode.Parse(VersionManifestJson)
-            .Deserialize<VersionManifestJsonObject>().Versions.Where(x => x.Id.Equals(patchNoteData.Version)).FirstOrDefault();
+            .Deserialize(FLSerializerContext.Default.VersionManifestJsonObject)
+            .Versions
+            .Where(x => x.Id.Equals(patchNoteData.Version))
+            .FirstOrDefault();
 
         if (manifestItem != null)
             _navigationService.Parent.NavigateTo("Cores/Install", manifestItem);

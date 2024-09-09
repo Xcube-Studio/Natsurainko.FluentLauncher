@@ -32,16 +32,16 @@ public sealed partial class SkinPage : Page, IBreadcrumbBarAware
             NearPlaneDistance = 0.1
         };
 
-        var brush = this.Resources["ContentDialogBackground"] as SolidColorBrush;
+        var brush = (SolidColorBrush)Resources["ContentDialogBackground"];
         Viewport3DX.Background = brush;
         Viewport3DX.BackgroundColor = brush.Color;
 
         WeakReferenceMessenger.Default.Register<AccountSkinCacheUpdatedMessage>(this, (r, m) =>
         {
-            var vm = this.DataContext as SkinViewModel;
+            var vm = (SkinViewModel)DataContext;
 
             if (m.Value.Type == vm!.ActiveAccount.Type && m.Value.Uuid == vm!.ActiveAccount.Uuid)
-                vm.LoadModel();
+                _ = vm.LoadModel();
         });
     }
 

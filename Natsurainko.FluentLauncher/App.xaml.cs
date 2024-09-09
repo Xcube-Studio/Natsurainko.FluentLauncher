@@ -35,11 +35,6 @@ public partial class App : Application
 
     void ConfigureApplication()
     {
-        // Increase thread pool size for bad async code
-        // TODO: Remove this when refactoring is completed
-        ThreadPool.SetMinThreads(20, 20);
-        ThreadPool.SetMaxThreads(20, 20);
-
         //Fix https://github.com/MCLF-CN/docs/issues/2 
         HttpUtils.HttpClient.DefaultRequestHeaders.UserAgent.Clear();
         HttpUtils.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("Natsurainko.FluentLauncher", Version.GetVersionString()));

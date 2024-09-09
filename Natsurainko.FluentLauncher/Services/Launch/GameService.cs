@@ -71,7 +71,7 @@ internal class GameService
 
     public virtual void OnActiveInstanceChanged(MinecraftInstance? oldGame, MinecraftInstance? newGame)
     {
-        _settingsService.ActiveInstanceId = newGame.InstanceId;
+        _settingsService.ActiveInstanceId = newGame?.InstanceId;
     }
 
     public virtual void ActivateMinecraftFolder(string? folder)
@@ -82,12 +82,12 @@ internal class GameService
         ActiveMinecraftFolder = folder;
     }
 
-    public virtual void ActivateGame(MinecraftInstance? MinecraftInstance)
+    public virtual void ActivateGame(MinecraftInstance? instance)
     {
-        if (MinecraftInstance != null && !_games.Contains(MinecraftInstance))
-            throw new ArgumentException("Not an game managed by GameService", nameof(MinecraftInstance));
+        if (instance != null && !_games.Contains(instance))
+            throw new ArgumentException("Not an game managed by GameService", nameof(instance));
 
-        ActiveGame = MinecraftInstance;
+        ActiveGame = instance;
     }
 
     public virtual void RefreshGames()
@@ -128,7 +128,7 @@ internal class GameService
 
     public void OnActiveMinecraftFolderChanged(string? oldFolder, string? newFolder)
     {
-        _settingsService.ActiveMinecraftFolder = newFolder;
+        _settingsService.ActiveMinecraftFolder = newFolder ?? ""; // TODO: Make SettingsService.ActiveMinecraftFolder nullable
 
         if (newFolder == null)
         {

@@ -326,6 +326,7 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
 {
     private readonly IInstanceInstaller _installer;
     private readonly InstanceInstallConfig _instanceInstallConfig;
+    private MinecraftInstance _minecraftInstance;
 
     public IEnumerable<InstallationStageViewModel> StageViewModels { get; }
 
@@ -343,6 +344,7 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
     }
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(LaunchCommand))]
     private bool canLaunch = false;
 
     public override string TaskIcon => TaskState switch
@@ -396,6 +398,7 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
 
             TaskState = resultState;
             CanLaunch = resultState == TaskState.Finished;
+            _minecraftInstance = instance;
         });
 
         if (resultState == TaskState.Finished && instance != null)
@@ -450,6 +453,9 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
     {
 
     }
+
+    [RelayCommand(CanExecute = nameof(CanLaunch))]
+    void Launch() => App.GetService<LaunchService>().LaunchFromUI(_minecraftInstance);
 }
 
 #endregion

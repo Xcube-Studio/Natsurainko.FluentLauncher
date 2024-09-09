@@ -190,7 +190,10 @@
                         <Button Command="{Binding CancelCommand}" Visibility="{Binding CancelButtonVisibility}">
                             <TextBlock x:Uid="Buttons_Cancel" Text="Cancel" />
                         </Button>
-                        <Button Style="{ThemeResource AccentButtonStyle}" Visibility="{Binding CanLaunch, Converter={ThemeResource BoolToVisibilityConverter}}">
+                        <Button
+                            Command="{Binding LaunchCommand}"
+                            Style="{ThemeResource AccentButtonStyle}"
+                            Visibility="{Binding CanLaunch, Converter={ThemeResource BoolToVisibilityConverter}}">
                             <TextBlock x:Uid="Buttons_Launch" Text="Launch" />
                         </Button>
                     </StackPanel>

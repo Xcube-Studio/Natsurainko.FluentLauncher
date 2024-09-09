@@ -2,7 +2,6 @@
 using System;
 using System.Threading.Tasks;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.Utils.Extensions;
 
 internal static class StoryboardExtensions
@@ -14,7 +13,7 @@ internal static class StoryboardExtensions
 
         var taskCompletionSource = new TaskCompletionSource();
 
-        void onComplete(object s, object e)
+        void onComplete(object? s, object e)
         {
             //storyboard.Stop();
             storyboard.Completed -= onComplete;

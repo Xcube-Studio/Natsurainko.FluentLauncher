@@ -8,7 +8,6 @@ using System;
 using System.ComponentModel;
 using System.Web;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 
 internal partial class BrowserMicrosoftAuthViewModel : WizardViewModelBase
@@ -17,16 +16,16 @@ internal partial class BrowserMicrosoftAuthViewModel : WizardViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
-    private string accessCode;
+    private string? accessCode;
 
     [ObservableProperty]
     private bool needRefresh;
 
     [ObservableProperty]
-    private string description;
+    private string? description;
 
     [ObservableProperty]
-    private string icon;
+    private string? icon;
 
     [ObservableProperty]
     private Uri source;
@@ -40,12 +39,11 @@ internal partial class BrowserMicrosoftAuthViewModel : WizardViewModelBase
 
     private readonly AuthenticationService _authenticationService;
 
-    public BrowserMicrosoftAuthViewModel()
+    public BrowserMicrosoftAuthViewModel(AuthenticationService authService)
     {
+        _authenticationService = authService;
+
         XamlPageType = typeof(BrowserMicrosoftAuthPage);
-
-        _authenticationService = App.GetService<AuthenticationService>();
-
         Source = new(AuthUrl);
     }
 
@@ -91,7 +89,7 @@ internal partial class BrowserMicrosoftAuthViewModel : WizardViewModelBase
 
     public override WizardViewModelBase GetNextViewModel()
     {
-        ConfirmProfileViewModel confirmProfileViewModel = default;
+        ConfirmProfileViewModel confirmProfileViewModel = null!;
 
         confirmProfileViewModel = new ConfirmProfileViewModel(() =>
         {
@@ -100,7 +98,7 @@ internal partial class BrowserMicrosoftAuthViewModel : WizardViewModelBase
                 App.DispatcherQueue.TryEnqueue(() => confirmProfileViewModel.LoadingProgressText = p.ToString());
             });
 
-            return [_authenticationService.LoginMicrosoftAsync(AccessCode, progress).GetAwaiter().GetResult()];
+            return [_authenticationService.LoginMicrosoftAsync(AccessCode! /* guaranteed by CanNext */, progress).GetAwaiter().GetResult()];
         });
 
         return confirmProfileViewModel;

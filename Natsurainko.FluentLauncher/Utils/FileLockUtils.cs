@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.Utils;
 
 internal class FileLockUtils
@@ -95,8 +94,8 @@ internal class FileLockUtils
 
     [DllImport("rstrtmgr.dll", CharSet = CharSet.Unicode)]
     static extern int RmRegisterResources(uint pSessionHandle, uint nFiles, string[] rgsFilenames,
-        uint nApplications, [In] RM_UNIQUE_PROCESS[] rgApplications, uint nServices,
-        string[] rgsServiceNames);
+        uint nApplications, [In] RM_UNIQUE_PROCESS[]? rgApplications, uint nServices,
+        string[]? rgsServiceNames);
 
     [DllImport("rstrtmgr.dll", CharSet = CharSet.Auto)]
     static extern int RmStartSession(out uint pSessionHandle, int dwSessionFlags, string strSessionKey);
@@ -106,7 +105,7 @@ internal class FileLockUtils
 
     [DllImport("rstrtmgr.dll")]
     static extern int RmGetList(uint dwSessionHandle, out uint pnProcInfoNeeded,
-        ref uint pnProcInfo, [In, Out] RM_PROCESS_INFO[] rgAffectedApps,
+        ref uint pnProcInfo, [In, Out] RM_PROCESS_INFO[]? rgAffectedApps,
         ref uint lpdwRebootReasons);
 
     private static List<Process> EnumerateProcesses(uint pnProcInfoNeeded, uint handle, uint lpdwRebootReasons)

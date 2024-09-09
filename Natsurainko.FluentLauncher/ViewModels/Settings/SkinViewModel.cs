@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using FluentLauncher.Infra.Settings.Mvvm;
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.WinUI;
@@ -14,7 +15,10 @@ using Nrk.FluentCore.Utils;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text.Json.Nodes;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Graphics.Imaging;
@@ -105,18 +109,20 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
         }
     }
 
-    public Task<bool> IsSlimSkin() => Task.Run(() =>
+    public async Task<bool> IsSlimSkin()
     {
-        var authorization = new Tuple<string, string>("Bearer", ActiveAccount.AccessToken);
         var skinUrl = string.Empty;
 
         if (ActiveAccount is YggdrasilAccount yggdrasil)
         {
-            using var responseMessage = HttpUtils.HttpGet(
-                yggdrasil.YggdrasilServerUrl +
-                "/sessionserver/session/minecraft/profile/" +
-                yggdrasil.Uuid.ToString("N").ToLower()
-                , authorization);
+            var request = new HttpRequestMessage(
+                HttpMethod.Get,
+                yggdrasil.YggdrasilServerUrl
+                + "/sessionserver/session/minecraft/profile/"
+                + yggdrasil.Uuid.ToString("N").ToLower());
+
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", yggdrasil.AccessToken);
+            var responseMessage = await HttpUtils.HttpClient.SendAsync(request);
 
             var jsonBase64 = JsonNode.Parse(responseMessage.Content.ReadAsString())!["properties"]![0]!["value"];
             var json = JsonNode.Parse(jsonBase64!.GetValue<string>().ConvertFromBase64());
@@ -127,7 +133,12 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
 
         if (ActiveAccount is MicrosoftAccount microsoft)
         {
-            using var responseMessage = HttpUtils.HttpGet("https://api.minecraftservices.com/minecraft/profile", authorization);
+            var request = new HttpRequestMessage(
+                HttpMethod.Get,
+                "https://api.minecraftservices.com/minecraft/profile");
+
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", microsoft.AccessToken);
+            var responseMessage = await HttpUtils.HttpClient.SendAsync(request);
             responseMessage.EnsureSuccessStatusCode();
 
             var json = JsonNode.Parse(responseMessage.Content.ReadAsString())!["skins"]!
@@ -138,7 +149,7 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
         }
 
         return false;
-    });
+    }
 
     #endregion
 

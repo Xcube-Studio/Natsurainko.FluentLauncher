@@ -4,8 +4,8 @@ using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
+using System;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 
 internal partial class ChooseMicrosoftAuthMethodViewModel : WizardViewModelBase
@@ -30,8 +30,9 @@ internal partial class ChooseMicrosoftAuthMethodViewModel : WizardViewModelBase
     {
         return SelectedMicrosoftAuthMethod switch
         {
-            MicrosoftAuthMethod.BuiltInBrowser => new BrowserMicrosoftAuthViewModel(),
-            MicrosoftAuthMethod.DeviceFlowCode => new DeviceFlowMicrosoftAuthViewModel(_authService)
+            MicrosoftAuthMethod.BuiltInBrowser => new BrowserMicrosoftAuthViewModel(_authService),
+            MicrosoftAuthMethod.DeviceFlowCode => new DeviceFlowMicrosoftAuthViewModel(_authService),
+            _ => throw new InvalidOperationException()
         };
     }
 }

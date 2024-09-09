@@ -4,8 +4,8 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
 using Nrk.FluentCore.Authentication;
+using System;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 
 internal partial class ChooseAccountTypeViewModel : WizardViewModelBase
@@ -35,7 +35,8 @@ internal partial class ChooseAccountTypeViewModel : WizardViewModelBase
         {
             AccountType.Microsoft => new ChooseMicrosoftAuthMethodViewModel(_authService),
             AccountType.Offline => new EnterOfflineProfileViewModel(),
-            AccountType.Yggdrasil => new EnterYggdrasilProfileViewModel()
+            AccountType.Yggdrasil => new EnterYggdrasilProfileViewModel(),
+            _ => throw new InvalidOperationException()
         };
     }
 }

@@ -6,18 +6,16 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
-using Nrk.FluentCore.Authentication;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
 internal partial class AuthenticationWizardDialogViewModel : ObservableObject
 {
     [ObservableProperty]
-    private WizardViewModelBase currentFrameDataContext;
+    private WizardViewModelBase currentFrameDataContext = null!; // Set in LoadEvent
 
     private readonly Stack<WizardViewModelBase> _viewModelStack = new();
 
@@ -25,8 +23,8 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
     private readonly NotificationService _notificationService;
     private readonly AuthenticationService _authService;
 
-    private Frame _contentFrame;
-    private ContentDialog _dialog;
+    private Frame _contentFrame = null!; // Set in LoadEvent
+    private ContentDialog _dialog = null!; // Set in LoadEvent
 
     public AuthenticationWizardDialogViewModel(AccountService accountService, NotificationService notificationService, AuthenticationService authService)
     {
@@ -39,8 +37,8 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
     public void LoadEvent(object args)
     {
         var grid = args.As<Grid, object>().sender;
-        _contentFrame = grid.FindName("contentFrame") as Frame;
-        _dialog = grid.FindName("Dialog") as ContentDialog;
+        _contentFrame = (Frame)grid.FindName("contentFrame");
+        _dialog = (ContentDialog)grid.FindName("Dialog");
 
         CurrentFrameDataContext = new ChooseAccountTypeViewModel(_authService);
 
@@ -102,8 +100,8 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
 
     private void Finish()
     {
-        var vm = CurrentFrameDataContext as ConfirmProfileViewModel;
-        var account = vm.SelectedAccount;
+        var vm = (ConfirmProfileViewModel)CurrentFrameDataContext;
+        var account = vm.SelectedAccount!; // checked by ConfirmProfileViewModel.CanNext
 
         var existedAccounts = _accountService.Accounts.Where(x => x.Equals(account)).ToArray();
 

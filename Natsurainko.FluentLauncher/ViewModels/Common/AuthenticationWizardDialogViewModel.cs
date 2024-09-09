@@ -6,7 +6,6 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
-using Nrk.FluentCore.Authentication;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -16,7 +15,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.Common;
 internal partial class AuthenticationWizardDialogViewModel : ObservableObject
 {
     [ObservableProperty]
-    private WizardViewModelBase? currentFrameDataContext;
+    private WizardViewModelBase currentFrameDataContext = null!; // Set in LoadEvent
 
     private readonly Stack<WizardViewModelBase> _viewModelStack = new();
 
@@ -102,7 +101,7 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
     private void Finish()
     {
         var vm = (ConfirmProfileViewModel)CurrentFrameDataContext;
-        var account = vm.SelectedAccount;
+        var account = vm.SelectedAccount!; // checked by ConfirmProfileViewModel.CanNext
 
         var existedAccounts = _accountService.Accounts.Where(x => x.Equals(account)).ToArray();
 

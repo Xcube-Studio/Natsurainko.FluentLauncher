@@ -3,9 +3,10 @@
     <assembly fullname="Natsurainko.FluentLauncher">
 
         <!-- Preserves all types who's fully qualified type name matches the regular expression -->
-        <!-- type fullname="Natsurainko.FluentLauncher.Namespace*" -->
+		<type fullname="Natsurainko.FluentLauncher.ViewModels*"/>
+		<type fullname="Natsurainko.FluentLauncher.XamlHelpers*"/>
 
         <!-- Preserve all types within the specified namespace -->
-        <namespace fullname="Natsurainko.FluentLauncher.ViewModels" />
+		<!-- namespace fullname="Natsurainko.FluentLauncher.ViewModels" -->
     </assembly>
 </linker>

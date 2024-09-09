@@ -148,16 +148,30 @@ public partial class SettingsService : SettingsContainer
         Migrate();
 
         // Init MinecraftFolders
-        string[] minecraftFolders = JsonSerializer.Deserialize<string[]>(appsettings.Values["MinecraftFolders"] as string ?? "null");
-        Array.ForEach(minecraftFolders ?? Array.Empty<string>(), MinecraftFolders.Add);
+        string? minecraftFoldersJson = appsettings.Values["MinecraftFolders"] as string;
+
+        string[] minecraftFolders;
+        if (minecraftFoldersJson is not null)
+            minecraftFolders = JsonSerializer.Deserialize<string[]>(minecraftFoldersJson) ?? [];
+        else
+            minecraftFolders = [];
+
+        Array.ForEach(minecraftFolders, MinecraftFolders.Add);
         MinecraftFolders.CollectionChanged += (sender, e) =>
         {
             appsettings.Values["MinecraftFolders"] = JsonSerializer.Serialize(MinecraftFolders.ToArray());
         };
 
         // Init Javas
-        string[] javaRuntimes = JsonSerializer.Deserialize<string[]>(appsettings.Values["Javas"] as string ?? "null");
-        Array.ForEach(javaRuntimes ?? Array.Empty<string>(), Javas.Add);
+        string? javaRuntimesJson = appsettings.Values["Javas"] as string;
+
+        string[] javaRuntimes;
+        if (javaRuntimesJson is not null)
+            javaRuntimes = JsonSerializer.Deserialize<string[]>(javaRuntimesJson) ?? [];
+        else
+            javaRuntimes = [];
+
+        Array.ForEach(javaRuntimes, Javas.Add);
         Javas.CollectionChanged += (sender, e) =>
         {
             appsettings.Values["Javas"] = JsonSerializer.Serialize(Javas.ToArray());
@@ -169,7 +183,6 @@ public partial class SettingsService : SettingsContainer
         if (CurrentDownloadSource == "Mcbbs")
             CurrentDownloadSource = "Bmclapi";
 
-        // ApplicationData.Current.LocalSettings.Values["SettingsVersion"] = 1u; // TODO: testing only, to be removed
         if (SettingsVersion == 0u) // Version 0: Before Release 2.1.8.0
         {
             MigrateFrom_2_1_8_0();
@@ -188,9 +201,9 @@ public partial class SettingsService : SettingsContainer
             SettingsVersion = 3u;
         }
 
-        //if (SettingsVersion == 1) // Version 1: Release vNext
+        //if (SettingsVersion == N) // Version N: Release vNext
         //{
-        //    SettingsVersion = 2;
+        //    SettingsVersion = N + 1;
         //}
     }
 
@@ -236,7 +249,7 @@ public partial class SettingsService : SettingsContainer
         string accountSettingsPath = Path.Combine(accountSettingsDir, "accounts.json");
         File.WriteAllText(accountSettingsPath, jsonNode.ToString());
 
-        //appsettings.Values.Remove("Accounts"); // TODO: Uncomment this after testing
+        appsettings.Values.Remove("Accounts");
 
         // Migrate to storing the GUID of the active account in ApplicationData.Current.LocalSettings
 
@@ -247,11 +260,11 @@ public partial class SettingsService : SettingsContainer
             return;
 
         // Set new setting ActiveAccountUuid and remove the old one
-        if (Guid.TryParse(currentAccountJsonNode["Uuid"].GetValue<string>(), out Guid currentAccountUuid))
+        if (Guid.TryParse(currentAccountJsonNode["Uuid"]?.GetValue<string>(), out Guid currentAccountUuid))
         {
             appsettings.Values["ActiveAccountUuid"] = currentAccountUuid;
         }
-        //appsettings.Values.Remove("CurrentAccount"); // TODO: Uncomment this after testing
+        appsettings.Values.Remove("CurrentAccount");
     }
 
     private static void MigrateFrom_2_3_0_0()

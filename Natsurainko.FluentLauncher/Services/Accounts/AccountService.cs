@@ -94,9 +94,9 @@ internal class AccountService
 
             Account? account = accountType switch
             {
-                AccountType.Offline => item.Deserialize<OfflineAccount>(),
-                AccountType.Microsoft => item.Deserialize<MicrosoftAccount>(),
-                AccountType.Yggdrasil => item.Deserialize<YggdrasilAccount>(),
+                AccountType.Offline => item.Deserialize(FLSerializerContext.Default.OfflineAccount),
+                AccountType.Microsoft => item.Deserialize(FLSerializerContext.Default.MicrosoftAccount),
+                AccountType.Yggdrasil => item.Deserialize(FLSerializerContext.Default.YggdrasilAccount),
                 _ => null
             };
 
@@ -113,20 +113,8 @@ internal class AccountService
     /// </summary>
     private void SaveData()
     {
-        var jsonArray = new JsonArray();
-        foreach (var item in Accounts)
-        {
-            // Use derived types to store all properties
-            if (item is OfflineAccount offlineAccount)
-                jsonArray.Add(offlineAccount);
-            else if (item is MicrosoftAccount microsoftAccount)
-                jsonArray.Add(microsoftAccount);
-            else if ((item is YggdrasilAccount yggdrasilAccount))
-                jsonArray.Add(yggdrasilAccount);
-        }
-
         // Save to file
-        string json = jsonArray.ToJsonString();
+        string json = JsonSerializer.Serialize(Accounts.ToArray(), FLSerializerContext.Default.AccountArray);
         var file = _storageService.GetFile(AccountsJsonPath);
 
         if (file.Directory != null && !file.Directory.Exists)

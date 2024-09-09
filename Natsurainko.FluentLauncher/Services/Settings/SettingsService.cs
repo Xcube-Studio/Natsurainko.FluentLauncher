@@ -152,14 +152,14 @@ public partial class SettingsService : SettingsContainer
 
         string[] minecraftFolders;
         if (minecraftFoldersJson is not null)
-            minecraftFolders = JsonSerializer.Deserialize<string[]>(minecraftFoldersJson) ?? [];
+            minecraftFolders = JsonSerializer.Deserialize(minecraftFoldersJson, SetingsJsonSerializerContext.Default.StringArray) ?? [];
         else
             minecraftFolders = [];
 
         Array.ForEach(minecraftFolders, MinecraftFolders.Add);
         MinecraftFolders.CollectionChanged += (sender, e) =>
         {
-            appsettings.Values["MinecraftFolders"] = JsonSerializer.Serialize(MinecraftFolders.ToArray());
+            appsettings.Values["MinecraftFolders"] = JsonSerializer.Serialize(MinecraftFolders.ToArray(), SetingsJsonSerializerContext.Default.StringArray);
         };
 
         // Init Javas
@@ -167,14 +167,14 @@ public partial class SettingsService : SettingsContainer
 
         string[] javaRuntimes;
         if (javaRuntimesJson is not null)
-            javaRuntimes = JsonSerializer.Deserialize<string[]>(javaRuntimesJson) ?? [];
+            javaRuntimes = JsonSerializer.Deserialize(javaRuntimesJson, SetingsJsonSerializerContext.Default.StringArray) ?? [];
         else
             javaRuntimes = [];
 
         Array.ForEach(javaRuntimes, Javas.Add);
         Javas.CollectionChanged += (sender, e) =>
         {
-            appsettings.Values["Javas"] = JsonSerializer.Serialize(Javas.ToArray());
+            appsettings.Values["Javas"] = JsonSerializer.Serialize(Javas.ToArray(), SetingsJsonSerializerContext.Default.StringArray);
         };
     }
 
@@ -297,6 +297,7 @@ public partial class SettingsService : SettingsContainer
 [JsonSerializable(typeof(float))]
 [JsonSerializable(typeof(double))]
 [JsonSerializable(typeof(string))]
+[JsonSerializable(typeof(string[]))]
 [JsonSerializable(typeof(Windows.UI.Color))]
 [JsonSerializable(typeof(WinUIEx.WindowState))]
 internal partial class SetingsJsonSerializerContext : JsonSerializerContext

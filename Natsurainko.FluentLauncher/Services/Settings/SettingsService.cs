@@ -111,6 +111,9 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(Default = true, Converter = typeof(JsonStringConverter<bool>))]
     public partial bool UseSystemAccentColor { get; set; }
 
+    [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
+    public partial bool UseNarrowMargin { get; set; }
+
 
     [SettingItem(Default = 500, Converter = typeof(JsonStringConverter<double>))]
     public partial double AppWindowHeight { get; set; }

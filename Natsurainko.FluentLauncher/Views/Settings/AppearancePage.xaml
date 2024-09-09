@@ -721,6 +721,16 @@
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
+
+                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Details" />
+
+                <controls:SettingsCard
+                    Description="Reduce margins to increase content fill ratio"
+                    Header="Narrow Margin Mode"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xf573;}">
+                    <ToggleSwitch IsOn="{Binding UseNarrowMargin, Mode=TwoWay}" />
+                </controls:SettingsCard>
+
             </StackPanel>
         </Border>
     </ScrollViewer>

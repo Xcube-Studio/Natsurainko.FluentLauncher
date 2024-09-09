@@ -33,7 +33,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
     public ShellPage()
     {
         _appearanceService.ApplyBackgroundBeforePageInit(this);
-        _appearanceService.ApplyThemeColorBeforePageInit();
+        _appearanceService.ApplySettingsBeforePageInit();
 
         InitializeComponent();
 

@@ -78,6 +78,7 @@ internal class LaunchService
         {
             InstanceConfig config = instance.GetConfig();
             config.LastLaunchTime = DateTime.Now;
+            //App.DispatcherQueue.TryEnqueue(() => config.LastLaunchTime = DateTime.Now);
 
             var preCheckData = await PreCheckLaunchNeeds(instance, config, cancellationToken, progress);
 

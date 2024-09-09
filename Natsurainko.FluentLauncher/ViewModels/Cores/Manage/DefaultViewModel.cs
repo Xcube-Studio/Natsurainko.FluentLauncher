@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
 using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Launch;
+using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.Common;
@@ -19,15 +20,17 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 {
     private readonly INavigationService _navigationService;
     private readonly GameService _gameService;
+    private readonly NotificationService _notificationService;
 
     public MinecraftInstance MinecraftInstance { get; private set; }
 
     public InstanceConfig InstanceConfig { get; private set; }
 
-    public DefaultViewModel(GameService gameService, INavigationService navigationService)
+    public DefaultViewModel(GameService gameService, INavigationService navigationService, NotificationService notificationService)
     {
         _gameService = gameService;
         _navigationService = navigationService;
+        _notificationService = notificationService;
     }
 
     [ObservableProperty]
@@ -86,6 +89,6 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     [RelayCommand]
     public async Task DeleteGame() => await new DeleteInstanceDialog()
     {
-        DataContext = new DeleteInstanceDialogViewModel(MinecraftInstance, _navigationService)
+        DataContext = new DeleteInstanceDialogViewModel(MinecraftInstance, _navigationService, _notificationService, _gameService)
     }.ShowAsync();
 }

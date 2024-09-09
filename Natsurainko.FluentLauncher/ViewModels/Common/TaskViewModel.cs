@@ -190,6 +190,7 @@ internal partial class DownloadGameResourceTaskViewModel : TaskViewModel
                     DownloadResultType.Failed => TaskState.Failed,
                     DownloadResultType.Cancelled => TaskState.Cancelled,
                     DownloadResultType.Successful => TaskState.Finished,
+                    _ => throw new InvalidOperationException()
                 };
 
                 if (downloadResult.Exception is not null)

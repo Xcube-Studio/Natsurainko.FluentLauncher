@@ -1,14 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
     <LangVersion>preview</LangVersion>
+    <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+    <WindowsSdkPackageVersion>10.0.22621.38</WindowsSdkPackageVersion>
     <RootNamespace>Natsurainko.FluentLauncher</RootNamespace>
-    <Platforms>x86;x64;ARM64</Platforms>
-    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+    <Platforms>x64;ARM64</Platforms>
+    <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
     <UseWinUI>true</UseWinUI>
     <DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+    <Configurations>Debug;Release;Debug-AOT;Release-AOT</Configurations>
 
     <!-- Packaging -->
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -25,12 +27,26 @@
     <Nullable>enable</Nullable>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
   </PropertyGroup>
-	
-  <PropertyGroup>
-	  <WindowsSdkPackageVersion>10.0.22621.38</WindowsSdkPackageVersion>
-  </PropertyGroup>  
-	
-	<!-- Enable package and publish in context menu -->
+
+    <!-- NativeAOT -->
+    <PropertyGroup Condition="$(Configuration.Contains('AOT'))">
+        <PublishAot>true</PublishAot>
+    </PropertyGroup>
+
+    <ItemGroup Condition="$(Configuration.Contains('AOT'))">
+        <TrimmerRootDescriptor Include="ILLink.Descriptors.xml" />
+    </ItemGroup>
+
+    <!-- CoreCLR -->
+    <PropertyGroup Condition="!$(Configuration.Contains('AOT'))">
+        <PublishAot>false</PublishAot>
+    </PropertyGroup>
+
+    <ItemGroup Condition="!$(Configuration.Contains('AOT'))">
+        <None Include="ILLink.Descriptors.xml" />
+    </ItemGroup>
+
+  <!-- Enable package and publish in context menu -->
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
       <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>

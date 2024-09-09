@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -12,13 +13,6 @@ namespace Natsurainko.FluentLauncher.Models.Launch;
 
 internal partial class InstanceConfig : ObservableObject
 {
-    private readonly static JsonSerializerOptions JsonSerializerOptions = new()
-    {
-        IncludeFields = false,
-        WriteIndented = true,
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-    };
-
     [JsonIgnore]
     public string FilePath { get; set; }
 
@@ -72,6 +66,6 @@ internal partial class InstanceConfig : ObservableObject
         base.OnPropertyChanged(e);
 
         if (!string.IsNullOrEmpty(FilePath))
-            File.WriteAllText(FilePath, JsonSerializer.Serialize(this, JsonSerializerOptions));
+            File.WriteAllText(FilePath, JsonSerializer.Serialize(this, InstanceConfigSerializerContext.Default.InstanceConfig));
     }
 }

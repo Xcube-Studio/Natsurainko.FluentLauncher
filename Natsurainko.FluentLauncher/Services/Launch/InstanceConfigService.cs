@@ -48,7 +48,9 @@ class InstanceConfigService
 
         try
         {
-            instanceConfig = JsonNode.Parse(File.ReadAllText(configFile)).Deserialize<InstanceConfig>()!;
+            instanceConfig = JsonNode.Parse(File.ReadAllText(configFile))
+                .Deserialize(InstanceConfigSerializerContext.Default.InstanceConfig)
+                ?? throw new InvalidDataException();
         }
         catch
         {

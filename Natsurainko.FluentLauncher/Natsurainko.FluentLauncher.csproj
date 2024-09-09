@@ -31,6 +31,7 @@
     <!-- NativeAOT -->
     <PropertyGroup Condition="$(Configuration.Contains('AOT'))">
         <PublishAot>true</PublishAot>
+        <CsWinRTAotOptimizerEnabled>true</CsWinRTAotOptimizerEnabled>
     </PropertyGroup>
 
     <ItemGroup Condition="$(Configuration.Contains('AOT'))">

@@ -20,7 +20,6 @@ namespace Natsurainko.FluentLauncher;
 [JsonSerializable(typeof(OptiFineInstallData[]))]
 [JsonSerializable(typeof(FabricInstallData[]))]
 [JsonSerializable(typeof(QuiltInstallData[]))]
-[JsonSerializable(typeof(InstanceConfig))]
 [JsonSerializable(typeof(VersionManifestJsonObject))]
 
 // Accounts
@@ -40,5 +39,15 @@ namespace Natsurainko.FluentLauncher;
 [JsonSerializable(typeof(Windows.UI.Color))]
 [JsonSerializable(typeof(WinUIEx.WindowState))]
 internal partial class FLSerializerContext : JsonSerializerContext
+{
+}
+
+
+[JsonSerializable(typeof(InstanceConfig))]
+[JsonSourceGenerationOptions(
+    IncludeFields = false,
+    WriteIndented = true,
+    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)]
+internal partial class InstanceConfigSerializerContext : JsonSerializerContext
 {
 }

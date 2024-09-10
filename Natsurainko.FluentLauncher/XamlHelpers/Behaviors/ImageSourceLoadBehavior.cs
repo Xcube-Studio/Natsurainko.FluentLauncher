@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.Xaml.Interactivity;
 using Natsurainko.FluentLauncher.Services.Network;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 
@@ -64,7 +65,9 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
         App.DispatcherQueue.TryEnqueue(LoadImage);
     }
 
-    private static DependencyProperty GetDependencyProperty(Type type, string propertyName)
+    private static DependencyProperty GetDependencyProperty(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type,
+        string propertyName)
     {
         var field = type.GetTypeInfo().GetDeclaredField($"{propertyName}Property");
 

@@ -140,7 +140,7 @@ public partial class SettingsService : SettingsContainer
     public SettingsService(ISettingsStorage storage) : base(storage)
     {
         // Configure JsonSerializerContext for NativeAOT-compatible JsonStringConverter
-        JsonStringConverterConfig.SerializerContext = SetingsJsonSerializerContext.Default;
+        JsonStringConverterConfig.SerializerContext = FLSerializerContext.Default;
 
         var appsettings = ApplicationData.Current.LocalSettings;
 
@@ -152,14 +152,14 @@ public partial class SettingsService : SettingsContainer
 
         string[] minecraftFolders;
         if (minecraftFoldersJson is not null)
-            minecraftFolders = JsonSerializer.Deserialize<string[]>(minecraftFoldersJson) ?? [];
+            minecraftFolders = JsonSerializer.Deserialize(minecraftFoldersJson, FLSerializerContext.Default.StringArray) ?? [];
         else
             minecraftFolders = [];
 
         Array.ForEach(minecraftFolders, MinecraftFolders.Add);
         MinecraftFolders.CollectionChanged += (sender, e) =>
         {
-            appsettings.Values["MinecraftFolders"] = JsonSerializer.Serialize(MinecraftFolders.ToArray());
+            appsettings.Values["MinecraftFolders"] = JsonSerializer.Serialize(MinecraftFolders.ToArray(), FLSerializerContext.Default.StringArray);
         };
 
         // Init Javas
@@ -167,14 +167,14 @@ public partial class SettingsService : SettingsContainer
 
         string[] javaRuntimes;
         if (javaRuntimesJson is not null)
-            javaRuntimes = JsonSerializer.Deserialize<string[]>(javaRuntimesJson) ?? [];
+            javaRuntimes = JsonSerializer.Deserialize(javaRuntimesJson, FLSerializerContext.Default.StringArray) ?? [];
         else
             javaRuntimes = [];
 
         Array.ForEach(javaRuntimes, Javas.Add);
         Javas.CollectionChanged += (sender, e) =>
         {
-            appsettings.Values["Javas"] = JsonSerializer.Serialize(Javas.ToArray());
+            appsettings.Values["Javas"] = JsonSerializer.Serialize(Javas.ToArray(), FLSerializerContext.Default.StringArray);
         };
     }
 
@@ -289,16 +289,4 @@ public partial class SettingsService : SettingsContainer
         if (clientId is not null)
             appsettings.Values["ActiveInstanceId"] = clientId;
     }
-}
-
-[JsonSerializable(typeof(int))]
-[JsonSerializable(typeof(uint))]
-[JsonSerializable(typeof(bool))]
-[JsonSerializable(typeof(float))]
-[JsonSerializable(typeof(double))]
-[JsonSerializable(typeof(string))]
-[JsonSerializable(typeof(Windows.UI.Color))]
-[JsonSerializable(typeof(WinUIEx.WindowState))]
-internal partial class SetingsJsonSerializerContext : JsonSerializerContext
-{
 }

@@ -23,7 +23,7 @@ using Windows.Storage.Pickers;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
-internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, ISettingsViewModel
+internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISettingsViewModel
 {
     #region Dependencies
 
@@ -53,9 +53,8 @@ internal partial class OOBEViewModel : ObservableRecipient, INavigationAware, IS
         // Init accounts
         Accounts = accountService.Accounts;
         ActiveAccount = accountService.ActiveAccount;
-        IsActive = true; // Enable message recipient
 
-        (this as ISettingsViewModel).InitializeSettings();
+        ((ISettingsViewModel)this).InitializeSettings();
     }
 
     #region Navigation

@@ -86,11 +86,11 @@ public partial class ChooseModLoaderData : ObservableObject
 
             installDatas = Type switch
             {
-                ModLoaderType.NeoForge => JsonNode.Parse(jsonContent).Deserialize<ForgeInstallData[]>()!,
-                ModLoaderType.Forge => JsonNode.Parse(jsonContent).Deserialize<ForgeInstallData[]>()!,
-                ModLoaderType.OptiFine => JsonNode.Parse(jsonContent).Deserialize<OptiFineInstallData[]>()!,
-                ModLoaderType.Fabric => JsonNode.Parse(jsonContent).Deserialize<FabricInstallData[]>()!,
-                ModLoaderType.Quilt => JsonNode.Parse(jsonContent).Deserialize<QuiltInstallData[]>()!,
+                ModLoaderType.NeoForge => JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.ForgeInstallDataArray),
+                ModLoaderType.Forge => JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.ForgeInstallDataArray),
+                ModLoaderType.OptiFine => JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.OptiFineInstallDataArray),
+                ModLoaderType.Fabric => JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.FabricInstallDataArray),
+                ModLoaderType.Quilt => JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.QuiltInstallDataArray),
                 _ => throw new InvalidOperationException()
             };
         }

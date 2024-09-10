@@ -3,34 +3,30 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.Xaml.Interactivity;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Behaviors;
 
-public class AncestorBindingBehavior : DependencyObject, IBehavior
+public class AncestorBindingBehavior : Behavior<FrameworkElement>
 {
-    public DependencyObject AssociatedObject { get; set; }
+    public Binding Binding { get; set; } = null!;
 
-    public Binding Binding { get; set; }
+    public string AncestorType { get; set; } = null!;
 
-    public string AncestorType { get; set; }
+    public string TargetPropertyName { get; set; } = null!;
 
-    public string TargetPropertyName { get; set; }
-
-    public void Attach(DependencyObject associatedObject)
+    protected override void OnAttached()
     {
-        AssociatedObject = associatedObject;
-
         if (Binding == null || string.IsNullOrWhiteSpace(TargetPropertyName) || string.IsNullOrWhiteSpace(AncestorType))
             return;
 
-        ((FrameworkElement)AssociatedObject).Loaded += AncestorBindingBehavior_Loaded;
+        AssociatedObject.Loaded += AncestorBindingBehavior_Loaded;
     }
 
     private void AncestorBindingBehavior_Loaded(object sender, RoutedEventArgs e)
     {
-        ((FrameworkElement)AssociatedObject).Loaded -= AncestorBindingBehavior_Loaded;
+        AssociatedObject.Loaded -= AncestorBindingBehavior_Loaded;
 
         var source = FindAncestorType(AssociatedObject, AncestorType);
         var targetProperty = GetDependencyProperty(AssociatedObject.GetType(), TargetPropertyName);
@@ -41,7 +37,7 @@ public class AncestorBindingBehavior : DependencyObject, IBehavior
         {
             Binding.Source = source;
 
-            ((FrameworkElement)AssociatedObject).SetBinding(targetProperty, Binding);
+            AssociatedObject.SetBinding(targetProperty, Binding);
         }
         catch
         {
@@ -50,11 +46,7 @@ public class AncestorBindingBehavior : DependencyObject, IBehavior
         }
     }
 
-    public void Detach()
-    {
-    }
-
-    private static DependencyObject FindAncestorType(DependencyObject element, string type)
+    private static DependencyObject? FindAncestorType(DependencyObject element, string type)
     {
         if (element.GetType().Name == type)
             return element;
@@ -67,21 +59,23 @@ public class AncestorBindingBehavior : DependencyObject, IBehavior
         return FindAncestorType(parent, type);
     }
 
-    private static DependencyProperty GetDependencyProperty(Type type, string propertyName)
+    private static DependencyProperty? GetDependencyProperty(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type,
+        string propertyName)
     {
         var field = type.GetTypeInfo().GetDeclaredField($"{propertyName}Property");
 
         if (field != null)
-            return (DependencyProperty)field.GetValue(null);
+            return (DependencyProperty?)field.GetValue(null);
 
         var property = type.GetTypeInfo().GetDeclaredProperty($"{propertyName}Property");
 
         if (property != null)
-            return (DependencyProperty)property.GetValue(null);
+            return (DependencyProperty?)property.GetValue(null);
 
         var baseType = type.GetTypeInfo().BaseType;
 
-        if (baseType == typeof(object))
+        if (baseType == typeof(object) || baseType == null)
             return null;
 
         return GetDependencyProperty(baseType, propertyName);

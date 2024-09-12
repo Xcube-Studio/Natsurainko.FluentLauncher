@@ -17,6 +17,7 @@
         </Grid.RowDefinitions>
 
         <BreadcrumbBar
+            Name="breadcrumbBar"
             Grid.Row="0"
             MaxWidth="1020"
             Margin="{ThemeResource PageMarginWithBreadcrumbBar}"
@@ -58,6 +59,28 @@
                 </TransitionCollection>
             </Frame.ContentTransitions>
         </Frame>
-    </Grid>
 
+        <!--  Visual states reflect the application's window size  -->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="LayoutVisualStates">
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger>
+                            <AdaptiveTrigger.MinWindowWidth>
+                                <x:Double>641</x:Double>
+                            </AdaptiveTrigger.MinWindowWidth>
+                        </AdaptiveTrigger>
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="breadcrumbBar.Margin" Value="10" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
 </Page>

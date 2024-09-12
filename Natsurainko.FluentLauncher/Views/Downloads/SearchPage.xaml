@@ -218,7 +218,7 @@
     </i:Interaction.Behaviors>
 
     <ScrollViewer>
-        <Border Margin="{ThemeResource PageMarginWithBorder}">
+        <Border Name="border" Margin="{ThemeResource PageMarginWithBorder}">
             <StackPanel
                 MaxWidth="1000"
                 HorizontalAlignment="Stretch"
@@ -302,5 +302,28 @@
                 </ItemsRepeater>
             </StackPanel>
         </Border>
+
+        <!--  Visual states reflect the application's window size  -->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="LayoutVisualStates">
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger>
+                            <AdaptiveTrigger.MinWindowWidth>
+                                <x:Double>641</x:Double>
+                            </AdaptiveTrigger.MinWindowWidth>
+                        </AdaptiveTrigger>
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="border.Margin" Value="20, 0, 20, 20" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </ScrollViewer>
 </Page>

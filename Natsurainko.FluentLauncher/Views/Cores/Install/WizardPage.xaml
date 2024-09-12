@@ -25,6 +25,7 @@
         </i:Interaction.Behaviors>
 
         <StackPanel
+            Name="stackPanel"
             MaxWidth="1060"
             Margin="{ThemeResource PageMarginWithInstallWizardPageStackPanel}"
             Padding="{ThemeResource PagePaddingWithInstallWizardPageStackPanel}">
@@ -73,6 +74,7 @@
             Height="1"
             Background="{ThemeResource NavigationViewContentGridBorderBrush}" />
         <Grid
+            Name="grid"
             Grid.Row="3"
             MaxWidth="1080"
             Padding="{ThemeResource PagePaddingWithInstallWizardPageGrid}"
@@ -114,5 +116,31 @@
                 </Button>
             </Grid>
         </Grid>
+
+        <!--  Visual states reflect the application's window size  -->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="LayoutVisualStates">
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger>
+                            <AdaptiveTrigger.MinWindowWidth>
+                                <x:Double>641</x:Double>
+                            </AdaptiveTrigger.MinWindowWidth>
+                        </AdaptiveTrigger>
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="grid.Padding" Value="20" />
+                        <Setter Target="stackPanel.Margin" Value="10,0" />
+                        <Setter Target="stackPanel.Padding" Value="10" />
+                        <Setter Target="contentFrame.Padding" Value="20,0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>

@@ -116,18 +116,18 @@ internal partial class DetailsViewModel : ObservableObject, INavigationAware
             }
         }
 
-        if (sender is CommunityToolkit.Labs.WinUI.MarkdownTextBlock.MarkdownTextBlock markdownTextBlock)
-        {
-            if (_resource is ModrinthResource modrinthResource)
-            {
-                var markdown = await _modrinthClient.GetResourceDescriptionAsync(modrinthResource.Id);
-                App.DispatcherQueue.TryEnqueue(() =>
-                {
-                    markdownTextBlock.Config = new CommunityToolkit.Labs.WinUI.MarkdownTextBlock.MarkdownConfig();
-                    markdownTextBlock.Text = markdown;
-                });
-            }
-        }
+        //if (sender is CommunityToolkit.Labs.WinUI.MarkdownTextBlock.MarkdownTextBlock markdownTextBlock)
+        //{
+        //    if (_resource is ModrinthResource modrinthResource)
+        //    {
+        //        var markdown = await _modrinthClient.GetResourceDescriptionAsync(modrinthResource.Id);
+        //        App.DispatcherQueue.TryEnqueue(() =>
+        //        {
+        //            markdownTextBlock.Config = new CommunityToolkit.Labs.WinUI.MarkdownTextBlock.MarkdownConfig();
+        //            markdownTextBlock.Text = markdown;
+        //        });
+        //    }
+        //}
     }
 
     [RelayCommand]

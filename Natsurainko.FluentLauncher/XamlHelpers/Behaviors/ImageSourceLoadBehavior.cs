@@ -6,6 +6,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Behaviors;
@@ -53,6 +54,8 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
     #endregion
 
     private bool isLoading = false;
+    private bool isUnloaded = false;
+    private CancellationTokenSource cancellationTokenSource;
     private readonly CacheInterfaceService _cacheInterfaceService = App.GetService<CacheInterfaceService>();
 
     public DependencyProperty SourceProperty { get; private set; }
@@ -62,6 +65,7 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
         base.OnAttached();
 
         SourceProperty = GetDependencyProperty(AssociatedObject.GetType(), SourcePropertyName);
+        AssociatedObject.Unloaded += AssociatedObject_Unloaded;
         App.DispatcherQueue.TryEnqueue(LoadImage);
     }
 
@@ -114,6 +118,7 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
     public async void LoadImage()
     {
         if (isLoading
+            || isUnloaded
             || AssociatedObject == null
             || SourceProperty == null
             || (!LoadFromInternet && !File.Exists(ImageSourceFilePath))
@@ -121,6 +126,7 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
             return;
 
         isLoading = true;
+        cancellationTokenSource = new CancellationTokenSource();
 
         try
         {
@@ -128,10 +134,16 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
                 ? await _cacheInterfaceService.RequestStreamAsync(ImageSourceUrl, Services.Network.Data.InterfaceRequestMethod.Static)
                 : File.OpenRead(ImageSourceFilePath);
 
+            cancellationTokenSource.Token.ThrowIfCancellationRequested();
+
             using var randomAccessStream = imageDataStream.AsRandomAccessStream();
+
+            cancellationTokenSource.Token.ThrowIfCancellationRequested();
 
             var bitmapImage = new BitmapImage();
             await bitmapImage.SetSourceAsync(randomAccessStream);
+
+            cancellationTokenSource.Token.ThrowIfCancellationRequested();
 
             AssociatedObject?.SetValue(SourceProperty, bitmapImage);
         }
@@ -142,6 +154,15 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
         finally
         {
             isLoading = false;
+            cancellationTokenSource?.Dispose();
         }
+    }
+
+    private void AssociatedObject_Unloaded(object sender, RoutedEventArgs e)
+    {
+        isUnloaded = true;
+
+        if (isLoading)
+            cancellationTokenSource?.Cancel(); 
     }
 }

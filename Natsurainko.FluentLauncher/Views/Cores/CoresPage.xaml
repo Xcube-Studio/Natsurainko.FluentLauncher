@@ -33,6 +33,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel
+            Name="stackPanel"
             MaxWidth="1000"
             Margin="{ThemeResource PageMarginWithStackPanel}"
             Spacing="15">
@@ -84,8 +85,12 @@
             </controls:WrapPanel>
         </StackPanel>
 
-        <ScrollViewer Grid.Row="2" Padding="{ThemeResource PagePaddingWithScrollViewer}">
+        <ScrollViewer
+            Name="scrollViewer"
+            Grid.Row="2"
+            Padding="{ThemeResource PagePaddingWithScrollViewer}">
             <ItemsRepeater
+                Name="itemsRepeater"
                 MaxWidth="1000"
                 Margin="{ThemeResource PageEndMarginWithScrollViewer}"
                 ItemsSource="{Binding DisplayMinecraftInstances}">
@@ -185,5 +190,30 @@
                 <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{Binding DisplayMinecraftInstances}" />
             </i:Interaction.Behaviors>
         </StackPanel>
+
+        <!--  Visual states reflect the application's window size  -->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="LayoutVisualStates">
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger>
+                            <AdaptiveTrigger.MinWindowWidth>
+                                <x:Double>641</x:Double>
+                            </AdaptiveTrigger.MinWindowWidth>
+                        </AdaptiveTrigger>
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="stackPanel.Margin" Value="20, 10, 20, 20" />
+                        <Setter Target="scrollViewer.Padding" Value="20, 0" />
+                        <Setter Target="itemsRepeater.Margin" Value="0, 0, 0, 20" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>

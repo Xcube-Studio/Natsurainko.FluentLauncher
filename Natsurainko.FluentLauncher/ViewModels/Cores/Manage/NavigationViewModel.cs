@@ -66,9 +66,7 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
     [RelayCommand]
     public void BreadcrumbBarLoadingEvent(object args)
     {
-        var breadcrumbBar = args.As<BreadcrumbBar, object>().sender;
-        var converter = breadcrumbBar.Resources["BreadcrumbBarLocalizationConverter"] as BreadcrumbBarLocalizationConverter;
-
+        var converter = args as BreadcrumbBarLocalizationConverter;
         converter.IgnoredText.Add(InstanceId);
     }
 }

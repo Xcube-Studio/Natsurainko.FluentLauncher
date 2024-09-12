@@ -20,6 +20,9 @@ internal class SaveManager
 
     public async IAsyncEnumerable<SaveInfo> EnumerateSavesAsync()
     {
+        if (!Directory.Exists(SavesFolder))
+            yield break;
+
         foreach (var dir in Directory.EnumerateDirectories(SavesFolder))
         {
             var levelDataFile = new FileInfo(Path.Combine(dir, "level.dat"));

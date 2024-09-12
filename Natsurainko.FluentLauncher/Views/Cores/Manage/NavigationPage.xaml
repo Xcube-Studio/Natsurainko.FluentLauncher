@@ -17,6 +17,7 @@
         </Grid.RowDefinitions>
 
         <BreadcrumbBar
+            Name="breadcrumbBar"
             Grid.Row="0"
             MaxWidth="1020"
             Margin="{ThemeResource PageMarginWithBreadcrumbBar}"
@@ -30,7 +31,7 @@
                     <actions:ModifiedInvokeCommandAction Command="{Binding ItemClickedEventCommand}" />
                 </core:EventTriggerBehavior>
                 <core:EventTriggerBehavior EventName="Loading">
-                    <actions:ModifiedInvokeCommandAction Command="{Binding BreadcrumbBarLoadingEventCommand}" />
+                    <actions:ModifiedInvokeCommandAction Command="{Binding BreadcrumbBarLoadingEventCommand}" CommandParameter="{StaticResource BreadcrumbBarLocalizationConverter}" />
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
 
@@ -61,5 +62,28 @@
                 </TransitionCollection>
             </Frame.ContentTransitions>
         </Frame>
+
+        <!--  Visual states reflect the application's window size  -->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="LayoutVisualStates">
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger>
+                            <AdaptiveTrigger.MinWindowWidth>
+                                <x:Double>641</x:Double>
+                            </AdaptiveTrigger.MinWindowWidth>
+                        </AdaptiveTrigger>
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="breadcrumbBar.Margin" Value="10" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>

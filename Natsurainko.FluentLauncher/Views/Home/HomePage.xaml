@@ -170,13 +170,16 @@
     </i:Interaction.Behaviors>
 
     <Grid x:Name="Grid">
-        <Grid VerticalAlignment="Bottom">
+        <Grid
+            Name="grid"
+            Padding="25,0"
+            VerticalAlignment="Bottom">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="5" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Grid Grid.Row="2" Margin="25,0,25,20">
+            <Grid Grid.Row="2" Margin="0,0,0,20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="10" />
@@ -198,6 +201,7 @@
                 <Button
                     x:Name="LaunchButton"
                     Grid.Column="4"
+                    VerticalAlignment="Bottom"
                     Command="{Binding LaunchCommand}"
                     Style="{ThemeResource AccentButtonStyle}">
                     <ToolTipService.ToolTip>
@@ -221,7 +225,7 @@
                     </Grid>
                 </Button>
             </Grid>
-            <Grid Margin="25,0" HorizontalAlignment="Right">
+            <Grid HorizontalAlignment="Right">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="10" />
@@ -351,5 +355,28 @@
                 </DropDownButton>
             </Grid>
         </Grid>
+
+        <!--  Visual states reflect the application's window size  -->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="LayoutVisualStates">
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger>
+                            <AdaptiveTrigger.MinWindowWidth>
+                                <x:Double>641</x:Double>
+                            </AdaptiveTrigger.MinWindowWidth>
+                        </AdaptiveTrigger>
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="grid.Padding" Value="20, 0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>

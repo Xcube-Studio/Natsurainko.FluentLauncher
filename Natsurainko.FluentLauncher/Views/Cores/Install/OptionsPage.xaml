@@ -15,10 +15,13 @@
         <converters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" Inverted="True" />
     </Page.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <!--  DO NOT remove this border. Directly setting the MaxWidth of ScrollViewer.Child causes layout issues.  -->
+    <ScrollViewer>
         <Border Margin="0,10">
-            <StackPanel MaxWidth="1000" Spacing="4">
+            <StackPanel MaxWidth="1000" Spacing="{StaticResource SettingsCardSpacing}">
+                <StackPanel.ChildrenTransitions>
+                    <EntranceThemeTransition FromVerticalOffset="50" />
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                </StackPanel.ChildrenTransitions>
 
                 <TextBlock
                     x:Uid="CoreInstallWizard_AdditionalOptionsPage_T1"

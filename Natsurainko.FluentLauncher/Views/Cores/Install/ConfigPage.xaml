@@ -14,7 +14,12 @@
 
     <ScrollViewer>
         <Border Margin="0,10">
-            <StackPanel MaxWidth="1000" Spacing="4">
+            <StackPanel MaxWidth="1000" Spacing="{StaticResource SettingsCardSpacing}">
+                <StackPanel.ChildrenTransitions>
+                    <EntranceThemeTransition FromVerticalOffset="50" />
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                </StackPanel.ChildrenTransitions>
+
                 <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xF158;}">
                     <controls:SettingsCard.Header>
                         <TextBlock x:Uid="CoreInstallWizard_EnterCoreSettingsPage_H1" Text="Core Absolute Id:" />

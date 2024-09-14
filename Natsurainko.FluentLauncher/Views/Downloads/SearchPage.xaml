@@ -223,6 +223,11 @@
                 MaxWidth="1000"
                 HorizontalAlignment="Stretch"
                 Spacing="{StaticResource SettingsCardSpacing}">
+                <StackPanel.ChildrenTransitions>
+                    <EntranceThemeTransition FromVerticalOffset="50" />
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                </StackPanel.ChildrenTransitions>
+
                 <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Visibility="{Binding IsEmptySearchText, Converter={ThemeResource InvertedBoolToVisibilityConverter}}">
                     <Run Text="&quot;" /><Run Text="{Binding SearchText}" /><Run Text="&quot;" />
                 </TextBlock>

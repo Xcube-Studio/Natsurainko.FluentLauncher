@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
@@ -455,7 +456,12 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
     }
 
     [RelayCommand(CanExecute = nameof(CanLaunch))]
-    void Launch() => App.GetService<LaunchService>().LaunchFromUI(_minecraftInstance);
+    void Launch(INavigationService navigationService)
+    {
+        navigationService.NavigateTo("Tasks/Launch");
+        App.GetService<LaunchService>().LaunchFromUI(_minecraftInstance);
+        
+    }
 }
 
 #endregion

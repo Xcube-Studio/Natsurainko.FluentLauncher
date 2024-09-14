@@ -360,7 +360,10 @@ internal class LaunchService
         // Natives decompression
         if (!CanSkipNativesDecompression(instance))
         {
-            var (_, nativeLibs) = instance.GetRequiredLibraries();
+            var (_, nativeLibs) = instance is ModifiedMinecraftInstance { HasInheritance: true } modifiedMinecraftInstance
+                ? modifiedMinecraftInstance.InheritedMinecraftInstance.GetRequiredLibraries()
+                : instance.GetRequiredLibraries();
+
             UnzipUtils.BatchUnzip(
                 Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId, "natives"),
                 nativeLibs.Select(x => x.FullPath));

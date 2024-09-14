@@ -9,19 +9,17 @@ namespace Natsurainko.FluentLauncher.ViewModels.Tasks;
 
 internal partial class DownloadViewModel : ObservableObject, INavigationAware
 {
-    private readonly DownloadService _downloadService;
-    private readonly INavigationService _navigationService;
-
     public ReadOnlyObservableCollection<TaskViewModel> Tasks { get; }
+
+    public INavigationService NavigationService { get; init; }
+
 
     public DownloadViewModel(DownloadService downloadService, INavigationService navigationService)
     {
-        _downloadService = downloadService;
-        _navigationService = navigationService;
-
+        NavigationService = navigationService;
         Tasks = new(downloadService.DownloadTasks);
     }
 
     [RelayCommand]
-    void GoToDownload() => _navigationService.NavigateTo("Download/Navigation");
+    void GoToDownload() => NavigationService.NavigateTo("Download/Navigation");
 }

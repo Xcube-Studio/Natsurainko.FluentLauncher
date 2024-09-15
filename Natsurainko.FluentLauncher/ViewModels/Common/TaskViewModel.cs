@@ -366,9 +366,9 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
         {
             instance = await _installer.InstallAsync(_tokenSource.Token);
         }
-        catch (AggregateException aggregateException)
+        catch (Exception ex)
         {
-            if (aggregateException.InnerException is OperationCanceledException canceledException)
+            if (ex.InnerException is OperationCanceledException canceledException)
             {
                 resultState = TaskState.Cancelled;
                 Exception = canceledException;
@@ -379,17 +379,17 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
                     ExceptionReason = canceledException.Message;
                 });
             }
-        }
-        catch (Exception ex)
-        {
-            resultState = TaskState.Failed;
-            Exception = ex;
-
-            App.DispatcherQueue.TryEnqueue(() =>
+            else
             {
-                ShowException = true;
-                ExceptionReason = ex.Message;
-            });
+                resultState = TaskState.Failed;
+                Exception = ex;
+
+                App.DispatcherQueue.TryEnqueue(() =>
+                {
+                    ShowException = true;
+                    ExceptionReason = ex.Message;
+                });
+            }
         }
 
         App.DispatcherQueue.TryEnqueue(() =>

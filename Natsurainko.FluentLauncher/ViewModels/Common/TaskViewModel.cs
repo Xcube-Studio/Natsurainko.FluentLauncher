@@ -773,7 +773,9 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     public void KillProcess()
     {
         _isMcProcessKilled = true;
-        McProcess!.Kill(); // not null when game is running
+        //McProcess!.Kill(); // not null when game is running
+
+        McProcess!.Process.KillProcessTree();
     }
 
     [RelayCommand]

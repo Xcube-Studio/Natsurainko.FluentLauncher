@@ -13,7 +13,6 @@ using System;
 using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading;
 
 namespace Natsurainko.FluentLauncher;
 

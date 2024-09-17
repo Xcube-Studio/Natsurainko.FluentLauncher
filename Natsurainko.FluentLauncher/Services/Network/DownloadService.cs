@@ -1,5 +1,4 @@
 ﻿using Natsurainko.FluentLauncher.Models.UI;
-using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network.Data;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.ViewModels.Common;
@@ -20,19 +19,26 @@ namespace Natsurainko.FluentLauncher.Services.Network;
 internal partial class DownloadService
 {
     private readonly SettingsService _settingsService;
-    private readonly GameService _gameService;
-    private readonly MultipartDownloader _downloader = new(HttpUtils.HttpClient, 1024 * 1024, 8, 64);
+    private MultipartDownloader _downloader;
 
     public IDownloader Downloader { get => _downloader; }
 
     public ObservableCollection<TaskViewModel> DownloadTasks { get; } = [];
 
-    public DownloadService(SettingsService settingsService, GameService gameService)
+    public DownloadService(SettingsService settingsService)
     {
         _settingsService = settingsService;
-        _gameService = gameService;
+        _downloader = new(HttpUtils.HttpClient, 1024 * 1024, 8, _settingsService.MaxDownloadThreads, 
+            _settingsService.CurrentDownloadSource == "Bmclapi" ? DownloadMirrors.BmclApi : null);
 
-        // TODO: 注册下载设置变化事件
+        _settingsService.MaxDownloadThreadsChanged += (_,_) => UpdateDownloader();
+        _settingsService.CurrentDownloadSourceChanged += (_, _) => UpdateDownloader();
+    }
+
+    void UpdateDownloader()
+    {
+        _downloader = new(HttpUtils.HttpClient, 1024 * 1024, 8, _settingsService.MaxDownloadThreads,
+            _settingsService.CurrentDownloadSource == "Bmclapi" ? DownloadMirrors.BmclApi : null);
     }
 
     public void DownloadResourceFile(GameResourceFile file, string filePath)
@@ -80,6 +86,7 @@ internal partial class DownloadService
 
         ModLoaderType modLoaderType = instanceInstallConfig.PrimaryLoader.Type;
         object selectedInstallData = instanceInstallConfig.PrimaryLoader.SelectedInstallData;
+        IDownloadMirror? downloadMirror = _settingsService.CurrentDownloadSource == "Bmclapi" ? DownloadMirrors.BmclApi : null;
 
         installationStageViews = GetInstallationViewModel(modLoaderType, out var vanillaStagesViewModel, out var stagesViewModel);
 
@@ -87,7 +94,7 @@ internal partial class DownloadService
         {
             ModLoaderType.Forge => new ForgeInstanceInstaller()
             {
-                //DownloadMirror = DownloadMirrors.BmclApi,
+                DownloadMirror = downloadMirror,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
@@ -100,7 +107,7 @@ internal partial class DownloadService
             },
             ModLoaderType.NeoForge => new ForgeInstanceInstaller()
             {
-                //DownloadMirror = DownloadMirrors.BmclApi,
+                DownloadMirror = downloadMirror,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
@@ -113,7 +120,7 @@ internal partial class DownloadService
             },
             ModLoaderType.OptiFine => new OptiFineInstanceInstaller()
             {
-                DownloadMirror = DownloadMirrors.BmclApi,
+                DownloadMirror = downloadMirror,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
@@ -125,7 +132,7 @@ internal partial class DownloadService
             },
             ModLoaderType.Fabric => new FabricInstanceInstaller()
             {
-                DownloadMirror = DownloadMirrors.BmclApi,
+                DownloadMirror = downloadMirror,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
@@ -136,7 +143,7 @@ internal partial class DownloadService
             },
             ModLoaderType.Quilt => new QuiltInstanceInstaller()
             {
-                DownloadMirror = DownloadMirrors.BmclApi,
+                DownloadMirror = downloadMirror,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
@@ -156,7 +163,7 @@ internal partial class DownloadService
         out InstallationViewModel<VanillaInstallationStage> vanillaStagesViewModel,
         out object stagesViewModel)
         {
-            List<InstallationStageViewModel> stageViewModels = new();
+            List<InstallationStageViewModel> stageViewModels = [];
             vanillaStagesViewModel = new();
 
             if (modLoaderType == ModLoaderType.Quilt)

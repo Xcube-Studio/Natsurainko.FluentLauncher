@@ -11,6 +11,7 @@ using Nrk.FluentCore.Exceptions;
 using Nrk.FluentCore.Experimental.Launch;
 using Nrk.FluentCore.GameManagement;
 using Nrk.FluentCore.GameManagement.Dependencies;
+using Nrk.FluentCore.GameManagement.Installer;
 using Nrk.FluentCore.GameManagement.Instances;
 using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Utils;
@@ -154,11 +155,22 @@ internal class LaunchService
         if (_settingsService.EnableAutoJava)
         {
             var targetJavaVersion = instance.GetSuitableJavaVersion();
-
             var javaInfos = _settingsService.Javas.Select(JavaUtils.GetJavaInfo).ToArray();
-            var possiblyAvailableJavas = targetJavaVersion == null
+
+            JavaInfo[] possiblyAvailableJavas;
+            bool isForgeOrNeoForge = false;
+
+            if (instance is ModifiedMinecraftInstance modifiedMinecraftInstance)
+            {
+                var loaders = modifiedMinecraftInstance.ModLoaders.Select(x => x.Type);
+                isForgeOrNeoForge = loaders.Contains(ModLoaderType.Forge) || loaders.Contains(ModLoaderType.NeoForge);
+            }
+
+            possiblyAvailableJavas = targetJavaVersion == null
                 ? javaInfos
-                : javaInfos.Where(x => x.Version.Major.ToString().Equals(targetJavaVersion)).ToArray();
+                : isForgeOrNeoForge
+                    ? javaInfos.Where(x => x.Version.Major.ToString().Equals(targetJavaVersion)).ToArray()
+                    : javaInfos.Where(x => x.Version.Major >= int.Parse(targetJavaVersion)).ToArray();
 
             if (possiblyAvailableJavas.Length == 0)
                 throw new Exception($"No suitable version of Java found to start this game, version {targetJavaVersion} is required");

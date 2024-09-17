@@ -2,30 +2,25 @@
 using FluentLauncher.Infra.Settings.Converters;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Utils;
-using Nrk.FluentCore.Management;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
 using Windows.Storage;
 
 namespace Natsurainko.FluentLauncher.Services.Settings;
 
 public partial class SettingsService : SettingsContainer
 {
-    #region New IFluentCoreSettingsService Property
-
-    public ObservableCollection<string> MinecraftFolders { get; private set; } = new();
-    public ObservableCollection<string> Javas { get; private set; } = new();
+    public ObservableCollection<string> MinecraftFolders { get; private set; } = [];
+    public ObservableCollection<string> Javas { get; private set; } = [];
 
     [SettingItem(Default = "", Converter = typeof(JsonStringConverter<string>))]
     public partial string ActiveMinecraftFolder { get; set; }
 
-    //[SettingItem(typeof(GameInfo), "ActiveGameInfo", Converter = typeof(JsonStringConverter<GameInfo>))]
-    [SettingItem]
+    [SettingItem] //[SettingItem(typeof(GameInfo), "ActiveGameInfo", Converter = typeof(JsonStringConverter<GameInfo>))]
     public partial string? ActiveInstanceId { get; set; }
 
     [SettingItem(Default = "", Converter = typeof(JsonStringConverter<string>))]
@@ -33,8 +28,6 @@ public partial class SettingsService : SettingsContainer
 
     [SettingItem(Default = 1024, Converter = typeof(JsonStringConverter<int>))]
     public partial int JavaMemory { get; set; }
-
-    #endregion
 
     [SettingItem(Default = true, Converter = typeof(JsonStringConverter<bool>))]
     public partial bool EnableAutoMemory { get; set; }
@@ -159,7 +152,7 @@ public partial class SettingsService : SettingsContainer
         Array.ForEach(minecraftFolders, MinecraftFolders.Add);
         MinecraftFolders.CollectionChanged += (sender, e) =>
         {
-            appsettings.Values["MinecraftFolders"] = JsonSerializer.Serialize(MinecraftFolders.ToArray(), FLSerializerContext.Default.StringArray);
+            appsettings.Values["MinecraftFolders"] = JsonSerializer.Serialize([.. MinecraftFolders], FLSerializerContext.Default.StringArray);
         };
 
         // Init Javas
@@ -174,7 +167,7 @@ public partial class SettingsService : SettingsContainer
         Array.ForEach(javaRuntimes, Javas.Add);
         Javas.CollectionChanged += (sender, e) =>
         {
-            appsettings.Values["Javas"] = JsonSerializer.Serialize(Javas.ToArray(), FLSerializerContext.Default.StringArray);
+            appsettings.Values["Javas"] = JsonSerializer.Serialize([.. Javas], FLSerializerContext.Default.StringArray);
         };
     }
 

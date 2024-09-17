@@ -1,8 +1,6 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Management;
-using System.Runtime.CompilerServices;
 
 namespace Natsurainko.FluentLauncher.Utils.Extensions;
 

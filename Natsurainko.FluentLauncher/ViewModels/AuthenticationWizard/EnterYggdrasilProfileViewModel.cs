@@ -8,7 +8,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 
 internal partial class EnterYggdrasilProfileViewModel : WizardViewModelBase
 {
-    private AuthenticationService _authenticationService;
+    private readonly AuthenticationService _authenticationService;
 
     public override bool CanNext => !(string.IsNullOrEmpty(Url) || string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password));
 
@@ -32,8 +32,9 @@ internal partial class EnterYggdrasilProfileViewModel : WizardViewModelBase
     private string password;
 
     public override WizardViewModelBase GetNextViewModel()
-        => new ConfirmProfileViewModel(() => _authenticationService.LoginYggdrasilAsync(Url, Email, Password).GetAwaiter().GetResult())
-        {
-            LoadingProgressText = "Authenticating with Yggdrasil Server"
-        };
+    {
+        return new ConfirmProfileViewModel(
+            async cancellationToken => await _authenticationService.LoginYggdrasilAsync(Url, Email, Password)) 
+            { LoadingProgressText = "Authenticating with Yggdrasil Server" };
+    }
 }

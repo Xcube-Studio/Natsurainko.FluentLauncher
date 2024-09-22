@@ -329,7 +329,7 @@ internal class LaunchService
             LaunchStageProgress.Starting()
         ));
 
-        preCheckData.Account = await _accountService.RefreshAccountAsync(preCheckData.Account);
+        preCheckData.Account = await _accountService.RefreshAccountAsync(preCheckData.Account, cancellationToken);
 
         progress?.Report(new(
             LaunchStage.Authenticate,

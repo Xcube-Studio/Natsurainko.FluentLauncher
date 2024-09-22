@@ -91,14 +91,13 @@ internal partial class BrowserMicrosoftAuthViewModel : WizardViewModelBase
     {
         ConfirmProfileViewModel confirmProfileViewModel = null!;
 
-        confirmProfileViewModel = new ConfirmProfileViewModel(() =>
+        confirmProfileViewModel = new ConfirmProfileViewModel(async cancellationToken =>
         {
-            var progress = new Progress<MicrosoftAuthenticationProgress>((p) =>
-            {
-                App.DispatcherQueue.TryEnqueue(() => confirmProfileViewModel.LoadingProgressText = p.ToString());
-            });
+            var progress = new Progress<MicrosoftAuthenticationProgress>(
+                (p) => App.DispatcherQueue.TryEnqueue(() => confirmProfileViewModel.LoadingProgressText = p.ToString()));
 
-            return [_authenticationService.LoginMicrosoftAsync(AccessCode! /* guaranteed by CanNext */, progress).GetAwaiter().GetResult()];
+            // AccessCode guaranteed by CanNext
+            return [ await _authenticationService.LoginMicrosoftAsync(AccessCode!, progress, cancellationToken)];
         });
 
         return confirmProfileViewModel;

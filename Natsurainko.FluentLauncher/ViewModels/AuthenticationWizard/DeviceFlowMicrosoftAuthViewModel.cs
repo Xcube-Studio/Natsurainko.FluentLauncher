@@ -33,8 +33,6 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
 
     private bool Unloaded = false;
 
-    // Started in the constructor
-    internal CancellationTokenSource CancellationTokenSource = null!;
     internal Task<OAuth2Tokens> DeviceFlowProcess = null!;
 
     public DeviceFlowMicrosoftAuthViewModel(AuthenticationService authService)
@@ -76,14 +74,7 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
     }
 
     public override WizardViewModelBase GetNextViewModel()
-    {
-        ConfirmProfileViewModel confirmProfileViewModel = new ConfirmProfileViewModel(() => new Account[]
-        {
-            _authService.LoginMicrosoftAsync(DeviceFlowProcess.GetAwaiter().GetResult()).GetAwaiter().GetResult()
-        });
-
-        return confirmProfileViewModel;
-    }
+        => new ConfirmProfileViewModel(async cancellationToken => [await _authService.LoginMicrosoftAsync(await DeviceFlowProcess)]);
 
     private async Task CreateDeviceFlowProcessAsync()
     {

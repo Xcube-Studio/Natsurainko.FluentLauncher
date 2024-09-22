@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
@@ -20,21 +22,17 @@ internal partial class ConfirmProfileViewModel : WizardViewModelBase
 
     public override bool CanNext => Loading == Visibility.Collapsed && SelectedAccount != null;
 
-    private readonly Func<IEnumerable<Account>> _authenticateAction;
+    public ObservableCollection<Account> Accounts { get; init; } = [];
 
-    public ObservableCollection<Account> Accounts { get; init; }
-
-    public ConfirmProfileViewModel(Func<IEnumerable<Account>> authenticateAction)
+    public ConfirmProfileViewModel(Func<CancellationToken, Task<Account[]>> authenticateAction)
     {
         XamlPageType = typeof(ConfirmProfilePage);
-        _authenticateAction = authenticateAction;
+        CancellationTokenSource = new CancellationTokenSource();
 
-        Accounts = [];
-
-        Task.Run(() =>
+        Task.Run(async () =>
         {
             App.DispatcherQueue.TryEnqueue(() => Loading = Visibility.Visible);
-            var accountsList = new List<Account>(_authenticateAction());
+            var accountsList = new List<Account>(await authenticateAction(CancellationTokenSource.Token));
 
             App.DispatcherQueue.TryEnqueue(() =>
             {
@@ -92,4 +90,10 @@ internal partial class ConfirmProfileViewModel : WizardViewModelBase
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
     private Account? selectedAccount;
+
+    [RelayCommand]
+    public void UnloadEvent(object args)
+    {
+        CancellationTokenSource?.Cancel();
+    }
 }

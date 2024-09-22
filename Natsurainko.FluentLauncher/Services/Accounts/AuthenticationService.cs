@@ -18,28 +18,28 @@ internal class AuthenticationService
 
     public AuthenticationService() { }
 
-    public Task<MicrosoftAccount> LoginMicrosoftAsync(string code, IProgress<MicrosoftAuthenticationProgress>? progress = null)
-        => _microsoftAuthenticator.LoginAsync(code, progress);
+    public Task<MicrosoftAccount> LoginMicrosoftAsync(string code, IProgress<MicrosoftAuthenticationProgress>? progress = null, CancellationToken cancellationToken = default)
+        => _microsoftAuthenticator.LoginAsync(code, progress, cancellationToken);
 
-    public Task<MicrosoftAccount> LoginMicrosoftAsync(OAuth2Tokens msaTokens, IProgress<MicrosoftAuthenticationProgress>? progress = null)
-        => _microsoftAuthenticator.LoginAsync(msaTokens, progress);
+    public Task<MicrosoftAccount> LoginMicrosoftAsync(OAuth2Tokens msaTokens, IProgress<MicrosoftAuthenticationProgress>? progress = null, CancellationToken cancellationToken = default)
+        => _microsoftAuthenticator.LoginAsync(msaTokens, progress, cancellationToken);
 
     public Task<OAuth2Tokens> AuthMsaFromDeviceFlowAsync(
         Action<OAuth2DeviceCodeResponse> receiveUserCodeAction,
         CancellationToken cancellationToken = default)
         => _microsoftAuthenticator.AuthMsaFromDeviceFlowAsync(receiveUserCodeAction, cancellationToken);
 
-    public Task<YggdrasilAccount[]> LoginYggdrasilAsync(string serverUrl, string email, string password)
-        => new YggdrasilAuthenticator(serverUrl).LoginAsync(email, password);
+    public Task<YggdrasilAccount[]> LoginYggdrasilAsync(string serverUrl, string email, string password, CancellationToken cancellationToken = default)
+        => new YggdrasilAuthenticator(serverUrl).LoginAsync(email, password, cancellationToken);
 
     public OfflineAccount LoginOffline(string name, string? uuid)
         => _offlineAuthenticator.Login(name, uuid == null ? null : Guid.Parse(uuid));
 
-    public Task<MicrosoftAccount> RefreshAsync(MicrosoftAccount account)
-        => _microsoftAuthenticator.RefreshAsync(account);
+    public Task<MicrosoftAccount> RefreshAsync(MicrosoftAccount account, CancellationToken cancellationToken = default)
+        => _microsoftAuthenticator.RefreshAsync(account, cancellationToken:cancellationToken);
 
-    public Task<YggdrasilAccount[]> RefreshAsync(YggdrasilAccount account)
-        => new YggdrasilAuthenticator(account.YggdrasilServerUrl, account.ClientToken).RefreshAsync(account);
+    public Task<YggdrasilAccount[]> RefreshAsync(YggdrasilAccount account, CancellationToken cancellationToken = default)
+        => new YggdrasilAuthenticator(account.YggdrasilServerUrl, account.ClientToken).RefreshAsync(account, cancellationToken);
 
     public OfflineAccount Refresh(OfflineAccount account)
         => _offlineAuthenticator.Refresh(account);

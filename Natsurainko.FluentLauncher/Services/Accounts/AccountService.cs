@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Services.Accounts;
@@ -149,13 +150,13 @@ internal class AccountService
         ActiveAccount = account;
     }
 
-    public async Task<Account> RefreshAccountAsync(Account account)
+    public async Task<Account> RefreshAccountAsync(Account account, CancellationToken cancellationToken = default)
     {
         // RefreshAsync account
         Account refreshedAccount = account switch
         {
-            MicrosoftAccount microsoftAccount => await _authService.RefreshAsync(microsoftAccount),
-            YggdrasilAccount yggdrasilAccount => (await _authService.RefreshAsync(yggdrasilAccount))
+            MicrosoftAccount microsoftAccount => await _authService.RefreshAsync(microsoftAccount, cancellationToken),
+            YggdrasilAccount yggdrasilAccount => (await _authService.RefreshAsync(yggdrasilAccount, cancellationToken))
                 .First(acc => acc.Equals(account)),
             OfflineAccount offlineAccount => _authService.Refresh(offlineAccount),
 

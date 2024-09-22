@@ -2,7 +2,9 @@
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
+using Nrk.FluentCore.Authentication;
 using System;
+using System.Threading.Tasks;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
@@ -41,5 +43,5 @@ internal partial class EnterOfflineProfileViewModel : WizardViewModelBase
     }
 
     public override WizardViewModelBase GetNextViewModel()
-        => new ConfirmProfileViewModel(() => [_authenticationService.LoginOffline(Name, Uuid)]);
+        => new ConfirmProfileViewModel(_ => Task.FromResult<Account[]>([_authenticationService.LoginOffline(Name, Uuid)]));
 }

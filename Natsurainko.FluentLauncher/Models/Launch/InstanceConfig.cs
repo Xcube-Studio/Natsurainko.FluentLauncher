@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -19,46 +18,81 @@ internal partial class InstanceConfig : ObservableObject
     [ObservableProperty]
     private string nickName;
 
-    [ObservableProperty]
     private bool enableSpecialSetting;
+    public bool EnableSpecialSetting
+    {
+        get => enableSpecialSetting;
+        set => SetProperty(ref enableSpecialSetting, value);
+    }
 
-    [ObservableProperty]
     private bool enableIndependencyCore;
+    public bool EnableIndependencyCore
+    {
+        get => enableIndependencyCore;
+        set => SetProperty(ref enableIndependencyCore, value);
+    }
 
-    [ObservableProperty]
     private bool enableFullScreen;
+    public bool EnableFullScreen
+    {
+        get => enableFullScreen;
+        set => SetProperty(ref enableFullScreen, value);
+    }
 
-    [ObservableProperty]
     private int gameWindowWidth = 854;
+    public int GameWindowWidth
+    {
+        get => gameWindowWidth;
+        set => SetProperty(ref gameWindowWidth, value);
+    }
 
-    [ObservableProperty]
     private int gameWindowHeight = 480;
+    public int GameWindowHeight
+    {
+        get => gameWindowHeight;
+        set => SetProperty(ref gameWindowHeight, value);
+    }
 
-    [ObservableProperty]
     private string serverAddress;
+    public string ServerAddress
+    {
+        get => serverAddress;
+        set => SetProperty(ref serverAddress, value);
+    }
 
-    [ObservableProperty]
     private string gameWindowTitle;
+    public string GameWindowTitle
+    {
+        get => gameWindowTitle;
+        set => SetProperty(ref gameWindowTitle, value);
+    }
 
-    [ObservableProperty]
     private Account account;
+    public Account Account
+    {
+        get => account;
+        set => SetProperty(ref account, value);
+    }
 
-    [ObservableProperty]
     private bool enableTargetedAccount;
+    public bool EnableTargetedAccount
+    {
+        get => enableTargetedAccount;
+        set => SetProperty(ref enableTargetedAccount, value);
+    }
 
-    [ObservableProperty]
     private IEnumerable<string> vmParameters;
-
+    public IEnumerable<string> VmParameters
+    {
+        get => vmParameters;
+        set => SetProperty(ref vmParameters, value);
+    }
 
     private DateTime? lastLaunchTime;
-
     public DateTime? LastLaunchTime
     {
         get => lastLaunchTime;
-        set
-        {
-            App.DispatcherQueue.TryEnqueue(() => SetProperty(ref lastLaunchTime, value));
-        }
+        set => App.DispatcherQueue.TryEnqueue(() => SetProperty(ref lastLaunchTime, value));
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -66,6 +100,9 @@ internal partial class InstanceConfig : ObservableObject
         base.OnPropertyChanged(e);
 
         if (!string.IsNullOrEmpty(FilePath))
-            File.WriteAllText(FilePath, JsonSerializer.Serialize(this, InstanceConfigSerializerContext.Default.InstanceConfig));
+        {
+            var content = JsonSerializer.Serialize(this, InstanceConfigSerializerContext.Default.InstanceConfig);
+            File.WriteAllText(FilePath, content);
+        }
     }
 }

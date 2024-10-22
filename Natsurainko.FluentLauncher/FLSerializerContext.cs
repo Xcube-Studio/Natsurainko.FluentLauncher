@@ -42,7 +42,6 @@ internal partial class FLSerializerContext : JsonSerializerContext
 {
 }
 
-
 [JsonSerializable(typeof(InstanceConfig))]
 [JsonSourceGenerationOptions(
     IncludeFields = false,

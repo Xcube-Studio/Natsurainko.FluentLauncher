@@ -60,8 +60,8 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     private Color? customBackgroundColor;
 
     [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.UseNarrowMargin))]
-    private bool useNarrowMargin;
+    [BindToSetting(Path = nameof(SettingsService.UseBackgroundMask))]
+    private bool useBackgroundMask;
 
     public Color CurrentThemeColor => UseSystemAccentColor ? (Color)App.Current.Resources["RawSystemAccentColor"] : CustomThemeColor.GetValueOrDefault();
 

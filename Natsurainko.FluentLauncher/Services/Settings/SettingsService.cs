@@ -105,7 +105,7 @@ public partial class SettingsService : SettingsContainer
     public partial bool UseSystemAccentColor { get; set; }
 
     [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
-    public partial bool UseNarrowMargin { get; set; }
+    public partial bool UseBackgroundMask { get; set; }
 
 
     [SettingItem(Default = 500, Converter = typeof(JsonStringConverter<double>))]

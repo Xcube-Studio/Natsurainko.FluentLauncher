@@ -721,6 +721,13 @@
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
+
+                <controls:SettingsCard
+                    Description="Use background masks to increase the visibility of controls against certain backgrounds"
+                    Header="Use Background Mask"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xef1f;}">
+                    <ToggleSwitch IsOn="{Binding UseBackgroundMask, Mode=TwoWay}" />
+                </controls:SettingsCard>
             </StackPanel>
         </Border>
 

@@ -9,6 +9,7 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Home;
 using System.IO;
+using Windows.UI;
 
 namespace Natsurainko.FluentLauncher.Services.UI;
 
@@ -66,6 +67,17 @@ internal class AppearanceService
             case 3:
                 if (File.Exists(_settingsService.ImageFilePath))
                 {
+                    if (_settingsService.UseBackgroundMask)
+                    {
+                        page.Resources["NavigationViewOverlayCornerRadius"] = new CornerRadius(0);
+                        page.Resources["NavigationViewExpandedPaneBackground"] = new AcrylicBrush()
+                        {
+                            TintColor = (Color)App.Current.Resources["SystemAccentColor"],
+                            TintOpacity = 0.1,
+                            TintLuminosityOpacity = 0.25
+                        };
+                    }
+
                     page.Resources.Add("NavigationViewContentBackground", new SolidColorBrush(Colors.Transparent));
                     //page.Resources.Add("NavigationViewContentGridCornerRadius", new CornerRadius(0));
                     page.Resources.Add("NavigationViewContentGridBorderThickness", new Thickness(0));

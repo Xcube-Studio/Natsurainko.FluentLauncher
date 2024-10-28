@@ -3,6 +3,7 @@ using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Pages;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Windows.Foundation;
 using Windows.Graphics;
+using Windows.UI;
 
 namespace Natsurainko.FluentLauncher.Views;
 
@@ -32,8 +34,8 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
     public ShellPage()
     {
-        _appearanceService.ApplyBackgroundBeforePageInit(this);
         _appearanceService.ApplySettingsBeforePageInit();
+        _appearanceService.ApplyBackgroundBeforePageInit(this);
 
         InitializeComponent();
 
@@ -47,6 +49,12 @@ public sealed partial class ShellPage : Page, INavigationProvider
     private async void Page_Loaded(object sender, RoutedEventArgs e)
     {
         App.MainWindow.SetTitleBar(AppTitleBar);
+
+        if (_settings.UseBackgroundMask)
+        {
+            AppTitleBar.Background = new SolidColorBrush((Color)this.Resources["SystemAccentColor"]);
+            AppTitleBar.RequestedTheme = ElementTheme.Light;
+        }
 
         if (_settings.BackgroundMode == 3 && !VM._onNavigatedTo)
         {

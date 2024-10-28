@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement.Installer;
 using System;
 using System.Collections.Generic;
@@ -69,6 +70,7 @@ public partial class ChooseModLoaderData : ObservableObject
     async Task LoadInstallDatas()
     {
         object[] installDatas = [];
+        string jsonContent;
 
         try
         {
@@ -82,19 +84,19 @@ public partial class ChooseModLoaderData : ObservableObject
                 _ => throw new NotImplementedException()
             };
 
-            string jsonContent = await cacheInterfaceService.RequestStringAsync(requestUrl, Services.Network.Data.InterfaceRequestMethod.AlwaysLatest);
+            jsonContent = await cacheInterfaceService.RequestStringAsync(requestUrl, Services.Network.Data.InterfaceRequestMethod.AlwaysLatest);
 
             installDatas = Type switch
             {
-                ModLoaderType.NeoForge => JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.ForgeInstallDataArray),
-                ModLoaderType.Forge => JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.ForgeInstallDataArray),
+                ModLoaderType.NeoForge => [.. JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.ForgeInstallDataArray).OrderByDescending(x => x.Version.FilterNumbers(), new IntArrayComparer())],
+                ModLoaderType.Forge => [.. JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.ForgeInstallDataArray).OrderByDescending(x => x.Build)],
                 ModLoaderType.OptiFine => JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.OptiFineInstallDataArray),
                 ModLoaderType.Fabric => JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.FabricInstallDataArray),
                 ModLoaderType.Quilt => JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.QuiltInstallDataArray),
                 _ => throw new InvalidOperationException()
             };
         }
-        catch (Exception)
+        catch (Exception ex)
         {
 
         }

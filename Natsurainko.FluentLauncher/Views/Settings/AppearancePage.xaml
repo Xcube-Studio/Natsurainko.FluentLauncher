@@ -343,6 +343,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <converters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" Inverted="True" />
     </Page.Resources>
 
     <ScrollViewer>
@@ -441,6 +442,25 @@
                                     </Button.Flyout>
                                 </Button>
                             </StackPanel>
+                        </controls:SettingsCard>
+                        <controls:SettingsCard
+                            Command="{Binding UseImageThemeColorCommand}"
+                            Header="Use image theme color"
+                            IsClickEnabled="True"
+                            IsEnabled="{Binding CanUseImageThemeColor}">
+                            <controls:SettingsCard.Description>
+                                <StackPanel>
+                                    <TextBlock
+                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                        Text="Select a theme color from the currently selected image background" />
+                                    <TextBlock
+                                        Foreground="{ThemeResource SystemErrorTextColor}"
+                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                        Text="Must use valid image background"
+                                        Visibility="{Binding CanUseImageThemeColor, Converter={ThemeResource InvertedBoolToVisibilityConverter}}" />
+                                </StackPanel>
+                            </controls:SettingsCard.Description>
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
 

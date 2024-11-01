@@ -2,12 +2,16 @@
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
 using Microsoft.UI.Composition.SystemBackdrops;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
+using Natsurainko.FluentLauncher.XamlHelpers.Converters;
 using System.IO;
+using System.Threading.Tasks;
 using Windows.UI;
 
 #nullable disable
@@ -17,10 +21,13 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;
+    private readonly NotificationService _notificationService;
 
-    public AppearanceViewModel(SettingsService settingsService)
+    public AppearanceViewModel(SettingsService settingsService, NotificationService notificationService)
     {
         _settingsService = settingsService;
+        _notificationService = notificationService;
+
         (this as ISettingsViewModel).InitializeSettings();
     }
 
@@ -30,6 +37,7 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.BackgroundMode))]
+    [NotifyPropertyChangedFor(nameof(CanUseImageThemeColor))]
     private int backgroundMode;
 
     [ObservableProperty]
@@ -44,6 +52,7 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.ImageFilePath))]
     [NotifyPropertyChangedFor(nameof(ImageFileExists))]
+    [NotifyPropertyChangedFor(nameof(CanUseImageThemeColor))]
     private string imageFilePath;
 
     [ObservableProperty]
@@ -71,6 +80,8 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
 
     public bool ImageFileExists => File.Exists(ImageFilePath);
 
+    public bool CanUseImageThemeColor => BackgroundMode == 3 && ImageFileExists;
+
     private Flyout backgroundColorFlyout;
     private Flyout themeColorFlyout;
 
@@ -95,6 +106,17 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     [RelayCommand]
     private void RadioButtonChecked(int index)
         => BackgroundMode = index;
+
+    [RelayCommand]
+    private async Task UseImageThemeColor()
+    {
+        CustomThemeColor = await DominantColorHelper.GetColorFromImageAsync(ImageFilePath);
+        var converter = (ColorHexCodeConverter)Application.Current.Resources["ColorHexCodeConverter"];
+
+        _notificationService.NotifyWithoutContent(
+            $"Image theme color successfully set, {converter.Convert(CustomThemeColor, null, null, null)}",
+            icon: "\uE73E");
+    }
 
     /// <summary>
     /// 神金 Command 无法被触发

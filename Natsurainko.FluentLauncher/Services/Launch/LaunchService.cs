@@ -48,6 +48,8 @@ internal class LaunchService
 
     public ObservableCollection<LaunchTaskViewModel> LaunchTasks { get; } = [];
 
+    public event EventHandler? TaskListStateChanged;
+
     public LaunchService(
         SettingsService settingsService,
         AccountService accountService,
@@ -56,11 +58,19 @@ internal class LaunchService
         _settingsService = settingsService;
         _accountService = accountService;
         _downloadService = downloadService;
+
+        LaunchTasks.CollectionChanged += (_, e) => TaskListStateChanged?.Invoke(this, e);
     }
 
     public void LaunchFromUI(MinecraftInstance instance)
     {
         var viewModel = new LaunchTaskViewModel(instance);
+        viewModel.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == "TaskState")
+                TaskListStateChanged?.Invoke(this, e);
+        };
+
         App.DispatcherQueue.TryEnqueue(() => LaunchTasks.Insert(0, viewModel));
 
         viewModel.Start();

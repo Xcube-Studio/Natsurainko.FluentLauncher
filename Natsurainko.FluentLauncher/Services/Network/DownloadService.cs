@@ -21,6 +21,8 @@ internal partial class DownloadService
     private readonly SettingsService _settingsService;
     private MultipartDownloader _downloader;
 
+    public event EventHandler? TaskListStateChanged;
+
     public IDownloader Downloader { get => _downloader; }
 
     public ObservableCollection<TaskViewModel> DownloadTasks { get; } = [];
@@ -44,6 +46,12 @@ internal partial class DownloadService
     public void DownloadResourceFile(GameResourceFile file, string filePath)
     {
         var taskViewModel = new DownloadGameResourceTaskViewModel(file, filePath);
+        taskViewModel.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == "TaskState")
+                TaskListStateChanged?.Invoke(this, e);
+        };
+
         App.DispatcherQueue.TryEnqueue(() => DownloadTasks.Insert(0, taskViewModel));
 
         taskViewModel.Start();
@@ -55,6 +63,12 @@ internal partial class DownloadService
             GetInstanceInstaller(config, out var installationStageViews),
             config,
             installationStageViews);
+        taskViewModel.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == "TaskState")
+                TaskListStateChanged?.Invoke(this, e);
+        };
+
         App.DispatcherQueue.TryEnqueue(() => DownloadTasks.Insert(0, taskViewModel));
 
         taskViewModel.Start();

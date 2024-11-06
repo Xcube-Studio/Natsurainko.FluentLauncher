@@ -1,14 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement.Installer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 #nullable disable
@@ -88,9 +86,9 @@ public partial class ChooseModLoaderData : ObservableObject
 
             installDatas = Type switch
             {
-                ModLoaderType.NeoForge => [.. JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.ForgeInstallDataArray).OrderByDescending(x => x.Version.FilterNumbers(), new IntArrayComparer())],
-                ModLoaderType.Forge => [.. JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.ForgeInstallDataArray).OrderByDescending(x => x.Build)],
-                ModLoaderType.OptiFine => JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.OptiFineInstallDataArray),
+                ModLoaderType.NeoForge => [.. JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.ForgeInstallDataArray).OrderByDescending(x => x, new ForgeVersionComparer())],
+                ModLoaderType.Forge => [.. JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.ForgeInstallDataArray).OrderByDescending(x => x, new ForgeVersionComparer())],
+                ModLoaderType.OptiFine => [.. JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.OptiFineInstallDataArray).OrderByDescending(x => x, new OptiFineVersionComparer())],
                 ModLoaderType.Fabric => JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.FabricInstallDataArray),
                 ModLoaderType.Quilt => JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.QuiltInstallDataArray),
                 _ => throw new InvalidOperationException()

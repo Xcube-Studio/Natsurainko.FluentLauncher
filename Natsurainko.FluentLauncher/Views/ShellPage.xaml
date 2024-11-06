@@ -282,12 +282,20 @@
                     x:Uid="ShellPage_NV_Item_5"
                     Content="Launch Tasks"
                     Icon="{xh:FontIcon Glyph=&#xE945;}"
-                    Tag="Tasks/Launch" />
+                    Tag="Tasks/Launch">
+                    <NavigationViewItem.InfoBadge>
+                        <InfoBadge Opacity="{Binding LaunchTasksInfoBadgeOpacity}" Value="{Binding RunningLaunchTasks}" />
+                    </NavigationViewItem.InfoBadge>
+                </NavigationViewItem>
                 <NavigationViewItem
                     x:Uid="ShellPage_NV_Item_6"
                     Content="Download Tasks"
                     Icon="{xh:FontIcon Glyph=&#xe896;}"
-                    Tag="Tasks/Download" />
+                    Tag="Tasks/Download">
+                    <NavigationViewItem.InfoBadge>
+                        <InfoBadge Opacity="{Binding DownloadTasksInfoBadgeOpacity}" Value="{Binding RunningDownloadTasks}" />
+                    </NavigationViewItem.InfoBadge>
+                </NavigationViewItem>
                 <NavigationViewItem
                     x:Uid="ShellPage_NV_Item_7"
                     Content="Settings"

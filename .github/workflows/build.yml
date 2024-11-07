@@ -75,7 +75,7 @@ jobs:
           Appx_Package_Build_Mode: SideloadOnly
           Appx_Package_Dir: ${{ env.Packages_DirectoryName }}\ # DO NOT REMOVE THE TRAILING SLASH
         run: |
-          msbuild $env:Solution_Name /p:Platform=$env:Platform /p:AppxBundlePlatforms="$env:Appx_Bundle_Platforms" /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
+          msbuild $env:Solution_Name /p:AllowUnsafeBlocks=true /p:Platform=$env:Platform /p:AppxBundlePlatforms="$env:Appx_Bundle_Platforms" /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
 
       - name: Prepare for bundling
         if: ${{ inputs.create_package }}

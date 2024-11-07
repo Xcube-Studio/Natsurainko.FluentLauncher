@@ -189,7 +189,7 @@ internal class LaunchService
         }
         else preCheckData.Java = _settingsService.ActiveJava;
 
-        if (!PathUtils.IsValidPath(preCheckData.Java) || !File.Exists(preCheckData.Java))
+        if (!PathUtils.IsValidPath(preCheckData.Java, isFile: true) || !File.Exists(preCheckData.Java))
             throw new Exception($"This is not a valid path, or the path does not exist: ({nameof(preCheckData.Java)}): {preCheckData.Java}");
 
         #endregion

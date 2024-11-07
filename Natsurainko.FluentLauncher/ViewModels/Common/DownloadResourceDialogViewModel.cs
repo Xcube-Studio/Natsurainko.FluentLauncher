@@ -7,6 +7,7 @@ using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Network.Data;
+using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement.Instances;
@@ -156,7 +157,7 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
         _downloadService.DownloadResourceFile(SelectedItem, fileName);
         _dialog.Hide();
 
-        _navigationService.Parent.NavigateTo("Tasks/Download");
+        App.GetService<NotificationService>().NotifyWithoutContent("Added to download task", icon: "\ue896");
     }
 
     public void SaveFile()

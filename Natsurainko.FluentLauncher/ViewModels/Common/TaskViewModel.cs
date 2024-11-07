@@ -460,7 +460,6 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
     {
         navigationService.NavigateTo("Tasks/Launch");
         App.GetService<LaunchService>().LaunchFromUI(_minecraftInstance);
-        
     }
 }
 

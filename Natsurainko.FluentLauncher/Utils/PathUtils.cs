@@ -1,13 +1,36 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.IO;
 
 namespace Natsurainko.FluentLauncher.Utils;
 
 internal static partial class PathUtils
 {
-    private static readonly Regex CheckRegex = GenerateCheckRegex();
+    public static bool IsValidPath(string path, bool isFile = false)
+    {
+        if (string.IsNullOrWhiteSpace(path) || !Path.IsPathRooted(path))
+            return false;
 
-    [GeneratedRegex(@"^([a-zA-Z]:\\)([-\u4e00-\u9fa5\w\s.()~!@#$%^&()\[\]{}+=]+\\?)*$")]
-    private static partial Regex GenerateCheckRegex();
+        char[] invalidPathChars = Path.GetInvalidPathChars();
+        char[] invalidFileNameChars = Path.GetInvalidPathChars();
 
-    public static bool IsValidPath(string path) => CheckRegex.IsMatch(path);
+        foreach (char c in path)
+            if (Array.Exists(invalidPathChars, element => element == c))
+                return false;
+
+        if (isFile)
+        {
+            try
+            {
+                foreach (char c in Path.GetFileName(path))
+                    if (Array.Exists(invalidFileNameChars, element => element == c))
+                        return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

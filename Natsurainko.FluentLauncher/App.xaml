@@ -27,6 +27,7 @@
             </ResourceDictionary.ThemeDictionaries>
 
             <FontFamily x:Key="MinecraftTen">/Assets/MinecraftTen.ttf#Minecraft Ten</FontFamily>
+
             <x:Double x:Key="SettingsCardSpacing">4</x:Double>
 
             <Thickness x:Key="PageMarginWithBreadcrumbBar">30,15</Thickness>

@@ -41,7 +41,7 @@ public partial class App : Application
         DispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
         App.GetService<MessengerService>().SubscribeEvents();
-        App.GetService<AppearanceService>().ApplyDisplayTheme();
+        App.GetService<AppearanceService>().RegisterApp(this);
 
         // Global exception handler
         UnhandledException += (_, e) =>

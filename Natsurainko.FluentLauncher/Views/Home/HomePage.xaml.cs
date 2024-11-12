@@ -1,12 +1,16 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using Natsurainko.FluentLauncher.ViewModels.Home;
 using Windows.Foundation;
+using Windows.UI;
 
 namespace Natsurainko.FluentLauncher.Views.Home;
 
 public sealed partial class HomePage : Page
 {
+    private readonly ThemeShadow _themeShadow = new ThemeShadow();
+
     public HomePage()
     {
         this.InitializeComponent();
@@ -14,6 +18,12 @@ public sealed partial class HomePage : Page
 
     private void Page_Loaded(object sender, RoutedEventArgs e)
     {
+        //_themeShadow.Receivers.Add(Grid);
+        //DropDownButton.Shadow = _themeShadow;
+        //DropDownButton.Translation += new System.Numerics.Vector3(0, 0, 48);
+        //DropDownButtonArea.Background = new CommunityToolkit.WinUI.Media.BackdropBlurBrush() { Amount = 16 };
+        //DropDownButton.Background = new SolidColorBrush(Color.FromArgb(128, 255, 255, 255));
+
         LaunchButton.Focus(FocusState.Programmatic);
     }
 

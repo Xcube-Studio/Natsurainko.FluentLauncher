@@ -171,7 +171,7 @@
 
     <Grid x:Name="Grid">
         <Grid
-            Name="grid"
+            Name="ControlsArea"
             Padding="25,0"
             VerticalAlignment="Bottom">
             <Grid.RowDefinitions>
@@ -232,127 +232,132 @@
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
 
-                <DropDownButton
-                    x:Name="DropDownButton"
-                    Grid.Column="2"
-                    HorizontalAlignment="Right"
-                    Background="Transparent"
-                    BorderBrush="Transparent"
-                    Click="DropDownButton_Click"
-                    Style="{ThemeResource DropDownButtonStyle}">
-                    <TextBlock
-                        Grid.Column="2"
-                        HorizontalTextAlignment="Right"
-                        Style="{ThemeResource TitleLargeTextBlockStyle}"
-                        Text="{Binding DropDownButtonDisplayText}"
-                        TextTrimming="CharacterEllipsis" />
-                    <DropDownButton.Flyout>
-                        <Flyout Opened="Flyout_Opened" Placement="TopEdgeAlignedRight">
-                            <Flyout.FlyoutPresenterStyle>
-                                <Style TargetType="FlyoutPresenter">
-                                    <Setter Property="BorderBrush">
-                                        <Setter.Value>
-                                            <SolidColorBrush Color="{StaticResource ControlStrokeColorDefault}" />
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Setter Property="Background" Value="{ThemeResource AcrylicInAppFillColorDefaultBrush}" />
-                                    <Setter Property="CornerRadius" Value="8" />
-                                </Style>
-                            </Flyout.FlyoutPresenterStyle>
-                            <Grid>
-                                <ListView
-                                    x:Name="listView"
-                                    MinWidth="250"
-                                    MaxWidth="425"
-                                    MaxHeight="250"
-                                    Margin="-10,-7.5"
-                                    ItemsSource="{Binding MinecraftInstances}"
-                                    SelectedItem="{Binding ActiveMinecraftInstance, Mode=TwoWay}">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid
-                                                x:Name="DataGrid"
-                                                Padding="0,7.5"
-                                                Background="Transparent">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="10" />
-                                                    <ColumnDefinition Width="1*" />
-                                                </Grid.ColumnDefinitions>
-                                                <Border
-                                                    Width="36"
-                                                    Height="36"
-                                                    VerticalAlignment="Center"
-                                                    BorderBrush="{ThemeResource IconBorder}"
-                                                    BorderThickness="2"
-                                                    CornerRadius="4">
-                                                    <Border CornerRadius="4">
-                                                        <Image Source="{Binding Converter={ThemeResource InstanceIconConverter}}" />
+                <Grid Grid.Column="2" HorizontalAlignment="Right">
+                    <Border
+                        Name="DropDownButtonArea"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        CornerRadius="{ThemeResource ControlCornerRadius}" />
+                    <DropDownButton
+                        x:Name="DropDownButton"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Click="DropDownButton_Click"
+                        Style="{ThemeResource DropDownButtonStyle}">
+                        <TextBlock
+                            Grid.Column="2"
+                            HorizontalTextAlignment="Right"
+                            Style="{ThemeResource TitleLargeTextBlockStyle}"
+                            Text="{Binding DropDownButtonDisplayText}"
+                            TextTrimming="CharacterEllipsis" />
+                        <DropDownButton.Flyout>
+                            <Flyout Opened="Flyout_Opened" Placement="TopEdgeAlignedRight">
+                                <Flyout.FlyoutPresenterStyle>
+                                    <Style TargetType="FlyoutPresenter">
+                                        <Setter Property="BorderBrush">
+                                            <Setter.Value>
+                                                <SolidColorBrush Color="{StaticResource ControlStrokeColorDefault}" />
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" Value="{ThemeResource AcrylicInAppFillColorDefaultBrush}" />
+                                        <Setter Property="CornerRadius" Value="8" />
+                                    </Style>
+                                </Flyout.FlyoutPresenterStyle>
+                                <Grid>
+                                    <ListView
+                                        x:Name="listView"
+                                        MinWidth="250"
+                                        MaxWidth="425"
+                                        MaxHeight="250"
+                                        Margin="-10,-7.5"
+                                        ItemsSource="{Binding MinecraftInstances}"
+                                        SelectedItem="{Binding ActiveMinecraftInstance, Mode=TwoWay}">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid
+                                                    x:Name="DataGrid"
+                                                    Padding="0,7.5"
+                                                    Background="Transparent">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="10" />
+                                                        <ColumnDefinition Width="1*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Border
+                                                        Width="36"
+                                                        Height="36"
+                                                        VerticalAlignment="Center"
+                                                        BorderBrush="{ThemeResource IconBorder}"
+                                                        BorderThickness="2"
+                                                        CornerRadius="4">
+                                                        <Border CornerRadius="4">
+                                                            <Image Source="{Binding Converter={ThemeResource InstanceIconConverter}}" />
+                                                        </Border>
                                                     </Border>
-                                                </Border>
-                                                <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                                                    <TextBlock
-                                                        Style="{ThemeResource BaseTextBlockStyle}"
-                                                        Text="{Binding InstanceId}"
-                                                        TextTrimming="CharacterEllipsis"
-                                                        TextWrapping="NoWrap"
-                                                        ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
-                                                    <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource InstanceDescriptionConverter}}">
-                                                        <ItemsRepeater.Layout>
-                                                            <StackLayout Orientation="Horizontal" Spacing="5" />
-                                                        </ItemsRepeater.Layout>
-                                                        <ItemsRepeater.ItemTemplate>
-                                                            <DataTemplate>
-                                                                <TextBlock
-                                                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                                                    Style="{ThemeResource CaptionTextBlockStyle}"
-                                                                    Text="{Binding}"
-                                                                    ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
-                                                            </DataTemplate>
-                                                        </ItemsRepeater.ItemTemplate>
-                                                    </ItemsRepeater>
-                                                </StackPanel>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
-                                <StackPanel
-                                    Grid.Row="2"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Orientation="Horizontal"
-                                    Spacing="5">
-                                    <FontIcon
-                                        FontSize="56"
-                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                        Glyph="&#xe74c;" />
-
-                                    <StackPanel VerticalAlignment="Center">
-                                        <TextBlock
-                                            x:Uid="Cores_CoresPage_Text3"
-                                            Margin="10,0"
-                                            VerticalAlignment="Center"
-                                            FontSize="16"
-                                            FontWeight="SemiBold"
+                                                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                                        <TextBlock
+                                                            Style="{ThemeResource BaseTextBlockStyle}"
+                                                            Text="{Binding InstanceId}"
+                                                            TextTrimming="CharacterEllipsis"
+                                                            TextWrapping="NoWrap"
+                                                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                                                        <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource InstanceDescriptionConverter}}">
+                                                            <ItemsRepeater.Layout>
+                                                                <StackLayout Orientation="Horizontal" Spacing="5" />
+                                                            </ItemsRepeater.Layout>
+                                                            <ItemsRepeater.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock
+                                                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                        Text="{Binding}"
+                                                                        ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                                                                </DataTemplate>
+                                                            </ItemsRepeater.ItemTemplate>
+                                                        </ItemsRepeater>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                    <StackPanel
+                                        Grid.Row="2"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal"
+                                        Spacing="5">
+                                        <FontIcon
+                                            FontSize="56"
                                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                            Text="No Core" />
-                                        <HyperlinkButton Margin="0,0,0,-5" Command="{Binding GoToSettingsCommand}">
+                                            Glyph="&#xe74c;" />
+
+                                        <StackPanel VerticalAlignment="Center">
                                             <TextBlock
-                                                x:Uid="Cores_CoresPage_Text4"
+                                                x:Uid="Cores_CoresPage_Text3"
+                                                Margin="10,0"
+                                                VerticalAlignment="Center"
+                                                FontSize="16"
                                                 FontWeight="SemiBold"
-                                                Text="Go To Settings" />
-                                        </HyperlinkButton>
+                                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                Text="No Core" />
+                                            <HyperlinkButton Margin="0,0,0,-5" Command="{Binding GoToSettingsCommand}">
+                                                <TextBlock
+                                                    x:Uid="Cores_CoresPage_Text4"
+                                                    FontWeight="SemiBold"
+                                                    Text="Go To Settings" />
+                                            </HyperlinkButton>
+                                        </StackPanel>
+
+                                        <i:Interaction.Behaviors>
+                                            <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{Binding MinecraftInstances}" />
+                                        </i:Interaction.Behaviors>
                                     </StackPanel>
 
-                                    <i:Interaction.Behaviors>
-                                        <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{Binding MinecraftInstances}" />
-                                    </i:Interaction.Behaviors>
-                                </StackPanel>
-
-                            </Grid>
-                        </Flyout>
-                    </DropDownButton.Flyout>
-                </DropDownButton>
+                                </Grid>
+                            </Flyout>
+                        </DropDownButton.Flyout>
+                    </DropDownButton>
+                </Grid>
             </Grid>
         </Grid>
 
@@ -373,7 +378,7 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="grid.Padding" Value="20, 0" />
+                        <Setter Target="ControlsArea.Padding" Value="20, 0" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

@@ -38,6 +38,7 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
         if (string.IsNullOrEmpty(ApplicationLanguages.PrimaryLanguageOverride))
             ResourceUtils.ApplyLanguage(_settingsService.CurrentLanguage);
 
+        App.GetService<AppearanceService>().RegisterWindow(this);
         InitializeComponent();
         ConfigureWindow();
     }
@@ -69,13 +70,13 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
 
     private void MainWindow_ActualThemeChanged(FrameworkElement sender, object args)
     {
-        var titleBarTheme = _settingsService.UseBackgroundMask ? ApplicationTheme.Light : App.Current.RequestedTheme;
+        var titleBarTheme = BackgroundGrid.ActualTheme;
 
         AppWindow.TitleBar.ButtonBackgroundColor = AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-        AppWindow.TitleBar.ButtonForegroundColor = titleBarTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
-        AppWindow.TitleBar.ButtonHoverForegroundColor = titleBarTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
+        AppWindow.TitleBar.ButtonForegroundColor = titleBarTheme == ElementTheme.Light ? Colors.Black : Colors.White;
+        AppWindow.TitleBar.ButtonHoverForegroundColor = titleBarTheme == ElementTheme.Light ? Colors.Black : Colors.White;
 
-        var hoverColor = titleBarTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
+        var hoverColor = titleBarTheme == ElementTheme.Light ? Colors.Black : Colors.White;
         hoverColor.A = 35;
 
         AppWindow.TitleBar.ButtonHoverBackgroundColor = hoverColor;
@@ -101,8 +102,6 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
 
         (MinWidth, MinHeight) = _settingsService.FinishGuide ? (516, 328) : (_settingsService.AppWindowWidth, _settingsService.AppWindowHeight);
         (Width, Height) = (_settingsService.AppWindowWidth, _settingsService.AppWindowHeight);
-
-        App.GetService<AppearanceService>().ApplyBackgroundAtWindowCreated(this);
 
         ((FrameworkElement)this.Content).ActualThemeChanged += MainWindow_ActualThemeChanged;
         this.WindowStateChanged += MainWindow_WindowStateChanged;

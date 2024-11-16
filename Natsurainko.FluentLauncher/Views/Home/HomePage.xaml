@@ -187,8 +187,17 @@
                     <ColumnDefinition Width="10" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <StackPanel VerticalAlignment="Bottom">
-                    <HyperlinkButton Background="Transparent" Command="{Binding GoToAccountCommand}">
+                <Grid VerticalAlignment="Bottom">
+                    <Border
+                        Name="HyperlinkButtonArea"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        CornerRadius="{ThemeResource ControlCornerRadius}" />
+                    <HyperlinkButton
+                        Name="HyperlinkButton"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Command="{Binding GoToAccountCommand}">
                         <StackPanel>
                             <TextBlock
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
@@ -197,7 +206,7 @@
                             <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Text="{Binding ActiveAccount.Name}" />
                         </StackPanel>
                     </HyperlinkButton>
-                </StackPanel>
+                </Grid>
                 <Button
                     x:Name="LaunchButton"
                     Grid.Column="4"

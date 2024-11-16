@@ -87,7 +87,7 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
     void ConfigureWindow()
     {
         var titleBarTheme = _settingsService.UseBackgroundMask ? ApplicationTheme.Light : App.Current.RequestedTheme;
-        var hoverColor = titleBarTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
+        var hoverColor = BackgroundGrid.ActualTheme == ElementTheme.Light ? Colors.Black : Colors.White;
         hoverColor.A = 35;
 
         _notificationService.InitContainer(NotifyStackPanel, BackgroundGrid);
@@ -96,8 +96,8 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
         AppWindow.Title = "Fluent Launcher";
         AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
         AppWindow.TitleBar.ButtonBackgroundColor = AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-        AppWindow.TitleBar.ButtonForegroundColor = titleBarTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
-        AppWindow.TitleBar.ButtonHoverForegroundColor = titleBarTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
+        AppWindow.TitleBar.ButtonForegroundColor = BackgroundGrid.ActualTheme == ElementTheme.Light ? Colors.Black : Colors.White;
+        AppWindow.TitleBar.ButtonHoverForegroundColor = BackgroundGrid.ActualTheme == ElementTheme.Light ? Colors.Black : Colors.White;
         AppWindow.TitleBar.ButtonHoverBackgroundColor = hoverColor;
 
         (MinWidth, MinHeight) = _settingsService.FinishGuide ? (516, 328) : (_settingsService.AppWindowWidth, _settingsService.AppWindowHeight);

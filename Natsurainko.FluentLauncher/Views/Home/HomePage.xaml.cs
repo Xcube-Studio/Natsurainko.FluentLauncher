@@ -1,6 +1,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.ViewModels.Home;
 using Windows.Foundation;
 using Windows.UI;
@@ -9,7 +10,8 @@ namespace Natsurainko.FluentLauncher.Views.Home;
 
 public sealed partial class HomePage : Page
 {
-    private readonly ThemeShadow _themeShadow = new ThemeShadow();
+    private readonly ThemeShadow _themeShadow = new();
+    private readonly SettingsService _settingsService = App.GetService<SettingsService>();
 
     public HomePage()
     {
@@ -18,11 +20,34 @@ public sealed partial class HomePage : Page
 
     private void Page_Loaded(object sender, RoutedEventArgs e)
     {
-        //_themeShadow.Receivers.Add(Grid);
-        //DropDownButton.Shadow = _themeShadow;
-        //DropDownButton.Translation += new System.Numerics.Vector3(0, 0, 48);
-        //DropDownButtonArea.Background = new CommunityToolkit.WinUI.Media.BackdropBlurBrush() { Amount = 16 };
-        //DropDownButton.Background = new SolidColorBrush(Color.FromArgb(128, 255, 255, 255));
+        _themeShadow.Receivers.Add(Grid);
+
+        if (_settingsService.UseHomeControlsMask)
+        {
+            Brush maskColorBrush = this.ActualTheme == ElementTheme.Light
+                    ? new SolidColorBrush(Color.FromArgb(128, 255, 255, 255))
+                    : new SolidColorBrush(Color.FromArgb(76, 58, 58, 58));
+
+            DropDownButton.Shadow = _themeShadow;
+            DropDownButton.Translation += new System.Numerics.Vector3(0, 0, 32);
+            DropDownButtonArea.Background = new CommunityToolkit.WinUI.Media.BackdropBlurBrush() { Amount = 16 };
+            DropDownButton.Background = maskColorBrush;
+
+            HyperlinkButton.Shadow = _themeShadow;
+            HyperlinkButton.Translation += new System.Numerics.Vector3(0, 0, 32);
+            HyperlinkButtonArea.Background = new CommunityToolkit.WinUI.Media.BackdropBlurBrush() { Amount = 16 };
+            HyperlinkButton.Background = maskColorBrush;
+
+            this.ActualThemeChanged += (_, e) =>
+            {
+                Brush maskColorBrush = this.ActualTheme == ElementTheme.Light
+                    ? new SolidColorBrush(Color.FromArgb(128, 255, 255, 255))
+                    : new SolidColorBrush(Color.FromArgb(76, 58, 58, 58));
+
+                DropDownButton.Background = maskColorBrush;
+                HyperlinkButton.Background = maskColorBrush;
+            };
+        }
 
         LaunchButton.Focus(FocusState.Programmatic);
     }

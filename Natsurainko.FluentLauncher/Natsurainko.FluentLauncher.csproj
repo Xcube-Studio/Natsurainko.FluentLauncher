@@ -26,6 +26,7 @@
     <RunPostBuildEvent>Always</RunPostBuildEvent>
     <Nullable>enable</Nullable>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
     <!-- NativeAOT -->

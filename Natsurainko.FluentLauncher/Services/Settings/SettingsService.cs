@@ -104,6 +104,8 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
     public partial bool UseBackgroundMask { get; set; }
 
+    [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
+    public partial bool UseHomeControlsMask { get; set; }
 
     [SettingItem(Default = 500, Converter = typeof(JsonStringConverter<double>))]
     public partial double AppWindowHeight { get; set; }

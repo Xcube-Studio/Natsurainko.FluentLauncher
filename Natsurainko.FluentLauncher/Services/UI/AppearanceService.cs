@@ -25,7 +25,11 @@ internal class AppearanceService
         _settingsService.DisplayThemeChanged += DisplayThemeChanged;
         _settingsService.UseSystemAccentColorChanged += UseSystemAccentColorChanged;
         _settingsService.BackgroundModeChanged += BackgroundModeChanged;
-        _settingsService.MicaKindChanged += MicaKindChanged;
+
+        _settingsService.MicaKindChanged += PropertyChanged;
+        _settingsService.SolidSelectedIndexChanged += PropertyChanged;
+        _settingsService.CustomBackgroundColorChanged += PropertyChanged;
+        _settingsService.ImageFilePathChanged += PropertyChanged;
     }
 
     private bool IsAppRegistered;
@@ -232,8 +236,8 @@ internal class AppearanceService
         BackgroundReloaded?.Invoke(this, new());
     }
 
-    private void MicaKindChanged(global::FluentLauncher.Infra.Settings.SettingsContainer sender, global::FluentLauncher.Infra.Settings.SettingChangedEventArgs e)
-        => BackgroundModeChanged(sender, new("BackgroundMode", 0));
+    private void PropertyChanged(global::FluentLauncher.Infra.Settings.SettingsContainer sender, global::FluentLauncher.Infra.Settings.SettingChangedEventArgs e)
+        => BackgroundModeChanged(sender, new("BackgroundMode", _settingsService.BackgroundMode));
     #endregion
 
     private static void Set(ResourceDictionary keyValuePairs, string Key, object Value)

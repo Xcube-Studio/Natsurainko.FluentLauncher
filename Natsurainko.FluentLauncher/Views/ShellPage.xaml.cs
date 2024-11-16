@@ -1,3 +1,4 @@
+using CommunityToolkit.WinUI.Media;
 using CommunityToolkit.WinUI.Media.Pipelines;
 using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Pages;
@@ -39,7 +40,6 @@ public sealed partial class ShellPage : Page, INavigationProvider
         InitializeComponent();
 
         ConfigurePage();
-        ConfigureNavigationView();
     }
 
     #region Page Events
@@ -47,6 +47,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
     private async void Page_Loaded(object sender, RoutedEventArgs e)
     {
         App.MainWindow.SetTitleBar(AppTitleBar);
+        ConfigureNavigationView();
 
         if (_settings.UseBackgroundMask)
         {
@@ -219,6 +220,41 @@ public sealed partial class ShellPage : Page, INavigationProvider
     void ConfigureNavigationView()
     {
         NavigationViewControl.IsPaneOpen = _settings.NavigationViewIsPaneOpen;
+
+        if (_settings.UseBackgroundMask)
+        {
+            var RootSplitView = FindControl<SplitView>(NavigationViewControl, typeof(SplitView), "RootSplitView");
+            if (RootSplitView != null)
+            {
+                RootSplitView.CornerRadius = new CornerRadius(0);
+
+                var PaneContentGrid = FindControl<Grid>(RootSplitView, typeof(Grid), "PaneContentGrid")!;
+
+                var Border = new Border();
+                Border.Background = new BackdropBlurBrush() { Amount = 16 };
+                Grid.SetRowSpan(Border, 8);
+
+                PaneContentGrid.Children.Insert(0, Border);
+                PaneContentGrid.Translation += new System.Numerics.Vector3(0, 0, 48);
+
+                PaneContentGrid.Background = this.ActualTheme == ElementTheme.Light
+                    ? new SolidColorBrush(Color.FromArgb(128, 255, 255, 255))
+                    : new SolidColorBrush(Color.FromArgb(76, 58, 58, 58));
+                PaneContentGrid.BorderBrush = this.ActualTheme == ElementTheme.Light
+                    ? new SolidColorBrush(Color.FromArgb(15, 0, 0, 0))
+                    : new SolidColorBrush(Color.FromArgb(25, 0, 0, 0));
+
+                PaneContentGrid.ActualThemeChanged += (_, e) =>
+                {
+                    PaneContentGrid.Background = this.ActualTheme == ElementTheme.Light
+                        ? new SolidColorBrush(Color.FromArgb(128, 255, 255, 255))
+                        : new SolidColorBrush(Color.FromArgb(76, 58, 58, 58));
+                    PaneContentGrid.BorderBrush = this.ActualTheme == ElementTheme.Light
+                        ? new SolidColorBrush(Color.FromArgb(15, 0, 0, 0))
+                        : new SolidColorBrush(Color.FromArgb(25, 0, 0, 0));
+                };
+            }
+        }
     }
 
     private void UpdateTitleBarDragArea()
@@ -284,5 +320,29 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
         await blurAnimation(sprite.Brush, to, TimeSpan.FromSeconds(time));
         backgroundBlurredValue = to;
+    }
+
+    private static T? FindControl<T>(UIElement parent, Type targetType, string ControlName) where T : FrameworkElement
+    {
+        if (parent == null) return null;
+
+        if (parent.GetType() == targetType && ((T)parent).Name == ControlName)
+        {
+            return (T)parent;
+        }
+        T? result = null;
+
+        int count = VisualTreeHelper.GetChildrenCount(parent);
+        for (int i = 0; i < count; i++)
+        {
+            UIElement child = (UIElement)VisualTreeHelper.GetChild(parent, i);
+
+            if (FindControl<T>(child, targetType, ControlName) != null)
+            {
+                result = FindControl<T>(child, targetType, ControlName);
+                break;
+            }
+        }
+        return result;
     }
 }

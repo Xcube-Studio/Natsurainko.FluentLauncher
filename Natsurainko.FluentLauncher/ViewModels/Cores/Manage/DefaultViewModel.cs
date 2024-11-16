@@ -12,6 +12,7 @@ using Nrk.FluentCore.GameManagement.Instances;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using Windows.System;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
@@ -85,6 +86,9 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
     [RelayCommand]
     void CardClick(string tag) => _navigationService.NavigateTo(tag, MinecraftInstance);
+
+    [RelayCommand]
+    public async Task OpenVersionFolder() => await Launcher.LaunchFolderPathAsync(MinecraftInstance.GetGameDirectory());
 
     [RelayCommand]
     public async Task DeleteGame() => await new DeleteInstanceDialog()

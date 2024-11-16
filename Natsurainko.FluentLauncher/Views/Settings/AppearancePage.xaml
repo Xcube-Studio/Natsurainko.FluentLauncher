@@ -743,6 +743,7 @@
                 </controls:SettingsExpander>
 
                 <InfoBar
+                    x:Uid="Settings_AppearancePage_InfoBar"
                     Title="Instability Warning"
                     IsClosable="False"
                     IsOpen="True"
@@ -750,9 +751,13 @@
                     Opacity="0.85"
                     Severity="Warning" />
 
-                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Mask" />
+                <TextBlock
+                    x:Uid="Settings_AppearancePage_T3"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Mask" />
 
                 <controls:SettingsCard
+                    x:Uid="Settings_AppearancePage_Card3"
                     Description="Display theme color mask in the title bar and Gaussian blur mask in the navigation sidebar to enhance the clarity of some controls under special background images, effective after restarting the app"
                     Header="Use Background Mask"
                     HeaderIcon="{xh:FontIcon Glyph=&#xef1f;}">
@@ -760,6 +765,7 @@
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
+                    x:Uid="Settings_AppearancePage_Card4"
                     Description="Display Gaussian blur background mask on some controls on the home page to enhance clarity"
                     Header="Use HomePage Controls Mask"
                     HeaderIcon="{xh:FontIcon Glyph=&#xef1f;}">

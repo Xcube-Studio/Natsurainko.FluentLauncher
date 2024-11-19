@@ -444,6 +444,7 @@
                             </StackPanel>
                         </controls:SettingsCard>
                         <controls:SettingsCard
+                            x:Uid="Settings_AppearancePage_SubCard6"
                             Command="{Binding UseImageThemeColorCommand}"
                             Header="Use image theme color"
                             IsClickEnabled="True"
@@ -451,10 +452,12 @@
                             <controls:SettingsCard.Description>
                                 <StackPanel>
                                     <TextBlock
+                                        x:Uid="Settings_AppearancePage_Text3"
                                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                         Style="{ThemeResource CaptionTextBlockStyle}"
                                         Text="Select a theme color from the currently selected image background" />
                                     <TextBlock
+                                        x:Uid="Settings_AppearancePage_Text4"
                                         Foreground="{ThemeResource SystemErrorTextColor}"
                                         Style="{ThemeResource CaptionTextBlockStyle}"
                                         Text="Must use valid image background"

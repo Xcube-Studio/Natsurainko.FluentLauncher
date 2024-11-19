@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
@@ -175,7 +176,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     private string activeMinecraftFolder;
 
     [RelayCommand]
-    public Task BrowseFolder() => Task.Run(async () =>
+    public async Task BrowseFolder()
     {
         var folderPicker = new FolderPicker();
 
@@ -186,21 +187,20 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
         var folder = await folderPicker.PickSingleFolderAsync();
 
         if (folder != null)
-            App.DispatcherQueue.TryEnqueue(() =>
+        {
+            if (MinecraftFolders.Contains(folder.Path))
             {
-                if (MinecraftFolders.Contains(folder.Path))
-                {
-                    _notificationService.NotifyMessage(
-                        ResourceUtils.GetValue("Notifications", "_AddFolderExistedT"),
-                        ResourceUtils.GetValue("Notifications", "_AddFolderExistedD"),
-                        icon: "\uF89A");
+                _notificationService.NotifyMessage(
+                    ResourceUtils.GetValue("Notifications", "_AddFolderExistedT"),
+                    ResourceUtils.GetValue("Notifications", "_AddFolderExistedD"),
+                    icon: "\uF89A");
 
-                    return;
-                }
+                return;
+            }
 
-                _gameService.AddMinecraftFolder(folder.Path);
-            });
-    });
+            _gameService.AddMinecraftFolder(folder.Path);
+        }
+    }
 
     private readonly string OfficialLauncherPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\.minecraft";
 
@@ -255,40 +255,54 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     private string activeJavaRuntime;
 
     [RelayCommand]
-    public Task BrowseJava() => Task.Run(async () =>
+    public void BrowseJava()
     {
-        var filePicker = new FileOpenPicker();
+        var openFileDialog = new OpenFileDialog
+        {
+            Multiselect = false,
+            Filter = "Javaw Executable File|javaw.exe|Java Executable File|java.exe"
+        };
 
-        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
-        WinRT.Interop.InitializeWithWindow.Initialize(filePicker, hwnd);
-
-        filePicker.FileTypeFilter.Add(".exe");
-        var file = await filePicker.PickSingleFileAsync();
-
-        if (file != null)
-            App.DispatcherQueue.TryEnqueue(() =>
+        if (openFileDialog.ShowDialog().GetValueOrDefault(false))
+        {
+            if (JavaRuntimes.Contains(openFileDialog.FileName))
             {
-                JavaRuntimes.Add(file.Path);
-                OnPropertyChanged(nameof(JavaRuntimes));
+                _notificationService.NotifyMessage(
+                    ResourceUtils.GetValue("Notifications", "_AddJavaExistedT"),
+                    ResourceUtils.GetValue("Notifications", "_AddJavaExistedD"),
+                    icon: "\uF89A");
 
-                ActiveJavaRuntime = file.Path;
-            });
-    });
+                return;
+            }
+
+            JavaRuntimes.Add(openFileDialog.FileName); 
+            OnPropertyChanged(nameof(JavaRuntimes));
+
+            ActiveJavaRuntime = openFileDialog.FileName;
+        }
+    }
 
     [RelayCommand]
     public void SearchJava()
     {
-        foreach (var java in JavaUtils.SearchJava())
-            if (!JavaRuntimes.Contains(java))
-                JavaRuntimes.Add(java);
+        try
+        {
+            foreach (var java in JavaUtils.SearchJava())
+                if (!JavaRuntimes.Contains(java))
+                    JavaRuntimes.Add(java);
 
-        ActiveJavaRuntime = JavaRuntimes.Any() ? JavaRuntimes[0] : null;
+            ActiveJavaRuntime = JavaRuntimes.Any() ? JavaRuntimes[0] : null;
 
-        OnPropertyChanged(nameof(JavaRuntimes));
+            OnPropertyChanged(nameof(JavaRuntimes));
 
-        _notificationService.NotifyWithoutContent(
-            ResourceUtils.GetValue("Notifications", "_AddSearchedJavaT"),
-            icon: "\uE73E");
+            _notificationService.NotifyWithoutContent(
+                ResourceUtils.GetValue("Notifications", "_AddSearchedJavaT"),
+                icon: "\uE73E");
+        }
+        catch (Exception ex)
+        {
+            _notificationService.NotifyException("_AddSearchedJavaFailedT", ex);
+        }
     }
 
     [RelayCommand]
@@ -297,12 +311,6 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
         JavaRuntimes.Remove(java);
         ActiveJavaRuntime = JavaRuntimes.Any() ? JavaRuntimes[0] : null;
     }
-
-    /*
-    [RelayCommand]
-    public void OpenJavaMirrorsDialog(HyperlinkButton parameter)
-        => _ = new JavaMirrorsDialog { XamlRoot = parameter.XamlRoot }.ShowAsync();
-    */
 
     #endregion
 

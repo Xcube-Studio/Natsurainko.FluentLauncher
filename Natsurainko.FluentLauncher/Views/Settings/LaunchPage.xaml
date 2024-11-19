@@ -226,7 +226,7 @@
                 <controls:SettingsCard
                     x:Uid="Settings_LaunchPage_Card2"
                     ActionIcon="{xh:FontIcon Glyph=&#xe838;}"
-                    Command="{Binding BrowserJavaCommand}"
+                    Command="{Binding BrowseJavaCommand}"
                     Description="The imported Javas will be displayed in the list above"
                     Header="Import Java Runtime"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe838;}"

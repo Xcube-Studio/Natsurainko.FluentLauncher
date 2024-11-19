@@ -117,7 +117,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     #region Minecraft Folder
 
     [RelayCommand]
-    public Task BrowserFolder() => Task.Run(async () =>
+    public async Task BrowserFolder()
     {
         var folderPicker = new FolderPicker();
 
@@ -129,24 +129,20 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
 
         if (folder != null)
         {
-            App.DispatcherQueue.TryEnqueue(() =>
+            if (MinecraftFolders.Contains(folder.Path))
             {
-                if (MinecraftFolders.Contains(folder.Path))
-                {
-                    _notificationService.NotifyMessage(
-                        ResourceUtils.GetValue("Notifications", "_AddFolderExistedT"),
-                        ResourceUtils.GetValue("Notifications", "_AddFolderExistedD"),
-                        icon: "\uF89A");
+                _notificationService.NotifyMessage(
+                    ResourceUtils.GetValue("Notifications", "_AddFolderExistedT"),
+                    ResourceUtils.GetValue("Notifications", "_AddFolderExistedD"),
+                    icon: "\uF89A");
 
-                    return;
-                }
+                return;
+            }
 
-                _gameService.AddMinecraftFolder(folder.Path);
-                OnPropertyChanged(nameof(IsMinecraftFoldersEmpty));
-            });
+            _gameService.AddMinecraftFolder(folder.Path);
+            OnPropertyChanged(nameof(IsMinecraftFoldersEmpty));
         }
-
-    });
+    }
 
     [RelayCommand]
     public void RemoveFolder(string folder)
@@ -178,49 +174,54 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     #region Java
 
     [RelayCommand]
-    public void BrowserJava()
+    public void BrowseJava()
     {
-        var openFileDialog = new OpenFileDialog();
-        openFileDialog.Multiselect = false;
-        openFileDialog.Filter = "Javaw Executable File|javaw.exe|Java Executable File|java.exe";
+        var openFileDialog = new OpenFileDialog
+        {
+            Multiselect = false,
+            Filter = "Javaw Executable File|javaw.exe|Java Executable File|java.exe"
+        };
 
         if (openFileDialog.ShowDialog().GetValueOrDefault(false))
         {
-            App.DispatcherQueue.TryEnqueue(() =>
+            if (Javas.Contains(openFileDialog.FileName))
             {
-                if (Javas.Contains(openFileDialog.FileName))
-                {
-                    _notificationService.NotifyMessage(
-                        ResourceUtils.GetValue("Notifications", "_AddJavaExistedT"),
-                        ResourceUtils.GetValue("Notifications", "_AddJavaExistedD"),
-                        icon: "\uF89A");
+                _notificationService.NotifyMessage(
+                    ResourceUtils.GetValue("Notifications", "_AddJavaExistedT"),
+                    ResourceUtils.GetValue("Notifications", "_AddJavaExistedD"),
+                    icon: "\uF89A");
 
-                    return;
-                }
+                return;
+            }
 
+            Javas.Add(openFileDialog.FileName);
+            ActiveJava = openFileDialog.FileName;
 
-                Javas.Add(openFileDialog.FileName);
-                ActiveJava = openFileDialog.FileName;
-
-                OnPropertyChanged(nameof(IsJavasEmpty));
-            });
+            OnPropertyChanged(nameof(IsJavasEmpty));
         }
     }
 
     [RelayCommand]
     public void SearchJava()
     {
-        foreach (var java in JavaUtils.SearchJava())
-            if (!Javas.Contains(java))
-                Javas.Add(java);
+        try
+        {
+            foreach (var java in JavaUtils.SearchJava())
+                if (!Javas.Contains(java))
+                    Javas.Add(java);
 
-        ActiveJava = Javas.Any() ? Javas[0] : null;
+            ActiveJava = Javas.Any() ? Javas[0] : null;
 
-        OnPropertyChanged(nameof(Javas));
+            OnPropertyChanged(nameof(Javas));
 
-        _notificationService.NotifyWithoutContent(
-            ResourceUtils.GetValue("Notifications", "_AddSearchedJavaT"),
-            icon: "\uE73E");
+            _notificationService.NotifyWithoutContent(
+                ResourceUtils.GetValue("Notifications", "_AddSearchedJavaT"),
+                icon: "\uE73E");
+        }
+        catch (Exception ex) 
+        {
+            _notificationService.NotifyException("_AddSearchedJavaFailedT", ex);
+        }
     }
 
     [RelayCommand]

@@ -214,13 +214,13 @@ public sealed partial class ShellPage : Page, INavigationProvider
     void ConfigurePage()
     {
         ContentFrame = contentFrame;
+        NavigationViewControl.IsPaneOpen = _settings.NavigationViewIsPaneOpen;
+
         App.GetService<AppearanceService>().BackgroundReloaded += BackgroundReloaded;
     }
 
     void ConfigureNavigationView()
     {
-        NavigationViewControl.IsPaneOpen = _settings.NavigationViewIsPaneOpen;
-
         if (_settings.UseBackgroundMask)
         {
             var RootSplitView = FindControl<SplitView>(NavigationViewControl, typeof(SplitView), "RootSplitView");

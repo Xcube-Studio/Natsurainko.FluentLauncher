@@ -28,6 +28,10 @@ public sealed partial class HomePage : Page
                     ? new SolidColorBrush(Color.FromArgb(128, 255, 255, 255))
                     : new SolidColorBrush(Color.FromArgb(76, 58, 58, 58));
 
+            Brush foregroundBrush = this.ActualTheme == ElementTheme.Light
+                ? new SolidColorBrush(Color.FromArgb(255, 26, 26, 26))
+                : new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+
             DropDownButton.Shadow = _themeShadow;
             DropDownButton.Translation += new System.Numerics.Vector3(0, 0, 32);
             DropDownButtonArea.Background = new CommunityToolkit.WinUI.Media.BackdropBlurBrush() { Amount = 16 };
@@ -37,6 +41,7 @@ public sealed partial class HomePage : Page
             HyperlinkButton.Translation += new System.Numerics.Vector3(0, 0, 32);
             HyperlinkButtonArea.Background = new CommunityToolkit.WinUI.Media.BackdropBlurBrush() { Amount = 16 };
             HyperlinkButton.Background = maskColorBrush;
+            HyperlinkButton.Foreground = foregroundBrush;
 
             this.ActualThemeChanged += (_, e) =>
             {
@@ -44,8 +49,13 @@ public sealed partial class HomePage : Page
                     ? new SolidColorBrush(Color.FromArgb(128, 255, 255, 255))
                     : new SolidColorBrush(Color.FromArgb(76, 58, 58, 58));
 
+                Brush foregroundBrush = this.ActualTheme == ElementTheme.Light
+                    ? new SolidColorBrush(Color.FromArgb(255, 26, 26, 26))
+                    : new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+
                 DropDownButton.Background = maskColorBrush;
                 HyperlinkButton.Background = maskColorBrush;
+                HyperlinkButton.Foreground = foregroundBrush;
             };
         }
 

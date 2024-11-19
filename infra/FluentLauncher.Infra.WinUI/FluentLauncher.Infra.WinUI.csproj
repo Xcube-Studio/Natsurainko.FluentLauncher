@@ -15,7 +15,7 @@
       <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240311000" />
       <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
       <PackageReference Include="System.Private.Uri" Version="4.3.2" />
-      <PackageReference Include="System.Text.Json" Version="8.0.4" />
+      <PackageReference Include="System.Text.Json" Version="8.0.5" />
       <PackageReference Include="WinUIEx" Version="2.3.4" />
   </ItemGroup>
 

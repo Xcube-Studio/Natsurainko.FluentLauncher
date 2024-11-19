@@ -72,6 +72,10 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     [BindToSetting(Path = nameof(SettingsService.UseBackgroundMask))]
     private bool useBackgroundMask;
 
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.UseHomeControlsMask))]
+    private bool useHomeControlsMask;
+
     public Color CurrentThemeColor => UseSystemAccentColor ? (Color)App.Current.Resources["RawSystemAccentColor"] : CustomThemeColor.GetValueOrDefault();
 
     public bool AcrylicIsSupported => DesktopAcrylicController.IsSupported();

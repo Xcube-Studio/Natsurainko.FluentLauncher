@@ -74,9 +74,6 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(Default = "en-US, English", Converter = typeof(JsonStringConverter<string>))] // TODO: remove default value; set to system language if null
     public partial string CurrentLanguage { get; set; }
 
-    [SettingItem(Default = 0, Converter = typeof(JsonStringConverter<int>))] //TODO: remove this
-    public partial int NavigationViewDisplayMode { get; set; }
-
     [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
     public partial bool NavigationViewIsPaneOpen { get; set; }
 
@@ -107,6 +104,8 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
     public partial bool UseBackgroundMask { get; set; }
 
+    [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
+    public partial bool UseHomeControlsMask { get; set; }
 
     [SettingItem(Default = 500, Converter = typeof(JsonStringConverter<double>))]
     public partial double AppWindowHeight { get; set; }

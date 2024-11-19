@@ -4,11 +4,10 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
-using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.Views;
-using Natsurainko.FluentLauncher.Views.Home;
+using System;
 using System.IO;
+using System.Threading.Tasks;
 using Windows.UI;
 
 namespace Natsurainko.FluentLauncher.Services.UI;
@@ -16,145 +15,235 @@ namespace Natsurainko.FluentLauncher.Services.UI;
 internal class AppearanceService
 {
     private readonly SettingsService _settingsService;
-    private NavigationView? _navigationView;
-    private BitmapImage? backgroundImage;
+
+    public event EventHandler? BackgroundReloaded;
 
     public AppearanceService(SettingsService settingsService)
     {
         _settingsService = settingsService;
+
+        _settingsService.DisplayThemeChanged += DisplayThemeChanged;
+        _settingsService.UseSystemAccentColorChanged += UseSystemAccentColorChanged;
+        _settingsService.BackgroundModeChanged += BackgroundModeChanged;
+
+        _settingsService.MicaKindChanged += PropertyChanged;
+        _settingsService.SolidSelectedIndexChanged += PropertyChanged;
+        _settingsService.CustomBackgroundColorChanged += PropertyChanged;
+        _settingsService.ImageFilePathChanged += PropertyChanged;
     }
 
-    public void RegisterNavigationView(NavigationView navigationView)
+    private bool IsAppRegistered;
+
+    private bool IsWindowRegistered;
+
+    public App? RegisteredApp { get; private set; }
+
+    public Window? RegisteredWindow { get; private set; }
+
+    public void RegisterWindow(Window window)
     {
-        _navigationView = navigationView;
-        _navigationView.PaneDisplayMode = _settingsService.NavigationViewDisplayMode == 0
-            ? NavigationViewPaneDisplayMode.Auto
-            : NavigationViewPaneDisplayMode.LeftMinimal;
+        RegisteredWindow = window;
+        IsWindowRegistered = true;
 
-        _settingsService.NavigationViewDisplayModeChanged += (sender, e) =>
-        {
-            _navigationView.PaneDisplayMode = _settingsService.NavigationViewDisplayMode == 0
-                ? NavigationViewPaneDisplayMode.Auto
-                : NavigationViewPaneDisplayMode.LeftMinimal;
-        };
+        var control = (Grid)RegisteredWindow!.Content;
+        control.RequestedTheme = (ElementTheme)_settingsService.DisplayTheme;
 
-        _navigationView.IsPaneOpen = _settingsService.NavigationViewIsPaneOpen;
-        _navigationView.PaneOpening += (sender, e) => _settingsService.NavigationViewIsPaneOpen = sender.IsPaneOpen;
-        _navigationView.PaneClosing += (sender, e) => _settingsService.NavigationViewIsPaneOpen = sender.IsPaneOpen;
-    }
-
-    public void ApplyDisplayTheme()
-    {
-        if (_settingsService.DisplayTheme == 0)
-            return;
-
-        App.Current.RequestedTheme = _settingsService.DisplayTheme == 1
-            ? ApplicationTheme.Light
-            : ApplicationTheme.Dark;
-    }
-
-    public void ApplyBackgroundBeforePageInit(ShellPage page)
-    {
-        switch (_settingsService.BackgroundMode)
-        {
-            case 2:
-                if (_settingsService.SolidSelectedIndex == 0)
-                    page.Background = App.Current.Resources["ApplicationPageBackgroundThemeBrush"] as Brush;
-                else if (_settingsService.CustomBackgroundColor != null)
-                    page.Background = new SolidColorBrush(_settingsService.CustomBackgroundColor.GetValueOrDefault(Colors.Transparent));
-
-                break;
-            case 3:
-                if (File.Exists(_settingsService.ImageFilePath))
-                {
-                    if (_settingsService.UseBackgroundMask)
-                    {
-                        page.Resources["NavigationViewOverlayCornerRadius"] = new CornerRadius(0);
-                        page.Resources["NavigationViewExpandedPaneBackground"] = new AcrylicBrush()
-                        {
-                            TintColor = (Color)App.Current.Resources["SystemAccentColor"],
-                            TintOpacity = 0.1,
-                            TintLuminosityOpacity = 0.25
-                        };
-                    }
-
-                    page.Resources.Add("NavigationViewContentBackground", new SolidColorBrush(Colors.Transparent));
-                    //page.Resources.Add("NavigationViewContentGridCornerRadius", new CornerRadius(0));
-                    page.Resources.Add("NavigationViewContentGridBorderThickness", new Thickness(0));
-                    page.Resources["BackgroundBorder"] = new Thickness(0);
-
-                    using var fileStream = File.OpenRead(_settingsService.ImageFilePath);
-                    using var randomAccessStream = fileStream.AsRandomAccessStream();
-
-                    BitmapImage bitmapImage = new();
-                    bitmapImage.SetSource(randomAccessStream);
-
-                    backgroundImage = bitmapImage;
-                }
-                break;
-        }
-    }
-
-    public void ApplySettingsBeforePageInit()
-    {
-        App.Current.Resources["RawSystemAccentColor"] = App.Current.Resources["SystemAccentColor"];
+        var resources = App.Current.Resources;
+        Set(resources, "RawSystemAccentColor", (Color)resources["SystemAccentColor"]);
 
         if (!_settingsService.UseSystemAccentColor)
         {
-            App.Current.Resources["SystemAccentColorLight1"] = _settingsService.CustomThemeColor.GetValueOrDefault();
-            App.Current.Resources["SystemAccentColorLight2"] = _settingsService.CustomThemeColor.GetValueOrDefault();
-            App.Current.Resources["SystemAccentColorLight3"] = _settingsService.CustomThemeColor.GetValueOrDefault();
-            App.Current.Resources["SystemAccentColorDark1"] = _settingsService.CustomThemeColor.GetValueOrDefault();
-            App.Current.Resources["SystemAccentColorDark2"] = _settingsService.CustomThemeColor.GetValueOrDefault();
-            App.Current.Resources["SystemAccentColorDark3"] = _settingsService.CustomThemeColor.GetValueOrDefault();
+            Set(resources, "SystemAccentColorLight1", _settingsService.CustomThemeColor.GetValueOrDefault());
+            Set(resources, "SystemAccentColorLight2", _settingsService.CustomThemeColor.GetValueOrDefault());
+            Set(resources, "SystemAccentColorLight3", _settingsService.CustomThemeColor.GetValueOrDefault());
+            Set(resources, "SystemAccentColorDark1", _settingsService.CustomThemeColor.GetValueOrDefault());
+            Set(resources, "SystemAccentColorDark2", _settingsService.CustomThemeColor.GetValueOrDefault());
+            Set(resources, "SystemAccentColorDark3", _settingsService.CustomThemeColor.GetValueOrDefault());
 
-            App.Current.Resources["SystemAccentColor"] = _settingsService.CustomThemeColor.GetValueOrDefault();
+            Set(resources, "SystemAccentColor", _settingsService.CustomThemeColor.GetValueOrDefault());
         }
-    }
 
-    public void ApplyBackgroundAfterPageInit(ShellPage page)
-    {
-        switch (_settingsService.BackgroundMode)
-        {
-            case 3:
-                page.BackgroundImage.Source = backgroundImage;
-                int blurred = 0;
-
-                ShellPage.ContentFrame.Navigated += (object sender, NavigationEventArgs e) =>
-                {
-                    if (!typeof(HomePage).Equals(e.SourcePageType))
-                    {
-                        if (blurred.Equals(75))
-                            return;
-
-                        page.BlurAnimation(blurred, 75);
-                        blurred = 75;
-                    }
-                    else
-                    {
-                        if (blurred.Equals(0))
-                            return;
-
-                        page.BlurAnimation(blurred, 0);
-                        blurred = 0;
-                    }
-                };
-                break;
-        }
-    }
-
-    public void ApplyBackgroundAtWindowCreated(MainWindow window)
-    {
         switch (_settingsService.BackgroundMode)
         {
             case 0:
                 if (MicaController.IsSupported())
-                    window.SystemBackdrop = new MicaBackdrop() { Kind = (MicaKind)_settingsService.MicaKind };
+                    RegisteredWindow!.SystemBackdrop = new MicaBackdrop() { Kind = (MicaKind)_settingsService.MicaKind };
                 break;
             case 1:
                 if (DesktopAcrylicController.IsSupported())
-                    window.SystemBackdrop = new DesktopAcrylicBackdrop();
+                    RegisteredWindow!.SystemBackdrop = new DesktopAcrylicBackdrop();
+                break;
+            case 2:
+                control.Background = _settingsService.SolidSelectedIndex == 0 || _settingsService.CustomBackgroundColor == null
+                    ? App.Current.Resources["ApplicationPageBackgroundThemeBrush"] as Brush
+                    : new SolidColorBrush(_settingsService.CustomBackgroundColor.GetValueOrDefault(Colors.Transparent));
+                break;
+            case 3:
+                if (File.Exists(_settingsService.ImageFilePath))
+                {
+                    try
+                    {
+                        using var fileStream = File.OpenRead(_settingsService.ImageFilePath);
+                        using var randomAccessStream = fileStream.AsRandomAccessStream();
+
+                        BitmapImage bitmapImage = new();
+                        bitmapImage.SetSource(randomAccessStream);
+
+                        lock (control)
+                        {
+                            ImageBrush imageBrush = new()
+                            {
+                                Stretch = Stretch.UniformToFill,
+                                ImageSource = bitmapImage
+                            };
+
+                            control.Background = imageBrush;
+                        }
+                    }
+                    catch { }
+                }
                 break;
         }
+
+        if (_settingsService.BackgroundMode == 3 || _settingsService.BackgroundMode == 2)
+        {
+            Set(control.Resources, "NavigationViewContentBackground", new SolidColorBrush(Colors.Transparent));
+            Set(control.Resources, "NavigationViewContentGridBorderThickness", new Thickness(0));
+            Set(control.Resources, "BackgroundBorder", new Thickness(0));
+        }
+        else
+        {
+            Set(control.Resources, "NavigationViewContentBackground", App.Current.Resources["LayerFillColorDefaultBrush"]);
+            Set(control.Resources, "NavigationViewContentGridBorderThickness", new Thickness(1, 1, 0, 0));
+            Set(control.Resources, "BackgroundBorder", new Thickness(0, 1, 0, 0));
+        }
+    }
+
+    public void RegisterApp(App app)
+    {
+        RegisteredApp = app;
+        IsAppRegistered = true;
+    }
+
+    #region Settings Changed Events
+    private void DisplayThemeChanged(global::FluentLauncher.Infra.Settings.SettingsContainer sender, global::FluentLauncher.Infra.Settings.SettingChangedEventArgs e)
+    {
+        if (IsWindowRegistered)
+        {
+            var element = ((FrameworkElement)RegisteredWindow!.Content);
+            element.RequestedTheme = (ElementTheme)e.NewValue!;
+        }
+    }
+
+    private void UseSystemAccentColorChanged(global::FluentLauncher.Infra.Settings.SettingsContainer sender, global::FluentLauncher.Infra.Settings.SettingChangedEventArgs e)
+    {
+        if (!IsAppRegistered) return;
+
+        var resources = RegisteredApp!.Resources;
+
+        if (e.NewValue is bool useSystemAccentColor && useSystemAccentColor)
+        {
+            var rawSystemAccentColor = (Color)resources["RawSystemAccentColor"];
+
+            resources["SystemAccentColorLight1"] = rawSystemAccentColor;
+            resources["SystemAccentColorLight2"] = rawSystemAccentColor;
+            resources["SystemAccentColorLight3"] = rawSystemAccentColor;
+            resources["SystemAccentColorDark1"] = rawSystemAccentColor;
+            resources["SystemAccentColorDark2"] = rawSystemAccentColor;
+            resources["SystemAccentColorDark3"] = rawSystemAccentColor;
+            resources["SystemAccentColor"] = rawSystemAccentColor;
+        } 
+        else
+        {
+            resources["SystemAccentColorLight1"] = _settingsService.CustomThemeColor.GetValueOrDefault();
+            resources["SystemAccentColorLight2"] = _settingsService.CustomThemeColor.GetValueOrDefault();
+            resources["SystemAccentColorLight3"] = _settingsService.CustomThemeColor.GetValueOrDefault();
+            resources["SystemAccentColorDark1"] = _settingsService.CustomThemeColor.GetValueOrDefault();
+            resources["SystemAccentColorDark2"] = _settingsService.CustomThemeColor.GetValueOrDefault();
+            resources["SystemAccentColorDark3"] = _settingsService.CustomThemeColor.GetValueOrDefault();
+            resources["SystemAccentColor"] = _settingsService.CustomThemeColor.GetValueOrDefault();
+        }
+    }
+
+    private async void BackgroundModeChanged(global::FluentLauncher.Infra.Settings.SettingsContainer sender, global::FluentLauncher.Infra.Settings.SettingChangedEventArgs e)
+    {
+        if (!IsWindowRegistered) return;
+
+        int backgroundMode = (int)e.NewValue!;
+        var control = (Grid)RegisteredWindow!.Content;
+
+        switch (backgroundMode)
+        {
+            case 0:
+                if (MicaController.IsSupported())
+                    RegisteredWindow!.SystemBackdrop = new MicaBackdrop() { Kind = (MicaKind)_settingsService.MicaKind };
+
+                control.Background = new SolidColorBrush(Colors.Transparent);
+                break;
+            case 1:
+                if (DesktopAcrylicController.IsSupported())
+                    RegisteredWindow!.SystemBackdrop = new DesktopAcrylicBackdrop();
+
+                control.Background = new SolidColorBrush(Colors.Transparent);
+                break;
+            case 2:
+                control.Background = _settingsService.SolidSelectedIndex == 0 || _settingsService.CustomBackgroundColor == null
+                    ? (Brush)App.Current.Resources["ApplicationPageBackgroundThemeBrush"]
+                    : new SolidColorBrush(_settingsService.CustomBackgroundColor.GetValueOrDefault(Colors.Transparent));
+                break;
+            case 3:
+                if (File.Exists(_settingsService.ImageFilePath))
+                {
+                    try
+                    {
+                        await Task.Delay(100);
+
+                        using var fileStream = File.OpenRead(_settingsService.ImageFilePath);
+                        using var randomAccessStream = fileStream.AsRandomAccessStream();
+
+                        BitmapImage bitmapImage = new();
+                        await bitmapImage.SetSourceAsync(randomAccessStream);
+
+                        lock (control)
+                        {
+                            ImageBrush imageBrush = new()
+                            {
+                                Stretch = Stretch.UniformToFill,
+                                ImageSource = bitmapImage
+                            };
+
+                            control.Background = imageBrush;
+                        }
+                    }
+                    catch { }
+                }
+                break;
+        }
+
+        if (backgroundMode == 3 || backgroundMode == 2)
+        {
+            Set(control.Resources, "NavigationViewContentBackground", new SolidColorBrush(Colors.Transparent));
+            Set(control.Resources, "NavigationViewContentGridBorderThickness", new Thickness(0));
+            Set(control.Resources, "BackgroundBorder", new Thickness(0));
+        } 
+        else
+        {
+            Set(control.Resources, "NavigationViewContentBackground", App.Current.Resources["LayerFillColorDefaultBrush"]);
+            Set(control.Resources, "NavigationViewContentGridBorderThickness", new Thickness(1, 1, 0, 0));
+            Set(control.Resources, "BackgroundBorder", new Thickness(0, 1, 0, 0));
+        }
+
+        BackgroundReloaded?.Invoke(this, new());
+    }
+
+    private void PropertyChanged(global::FluentLauncher.Infra.Settings.SettingsContainer sender, global::FluentLauncher.Infra.Settings.SettingChangedEventArgs e)
+        => BackgroundModeChanged(sender, new("BackgroundMode", _settingsService.BackgroundMode));
+    #endregion
+
+    private static void Set(ResourceDictionary keyValuePairs, string Key, object Value)
+    {
+        if (!keyValuePairs.ContainsKey(Key))
+            keyValuePairs.Add(Key, Value);
+        else keyValuePairs[Key] = Value;
     }
 }

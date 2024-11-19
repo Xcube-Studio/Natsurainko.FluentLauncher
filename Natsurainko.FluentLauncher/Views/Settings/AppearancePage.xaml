@@ -364,7 +364,7 @@
 
                 <controls:SettingsCard
                     x:Uid="Settings_AppearancePage_Card1"
-                    Description="Dark and light color themes, effective after restarting the app"
+                    Description="Dark and light color themes"
                     Header="Display Theme"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe706;}">
 
@@ -742,11 +742,34 @@
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
 
+                <InfoBar
+                    x:Uid="Settings_AppearancePage_InfoBar"
+                    Title="Instability Warning"
+                    IsClosable="False"
+                    IsOpen="True"
+                    Message="Although the code has implemented dynamic switching of the application background, there are still some cases where the switching fails. We still recommend restarting the application after switching the background to ensure that there are no residual problems."
+                    Opacity="0.85"
+                    Severity="Warning" />
+
+                <TextBlock
+                    x:Uid="Settings_AppearancePage_T3"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Mask" />
+
                 <controls:SettingsCard
-                    Description="Use background masks to increase the visibility of controls against certain backgrounds"
+                    x:Uid="Settings_AppearancePage_Card3"
+                    Description="Display theme color mask in the title bar and Gaussian blur mask in the navigation sidebar to enhance the clarity of some controls under special background images, effective after restarting the app"
                     Header="Use Background Mask"
                     HeaderIcon="{xh:FontIcon Glyph=&#xef1f;}">
                     <ToggleSwitch IsOn="{Binding UseBackgroundMask, Mode=TwoWay}" />
+                </controls:SettingsCard>
+
+                <controls:SettingsCard
+                    x:Uid="Settings_AppearancePage_Card4"
+                    Description="Display Gaussian blur background mask on some controls on the home page to enhance clarity"
+                    Header="Use HomePage Controls Mask"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xef1f;}">
+                    <ToggleSwitch IsOn="{Binding UseHomeControlsMask, Mode=TwoWay}" />
                 </controls:SettingsCard>
             </StackPanel>
         </Border>

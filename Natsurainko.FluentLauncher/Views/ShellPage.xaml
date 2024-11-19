@@ -6,14 +6,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    ActualThemeChanged="Page_ActualThemeChanged"
     Loaded="Page_Loaded"
     SizeChanged="Page_SizeChanged"
     mc:Ignorable="d">
     <Page.Resources>
-        <CornerRadius x:Key="NavigationViewContentGridCornerRadius">0</CornerRadius>
-        <Thickness x:Key="BackgroundBorder">0,1,0,0</Thickness>
-        <CornerRadius x:Key="NavigationViewOverlayCornerRadius">8,8,8,8</CornerRadius>
-
         <Style x:Key="PaneToggleButtonStyle" TargetType="Button">
             <Setter Property="FontSize" Value="16" />
             <Setter Property="FontFamily" Value="{StaticResource SymbolThemeFontFamily}" />
@@ -890,21 +887,13 @@
         </Grid.RowDefinitions>
 
         <Border
-            Name="BackgroundImageBorder"
+            Name="BlurBorder"
             Grid.RowSpan="2"
-            Padding="20"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch">
-            <Image
-                Name="BackgroundImage"
-                Margin="-20"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Stretch"
-                x:FieldModifier="public"
-                Stretch="UniformToFill" />
-        </Border>
+            VerticalAlignment="Stretch" />
 
         <Border
+            Name="BackgroundContentBorder"
             Grid.Row="1"
             Background="{ThemeResource NavigationViewContentBackground}"
             BorderBrush="{ThemeResource NavigationViewContentGridBorderBrush}"

@@ -1,3 +1,4 @@
+using CommunityToolkit.WinUI.Media;
 using CommunityToolkit.WinUI.Media.Pipelines;
 using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Pages;
@@ -9,9 +10,11 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels;
+using Natsurainko.FluentLauncher.Views.Home;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Graphics;
 using Windows.UI;
@@ -27,21 +30,16 @@ public sealed partial class ShellPage : Page, INavigationProvider
     private ShellViewModel VM => (ShellViewModel)DataContext;
 
     private readonly SettingsService _settings = App.GetService<SettingsService>();
-    private readonly AppearanceService _appearanceService = App.GetService<AppearanceService>();
     private readonly SearchProviderService _searchProviderService = App.GetService<SearchProviderService>();
 
     private bool isUpdatingNavigationItemSelection = false;
+    private int backgroundBlurredValue = 0;
 
     public ShellPage()
     {
-        _appearanceService.ApplySettingsBeforePageInit();
-        _appearanceService.ApplyBackgroundBeforePageInit(this);
-
         InitializeComponent();
 
-        ContentFrame = contentFrame;
-        _appearanceService.ApplyBackgroundAfterPageInit(this);
-        _appearanceService.RegisterNavigationView(NavigationViewControl);
+        ConfigurePage();
     }
 
     #region Page Events
@@ -49,6 +47,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
     private async void Page_Loaded(object sender, RoutedEventArgs e)
     {
         App.MainWindow.SetTitleBar(AppTitleBar);
+        ConfigureNavigationView();
 
         if (_settings.UseBackgroundMask)
         {
@@ -61,7 +60,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
             var sprite = await PipelineBuilder
                 .FromBackdrop()
                 .Blur(0, out EffectAnimation<float> blurAnimation)
-                .AttachAsync(BackgroundImageBorder, BackgroundImageBorder);
+                .AttachAsync(BlurBorder, BlurBorder);
 
             await blurAnimation(sprite.Brush, 0, TimeSpan.FromMilliseconds(1));
         }
@@ -76,6 +75,24 @@ public sealed partial class ShellPage : Page, INavigationProvider
         UpdateTitleBarDragArea();
     }
 
+    private void Page_ActualThemeChanged(FrameworkElement sender, object args)
+    {
+        if (_settings.BackgroundMode == 3 || _settings.BackgroundMode == 2)
+        {
+            BackgroundContentBorder.Background = null;
+            BackgroundContentBorder.BorderBrush = null;
+        } 
+        else
+        {
+            BackgroundContentBorder.Background = this.ActualTheme == ElementTheme.Light
+                ? new SolidColorBrush(Color.FromArgb(128, 255, 255, 255))
+                : new SolidColorBrush(Color.FromArgb(76, 58, 58, 58));
+            BackgroundContentBorder.BorderBrush = this.ActualTheme == ElementTheme.Light
+                ? new SolidColorBrush(Color.FromArgb(15, 0, 0, 0))
+                : new SolidColorBrush(Color.FromArgb(25, 0, 0, 0));
+        }
+    }
+
     #endregion
 
     #region NavigationView & Frame Events
@@ -85,6 +102,8 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
         UpdateTitleTextPosition(sender);
         UpdateTitleBarDragArea();
+
+        _settings.NavigationViewIsPaneOpen = false;
     }
 
     private void NavigationViewControl_PaneOpening(NavigationView sender, object _)
@@ -93,6 +112,8 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
         UpdateTitleTextPosition(sender);
         UpdateTitleBarDragArea();
+
+        _settings.NavigationViewIsPaneOpen = true;
     }
 
     private void NavigationViewControl_ItemInvoked(NavigationView _, NavigationViewItemInvokedEventArgs args)
@@ -130,7 +151,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
         UpdateTitleBarDragArea();
     }
 
-    private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
+    private async void ContentFrame_Navigated(object sender, NavigationEventArgs e)
     {
         isUpdatingNavigationItemSelection = true;
 
@@ -146,6 +167,10 @@ public sealed partial class ShellPage : Page, INavigationProvider
         }
 
         isUpdatingNavigationItemSelection = false;
+
+        if (_settings.BackgroundMode == 3)
+            await BlurAnimation(!typeof(HomePage).Equals(e.SourcePageType) ? 75 : 0);
+        else await BlurAnimation(0);
     }
 
     #endregion
@@ -162,6 +187,75 @@ public sealed partial class ShellPage : Page, INavigationProvider
          => _searchProviderService.BindingSearchBox(AutoSuggestBox);
 
     #endregion
+
+    #region AppearanceService Events
+    private async void BackgroundReloaded(object? sender, EventArgs e)
+    {
+        await BlurAnimation((_settings.BackgroundMode == 3) ? 75 : 0, 0.001);
+
+        if (_settings.BackgroundMode == 3 || _settings.BackgroundMode == 2)
+        {
+            BackgroundContentBorder.Background = null;
+            BackgroundContentBorder.BorderBrush = null;
+        }
+        else
+        {
+            BackgroundContentBorder.Background = this.ActualTheme == ElementTheme.Light
+                ? new SolidColorBrush(Color.FromArgb(128, 255, 255, 255))
+                : new SolidColorBrush(Color.FromArgb(76, 58, 58, 58));
+            BackgroundContentBorder.BorderBrush = this.ActualTheme == ElementTheme.Light
+                ? new SolidColorBrush(Color.FromArgb(15, 0, 0, 0))
+                : new SolidColorBrush(Color.FromArgb(25, 0, 0, 0));
+        }
+    }
+
+    #endregion
+
+    void ConfigurePage()
+    {
+        ContentFrame = contentFrame;
+        App.GetService<AppearanceService>().BackgroundReloaded += BackgroundReloaded;
+    }
+
+    void ConfigureNavigationView()
+    {
+        NavigationViewControl.IsPaneOpen = _settings.NavigationViewIsPaneOpen;
+
+        if (_settings.UseBackgroundMask)
+        {
+            var RootSplitView = FindControl<SplitView>(NavigationViewControl, typeof(SplitView), "RootSplitView");
+            if (RootSplitView != null)
+            {
+                RootSplitView.CornerRadius = new CornerRadius(0);
+
+                var PaneContentGrid = FindControl<Grid>(RootSplitView, typeof(Grid), "PaneContentGrid")!;
+
+                var Border = new Border();
+                Border.Background = new BackdropBlurBrush() { Amount = 16 };
+                Grid.SetRowSpan(Border, 8);
+
+                PaneContentGrid.Children.Insert(0, Border);
+                PaneContentGrid.Translation += new System.Numerics.Vector3(0, 0, 48);
+
+                PaneContentGrid.Background = this.ActualTheme == ElementTheme.Light
+                    ? new SolidColorBrush(Color.FromArgb(128, 255, 255, 255))
+                    : new SolidColorBrush(Color.FromArgb(76, 58, 58, 58));
+                PaneContentGrid.BorderBrush = this.ActualTheme == ElementTheme.Light
+                    ? new SolidColorBrush(Color.FromArgb(15, 0, 0, 0))
+                    : new SolidColorBrush(Color.FromArgb(25, 0, 0, 0));
+
+                PaneContentGrid.ActualThemeChanged += (_, e) =>
+                {
+                    PaneContentGrid.Background = this.ActualTheme == ElementTheme.Light
+                        ? new SolidColorBrush(Color.FromArgb(128, 255, 255, 255))
+                        : new SolidColorBrush(Color.FromArgb(76, 58, 58, 58));
+                    PaneContentGrid.BorderBrush = this.ActualTheme == ElementTheme.Light
+                        ? new SolidColorBrush(Color.FromArgb(15, 0, 0, 0))
+                        : new SolidColorBrush(Color.FromArgb(25, 0, 0, 0));
+                };
+            }
+        }
+    }
 
     private void UpdateTitleBarDragArea()
     {
@@ -214,13 +308,41 @@ public sealed partial class ShellPage : Page, INavigationProvider
                  : new System.Numerics.Vector3(28, 0, 0);
     }
 
-    internal async void BlurAnimation(int from, int to)
+    private async Task BlurAnimation(int to, double time = 0.1)
     {
+        //if (backgroundBlurredValue.Equals(to))
+        //    return;
+
         var sprite = await PipelineBuilder
             .FromBackdrop()
-            .Blur(from, out EffectAnimation<float> blurAnimation)
-            .AttachAsync(BackgroundImageBorder, BackgroundImageBorder);
+            .Blur(backgroundBlurredValue, out EffectAnimation<float> blurAnimation)
+            .AttachAsync(BlurBorder, BlurBorder);
 
-        await blurAnimation(sprite.Brush, to, TimeSpan.FromSeconds(0.1));
+        await blurAnimation(sprite.Brush, to, TimeSpan.FromSeconds(time));
+        backgroundBlurredValue = to;
+    }
+
+    private static T? FindControl<T>(UIElement parent, Type targetType, string ControlName) where T : FrameworkElement
+    {
+        if (parent == null) return null;
+
+        if (parent.GetType() == targetType && ((T)parent).Name == ControlName)
+        {
+            return (T)parent;
+        }
+        T? result = null;
+
+        int count = VisualTreeHelper.GetChildrenCount(parent);
+        for (int i = 0; i < count; i++)
+        {
+            UIElement child = (UIElement)VisualTreeHelper.GetChild(parent, i);
+
+            if (FindControl<T>(child, targetType, ControlName) != null)
+            {
+                result = FindControl<T>(child, targetType, ControlName);
+                break;
+            }
+        }
+        return result;
     }
 }

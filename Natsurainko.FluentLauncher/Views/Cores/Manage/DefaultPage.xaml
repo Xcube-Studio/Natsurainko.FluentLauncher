@@ -25,7 +25,10 @@
                     Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
                     Text="Basic Configuration" />
 
-                <controls:SettingsCard>
+                <controls:SettingsCard
+                    ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
+                    Command="{Binding OpenVersionFolderCommand}"
+                    IsClickEnabled="True">
                     <controls:SettingsCard.Header>
                         <Grid DataContext="{Binding MinecraftInstance}">
                             <Grid.ColumnDefinitions>

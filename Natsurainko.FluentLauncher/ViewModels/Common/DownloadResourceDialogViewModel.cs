@@ -32,8 +32,10 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
 
     private readonly CurseForgeClient _curseForgeClient = App.GetService<CurseForgeClient>();
     private readonly ModrinthClient _modrinthClient = App.GetService<ModrinthClient>();
+
     private readonly GameService _gameService = App.GetService<GameService>();
     private readonly DownloadService _downloadService = App.GetService<DownloadService>();
+    private readonly NotificationService _notificationService = App.GetService<NotificationService>();
 
     public MinecraftInstance MinecraftInstance { get; private set; }
 
@@ -157,7 +159,7 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
         _downloadService.DownloadResourceFile(SelectedItem, fileName);
         _dialog.Hide();
 
-        App.GetService<NotificationService>().NotifyWithoutContent("Added to download task", icon: "\ue896");
+        _notificationService.NotifyWithoutContent(ResourceUtils.GetValue("Notifications", "_AddDownloadTask"), icon: "\ue896");
     }
 
     public void SaveFile()

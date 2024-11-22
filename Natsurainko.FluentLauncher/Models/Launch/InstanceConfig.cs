@@ -15,8 +15,12 @@ internal partial class InstanceConfig : ObservableObject
     [JsonIgnore]
     public string FilePath { get; set; }
 
-    [ObservableProperty]
     private string nickName;
+    public string NickName
+    {
+        get => nickName;
+        set => SetProperty(ref nickName, value);
+    }
 
     private bool enableSpecialSetting;
     public bool EnableSpecialSetting

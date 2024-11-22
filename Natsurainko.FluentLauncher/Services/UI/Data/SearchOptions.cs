@@ -1,5 +1,4 @@
-﻿#nullable disable
-namespace Natsurainko.FluentLauncher.Models.UI;
+﻿namespace Natsurainko.FluentLauncher.Services.UI.Data;
 
 internal class SearchOptions
 {

@@ -604,7 +604,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
         _instance = instance;
 
         StageViewModels = launchProgressViewModel.Stages.Values;
-        TaskTitle = _instance.InstanceId;
+        TaskTitle = _instance.GetDisplayName();
         IsExpanded = true;
     }
 

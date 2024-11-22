@@ -306,7 +306,7 @@
                                                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                                         <TextBlock
                                                             Style="{ThemeResource BaseTextBlockStyle}"
-                                                            Text="{Binding InstanceId}"
+                                                            Text="{Binding Converter={ThemeResource InstanceDisplayNameConverter}}"
                                                             TextTrimming="CharacterEllipsis"
                                                             TextWrapping="NoWrap"
                                                             ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />

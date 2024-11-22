@@ -76,12 +76,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     private void InstanceConfig_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == "NickName" && !string.IsNullOrEmpty(InstanceConfig.NickName))
-        {
-            if (MinecraftInstance.Equals(_gameService.ActiveGame))
-                _gameService.ActiveGame.GetConfig().NickName = InstanceConfig.NickName;
-
-            MinecraftInstance.GetConfig().NickName = InstanceConfig.NickName;
-        }
+            InstanceConfig.NickName = InstanceConfig.NickName;
     }
 
     [RelayCommand]

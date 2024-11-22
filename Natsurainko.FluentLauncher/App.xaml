@@ -51,6 +51,7 @@
             <converters:JavaInfoConverter x:Key="JavaInfoConverter" />
 
             <converters:InstanceIconConverter x:Key="InstanceIconConverter" />
+            <converters:InstanceDisplayNameConverter x:Key="InstanceDisplayNameConverter" />
             <converters:InstanceDescriptionConverter x:Key="InstanceDescriptionConverter" />
             <converters:InstallDataLoaderVersionConverter x:Key="InstallDataLoaderVersionConverter" />
 

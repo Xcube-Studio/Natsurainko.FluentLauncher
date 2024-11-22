@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.Models.UI;
+using Natsurainko.FluentLauncher.Services.UI.Data;
 using Natsurainko.FluentLauncher.Utils;
 using System.Collections.ObjectModel;
 using System.Linq;

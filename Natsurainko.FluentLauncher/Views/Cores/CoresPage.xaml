@@ -122,7 +122,7 @@
                                     <StackPanel Grid.Column="2" Spacing="5">
                                         <TextBlock
                                             FontWeight="SemiBold"
-                                            Text="{Binding InstanceId}"
+                                            Text="{Binding Converter={ThemeResource InstanceDisplayNameConverter}}"
                                             TextTrimming="CharacterEllipsis"
                                             ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
                                         <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource InstanceDescriptionConverter}}">

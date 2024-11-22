@@ -2,17 +2,17 @@
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
-using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Services.UI.Data;
 using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.GameManagement.Instances;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Threading.Tasks;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Home;
@@ -50,7 +50,7 @@ internal partial class HomeViewModel : ObservableObject
 
     public string DropDownButtonDisplayText => ActiveMinecraftInstance == null
         ? ResourceUtils.GetValue("Home", "HomePage", "_NoCore")
-        : ActiveMinecraftInstance.InstanceId;
+        : ActiveMinecraftInstance.GetDisplayName();
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(AccountTag))]

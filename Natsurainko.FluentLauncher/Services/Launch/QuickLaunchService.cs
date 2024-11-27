@@ -16,8 +16,8 @@ internal class QuickLaunchService
     private readonly LaunchService _launchService;
     private readonly SettingsService _settingsService;
 
-    private const string PinnedUri = "ms-resource:///Resources/JumpList__Pinned";
-    private const string LatestUri = "ms-resource:///Resources/JumpList__Latest";
+    public const string PinnedUri = "ms-resource:///Resources/JumpList__Pinned";
+    public const string LatestUri = "ms-resource:///Resources/JumpList__Latest";
 
     public QuickLaunchService(LaunchService launchService, SettingsService settingsService)
     {
@@ -44,8 +44,6 @@ internal class QuickLaunchService
 
         if (latestStartIndex != -1)
             jumpList.Items.Insert(latestStartIndex, item);
-        else if (pinStartIndex != -1)
-            jumpList.Items.Insert(0, item);
         else jumpList.Items.Add(item);
 
         GetStartIndexOfGroups(jumpList, out pinStartIndex, out latestStartIndex);
@@ -67,7 +65,7 @@ internal class QuickLaunchService
         item.GroupName = PinnedUri;
         item.Logo = GetItemIcon(instance);
 
-        if (IsExisted(jumpList, instance, out var existedItem))
+        if (IsExisted(jumpList, instance, out var existedItem, PinnedUri))
             jumpList.Items.Remove(existedItem);
 
         GetStartIndexOfGroups(jumpList, out var pinStartIndex, out _);
@@ -76,14 +74,14 @@ internal class QuickLaunchService
         await jumpList.SaveAsync();
     }
 
-    public bool IsExisted(JumpList jumpList, MinecraftInstance instance, out JumpListItem? jumpListItem)
+    public bool IsExisted(JumpList jumpList, MinecraftInstance instance, out JumpListItem? jumpListItem, string groupName = LatestUri)
     {
         string args = GenerateCommandLineArguments(instance);
         jumpListItem = null;
 
         foreach (var item in jumpList.Items)
         {
-            if (item.Arguments == args)
+            if (item.Arguments == args && item.GroupName == groupName)
             {
                 jumpListItem = item;
                 return true;

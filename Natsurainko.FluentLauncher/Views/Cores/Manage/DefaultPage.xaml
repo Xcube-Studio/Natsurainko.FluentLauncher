@@ -120,6 +120,13 @@
                     HeaderIcon="{xh:FontIcon Glyph=&#xe945;}"
                     IsClickEnabled="True" />
 
+                <controls:SettingsCard
+                    Description="Pin to the taskbar and quickly launch the game through the taskbar menu"
+                    Header="Pin to Quick Launch"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xe718;}">
+                    <ToggleSwitch IsOn="{Binding Pinned, Mode=TwoWay}" />
+                </controls:SettingsCard>
+
                 <TextBlock
                     x:Uid="Cores_Manage_DefaultPage_T2"
                     Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"

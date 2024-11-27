@@ -82,6 +82,10 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     [BindToSetting(Path = nameof(SettingsService.EnableIndependencyCore))]
     private bool enableIndependencyCore;
 
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.MaxQuickLaunchLatestItem))]
+    private int maxQuickLaunchLatestItem;
+
     #endregion
 
     public bool IsMinecraftFoldersEmpty => MinecraftFolders.Count == 0;

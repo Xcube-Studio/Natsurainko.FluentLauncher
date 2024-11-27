@@ -590,6 +590,7 @@ readonly record struct LaunchStageProgress(
 internal partial class LaunchTaskViewModel : TaskViewModel
 {
     private readonly MinecraftInstance _instance;
+    private readonly LaunchService _launchService;
     private readonly LaunchProgressViewModel launchProgressViewModel = new();
     private bool _isMcProcessKilled = false;
 
@@ -599,9 +600,10 @@ internal partial class LaunchTaskViewModel : TaskViewModel
 
     public ObservableCollection<GameLoggerOutput> Logger { get; } = [];
 
-    public LaunchTaskViewModel(MinecraftInstance instance)
+    public LaunchTaskViewModel(MinecraftInstance instance, LaunchService launchService)
     {
         _instance = instance;
+        _launchService = launchService;
 
         StageViewModels = launchProgressViewModel.Stages.Values;
         TaskTitle = _instance.GetDisplayName();
@@ -645,7 +647,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
 
         try
         {
-            McProcess = await App.GetService<LaunchService>().LaunchAsync(
+            McProcess = await _launchService.LaunchAsync(
                 _instance, 
                 Process_OutputDataReceived,
                 Process_ErrorDataReceived,

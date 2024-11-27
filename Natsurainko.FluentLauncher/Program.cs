@@ -106,6 +106,7 @@ services.AddSingleton<AppearanceService>();
 services.AddSingleton<CacheSkinService>();
 services.AddSingleton<CacheInterfaceService>();
 //services.AddSingleton<JumpListService>();
+services.AddSingleton<QuickLaunchService>();
 services.AddSingleton<SearchProviderService>();
 services.AddSingleton<InstanceConfigService>();
 

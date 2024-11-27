@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
+using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils.Extensions;
@@ -13,6 +14,8 @@ using System;
 using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading.Tasks;
+using Windows.UI.StartScreen;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -42,6 +45,7 @@ public partial class App : Application
 
         App.GetService<MessengerService>().SubscribeEvents();
         App.GetService<AppearanceService>().RegisterApp(this);
+        App.GetService<QuickLaunchService>().CleanRemovedJumpListItem();
 
         // Global exception handler
         UnhandledException += (_, e) =>
@@ -57,8 +61,19 @@ public partial class App : Application
         var mainInstance = AppInstance.FindOrRegisterForKey("Main");
         mainInstance.Activated += (object? sender, AppActivationArguments e) =>
         {
-            DispatcherQueue.TryEnqueue(() => MainWindow?.Activate());
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                if (MainWindow != null)
+                {
+                    MainWindow.Activate();
+                    return;
+                }
+
+                IWindowService mainWindowService = App.GetService<IActivationService>().ActivateWindow("MainWindow");
+            });
         };
+
+        string[] cmdargs = Environment.GetCommandLineArgs();
 
         if (!mainInstance.IsCurrent)
         {
@@ -69,8 +84,6 @@ public partial class App : Application
             Process.GetCurrentProcess().Kill();
             return;
         }
-
-        string[] cmdargs = Environment.GetCommandLineArgs();
 
         if (cmdargs.Length > 1 && cmdargs[1].Equals("/quick-launch"))
         {

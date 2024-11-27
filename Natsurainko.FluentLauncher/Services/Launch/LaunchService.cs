@@ -64,7 +64,7 @@ internal class LaunchService
 
     public void LaunchFromUI(MinecraftInstance instance)
     {
-        var viewModel = new LaunchTaskViewModel(instance);
+        var viewModel = new LaunchTaskViewModel(instance, this);
         viewModel.PropertyChanged += (_, e) =>
         {
             if (e.PropertyName == "TaskState")
@@ -90,7 +90,7 @@ internal class LaunchService
         {
             InstanceConfig config = instance.GetConfig();
             config.LastLaunchTime = DateTime.Now;
-            //App.DispatcherQueue.TryEnqueue(() => config.LastLaunchTime = DateTime.Now);
+            await App.GetService<QuickLaunchService>().AddLatestMinecraftInstance(instance);
 
             var preCheckData = await PreCheckLaunchNeeds(instance, config, cancellationToken, progress);
 

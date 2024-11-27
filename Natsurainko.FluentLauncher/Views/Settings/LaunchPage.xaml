@@ -344,6 +344,29 @@
                     </TextBox>
                 </controls:SettingsCard>
 
+                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Quick Launch Settings" />
+
+                <controls:SettingsCard
+                    Description="Maximum number of items in the Latest group to keep in the taskbar"
+                    Header="Latest item maximum number"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xebc6;}">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Style="{ThemeResource BaseTextBlockStyle}"
+                            Text="{Binding MaxQuickLaunchLatestItem}" />
+
+                        <Slider
+                            Width="128"
+                            Maximum="16"
+                            Minimum="3"
+                            Value="{Binding MaxQuickLaunchLatestItem, Mode=TwoWay}">
+                            <i:Interaction.Behaviors>
+                                <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
+                            </i:Interaction.Behaviors>
+                        </Slider>
+                    </StackPanel>
+                </controls:SettingsCard>
             </StackPanel>
         </Border>
 

@@ -1,8 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using FluentLauncher.Infra.UI.Navigation;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.ViewModels.Common;
+using Natsurainko.FluentLauncher.ViewModels.OOBE;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -51,6 +54,12 @@ internal partial class ShellViewModel : ObservableObject, INavigationAware
                 RunningDownloadTasks = _downloadService.DownloadTasks
                     .Where(x => x.TaskState == TaskState.Running || x.TaskState == TaskState.Prepared)
                     .Count());
+
+        WeakReferenceMessenger.Default.Register<GlobalNavigationMessage>(this!, (r, m) =>
+        {
+            ShellViewModel vm = (r as ShellViewModel)!;
+            App.DispatcherQueue.TryEnqueue(() => vm.NavigationService.NavigateTo(m.Value));
+        });
     }
 
     void INavigationAware.OnNavigatedTo(object? parameter)

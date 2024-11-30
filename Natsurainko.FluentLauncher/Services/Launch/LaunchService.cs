@@ -1,7 +1,9 @@
-﻿using Natsurainko.FluentLauncher.Models.Launch;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Common;
@@ -74,6 +76,7 @@ internal class LaunchService
         App.DispatcherQueue.TryEnqueue(() => LaunchTasks.Insert(0, viewModel));
 
         viewModel.Start();
+        WeakReferenceMessenger.Default.Send(new GlobalNavigationMessage("Tasks/Launch"));
     }
 
     public async Task<MinecraftProcess> LaunchAsync(

@@ -22,3 +22,8 @@ class AccountSkinCacheUpdatedMessage : ValueChangedMessage<Account>
 {
     public AccountSkinCacheUpdatedMessage(Account value) : base(value) { }
 }
+
+class GlobalNavigationMessage : ValueChangedMessage<string>
+{
+    public GlobalNavigationMessage(string pageKey) : base(pageKey) { }
+}

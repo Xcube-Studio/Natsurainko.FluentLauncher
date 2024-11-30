@@ -456,11 +456,7 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
     }
 
     [RelayCommand(CanExecute = nameof(CanLaunch))]
-    void Launch(INavigationService navigationService)
-    {
-        navigationService.NavigateTo("Tasks/Launch");
-        App.GetService<LaunchService>().LaunchFromUI(_minecraftInstance);
-    }
+    void Launch(INavigationService navigationService) => App.GetService<LaunchService>().LaunchFromUI(_minecraftInstance);
 }
 
 #endregion

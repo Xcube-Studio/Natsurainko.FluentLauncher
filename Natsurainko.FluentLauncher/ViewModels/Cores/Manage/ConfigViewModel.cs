@@ -27,7 +27,8 @@ internal partial class ConfigViewModel : ObservableObject, INavigationAware
 
     public MinecraftInstance MinecraftInstance { get; private set; }
 
-    public InstanceConfig InstanceConfig { get; private set; }
+    [ObservableProperty]
+    private InstanceConfig instanceConfig;
 
     [ObservableProperty]
     private Account targetedAccount;
@@ -83,14 +84,14 @@ internal partial class ConfigViewModel : ObservableObject, INavigationAware
             DataContext = new AddVmArgumentDialogViewModel(VmArguments.Add)
         }.ShowAsync();
 
-        InstanceConfig.VmParameters = VmArguments.ToArray();
+        InstanceConfig.VmParameters = [.. VmArguments];
     }
 
     [RelayCommand]
     public void RemoveArgument(string arg)
     {
         VmArguments.Remove(arg);
-        InstanceConfig.VmParameters = VmArguments.ToArray();
+        InstanceConfig.VmParameters = [.. VmArguments];
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)

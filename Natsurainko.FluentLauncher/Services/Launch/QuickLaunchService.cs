@@ -1,10 +1,12 @@
-﻿using Natsurainko.FluentLauncher.Services.Settings;
+﻿using Microsoft.Windows.AppLifecycle;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement;
 using Nrk.FluentCore.GameManagement.Instances;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;
+using System.CommandLine;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.StartScreen;
@@ -25,9 +27,42 @@ internal class QuickLaunchService
         _settingsService = settingsService;
     }
 
-    public void LaunchFromArguments(string[] args)
+    public void LaunchFromActivatedEventArgs(string[] args)
     {
-        
+        var parseResult = Program.BuildSubCommand().Parse(args);
+
+        string? minecraftFolder = parseResult.GetValueForOption(Program.MinecraftFolderOption);
+        string? instanceId = parseResult.GetValueForOption(Program.InstanceIdOption);
+
+        if (minecraftFolder == null || instanceId == null)
+            return;
+
+        MinecraftInstanceParser minecraftInstanceParser = new(minecraftFolder);
+        MinecraftInstance instance = minecraftInstanceParser.ParseAllInstances()
+            .FirstOrDefault(x => (x?.InstanceId.Equals(instanceId)).GetValueOrDefault(false), null)
+            ?? throw new Exception("The target Minecraft instance could not be found");
+
+        _launchService.LaunchFromUI(instance);
+    }
+
+    public async Task LaunchFromArguments(string minecraftFolder, string instanceId)
+    {
+        var appInstance = AppInstance.GetCurrent();
+        var appActivationArguments = appInstance.GetActivatedEventArgs();
+        var mainInstance = AppInstance.FindOrRegisterForKey("Main");
+
+        if (!mainInstance.IsCurrent)
+        {
+            await mainInstance.RedirectActivationToAsync(appActivationArguments);
+            return;
+        }
+
+        MinecraftInstanceParser minecraftInstanceParser = new(minecraftFolder);
+        MinecraftInstance instance = minecraftInstanceParser.ParseAllInstances()
+            .FirstOrDefault(x => (x?.InstanceId.Equals(instanceId)).GetValueOrDefault(false), null) 
+            ?? throw new Exception("The target Minecraft instance could not be found");
+
+        _launchService.LaunchAsync(instance).Wait();
     }
 
     public async Task AddLatestMinecraftInstance(MinecraftInstance instance)

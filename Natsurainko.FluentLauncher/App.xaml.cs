@@ -14,8 +14,6 @@ using System;
 using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.StartScreen;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -61,19 +59,11 @@ public partial class App : Application
         var mainInstance = AppInstance.FindOrRegisterForKey("Main");
         mainInstance.Activated += (object? sender, AppActivationArguments e) =>
         {
-            DispatcherQueue.TryEnqueue(() =>
-            {
-                if (MainWindow != null)
-                {
-                    MainWindow.Activate();
-                    return;
-                }
+            DispatcherQueue.TryEnqueue(() => MainWindow?.Activate());
 
-                IWindowService mainWindowService = App.GetService<IActivationService>().ActivateWindow("MainWindow");
-            });
+            if (e.Data is Windows.ApplicationModel.Activation.LaunchActivatedEventArgs redirectedArgs)
+                App.GetService<QuickLaunchService>().LaunchFromActivatedEventArgs(redirectedArgs.Arguments.Split(' '));
         };
-
-        string[] cmdargs = Environment.GetCommandLineArgs();
 
         if (!mainInstance.IsCurrent)
         {
@@ -82,12 +72,6 @@ public partial class App : Application
 
             await mainInstance.RedirectActivationToAsync(activatedEventArgs);
             Process.GetCurrentProcess().Kill();
-            return;
-        }
-
-        if (cmdargs.Length > 1 && cmdargs[1].Equals("/quick-launch"))
-        {
-            //App.GetService<JumpListService>().LaunchFromJumpListAsync(cmdargs[2]);
             return;
         }
 

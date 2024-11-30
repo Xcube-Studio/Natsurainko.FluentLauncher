@@ -29,7 +29,8 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
     public MinecraftInstance MinecraftInstance { get; private set; }
 
-    public InstanceConfig InstanceConfig { get; private set; }
+    [ObservableProperty]
+    private InstanceConfig instanceConfig;
 
     public DefaultViewModel(
         GameService gameService, 

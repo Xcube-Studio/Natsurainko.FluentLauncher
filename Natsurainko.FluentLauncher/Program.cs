@@ -150,7 +150,8 @@ public partial class Program
         quickLaunchCommand.AddOption(MinecraftFolderOption);
         quickLaunchCommand.AddOption(InstanceIdOption);
 
-        quickLaunchCommand.SetHandler(AppHost.Services.GetService<QuickLaunchService>()!.LaunchFromArguments, 
+        quickLaunchCommand.SetHandler(async (folder, instanceId) => 
+            await AppHost.Services.GetService<QuickLaunchService>()!.LaunchFromArguments(folder, instanceId), 
             MinecraftFolderOption, InstanceIdOption);
 
         return quickLaunchCommand;

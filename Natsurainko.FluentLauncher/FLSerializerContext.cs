@@ -1,6 +1,5 @@
 ﻿using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Models.UI;
-using Natsurainko.FluentLauncher.Services.Launch.Data;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.GameManagement.Installer;
 using System.Text.Json.Serialization;
@@ -42,10 +41,3 @@ internal partial class FLSerializerContext : JsonSerializerContext { }
     WriteIndented = true,
     DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)]
 internal partial class InstanceConfigSerializerContext : JsonSerializerContext { }
-
-[JsonSerializable(typeof(QuickLaunchArgumentsData))]
-[JsonSourceGenerationOptions(
-    IncludeFields = false,
-    WriteIndented = true,
-    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)]
-internal partial class QuickLaunchArgumentsDataSerializerContext : JsonSerializerContext { }

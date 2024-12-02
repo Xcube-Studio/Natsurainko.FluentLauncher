@@ -1,6 +1,8 @@
 ﻿using Microsoft.Windows.AppLifecycle;
 using Microsoft.Windows.AppNotifications;
+using Microsoft.Windows.AppNotifications.Builder;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.GameManagement;
@@ -10,12 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.CommandLine;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Windows.UI.Popups;
 using Windows.UI.StartScreen;
-using WinUIEx;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
 
@@ -23,14 +22,16 @@ internal class QuickLaunchService
 {
     private readonly LaunchService _launchService;
     private readonly SettingsService _settingsService;
+    private readonly NotificationService _notificationService;
 
     public const string PinnedUri = "ms-resource:///Resources/JumpList__Pinned";
     public const string LatestUri = "ms-resource:///Resources/JumpList__Latest";
 
-    public QuickLaunchService(LaunchService launchService, SettingsService settingsService)
+    public QuickLaunchService(LaunchService launchService, SettingsService settingsService, NotificationService notificationService)
     {
         _launchService = launchService;
         _settingsService = settingsService;
+        _notificationService = notificationService;
     }
 
     public void LaunchFromActivatedEventArgs(string[] args)
@@ -43,13 +44,19 @@ internal class QuickLaunchService
         if (minecraftFolder == null || instanceId == null)
             return;
 
-        MinecraftInstanceParser minecraftInstanceParser = new(minecraftFolder);
-        MinecraftInstance instance = minecraftInstanceParser.ParseAllInstances()
-            .FirstOrDefault(x => (x?.InstanceId.Equals(instanceId)).GetValueOrDefault(false), null)
-            ?? throw new Exception("The target Minecraft instance could not be found");
+        try
+        {
+            MinecraftInstanceParser minecraftInstanceParser = new(minecraftFolder);
+            MinecraftInstance instance = minecraftInstanceParser.ParseAllInstances()
+                .FirstOrDefault(x => (x?.InstanceId.Equals(instanceId)).GetValueOrDefault(false), null)
+                ?? throw new Exception("The target Minecraft instance could not be found");
 
-
-        _launchService.LaunchFromUI(instance);
+            _launchService.LaunchFromUI(instance);
+        }
+        catch (Exception ex)
+        {
+            _notificationService.NotifyWithoutContent(ex.Message);
+        }
     }
 
     public async Task LaunchFromArguments(string minecraftFolder, string instanceId)
@@ -80,7 +87,10 @@ internal class QuickLaunchService
 
             if (process.Process.ExitCode != 0)
             {
-
+                AppNotificationManager.Default.Show(new AppNotificationBuilder()
+                    .AddText($"Minecraft: {instance.GetDisplayName} Crashed")
+                    .AddText("Quick Launch cannot provide further error information")
+                    .BuildNotification());
             }
         }
         catch (Exception ex)

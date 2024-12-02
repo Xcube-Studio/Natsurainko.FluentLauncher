@@ -113,7 +113,7 @@
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
-                    x:Uid="Cores_Manage_DefaultPage_Card2"
+                    x:Uid="Cores_Manage_DefaultPage_Card6"
                     Command="{Binding CardClickCommand}"
                     CommandParameter="CoreManage/Config"
                     Description="Set additional JVM parameters, game accounts, core independence, etc."
@@ -122,6 +122,7 @@
                     IsClickEnabled="True" />
 
                 <controls:SettingsCard
+                    x:Uid="Cores_Manage_DefaultPage_Card6"
                     Description="Pin to the taskbar and quickly launch the game through the taskbar menu"
                     Header="Pin to Quick Launch"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe718;}">

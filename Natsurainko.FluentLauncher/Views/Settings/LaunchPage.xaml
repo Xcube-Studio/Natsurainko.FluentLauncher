@@ -344,9 +344,13 @@
                     </TextBox>
                 </controls:SettingsCard>
 
-                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Quick Launch Settings" />
+                <TextBlock
+                    x:Uid="Settings_LaunchPage_T4"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Quick Launch Settings" />
 
                 <controls:SettingsCard
+                    x:Uid="Settings_LaunchPage_Card11"
                     Description="Maximum number of items in the Latest group to keep in the taskbar"
                     Header="Latest item maximum number"
                     HeaderIcon="{xh:FontIcon Glyph=&#xebc6;}">

@@ -96,7 +96,7 @@ internal partial class InstanceConfig : ObservableObject
     public DateTime? LastLaunchTime
     {
         get => lastLaunchTime;
-        set => App.DispatcherQueue.TryEnqueue(() => SetProperty(ref lastLaunchTime, value));
+        set => SetProperty(ref lastLaunchTime, value);
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)

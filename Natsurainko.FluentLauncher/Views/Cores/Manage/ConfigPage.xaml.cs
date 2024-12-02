@@ -17,6 +17,7 @@ public sealed partial class ConfigPage : Page, IBreadcrumbBarAware
     {
         var vm = (this.DataContext as ConfigViewModel)!;
         vm.inited = false;
+        vm.InstanceConfig = null!;
 
         ComboBox.ItemsSource = null; // Unload Binding to AccountService.Accounts
     }

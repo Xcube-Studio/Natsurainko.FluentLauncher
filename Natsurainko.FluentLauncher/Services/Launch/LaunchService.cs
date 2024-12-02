@@ -1,7 +1,9 @@
-﻿using Natsurainko.FluentLauncher.Models.Launch;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Common;
@@ -64,7 +66,7 @@ internal class LaunchService
 
     public void LaunchFromUI(MinecraftInstance instance)
     {
-        var viewModel = new LaunchTaskViewModel(instance);
+        var viewModel = new LaunchTaskViewModel(instance, this);
         viewModel.PropertyChanged += (_, e) =>
         {
             if (e.PropertyName == "TaskState")
@@ -74,6 +76,7 @@ internal class LaunchService
         App.DispatcherQueue.TryEnqueue(() => LaunchTasks.Insert(0, viewModel));
 
         viewModel.Start();
+        WeakReferenceMessenger.Default.Send(new GlobalNavigationMessage("Tasks/Launch"));
     }
 
     public async Task<MinecraftProcess> LaunchAsync(
@@ -90,7 +93,7 @@ internal class LaunchService
         {
             InstanceConfig config = instance.GetConfig();
             config.LastLaunchTime = DateTime.Now;
-            //App.DispatcherQueue.TryEnqueue(() => config.LastLaunchTime = DateTime.Now);
+            await App.GetService<QuickLaunchService>().AddLatestMinecraftInstance(instance);
 
             var preCheckData = await PreCheckLaunchNeeds(instance, config, cancellationToken, progress);
 

@@ -13,6 +13,7 @@ using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Nrk.FluentCore.Resources;
 using System;
+using System.CommandLine;
 using ViewModels = Natsurainko.FluentLauncher.ViewModels;
 using Views = Natsurainko.FluentLauncher.Views;
 
@@ -106,6 +107,7 @@ services.AddSingleton<AppearanceService>();
 services.AddSingleton<CacheSkinService>();
 services.AddSingleton<CacheInterfaceService>();
 //services.AddSingleton<JumpListService>();
+services.AddSingleton<QuickLaunchService>();
 services.AddSingleton<SearchProviderService>();
 services.AddSingleton<InstanceConfigService>();
 
@@ -122,9 +124,36 @@ services.AddTransient<ViewModels.Common.SwitchAccountDialogViewModel>();
 var app = builder.Build();
 AppHost = app.Host;
 
-await app.RunAsync();
+await BuildRootCommand(app).InvokeAsync(args);
+//await app.RunAsync();
 
 public partial class Program
 {
     public static IHost AppHost { get; private set; } = null!;
+
+    public static Option<string> MinecraftFolderOption { get; } = new (name: "--minecraftFolder") { IsRequired = true };
+
+    public static Option<string> InstanceIdOption { get; } = new(name: "--instanceId") { IsRequired = true };
+
+    public static RootCommand BuildRootCommand(WinUIApplication application)
+    {
+        var rootCommand = new RootCommand();
+        rootCommand.SetHandler(async () => await application.RunAsync());
+        rootCommand.Add(BuildSubCommand());
+
+        return rootCommand;
+    }
+
+    public static Command BuildSubCommand()
+    {
+        var quickLaunchCommand = new Command("quickLaunch");
+        quickLaunchCommand.AddOption(MinecraftFolderOption);
+        quickLaunchCommand.AddOption(InstanceIdOption);
+
+        quickLaunchCommand.SetHandler(async (folder, instanceId) => 
+            await AppHost.Services.GetService<QuickLaunchService>()!.LaunchFromArguments(folder, instanceId), 
+            MinecraftFolderOption, InstanceIdOption);
+
+        return quickLaunchCommand;
+    }
 }

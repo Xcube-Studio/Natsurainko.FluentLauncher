@@ -71,11 +71,7 @@ internal partial class HomeViewModel : ObservableObject
     private bool CanExecuteLaunch() => ActiveMinecraftInstance is not null;
 
     [RelayCommand(CanExecute = nameof(CanExecuteLaunch))]
-    private void Launch()
-    {
-        _navigationService.NavigateTo("Tasks/Launch");
-        _launchService.LaunchFromUI(ActiveMinecraftInstance);
-    }
+    private void Launch() => _launchService.LaunchFromUI(ActiveMinecraftInstance);
 
     [RelayCommand]
     public void GoToAccount() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Account");
@@ -101,11 +97,8 @@ internal partial class HomeViewModel : ObservableObject
             if (item.InstanceId.Contains(searchText))
             {
                 yield return SuggestionHelper.FromMinecraftInstance(item,
-                    ResourceUtils.GetValue("SearchSuggest", "_D4"), () =>
-                    {
-                        _navigationService.NavigateTo("Tasks/Launch");
-                        _launchService.LaunchFromUI(item);
-                    });
+                    ResourceUtils.GetValue("SearchSuggest", "_D4"), 
+                    () => _launchService.LaunchFromUI(item));
             }
         }
     }

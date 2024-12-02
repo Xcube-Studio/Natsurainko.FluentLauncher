@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
+using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils.Extensions;
@@ -42,6 +43,7 @@ public partial class App : Application
 
         App.GetService<MessengerService>().SubscribeEvents();
         App.GetService<AppearanceService>().RegisterApp(this);
+        App.GetService<QuickLaunchService>().CleanRemovedJumpListItem();
 
         // Global exception handler
         UnhandledException += (_, e) =>
@@ -58,6 +60,9 @@ public partial class App : Application
         mainInstance.Activated += (object? sender, AppActivationArguments e) =>
         {
             DispatcherQueue.TryEnqueue(() => MainWindow?.Activate());
+
+            if (e.Data is Windows.ApplicationModel.Activation.LaunchActivatedEventArgs redirectedArgs)
+                App.GetService<QuickLaunchService>().LaunchFromActivatedEventArgs(redirectedArgs.Arguments.Split(' '));
         };
 
         if (!mainInstance.IsCurrent)
@@ -67,14 +72,6 @@ public partial class App : Application
 
             await mainInstance.RedirectActivationToAsync(activatedEventArgs);
             Process.GetCurrentProcess().Kill();
-            return;
-        }
-
-        string[] cmdargs = Environment.GetCommandLineArgs();
-
-        if (cmdargs.Length > 1 && cmdargs[1].Equals("/quick-launch"))
-        {
-            //App.GetService<JumpListService>().LaunchFromJumpListAsync(cmdargs[2]);
             return;
         }
 

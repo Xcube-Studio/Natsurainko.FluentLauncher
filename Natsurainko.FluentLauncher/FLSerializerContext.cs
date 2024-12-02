@@ -2,12 +2,7 @@
 using Natsurainko.FluentLauncher.Models.UI;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.GameManagement.Installer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -38,15 +33,11 @@ namespace Natsurainko.FluentLauncher;
 [JsonSerializable(typeof(string[]))]
 [JsonSerializable(typeof(Windows.UI.Color))]
 [JsonSerializable(typeof(WinUIEx.WindowState))]
-internal partial class FLSerializerContext : JsonSerializerContext
-{
-}
+internal partial class FLSerializerContext : JsonSerializerContext { }
 
 [JsonSerializable(typeof(InstanceConfig))]
 [JsonSourceGenerationOptions(
     IncludeFields = false,
     WriteIndented = true,
     DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)]
-internal partial class InstanceConfigSerializerContext : JsonSerializerContext
-{
-}
+internal partial class InstanceConfigSerializerContext : JsonSerializerContext { }

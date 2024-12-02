@@ -5,7 +5,6 @@ using Natsurainko.FluentLauncher.Utils;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Windows.Storage;
@@ -15,13 +14,16 @@ namespace Natsurainko.FluentLauncher.Services.Settings;
 public partial class SettingsService : SettingsContainer
 {
     public ObservableCollection<string> MinecraftFolders { get; private set; } = [];
-    public ObservableCollection<string> Javas { get; private set; } = [];
 
     [SettingItem(Default = "", Converter = typeof(JsonStringConverter<string>))]
     public partial string ActiveMinecraftFolder { get; set; }
 
     [SettingItem] //[SettingItem(typeof(GameInfo), "ActiveGameInfo", Converter = typeof(JsonStringConverter<GameInfo>))]
     public partial string? ActiveInstanceId { get; set; }
+
+    #region Launch Java Settings
+
+    public ObservableCollection<string> Javas { get; private set; } = [];
 
     [SettingItem(Default = "", Converter = typeof(JsonStringConverter<string>))]
     public partial string ActiveJava { get; set; }
@@ -34,6 +36,10 @@ public partial class SettingsService : SettingsContainer
 
     [SettingItem(Default = true, Converter = typeof(JsonStringConverter<bool>))]
     public partial bool EnableAutoJava { get; set; }
+
+    #endregion
+
+    #region Global Launch Settings
 
     [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
     public partial bool EnableFullScreen { get; set; }
@@ -53,14 +59,29 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(Default = "", Converter = typeof(JsonStringConverter<string>))]
     public partial string GameWindowTitle { get; set; }
 
+    #endregion
+
+    #region Quick Launch Settings
+
+    [SettingItem(Default = 6, Converter = typeof(JsonStringConverter<int>))]
+    public partial int MaxQuickLaunchLatestItem { get; set; }
+
+    #endregion
+
+    [SettingItem]
+    public partial Guid? ActiveAccountUuid { get; set; }
+
+    #region Account Other Settings
+
     [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
     public partial bool EnableDemoUser { get; set; }
 
     [SettingItem(Default = true, Converter = typeof(JsonStringConverter<bool>))]
     public partial bool AutoRefresh { get; set; }
 
-    [SettingItem]
-    public partial Guid? ActiveAccountUuid { get; set; }
+    #endregion
+
+    #region Download Settings
 
     [SettingItem(Default = "Mojang", Converter = typeof(JsonStringConverter<string>))]
     public partial string CurrentDownloadSource { get; set; }
@@ -71,14 +92,22 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(Default = 128, Converter = typeof(JsonStringConverter<int>))]
     public partial int MaxDownloadThreads { get; set; }
 
+    #endregion
+
     [SettingItem(Default = "en-US, English", Converter = typeof(JsonStringConverter<string>))] // TODO: remove default value; set to system language if null
     public partial string CurrentLanguage { get; set; }
 
-    [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
-    public partial bool NavigationViewIsPaneOpen { get; set; }
+    #region Appearance Theme Settings
 
     [SettingItem(Default = 0, Converter = typeof(JsonStringConverter<int>))]
     public partial int DisplayTheme { get; set; }
+
+    [SettingItem(Default = true, Converter = typeof(JsonStringConverter<bool>))]
+    public partial bool UseSystemAccentColor { get; set; }
+
+    #endregion
+
+    #region Appearance Background Settings
 
     [SettingItem(Default = 1, Converter = typeof(JsonStringConverter<int>))]
     public partial int BackgroundMode { get; set; }
@@ -98,14 +127,19 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(Converter = typeof(JsonStringConverter<Windows.UI.Color>))]
     public partial Windows.UI.Color? CustomThemeColor { get; set; }
 
-    [SettingItem(Default = true, Converter = typeof(JsonStringConverter<bool>))]
-    public partial bool UseSystemAccentColor { get; set; }
+    #endregion
+
+    #region Appearance Mask Settings
 
     [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
     public partial bool UseBackgroundMask { get; set; }
 
     [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
     public partial bool UseHomeControlsMask { get; set; }
+
+    #endregion
+
+    #region Application Window
 
     [SettingItem(Default = 500, Converter = typeof(JsonStringConverter<double>))]
     public partial double AppWindowHeight { get; set; }
@@ -116,15 +150,23 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(Default = WinUIEx.WindowState.Normal, Converter = typeof(JsonStringConverter<WinUIEx.WindowState>))]
     public partial WinUIEx.WindowState AppWindowState { get; set; }
 
+    #endregion
+
+    #region User Interface
+
     [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
     public partial bool FinishGuide { get; set; }
-
 
     [SettingItem(Default = 0, Converter = typeof(JsonStringConverter<int>))]
     public partial int CoresSortByIndex { get; set; }
 
     [SettingItem(Default = 0, Converter = typeof(JsonStringConverter<int>))]
     public partial int CoresFilterIndex { get; set; }
+
+    [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
+    public partial bool NavigationViewIsPaneOpen { get; set; }
+
+    #endregion
 
     [SettingItem(Default = 0u)]
     public partial uint SettingsVersion { get; set; }

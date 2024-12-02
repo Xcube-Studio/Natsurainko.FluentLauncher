@@ -1,9 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.WinUI.UI.Controls;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.Windows.AppNotifications;
+using Microsoft.Windows.AppNotifications.Builder;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
@@ -456,11 +459,7 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
     }
 
     [RelayCommand(CanExecute = nameof(CanLaunch))]
-    void Launch(INavigationService navigationService)
-    {
-        navigationService.NavigateTo("Tasks/Launch");
-        App.GetService<LaunchService>().LaunchFromUI(_minecraftInstance);
-    }
+    void Launch(INavigationService navigationService) => App.GetService<LaunchService>().LaunchFromUI(_minecraftInstance);
 }
 
 #endregion
@@ -478,10 +477,81 @@ class LaunchProgressViewModel : IProgress<LaunchProgress>
                 { TaskName = ResourceUtils.GetValue("Tasks", "LaunchPage", $"_TaskName_{name}") });
     }
 
-    public void Report(LaunchProgress value)
+    public virtual void Report(LaunchProgress value)
     {
         var vm = Stages[value.Stage];
         App.DispatcherQueue.TryEnqueue(() => vm.UpdateProgress(value.StageProgress));
+    }
+}
+
+class QuickLaunchProgressViewModel : LaunchProgressViewModel
+{
+    private uint sequence = 1;
+    public const string GroupName = "Natsurainko.FluentLauncher";
+
+    public readonly MinecraftInstance _minecraftInstance;
+    public readonly Guid Guid = Guid.NewGuid();
+
+    public AppNotification AppNotification { get; }
+
+    public string InstanceDisplayName { get; }
+
+    public QuickLaunchProgressViewModel(MinecraftInstance instance) : base() 
+    {
+        _minecraftInstance = instance;
+        InstanceDisplayName = instance.GetDisplayName();
+
+        AppNotification = new AppNotificationBuilder()
+            .AddArgument("guid", Guid.ToString())
+            //.SetAppLogoOverride(new Uri(icon), AppNotificationImageCrop.Default)
+            .AddText($"Launching Game: {InstanceDisplayName}")
+            .AddText("This may take some time, please wait")
+            .AddProgressBar(new AppNotificationProgressBar()
+                .BindTitle()
+                .BindValue()
+                .BindValueStringOverride()
+                .BindStatus())
+            //.AddButton(new AppNotificationButton("Open Launcher")
+            //    .AddArgument("action", "OpenApp"))
+            .BuildNotification();
+
+        AppNotification.Tag = Guid.ToString();
+        AppNotification.Group = GroupName;
+    }
+
+    public override void Report(LaunchProgress value)
+    {
+        var vm = Stages[value.Stage];
+        vm.UpdateProgress(value.StageProgress);
+
+        var data = new AppNotificationProgressData(sequence)
+        {
+            Title = InstanceDisplayName,
+            Value = vm.FinishedTasks / (double)vm.TotalTasks,
+            ValueStringOverride = $"{vm.FinishedTasks} / {vm.TotalTasks}",
+            Status = vm.TaskName
+        };
+
+        AppNotification.Progress = data;
+        AppNotificationManager.Default.UpdateAsync(data, Guid.ToString(), GroupName)
+            .GetAwaiter().GetResult();
+
+        sequence++;
+
+        if (value.Stage == LaunchStage.LaunchProcess && vm.FinishedTasks == vm.TotalTasks)
+            _ = OnFinished();
+    }
+
+    private async Task OnFinished()
+    {
+        await AppNotificationManager.Default.RemoveByTagAndGroupAsync(Guid.ToString(), GroupName);
+        var appNotification = new AppNotificationBuilder()
+            //.SetAppLogoOverride(new Uri(icon), AppNotificationImageCrop.Default)
+            .AddText($"Minecraft: {InstanceDisplayName} Launched successfully")
+            .AddText("Waiting for the game window to appear")
+            .BuildNotification();
+
+        AppNotificationManager.Default.Show(appNotification);
     }
 }
 
@@ -590,6 +660,7 @@ readonly record struct LaunchStageProgress(
 internal partial class LaunchTaskViewModel : TaskViewModel
 {
     private readonly MinecraftInstance _instance;
+    private readonly LaunchService _launchService;
     private readonly LaunchProgressViewModel launchProgressViewModel = new();
     private bool _isMcProcessKilled = false;
 
@@ -599,9 +670,10 @@ internal partial class LaunchTaskViewModel : TaskViewModel
 
     public ObservableCollection<GameLoggerOutput> Logger { get; } = [];
 
-    public LaunchTaskViewModel(MinecraftInstance instance)
+    public LaunchTaskViewModel(MinecraftInstance instance, LaunchService launchService)
     {
         _instance = instance;
+        _launchService = launchService;
 
         StageViewModels = launchProgressViewModel.Stages.Values;
         TaskTitle = _instance.GetDisplayName();
@@ -645,7 +717,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
 
         try
         {
-            McProcess = await App.GetService<LaunchService>().LaunchAsync(
+            McProcess = await _launchService.LaunchAsync(
                 _instance, 
                 Process_OutputDataReceived,
                 Process_ErrorDataReceived,

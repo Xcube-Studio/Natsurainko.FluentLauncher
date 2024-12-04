@@ -113,7 +113,7 @@
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
-                    x:Uid="Cores_Manage_DefaultPage_Card6"
+                    x:Uid="Cores_Manage_DefaultPage_Card2"
                     Command="{Binding CardClickCommand}"
                     CommandParameter="CoreManage/Config"
                     Description="Set additional JVM parameters, game accounts, core independence, etc."

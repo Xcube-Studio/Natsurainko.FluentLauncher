@@ -38,7 +38,7 @@ internal class AuthenticationService
     public Task<MicrosoftAccount> RefreshAsync(MicrosoftAccount account, CancellationToken cancellationToken = default)
         => _microsoftAuthenticator.RefreshAsync(account, cancellationToken:cancellationToken);
 
-    public Task<YggdrasilAccount[]> RefreshAsync(YggdrasilAccount account, CancellationToken cancellationToken = default)
+    public Task<YggdrasilAccount> RefreshAsync(YggdrasilAccount account, CancellationToken cancellationToken = default)
         => new YggdrasilAuthenticator(account.YggdrasilServerUrl, account.ClientToken).RefreshAsync(account, cancellationToken);
 
     public OfflineAccount Refresh(OfflineAccount account)

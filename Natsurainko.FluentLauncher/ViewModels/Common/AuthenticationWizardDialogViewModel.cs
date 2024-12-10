@@ -6,9 +6,12 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
+using Nrk.FluentCore.Authentication;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
@@ -52,11 +55,11 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
     /// Next Button Command
     /// </summary>
     [RelayCommand]
-    public void Next()
+    public async Task Next()
     {
         if (CurrentFrameDataContext.GetType().Equals(typeof(ConfirmProfileViewModel)))
         {
-            Finish();
+            await Finish();
             return;
         }
 
@@ -98,19 +101,30 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
         base.OnPropertyChanged(e);
     }
 
-    private void Finish()
+    private async Task Finish()
     {
         var vm = (ConfirmProfileViewModel)CurrentFrameDataContext;
         var account = vm.SelectedAccount!; // checked by ConfirmProfileViewModel.CanNext
+
+        try // refresh accessToken of the selected profile
+        {
+            if (account is YggdrasilAccount yggdrasilAccount)
+                account = await _authService.RefreshAsync(yggdrasilAccount);
+        } 
+        catch (Exception ex)
+        {
+            _dialog.Hide();
+            _notificationService.NotifyException("_AccountYggdrasilProfileConfirmationFailed", ex);
+
+            return;
+        }
 
         var existedAccounts = _accountService.Accounts.Where(x => x.Equals(account)).ToArray();
 
         if (existedAccounts.Length != 0)
         {
             foreach (var item in existedAccounts)
-            {
                 _accountService.RemoveAccount(item, true);
-            }
 
             _notificationService.NotifyWithoutContent(
                 ResourceUtils.GetValue("Notifications", "_AccountExisted"),

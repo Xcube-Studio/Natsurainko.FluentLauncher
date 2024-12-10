@@ -156,8 +156,7 @@ internal class AccountService
         Account refreshedAccount = account switch
         {
             MicrosoftAccount microsoftAccount => await _authService.RefreshAsync(microsoftAccount, cancellationToken),
-            YggdrasilAccount yggdrasilAccount => (await _authService.RefreshAsync(yggdrasilAccount, cancellationToken))
-                .First(acc => acc.Equals(account)),
+            YggdrasilAccount yggdrasilAccount => await _authService.RefreshAsync(yggdrasilAccount, cancellationToken),
             OfflineAccount offlineAccount => _authService.Refresh(offlineAccount),
 
             _ => throw new InvalidOperationException("Unknown account type")

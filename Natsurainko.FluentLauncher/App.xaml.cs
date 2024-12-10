@@ -59,7 +59,11 @@ public partial class App : Application
         var mainInstance = AppInstance.FindOrRegisterForKey("Main");
         mainInstance.Activated += (object? sender, AppActivationArguments e) =>
         {
-            DispatcherQueue.TryEnqueue(() => MainWindow?.Activate());
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                MainWindow?.Activate();
+                MainWindow?.BringToFront();
+            });
 
             if (e.Data is Windows.ApplicationModel.Activation.LaunchActivatedEventArgs redirectedArgs)
                 App.GetService<QuickLaunchService>().LaunchFromActivatedEventArgs(redirectedArgs.Arguments.Split(' '));

@@ -109,7 +109,5 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
         this.Activated += MainWindow_Activated;
     }
 
-    public void NavigateToLaunchTasksPage() => _navigationService.NavigateTo("Tasks/Launch");
-
     private void Frame_Loaded(object sender, RoutedEventArgs e) => XamlRoot = Frame.XamlRoot;
 }

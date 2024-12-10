@@ -163,7 +163,7 @@ internal class AccountService
         };
 
         // Update stored account
-        Account? oldAccount = Accounts.FirstOrDefault(x => x.Equals(account)) 
+        Account? oldAccount = Accounts.FirstOrDefault(x => x.ProfileEquals(account)) 
             ?? throw new Exception($"{account} does not exist in AccountService");
 
         bool isActiveAccount = ActiveAccount == oldAccount;

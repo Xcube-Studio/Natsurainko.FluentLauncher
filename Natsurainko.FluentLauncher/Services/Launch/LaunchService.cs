@@ -227,7 +227,7 @@ internal class LaunchService
 
         if (specialConfig.EnableSpecialSetting && specialConfig.EnableTargetedAccount && specialConfig.Account != null)
         {
-            preCheckData.Account = _accountService.Accounts.First(x => x.Equals(specialConfig.Account))
+            preCheckData.Account = _accountService.Accounts.FirstOrDefault(x => x.ProfileEquals(specialConfig.Account))
                 ?? throw new Exception("The game specifies an account to launch, but that account cannot be found in the current account list");
         }
         else preCheckData.Account = _accountService.ActiveAccount

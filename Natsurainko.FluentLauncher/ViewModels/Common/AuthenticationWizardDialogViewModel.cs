@@ -119,7 +119,7 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
             return;
         }
 
-        var existedAccounts = _accountService.Accounts.Where(x => x.Equals(account)).ToArray();
+        var existedAccounts = _accountService.Accounts.Where(x => x.ProfileEquals(account)).ToArray();
 
         if (existedAccounts.Length != 0)
         {

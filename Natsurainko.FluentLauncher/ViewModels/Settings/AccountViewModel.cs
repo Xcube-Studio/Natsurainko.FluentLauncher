@@ -70,10 +70,10 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
 
     public bool IsOfflineAccount => ActiveAccount.Type == AccountType.Offline;
 
-    //partial void OnActiveAccountChanged(Account value)
-    //{
-    //    if (value is not null) _accountService.ActivateAccount(value);
-    //}
+    partial void OnActiveAccountChanged(Account value)
+    {
+        //if (value is not null) _accountService.ActivateAccount(value);
+    }
 
     [RelayCommand]
     public async Task Login() => await new AuthenticationWizardDialog().ShowAsync();

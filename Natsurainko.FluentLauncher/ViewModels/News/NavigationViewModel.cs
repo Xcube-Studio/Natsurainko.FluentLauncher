@@ -14,7 +14,7 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
     private readonly INavigationService _navigationService;
 
     [ObservableProperty]
-    private ObservableCollection<string> routes;
+    public partial ObservableCollection<string> Routes { get; set; }
 
     public NavigationViewModel(INavigationService navigationService)
     {

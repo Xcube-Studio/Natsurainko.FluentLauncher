@@ -28,10 +28,10 @@ public partial class UploadSkinDialogViewModel : ObservableObject
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(UploadCommand))]
-    private string filePath;
+    public partial string FilePath { get; set; }
 
     [ObservableProperty]
-    private bool isSlimModel;
+    public partial bool IsSlimModel { get; set; }
 
     [RelayCommand]
     public void LoadEvent(object args)

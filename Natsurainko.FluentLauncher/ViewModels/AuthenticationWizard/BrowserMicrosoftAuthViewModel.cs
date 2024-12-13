@@ -16,19 +16,19 @@ internal partial class BrowserMicrosoftAuthViewModel : WizardViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
-    private string? accessCode;
+    public partial string? AccessCode { get; set; }
 
     [ObservableProperty]
-    private bool needRefresh;
+    public partial bool NeedRefresh { get; set; }
 
     [ObservableProperty]
-    private string? description;
+    public partial string? Description { get; set; }
 
     [ObservableProperty]
-    private string? icon;
+    public partial string? Icon { get; set; }
 
     [ObservableProperty]
-    private Uri source;
+    public partial Uri Source { get; set; }
 
     private readonly string AuthUrl = "https://login.live.com/oauth20_authorize.srf" +
         $"?client_id={AuthenticationService.MicrosoftClientId}" +

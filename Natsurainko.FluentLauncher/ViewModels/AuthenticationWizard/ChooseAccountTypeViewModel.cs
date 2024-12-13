@@ -18,7 +18,7 @@ internal partial class ChooseAccountTypeViewModel : WizardViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
-    private AccountType? selectedAccountType = AccountType.Microsoft;
+    public partial AccountType? SelectedAccountType { get; set; } = AccountType.Microsoft;
 
     public ChooseAccountTypeViewModel(AuthenticationService authService)
     {

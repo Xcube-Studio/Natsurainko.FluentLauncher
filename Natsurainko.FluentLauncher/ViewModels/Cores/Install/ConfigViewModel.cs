@@ -32,13 +32,13 @@ internal partial class ConfigViewModel : WizardViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
-    public string instanceId;
+    public partial string InstanceId { get; set; }
 
     [ObservableProperty]
-    public string nickName;
+    public partial string NickName { get; set; }
 
     [ObservableProperty]
-    public bool enableIndependencyInstance;
+    public partial bool EnableIndependencyInstance { get; set; }
 
     #endregion
 

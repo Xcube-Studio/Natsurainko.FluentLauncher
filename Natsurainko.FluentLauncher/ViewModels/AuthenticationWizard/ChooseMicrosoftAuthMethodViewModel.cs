@@ -15,7 +15,7 @@ internal partial class ChooseMicrosoftAuthMethodViewModel : WizardViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
-    private MicrosoftAuthMethod? selectedMicrosoftAuthMethod = MicrosoftAuthMethod.BuiltInBrowser;
+    public partial MicrosoftAuthMethod? SelectedMicrosoftAuthMethod { get; set; } = MicrosoftAuthMethod.BuiltInBrowser;
 
     public ChooseMicrosoftAuthMethodViewModel(AuthenticationService authService)
     {

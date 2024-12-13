@@ -14,7 +14,7 @@ internal partial class AboutViewModel : ObservableObject
 
 #if DEBUG
     [ObservableProperty]
-    private string edition = ResourceUtils.GetValue("Settings", "AboutPage", "_Debug");
+    public partial string Edition { get; set; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Debug");
 #else
     [ObservableProperty]
     private string edition = ResourceUtils.GetValue("Settings", "AboutPage", "_Release");

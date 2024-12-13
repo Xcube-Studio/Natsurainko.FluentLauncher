@@ -36,32 +36,32 @@ internal partial class DetailsViewModel : ObservableObject, INavigationAware
     }
 
     [ObservableProperty]
-    private string iconUrl;
+    public partial string IconUrl { get; set; }
 
     [ObservableProperty]
-    private string name;
+    public partial string Name { get; set; }
 
     [ObservableProperty]
-    private string summary;
+    public partial string Summary { get; set; }
 
     [ObservableProperty]
-    private string webLink;
+    public partial string WebLink { get; set; }
 
     [ObservableProperty]
-    private string authors;
+    public partial string Authors { get; set; }
 
     [ObservableProperty]
-    private int downloadCount;
+    public partial int DownloadCount { get; set; }
 
     [ObservableProperty]
-    private DateTime dateModified;
+    public partial DateTime DateModified { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasScreenshot))]
-    private string[] screenshotUrls;
+    public partial string[] ScreenshotUrls { get; set; }
 
     [ObservableProperty]
-    private bool isHtmlDescription = false;
+    public partial bool IsHtmlDescription { get; set; } = false;
 
     public bool HasScreenshot => ScreenshotUrls != null && ScreenshotUrls.Length != 0;
 

@@ -53,17 +53,16 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.EnableDemoUser))]
-    private bool enableDemoUser;
+    public partial bool EnableDemoUser { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.AutoRefresh))]
-    private bool autoRefresh;
+    public partial bool AutoRefresh { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(SkinFile))]
     [NotifyPropertyChangedFor(nameof(IsOfflineAccount))]
-    private Account activeAccount;
-
+    public partial Account ActiveAccount { get; set; }
     public ReadOnlyObservableCollection<Account> Accounts { get; init; }
 
     public string SkinFile => _cacheSkinService.GetSkinFilePath(ActiveAccount);

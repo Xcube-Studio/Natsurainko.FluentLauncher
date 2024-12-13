@@ -63,7 +63,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(BackCommand))]
     [NotifyPropertyChangedFor(nameof(NextText))]
-    int currentPageIndex;
+    public partial int CurrentPageIndex { get; set; }
 
     private static readonly string[] OOBEPageKeys =
     {
@@ -145,7 +145,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
     [BindToSetting(Path = nameof(SettingsService.CurrentLanguage))]
-    private string currentLanguage;
+    public partial string CurrentLanguage { get; set; }
 
     public List<string> Languages { get; } = ResourceUtils.Languages;
 
@@ -173,7 +173,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
     [BindToSetting(Path = nameof(SettingsService.ActiveMinecraftFolder))]
-    private string activeMinecraftFolder;
+    public partial string ActiveMinecraftFolder { get; set; }
 
     [RelayCommand]
     public async Task BrowseFolder()
@@ -252,7 +252,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.ActiveJava))]
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
-    private string activeJavaRuntime;
+    public partial string ActiveJavaRuntime { get; set; }
 
     [RelayCommand]
     public void BrowseJava()
@@ -320,7 +320,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
-    private Account activeAccount;
+    public partial Account ActiveAccount { get; set; }
 
     public bool processingActiveAccountChangedMessage = false;
 

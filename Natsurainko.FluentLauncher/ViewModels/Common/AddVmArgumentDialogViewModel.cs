@@ -11,7 +11,7 @@ internal partial class AddVmArgumentDialogViewModel : ObservableObject
 {
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddCommand))]
-    private string? argument;
+    public partial string? Argument { get; set; }
 
     private readonly Action<string> _addAction;
     private ContentDialog _dialog = null!;

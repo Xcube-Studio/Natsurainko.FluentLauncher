@@ -31,7 +31,7 @@ internal partial class NotifyExceptionViewModel : ObservableObject
     public Exception Exception { get; private set; }
 
     [ObservableProperty]
-    private string description;
+    public partial string Description { get; set; }
 
     [RelayCommand]
     public void Copy()

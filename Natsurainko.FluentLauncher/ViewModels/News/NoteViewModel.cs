@@ -25,10 +25,10 @@ internal partial class NoteViewModel : ObservableObject, INavigationAware
     }
 
     [ObservableProperty]
-    private string body;
+    public partial string Body { get; set; }
 
     [ObservableProperty]
-    private PatchNoteData patchNoteData;
+    public partial PatchNoteData PatchNoteData { get; set; }
 
     void INavigationAware.OnNavigatedTo(object parameter)
     {

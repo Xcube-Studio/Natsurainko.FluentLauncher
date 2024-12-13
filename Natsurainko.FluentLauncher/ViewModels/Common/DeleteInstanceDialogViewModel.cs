@@ -25,7 +25,7 @@ internal partial class DeleteInstanceDialogViewModel : ObservableObject
     public string Title => $"\"{_minecraftInstance.InstanceId}\"";
 
     [ObservableProperty]
-    private bool deleteCoreSettings = true;
+    public partial bool DeleteCoreSettings { get; set; } = true;
 
     public DeleteInstanceDialogViewModel(
         MinecraftInstance minecraftInstance,

@@ -33,33 +33,33 @@ public partial class ChooseModLoaderData : ObservableObject
     #region Properties
 
     [ObservableProperty]
-    private ModLoaderType type;
+    public partial ModLoaderType Type { get; set; }
 
     [ObservableProperty]
-    private bool isChecked;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsEnable))]
-    private bool isSupported = false;
+    public partial bool IsChecked { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsEnable))]
-    private bool isCompatible = true;
+    public partial bool IsSupported { get; set; } = false;
 
     [ObservableProperty]
-    private bool isLoading = true;
+    [NotifyPropertyChangedFor(nameof(IsEnable))]
+    public partial bool IsCompatible { get; set; } = true;
 
     [ObservableProperty]
-    private string description;
+    public partial bool IsLoading { get; set; } = true;
 
     [ObservableProperty]
-    private string displayText = ResourceUtils.GetValue("CoreInstallWizard", "ChooseModLoaderPage", "_Loading");
+    public partial string Description { get; set; }
 
     [ObservableProperty]
-    private object[] installDatas;
+    public partial string DisplayText { get; set; } = ResourceUtils.GetValue("CoreInstallWizard", "ChooseModLoaderPage", "_Loading");
 
     [ObservableProperty]
-    private object selectedInstallData;
+    public partial object[] InstallDatas { get; set; }
+
+    [ObservableProperty]
+    public partial object SelectedInstallData { get; set; }
 
     public bool IsEnable => IsSupported && IsCompatible;
 

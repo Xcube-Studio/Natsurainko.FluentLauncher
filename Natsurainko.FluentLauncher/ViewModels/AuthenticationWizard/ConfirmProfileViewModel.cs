@@ -76,20 +76,20 @@ internal partial class ConfirmProfileViewModel : WizardViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
-    private Visibility loading = Visibility.Collapsed;
+    public partial Visibility Loading { get; set; } = Visibility.Collapsed;
 
     [ObservableProperty]
-    private bool faulted;
+    public partial bool Faulted { get; set; }
 
     [ObservableProperty]
-    private string? faultedMessage;
+    public partial string? FaultedMessage { get; set; }
 
     [ObservableProperty]
-    private string? loadingProgressText;
+    public partial string? LoadingProgressText { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
-    private Account? selectedAccount;
+    public partial Account? SelectedAccount { get; set; }
 
     [RelayCommand]
     public void UnloadEvent(object args)

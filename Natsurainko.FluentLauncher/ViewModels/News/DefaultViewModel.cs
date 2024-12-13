@@ -24,10 +24,10 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     }
 
     [ObservableProperty]
-    private PatchNoteData[] patchNoteDatas;
+    public partial PatchNoteData[] PatchNoteDatas { get; set; }
 
     [ObservableProperty]
-    private NewsData[] newsDatas;
+    public partial NewsData[] NewsDatas { get; set; }
 
     private string PatchNotesJson;
     private string NewsJson;

@@ -9,11 +9,11 @@ namespace Natsurainko.FluentLauncher.ViewModels.Common;
 internal partial class ExceptionDialogViewModel : ObservableObject
 {
     [ObservableProperty]
-    string errorMessage;
+    public partial string ErrorMessage { get; set; }
 
     public ExceptionDialogViewModel(string errorMessage = "")
     {
-        this.errorMessage = errorMessage;
+        ErrorMessage = errorMessage;
     }
 
     [RelayCommand]

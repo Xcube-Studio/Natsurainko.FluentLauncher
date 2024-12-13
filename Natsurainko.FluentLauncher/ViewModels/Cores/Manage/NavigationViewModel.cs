@@ -17,8 +17,7 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
     private readonly INavigationService _navigationService;
 
     [ObservableProperty]
-    private ObservableCollection<string> routes;
-
+    public partial ObservableCollection<string> Routes { get; set; }
     public MinecraftInstance MinecraftInstance { get; private set; }
 
     public string InstanceId { get; private set; } // 缓存游戏名称，防止昵称修改后名称对不上

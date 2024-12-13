@@ -19,15 +19,15 @@ internal partial class DownloadViewModel : SettingsViewModelBase, ISettingsViewM
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.CurrentDownloadSource))]
-    private string currentDownloadSource;
+    public partial string CurrentDownloadSource { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.MaxDownloadThreads))]
-    private int maxDownloadThreads;
+    public partial int MaxDownloadThreads { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.EnableFragmentDownload))]
-    private bool enableFragmentDownload;
+    public partial bool EnableFragmentDownload { get; set; }
 
     public string CoreConfigurationsFolder => _localStorageService.GetDirectory("GameConfigsFolder").FullName;
 

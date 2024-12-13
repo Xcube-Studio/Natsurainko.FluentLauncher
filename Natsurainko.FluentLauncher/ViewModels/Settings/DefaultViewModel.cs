@@ -29,13 +29,13 @@ internal partial class DefaultViewModel : SettingsViewModelBase, ISettingsViewMo
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.CurrentLanguage))]
-    private string currentLanguage;
+    public partial string CurrentLanguage { get; set; }
 
     public string Version => App.Version.GetVersionString();
 
 #if DEBUG
     [ObservableProperty]
-    private string edition = ResourceUtils.GetValue("Settings", "AboutPage", "_Debug");
+    public partial string Edition { get; set; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Debug");
 #else
     [ObservableProperty]
     private string edition = ResourceUtils.GetValue("Settings", "AboutPage", "_Release");

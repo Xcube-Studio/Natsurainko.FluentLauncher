@@ -59,47 +59,54 @@ internal class AccountAvatarLoadBehavior : DependencyObject, IBehavior
 
     private async void RenderAvatar()
     {
-        if (Account == null) return;
-        if (ProgressRing == null || BackgroundLayout == null || ForegroundLayout == null) return;
-
-        ProgressRing.IsActive = true;
-        Border border = (Border)AssociatedObject;
-
-        var filePath = _cacheSkinService.GetSkinFilePath(Account);
-
-        if (Account.Type == AccountType.Offline)
+        try
         {
-            BackgroundLayout.Source = await StretchImageSizeAsync(
-                new Bitmap(
-                    System.Drawing.Image.FromFile(
-                        (await StorageFile.GetFileFromApplicationUriAsync(new Uri(filePath))).Path)),
-                (int)border.ActualWidth,
-                (int)border.ActualHeight);
-            ForegroundLayout.Source = null;
+            if (Account == null) return;
+            if (ProgressRing == null || BackgroundLayout == null || ForegroundLayout == null) return;
+
+            ProgressRing.IsActive = true;
+            Border border = (Border)AssociatedObject;
+
+            var filePath = _cacheSkinService.GetSkinFilePath(Account);
+
+            if (Account.Type == AccountType.Offline)
+            {
+                BackgroundLayout.Source = await StretchImageSizeAsync(
+                    new Bitmap(
+                        System.Drawing.Image.FromFile(
+                            (await StorageFile.GetFileFromApplicationUriAsync(new Uri(filePath))).Path)),
+                    (int)border.ActualWidth,
+                    (int)border.ActualHeight);
+                ForegroundLayout.Source = null;
+
+                ProgressRing.IsActive = false;
+                return;
+            }
+
+            if (!File.Exists(filePath))
+            {
+                _ = _cacheSkinService.CacheSkinOfAccount(Account);
+                ProgressRing.IsActive = false;
+                return;
+            }
+
+            var stream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            using var originImage = System.Drawing.Image.FromStream(stream);
+            stream.Close();
+            stream.Dispose();
+
+            using var backgroundBitmap = GetAreaFromImage(originImage, new(8, 8, 8, 8));
+            using var foregroundBitmap = GetAreaFromImage(originImage, new(40, 8, 8, 8));
+
+            BackgroundLayout.Source = await StretchImageSizeAsync(backgroundBitmap, (int)border.ActualWidth, (int)border.ActualHeight);
+            ForegroundLayout.Source = await StretchImageSizeAsync(foregroundBitmap, (int)border.ActualWidth, (int)border.ActualHeight);
 
             ProgressRing.IsActive = false;
-            return;
         }
-
-        if (!File.Exists(filePath))
+        catch (Exception ex)
         {
-            _ = _cacheSkinService.CacheSkinOfAccount(Account);
-            ProgressRing.IsActive = false;
-            return;
+            //App.GetService<NotificationService>().NotifyException(null, ex);
         }
-
-        var stream = File.OpenRead(filePath);
-        using var originImage = System.Drawing.Image.FromStream(stream);
-        stream.Close();
-        stream.Dispose();
-
-        using var backgroundBitmap = GetAreaFromImage(originImage, new(8, 8, 8, 8));
-        using var foregroundBitmap = GetAreaFromImage(originImage, new(40, 8, 8, 8));
-
-        BackgroundLayout.Source = await StretchImageSizeAsync(backgroundBitmap, (int)border.ActualWidth, (int)border.ActualHeight);
-        ForegroundLayout.Source = await StretchImageSizeAsync(foregroundBitmap, (int)border.ActualWidth, (int)border.ActualHeight);
-
-        ProgressRing.IsActive = false;
     }
 
     #region Bitmap Operations

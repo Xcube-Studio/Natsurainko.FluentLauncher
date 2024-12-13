@@ -7,7 +7,7 @@
     <WindowsSdkPackageVersion>10.0.22621.38</WindowsSdkPackageVersion>
     <RootNamespace>Natsurainko.FluentLauncher</RootNamespace>
     <Platforms>x64;ARM64</Platforms>
-    <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifier>win-$(Platform)</RuntimeIdentifier>
     <UseWinUI>true</UseWinUI>
     <DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
     <Configurations>Debug;Release;Debug-AOT;Release-AOT</Configurations>

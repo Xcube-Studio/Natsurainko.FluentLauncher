@@ -8,7 +8,7 @@ using System;
 #nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
-public class InstanceIconConverter : IValueConverter
+public partial class InstanceIconConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {

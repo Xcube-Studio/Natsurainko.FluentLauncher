@@ -9,7 +9,7 @@ using System;
 #nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
-internal class SuggestionIconConverter : IValueConverter
+internal partial class SuggestionIconConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {

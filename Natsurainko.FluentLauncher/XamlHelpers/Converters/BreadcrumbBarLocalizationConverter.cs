@@ -6,7 +6,7 @@ using System.Collections.Generic;
 #nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
-public class BreadcrumbBarLocalizationConverter : IValueConverter
+public partial class BreadcrumbBarLocalizationConverter : IValueConverter
 {
     public string BasePath { get; set; }
 

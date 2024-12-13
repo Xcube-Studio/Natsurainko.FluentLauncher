@@ -5,7 +5,7 @@ using System;
 #nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
-internal class BoolToVisibilityConverter : IValueConverter
+internal partial class BoolToVisibilityConverter : IValueConverter
 {
     public bool Inverted { get; set; }
 

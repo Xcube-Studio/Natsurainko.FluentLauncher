@@ -4,7 +4,7 @@ using Windows.UI;
 
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
-public class ColorHexCodeConverter : IValueConverter
+public partial class ColorHexCodeConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {

@@ -3,10 +3,9 @@ using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement.Instances;
 using System;
 
-
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
-internal class InstanceDisplayNameConverter : IValueConverter
+internal partial class InstanceDisplayNameConverter : IValueConverter
 {
     public object? Convert(object value, Type targetType, object parameter, string language)
     {

@@ -6,7 +6,7 @@ using Nrk.FluentCore.Resources;
 #nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Selectors;
 
-internal class ResourceItemTemplateSelector : DataTemplateSelector
+internal partial class ResourceItemTemplateSelector : DataTemplateSelector
 {
     public DataTemplate Modrinth { get; set; }
 

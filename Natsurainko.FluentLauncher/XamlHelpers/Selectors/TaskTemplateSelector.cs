@@ -5,7 +5,7 @@ using Natsurainko.FluentLauncher.ViewModels.Common;
 #nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Selectors;
 
-internal class TaskTemplateSelector : DataTemplateSelector
+internal partial class TaskTemplateSelector : DataTemplateSelector
 {
     public DataTemplate LaunchTask { get; set; }
 

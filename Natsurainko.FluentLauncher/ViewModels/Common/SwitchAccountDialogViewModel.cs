@@ -18,7 +18,7 @@ internal partial class SwitchAccountDialogViewModel : SettingsViewModelBase, ISe
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(RemoveCommand))]
-    private Account activeAccount;
+    public partial Account ActiveAccount { get; set; }
 
     #endregion
 

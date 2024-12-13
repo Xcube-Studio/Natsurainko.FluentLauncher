@@ -30,28 +30,28 @@ internal partial class OptionsViewModel : WizardViewModelBase
     public override bool CanPrevious => true;
 
     [ObservableProperty]
-    private bool fabricApiAvailable;
+    public partial bool FabricApiAvailable { get; set; }
 
     [ObservableProperty]
-    private bool optiFabricAvailable;
+    public partial bool OptiFabricAvailable { get; set; }
 
     [ObservableProperty]
-    private bool enabledFabricApi;
+    public partial bool EnabledFabricApi { get; set; }
 
     [ObservableProperty]
-    private bool enabledOptiFabric;
+    public partial bool EnabledOptiFabric { get; set; }
 
     [ObservableProperty]
-    private bool loadingFabricApi = true;
+    public partial bool LoadingFabricApi { get; set; } = true;
 
     [ObservableProperty]
-    private ModrinthFile fabricApi;
+    public partial ModrinthFile FabricApi { get; set; }
 
     [ObservableProperty]
-    private bool loadingOptiFabric = true;
+    public partial bool LoadingOptiFabric { get; set; } = true;
 
     [ObservableProperty]
-    private CurseForgeFile optiFabric;
+    public partial CurseForgeFile OptiFabric { get; set; }
     #endregion
 
     public void Init()

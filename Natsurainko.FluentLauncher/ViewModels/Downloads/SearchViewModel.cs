@@ -53,26 +53,26 @@ internal partial class SearchViewModel : ObservableObject, INavigationAware
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsEmptySearchText))]
-    private string searchText;
+    public partial string SearchText { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsSearchMinecraft))]
-    private int resourceType;
+    public partial int ResourceType { get; set; }
 
     [ObservableProperty]
-    private int resourceSource;
+    public partial int ResourceSource { get; set; }
 
     [ObservableProperty]
-    private IEnumerable<string> resourceVersions;
+    public partial IEnumerable<string> ResourceVersions { get; set; }
 
     [ObservableProperty]
-    private string selectedVersion;
+    public partial string SelectedVersion { get; set; }
 
     [ObservableProperty]
-    private IEnumerable<object> searchResult;
+    public partial IEnumerable<object> SearchResult { get; set; }
 
     [ObservableProperty]
-    public bool enableVersionFilter;
+    public partial bool EnableVersionFilter { get; set; }
 
     public bool IsSearchMinecraft => ResourceType == 1;
 

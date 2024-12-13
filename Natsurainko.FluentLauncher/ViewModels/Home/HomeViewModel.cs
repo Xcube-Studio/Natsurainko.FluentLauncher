@@ -54,11 +54,11 @@ internal partial class HomeViewModel : ObservableObject
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(AccountTag))]
-    private Account activeAccount;
+    public partial Account ActiveAccount { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(DropDownButtonDisplayText))]
-    private MinecraftInstance activeMinecraftInstance;
+    public partial MinecraftInstance ActiveMinecraftInstance { get; set; }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {

@@ -52,22 +52,22 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     }
 
     [ObservableProperty]
-    private PatchNoteData[] patchNoteDatas;
+    public partial PatchNoteData[] PatchNoteDatas { get; set; }
 
     [ObservableProperty]
-    private VersionManifestItem[] versionManifestItems;
+    public partial VersionManifestItem[] VersionManifestItems { get; set; }
 
     [ObservableProperty]
-    private CurseForgeResource[] curseForgeResources;
+    public partial CurseForgeResource[] CurseForgeResources { get; set; }
 
     [ObservableProperty]
-    private ModrinthResource[] modrinthResources;
+    public partial ModrinthResource[] ModrinthResources { get; set; }
 
     [ObservableProperty]
-    private bool loadingCurseForgeResource = true;
+    public partial bool LoadingCurseForgeResource { get; set; } = true;
 
     [ObservableProperty]
-    private bool loadingModrinthResource = true;
+    public partial bool LoadingModrinthResource { get; set; } = true;
 
     private string PatchNotesJson;
     private string VersionManifestJson;

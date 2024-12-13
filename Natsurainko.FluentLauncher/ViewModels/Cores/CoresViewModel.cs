@@ -57,18 +57,18 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(DisplayFolderPath))]
     [BindToSetting(Path = nameof(SettingsService.ActiveMinecraftFolder))]
-    private string activeMinecraftFolder;
+    public partial string ActiveMinecraftFolder { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.CoresFilterIndex))]
-    private int filterIndex;
+    public partial int FilterIndex { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.CoresSortByIndex))]
-    private int sortByIndex;
+    public partial int SortByIndex { get; set; }
 
     [ObservableProperty]
-    private IEnumerable<MinecraftInstance> displayMinecraftInstances;
+    public partial IEnumerable<MinecraftInstance> DisplayMinecraftInstances { get; set; }
 
     public string DisplayFolderPath => (string.IsNullOrEmpty(ActiveMinecraftFolder) || !Directory.Exists(ActiveMinecraftFolder))
         ? ResourceUtils.GetValue("Cores", "CoresPage", "_FolderError")

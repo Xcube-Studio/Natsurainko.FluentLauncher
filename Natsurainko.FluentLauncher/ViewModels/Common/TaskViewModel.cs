@@ -58,32 +58,32 @@ internal abstract partial class TaskViewModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(ProgressShowPaused))]
     [NotifyPropertyChangedFor(nameof(ProgressShowError))]
     [NotifyPropertyChangedFor(nameof(CancelButtonVisibility))]
-    private TaskState taskState = TaskState.Prepared;
+    public partial TaskState TaskState { get; set; } = TaskState.Prepared;
 
     [ObservableProperty]
-    private string taskTitle;
+    public partial string TaskTitle { get; set; }
 
     [ObservableProperty]
-    private bool isExpanded = true;
+    public partial bool IsExpanded { get; set; } = true;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ProgressPercentage))]
-    private double progress = 0;
+    public partial double Progress { get; set; } = 0;
 
     [ObservableProperty]
-    private string timeUsage;
+    public partial string TimeUsage { get; set; }
 
     [ObservableProperty]
-    private bool progressBarIsIndeterminate = true;
+    public partial bool ProgressBarIsIndeterminate { get; set; } = true;
 
     [ObservableProperty]
-    private Visibility progressBarVisibility = Visibility.Visible;
+    public partial Visibility ProgressBarVisibility { get; set; } = Visibility.Visible;
 
     [ObservableProperty]
-    private bool showException = false;
+    public partial bool ShowException { get; set; } = false;
 
     [ObservableProperty]
-    private string exceptionReason;
+    public partial string ExceptionReason { get; set; }
 
     public Visibility CancelButtonVisibility => (TaskState == TaskState.Cancelled || TaskState == TaskState.Finished || TaskState == TaskState.Failed) 
         ? Visibility.Collapsed 
@@ -262,15 +262,15 @@ class InstallationViewModel<TStage> : IProgress<InstallerProgress<TStage>>
 partial class InstallationStageViewModel : ObservableObject
 {
     [ObservableProperty]
-    private string taskName = string.Empty;
+    public partial string TaskName { get; set; } = string.Empty;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsRunning))]
     [NotifyPropertyChangedFor(nameof(FontIcon))]
-    private TaskState state = TaskState.Prepared;
+    public partial TaskState State { get; set; } = TaskState.Prepared;
 
     [ObservableProperty]
-    private int totalTasks = 1;
+    public partial int TotalTasks { get; set; } = 1;
 
     public int FinishedTasks
     {
@@ -349,7 +349,7 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(LaunchCommand))]
-    private bool canLaunch = false;
+    public partial bool CanLaunch { get; set; } = false;
 
     public override string TaskIcon => TaskState switch
     {
@@ -558,15 +558,15 @@ class QuickLaunchProgressViewModel : LaunchProgressViewModel
 partial class LaunchStageViewModel : ObservableObject
 {
     [ObservableProperty]
-    private string taskName = string.Empty;
+    public partial string TaskName { get; set; } = string.Empty;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsRunning))]
     [NotifyPropertyChangedFor(nameof(FontIcon))]
-    private TaskState state = TaskState.Prepared;
+    public partial TaskState State { get; set; } = TaskState.Prepared;
 
     [ObservableProperty]
-    private int totalTasks = 1;
+    public partial int TotalTasks { get; set; } = 1;
 
     public int FinishedTasks
     {
@@ -683,20 +683,20 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanCancel))]
     [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
-    private bool isLaunching = true;
+    public partial bool IsLaunching { get; set; } = true;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsGameRunning))]
     [NotifyCanExecuteChangedFor(nameof(KillProcessCommand))]
-    private bool processLaunched;
+    public partial bool ProcessLaunched { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsGameRunning))]
     [NotifyCanExecuteChangedFor(nameof(KillProcessCommand))]
-    private bool processExited;
+    public partial bool ProcessExited { get; set; }
 
     [ObservableProperty]
-    private bool crashed = false;
+    public partial bool Crashed { get; set; } = false;
 
     public override bool CanCancel => IsLaunching && TaskState != TaskState.Canceling;
 

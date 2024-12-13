@@ -28,15 +28,15 @@ internal partial class EnterYggdrasilProfileViewModel : WizardViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
-    private string url;
+    public partial string Url { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
-    private string email;
+    public partial string Email { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
-    private string password;
+    public partial string Password { get; set; }
 
     public override WizardViewModelBase GetNextViewModel()
     {

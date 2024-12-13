@@ -74,51 +74,51 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private string[] versions;
+    public partial string[] Versions { get; set; }
 
     [ObservableProperty]
-    private string selectedVersion;
+    public partial string SelectedVersion { get; set; }
 
     [ObservableProperty]
-    private string[] loaders;
+    public partial string[] Loaders { get; set; }
 
     [ObservableProperty]
-    private string selectedLoader;
+    public partial string SelectedLoader { get; set; }
 
     [ObservableProperty]
-    private string resourceName;
+    public partial string ResourceName { get; set; }
 
     [ObservableProperty]
-    private GameResourceFile[] displayItems;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CanConfirm))]
-    private GameResourceFile selectedItem;
+    public partial GameResourceFile[] DisplayItems { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanConfirm))]
-    private bool downloadToDesignated;
+    public partial GameResourceFile SelectedItem { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanConfirm))]
-    private bool downloadToCurrentGame;
+    public partial bool DownloadToDesignated { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanConfirm))]
-    private bool isModpack;
+    public partial bool DownloadToCurrentGame { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanConfirm))]
-    private string designatedFilePath;
+    public partial bool IsModpack { get; set; }
 
     [ObservableProperty]
-    private Visibility checkBox1;
+    [NotifyPropertyChangedFor(nameof(CanConfirm))]
+    public partial string DesignatedFilePath { get; set; }
 
     [ObservableProperty]
-    private Visibility checkBox2;
+    public partial Visibility CheckBox1 { get; set; }
 
     [ObservableProperty]
-    private Visibility checkBox3;
+    public partial Visibility CheckBox2 { get; set; }
+
+    [ObservableProperty]
+    public partial Visibility CheckBox3 { get; set; }
 
     public bool CanConfirm
     {

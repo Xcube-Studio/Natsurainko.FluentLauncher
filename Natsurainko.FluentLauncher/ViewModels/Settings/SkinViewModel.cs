@@ -54,8 +54,7 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
     }
 
     [ObservableProperty]
-    private Account activeAccount;
-
+    public partial Account ActiveAccount { get; set; }
     public ObservableElement3DCollection ModelGeometry { get; private set; } = [];
 
     public bool IsYggdrasilAccount => ActiveAccount.Type == AccountType.Yggdrasil;

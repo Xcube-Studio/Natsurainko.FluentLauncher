@@ -17,8 +17,8 @@ public partial class FontIcon : MarkupExtension
     }
 }
 
-[MarkupExtensionReturnType(ReturnType = typeof(Microsoft.UI.Xaml.Controls.ComboBox))]
-public class ComboBox : MarkupExtension
+[MarkupExtensionReturnType(ReturnType = typeof(string[]))]
+public partial class ComboBox : MarkupExtension
 {
     public string ResourceKey { get; set; }
 

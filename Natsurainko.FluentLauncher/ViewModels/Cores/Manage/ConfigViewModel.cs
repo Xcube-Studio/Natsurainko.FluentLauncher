@@ -28,10 +28,10 @@ internal partial class ConfigViewModel : ObservableObject, INavigationAware
     public MinecraftInstance MinecraftInstance { get; private set; }
 
     [ObservableProperty]
-    private InstanceConfig instanceConfig;
+    public partial InstanceConfig InstanceConfig { get; set; }
 
     [ObservableProperty]
-    private Account targetedAccount;
+    public partial Account TargetedAccount { get; set; }
 
     public ConfigViewModel(AccountService accountService)
     {
@@ -72,7 +72,7 @@ internal partial class ConfigViewModel : ObservableObject, INavigationAware
 
 #pragma warning disable MVVMTK0034 // Direct field reference to [ObservableProperty] backing field
         if (matchAccount.Any())
-            targetedAccount = matchAccount.First();
+            TargetedAccount = matchAccount.First();
 #pragma warning restore MVVMTK0034 // Direct field reference to [ObservableProperty] backing field
     }
 

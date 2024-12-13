@@ -33,48 +33,48 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.DisplayTheme))]
-    private int displayTheme;
+    public partial int DisplayTheme { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.BackgroundMode))]
     [NotifyPropertyChangedFor(nameof(CanUseImageThemeColor))]
-    private int backgroundMode;
+    public partial int BackgroundMode { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.UseSystemAccentColor))]
     [NotifyPropertyChangedFor(nameof(CurrentThemeColor))]
-    private bool useSystemAccentColor;
+    public partial bool UseSystemAccentColor { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.MicaKind))]
-    private int micaKind;
+    public partial int MicaKind { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.ImageFilePath))]
     [NotifyPropertyChangedFor(nameof(ImageFileExists))]
     [NotifyPropertyChangedFor(nameof(CanUseImageThemeColor))]
-    private string imageFilePath;
+    public partial string ImageFilePath { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.SolidSelectedIndex))]
-    private int solidSelectedIndex;
+    public partial int SolidSelectedIndex { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.CustomThemeColor))]
     [NotifyPropertyChangedFor(nameof(CurrentThemeColor))]
-    private Color? customThemeColor;
+    public partial Color? CustomThemeColor { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.CustomBackgroundColor))]
-    private Color? customBackgroundColor;
+    public partial Color? CustomBackgroundColor { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.UseBackgroundMask))]
-    private bool useBackgroundMask;
+    public partial bool UseBackgroundMask { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.UseHomeControlsMask))]
-    private bool useHomeControlsMask;
+    public partial bool UseHomeControlsMask { get; set; }
 
     public Color CurrentThemeColor => UseSystemAccentColor ? (Color)App.Current.Resources["RawSystemAccentColor"] : CustomThemeColor.GetValueOrDefault();
 

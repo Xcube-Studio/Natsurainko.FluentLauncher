@@ -26,10 +26,10 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
     //private DeviceFlowResponse deviceFlowAuthResult;
 
     [ObservableProperty]
-    private string? deviceCode;
+    public partial string? DeviceCode { get; set; }
 
     [ObservableProperty]
-    private bool loading = true;
+    public partial bool Loading { get; set; } = true;
 
     private bool Unloaded = false;
 

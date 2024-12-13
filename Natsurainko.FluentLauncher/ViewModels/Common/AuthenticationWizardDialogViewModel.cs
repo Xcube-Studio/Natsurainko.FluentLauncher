@@ -18,7 +18,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.Common;
 internal partial class AuthenticationWizardDialogViewModel : ObservableObject
 {
     [ObservableProperty]
-    private WizardViewModelBase currentFrameDataContext = null!; // Set in LoadEvent
+    public partial WizardViewModelBase CurrentFrameDataContext { get; set; } = null!;
 
     private readonly Stack<WizardViewModelBase> _viewModelStack = new();
 

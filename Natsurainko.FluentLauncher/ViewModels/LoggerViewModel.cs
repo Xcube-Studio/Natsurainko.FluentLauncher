@@ -34,23 +34,22 @@ internal partial class LoggerViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private bool info = true;
+    public partial bool Info { get; set; } = true;
 
     [ObservableProperty]
-    private bool warn = true;
+    public partial bool Warn { get; set; } = true;
 
     [ObservableProperty]
-    private bool error = true;
+    public partial bool Error { get; set; } = true;
 
     [ObservableProperty]
-    private bool fatal = true;
+    public partial bool Fatal { get; set; } = true;
 
     [ObservableProperty]
-    private bool debug = true;
+    public partial bool Debug { get; set; } = true;
 
     [ObservableProperty]
-    private bool enableAutoScroll = true;
-
+    public partial bool EnableAutoScroll { get; set; } = true;
     public ObservableCollection<LoggerItem> FilterLoggerItems { get; } = [];
 
     private ObservableCollection<GameLoggerOutputLevel> EnabledLevel { get; } = [];
@@ -158,9 +157,9 @@ internal partial class LoggerViewModel : ObservableObject
         }
 
         [ObservableProperty]
-        private RichTextBlock richTextBlock;
+        public partial RichTextBlock RichTextBlock { get; set; }
 
         [ObservableProperty]
-        private Visibility errorVisibility;
+        public partial Visibility ErrorVisibility { get; set; }
     }
 }

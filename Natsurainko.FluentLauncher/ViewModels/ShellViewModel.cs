@@ -24,13 +24,13 @@ internal partial class ShellViewModel : ObservableObject, INavigationAware
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(LaunchTasksInfoBadgeOpacity))]
-    private int runningLaunchTasks;
+    public partial int RunningLaunchTasks { get; set; }
 
     public float LaunchTasksInfoBadgeOpacity => RunningLaunchTasks == 0 ? 0 : 1;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(DownloadTasksInfoBadgeOpacity))]
-    private int runningDownloadTasks;
+    public partial int RunningDownloadTasks { get; set; }
 
     public float DownloadTasksInfoBadgeOpacity => RunningDownloadTasks == 0 ? 0 : 1;
 

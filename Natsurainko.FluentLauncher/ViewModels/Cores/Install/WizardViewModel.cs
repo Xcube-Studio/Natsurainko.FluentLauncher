@@ -20,10 +20,10 @@ namespace Natsurainko.FluentLauncher.ViewModels.Cores.Install;
 internal partial class WizardViewModel : ObservableObject, INavigationAware
 {
     [ObservableProperty]
-    private WizardViewModelBase currentFrameDataContext;
+    public partial WizardViewModelBase CurrentFrameDataContext { get; set; }
 
     [ObservableProperty]
-    private string[] breadcrumbBarItemsSource;
+    public partial string[] BreadcrumbBarItemsSource { get; set; }
 
     private readonly Stack<WizardViewModelBase> _viewModelStack = new();
 

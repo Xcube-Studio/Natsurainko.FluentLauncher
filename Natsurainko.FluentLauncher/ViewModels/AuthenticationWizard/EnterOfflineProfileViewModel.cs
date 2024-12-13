@@ -22,11 +22,11 @@ internal partial class EnterOfflineProfileViewModel : WizardViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
-    private string name;
+    public partial string Name { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
-    private string uuid;
+    public partial string Uuid { get; set; }
 
     public override bool CanNext
     {

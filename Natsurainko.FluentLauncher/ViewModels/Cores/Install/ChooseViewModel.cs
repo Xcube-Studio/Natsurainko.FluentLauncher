@@ -20,7 +20,7 @@ internal partial class ChooseViewModel : WizardViewModelBase
     public override bool CanPrevious => false;
 
     [ObservableProperty]
-    private List<ChooseModLoaderData> modLoaderDatas = [];
+    public partial List<ChooseModLoaderData> ModLoaderDatas { get; set; } = [];
 
     #endregion
 
@@ -30,14 +30,13 @@ internal partial class ChooseViewModel : WizardViewModelBase
 
         _manifestItem = manifestItem;
         _installConfig = new() { ManifestItem = manifestItem };
-
-        modLoaderDatas = 
+        ModLoaderDatas = 
         [
-            new(ModLoaderType.NeoForge, _manifestItem, modLoaderDatas),
-            new(ModLoaderType.Forge, _manifestItem, modLoaderDatas),
-            new(ModLoaderType.OptiFine, _manifestItem, modLoaderDatas),
-            new(ModLoaderType.Fabric, _manifestItem, modLoaderDatas),
-            new(ModLoaderType.Quilt, _manifestItem, modLoaderDatas),
+            new(ModLoaderType.NeoForge, _manifestItem, ModLoaderDatas),
+            new(ModLoaderType.Forge, _manifestItem, ModLoaderDatas),
+            new(ModLoaderType.OptiFine, _manifestItem, ModLoaderDatas),
+            new(ModLoaderType.Fabric, _manifestItem, ModLoaderDatas),
+            new(ModLoaderType.Quilt, _manifestItem, ModLoaderDatas),
         ];
     }
 

@@ -30,7 +30,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     public MinecraftInstance MinecraftInstance { get; private set; }
 
     [ObservableProperty]
-    private InstanceConfig instanceConfig;
+    public partial InstanceConfig InstanceConfig { get; set; }
 
     public DefaultViewModel(
         GameService gameService, 
@@ -46,10 +46,10 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(FormatSize))]
-    private GameStorageInfo gameStorageInfo;
+    public partial GameStorageInfo GameStorageInfo { get; set; }
 
     [ObservableProperty]
-    private bool pinned;
+    public partial bool Pinned { get; set; }
 
     public string FormatSize
     {

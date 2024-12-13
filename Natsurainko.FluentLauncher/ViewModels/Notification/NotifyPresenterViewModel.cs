@@ -14,14 +14,13 @@ internal partial class NotifyPresenterViewModel : ObservableObject
     public bool _removed = false;
 
     [ObservableProperty]
-    private string notifyTitile;
+    public partial string NotifyTitile { get; set; }
 
     [ObservableProperty]
-    private string icon;
+    public partial string Icon { get; set; }
 
     [ObservableProperty]
-    private ContentPresenter notifyContent;
-
+    public partial ContentPresenter NotifyContent { get; set; }
     public Func<Storyboard> CreateRetractAnimationAction { get; set; }
 
     public Action Remove { get; set; }

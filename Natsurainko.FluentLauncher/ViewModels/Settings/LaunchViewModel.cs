@@ -37,54 +37,54 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsMinecraftFoldersEmpty))]
     [BindToSetting(Path = nameof(SettingsService.ActiveMinecraftFolder))]
-    private string activeMinecraftFolder;
+    public partial string ActiveMinecraftFolder { get; set; }
 
     public ObservableCollection<string> Javas => _settingsService.Javas;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsJavasEmpty))]
     [BindToSetting(Path = nameof(SettingsService.ActiveJava))]
-    private string activeJava;
+    public partial string ActiveJava { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.JavaMemory))]
-    private int javaMemory;
+    public partial int JavaMemory { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.EnableAutoMemory))]
-    private bool enableAutoMemory;
+    public partial bool EnableAutoMemory { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.EnableAutoJava))]
-    private bool enableAutoJava;
+    public partial bool EnableAutoJava { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.GameWindowTitle))]
-    private string gameWindowTitle;
+    public partial string GameWindowTitle { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.GameWindowWidth))]
-    private int gameWindowWidth;
+    public partial int GameWindowWidth { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.GameWindowHeight))]
-    private int gameWindowHeight;
+    public partial int GameWindowHeight { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.GameServerAddress))]
-    private string gameServerAddress;
+    public partial string GameServerAddress { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.EnableFullScreen))]
-    private bool enableFullScreen;
+    public partial bool EnableFullScreen { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.EnableIndependencyCore))]
-    private bool enableIndependencyCore;
+    public partial bool EnableIndependencyCore { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.MaxQuickLaunchLatestItem))]
-    private int maxQuickLaunchLatestItem;
+    public partial int MaxQuickLaunchLatestItem { get; set; }
 
     #endregion
 

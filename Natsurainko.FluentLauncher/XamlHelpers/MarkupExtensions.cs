@@ -7,7 +7,7 @@ using System.Linq;
 namespace Natsurainko.FluentLauncher.XamlHelpers;
 
 [MarkupExtensionReturnType(ReturnType = typeof(Microsoft.UI.Xaml.Controls.FontIcon))]
-public class FontIcon : MarkupExtension
+public partial class FontIcon : MarkupExtension
 {
     public string Glyph { get; set; }
 

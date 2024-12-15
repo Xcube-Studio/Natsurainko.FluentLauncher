@@ -302,7 +302,7 @@
                                                         BorderThickness="2"
                                                         CornerRadius="4">
                                                         <Border CornerRadius="4">
-                                                            <Image Source="{x:Bind Converter={ThemeResource InstanceIconConverter}}" />
+                                                            <Image Source="{Binding Converter={ThemeResource InstanceIconConverter}}" />
                                                         </Border>
                                                     </Border>
                                                     <StackPanel Grid.Column="2" VerticalAlignment="Center">

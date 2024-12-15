@@ -139,27 +139,27 @@ internal partial class LoggerViewModel : ObservableObject
     }
 
     private void ScrollToEnd() => View.ScrollViewer.ScrollToVerticalOffset(View.ScrollViewer.ScrollableHeight);
+}
 
-    internal partial class LoggerItem : ObservableObject
+internal partial class LoggerItem : ObservableObject
+{
+    public LoggerItem(GameLoggerOutput output)
     {
-        public LoggerItem(GameLoggerOutput output)
+        App.DispatcherQueue.TryEnqueue(() =>
         {
-            App.DispatcherQueue.TryEnqueue(() =>
-            {
-                var richTextBlock = new RichTextBlock();
-                LoggerColorLightLanguage.Formatter.FormatRichTextBlock(output.FullData, new LoggerColorLightLanguage(), richTextBlock);
-                RichTextBlock = richTextBlock;
-            });
+            var richTextBlock = new RichTextBlock();
+            LoggerColorLightLanguage.Formatter.FormatRichTextBlock(output.FullData, new LoggerColorLightLanguage(), richTextBlock);
+            RichTextBlock = richTextBlock;
+        });
 
-            ErrorVisibility = (output.Level == GameLoggerOutputLevel.Error || output.Level == GameLoggerOutputLevel.Fatal)
-                ? Visibility.Visible
-                : Visibility.Collapsed;
-        }
-
-        [ObservableProperty]
-        public partial RichTextBlock RichTextBlock { get; set; }
-
-        [ObservableProperty]
-        public partial Visibility ErrorVisibility { get; set; }
+        ErrorVisibility = (output.Level == GameLoggerOutputLevel.Error || output.Level == GameLoggerOutputLevel.Fatal)
+            ? Visibility.Visible
+            : Visibility.Collapsed;
     }
+
+    [ObservableProperty]
+    public partial RichTextBlock RichTextBlock { get; set; }
+
+    [ObservableProperty]
+    public partial Visibility ErrorVisibility { get; set; }
 }

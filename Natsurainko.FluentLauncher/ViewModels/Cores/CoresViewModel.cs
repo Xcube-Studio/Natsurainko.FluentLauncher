@@ -101,9 +101,9 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
         App.DispatcherQueue.TryEnqueue(() => DisplayMinecraftInstances = list);
     }
 
-    IEnumerable<SearchProviderService.Suggestion> ProviderSuggestions(string searchText)
+    IEnumerable<Suggestion> ProviderSuggestions(string searchText)
     {
-        yield return new SearchProviderService.Suggestion
+        yield return new Suggestion
         {
             Title = ResourceUtils.GetValue("SearchSuggest", "_T1").Replace("{searchText}", searchText),
             Description = ResourceUtils.GetValue("SearchSuggest", "_D1"),

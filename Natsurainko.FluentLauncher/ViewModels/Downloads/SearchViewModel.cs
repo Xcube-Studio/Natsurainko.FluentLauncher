@@ -199,7 +199,7 @@ internal partial class SearchViewModel : ObservableObject, INavigationAware
         });
     }
 
-    IEnumerable<SearchProviderService.Suggestion> ProviderSuggestions(string searchText)
+    IEnumerable<Suggestion> ProviderSuggestions(string searchText)
     {
         if (ResourceType == 0)
         {

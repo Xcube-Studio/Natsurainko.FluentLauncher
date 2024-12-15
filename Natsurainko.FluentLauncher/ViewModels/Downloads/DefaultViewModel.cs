@@ -173,9 +173,9 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         });
     }
 
-    IEnumerable<SearchProviderService.Suggestion> ProviderSuggestions(string searchText)
+    IEnumerable<Suggestion> ProviderSuggestions(string searchText)
     {
-        yield return new SearchProviderService.Suggestion
+        yield return new Suggestion
         {
             Title = ResourceUtils.GetValue("SearchSuggest", "_T1").Replace("{searchText}", searchText),
             Description = ResourceUtils.GetValue("SearchSuggest", "_D1"),
@@ -186,7 +186,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             })
         };
 
-        yield return new SearchProviderService.Suggestion
+        yield return new Suggestion
         {
             Title = ResourceUtils.GetValue("SearchSuggest", "_T2").Replace("{searchText}", searchText),
             Description = ResourceUtils.GetValue("SearchSuggest", "_D1"),
@@ -197,7 +197,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             })
         };
 
-        yield return new SearchProviderService.Suggestion
+        yield return new Suggestion
         {
             Title = ResourceUtils.GetValue("SearchSuggest", "_T3").Replace("{searchText}", searchText),
             Description = ResourceUtils.GetValue("SearchSuggest", "_D1"),

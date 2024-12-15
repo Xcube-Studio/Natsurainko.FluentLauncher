@@ -79,9 +79,9 @@ internal partial class HomeViewModel : ObservableObject
     [RelayCommand]
     public void GoToSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Launch");
 
-    IEnumerable<SearchProviderService.Suggestion> ProviderSuggestions(string searchText)
+    IEnumerable<Suggestion> ProviderSuggestions(string searchText)
     {
-        yield return new SearchProviderService.Suggestion
+        yield return new Suggestion
         {
             Title = ResourceUtils.GetValue("SearchSuggest", "_T1").Replace("{searchText}", searchText),
             Description = ResourceUtils.GetValue("SearchSuggest", "_D1"),

@@ -116,7 +116,7 @@
                 <StackPanel>
                     <ItemsRepeater ItemsSource="{x:Bind VM.FilterLoggerItems}">
                         <ItemsRepeater.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate x:DataType="pages:LoggerItem">
                                 <Grid>
                                     <Rectangle
                                         Width="4"
@@ -124,11 +124,11 @@
                                         HorizontalAlignment="Right"
                                         Fill="Red"
                                         Opacity="0.5"
-                                        Visibility="{x:Bind VM.ErrorVisibility}" />
+                                        Visibility="{x:Bind ErrorVisibility}" />
                                     <ContentControl
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
-                                        Content="{x:Bind VM.RichTextBlock}"
+                                        Content="{x:Bind RichTextBlock}"
                                         FontWeight="SemiBold" />
                                 </Grid>
                             </DataTemplate>

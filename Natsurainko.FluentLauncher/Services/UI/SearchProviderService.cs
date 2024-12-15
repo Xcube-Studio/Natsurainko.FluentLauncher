@@ -85,39 +85,39 @@ internal partial class SearchProviderService : ObservableObject
         QueryReceiverOwner = provider;
         QueryReceiver = action;
     }
+}
 
-    public class Suggestion
-    {
-        public string Title { get; set; }
+public class Suggestion
+{
+    public string Title { get; set; }
 
-        public string Description { get; set; }
+    public string Description { get; set; }
 
-        public SuggestionIconType SuggestionIconType { get; set; } = SuggestionIconType.Glyph;
+    public SuggestionIconType SuggestionIconType { get; set; } = SuggestionIconType.Glyph;
 
-        public string Icon { get; set; } = "\ue721";
+    public string Icon { get; set; } = "\ue721";
 
-        public Action InvokeAction { get; set; }
+    public Action InvokeAction { get; set; }
 
-        public object Parameter { get; set; }
-    }
+    public object Parameter { get; set; }
+}
 
-    public enum SuggestionIconType
-    {
-        Glyph = 0,
-        UriIcon = 1,
-        WebUrlIcon = 2
-    }
+public enum SuggestionIconType
+{
+    Glyph = 0,
+    UriIcon = 1,
+    WebUrlIcon = 2
 }
 
 internal static class SuggestionHelper
 {
-    public static SearchProviderService.Suggestion FromMinecraftInstance(MinecraftInstance instance, string description, Action action)
+    public static Suggestion FromMinecraftInstance(MinecraftInstance instance, string description, Action action)
     {
-        return new SearchProviderService.Suggestion
+        return new Suggestion
         {
             Title = instance.InstanceId,
             Description = description,
-            SuggestionIconType = SearchProviderService.SuggestionIconType.UriIcon,
+            SuggestionIconType = SuggestionIconType.UriIcon,
             Icon = string.Format("ms-appx:///Assets/Icons/{0}.png", instance.Version.Type switch
             {
                 MinecraftVersionType.Release => "grass_block_side",
@@ -130,13 +130,13 @@ internal static class SuggestionHelper
         };
     }
 
-    public static SearchProviderService.Suggestion FromVersionManifestItem(VersionManifestItem item, string description, Action action)
+    public static Suggestion FromVersionManifestItem(VersionManifestItem item, string description, Action action)
     {
-        return new SearchProviderService.Suggestion
+        return new Suggestion
         {
             Title = item.Id,
             Description = description,
-            SuggestionIconType = SearchProviderService.SuggestionIconType.UriIcon,
+            SuggestionIconType = SuggestionIconType.UriIcon,
             Icon = string.Format("ms-appx:///Assets/Icons/{0}.png", item.Type switch
             {
                 "release" => "grass_block_side",

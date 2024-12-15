@@ -27,7 +27,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
     object INavigationProvider.NavigationControl => contentFrame;
 
-    private ShellViewModel VM => (ShellViewModel)DataContext;
+    ShellViewModel VM => (ShellViewModel)DataContext;
 
     private readonly SettingsService _settings = App.GetService<SettingsService>();
     private readonly SearchProviderService _searchProviderService = App.GetService<SearchProviderService>();

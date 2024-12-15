@@ -6,9 +6,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    xmlns:searchService="using:Natsurainko.FluentLauncher.Services.UI"
     ActualThemeChanged="Page_ActualThemeChanged"
     Loaded="Page_Loaded"
     SizeChanged="Page_SizeChanged"
+    x:DefaultBindMode="OneWay"
     mc:Ignorable="d">
     <Page.Resources>
         <Style x:Key="PaneToggleButtonStyle" TargetType="Button">
@@ -948,7 +950,7 @@
                     Icon="{xh:FontIcon Glyph=&#xE945;}"
                     Tag="Tasks/Launch">
                     <NavigationViewItem.InfoBadge>
-                        <InfoBadge Opacity="{Binding LaunchTasksInfoBadgeOpacity}" Value="{Binding RunningLaunchTasks}" />
+                        <InfoBadge Opacity="{x:Bind VM.LaunchTasksInfoBadgeOpacity}" Value="{x:Bind VM.RunningLaunchTasks}" />
                     </NavigationViewItem.InfoBadge>
                 </NavigationViewItem>
                 <NavigationViewItem
@@ -957,7 +959,7 @@
                     Icon="{xh:FontIcon Glyph=&#xe896;}"
                     Tag="Tasks/Download">
                     <NavigationViewItem.InfoBadge>
-                        <InfoBadge Opacity="{Binding DownloadTasksInfoBadgeOpacity}" Value="{Binding RunningDownloadTasks}" />
+                        <InfoBadge Opacity="{x:Bind VM.DownloadTasksInfoBadgeOpacity}" Value="{x:Bind VM.RunningDownloadTasks}" />
                     </NavigationViewItem.InfoBadge>
                 </NavigationViewItem>
                 <NavigationViewItem
@@ -1005,7 +1007,7 @@
                 <Button
                     x:Name="BackButton"
                     Click="BackButton_Click"
-                    IsEnabled="{Binding CanGoBack, ElementName=contentFrame}"
+                    IsEnabled="{x:Bind contentFrame.CanGoBack}"
                     Style="{ThemeResource NavigationBackButtonNormalStyle}" />
                 <Button
                     x:Name="PaneToggleButton"
@@ -1070,7 +1072,7 @@
                 </AutoSuggestBox.QueryIcon>
 
                 <AutoSuggestBox.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="searchService:Suggestion">
                         <Grid Padding="0,10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -1090,16 +1092,16 @@
                                     <ContentControl
                                         HorizontalContentAlignment="Center"
                                         VerticalContentAlignment="Center"
-                                        Content="{Binding Converter={ThemeResource SuggestionIconConverter}}" />
+                                        Content="{x:Bind Converter={ThemeResource SuggestionIconConverter}}" />
                                 </Border>
                             </Grid>
 
                             <StackPanel Grid.Column="2">
-                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding Title}" />
+                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind Title}" />
                                 <TextBlock
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="{Binding Description}" />
+                                    Text="{x:Bind Description}" />
                             </StackPanel>
                         </Grid>
                     </DataTemplate>

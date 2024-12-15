@@ -17,7 +17,7 @@ internal partial class AboutViewModel : ObservableObject
     public partial string Edition { get; set; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Debug");
 #else
     [ObservableProperty]
-    private string edition = ResourceUtils.GetValue("Settings", "AboutPage", "_Release");
+    public partial string Edition { get; set; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Release");
 #endif
 
     [RelayCommand]

@@ -4,6 +4,7 @@ using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Pages;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.Settings;
@@ -34,6 +35,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
     private bool isUpdatingNavigationItemSelection = false;
     private int backgroundBlurredValue = 0;
+    private bool isCursorInNavBarHoverArea;
 
     public ShellPage()
     {
@@ -71,6 +73,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
     private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
     {
         AppTitle.Visibility = e.NewSize.Width <= 750 ? Visibility.Collapsed : Visibility.Visible;
+        NavigationViewControl.PaneDisplayMode = e.NewSize.Width <= 640 ? NavigationViewPaneDisplayMode.LeftMinimal : NavigationViewPaneDisplayMode.LeftCompact;
 
         UpdateTitleBarDragArea();
     }
@@ -104,6 +107,9 @@ public sealed partial class ShellPage : Page, INavigationProvider
         UpdateTitleBarDragArea();
 
         _settings.NavigationViewIsPaneOpen = false;
+
+        NavViewPaneBackground.Opacity = 1;
+        NavViewPaneBackground.Translation = new System.Numerics.Vector3(0, 0, 32);
     }
 
     private void NavigationViewControl_PaneOpening(NavigationView sender, object _)
@@ -114,6 +120,9 @@ public sealed partial class ShellPage : Page, INavigationProvider
         UpdateTitleBarDragArea();
 
         _settings.NavigationViewIsPaneOpen = true;
+
+        NavViewPaneBackground.Opacity = 0;
+        NavViewPaneBackground.Translation = new System.Numerics.Vector3(0, 0, 0);
     }
 
     private void NavigationViewControl_ItemInvoked(NavigationView _, NavigationViewItemInvokedEventArgs args)
@@ -221,40 +230,20 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
     void ConfigureNavigationView()
     {
-        if (_settings.UseBackgroundMask)
+        NavViewPaneBackground.OpacityTransition = new ScalarTransition()
         {
-            var RootSplitView = FindControl<SplitView>(NavigationViewControl, typeof(SplitView), "RootSplitView");
-            if (RootSplitView != null)
-            {
-                RootSplitView.CornerRadius = new CornerRadius(0);
+            Duration = TimeSpan.FromMilliseconds(150)
+        };
+        NavViewPaneBackground.TranslationTransition = new Vector3Transition()
+        {
+            Duration = TimeSpan.FromMilliseconds(150)
+        };
 
-                var PaneContentGrid = FindControl<Grid>(RootSplitView, typeof(Grid), "PaneContentGrid")!;
+        NavViewPaneBackground.Visibility = _settings.UseBackgroundMask ? Visibility.Visible : Visibility.Collapsed;
 
-                var Border = new Border();
-                Border.Background = new BackdropBlurBrush() { Amount = 16 };
-                Grid.SetRowSpan(Border, 8);
-
-                PaneContentGrid.Children.Insert(0, Border);
-                PaneContentGrid.Translation += new System.Numerics.Vector3(0, 0, 48);
-
-                PaneContentGrid.Background = this.ActualTheme == ElementTheme.Light
-                    ? new SolidColorBrush(Color.FromArgb(128, 255, 255, 255))
-                    : new SolidColorBrush(Color.FromArgb(76, 58, 58, 58));
-                PaneContentGrid.BorderBrush = this.ActualTheme == ElementTheme.Light
-                    ? new SolidColorBrush(Color.FromArgb(15, 0, 0, 0))
-                    : new SolidColorBrush(Color.FromArgb(25, 0, 0, 0));
-
-                PaneContentGrid.ActualThemeChanged += (_, e) =>
-                {
-                    PaneContentGrid.Background = this.ActualTheme == ElementTheme.Light
-                        ? new SolidColorBrush(Color.FromArgb(128, 255, 255, 255))
-                        : new SolidColorBrush(Color.FromArgb(76, 58, 58, 58));
-                    PaneContentGrid.BorderBrush = this.ActualTheme == ElementTheme.Light
-                        ? new SolidColorBrush(Color.FromArgb(15, 0, 0, 0))
-                        : new SolidColorBrush(Color.FromArgb(25, 0, 0, 0));
-                };
-            }
-        }
+        var RootSplitView = FindControl<SplitView>(NavigationViewControl, typeof(SplitView), "RootSplitView")!;
+        RootSplitView.Margin = new Thickness(-1);
+        RootSplitView.Padding = new Thickness(1);
     }
 
     private void UpdateTitleBarDragArea()

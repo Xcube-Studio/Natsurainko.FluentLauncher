@@ -12,6 +12,7 @@
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
+        <ThemeShadow x:Name="SharedShadow" />
         <Style x:Key="DropDownButtonStyle" TargetType="DropDownButton">
             <Setter Property="Background" Value="{ThemeResource ButtonBackground}" />
             <Setter Property="Foreground" Value="{ThemeResource ButtonForeground}" />

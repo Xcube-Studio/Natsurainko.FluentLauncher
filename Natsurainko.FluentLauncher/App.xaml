@@ -23,6 +23,12 @@
                         TintColor="#EEEEEE"
                         TintLuminosityOpacity="0.9"
                         TintOpacity="0.0" />
+                    <AcrylicBrush
+                        x:Key="BackgroundImageMaskAcrylicBrush"
+                        FallbackColor="#E0EEEEEE"
+                        TintColor="#EEEEEE"
+                        TintLuminosityOpacity="0.9"
+                        TintOpacity="0.4" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="DeleteButtonBackground" Color="#3FFF0000" />
@@ -34,6 +40,12 @@
                         FallbackColor="#AA222222"
                         TintColor="#222222"
                         TintLuminosityOpacity="0.5"
+                        TintOpacity="0.0" />
+                    <AcrylicBrush
+                        x:Key="BackgroundImageMaskAcrylicBrush"
+                        FallbackColor="#EE222222"
+                        TintColor="#222222"
+                        TintLuminosityOpacity="0.7"
                         TintOpacity="0.0" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>

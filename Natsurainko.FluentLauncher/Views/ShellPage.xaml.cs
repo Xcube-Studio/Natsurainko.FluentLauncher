@@ -34,8 +34,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
     private readonly SearchProviderService _searchProviderService = App.GetService<SearchProviderService>();
 
     private bool isUpdatingNavigationItemSelection = false;
-    private int backgroundBlurredValue = 0;
-    private bool isCursorInNavBarHoverArea;
+    //private int backgroundBlurredValue = 0;
 
     public ShellPage()
     {
@@ -46,33 +45,44 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
     #region Page Events
 
-    private async void Page_Loaded(object sender, RoutedEventArgs e)
+    private void Page_Loaded(object sender, RoutedEventArgs e)
     {
         App.MainWindow.SetTitleBar(AppTitleBar);
         ConfigureNavigationView();
 
-        if (_settings.UseBackgroundMask)
-        {
-            AppTitleBar.Background = new SolidColorBrush((Color)this.Resources["SystemAccentColor"]);
-            AppTitleBar.RequestedTheme = ElementTheme.Light;
-        }
+        //if (_settings.BackgroundMode == 3 && !VM._onNavigatedTo)
+        //{
+        //    var sprite = await PipelineBuilder
+        //        .FromBackdrop()
+        //        .Blur(0, out EffectAnimation<float> blurAnimation)
+        //        .AttachAsync(BlurBorder, BlurBorder);
 
-        if (_settings.BackgroundMode == 3 && !VM._onNavigatedTo)
-        {
-            var sprite = await PipelineBuilder
-                .FromBackdrop()
-                .Blur(0, out EffectAnimation<float> blurAnimation)
-                .AttachAsync(BlurBorder, BlurBorder);
-
-            await blurAnimation(sprite.Brush, 0, TimeSpan.FromMilliseconds(1));
-        }
+        //    await blurAnimation(sprite.Brush, 0, TimeSpan.FromMilliseconds(1));
+        //}
 
         UpdateTitleBarDragArea();
     }
 
     private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        AppTitle.Visibility = e.NewSize.Width <= 750 ? Visibility.Collapsed : Visibility.Visible;
+        if (e.PreviousSize.Width <= 640 && e.NewSize.Width > 640)
+        {
+            NavViewPaneBackground.Translation += new System.Numerics.Vector3(48, 0, 0);
+            TopNavViewPaneBackground.Translation -= new System.Numerics.Vector3(110, 0, 0);
+
+            var PaneToggleButtonGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneToggleButtonGrid")!;
+            PaneToggleButtonGrid.Translation -= new System.Numerics.Vector3(20, 0, 0);
+        }
+
+        if (e.PreviousSize.Width > 640 && e.NewSize.Width <= 640)
+        {
+            NavViewPaneBackground.Translation -= new System.Numerics.Vector3(48, 0, 0);
+            TopNavViewPaneBackground.Translation += new System.Numerics.Vector3(110, 0, 0);
+
+            var PaneToggleButtonGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneToggleButtonGrid")!;
+            PaneToggleButtonGrid.Translation += new System.Numerics.Vector3(20, 0, 0);
+        }
+
         NavigationViewControl.PaneDisplayMode = e.NewSize.Width <= 640 ? NavigationViewPaneDisplayMode.LeftMinimal : NavigationViewPaneDisplayMode.LeftCompact;
 
         UpdateTitleBarDragArea();
@@ -103,26 +113,26 @@ public sealed partial class ShellPage : Page, INavigationProvider
     {
         AutoSuggestBox.Visibility = Visibility.Visible;
 
-        UpdateTitleTextPosition(sender);
+        //UpdateTitleTextPosition(sender);
         UpdateTitleBarDragArea();
 
         _settings.NavigationViewIsPaneOpen = false;
 
         NavViewPaneBackground.Opacity = 1;
-        NavViewPaneBackground.Translation = new System.Numerics.Vector3(0, 0, 32);
+        NavViewPaneBackground.Translation += new System.Numerics.Vector3(0, 0, 32);
     }
 
     private void NavigationViewControl_PaneOpening(NavigationView sender, object _)
     {
         AutoSuggestBox.Visibility = NavigationViewControl.DisplayMode == NavigationViewDisplayMode.Minimal ? Visibility.Collapsed : Visibility.Visible;
 
-        UpdateTitleTextPosition(sender);
+        //UpdateTitleTextPosition(sender);
         UpdateTitleBarDragArea();
 
         _settings.NavigationViewIsPaneOpen = true;
 
         NavViewPaneBackground.Opacity = 0;
-        NavViewPaneBackground.Translation = new System.Numerics.Vector3(0, 0, 0);
+        NavViewPaneBackground.Translation -= new System.Numerics.Vector3(0, 0, 32);
     }
 
     private void NavigationViewControl_ItemInvoked(NavigationView _, NavigationViewItemInvokedEventArgs args)
@@ -138,29 +148,21 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
     private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
     {
-        PaneToggleButton.Visibility = args.DisplayMode == NavigationViewDisplayMode.Minimal ? Visibility.Visible : Visibility.Collapsed;
-        NavigationViewControl.IsPaneToggleButtonVisible = args.DisplayMode != NavigationViewDisplayMode.Minimal;
+        //PaneToggleButton.Visibility = args.DisplayMode == NavigationViewDisplayMode.Minimal ? Visibility.Visible : Visibility.Collapsed;
+        //NavigationViewControl.IsPaneToggleButtonVisible = args.DisplayMode != NavigationViewDisplayMode.Minimal;
 
-        if (args.DisplayMode == NavigationViewDisplayMode.Minimal)
-        {
-            Grid.SetRow(NavigationViewControl, 0);
-            Grid.SetRowSpan(NavigationViewControl, 2);
-            Spacer.Height = 48;
-            contentFrame.Margin = new Thickness(0, 48, 0, 0);
-        }
-        else
-        {
-            Grid.SetRow(NavigationViewControl, 1);
-            Grid.SetRowSpan(NavigationViewControl, 1);
-            Spacer.Height = 0;
-            contentFrame.Margin = new Thickness(0);
-        }
+        //if (args.DisplayMode == NavigationViewDisplayMode.Minimal)
+        //    contentFrame.Margin = new Thickness(0, 48, 0, 0);
+        //else
+        //    contentFrame.Margin = new Thickness(0);
 
-        UpdateTitleTextPosition(sender);
+        //UpdateTitleTextPosition(sender);
+
+        TopNavViewPaneToggleButtonsBorder.Width = args.DisplayMode == NavigationViewDisplayMode.Minimal ? 150 : 0;
         UpdateTitleBarDragArea();
     }
 
-    private async void ContentFrame_Navigated(object sender, NavigationEventArgs e)
+    private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
     {
         isUpdatingNavigationItemSelection = true;
 
@@ -177,20 +179,18 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
         isUpdatingNavigationItemSelection = false;
 
+        //if (_settings.BackgroundMode == 3)
+        //    await BlurAnimation(!typeof(HomePage).Equals(e.SourcePageType) ? 75 : 0);
+        //else await BlurAnimation(0);
+
         if (_settings.BackgroundMode == 3)
-            await BlurAnimation(!typeof(HomePage).Equals(e.SourcePageType) ? 75 : 0);
-        else await BlurAnimation(0);
+            BlurBorder.Opacity = typeof(HomePage).Equals(e.SourcePageType) ? 0 : 1;
+        else BlurBorder.Opacity = 0;
     }
 
     #endregion
 
     #region TitleBar Controls Events
-
-    private void PaneToggleButton_Click(object sender, RoutedEventArgs e)
-        => NavigationViewControl.IsPaneOpen = !NavigationViewControl.IsPaneOpen;
-
-    private void BackButton_Click(object sender, RoutedEventArgs e)
-        => VM.NavigationService.GoBack();
 
     private void AutoSuggestBox_Loaded(object sender, RoutedEventArgs e)
          => _searchProviderService.BindingSearchBox(AutoSuggestBox);
@@ -198,9 +198,9 @@ public sealed partial class ShellPage : Page, INavigationProvider
     #endregion
 
     #region AppearanceService Events
-    private async void BackgroundReloaded(object? sender, EventArgs e)
+    private void BackgroundReloaded(object? sender, EventArgs e)
     {
-        await BlurAnimation((_settings.BackgroundMode == 3) ? 75 : 0, 0.001);
+        BlurBorder.Opacity = (_settings.BackgroundMode == 3) ? 1 : 0;
 
         if (_settings.BackgroundMode == 3 || _settings.BackgroundMode == 2)
         {
@@ -224,6 +224,10 @@ public sealed partial class ShellPage : Page, INavigationProvider
     {
         ContentFrame = contentFrame;
         NavigationViewControl.IsPaneOpen = _settings.NavigationViewIsPaneOpen;
+        BlurBorder.OpacityTransition = new ScalarTransition()
+        {
+            Duration = TimeSpan.FromMilliseconds(150)
+        };
 
         App.GetService<AppearanceService>().BackgroundReloaded += BackgroundReloaded;
     }
@@ -238,12 +242,26 @@ public sealed partial class ShellPage : Page, INavigationProvider
         {
             Duration = TimeSpan.FromMilliseconds(150)
         };
+        TopNavViewPaneBackground.TranslationTransition = new Vector3Transition()
+        {
+            Duration = TimeSpan.FromMilliseconds(150)
+        };
 
         NavViewPaneBackground.Visibility = _settings.UseBackgroundMask ? Visibility.Visible : Visibility.Collapsed;
 
         var RootSplitView = FindControl<SplitView>(NavigationViewControl, typeof(SplitView), "RootSplitView")!;
         RootSplitView.Margin = new Thickness(-1);
         RootSplitView.Padding = new Thickness(1);
+
+        var PaneContentGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneContentGrid")!;
+        PaneContentGrid.Padding = new Thickness(1,0,0,0);
+
+        var PaneToggleButtonGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneToggleButtonGrid")!;
+        PaneToggleButtonGrid.Translation += new System.Numerics.Vector3(20, 0, 0);
+        PaneToggleButtonGrid.TranslationTransition = new Vector3Transition()
+        {
+            Duration = TimeSpan.FromMilliseconds(500)
+        };
     }
 
     private void UpdateTitleBarDragArea()
@@ -288,28 +306,28 @@ public sealed partial class ShellPage : Page, INavigationProvider
         App.MainWindow.AppWindow.TitleBar.SetDragRectangles([.. dragRects]);
     }
 
-    private void UpdateTitleTextPosition(NavigationView sender)
-    {
-        AppTitle.TranslationTransition = new Vector3Transition();
-        AppTitle.Translation = ((sender.DisplayMode == NavigationViewDisplayMode.Expanded && sender.IsPaneOpen) ||
-                 sender.DisplayMode == NavigationViewDisplayMode.Minimal)
-                 ? new System.Numerics.Vector3(8, 0, 0)
-                 : new System.Numerics.Vector3(28, 0, 0);
-    }
+    //private void UpdateTitleTextPosition(NavigationView sender)
+    //{
+    //    AppTitle.TranslationTransition = new Vector3Transition();
+    //    AppTitle.Translation = ((sender.DisplayMode == NavigationViewDisplayMode.Expanded && sender.IsPaneOpen) ||
+    //             sender.DisplayMode == NavigationViewDisplayMode.Minimal)
+    //             ? new System.Numerics.Vector3(8, 0, 0)
+    //             : new System.Numerics.Vector3(28, 0, 0);
+    //}
 
-    private async Task BlurAnimation(int to, double time = 0.1)
-    {
-        //if (backgroundBlurredValue.Equals(to))
-        //    return;
+    //private async Task BlurAnimation(int to, double time = 0.1)
+    //{
+    //    //if (backgroundBlurredValue.Equals(to))
+    //    //    return;
 
-        var sprite = await PipelineBuilder
-            .FromBackdrop()
-            .Blur(backgroundBlurredValue, out EffectAnimation<float> blurAnimation)
-            .AttachAsync(BlurBorder, BlurBorder);
+    //    var sprite = await PipelineBuilder
+    //        .FromBackdrop()
+    //        .Blur(backgroundBlurredValue, out EffectAnimation<float> blurAnimation)
+    //        .AttachAsync(BlurBorder, BlurBorder);
 
-        await blurAnimation(sprite.Brush, to, TimeSpan.FromSeconds(time));
-        backgroundBlurredValue = to;
-    }
+    //    await blurAnimation(sprite.Brush, to, TimeSpan.FromSeconds(time));
+    //    backgroundBlurredValue = to;
+    //}
 
     private static T? FindControl<T>(UIElement parent, Type targetType, string ControlName) where T : FrameworkElement
     {

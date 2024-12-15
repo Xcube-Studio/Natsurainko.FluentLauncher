@@ -218,18 +218,21 @@
             Name="BlurBorder"
             Grid.RowSpan="2"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch" />
+            VerticalAlignment="Stretch"
+            Background="{ThemeResource BackgroundImageMaskAcrylicBrush}"
+            Opacity="0" />
 
         <Border
             Name="BackgroundContentBorder"
             Grid.Row="1"
             Background="{ThemeResource NavigationViewContentBackground}"
             BorderBrush="{ThemeResource NavigationViewContentGridBorderBrush}"
-            BorderThickness="{ThemeResource BackgroundBorder}" />
+            BorderThickness="{ThemeResource BackgroundBorder}"
+            Visibility="Collapsed" />
 
         <Border
             x:Name="NavViewPaneBackground"
-            Grid.Row="1"
+            Grid.RowSpan="3"
             Width="48"
             Margin="0"
             HorizontalAlignment="Left"
@@ -240,14 +243,33 @@
             CornerRadius="0,8,8,0"
             Opacity="1"
             Shadow="{ThemeResource SharedShadow}"
-            Translation="0,0,32" />
+            Translation="-48,0,32" />
+
+        <Border
+            x:Name="TopNavViewPaneBackground"
+            Grid.RowSpan="2"
+            Width="90"
+            Height="48"
+            Margin="20,0,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Background="{ThemeResource NavigationViewUnfoldedPaneBackground}"
+            BorderBrush="{ThemeResource AccentControlElevationBorderBrush}"
+            BorderThickness="0"
+            CornerRadius="0,0,8,8"
+            Opacity="1"
+            Shadow="{ThemeResource SharedShadow}"
+            Translation="0,0,16" />
 
         <NavigationView
             x:Name="NavigationViewControl"
-            Grid.Row="1"
+            Grid.Row="0"
+            Grid.RowSpan="3"
             Canvas.ZIndex="0"
             DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
-            IsBackButtonVisible="Collapsed"
+            IsBackButtonVisible="Visible"
+            IsBackEnabled="{Binding CanGoBack, ElementName=contentFrame}"
+            IsPaneToggleButtonVisible="True"
             IsSettingsVisible="False"
             ItemInvoked="NavigationViewControl_ItemInvoked"
             OpenPaneLength="300"
@@ -257,9 +279,24 @@
                 <SolidColorBrush x:Key="NavigationViewContentBackground" Color="Transparent" />
                 <SolidColorBrush x:Key="NavigationViewContentGridBorderBrush" Color="Transparent" />
             </NavigationView.Resources>
-            <NavigationView.PaneCustomContent>
-                <Border x:Name="Spacer" Height="48" />
-            </NavigationView.PaneCustomContent>
+            <NavigationView.PaneHeader>
+                <Grid Padding="15,0,0,0">
+                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                        <Border VerticalAlignment="Center" CornerRadius="2.5">
+                            <Image
+                                Width="16"
+                                Height="16"
+                                Source="/Assets/AppIcon.png" />
+                        </Border>
+                        <TextBlock
+                            Margin="15,0,0,0"
+                            VerticalAlignment="Center"
+                            FontWeight="SemiBold"
+                            Opacity="0.8"
+                            Text="Fluent Launcher" />
+                    </StackPanel>
+                </Grid>
+            </NavigationView.PaneHeader>
             <NavigationView.MenuItems>
                 <NavigationViewItem
                     x:Uid="ShellPage_NV_Item_1"
@@ -319,7 +356,7 @@
 
             <Frame
                 x:Name="contentFrame"
-                Margin="0,32,0,0"
+                Margin="0,48,0,0"
                 Background="Transparent"
                 Navigated="ContentFrame_Navigated" />
         </NavigationView>
@@ -327,7 +364,6 @@
         <Grid
             x:Name="AppTitleBar"
             x:FieldModifier="public"
-            Background="Transparent"
             IsHitTestVisible="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="Column0" Width="Auto" />
@@ -339,49 +375,22 @@
                     MinWidth="150" />
             </Grid.ColumnDefinitions>
 
-            <StackPanel
+            <Border
+                x:Name="TopNavViewPaneToggleButtonsBorder"
                 Grid.Column="0"
-                VerticalAlignment="Center"
-                Canvas.ZIndex="1"
-                Orientation="Horizontal">
-                <Button
-                    x:Name="BackButton"
-                    Click="BackButton_Click"
-                    IsEnabled="{Binding CanGoBack, ElementName=contentFrame}"
-                    Style="{ThemeResource NavigationBackButtonNormalStyle}" />
-                <Button
-                    x:Name="PaneToggleButton"
-                    Padding="0"
-                    Click="PaneToggleButton_Click"
-                    Style="{ThemeResource PaneToggleButtonStyle}" />
-            </StackPanel>
+                VerticalAlignment="Stretch"
+                Canvas.ZIndex="1" />
 
-            <StackPanel
-                x:Name="AppTitle"
+            <Border
                 Grid.Column="1"
-                VerticalAlignment="Center"
-                Orientation="Horizontal"
-                Visibility="Collapsed">
-                <Border VerticalAlignment="Center" CornerRadius="2.5">
-                    <Image
-                        Width="16"
-                        Height="16"
-                        Source="/Assets/AppIcon.png" />
-                </Border>
-                <TextBlock
-                    Margin="15,0,0,0"
-                    VerticalAlignment="Center"
-                    FontWeight="SemiBold"
-                    Opacity="0.8"
-                    Text="Fluent Launcher" />
-            </StackPanel>
+                Width="0"
+                VerticalAlignment="Stretch" />
 
             <AutoSuggestBox
                 x:Name="AutoSuggestBox"
                 x:Uid="ShellPage_AutoSuggestBox"
                 Grid.Column="2"
                 MaxWidth="380"
-                Margin="20,0,0,0"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Center"
                 VerticalContentAlignment="Center"

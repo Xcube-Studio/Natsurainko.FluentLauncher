@@ -109,9 +109,9 @@
                                 Width="32"
                                 Height="32"
                                 VerticalAlignment="Center"
-                                Source="{x:Bind Converter={ThemeResource JavaIconConverter}}" />
+                                Source="{x:Bind Converter={StaticResource JavaIconConverter}}" />
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="{x:Bind Converter={ThemeResource JavaInfoConverter}}" TextTrimming="CharacterEllipsis" />
+                                <TextBlock Text="{x:Bind Converter={StaticResource JavaInfoConverter}}" TextTrimming="CharacterEllipsis" />
                                 <TextBlock
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"

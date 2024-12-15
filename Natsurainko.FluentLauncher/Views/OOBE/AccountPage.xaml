@@ -104,7 +104,7 @@
                                 <TextBlock
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="{x:Bind Type, Converter={ThemeResource AccountInfoConverter}}"
+                                    Text="{x:Bind Type, Converter={StaticResource AccountInfoConverter}}"
                                     TextTrimming="CharacterEllipsis"
                                     TextWrapping="NoWrap" />
                             </StackPanel>

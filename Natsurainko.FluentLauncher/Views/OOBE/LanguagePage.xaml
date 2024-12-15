@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
+    x:DefaultBindMode="OneWay"
     d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
     mc:Ignorable="d">
 
@@ -40,8 +41,8 @@
                 Margin="16,0,0,0"
                 VerticalAlignment="Center">
                 <TextBlock FontSize="18" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
-                    <Run Text="{Binding Edition}" />
-                    <Run Text="{Binding Version}" />
+                    <Run Text="{x:Bind Edition, Mode=OneTime}" />
+                    <Run Text="{x:Bind Version, Mode=OneTime}" />
                 </TextBlock>
                 <TextBlock
                     Margin="0,-7.5,0,0"
@@ -74,8 +75,8 @@
 
             <ComboBox
                 Grid.Row="3"
-                ItemsSource="{Binding Languages}"
-                SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}" />
+                ItemsSource="{x:Bind Languages, Mode=OneTime}"
+                SelectedItem="{x:Bind VM.CurrentLanguage, Mode=TwoWay}" />
         </Grid>
     </Grid>
 </Page>

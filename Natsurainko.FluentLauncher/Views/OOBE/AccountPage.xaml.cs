@@ -7,6 +7,8 @@ namespace Natsurainko.FluentLauncher.Views.OOBE;
 
 public sealed partial class AccountPage : Page
 {
+    OOBEViewModel VM => (OOBEViewModel)DataContext;
+
     public AccountPage()
     {
         InitializeComponent();

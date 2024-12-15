@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:DefaultBindMode="OneWay"
     mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Center">
@@ -42,7 +43,7 @@
                     <Button
                         x:Uid="OOBE_JavaPage_SearchBtn"
                         Height="32"
-                        Command="{Binding SearchJavaCommand}"
+                        Command="{x:Bind VM.SearchJavaCommand}"
                         Style="{ThemeResource AccentButtonStyle}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <AnimatedIcon Height="21.5">
@@ -58,7 +59,7 @@
                     </Button>
                     <Button
                         x:Uid="OOBE_JavaPage_AddBtn"
-                        Command="{Binding BrowseJavaCommand}"
+                        Command="{x:Bind VM.BrowseJavaCommand}"
                         Style="{ThemeResource AccentButtonStyle}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <FontIcon FontSize="16" Glyph="&#xe838;" />
@@ -82,7 +83,7 @@
             MaxHeight="275"
             HorizontalAlignment="Center"
             VerticalAlignment="Center">
-            <ListView ItemsSource="{Binding JavaRuntimes}" SelectedItem="{Binding ActiveJavaRuntime, Mode=TwoWay}">
+            <ListView ItemsSource="{x:Bind VM.JavaRuntimes}" SelectedItem="{x:Bind VM.ActiveJavaRuntime, Mode=TwoWay}">
                 <ListView.Header>
                     <TextBlock
                         x:Uid="OOBE_JavaPage_H"
@@ -91,7 +92,7 @@
                         Text="Existing:" />
                 </ListView.Header>
                 <ListView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="x:String">
                         <Grid
                             Padding="0,10"
                             Background="Transparent"
@@ -109,13 +110,13 @@
                                 Width="32"
                                 Height="32"
                                 VerticalAlignment="Center"
-                                Source="{Binding Converter={ThemeResource JavaIconConverter}}" />
+                                Source="{x:Bind Converter={ThemeResource JavaIconConverter}}" />
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="{Binding Converter={ThemeResource JavaInfoConverter}}" TextTrimming="CharacterEllipsis" />
+                                <TextBlock Text="{x:Bind Converter={ThemeResource JavaInfoConverter}}" TextTrimming="CharacterEllipsis" />
                                 <TextBlock
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="{Binding}"
+                                    Text="{x:Bind}"
                                     TextTrimming="CharacterEllipsis"
                                     TextWrapping="NoWrap" />
                             </StackPanel>

@@ -97,7 +97,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     bool CanNext() => CurrentPageIndex switch
     {
         // Language page
-        0 => Languages.Contains(CurrentLanguage),
+        0 => ResourceUtils.Languages.Contains(CurrentLanguage),
         // Minecraft folder page
         1 => !string.IsNullOrEmpty(ActiveMinecraftFolder),
         // Java page
@@ -147,19 +147,9 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     [BindToSetting(Path = nameof(SettingsService.CurrentLanguage))]
     public partial string CurrentLanguage { get; set; }
 
-    public List<string> Languages { get; } = ResourceUtils.Languages;
-
-    public string Version => App.Version.GetVersionString();
-
-#if DEBUG 
-    public string Edition { get; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Debug");
-#else 
-    public string Edition { get; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Release");
-#endif
-
     partial void OnCurrentLanguageChanged(string oldValue, string newValue)
     {
-        if (Languages.Contains(CurrentLanguage) && oldValue is not null) // oldValue is null at startup
+        if (ResourceUtils.Languages.Contains(CurrentLanguage) && oldValue is not null) // oldValue is null at startup
             ResourceUtils.ApplyLanguage(CurrentLanguage);
     }
 

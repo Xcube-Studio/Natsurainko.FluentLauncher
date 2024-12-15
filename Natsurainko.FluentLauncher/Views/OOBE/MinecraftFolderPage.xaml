@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:DefaultBindMode="OneWay"
     mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Center">
@@ -44,7 +45,7 @@
                 <Button
                     x:Uid="OOBE_MinecraftFolderPage_DetectBtn"
                     Height="32"
-                    Command="{Binding DetectOfficialMinecraftFolderCommand}"
+                    Command="{x:Bind VM.DetectOfficialMinecraftFolderCommand}"
                     Style="{ThemeResource AccentButtonStyle}">
                     <StackPanel Orientation="Horizontal" Spacing="5">
                         <AnimatedIcon Height="21.5">
@@ -60,7 +61,7 @@
                 </Button>
                 <Button
                     x:Uid="OOBE_MinecraftFolderPage_AddBtn"
-                    Command="{Binding BrowseFolderCommand}"
+                    Command="{x:Bind VM.BrowseFolderCommand}"
                     Style="{ThemeResource AccentButtonStyle}">
                     <StackPanel Orientation="Horizontal" Spacing="5">
                         <FontIcon FontSize="16" Glyph="&#xe838;" />
@@ -76,7 +77,7 @@
             MaxHeight="275"
             HorizontalAlignment="Center"
             VerticalAlignment="Center">
-            <ListView ItemsSource="{Binding MinecraftFolders}" SelectedItem="{Binding ActiveMinecraftFolder, Mode=TwoWay}">
+            <ListView ItemsSource="{x:Bind VM.MinecraftFolders}" SelectedItem="{x:Bind VM.ActiveMinecraftFolder, Mode=TwoWay}">
                 <ListView.Header>
                     <TextBlock
                         x:Uid="OOBE_MinecraftFolderPage_H"
@@ -85,7 +86,7 @@
                         Text="Existing:" />
                 </ListView.Header>
                 <ListView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="x:String">
                         <Grid
                             Background="Transparent"
                             ColumnSpacing="8"
@@ -104,7 +105,7 @@
                                 Grid.Column="1"
                                 VerticalAlignment="Center"
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                Text="{Binding}"
+                                Text="{x:Bind}"
                                 TextTrimming="CharacterEllipsis" />
                             <Button
                                 x:Name="DeleteButton"
@@ -115,7 +116,7 @@
                                 HorizontalAlignment="Right"
                                 Background="Transparent"
                                 BorderThickness="0"
-                                CommandParameter="{Binding}"
+                                CommandParameter="{x:Bind}"
                                 Visibility="Collapsed">
                                 <FontIcon FontSize="14" Glyph="&#xE711;" />
                                 <i:Interaction.Behaviors>

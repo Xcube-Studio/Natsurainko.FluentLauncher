@@ -8,8 +8,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:userControls="using:Natsurainko.FluentLauncher.UserControls"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
+    xmlns:models="using:Nrk.FluentCore.Authentication"
     d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
     Loaded="Page_Loaded"
+    x:DefaultBindMode="OneWay"
     mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Center">
@@ -44,9 +46,9 @@
 
             <StackPanel Grid.Row="4" Spacing="10">
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <Button
-                        Command="{Binding LoginCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                    <Button x:Name="loginButton"
+                        Command="{x:Bind VM.LoginCommand}"
+                        CommandParameter="{x:Bind loginButton}"
                         Style="{ThemeResource AccentButtonStyle}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <FontIcon FontSize="16" Glyph="&#xE8FA;" />
@@ -69,8 +71,8 @@
             VerticalAlignment="Center">
             <ListView
                 x:Name="ListView"
-                ItemsSource="{Binding Accounts}"
-                SelectedItem="{Binding ActiveAccount, Mode=TwoWay}">
+                ItemsSource="{x:Bind VM.Accounts}"
+                SelectedItem="{x:Bind VM.ActiveAccount, Mode=TwoWay}">
                 <ListView.Header>
                     <TextBlock
                         x:Uid="OOBE_AccountPage_H"
@@ -79,7 +81,7 @@
                         Text="Existing:" />
                 </ListView.Header>
                 <ListView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="models:Account">
                         <Grid Padding="0,7.5" Background="Transparent">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -94,16 +96,16 @@
                                 Width="36"
                                 Height="36"
                                 VerticalAlignment="Center"
-                                Account="{Binding}" />
+                                Account="{x:Bind}" />
                             <StackPanel Grid.Column="2">
                                 <TextBlock
                                     FontWeight="SemiBold"
-                                    Text="{Binding Name}"
+                                    Text="{x:Bind Name}"
                                     TextTrimming="CharacterEllipsis" />
                                 <TextBlock
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="{Binding Type, Converter={ThemeResource AccountInfoConverter}}"
+                                    Text="{x:Bind Type, Converter={ThemeResource AccountInfoConverter}}"
                                     TextTrimming="CharacterEllipsis"
                                     TextWrapping="NoWrap" />
                             </StackPanel>
@@ -116,7 +118,7 @@
                                 HorizontalAlignment="Right"
                                 Background="Transparent"
                                 BorderThickness="0"
-                                CommandParameter="{Binding}"
+                                CommandParameter="{x:Bind}"
                                 Visibility="Collapsed">
                                 <FontIcon FontSize="14" Glyph="&#xE711;" />
                                 <i:Interaction.Behaviors>

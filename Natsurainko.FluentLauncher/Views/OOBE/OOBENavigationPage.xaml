@@ -7,6 +7,7 @@
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
+    x:DefaultBindMode="OneWay"
     mc:Ignorable="d">
     <Page.Resources>
         <Thickness x:Key="TopNavigationViewContentGridBorderThickness">0</Thickness>
@@ -89,15 +90,15 @@
                 MinWidth="120"
                 HorizontalAlignment="Left"
                 Click="BackButton_Click"
-                Command="{Binding BackCommand}">
+                Command="{x:Bind VM.BackCommand}">
                 <TextBlock x:Uid="Buttons_Back" Text="Back" />
             </Button>
             <Button
                 MinWidth="120"
                 HorizontalAlignment="Right"
                 Click="NextButton_Click"
-                Command="{Binding NextCommand}"
-                Content="{Binding NextText}"
+                Command="{x:Bind VM.NextCommand}"
+                Content="{x:Bind VM.NextText}"
                 Style="{ThemeResource AccentButtonStyle}" />
         </Grid>
     </Grid>

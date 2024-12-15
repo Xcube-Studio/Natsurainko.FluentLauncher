@@ -193,12 +193,13 @@
                         Name="HyperlinkButtonArea"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
-                        CornerRadius="{ThemeResource ControlCornerRadius}" />
+                        CornerRadius="8" />
                     <HyperlinkButton
                         Name="HyperlinkButton"
                         Background="Transparent"
                         BorderBrush="Transparent"
-                        Command="{Binding GoToAccountCommand}">
+                        Command="{Binding GoToAccountCommand}"
+                        CornerRadius="8">
                         <StackPanel>
                             <TextBlock
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
@@ -213,6 +214,7 @@
                     Grid.Column="4"
                     VerticalAlignment="Bottom"
                     Command="{Binding LaunchCommand}"
+                    CornerRadius="8"
                     Style="{ThemeResource AccentButtonStyle}">
                     <ToolTipService.ToolTip>
                         <TextBlock x:Uid="Home_HomePage_LaunchButton" />
@@ -247,12 +249,13 @@
                         Name="DropDownButtonArea"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
-                        CornerRadius="{ThemeResource ControlCornerRadius}" />
+                        CornerRadius="8" />
                     <DropDownButton
                         x:Name="DropDownButton"
                         Background="Transparent"
                         BorderBrush="Transparent"
                         Click="DropDownButton_Click"
+                        CornerRadius="8"
                         Style="{ThemeResource DropDownButtonStyle}">
                         <TextBlock
                             Grid.Column="2"

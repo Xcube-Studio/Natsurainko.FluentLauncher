@@ -27,6 +27,9 @@ public sealed partial class HomePage : Page
                 ? new SolidColorBrush(Color.FromArgb(255, 26, 26, 26))
                 : new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
 
+            LaunchButton.Shadow = SharedShadow;
+            LaunchButton.Translation += new System.Numerics.Vector3(0, 0, 16);
+
             DropDownButton.Shadow = SharedShadow;
             DropDownButton.Translation += new System.Numerics.Vector3(0, 0, 16);
             DropDownButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;

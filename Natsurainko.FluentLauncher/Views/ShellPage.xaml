@@ -377,7 +377,6 @@
                 MaxWidth="380"
                 Margin="0,2"
                 CornerRadius="8"
-                Shadow="{ThemeResource SharedShadow}"
                 Translation="0,0,16">
                 <Border
                     x:Name="SearchBoxAreaBackgroundBorder"

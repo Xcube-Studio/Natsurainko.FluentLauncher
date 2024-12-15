@@ -73,6 +73,8 @@ public sealed partial class ShellPage : Page, INavigationProvider
         NavigationViewControl.PaneDisplayMode = e.NewSize.Width <= 640 ? NavigationViewPaneDisplayMode.LeftMinimal : NavigationViewPaneDisplayMode.LeftCompact;
         TopNavViewPaneToggleButtonsBorder.Width = e.NewSize.Width <= 640 ? 120 : 48;
 
+        UpdateSearchBoxArea();
+
         UpdateTitleBarDragArea();
     }
 
@@ -138,6 +140,8 @@ public sealed partial class ShellPage : Page, INavigationProvider
         if (_settings.BackgroundMode == 3)
             BlurBorder.Opacity = typeof(HomePage).Equals(e.SourcePageType) ? 0 : 1;
         else BlurBorder.Opacity = 0;
+
+        UpdateSearchBoxArea();
     }
 
     #endregion
@@ -154,9 +158,12 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
     private void UseBackgroundMaskChanged(SettingsContainer sender, SettingChangedEventArgs e)
     {
-        NavViewPaneBackground.Visibility = _settings.UseBackgroundMask ? Visibility.Visible : Visibility.Collapsed;
-        SearchBoxAreaBackgroundBorder.Visibility = _settings.UseBackgroundMask ? Visibility.Visible : Visibility.Collapsed;
-        SearchBoxAreaGrid.Translation = _settings.UseBackgroundMask ? new System.Numerics.Vector3(0, 0, 16) : new System.Numerics.Vector3(0, 0, 0);
+        NavViewPaneBackground.Visibility = 
+        TopNavViewPaneBackground.Visibility = 
+        SearchBoxAreaBackgroundBorder.Visibility = 
+            _settings.UseBackgroundMask ? Visibility.Visible : Visibility.Collapsed;
+
+        SearchBoxAreaGrid.Shadow = _settings.UseBackgroundMask ? SharedShadow : null;
     }
 
     #endregion
@@ -165,8 +172,13 @@ public sealed partial class ShellPage : Page, INavigationProvider
     {
         ContentFrame = contentFrame;
         NavigationViewControl.IsPaneOpen = _settings.NavigationViewIsPaneOpen;
-        SearchBoxAreaBackgroundBorder.Visibility = _settings.UseBackgroundMask ? Visibility.Visible: Visibility.Collapsed;
-        SearchBoxAreaGrid.Translation = _settings.UseBackgroundMask ? new System.Numerics.Vector3(0, 0, 16) : new System.Numerics.Vector3(0, 0, 0);
+        SearchBoxAreaGrid.Shadow = _settings.UseBackgroundMask ? SharedShadow : null;
+
+        NavViewPaneBackground.Visibility =
+        TopNavViewPaneBackground.Visibility =
+        SearchBoxAreaBackgroundBorder.Visibility =
+            _settings.UseBackgroundMask ? Visibility.Visible : Visibility.Collapsed;
+
         BlurBorder.OpacityTransition = new ScalarTransition()
         {
             Duration = TimeSpan.FromMilliseconds(150)
@@ -182,6 +194,10 @@ public sealed partial class ShellPage : Page, INavigationProvider
         {
             Duration = TimeSpan.FromMilliseconds(150)
         };
+        SearchBoxAreaBackgroundBorder.OpacityTransition = new ScalarTransition()
+        {
+            Duration = TimeSpan.FromMilliseconds(150)
+        };
         NavViewPaneBackground.TranslationTransition = new Vector3Transition()
         {
             Duration = TimeSpan.FromMilliseconds(150)
@@ -194,8 +210,6 @@ public sealed partial class ShellPage : Page, INavigationProvider
         {
             Duration = TimeSpan.FromMilliseconds(150)
         };
-
-        NavViewPaneBackground.Visibility = _settings.UseBackgroundMask ? Visibility.Visible : Visibility.Collapsed;
 
         var RootSplitView = FindControl<SplitView>(NavigationViewControl, typeof(SplitView), "RootSplitView")!;
         RootSplitView.Margin = new Thickness(-1);
@@ -252,6 +266,20 @@ public sealed partial class ShellPage : Page, INavigationProvider
         };
 
         App.MainWindow.AppWindow.TitleBar.SetDragRectangles([.. dragRects]);
+    }
+
+    private void UpdateSearchBoxArea()
+    {
+        if (this.ActualWidth <= 640 || typeof(HomePage).Equals(contentFrame.Content.GetType()))
+        {
+            SearchBoxAreaGrid.Translation = new System.Numerics.Vector3(0, 0, 16);
+            SearchBoxAreaBackgroundBorder.Opacity = 1;
+        }
+        else
+        {
+            SearchBoxAreaGrid.Translation = new System.Numerics.Vector3(0, 0, 0);
+            SearchBoxAreaBackgroundBorder.Opacity = 0;
+        }
     }
 
     private static T? FindControl<T>(UIElement parent, Type targetType, string ControlName) where T : FrameworkElement

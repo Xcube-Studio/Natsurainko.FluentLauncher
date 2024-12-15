@@ -11,7 +11,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data="using:Nrk.FluentCore.GameManagement.Instances"
     Loaded="Page_Loaded"
-    x:DefaultBindMode="OneWay"
     mc:Ignorable="d">
     <Page.Resources>
         <Style x:Key="DropDownButtonStyle" TargetType="DropDownButton">
@@ -204,8 +203,8 @@
                             <TextBlock
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
-                                Text="{x:Bind VM.ActiveAccount.Type, Converter={ThemeResource AccountInfoConverter}}" />
-                            <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Text="{x:Bind VM.ActiveAccount.Name}" />
+                                Text="{x:Bind VM.ActiveAccount.Type, Converter={ThemeResource AccountInfoConverter}, Mode=OneWay}" />
+                            <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Text="{x:Bind VM.ActiveAccount.Name, Mode=OneWay}" />
                         </StackPanel>
                     </HyperlinkButton>
                 </Grid>
@@ -259,7 +258,7 @@
                             Grid.Column="2"
                             HorizontalTextAlignment="Right"
                             Style="{ThemeResource TitleLargeTextBlockStyle}"
-                            Text="{x:Bind VM.DropDownButtonDisplayText}"
+                            Text="{x:Bind VM.DropDownButtonDisplayText, Mode=OneWay}"
                             TextTrimming="CharacterEllipsis" />
                         <DropDownButton.Flyout>
                             <Flyout Opened="Flyout_Opened" Placement="TopEdgeAlignedRight">
@@ -281,7 +280,7 @@
                                         MaxWidth="425"
                                         MaxHeight="250"
                                         Margin="-10,-7.5"
-                                        ItemsSource="{x:Bind VM.MinecraftInstances}"
+                                        ItemsSource="{x:Bind VM.MinecraftInstances, Mode=OneWay}"
                                         SelectedItem="{x:Bind VM.ActiveMinecraftInstance, Mode=TwoWay}">
                                         <ListView.ItemTemplate>
                                             <DataTemplate x:DataType="data:MinecraftInstance">
@@ -360,7 +359,7 @@
                                         </StackPanel>
 
                                         <i:Interaction.Behaviors>
-                                            <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{x:Bind VM.MinecraftInstances}" />
+                                            <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{x:Bind VM.MinecraftInstances, Mode=OneWay}" />
                                         </i:Interaction.Behaviors>
                                     </StackPanel>
 

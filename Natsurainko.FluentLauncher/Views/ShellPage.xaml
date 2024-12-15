@@ -10,7 +10,6 @@
     ActualThemeChanged="Page_ActualThemeChanged"
     Loaded="Page_Loaded"
     SizeChanged="Page_SizeChanged"
-    x:DefaultBindMode="OneWay"
     mc:Ignorable="d">
     <Page.Resources>
         <Style x:Key="PaneToggleButtonStyle" TargetType="Button">
@@ -950,7 +949,7 @@
                     Icon="{xh:FontIcon Glyph=&#xE945;}"
                     Tag="Tasks/Launch">
                     <NavigationViewItem.InfoBadge>
-                        <InfoBadge Opacity="{x:Bind VM.LaunchTasksInfoBadgeOpacity}" Value="{x:Bind VM.RunningLaunchTasks}" />
+                        <InfoBadge Opacity="{x:Bind VM.LaunchTasksInfoBadgeOpacity, Mode=OneWay}" Value="{x:Bind VM.RunningLaunchTasks, Mode=OneWay}" />
                     </NavigationViewItem.InfoBadge>
                 </NavigationViewItem>
                 <NavigationViewItem
@@ -959,7 +958,7 @@
                     Icon="{xh:FontIcon Glyph=&#xe896;}"
                     Tag="Tasks/Download">
                     <NavigationViewItem.InfoBadge>
-                        <InfoBadge Opacity="{x:Bind VM.DownloadTasksInfoBadgeOpacity}" Value="{x:Bind VM.RunningDownloadTasks}" />
+                        <InfoBadge Opacity="{x:Bind VM.DownloadTasksInfoBadgeOpacity, Mode=OneWay}" Value="{x:Bind VM.RunningDownloadTasks, Mode=OneWay}" />
                     </NavigationViewItem.InfoBadge>
                 </NavigationViewItem>
                 <NavigationViewItem
@@ -1007,7 +1006,7 @@
                 <Button
                     x:Name="BackButton"
                     Click="BackButton_Click"
-                    IsEnabled="{x:Bind contentFrame.CanGoBack}"
+                    IsEnabled="{x:Bind contentFrame.CanGoBack, Mode=OneWay}"
                     Style="{ThemeResource NavigationBackButtonNormalStyle}" />
                 <Button
                     x:Name="PaneToggleButton"

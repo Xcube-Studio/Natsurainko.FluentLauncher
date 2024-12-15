@@ -11,7 +11,6 @@
     xmlns:models="using:Nrk.FluentCore.Authentication"
     d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
     Loaded="Page_Loaded"
-    x:DefaultBindMode="OneWay"
     mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Center">
@@ -71,7 +70,7 @@
             VerticalAlignment="Center">
             <ListView
                 x:Name="ListView"
-                ItemsSource="{x:Bind VM.Accounts}"
+                ItemsSource="{x:Bind VM.Accounts, Mode=OneWay}"
                 SelectedItem="{x:Bind VM.ActiveAccount, Mode=TwoWay}">
                 <ListView.Header>
                     <TextBlock

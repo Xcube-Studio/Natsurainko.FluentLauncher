@@ -7,7 +7,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    x:DefaultBindMode="OneWay"
     mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Center">
@@ -83,7 +82,7 @@
             MaxHeight="275"
             HorizontalAlignment="Center"
             VerticalAlignment="Center">
-            <ListView ItemsSource="{x:Bind VM.JavaRuntimes}" SelectedItem="{x:Bind VM.ActiveJavaRuntime, Mode=TwoWay}">
+            <ListView ItemsSource="{x:Bind VM.JavaRuntimes, Mode=OneWay}" SelectedItem="{x:Bind VM.ActiveJavaRuntime, Mode=TwoWay}">
                 <ListView.Header>
                     <TextBlock
                         x:Uid="OOBE_JavaPage_H"

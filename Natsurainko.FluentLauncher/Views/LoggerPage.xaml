@@ -6,7 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:pages="using:Natsurainko.FluentLauncher.ViewModels.Pages"
     d:DataContext="{d:DesignInstance Type=pages:LoggerViewModel}"
-    x:DefaultBindMode="OneWay"
     mc:Ignorable="d">
     <Page.Resources>
         <x:Double x:Key="ListViewItemMinHeight">0</x:Double>
@@ -37,7 +36,7 @@
                     VerticalAlignment="Center"
                     FontSize="14"
                     Opacity="0.8">
-                    <Run x:Uid="LoggerPage_Title" Text="Logger" /> <Run Text="-" /> <Run Text="{x:Bind VM.Title}" />
+                    <Run x:Uid="LoggerPage_Title" Text="Logger" /> <Run Text="-" /> <Run Text="{x:Bind VM.Title, Mode=OneWay}" />
                 </TextBlock>
             </StackPanel>
         </Grid>
@@ -114,7 +113,7 @@
                 Padding="15,10"
                 x:FieldModifier="public">
                 <StackPanel>
-                    <ItemsRepeater ItemsSource="{x:Bind VM.FilterLoggerItems}">
+                    <ItemsRepeater ItemsSource="{x:Bind VM.FilterLoggerItems, Mode=OneWay}">
                         <ItemsRepeater.ItemTemplate>
                             <DataTemplate x:DataType="pages:LoggerItem">
                                 <Grid>
@@ -124,11 +123,11 @@
                                         HorizontalAlignment="Right"
                                         Fill="Red"
                                         Opacity="0.5"
-                                        Visibility="{x:Bind ErrorVisibility}" />
+                                        Visibility="{x:Bind ErrorVisibility, Mode=OneWay}" />
                                     <ContentControl
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
-                                        Content="{x:Bind RichTextBlock}"
+                                        Content="{x:Bind RichTextBlock, Mode=OneWay}"
                                         FontWeight="SemiBold" />
                                 </Grid>
                             </DataTemplate>

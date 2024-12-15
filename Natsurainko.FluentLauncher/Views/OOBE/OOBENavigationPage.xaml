@@ -7,7 +7,6 @@
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
-    x:DefaultBindMode="OneWay"
     mc:Ignorable="d">
     <Page.Resources>
         <Thickness x:Key="TopNavigationViewContentGridBorderThickness">0</Thickness>
@@ -98,7 +97,7 @@
                 HorizontalAlignment="Right"
                 Click="NextButton_Click"
                 Command="{x:Bind VM.NextCommand}"
-                Content="{x:Bind VM.NextText}"
+                Content="{x:Bind VM.NextText, Mode=OneWay}"
                 Style="{ThemeResource AccentButtonStyle}" />
         </Grid>
     </Grid>

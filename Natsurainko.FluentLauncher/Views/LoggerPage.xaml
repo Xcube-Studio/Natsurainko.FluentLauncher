@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:pages="using:Natsurainko.FluentLauncher.ViewModels.Pages"
     d:DataContext="{d:DesignInstance Type=pages:LoggerViewModel}"
+    x:DefaultBindMode="OneWay"
     mc:Ignorable="d">
     <Page.Resources>
         <x:Double x:Key="ListViewItemMinHeight">0</x:Double>
@@ -36,7 +37,7 @@
                     VerticalAlignment="Center"
                     FontSize="14"
                     Opacity="0.8">
-                    <Run x:Uid="LoggerPage_Title" Text="Logger" /> <Run Text="-" /> <Run Text="{Binding Title}" />
+                    <Run x:Uid="LoggerPage_Title" Text="Logger" /> <Run Text="-" /> <Run Text="{x:Bind VM.Title}" />
                 </TextBlock>
             </StackPanel>
         </Grid>
@@ -67,33 +68,33 @@
                         Padding="10,2"
                         Content="INFO"
                         FontWeight="SemiBold"
-                        IsChecked="{Binding Info, Mode=TwoWay}" />
+                        IsChecked="{x:Bind VM.Info, Mode=TwoWay}" />
                     <ToggleButton
                         Margin="5,0"
                         Padding="10,2"
                         Content="WARN"
                         FontWeight="SemiBold"
-                        IsChecked="{Binding Warn, Mode=TwoWay}" />
+                        IsChecked="{x:Bind VM.Warn, Mode=TwoWay}" />
                     <ToggleButton
                         Padding="10,2"
                         Content="ERROR"
                         FontWeight="SemiBold"
-                        IsChecked="{Binding Error, Mode=TwoWay}" />
+                        IsChecked="{x:Bind VM.Error, Mode=TwoWay}" />
                     <ToggleButton
                         Margin="5,0"
                         Padding="10,2"
                         Content="FATAL"
                         FontWeight="SemiBold"
-                        IsChecked="{Binding Fatal, Mode=TwoWay}" />
+                        IsChecked="{x:Bind VM.Fatal, Mode=TwoWay}" />
                     <ToggleButton
                         Padding="10,2"
                         Content="DEBUG"
                         FontWeight="SemiBold"
-                        IsChecked="{Binding Debug, Mode=TwoWay}" />
+                        IsChecked="{x:Bind VM.Debug, Mode=TwoWay}" />
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="2">
-                <Button Command="{Binding ExportLogCommand}">
+                <Button Command="{x:Bind VM.ExportLogCommand}">
                     <StackPanel Orientation="Horizontal" Spacing="5">
                         <FontIcon FontSize="14" Glyph="&#xe74e;" />
                         <TextBlock x:Uid="LoggerPage_Text2" Text="Export Log File" />
@@ -103,7 +104,7 @@
                     <CheckBox
                         x:Uid="LoggerPage_CheckBox"
                         Content="Auto Scroll to the End"
-                        IsChecked="{Binding EnableAutoScroll, Mode=TwoWay}" />
+                        IsChecked="{x:Bind VM.EnableAutoScroll, Mode=TwoWay}" />
                 </StackPanel>
             </Grid>
             <ScrollViewer
@@ -113,7 +114,7 @@
                 Padding="15,10"
                 x:FieldModifier="public">
                 <StackPanel>
-                    <ItemsRepeater ItemsSource="{Binding FilterLoggerItems}">
+                    <ItemsRepeater ItemsSource="{x:Bind VM.FilterLoggerItems}">
                         <ItemsRepeater.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -123,11 +124,11 @@
                                         HorizontalAlignment="Right"
                                         Fill="Red"
                                         Opacity="0.5"
-                                        Visibility="{Binding ErrorVisibility}" />
+                                        Visibility="{x:Bind VM.ErrorVisibility}" />
                                     <ContentControl
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
-                                        Content="{Binding RichTextBlock}"
+                                        Content="{x:Bind VM.RichTextBlock}"
                                         FontWeight="SemiBold" />
                                 </Grid>
                             </DataTemplate>

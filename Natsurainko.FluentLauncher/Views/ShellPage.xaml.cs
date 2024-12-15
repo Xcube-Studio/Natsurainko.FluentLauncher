@@ -1,3 +1,4 @@
+using FluentLauncher.Infra.Settings;
 using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Pages;
 using Microsoft.UI.Xaml;
@@ -29,7 +30,6 @@ public sealed partial class ShellPage : Page, INavigationProvider
     private readonly SearchProviderService _searchProviderService = App.GetService<SearchProviderService>();
 
     private bool isUpdatingNavigationItemSelection = false;
-    //private int backgroundBlurredValue = 0;
 
     public ShellPage()
     {
@@ -69,6 +69,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
         }
 
         NavigationViewControl.PaneDisplayMode = e.NewSize.Width <= 640 ? NavigationViewPaneDisplayMode.LeftMinimal : NavigationViewPaneDisplayMode.LeftCompact;
+        TopNavViewPaneToggleButtonsBorder.Width = e.NewSize.Width <= 640 ? 120 : 48;
 
         UpdateTitleBarDragArea();
     }
@@ -78,27 +79,31 @@ public sealed partial class ShellPage : Page, INavigationProvider
     #region NavigationView & Frame Events
     private void NavigationViewControl_PaneClosing(NavigationView sender, object _)
     {
-        AutoSuggestBox.Visibility = Visibility.Visible;
-
         UpdateTitleBarDragArea();
 
         _settings.NavigationViewIsPaneOpen = false;
 
         NavViewPaneBackground.Opacity = 1;
         NavViewPaneBackground.Translation += new System.Numerics.Vector3(0, 0, 32);
+
+        if (SearchBoxAreaGrid.Translation.Y < 0)
+            SearchBoxAreaGrid.Translation += new System.Numerics.Vector3(0, 44, 0);
     }
 
     private void NavigationViewControl_PaneOpening(NavigationView sender, object _)
     {
-        AutoSuggestBox.Visibility = NavigationViewControl.DisplayMode == NavigationViewDisplayMode.Minimal ? Visibility.Collapsed : Visibility.Visible;
-
         UpdateTitleBarDragArea();
 
         _settings.NavigationViewIsPaneOpen = true;
 
         NavViewPaneBackground.Opacity = 0;
         NavViewPaneBackground.Translation -= new System.Numerics.Vector3(0, 0, 32);
+
+        if (this.ActualWidth < 1100)
+            SearchBoxAreaGrid.Translation -= new System.Numerics.Vector3(0, 44, 0);
     }
+
+    private void NavigationViewControl_BackRequested(NavigationView _, NavigationViewBackRequestedEventArgs args) => VM.NavigationService.GoBack();
 
     private void NavigationViewControl_ItemInvoked(NavigationView _, NavigationViewItemInvokedEventArgs args)
     {
@@ -109,12 +114,6 @@ public sealed partial class ShellPage : Page, INavigationProvider
             ?? throw new ArgumentNullException("The invoked item's tag is null.");
 
         VM.NavigationService.NavigateTo(pageTag);
-    }
-
-    private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
-    {
-        TopNavViewPaneToggleButtonsBorder.Width = args.DisplayMode == NavigationViewDisplayMode.Minimal ? 150 : 0;
-        UpdateTitleBarDragArea();
     }
 
     private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
@@ -149,22 +148,23 @@ public sealed partial class ShellPage : Page, INavigationProvider
     #endregion
 
     #region Services Events
-    private void BackgroundReloaded(object? sender, EventArgs e)
-    {
-        BlurBorder.Opacity = (_settings.BackgroundMode == 3) ? 1 : 0;
-    }
+    private void BackgroundReloaded(object? sender, EventArgs e) => BlurBorder.Opacity = (_settings.BackgroundMode == 3) ? 1 : 0;
 
-    private void UseBackgroundMaskChanged(global::FluentLauncher.Infra.Settings.SettingsContainer sender, global::FluentLauncher.Infra.Settings.SettingChangedEventArgs e)
+    private void UseBackgroundMaskChanged(SettingsContainer sender, SettingChangedEventArgs e)
     {
         NavViewPaneBackground.Visibility = _settings.UseBackgroundMask ? Visibility.Visible : Visibility.Collapsed;
+        SearchBoxAreaBackgroundBorder.Visibility = _settings.UseBackgroundMask ? Visibility.Visible : Visibility.Collapsed;
+        SearchBoxAreaGrid.Translation = _settings.UseBackgroundMask ? new System.Numerics.Vector3(0, 0, 16) : new System.Numerics.Vector3(0, 0, 0);
     }
-
+        
     #endregion
 
     void ConfigurePage()
     {
         ContentFrame = contentFrame;
         NavigationViewControl.IsPaneOpen = _settings.NavigationViewIsPaneOpen;
+        SearchBoxAreaBackgroundBorder.Visibility = _settings.UseBackgroundMask ? Visibility.Visible: Visibility.Collapsed;
+        SearchBoxAreaGrid.Translation = _settings.UseBackgroundMask ? new System.Numerics.Vector3(0, 0, 16) : new System.Numerics.Vector3(0, 0, 0);
         BlurBorder.OpacityTransition = new ScalarTransition()
         {
             Duration = TimeSpan.FromMilliseconds(150)
@@ -185,6 +185,10 @@ public sealed partial class ShellPage : Page, INavigationProvider
             Duration = TimeSpan.FromMilliseconds(150)
         };
         TopNavViewPaneBackground.TranslationTransition = new Vector3Transition()
+        {
+            Duration = TimeSpan.FromMilliseconds(150)
+        };
+        SearchBoxAreaGrid.TranslationTransition = new Vector3Transition()
         {
             Duration = TimeSpan.FromMilliseconds(150)
         };

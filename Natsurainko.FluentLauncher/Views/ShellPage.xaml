@@ -238,16 +238,15 @@
 
         <Border
             x:Name="TopNavViewPaneBackground"
-            Grid.RowSpan="2"
-            Width="90"
-            Height="48"
-            Margin="20,0,0,0"
+            Width="89"
+            Height="44"
+            Margin="20,2,0,2"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Background="{ThemeResource NavigationViewUnfoldedPaneBackground}"
             BorderBrush="{ThemeResource AccentControlElevationBorderBrush}"
             BorderThickness="0"
-            CornerRadius="0,0,8,8"
+            CornerRadius="8"
             Opacity="1"
             Shadow="{ThemeResource SharedShadow}"
             Translation="0,0,16" />
@@ -256,8 +255,8 @@
             x:Name="NavigationViewControl"
             Grid.Row="0"
             Grid.RowSpan="3"
+            BackRequested="NavigationViewControl_BackRequested"
             Canvas.ZIndex="0"
-            DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
             IsBackButtonVisible="Visible"
             IsBackEnabled="{Binding CanGoBack, ElementName=contentFrame}"
             IsPaneToggleButtonVisible="True"
@@ -271,7 +270,7 @@
                 <SolidColorBrush x:Key="NavigationViewContentGridBorderBrush" Color="Transparent" />
             </NavigationView.Resources>
             <NavigationView.PaneHeader>
-                <Grid Padding="15,0,0,0">
+                <Grid Padding="35,0,0,0">
                     <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                         <Border VerticalAlignment="Center" CornerRadius="2.5">
                             <Image
@@ -372,82 +371,91 @@
                 VerticalAlignment="Stretch"
                 Canvas.ZIndex="1" />
 
-            <Border
-                Grid.Column="1"
-                Width="0"
-                VerticalAlignment="Stretch" />
-
-            <AutoSuggestBox
-                x:Name="AutoSuggestBox"
-                x:Uid="ShellPage_AutoSuggestBox"
+            <Grid
+                x:Name="SearchBoxAreaGrid"
                 Grid.Column="2"
                 MaxWidth="380"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Center"
-                VerticalContentAlignment="Center"
-                Loaded="AutoSuggestBox_Loaded"
-                PlaceholderText="Search..">
-                <AutoSuggestBox.Resources>
-                    <LinearGradientBrush x:Key="TextControlElevationBorderBrush" MappingMode="Absolute" StartPoint="0,0" EndPoint="0,2">
-                        <LinearGradientBrush.RelativeTransform>
-                            <ScaleTransform CenterY="0.5" ScaleY="-1" />
-                        </LinearGradientBrush.RelativeTransform>
-                        <LinearGradientBrush.GradientStops>
-                            <GradientStop Offset="0.5" Color="{StaticResource ControlStrokeColorSecondary}" />
-                            <GradientStop Offset="1.0" Color="{StaticResource ControlStrokeColorDefault}" />
-                        </LinearGradientBrush.GradientStops>
-                    </LinearGradientBrush>
-                    <StaticResource x:Key="TextControlBorderBrush" ResourceKey="TextControlElevationBorderBrush" />
-                    <StaticResource x:Key="TextControlBorderBrushPointerOver" ResourceKey="TextControlElevationBorderBrush" />
+                Margin="0,2"
+                CornerRadius="8"
+                Shadow="{ThemeResource SharedShadow}"
+                Translation="0,0,16">
+                <Border
+                    x:Name="SearchBoxAreaBackgroundBorder"
+                    Background="{ThemeResource NavigationViewUnfoldedPaneBackground}"
+                    CornerRadius="8" />
 
-                </AutoSuggestBox.Resources>
-                <AutoSuggestBox.QueryIcon>
-                    <AnimatedIcon Width="16" Height="16">
-                        <AnimatedIcon.Source>
-                            <animatedvisuals:AnimatedFindVisualSource />
-                        </AnimatedIcon.Source>
-                        <AnimatedIcon.FallbackIconSource>
-                            <SymbolIconSource Symbol="Find" />
-                        </AnimatedIcon.FallbackIconSource>
-                    </AnimatedIcon>
-                </AutoSuggestBox.QueryIcon>
+                <AutoSuggestBox
+                    x:Name="AutoSuggestBox"
+                    x:Uid="ShellPage_AutoSuggestBox"
+                    Margin="5,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Loaded="AutoSuggestBox_Loaded"
+                    PlaceholderText="Search..">
+                    <AutoSuggestBox.Resources>
+                        <LinearGradientBrush x:Key="TextControlElevationBorderBrush" MappingMode="Absolute" StartPoint="0,0" EndPoint="0,2">
+                            <LinearGradientBrush.RelativeTransform>
+                                <ScaleTransform CenterY="0.5" ScaleY="-1" />
+                            </LinearGradientBrush.RelativeTransform>
+                            <LinearGradientBrush.GradientStops>
+                                <GradientStop Offset="0.5" Color="{StaticResource ControlStrokeColorSecondary}" />
+                                <GradientStop Offset="1.0" Color="{StaticResource ControlStrokeColorDefault}" />
+                            </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                        <StaticResource x:Key="TextControlBorderBrush" ResourceKey="TextControlElevationBorderBrush" />
+                        <StaticResource x:Key="TextControlBorderBrushPointerOver" ResourceKey="TextControlElevationBorderBrush" />
 
-                <AutoSuggestBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Padding="0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="1*" />
-                            </Grid.ColumnDefinitions>
+                    </AutoSuggestBox.Resources>
+                    <AutoSuggestBox.QueryIcon>
+                        <AnimatedIcon Width="16" Height="16">
+                            <AnimatedIcon.Source>
+                                <animatedvisuals:AnimatedFindVisualSource />
+                            </AnimatedIcon.Source>
+                            <AnimatedIcon.FallbackIconSource>
+                                <SymbolIconSource Symbol="Find" />
+                            </AnimatedIcon.FallbackIconSource>
+                        </AnimatedIcon>
+                    </AutoSuggestBox.QueryIcon>
 
-                            <Grid
-                                Width="32"
-                                Height="32"
-                                VerticalAlignment="Center"
-                                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-                                BorderBrush="{ThemeResource IconBorder}"
-                                BorderThickness="1"
-                                CornerRadius="4">
-                                <Border CornerRadius="4">
-                                    <ContentControl
-                                        HorizontalContentAlignment="Center"
-                                        VerticalContentAlignment="Center"
-                                        Content="{Binding Converter={ThemeResource SuggestionIconConverter}}" />
-                                </Border>
+                    <AutoSuggestBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid
+                                    Width="32"
+                                    Height="32"
+                                    VerticalAlignment="Center"
+                                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                                    BorderBrush="{ThemeResource IconBorder}"
+                                    BorderThickness="1"
+                                    CornerRadius="4">
+                                    <Border CornerRadius="4">
+                                        <ContentControl
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Content="{Binding Converter={ThemeResource SuggestionIconConverter}}" />
+                                    </Border>
+                                </Grid>
+
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding Title}" />
+                                    <TextBlock
+                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                        Text="{Binding Description}" />
+                                </StackPanel>
                             </Grid>
+                        </DataTemplate>
+                    </AutoSuggestBox.ItemTemplate>
+                </AutoSuggestBox>
+            </Grid>
 
-                            <StackPanel Grid.Column="2">
-                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding Title}" />
-                                <TextBlock
-                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                    Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="{Binding Description}" />
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                </AutoSuggestBox.ItemTemplate>
-            </AutoSuggestBox>
         </Grid>
     </Grid>
 </Page>

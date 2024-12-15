@@ -28,12 +28,12 @@ public sealed partial class HomePage : Page
                 : new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
 
             DropDownButton.Shadow = SharedShadow;
-            DropDownButton.Translation += new System.Numerics.Vector3(0, 0, 32);
-            DropDownButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush; // new CommunityToolkit.WinUI.Media.BackdropBlurBrush() { Amount = 16 };
+            DropDownButton.Translation += new System.Numerics.Vector3(0, 0, 16);
+            DropDownButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
 
             HyperlinkButton.Shadow = SharedShadow;
-            HyperlinkButton.Translation += new System.Numerics.Vector3(0, 0, 32);
-            HyperlinkButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush; //new CommunityToolkit.WinUI.Media.BackdropBlurBrush() { Amount = 16 };
+            HyperlinkButton.Translation += new System.Numerics.Vector3(0, 0, 16);
+            HyperlinkButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
             HyperlinkButton.Foreground = foregroundBrush;
 
             this.ActualThemeChanged += (_, e) =>
@@ -44,9 +44,9 @@ public sealed partial class HomePage : Page
                     ? new SolidColorBrush(Color.FromArgb(255, 26, 26, 26))
                     : new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
 
-                DropDownButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush; // new CommunityToolkit.WinUI.Media.BackdropBlurBrush() { Amount = 16 };
+                DropDownButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
 
-                HyperlinkButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush; //new CommunityToolkit.WinUI.Media.BackdropBlurBrush() { Amount = 16 };
+                HyperlinkButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
                 HyperlinkButton.Foreground = foregroundBrush;
             };
         }

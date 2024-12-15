@@ -1,10 +1,7 @@
-using CommunityToolkit.WinUI.Media;
-using CommunityToolkit.WinUI.Media.Pipelines;
 using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Pages;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.Settings;
@@ -15,10 +12,8 @@ using Natsurainko.FluentLauncher.Views.Home;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Graphics;
-using Windows.UI;
 
 namespace Natsurainko.FluentLauncher.Views;
 
@@ -48,18 +43,8 @@ public sealed partial class ShellPage : Page, INavigationProvider
     private void Page_Loaded(object sender, RoutedEventArgs e)
     {
         App.MainWindow.SetTitleBar(AppTitleBar);
+
         ConfigureNavigationView();
-
-        //if (_settings.BackgroundMode == 3 && !VM._onNavigatedTo)
-        //{
-        //    var sprite = await PipelineBuilder
-        //        .FromBackdrop()
-        //        .Blur(0, out EffectAnimation<float> blurAnimation)
-        //        .AttachAsync(BlurBorder, BlurBorder);
-
-        //    await blurAnimation(sprite.Brush, 0, TimeSpan.FromMilliseconds(1));
-        //}
-
         UpdateTitleBarDragArea();
     }
 
@@ -88,24 +73,6 @@ public sealed partial class ShellPage : Page, INavigationProvider
         UpdateTitleBarDragArea();
     }
 
-    private void Page_ActualThemeChanged(FrameworkElement sender, object args)
-    {
-        if (_settings.BackgroundMode == 3 || _settings.BackgroundMode == 2)
-        {
-            BackgroundContentBorder.Background = null;
-            BackgroundContentBorder.BorderBrush = null;
-        } 
-        else
-        {
-            BackgroundContentBorder.Background = this.ActualTheme == ElementTheme.Light
-                ? new SolidColorBrush(Color.FromArgb(128, 255, 255, 255))
-                : new SolidColorBrush(Color.FromArgb(76, 58, 58, 58));
-            BackgroundContentBorder.BorderBrush = this.ActualTheme == ElementTheme.Light
-                ? new SolidColorBrush(Color.FromArgb(15, 0, 0, 0))
-                : new SolidColorBrush(Color.FromArgb(25, 0, 0, 0));
-        }
-    }
-
     #endregion
 
     #region NavigationView & Frame Events
@@ -113,7 +80,6 @@ public sealed partial class ShellPage : Page, INavigationProvider
     {
         AutoSuggestBox.Visibility = Visibility.Visible;
 
-        //UpdateTitleTextPosition(sender);
         UpdateTitleBarDragArea();
 
         _settings.NavigationViewIsPaneOpen = false;
@@ -126,7 +92,6 @@ public sealed partial class ShellPage : Page, INavigationProvider
     {
         AutoSuggestBox.Visibility = NavigationViewControl.DisplayMode == NavigationViewDisplayMode.Minimal ? Visibility.Collapsed : Visibility.Visible;
 
-        //UpdateTitleTextPosition(sender);
         UpdateTitleBarDragArea();
 
         _settings.NavigationViewIsPaneOpen = true;
@@ -148,16 +113,6 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
     private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
     {
-        //PaneToggleButton.Visibility = args.DisplayMode == NavigationViewDisplayMode.Minimal ? Visibility.Visible : Visibility.Collapsed;
-        //NavigationViewControl.IsPaneToggleButtonVisible = args.DisplayMode != NavigationViewDisplayMode.Minimal;
-
-        //if (args.DisplayMode == NavigationViewDisplayMode.Minimal)
-        //    contentFrame.Margin = new Thickness(0, 48, 0, 0);
-        //else
-        //    contentFrame.Margin = new Thickness(0);
-
-        //UpdateTitleTextPosition(sender);
-
         TopNavViewPaneToggleButtonsBorder.Width = args.DisplayMode == NavigationViewDisplayMode.Minimal ? 150 : 0;
         UpdateTitleBarDragArea();
     }
@@ -179,10 +134,6 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
         isUpdatingNavigationItemSelection = false;
 
-        //if (_settings.BackgroundMode == 3)
-        //    await BlurAnimation(!typeof(HomePage).Equals(e.SourcePageType) ? 75 : 0);
-        //else await BlurAnimation(0);
-
         if (_settings.BackgroundMode == 3)
             BlurBorder.Opacity = typeof(HomePage).Equals(e.SourcePageType) ? 0 : 1;
         else BlurBorder.Opacity = 0;
@@ -197,25 +148,15 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
     #endregion
 
-    #region AppearanceService Events
+    #region Services Events
     private void BackgroundReloaded(object? sender, EventArgs e)
     {
         BlurBorder.Opacity = (_settings.BackgroundMode == 3) ? 1 : 0;
+    }
 
-        if (_settings.BackgroundMode == 3 || _settings.BackgroundMode == 2)
-        {
-            BackgroundContentBorder.Background = null;
-            BackgroundContentBorder.BorderBrush = null;
-        }
-        else
-        {
-            BackgroundContentBorder.Background = this.ActualTheme == ElementTheme.Light
-                ? new SolidColorBrush(Color.FromArgb(128, 255, 255, 255))
-                : new SolidColorBrush(Color.FromArgb(76, 58, 58, 58));
-            BackgroundContentBorder.BorderBrush = this.ActualTheme == ElementTheme.Light
-                ? new SolidColorBrush(Color.FromArgb(15, 0, 0, 0))
-                : new SolidColorBrush(Color.FromArgb(25, 0, 0, 0));
-        }
+    private void UseBackgroundMaskChanged(global::FluentLauncher.Infra.Settings.SettingsContainer sender, global::FluentLauncher.Infra.Settings.SettingChangedEventArgs e)
+    {
+        NavViewPaneBackground.Visibility = _settings.UseBackgroundMask ? Visibility.Visible : Visibility.Collapsed;
     }
 
     #endregion
@@ -230,6 +171,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
         };
 
         App.GetService<AppearanceService>().BackgroundReloaded += BackgroundReloaded;
+        _settings.UseBackgroundMaskChanged += UseBackgroundMaskChanged;
     }
 
     void ConfigureNavigationView()
@@ -305,29 +247,6 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
         App.MainWindow.AppWindow.TitleBar.SetDragRectangles([.. dragRects]);
     }
-
-    //private void UpdateTitleTextPosition(NavigationView sender)
-    //{
-    //    AppTitle.TranslationTransition = new Vector3Transition();
-    //    AppTitle.Translation = ((sender.DisplayMode == NavigationViewDisplayMode.Expanded && sender.IsPaneOpen) ||
-    //             sender.DisplayMode == NavigationViewDisplayMode.Minimal)
-    //             ? new System.Numerics.Vector3(8, 0, 0)
-    //             : new System.Numerics.Vector3(28, 0, 0);
-    //}
-
-    //private async Task BlurAnimation(int to, double time = 0.1)
-    //{
-    //    //if (backgroundBlurredValue.Equals(to))
-    //    //    return;
-
-    //    var sprite = await PipelineBuilder
-    //        .FromBackdrop()
-    //        .Blur(backgroundBlurredValue, out EffectAnimation<float> blurAnimation)
-    //        .AttachAsync(BlurBorder, BlurBorder);
-
-    //    await blurAnimation(sprite.Brush, to, TimeSpan.FromSeconds(time));
-    //    backgroundBlurredValue = to;
-    //}
 
     private static T? FindControl<T>(UIElement parent, Type targetType, string ControlName) where T : FrameworkElement
     {

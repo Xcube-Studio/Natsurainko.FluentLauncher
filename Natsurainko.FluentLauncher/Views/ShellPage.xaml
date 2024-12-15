@@ -6,7 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
-    ActualThemeChanged="Page_ActualThemeChanged"
     Loaded="Page_Loaded"
     SizeChanged="Page_SizeChanged"
     mc:Ignorable="d">
@@ -221,14 +220,6 @@
             VerticalAlignment="Stretch"
             Background="{ThemeResource BackgroundImageMaskAcrylicBrush}"
             Opacity="0" />
-
-        <Border
-            Name="BackgroundContentBorder"
-            Grid.Row="1"
-            Background="{ThemeResource NavigationViewContentBackground}"
-            BorderBrush="{ThemeResource NavigationViewContentGridBorderBrush}"
-            BorderThickness="{ThemeResource BackgroundBorder}"
-            Visibility="Collapsed" />
 
         <Border
             x:Name="NavViewPaneBackground"

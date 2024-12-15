@@ -9,7 +9,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:Nrk.FluentCore.GameManagement.Instances"
     Loaded="Page_Loaded"
+    x:DefaultBindMode="OneWay"
     mc:Ignorable="d">
     <Page.Resources>
         <Style x:Key="DropDownButtonStyle" TargetType="DropDownButton">
@@ -162,10 +164,10 @@
 
     <i:Interaction.Behaviors>
         <core:EventTriggerBehavior EventName="Unloaded">
-            <actions:ModifiedInvokeCommandAction Command="{Binding UnloadedCommand}" />
+            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.UnloadedCommand}" />
         </core:EventTriggerBehavior>
         <core:EventTriggerBehavior EventName="Loaded">
-            <actions:ModifiedInvokeCommandAction Command="{Binding LoadedCommand}" />
+            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadedCommand}" />
         </core:EventTriggerBehavior>
     </i:Interaction.Behaviors>
 
@@ -197,13 +199,13 @@
                         Name="HyperlinkButton"
                         Background="Transparent"
                         BorderBrush="Transparent"
-                        Command="{Binding GoToAccountCommand}">
+                        Command="{x:Bind VM.GoToAccountCommand}">
                         <StackPanel>
                             <TextBlock
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
-                                Text="{Binding ActiveAccount.Type, Converter={ThemeResource AccountInfoConverter}}" />
-                            <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Text="{Binding ActiveAccount.Name}" />
+                                Text="{x:Bind VM.ActiveAccount.Type, Converter={ThemeResource AccountInfoConverter}}" />
+                            <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Text="{x:Bind VM.ActiveAccount.Name}" />
                         </StackPanel>
                     </HyperlinkButton>
                 </Grid>
@@ -211,7 +213,7 @@
                     x:Name="LaunchButton"
                     Grid.Column="4"
                     VerticalAlignment="Bottom"
-                    Command="{Binding LaunchCommand}"
+                    Command="{x:Bind VM.LaunchCommand}"
                     Style="{ThemeResource AccentButtonStyle}">
                     <ToolTipService.ToolTip>
                         <TextBlock x:Uid="Home_HomePage_LaunchButton" />
@@ -257,7 +259,7 @@
                             Grid.Column="2"
                             HorizontalTextAlignment="Right"
                             Style="{ThemeResource TitleLargeTextBlockStyle}"
-                            Text="{Binding DropDownButtonDisplayText}"
+                            Text="{x:Bind VM.DropDownButtonDisplayText}"
                             TextTrimming="CharacterEllipsis" />
                         <DropDownButton.Flyout>
                             <Flyout Opened="Flyout_Opened" Placement="TopEdgeAlignedRight">
@@ -279,10 +281,10 @@
                                         MaxWidth="425"
                                         MaxHeight="250"
                                         Margin="-10,-7.5"
-                                        ItemsSource="{Binding MinecraftInstances}"
-                                        SelectedItem="{Binding ActiveMinecraftInstance, Mode=TwoWay}">
+                                        ItemsSource="{x:Bind VM.MinecraftInstances}"
+                                        SelectedItem="{x:Bind VM.ActiveMinecraftInstance, Mode=TwoWay}">
                                         <ListView.ItemTemplate>
-                                            <DataTemplate>
+                                            <DataTemplate x:DataType="data:MinecraftInstance">
                                                 <Grid
                                                     x:Name="DataGrid"
                                                     Padding="0,7.5"
@@ -300,27 +302,27 @@
                                                         BorderThickness="2"
                                                         CornerRadius="4">
                                                         <Border CornerRadius="4">
-                                                            <Image Source="{Binding Converter={ThemeResource InstanceIconConverter}}" />
+                                                            <Image Source="{x:Bind Converter={ThemeResource InstanceIconConverter}}" />
                                                         </Border>
                                                     </Border>
                                                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                                         <TextBlock
                                                             Style="{ThemeResource BaseTextBlockStyle}"
-                                                            Text="{Binding Converter={ThemeResource InstanceDisplayNameConverter}}"
+                                                            Text="{x:Bind Converter={ThemeResource InstanceDisplayNameConverter}}"
                                                             TextTrimming="CharacterEllipsis"
                                                             TextWrapping="NoWrap"
                                                             ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
-                                                        <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource InstanceDescriptionConverter}}">
+                                                        <ItemsRepeater ItemsSource="{x:Bind Converter={ThemeResource InstanceDescriptionConverter}}">
                                                             <ItemsRepeater.Layout>
                                                                 <StackLayout Orientation="Horizontal" Spacing="5" />
                                                             </ItemsRepeater.Layout>
                                                             <ItemsRepeater.ItemTemplate>
-                                                                <DataTemplate>
+                                                                <DataTemplate x:DataType="x:String">
                                                                     <TextBlock
                                                                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                                                         Style="{ThemeResource CaptionTextBlockStyle}"
-                                                                        Text="{Binding}"
-                                                                        ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                                                                        Text="{x:Bind}"
+                                                                        ToolTipService.ToolTip="{x:Bind}" />
                                                                 </DataTemplate>
                                                             </ItemsRepeater.ItemTemplate>
                                                         </ItemsRepeater>
@@ -349,7 +351,7 @@
                                                 FontWeight="SemiBold"
                                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                                 Text="No Core" />
-                                            <HyperlinkButton Margin="0,0,0,-5" Command="{Binding GoToSettingsCommand}">
+                                            <HyperlinkButton Margin="0,0,0,-5" Command="{x:Bind VM.GoToSettingsCommand}">
                                                 <TextBlock
                                                     x:Uid="Cores_CoresPage_Text4"
                                                     FontWeight="SemiBold"
@@ -358,7 +360,7 @@
                                         </StackPanel>
 
                                         <i:Interaction.Behaviors>
-                                            <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{Binding MinecraftInstances}" />
+                                            <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{x:Bind VM.MinecraftInstances}" />
                                         </i:Interaction.Behaviors>
                                     </StackPanel>
 

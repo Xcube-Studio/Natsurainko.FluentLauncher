@@ -17,24 +17,11 @@
                 Height="300"
                 MinWidth="400"
                 HorizontalAlignment="Stretch"
-                Source="{Binding Source, Mode=TwoWay}">
-                <WebView2.Visibility>
-                    <Binding Path="NeedRefresh">
-                        <Binding.Converter>
-                            <converters:BoolToVisibilityConverter Inverted="True" />
-                        </Binding.Converter>
-                    </Binding>
-                </WebView2.Visibility>
+                Source="{x:Bind VM.Source, Mode=TwoWay}"
+                Visibility="{x:Bind VM.NeedRefresh, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
             </WebView2>
         </Border>
-        <Grid>
-            <Grid.Visibility>
-                <Binding Path="NeedRefresh">
-                    <Binding.Converter>
-                        <converters:BoolToVisibilityConverter />
-                    </Binding.Converter>
-                </Binding>
-            </Grid.Visibility>
+        <Grid Visibility="{x:Bind VM.NeedRefresh, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="10" />
@@ -42,14 +29,14 @@
                 <ColumnDefinition Width="10" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <FontIcon VerticalAlignment="Center" Glyph="{Binding Icon}" />
+            <FontIcon VerticalAlignment="Center" Glyph="{x:Bind VM.Icon, Mode=OneWay}" />
             <TextBlock
                 Grid.Column="2"
                 VerticalAlignment="Center"
                 Style="{ThemeResource BaseTextBlockStyle}"
-                Text="{Binding Description}"
+                Text="{x:Bind VM.Description, Mode=OneWay}"
                 TextWrapping="WrapWholeWords" />
-            <Button Grid.Column="4" Command="{Binding RefreshCommand}">
+            <Button Grid.Column="4" Command="{x:Bind VM.RefreshCommand}">
                 <TextBlock x:Uid="Buttons_Refresh" Text="Refresh" />
             </Button>
         </Grid>

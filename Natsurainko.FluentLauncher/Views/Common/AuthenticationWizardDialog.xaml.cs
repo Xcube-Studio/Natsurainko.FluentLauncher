@@ -7,11 +7,13 @@ namespace Natsurainko.FluentLauncher.Views.Common;
 
 public sealed partial class AuthenticationWizardDialog : ContentDialog
 {
+    AuthenticationWizardDialogViewModel VM => (AuthenticationWizardDialogViewModel)DataContext;
+
     public AuthenticationWizardDialog()
     {
-        this.XamlRoot = MainWindow.XamlRoot;
+        XamlRoot = MainWindow.XamlRoot;
 
-        this.InitializeComponent();
+        InitializeComponent();
         DataContext = new AuthenticationWizardDialogViewModel(
             App.GetService<AccountService>(),
             App.GetService<NotificationService>(),

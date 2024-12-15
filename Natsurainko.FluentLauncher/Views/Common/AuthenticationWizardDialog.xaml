@@ -351,7 +351,7 @@
                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                 Style="{ThemeResource BaseTextBlockStyle}"
                 Text="Account Add Wizard:" />
-            <TextBlock Text="{Binding ElementName=contentFrame, Path=Content.Tag}" TextWrapping="WrapWholeWords" />
+            <TextBlock Text="{x:Bind ((FrameworkElement)contentFrame.Content).Tag, Mode=OneWay}" TextWrapping="WrapWholeWords" />
         </StackPanel>
     </ContentDialog.Title>
 
@@ -378,10 +378,10 @@
             Background="Transparent">
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="Loaded">
-                    <actions:ModifiedInvokeCommandAction Command="{Binding LoadEventCommand}" />
+                    <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadEventCommand}" />
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
-            <Frame x:Name="contentFrame" DataContext="{Binding CurrentFrameDataContext}">
+            <Frame x:Name="contentFrame" DataContext="{x:Bind VM.CurrentFrameDataContext, Mode=OneWay}">
                 <Frame.ContentTransitions>
                     <TransitionCollection>
                         <RepositionThemeTransition />
@@ -413,27 +413,27 @@
                 <Button
                     Grid.Column="2"
                     HorizontalAlignment="Stretch"
-                    Command="{Binding NextCommand}"
+                    Command="{x:Bind VM.NextCommand}"
                     ElementSoundMode="FocusOnly"
-                    IsEnabled="{Binding CurrentFrameDataContext.CanNext}"
+                    IsEnabled="{x:Bind VM.CurrentFrameDataContext.CanNext, Mode=OneWay}"
                     IsTabStop="False"
                     Style="{ThemeResource AccentButtonStyle}">
                     <TextBlock x:Uid="Buttons_Next" Text="Next" />
                 </Button>
                 <Button
                     HorizontalAlignment="Stretch"
-                    Command="{Binding PreviousCommand}"
+                    Command="{x:Bind VM.PreviousCommand}"
                     ElementSoundMode="FocusOnly"
-                    IsEnabled="{Binding CurrentFrameDataContext.CanPrevious}"
+                    IsEnabled="{x:Bind VM.CurrentFrameDataContext.CanPrevious, Mode=OneWay}"
                     IsTabStop="False">
                     <TextBlock x:Uid="Buttons_Back" Text="Back" />
                 </Button>
                 <Button
                     Grid.Column="4"
                     HorizontalAlignment="Stretch"
-                    Command="{Binding CancelCommand}"
+                    Command="{x:Bind VM.CancelCommand}"
                     ElementSoundMode="FocusOnly"
-                    IsEnabled="{Binding CurrentFrameDataContext.CanCancel}"
+                    IsEnabled="{x:Bind VM.CurrentFrameDataContext.CanCancel, Mode=OneWay}"
                     IsTabStop="False">
                     <TextBlock x:Uid="Buttons_Cancel" Text="Cancel" />
                 </Button>

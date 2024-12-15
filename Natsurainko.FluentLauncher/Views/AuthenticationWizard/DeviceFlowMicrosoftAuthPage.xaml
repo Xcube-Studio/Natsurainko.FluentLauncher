@@ -15,7 +15,7 @@
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <core:EventTriggerBehavior EventName="Unloaded">
-            <actions:ModifiedInvokeCommandAction Command="{Binding UnloadEventCommand}" />
+            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.UnloadEventCommand}" />
         </core:EventTriggerBehavior>
     </i:Interaction.Behaviors>
 
@@ -31,11 +31,11 @@
                 VerticalAlignment="Center"
                 FontWeight="SemiBold">
                 <Grid>
-                    <TextBlock Text="{Binding DeviceCode}" />
+                    <TextBlock Text="{x:Bind VM.DeviceCode, Mode=OneWay}" />
                     <ProgressRing
                         Width="16"
                         Height="16"
-                        IsActive="{Binding Loading}" />
+                        IsActive="{x:Bind VM.Loading, Mode=OneWay}" />
                 </Grid>
             </Button>
         </StackPanel>
@@ -55,13 +55,13 @@
                 <ColumnDefinition Width="10" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Command="{Binding CopyCodeCommand}">
+            <Button Grid.Column="0" Command="{x:Bind VM.CopyCodeCommand}">
                 <StackPanel Orientation="Horizontal" Spacing="5">
                     <FontIcon FontSize="16" Glyph="&#xe8c8;" />
                     <TextBlock x:Uid="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_B1" Text="Copy Code" />
                 </StackPanel>
             </Button>
-            <Button Grid.Column="2" Command="{Binding RefreshCodeCommand}">
+            <Button Grid.Column="2" Command="{x:Bind VM.RefreshCodeCommand}">
                 <StackPanel Orientation="Horizontal" Spacing="5">
                     <FontIcon FontSize="16" Glyph="&#xE72C;" />
                     <TextBlock x:Uid="AuthenticationWizard_DeviceFlowMicrosoftAuthPage_B2" Text="Refresh Code" />

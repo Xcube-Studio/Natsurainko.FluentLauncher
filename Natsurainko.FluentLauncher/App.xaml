@@ -60,6 +60,7 @@
 
             <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <converters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" Inverted="true"/>
             <converters:ColorHexCodeConverter x:Key="ColorHexCodeConverter" />
 
             <converters:ResourceAuthorsConverter x:Key="ResourceAuthorsConverter" />

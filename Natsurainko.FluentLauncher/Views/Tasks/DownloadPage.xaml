@@ -45,7 +45,7 @@
                 MaxWidth="1000"
                 Margin="{ThemeResource PageEndMarginWithScrollViewer}"
                 ItemTemplate="{ThemeResource TemplateSelector}"
-                ItemsSource="{Binding Tasks}">
+                ItemsSource="{x:Bind VM.Tasks, Mode=OneWay}">
                 <ItemsRepeater.Layout>
                     <StackLayout Spacing="4" />
                 </ItemsRepeater.Layout>
@@ -72,7 +72,7 @@
                     FontWeight="SemiBold"
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                     Text="No Task" />
-                <HyperlinkButton Margin="0,0,0,-5" Command="{Binding GoToDownloadCommand}">
+                <HyperlinkButton Margin="0,0,0,-5" Command="{x:Bind VM.GoToDownloadCommand}">
                     <TextBlock
                         x:Uid="Tasks_DownloadPage_Text2"
                         FontWeight="SemiBold"
@@ -81,7 +81,7 @@
             </StackPanel>
 
             <i:Interaction.Behaviors>
-                <behaviors:EmptyListVisibleBehavior IsObservableCollection="True" ItemsSource="{Binding Tasks}" />
+                <behaviors:EmptyListVisibleBehavior IsObservableCollection="True" ItemsSource="{x:Bind VM.Tasks, Mode=OneWay}" />
             </i:Interaction.Behaviors>
         </StackPanel>
 

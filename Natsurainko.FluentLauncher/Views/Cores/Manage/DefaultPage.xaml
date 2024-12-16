@@ -10,6 +10,10 @@
     Unloaded="Page_Unloaded"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <converters:InstanceDescriptionConverter x:Key="InstanceDescriptionConverter" EnableShowModLoaderType="True" />
+    </Page.Resources>
+
     <ScrollViewer>
         <Border Name="border" Margin="{ThemeResource PageMarginWithBorder}">
             <StackPanel
@@ -28,10 +32,10 @@
 
                 <controls:SettingsCard
                     ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
-                    Command="{Binding OpenVersionFolderCommand}"
+                    Command="{x:Bind VM.OpenVersionFolderCommand}"
                     IsClickEnabled="True">
                     <controls:SettingsCard.Header>
-                        <Grid DataContext="{Binding MinecraftInstance}">
+                        <Grid DataContext="{x:Bind VM.MinecraftInstance, Mode=OneWay}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="15" />
@@ -46,28 +50,21 @@
                                 BorderThickness="2"
                                 CornerRadius="4">
                                 <Border CornerRadius="4">
-                                    <Image Source="{Binding Converter={ThemeResource InstanceIconConverter}}" />
+                                    <Image Source="{x:Bind VM.MinecraftInstance, Mode=OneWay, Converter={StaticResource InstanceIconConverter}}" />
                                 </Border>
                             </Border>
                             <StackPanel Grid.Column="2" Spacing="5">
                                 <TextBlock
                                     FontWeight="SemiBold"
-                                    Text="{Binding InstanceId}"
+                                    Text="{x:Bind VM.MinecraftInstance.InstanceId, Mode=OneWay}"
                                     TextTrimming="CharacterEllipsis"
-                                    ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
-                                <ItemsRepeater>
-                                    <ItemsRepeater.ItemsSource>
-                                        <Binding>
-                                            <Binding.Converter>
-                                                <converters:InstanceDescriptionConverter EnableShowModLoaderType="True" />
-                                            </Binding.Converter>
-                                        </Binding>
-                                    </ItemsRepeater.ItemsSource>
+                                    ToolTipService.ToolTip="{x:Bind VM.MinecraftInstance.InstanceId, Mode=OneWay}" />
+                                <ItemsRepeater ItemsSource="{x:Bind VM.MinecraftInstance, Mode=OneWay, Converter={StaticResource InstanceDescriptionConverter}}">
                                     <ItemsRepeater.Layout>
                                         <controls:WrapLayout HorizontalSpacing="5" VerticalSpacing="5" />
                                     </ItemsRepeater.Layout>
                                     <ItemsRepeater.ItemTemplate>
-                                        <DataTemplate>
+                                        <DataTemplate x:DataType="x:String">
                                             <Border Padding="5,1" CornerRadius="2.5">
                                                 <Border.Background>
                                                     <SolidColorBrush Opacity="0.9" Color="{ThemeResource SystemAccentColor}" />
@@ -75,8 +72,8 @@
                                                 <TextBlock
                                                     Foreground="{ThemeResource AccentButtonForeground}"
                                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                                    Text="{Binding}"
-                                                    ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                                                    Text="{x:Bind}"
+                                                    ToolTipService.ToolTip="{x:Bind}" />
                                             </Border>
                                         </DataTemplate>
                                     </ItemsRepeater.ItemTemplate>
@@ -89,7 +86,7 @@
                         Name="DeleteButton"
                         Background="{ThemeResource DeleteButtonBackground}"
                         BorderBrush="{ThemeResource DeleteButtonBorder}"
-                        Command="{Binding DeleteGameCommand}"
+                        Command="{x:Bind VM.DeleteGameCommand}"
                         Style="{ThemeResource ButtonRevealStyle}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <FontIcon
@@ -109,12 +106,12 @@
                     Description="Only as a display name, the actual Id will not be modified"
                     Header="Core Nickname"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE8AC;}">
-                    <TextBox Width="150" Text="{Binding InstanceConfig.NickName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox Width="150" Text="{x:Bind VM.InstanceConfig.NickName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
                     x:Uid="Cores_Manage_DefaultPage_Card2"
-                    Command="{Binding CardClickCommand}"
+                    Command="{x:Bind VM.CardClickCommand}"
                     CommandParameter="CoreManage/Config"
                     Description="Set additional JVM parameters, game accounts, core independence, etc."
                     Header="Game launch settings"
@@ -126,7 +123,7 @@
                     Description="Pin to the taskbar and quickly launch the game through the taskbar menu"
                     Header="Pin to Quick Launch"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe718;}">
-                    <ToggleSwitch IsOn="{Binding Pinned, Mode=TwoWay}" />
+                    <ToggleSwitch IsOn="{x:Bind VM.Pinned, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
                 <TextBlock
@@ -136,7 +133,7 @@
 
                 <controls:SettingsCard
                     x:Uid="Cores_Manage_DefaultPage_Card3"
-                    Command="{Binding CardClickCommand}"
+                    Command="{x:Bind VM.CardClickCommand}"
                     CommandParameter="CoreManage/Mod"
                     Description="Import, enable/disable, delete modules"
                     Header="Module Management"
@@ -145,7 +142,7 @@
 
                 <controls:SettingsCard
                     x:Uid="Cores_Manage_DefaultPage_Card4"
-                    Command="{Binding CardClickCommand}"
+                    Command="{x:Bind VM.CardClickCommand}"
                     CommandParameter="CoreManage/Save"
                     Description="View and manage your game saves"
                     Header="Save Management"
@@ -163,11 +160,11 @@
                     HeaderIcon="{xh:FontIcon Glyph=&#xe7c3;}">
                     <controls:SettingsCard.Description>
                         <TextBlock>
-                            <Run x:Uid="Cores_Manage_DefaultPage_Text1" Text="Referenced" /> <Run Text="{Binding GameStorageInfo.LibrariesCount}" /> <Run x:Uid="Cores_Manage_DefaultPage_Text2" Text="Libraries;" />
-                            <Run x:Uid="Cores_Manage_DefaultPage_Text1" Text="Referenced" /> <Run Text="{Binding GameStorageInfo.AssetsCount}" /> <Run x:Uid="Cores_Manage_DefaultPage_Text3" Text="Assets;" />
+                            <Run x:Uid="Cores_Manage_DefaultPage_Text1" Text="Referenced" /> <Run Text="{x:Bind VM.GameStorageInfo.LibrariesCount, Mode=OneWay}" /> <Run x:Uid="Cores_Manage_DefaultPage_Text2" Text="Libraries;" />
+                            <Run x:Uid="Cores_Manage_DefaultPage_Text1" Text="Referenced" /> <Run Text="{x:Bind VM.GameStorageInfo.AssetsCount, Mode=OneWay}" /> <Run x:Uid="Cores_Manage_DefaultPage_Text3" Text="Assets;" />
                         </TextBlock>
                     </controls:SettingsCard.Description>
-                    <TextBlock Text="{Binding FormatSize}" />
+                    <TextBlock Text="{x:Bind VM.FormatSize, Mode=OneWay}" />
                 </controls:SettingsCard>
             </StackPanel>
         </Border>

@@ -21,29 +21,29 @@
             Grid.Row="0"
             MaxWidth="1020"
             Margin="{ThemeResource PageMarginWithBreadcrumbBar}"
-            ItemsSource="{Binding Routes}">
+            ItemsSource="{x:Bind VM.Routes, Mode=OneWay}">
             <BreadcrumbBar.Resources>
                 <converters:BreadcrumbBarLocalizationConverter x:Key="BreadcrumbBarLocalizationConverter" BasePath="Cores_Manage_NavigationPage" />
             </BreadcrumbBar.Resources>
 
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="ItemClicked">
-                    <actions:ModifiedInvokeCommandAction Command="{Binding ItemClickedEventCommand}" />
+                    <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.ItemClickedEventCommand}" />
                 </core:EventTriggerBehavior>
                 <core:EventTriggerBehavior EventName="Loading">
-                    <actions:ModifiedInvokeCommandAction Command="{Binding BreadcrumbBarLoadingEventCommand}" CommandParameter="{StaticResource BreadcrumbBarLocalizationConverter}" />
+                    <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.BreadcrumbBarLoadingEventCommand}" CommandParameter="{StaticResource BreadcrumbBarLocalizationConverter}" />
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
 
             <BreadcrumbBar.ItemTemplate>
-                <DataTemplate>
-                    <BreadcrumbBarItem Content="{Binding}">
+                <DataTemplate x:DataType="x:String">
+                    <BreadcrumbBarItem Content="{x:Bind}">
                         <BreadcrumbBarItem.ContentTemplate>
                             <DataTemplate>
                                 <TextBlock
                                     Margin="10,0"
                                     Style="{ThemeResource TitleTextBlockStyle}"
-                                    Text="{Binding Converter={ThemeResource BreadcrumbBarLocalizationConverter}}"
+                                    Text="{x:Bind Converter={StaticResource BreadcrumbBarLocalizationConverter}}"
                                     TextTrimming="CharacterEllipsis" />
                             </DataTemplate>
                         </BreadcrumbBarItem.ContentTemplate>

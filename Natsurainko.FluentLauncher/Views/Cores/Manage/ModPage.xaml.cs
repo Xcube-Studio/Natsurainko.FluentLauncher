@@ -10,9 +10,11 @@ public sealed partial class ModPage : Page, IBreadcrumbBarAware
 {
     public string Route => "Mod";
 
+    ModViewModel VM => (ModViewModel)DataContext;
+
     public ModPage()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 
     private void SettingsCard_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)

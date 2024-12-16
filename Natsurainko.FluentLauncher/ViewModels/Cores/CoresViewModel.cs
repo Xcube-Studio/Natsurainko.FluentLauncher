@@ -68,7 +68,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     public partial int SortByIndex { get; set; }
 
     [ObservableProperty]
-    public partial IEnumerable<MinecraftInstance> DisplayMinecraftInstances { get; set; }
+    public partial List<MinecraftInstance> DisplayMinecraftInstances { get; set; }
 
     public string DisplayFolderPath => (string.IsNullOrEmpty(ActiveMinecraftFolder) || !Directory.Exists(ActiveMinecraftFolder))
         ? ResourceUtils.GetValue("Cores", "CoresPage", "_FolderError")
@@ -94,7 +94,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
             };
         });
 
-        IReadOnlyList<MinecraftInstance> list = SortByIndex.Equals(0)
+        List<MinecraftInstance> list = SortByIndex.Equals(0)
             ? [.. infos.OrderBy(x => x.InstanceId)]
             : [..infos.OrderByDescending(x => x.GetConfig().LastLaunchTime)];
 

@@ -29,9 +29,9 @@
                     Style="{ThemeResource BaseTextBlockStyle}"
                     Text="Additional options for Fabric loader" />
 
-                <controls:SettingsCard IsEnabled="{Binding FabricApiAvailable}">
+                <controls:SettingsCard IsEnabled="{x:Bind VM.FabricApiAvailable, Mode=OneWay}">
                     <controls:SettingsCard.Header>
-                        <CheckBox IsChecked="{Binding EnabledFabricApi, Mode=TwoWay}">
+                        <CheckBox IsChecked="{x:Bind VM.EnabledFabricApi, Mode=TwoWay}">
                             <Grid Margin="10,-5,0,0" Background="Transparent">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -65,30 +65,30 @@
                         <ProgressRing
                             Width="16"
                             Height="16"
-                            IsActive="{Binding LoadingFabricApi}"
-                            Visibility="{Binding LoadingFabricApi, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                            IsActive="{x:Bind VM.LoadingFabricApi, Mode=OneWay}"
+                            Visibility="{x:Bind VM.LoadingFabricApi, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
 
-                        <StackPanel Visibility="{Binding LoadingFabricApi, Converter={ThemeResource InvertedBoolToVisibilityConverter}}">
+                        <StackPanel Visibility="{x:Bind VM.LoadingFabricApi,Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
                             <TextBlock
                                 x:Uid="CoreInstallWizard_AdditionalOptionsPage_Text1"
                                 VerticalAlignment="Center"
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
                                 Text="Unsupported"
-                                Visibility="{Binding FabricApiAvailable, Converter={ThemeResource InvertedBoolToVisibilityConverter}}" />
+                                Visibility="{x:Bind VM.FabricApiAvailable, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
                             <TextBlock
                                 VerticalAlignment="Center"
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
-                                Text="{Binding FabricApi.FileName}"
-                                Visibility="{Binding FabricApiAvailable, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                                Text="{x:Bind VM.FabricApi.FileName, Mode=OneWay}"
+                                Visibility="{x:Bind VM.FabricApiAvailable, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
                         </StackPanel>
                     </StackPanel>
                 </controls:SettingsCard>
 
-                <controls:SettingsCard IsEnabled="{Binding OptiFabricAvailable}">
+                <controls:SettingsCard IsEnabled="{x:Bind VM.OptiFabricAvailable, Mode=OneWay}">
                     <controls:SettingsCard.Header>
-                        <CheckBox IsChecked="{Binding EnabledOptiFabric, Mode=TwoWay}">
+                        <CheckBox IsChecked="{x:Bind VM.EnabledOptiFabric, Mode=TwoWay}">
                             <Grid Margin="10,-5,0,0" Background="Transparent">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -122,23 +122,23 @@
                         <ProgressRing
                             Width="16"
                             Height="16"
-                            IsActive="{Binding LoadingOptiFabric}"
-                            Visibility="{Binding LoadingOptiFabric, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                            IsActive="{x:Bind VM.LoadingOptiFabric, Mode=OneWay}"
+                            Visibility="{x:Bind VM.LoadingOptiFabric, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
 
-                        <StackPanel Visibility="{Binding LoadingOptiFabric, Converter={ThemeResource InvertedBoolToVisibilityConverter}}">
+                        <StackPanel Visibility="{x:Bind VM.LoadingOptiFabric, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
                             <TextBlock
                                 x:Uid="CoreInstallWizard_AdditionalOptionsPage_Text1"
                                 VerticalAlignment="Center"
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
                                 Text="Unsupported"
-                                Visibility="{Binding OptiFabricAvailable, Converter={ThemeResource InvertedBoolToVisibilityConverter}}" />
+                                Visibility="{x:Bind VM.OptiFabricAvailable, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
                             <TextBlock
                                 VerticalAlignment="Center"
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
-                                Text="{Binding OptiFabric.FileName}"
-                                Visibility="{Binding OptiFabricAvailable, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                                Text="{x:Bind VM.OptiFabric.FileName, Mode=OneWay}"
+                                Visibility="{x:Bind VM.OptiFabricAvailable, Mode=OneWay,, Converter={StaticResource BoolToVisibilityConverter}}" />
                         </StackPanel>
                     </StackPanel>
                 </controls:SettingsCard>

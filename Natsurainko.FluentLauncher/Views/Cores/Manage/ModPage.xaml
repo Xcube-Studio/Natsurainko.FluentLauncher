@@ -8,6 +8,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    xmlns:data="using:Nrk.FluentCore.GameManagement.Mods"
     mc:Ignorable="d">
 
     <ScrollViewer>
@@ -24,8 +25,8 @@
                 <controls:SettingsCard
                     x:Uid="Cores_Manage_ModPage_Card1"
                     ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
-                    Command="{Binding OpenModsFolderCommand}"
-                    Description="{Binding ModsFolder}"
+                    Command="{x:Bind VM.OpenModsFolderCommand}"
+                    Description="{x:Bind VM.ModsFolder, Mode=OneWay}"
                     Header="Mods Folder"
                     HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
                     IsClickEnabled="True" />
@@ -35,16 +36,16 @@
                     Foreground="{ThemeResource SystemErrorTextColor}"
                     Header="This game does not have a mod loader or the modder does not support mods"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE711;}"
-                    Visibility="{Binding NotSupportMod, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                    Visibility="{x:Bind VM.NotSupportMod, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                 <TextBlock
                     x:Uid="Cores_Manage_ModPage_T1"
                     Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
                     Text="Mods" />
 
-                <ItemsControl ItemsSource="{Binding Mods}">
+                <ItemsControl ItemsSource="{x:Bind VM.Mods, Mode=OneWay}">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="data:MinecraftMod">
                             <controls:SettingsCard
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
@@ -64,7 +65,7 @@
                                         <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                             <TextBlock
                                                 FontWeight="SemiBold"
-                                                Text="{Binding DisplayName}"
+                                                Text="{x:Bind DisplayName}"
                                                 TextTrimming="CharacterEllipsis" />
                                             <TextBlock
                                                 x:Name="InfoText"
@@ -72,7 +73,7 @@
                                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                                 MaxLines="1"
                                                 Style="{ThemeResource CaptionTextBlockStyle}"
-                                                Text="{Binding Converter={ThemeResource ModInfoConverter}}"
+                                                Text="{x:Bind Converter={StaticResource ModInfoConverter}}"
                                                 TextTrimming="CharacterEllipsis"
                                                 TextWrapping="NoWrap" />
                                         </StackPanel>
@@ -84,7 +85,7 @@
                                         Name="DeleteButton"
                                         Background="{ThemeResource DeleteButtonBackground}"
                                         BorderBrush="{ThemeResource DeleteButtonBorder}"
-                                        CommandParameter="{Binding}"
+                                        CommandParameter="{x:Bind}"
                                         Style="{ThemeResource ButtonRevealStyle}">
                                         <StackPanel Orientation="Horizontal" Spacing="5">
                                             <FontIcon
@@ -107,7 +108,7 @@
 
                                     <ToggleSwitch
                                         Name="ToggleSwitch"
-                                        IsOn="{Binding IsEnabled, Mode=OneTime}"
+                                        IsOn="{x:Bind IsEnabled}"
                                         Loaded="ToggleSwitch_Loaded" />
                                 </StackPanel>
 
@@ -147,7 +148,7 @@
                     </StackPanel>
 
                     <i:Interaction.Behaviors>
-                        <behaviors:EmptyListVisibleBehavior IsObservableCollection="True" ItemsSource="{Binding Mods}" />
+                        <behaviors:EmptyListVisibleBehavior IsObservableCollection="True" ItemsSource="{x:Bind VM.Mods, Mode=OneWay}" />
                     </i:Interaction.Behaviors>
                 </StackPanel>
             </StackPanel>

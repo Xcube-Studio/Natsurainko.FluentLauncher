@@ -8,9 +8,11 @@ public sealed partial class ConfigPage : Page, IBreadcrumbBarAware
 {
     public string Route => "Config";
 
+    ConfigViewModel VM => (ConfigViewModel)DataContext;
+
     public ConfigPage()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 
     private void Page_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

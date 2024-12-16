@@ -11,6 +11,8 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    xmlns:inst="using:Nrk.FluentCore.GameManagement.Instances"
+    xmlns:collections="using:System.Collections"
     Background="Transparent"
     mc:Ignorable="d">
     <Page.Resources>
@@ -19,10 +21,10 @@
 
     <i:Interaction.Behaviors>
         <core:EventTriggerBehavior EventName="Unloaded">
-            <actions:ModifiedInvokeCommandAction Command="{Binding UnloadedCommand}" />
+            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.UnloadedCommand}" />
         </core:EventTriggerBehavior>
         <core:EventTriggerBehavior EventName="Loaded">
-            <actions:ModifiedInvokeCommandAction Command="{Binding LoadedCommand}" />
+            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadedCommand}" />
         </core:EventTriggerBehavior>
     </i:Interaction.Behaviors>
 
@@ -43,7 +45,7 @@
                 Text="CoresPage" />
 
             <controls:WrapPanel HorizontalSpacing="15" VerticalSpacing="15">
-                <Button Command="{Binding SearchAllMinecraftCommand}" Style="{ThemeResource AccentButtonStyle}">
+                <Button Command="{x:Bind VM.SearchAllMinecraftCommand}" Style="{ThemeResource AccentButtonStyle}">
                     <StackPanel Orientation="Horizontal" Spacing="5">
                         <FontIcon FontSize="14" Glyph="&#xE896;" />
                         <TextBlock x:Uid="Cores_CoresPage_InstallButton" Text="Install cores" />
@@ -66,7 +68,7 @@
                         VerticalAlignment="Center"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Text="Filter: " />
-                    <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items1}" SelectedIndex="{Binding FilterIndex, Mode=TwoWay}" />
+                    <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items1}" SelectedIndex="{x:Bind VM.FilterIndex, Mode=TwoWay}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="5">
                     <FontIcon
@@ -78,10 +80,10 @@
                         VerticalAlignment="Center"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Text="Sort by: " />
-                    <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items2}" SelectedIndex="{Binding SortByIndex, Mode=TwoWay}" />
+                    <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items2}" SelectedIndex="{x:Bind VM.SortByIndex, Mode=TwoWay}" />
                 </StackPanel>
 
-                <HyperlinkButton Command="{Binding NavigateFolderCommand}" Content="{Binding DisplayFolderPath}" />
+                <HyperlinkButton Command="{x:Bind VM.NavigateFolderCommand}" Content="{x:Bind VM.DisplayFolderPath, Mode=OneWay}" />
             </controls:WrapPanel>
         </StackPanel>
 
@@ -93,13 +95,13 @@
                 Name="itemsRepeater"
                 MaxWidth="1000"
                 Margin="{ThemeResource PageEndMarginWithScrollViewer}"
-                ItemsSource="{Binding DisplayMinecraftInstances}">
+                ItemsSource="{x:Bind VM.DisplayMinecraftInstances, Mode=OneWay}">
                 <ItemsRepeater.Layout>
                     <StackLayout Spacing="4" />
                 </ItemsRepeater.Layout>
                 <ItemsRepeater.ItemTemplate>
-                    <DataTemplate>
-                        <controls:SettingsCard CommandParameter="{Binding}" IsClickEnabled="True">
+                    <DataTemplate x:DataType="inst:MinecraftInstance">
+                        <controls:SettingsCard CommandParameter="{x:Bind}" IsClickEnabled="True">
                             <controls:SettingsCard.Header>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -116,16 +118,16 @@
                                         BorderThickness="2"
                                         CornerRadius="4">
                                         <Border CornerRadius="4">
-                                            <Image Source="{Binding Converter={ThemeResource InstanceIconConverter}}" />
+                                            <Image Source="{x:Bind Converter={StaticResource InstanceIconConverter}}" />
                                         </Border>
                                     </Border>
                                     <StackPanel Grid.Column="2" Spacing="5">
                                         <TextBlock
                                             FontWeight="SemiBold"
-                                            Text="{Binding Converter={ThemeResource InstanceDisplayNameConverter}}"
+                                            Text="{x:Bind Converter={ThemeResource InstanceDisplayNameConverter}}"
                                             TextTrimming="CharacterEllipsis"
                                             ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
-                                        <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource InstanceDescriptionConverter}}">
+                                        <ItemsRepeater ItemsSource="{x:Bind Converter={StaticResource InstanceDescriptionConverter}}">
                                             <ItemsRepeater.Layout>
                                                 <controls:WrapLayout HorizontalSpacing="5" VerticalSpacing="5" />
                                             </ItemsRepeater.Layout>
@@ -138,8 +140,8 @@
                                                         <TextBlock
                                                             Foreground="{ThemeResource AccentButtonForeground}"
                                                             Style="{ThemeResource CaptionTextBlockStyle}"
-                                                            Text="{Binding}"
-                                                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                                                            Text="{x:Bind}"
+                                                            ToolTipService.ToolTip="{x:Bind}" />
                                                     </Border>
                                                 </DataTemplate>
                                             </ItemsRepeater.ItemTemplate>
@@ -178,7 +180,7 @@
                     FontWeight="SemiBold"
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                     Text="No Core" />
-                <HyperlinkButton Margin="0,0,0,-5" Command="{Binding GoToSettingsCommand}">
+                <HyperlinkButton Margin="0,0,0,-5" Command="{x:Bind VM.GoToSettingsCommand}">
                     <TextBlock
                         x:Uid="Cores_CoresPage_Text4"
                         FontWeight="SemiBold"
@@ -187,7 +189,7 @@
             </StackPanel>
 
             <i:Interaction.Behaviors>
-                <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{Binding DisplayMinecraftInstances}" />
+                <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{x:Bind VM.DisplayMinecraftInstances, Mode=OneWay}" />
             </i:Interaction.Behaviors>
         </StackPanel>
 

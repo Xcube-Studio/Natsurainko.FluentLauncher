@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Cores.Install"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:Natsurainko.FluentLauncher.Models.UI"
     x:Uid="CoreInstallWizard_ChooseModLoaderPage_Page"
     Tag="Mod Loader Options (1/3)"
     mc:Ignorable="d">
@@ -19,12 +20,12 @@
                     <RepositionThemeTransition IsStaggeringEnabled="False" />
                 </StackPanel.ChildrenTransitions>
 
-                <ItemsRepeater ItemsSource="{Binding ModLoaderDatas}">
+                <ItemsRepeater ItemsSource="{x:Bind VM.ModLoaderDatas, Mode=OneWay}">
                     <ItemsRepeater.ItemTemplate>
-                        <DataTemplate>
-                            <controls:SettingsCard Margin="0,2" IsEnabled="{Binding IsEnable}">
+                        <DataTemplate x:DataType="data:ChooseModLoaderData">
+                            <controls:SettingsCard Margin="0,2" IsEnabled="{x:Bind IsEnable, Mode=OneWay}">
                                 <controls:SettingsCard.Header>
-                                    <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}">
+                                    <CheckBox IsChecked="{x:Bind IsChecked, Mode=TwoWay}">
                                         <Grid Margin="10,-5,0,0" Background="Transparent">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
@@ -39,15 +40,15 @@
                                                 BorderThickness="2"
                                                 CornerRadius="4">
                                                 <Border CornerRadius="4">
-                                                    <Image Source="{Binding Type, Converter={ThemeResource InstanceIconConverter}}" />
+                                                    <Image Source="{x:Bind Type, Mode=OneWay, Converter={StaticResource InstanceIconConverter}}" />
                                                 </Border>
                                             </Border>
                                             <StackPanel Grid.Column="2">
-                                                <TextBlock Text="{Binding Type}" />
+                                                <TextBlock Text="{x:Bind Type, Mode=OneWay}" />
                                                 <TextBlock
                                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                                    Text="{Binding Description}" />
+                                                    Text="{x:Bind Description, Mode=OneWay}" />
                                             </StackPanel>
                                         </Grid>
                                     </CheckBox>
@@ -57,29 +58,23 @@
                                         <ProgressRing
                                             Width="16"
                                             Height="16"
-                                            IsActive="{Binding IsLoading}"
-                                            Visibility="{Binding IsLoading, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                                            IsActive="{x:Bind IsLoading, Mode=OneWay}"
+                                            Visibility="{x:Bind IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
                                         <TextBlock
                                             VerticalAlignment="Center"
                                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                             Style="{ThemeResource CaptionTextBlockStyle}"
-                                            Text="{Binding DisplayText}">
-                                            <TextBlock.Visibility>
-                                                <Binding Path="IsSupported">
-                                                    <Binding.Converter>
-                                                        <converters:BoolToVisibilityConverter Inverted="True" />
-                                                    </Binding.Converter>
-                                                </Binding>
-                                            </TextBlock.Visibility>
+                                            Text="{x:Bind DisplayText, Mode=OneWay}"
+                                            Visibility="{x:Bind IsSupported, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
                                         </TextBlock>
                                     </StackPanel>
                                     <ComboBox
-                                        ItemsSource="{Binding InstallDatas}"
-                                        SelectedItem="{Binding SelectedInstallData, Mode=TwoWay}"
-                                        Visibility="{Binding IsSupported, Converter={ThemeResource BoolToVisibilityConverter}}">
+                                        ItemsSource="{x:Bind InstallDatas, Mode=OneWay}"
+                                        SelectedItem="{x:Bind SelectedInstallData, Mode=TwoWay}"
+                                        Visibility="{x:Bind IsSupported, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Converter={ThemeResource InstallDataLoaderVersionConverter}}" />
+                                                <TextBlock Text="{x:Bind Converter={StaticResource InstallDataLoaderVersionConverter}}" />
                                             </DataTemplate>
                                         </ComboBox.ItemTemplate>
                                     </ComboBox>

@@ -8,6 +8,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    xmlns:data="using:Natsurainko.FluentLauncher.Experimental.Saves"
     mc:Ignorable="d">
 
     <ScrollViewer>
@@ -24,8 +25,8 @@
                 <controls:SettingsCard
                     x:Uid="Cores_Manage_SavePage_Card1"
                     ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
-                    Command="{Binding OpenSavesFolderCommand}"
-                    Description="{Binding SavesFolder}"
+                    Command="{x:Bind VM.OpenSavesFolderCommand}"
+                    Description="{x:Bind VM.SavesFolder, Mode=OneWay}"
                     Header="Saves Folder"
                     HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
                     IsClickEnabled="True" />
@@ -35,12 +36,12 @@
                     Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
                     Text="Saves" />
 
-                <ItemsRepeater ItemsSource="{Binding Saves}">
+                <ItemsRepeater ItemsSource="{x:Bind VM.Saves, Mode=OneWay}">
                     <ItemsRepeater.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="data:SaveInfo">
                             <controls:SettingsCard
                                 ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
-                                CommandParameter="{Binding}"
+                                CommandParameter="{x:Bind}"
                                 IsClickEnabled="True">
                                 <controls:SettingsCard.Header>
                                     <Grid>
@@ -60,7 +61,7 @@
                                             <Border CornerRadius="4">
                                                 <Image>
                                                     <i:Interaction.Behaviors>
-                                                        <behaviors:ImageSourceLoadBehavior ImageSourceFilePath="{Binding IconFilePath}" SourcePropertyName="Source" />
+                                                        <behaviors:ImageSourceLoadBehavior ImageSourceFilePath="{x:Bind IconFilePath}" SourcePropertyName="Source" />
                                                     </i:Interaction.Behaviors>
                                                 </Image>
                                             </Border>
@@ -68,23 +69,23 @@
                                         <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                             <TextBlock
                                                 IsTextSelectionEnabled="True"
-                                                Text="{Binding LevelName}"
+                                                Text="{x:Bind LevelName}"
                                                 TextTrimming="CharacterEllipsis"
-                                                ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                                                ToolTipService.ToolTip="{x:Bind LevelName}" />
                                             <StackPanel Orientation="Horizontal" Spacing="5">
                                                 <TextBlock
                                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                                     IsTextSelectionEnabled="True"
                                                     Style="{ThemeResource CaptionTextBlockStyle}">
-                                                    <Run Text="{Binding FolderName}" />
-                                                    <Run>(</Run><Run Text="{Binding LastPlayed}" /><Run>)</Run>
+                                                    <Run Text="{x:Bind FolderName}" />
+                                                    <Run>(</Run><Run Text="{x:Bind LastPlayed}" /><Run>)</Run>
                                                 </TextBlock>
                                             </StackPanel>
                                             <TextBlock
                                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                                 IsTextSelectionEnabled="True"
                                                 Style="{ThemeResource CaptionTextBlockStyle}"
-                                                Text="{Binding Converter={ThemeResource SaveInfoConverter}}" />
+                                                Text="{x:Bind Converter={StaticResource SaveInfoConverter}}" />
                                         </StackPanel>
                                     </Grid>
                                 </controls:SettingsCard.Header>
@@ -122,7 +123,7 @@
                     </StackPanel>
 
                     <i:Interaction.Behaviors>
-                        <behaviors:EmptyListVisibleBehavior IsObservableCollection="True" ItemsSource="{Binding Saves}" />
+                        <behaviors:EmptyListVisibleBehavior IsObservableCollection="True" ItemsSource="{x:Bind VM.Saves}" />
                     </i:Interaction.Behaviors>
                 </StackPanel>
 

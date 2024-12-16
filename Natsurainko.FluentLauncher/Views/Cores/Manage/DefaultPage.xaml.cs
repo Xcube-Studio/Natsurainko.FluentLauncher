@@ -8,9 +8,11 @@ public sealed partial class DefaultPage : Page, IBreadcrumbBarAware
 {
     public string Route => "CoreManage";
 
+    DefaultViewModel VM => (DefaultViewModel)DataContext;
+
     public DefaultPage()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 
     private void Page_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

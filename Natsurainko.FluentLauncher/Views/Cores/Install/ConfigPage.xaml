@@ -29,18 +29,12 @@
                     </controls:SettingsCard.Description>
 
                     <StackPanel Spacing="4">
-                        <TextBox Width="150" Text="{Binding InstanceId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox Width="150" Text="{x:Bind VM.InstanceId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBlock
                             x:Uid="CoreInstallWizard_EnterCoreSettingsPage_NotAvailableText"
                             Style="{ThemeResource CaptionTextBlockStyle}"
-                            Text="Id not available">
-                            <TextBlock.Visibility>
-                                <Binding Path="CanNext">
-                                    <Binding.Converter>
-                                        <converters:BoolToVisibilityConverter Inverted="True" />
-                                    </Binding.Converter>
-                                </Binding>
-                            </TextBlock.Visibility>
+                            Text="Id not available"
+                            Visibility="{x:Bind VM.CanNext, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
                         </TextBlock>
                     </StackPanel>
                 </controls:SettingsCard>
@@ -53,7 +47,7 @@
                         <TextBlock x:Uid="CoreInstallWizard_EnterCoreSettingsPage_D2" Text="Only as a display name, the actual Id will not be modified" />
                     </controls:SettingsCard.Description>
 
-                    <TextBox Width="150" Text="{Binding NickName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox Width="150" Text="{x:Bind VM.NickName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </controls:SettingsCard>
 
                 <controls:SettingsCard HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
@@ -63,7 +57,7 @@
                     <controls:SettingsCard.Description>
                         <TextBlock x:Uid="CoreInstallWizard_EnterCoreSettingsPage_D3" Text="The game will run at versions\${version} directory" />
                     </controls:SettingsCard.Description>
-                    <ToggleSwitch IsOn="{Binding EnableIndependencyInstance, Mode=TwoWay}" />
+                    <ToggleSwitch IsOn="{x:Bind VM.EnableIndependencyInstance, Mode=TwoWay}" />
                 </controls:SettingsCard>
             </StackPanel>
         </Border>

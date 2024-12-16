@@ -8,6 +8,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:data="using:Natsurainko.FluentLauncher.Models.UI"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.Media"
@@ -47,9 +48,9 @@
                     Height="500"
                     BorderBrush="{ThemeResource TextControlElevationBorderBrush}"
                     BorderThickness="1"
-                    ItemsSource="{Binding PatchNoteDatas}">
+                    ItemsSource="{x:Bind VM.PatchNoteDatas, Mode=OneWay}">
                     <FlipView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="data:PatchNoteData">
                             <Grid CornerRadius="4">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="1*" />
@@ -62,7 +63,7 @@
                                     Stretch="UniformToFill">
                                     <i:Interaction.Behaviors>
                                         <bh:ImageSourceLoadBehavior
-                                            ImageSourceUrl="{Binding ImageUrl}"
+                                            ImageSourceUrl="{x:Bind ImageUrl}"
                                             LoadFromInternet="True"
                                             SourcePropertyName="Source" />
                                     </i:Interaction.Behaviors>
@@ -85,13 +86,13 @@
                                         <TextBlock
                                             FontFamily="{ThemeResource MinecraftTen}"
                                             Style="{ThemeResource TitleTextBlockStyle}"
-                                            Text="{Binding Title}"
+                                            Text="{x:Bind Title}"
                                             TextWrapping="WrapWholeWords" />
-                                        <TextBlock Text="{Binding ShortText}" TextWrapping="WrapWholeWords" />
+                                        <TextBlock Text="{x:Bind ShortText}" TextWrapping="WrapWholeWords" />
 
                                         <Button
                                             Height="32"
-                                            CommandParameter="{Binding}"
+                                            CommandParameter="{x:Bind}"
                                             Style="{ThemeResource AccentButtonStyle}">
                                             <StackPanel Orientation="Horizontal" Spacing="5">
                                                 <TextBlock x:Uid="News_DefaultPage_Text1" Text="View Details" />
@@ -154,9 +155,9 @@
                     Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
                     Text="Minecraft News" />
 
-                <GridView ItemsSource="{Binding NewsDatas}">
+                <GridView ItemsSource="{x:Bind VM.NewsDatas, Mode=OneWay}">
                     <GridView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="data:NewsData">
                             <Grid CornerRadius="4">
                                 <Image
                                     HorizontalAlignment="Center"
@@ -164,7 +165,7 @@
                                     Stretch="UniformToFill">
                                     <i:Interaction.Behaviors>
                                         <bh:ImageSourceLoadBehavior
-                                            ImageSourceUrl="{Binding ImageUrl}"
+                                            ImageSourceUrl="{x:Bind ImageUrl}"
                                             LoadFromInternet="True"
                                             SourcePropertyName="Source" />
                                     </i:Interaction.Behaviors>
@@ -188,10 +189,10 @@
                                         <TextBlock
                                             FontFamily="{ThemeResource MinecraftTen}"
                                             Style="{ThemeResource TitleTextBlockStyle}"
-                                            Text="{Binding Title}"
+                                            Text="{x:Bind Title}"
                                             TextWrapping="WrapWholeWords" />
-                                        <TextBlock Text="{Binding Text}" TextWrapping="WrapWholeWords" />
-                                        <ItemsRepeater ItemsSource="{Binding Tags}">
+                                        <TextBlock Text="{x:Bind Text}" TextWrapping="WrapWholeWords" />
+                                        <ItemsRepeater ItemsSource="{x:Bind Tags}">
                                             <ItemsRepeater.Layout>
                                                 <controls:WrapLayout HorizontalSpacing="5" VerticalSpacing="5" />
                                             </ItemsRepeater.Layout>
@@ -205,7 +206,7 @@
                                                         CornerRadius="2.5">
                                                         <TextBlock
                                                             Style="{ThemeResource CaptionTextBlockStyle}"
-                                                            Text="{Binding}"
+                                                            Text="{x:Bind}"
                                                             ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
                                                     </Border>
                                                 </DataTemplate>
@@ -217,7 +218,7 @@
                                             Background="{ThemeResource ButtonBackground}"
                                             BorderBrush="{ThemeResource ButtonBorderBrush}"
                                             BorderThickness="1"
-                                            NavigateUri="{Binding ReadMoreUrl}">
+                                            NavigateUri="{x:Bind ReadMoreUrl}">
                                             <StackPanel Orientation="Horizontal" Spacing="5">
                                                 <TextBlock x:Uid="News_DefaultPage_Text1" Text="View Details" />
                                                 <FontIcon FontSize="14" Glyph="&#xE8A7;" />

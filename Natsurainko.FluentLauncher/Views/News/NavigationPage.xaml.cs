@@ -12,7 +12,7 @@ public sealed partial class NavigationPage : Page, INavigationProvider
 
     public NavigationPage()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 
     private void ContentFrame_Navigated(object sender, NavigationEventArgs e)

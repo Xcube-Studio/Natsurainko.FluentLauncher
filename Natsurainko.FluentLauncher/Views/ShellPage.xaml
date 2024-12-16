@@ -1091,7 +1091,7 @@
                                     <ContentControl
                                         HorizontalContentAlignment="Center"
                                         VerticalContentAlignment="Center"
-                                        Content="{x:Bind Converter={ThemeResource SuggestionIconConverter}}" />
+                                        Content="{x:Bind Converter={StaticResource SuggestionIconConverter}}" />
                                 </Border>
                             </Grid>
 

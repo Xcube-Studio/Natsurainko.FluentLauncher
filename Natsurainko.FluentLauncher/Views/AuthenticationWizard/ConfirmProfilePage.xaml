@@ -68,21 +68,14 @@
             HorizontalAlignment="Center"
             Orientation="Horizontal"
             Spacing="15"
-            Visibility="{Binding Loading}">
+            Visibility="{x:Bind VM.Loading, Mode=OneWay}">
             <ProgressRing Width="16" Height="16" />
             <TextBlock
                 VerticalAlignment="Center"
                 Style="{ThemeResource BaseTextBlockStyle}"
-                Text="{Binding LoadingProgressText}" />
+                Text="{x:Bind VM.LoadingProgressText, Mode=OneWay}" />
         </StackPanel>
-        <Grid>
-            <Grid.Visibility>
-                <Binding Path="Faulted">
-                    <Binding.Converter>
-                        <converters:BoolToVisibilityConverter />
-                    </Binding.Converter>
-                </Binding>
-            </Grid.Visibility>
+        <Grid Visibility="{x:Bind VM.Faulted, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="10" />
@@ -95,7 +88,7 @@
             <ScrollViewer Grid.Column="2" VerticalAlignment="Center">
                 <RichTextBlock>
                     <Paragraph>
-                        <Run FontWeight="SemiBold" Text="{Binding FaultedMessage}" />
+                        <Run FontWeight="SemiBold" Text="{x:Bind VM.FaultedMessage, Mode=OneWay}" />
                     </Paragraph>
                 </RichTextBlock>
             </ScrollViewer>

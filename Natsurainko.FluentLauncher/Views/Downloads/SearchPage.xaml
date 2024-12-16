@@ -21,7 +21,7 @@
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 BorderThickness="1"
-                CommandParameter="{Binding}"
+                CommandParameter="{x:Bind}"
                 IsClickEnabled="True">
                 <controls:SettingsCard.Header>
                     <Grid Background="Transparent">
@@ -210,10 +210,10 @@
 
     <i:Interaction.Behaviors>
         <core:EventTriggerBehavior EventName="Unloaded">
-            <actions:ModifiedInvokeCommandAction Command="{Binding UnloadedCommand}" />
+            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.UnloadedCommand}" />
         </core:EventTriggerBehavior>
         <core:EventTriggerBehavior EventName="Loaded">
-            <actions:ModifiedInvokeCommandAction Command="{Binding LoadedCommand}" />
+            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadedCommand}" />
         </core:EventTriggerBehavior>
     </i:Interaction.Behaviors>
 
@@ -228,8 +228,8 @@
                     <RepositionThemeTransition IsStaggeringEnabled="False" />
                 </StackPanel.ChildrenTransitions>
 
-                <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Visibility="{Binding IsEmptySearchText, Converter={ThemeResource InvertedBoolToVisibilityConverter}}">
-                    <Run Text="&quot;" /><Run Text="{Binding SearchText}" /><Run Text="&quot;" />
+                <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Visibility="{x:Bind VM.IsEmptySearchText, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+                    <Run Text="&quot;" /><Run Text="{x:Bind VM.SearchText, Mode=OneWay}" /><Run Text="&quot;" />
                 </TextBlock>
 
                 <controls:WrapPanel
@@ -246,7 +246,7 @@
                             VerticalAlignment="Center"
                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                             Text="Resource Type: " />
-                        <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items1}" SelectedIndex="{Binding ResourceType, Mode=TwoWay}">
+                        <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items1}" SelectedIndex="{x:Bind VM.ResourceType, Mode=TwoWay}">
                             <x:String>All</x:String>
                             <x:String>Minecraft</x:String>
                             <x:String>Modpack</x:String>
@@ -257,7 +257,7 @@
                     <StackPanel
                         Orientation="Horizontal"
                         Spacing="5"
-                        Visibility="{Binding IsSearchMinecraft, Converter={ThemeResource InvertedBoolToVisibilityConverter}}">
+                        Visibility="{x:Bind VM.IsSearchMinecraft, Mode=OneWay, Converter={ThemeResource InvertedBoolToVisibilityConverter}}">
                         <FontIcon
                             FontSize="13"
                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
@@ -267,7 +267,7 @@
                             VerticalAlignment="Center"
                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                             Text="Resource Source:" />
-                        <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items2}" SelectedIndex="{Binding ResourceSource, Mode=TwoWay}">
+                        <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items2}" SelectedIndex="{x:Bind VM.ResourceSource, Mode=TwoWay}">
                             <x:String>All</x:String>
                             <x:String>CurseForge</x:String>
                             <x:String>Modrinth</x:String>
@@ -278,10 +278,10 @@
                         x:Uid="Downloads_SearchPage_CheckBox"
                         VerticalAlignment="Center"
                         Content="Enable Version Filter"
-                        IsChecked="{Binding EnableVersionFilter, Mode=TwoWay}"
-                        Visibility="{Binding IsSearchMinecraft, Converter={ThemeResource InvertedBoolToVisibilityConverter}}" />
+                        IsChecked="{x:Bind VM.EnableVersionFilter, Mode=TwoWay}"
+                        Visibility="{x:Bind VM.IsSearchMinecraft, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
 
-                    <ContentControl IsEnabled="{Binding EnableVersionFilter}" Visibility="{Binding IsSearchMinecraft, Converter={ThemeResource InvertedBoolToVisibilityConverter}}">
+                    <ContentControl IsEnabled="{x:Bind VM.EnableVersionFilter, Mode=OneWay}" Visibility="{x:Bind VM.IsSearchMinecraft, Mode=OneWay, Converter={ThemeResource InvertedBoolToVisibilityConverter}}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <FontIcon
                                 FontSize="13"
@@ -292,7 +292,7 @@
                                 VerticalAlignment="Center"
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Text="Applicable Version:" />
-                            <ComboBox ItemsSource="{Binding ResourceVersions}" SelectedItem="{Binding SelectedVersion, Mode=TwoWay}" />
+                            <ComboBox ItemsSource="{x:Bind VM.ResourceVersions, Mode=OneWay}" SelectedItem="{x:Bind VM.SelectedVersion, Mode=TwoWay}" />
                         </StackPanel>
                     </ContentControl>
                 </controls:WrapPanel>
@@ -300,7 +300,7 @@
                 <ItemsRepeater
                     x:Name="ItemsRepeater"
                     ItemTemplate="{ThemeResource ResourceItemTemplateSelector}"
-                    ItemsSource="{Binding SearchResult}">
+                    ItemsSource="{x:Bind VM.SearchResult, Mode=OneWay}">
                     <ItemsRepeater.Layout>
                         <StackLayout Spacing="4" />
                     </ItemsRepeater.Layout>

@@ -116,7 +116,7 @@
                                     <Image>
                                         <i:Interaction.Behaviors>
                                             <behaviors:ImageSourceLoadBehavior
-                                                ImageSourceUrl="{Binding IconUrl}"
+                                                ImageSourceUrl="{x:Bind VM.IconUrl, Mode=OneWay}"
                                                 LoadFromInternet="True"
                                                 SourcePropertyName="Source" />
                                         </i:Interaction.Behaviors>
@@ -126,7 +126,7 @@
                             <StackPanel Grid.Column="2" Spacing="2.5">
                                 <TextBlock
                                     Style="{ThemeResource BaseTextBlockStyle}"
-                                    Text="{Binding Name}"
+                                    Text="{x:Bind VM.Name, Mode=OneWay}"
                                     TextWrapping="WrapWholeWords" />
                                 <StackPanel Spacing="2.5">
                                     <StackPanel Orientation="Horizontal" Spacing="5">
@@ -137,7 +137,7 @@
                                         <TextBlock
                                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                             Style="{ThemeResource CaptionTextBlockStyle}"
-                                            Text="{Binding Authors}"
+                                            Text="{x:Bind VM.Authors, Mode=OneWay}"
                                             TextTrimming="CharacterEllipsis" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Spacing="5">
@@ -150,7 +150,7 @@
                                             Style="{ThemeResource CaptionTextBlockStyle}"
                                             TextTrimming="CharacterEllipsis">
                                             <Run x:Uid="Downloads_DetailsPage_Text2" Text="Download Count:" />
-                                            <Run Text="{Binding DownloadCount}" />
+                                            <Run Text="{x:Bind VM.DownloadCount, Mode=OneWay}" />
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Spacing="5">
@@ -163,7 +163,7 @@
                                             Style="{ThemeResource CaptionTextBlockStyle}"
                                             TextTrimming="CharacterEllipsis">
                                             <Run x:Uid="Downloads_DetailsPage_Text3" Text="Update Date:" />
-                                            <Run Text="{Binding DateModified}" />
+                                            <Run Text="{x:Bind VM.DateModified, Mode=OneWay}" />
                                         </TextBlock>
                                     </StackPanel>
                                 </StackPanel>
@@ -171,11 +171,11 @@
                             <StackPanel Grid.Column="4" Spacing="10">
                                 <Button
                                     Width="125"
-                                    Command="{Binding DownloadResourceCommand}"
+                                    Command="{x:Bind VM.DownloadResourceCommand}"
                                     Style="{ThemeResource AccentButtonStyle}">
                                     <TextBlock x:Uid="Buttons_Download" Text="Download" />
                                 </Button>
-                                <HyperlinkButton Width="125" NavigateUri="{Binding WebLink}">
+                                <HyperlinkButton Width="125" NavigateUri="{x:Bind VM.WebLink, Mode=OneWay}">
                                     <TextBlock x:Uid="Downloads_DetailsPage_Text1" Text="Open in Browser" />
                                 </HyperlinkButton>
                             </StackPanel>
@@ -184,7 +184,7 @@
                             Grid.Row="2"
                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                             Style="{ThemeResource CaptionTextBlockStyle}"
-                            Text="{Binding Summary}" />
+                            Text="{x:Bind VM.Summary, Mode=OneWay}" />
                     </Grid>
                 </Border>
 
@@ -192,16 +192,16 @@
                     x:Uid="Downloads_DetailsPage_T1"
                     Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
                     Text="Screenshots"
-                    Visibility="{Binding HasScreenshot, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                    Visibility="{x:Bind VM.HasScreenshot, Mode=OneWay, Converter={ThemeResource BoolToVisibilityConverter}}" />
 
                 <FlipView
                     Height="400"
                     BorderBrush="{ThemeResource SettingsCardBorderBrush}"
                     BorderThickness="1"
-                    ItemsSource="{Binding ScreenshotUrls}"
-                    Visibility="{Binding HasScreenshot, Converter={ThemeResource BoolToVisibilityConverter}}">
+                    ItemsSource="{x:Bind VM.ScreenshotUrls, Mode=OneWay}"
+                    Visibility="{x:Bind VM.HasScreenshot, Mode=OneWay, Converter={ThemeResource BoolToVisibilityConverter}}">
                     <FlipView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="x:String">
                             <Grid CornerRadius="4">
                                 <Image
                                     HorizontalAlignment="Center"
@@ -210,7 +210,7 @@
                                     <i:Interaction.Behaviors>
                                         <behaviors:ImageSourceLoadBehavior
                                             x:Name="ImageSourceLoadBehavior"
-                                            ImageSourceUrl="{Binding}"
+                                            ImageSourceUrl="{x:Bind}"
                                             LoadFromInternet="True"
                                             SourcePropertyName="Source" />
                                     </i:Interaction.Behaviors>
@@ -233,10 +233,10 @@
                     BorderThickness="1"
                     CornerRadius="8">
                     <Grid>
-                        <old_controls:MarkdownTextBlock Background="Transparent" Visibility="{Binding IsHtmlDescription, Converter={ThemeResource InvertedBoolToVisibilityConverter}}">
+                        <old_controls:MarkdownTextBlock Background="Transparent" Visibility="{x:Bind VM.IsHtmlDescription, Mode=OneWay, Converter={ThemeResource InvertedBoolToVisibilityConverter}}">
                             <i:Interaction.Behaviors>
                                 <core:EventTriggerBehavior EventName="Loaded">
-                                    <actions:ModifiedInvokeCommandAction Command="{Binding MarkdownTextBlockLoadedEventCommand}" />
+                                    <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.MarkdownTextBlockLoadedEventCommand}" />
                                 </core:EventTriggerBehavior>
                             </i:Interaction.Behaviors>
                         </old_controls:MarkdownTextBlock>
@@ -251,10 +251,10 @@
                         </labs:MarkdownTextBlock>
                         -->
 
-                        <WebView2 DefaultBackgroundColor="Transparent" Visibility="{Binding IsHtmlDescription, Converter={ThemeResource BoolToVisibilityConverter}}">
+                        <WebView2 DefaultBackgroundColor="Transparent" Visibility="{x:Bind VM.IsHtmlDescription, Mode=OneWay, Converter={ThemeResource BoolToVisibilityConverter}}">
                             <i:Interaction.Behaviors>
                                 <core:EventTriggerBehavior EventName="Loaded">
-                                    <actions:ModifiedInvokeCommandAction Command="{Binding WebView2LoadedEventCommand}" />
+                                    <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.WebView2LoadedEventCommand}" />
                                 </core:EventTriggerBehavior>
                             </i:Interaction.Behaviors>
                         </WebView2>

@@ -5,11 +5,13 @@ namespace Natsurainko.FluentLauncher.Views.Common;
 
 public sealed partial class UploadSkinDialog : ContentDialog
 {
+    UploadSkinDialogViewModel VM => (UploadSkinDialogViewModel)DataContext;
+
     public UploadSkinDialog()
     {
-        this.XamlRoot = MainWindow.XamlRoot;
+        XamlRoot = MainWindow.XamlRoot;
 
-        this.InitializeComponent();
+        InitializeComponent();
     }
 
     private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)

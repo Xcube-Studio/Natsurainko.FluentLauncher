@@ -5,9 +5,11 @@ namespace Natsurainko.FluentLauncher.Views.Common;
 
 public sealed partial class ExceptionDialog : ContentDialog
 {
+    ExceptionDialogViewModel VM => (ExceptionDialogViewModel)DataContext;
+
     public ExceptionDialog(string errorMessage = "")
     {
-        this.XamlRoot = MainWindow.XamlRoot;
+        XamlRoot = MainWindow.XamlRoot;
 
         InitializeComponent();
         DataContext = new ExceptionDialogViewModel(errorMessage);

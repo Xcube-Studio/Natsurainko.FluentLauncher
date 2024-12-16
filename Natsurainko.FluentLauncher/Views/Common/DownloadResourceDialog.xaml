@@ -7,6 +7,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:converters="using:Natsurainko.FluentLauncher.XamlHelpers.Converters"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:data="using:Natsurainko.FluentLauncher.Services.Network.Data"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -449,7 +450,7 @@
         <StackPanel Margin="24,24,24,0">
             <TextBlock TextTrimming="CharacterEllipsis">
                 <Run x:Uid="Dialogs_DownloadResourceDialog_T" Text="Download:" />
-                <Run Text="{Binding ResourceName}" />
+                <Run Text="{x:Bind VM.ResourceName, Mode=OneWay}" />
             </TextBlock>
         </StackPanel>
     </ContentDialog.Title>
@@ -474,7 +475,7 @@
 
         <i:Interaction.Behaviors>
             <core:EventTriggerBehavior EventName="Loaded">
-                <actions:ModifiedInvokeCommandAction Command="{Binding LoadEventCommand}" />
+                <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadEventCommand}" />
             </core:EventTriggerBehavior>
         </i:Interaction.Behaviors>
 
@@ -501,7 +502,7 @@
                         VerticalAlignment="Center"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Text="Version: " />
-                    <ComboBox ItemsSource="{Binding Versions}" SelectedItem="{Binding SelectedVersion, Mode=TwoWay}" />
+                    <ComboBox ItemsSource="{x:Bind VM.Versions, Mode=OneWay}" SelectedItem="{x:Bind VM.SelectedVersion, Mode=TwoWay}" />
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Spacing="5">
@@ -514,7 +515,7 @@
                         VerticalAlignment="Center"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Text="Mod Loader: " />
-                    <ComboBox ItemsSource="{Binding Loaders}" SelectedItem="{Binding SelectedLoader, Mode=TwoWay}" />
+                    <ComboBox ItemsSource="{x:Bind VM.Loaders, Mode=OneWay}" SelectedItem="{x:Bind VM.SelectedLoader, Mode=TwoWay}" />
                 </StackPanel>
             </controls:WrapPanel>
 
@@ -522,10 +523,10 @@
                 Grid.Row="1"
                 MaxHeight="185"
                 Margin="0,15"
-                ItemsSource="{Binding DisplayItems}"
-                SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+                ItemsSource="{x:Bind VM.DisplayItems, Mode=OneWay}"
+                SelectedItem="{x:Bind VM.SelectedItem, Mode=TwoWay}">
                 <ListView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="data:GameResourceFile">
                         <Grid Padding="0,10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -539,7 +540,7 @@
                                 Glyph="&#xE8A5;" />
 
                             <StackPanel Grid.Column="2" Spacing="5">
-                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding FileName}" />
+                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind FileName}" />
                                 <StackPanel Orientation="Horizontal" Spacing="5">
                                     <Border Padding="5,1" CornerRadius="2.5">
                                         <Border.Background>
@@ -548,13 +549,13 @@
                                         <TextBlock
                                             Foreground="{ThemeResource AccentButtonForeground}"
                                             Style="{ThemeResource CaptionTextBlockStyle}"
-                                            Text="{Binding Version}"
+                                            Text="{x:Bind Version}"
                                             TextWrapping="WrapWholeWords"
-                                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                                            ToolTipService.ToolTip="{x:Bind Version}" />
                                     </Border>
-                                    <ItemsRepeater ItemsSource="{Binding Loaders}">
+                                    <ItemsRepeater ItemsSource="{x:Bind Loaders}">
                                         <ItemsRepeater.ItemTemplate>
-                                            <DataTemplate>
+                                            <DataTemplate x:DataType="x:String">
                                                 <Border Padding="5,1" CornerRadius="2.5">
                                                     <Border.Background>
                                                         <SolidColorBrush Opacity="0.9" Color="{ThemeResource SystemAccentColor}" />
@@ -562,8 +563,8 @@
                                                     <TextBlock
                                                         Foreground="{ThemeResource AccentButtonForeground}"
                                                         Style="{ThemeResource CaptionTextBlockStyle}"
-                                                        Text="{Binding}"
-                                                        ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                                                        Text="{x:Bind}"
+                                                        ToolTipService.ToolTip="{x:Bind}" />
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsRepeater.ItemTemplate>
@@ -581,44 +582,44 @@
             <StackPanel Grid.Row="2" Spacing="2">
                 <CheckBox
                     HorizontalAlignment="Stretch"
-                    IsChecked="{Binding DownloadToCurrentGame, Mode=TwoWay}"
-                    Visibility="{Binding CheckBox1}">
-                    <StackPanel DataContext="{Binding MinecraftInstance}">
+                    IsChecked="{x:Bind VM.DownloadToCurrentGame, Mode=TwoWay}"
+                    Visibility="{x:Bind VM.CheckBox1, Mode=OneWay}">
+                    <StackPanel DataContext="{x:Bind VM.MinecraftInstance, Mode=OneWay}">
                         <TextBlock x:Uid="Dialogs_DownloadResourceDialog_Text3" Text="Install this mod for the currently selected game" />
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <TextBlock
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
                                 TextTrimming="CharacterEllipsis">
-                                <Run Text="{Binding InstanceId}" /><Run Text="," />
+                                <Run Text="{x:Bind VM.MinecraftInstance.InstanceId, Mode=OneWay}" /><Run Text="," />
                             </TextBlock>
-                            <ItemsRepeater ItemsSource="{Binding Converter={ThemeResource InstanceDescriptionConverter}}">
+                            <ItemsRepeater ItemsSource="{x:Bind VM.MinecraftInstance, Mode=OneWay, Converter={StaticResource InstanceDescriptionConverter}}">
                                 <ItemsRepeater.Layout>
                                     <controls:WrapLayout HorizontalSpacing="5" VerticalSpacing="5" />
                                 </ItemsRepeater.Layout>
                                 <ItemsRepeater.ItemTemplate>
-                                    <DataTemplate>
+                                    <DataTemplate x:DataType="x:String">
                                         <TextBlock
                                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                             Style="{ThemeResource CaptionTextBlockStyle}"
-                                            Text="{Binding}"
-                                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                                            Text="{x:Bind}"
+                                            ToolTipService.ToolTip="{x:Bind}" />
                                     </DataTemplate>
                                 </ItemsRepeater.ItemTemplate>
                             </ItemsRepeater>
                         </StackPanel>
                     </StackPanel>
                 </CheckBox>
-                <CheckBox IsChecked="{Binding DownloadToDesignated, Mode=TwoWay}" Visibility="{Binding CheckBox2}">
+                <CheckBox IsChecked="{x:Bind VM.DownloadToDesignated, Mode=TwoWay}" Visibility="{x:Bind VM.CheckBox2, Mode=OneWay}">
                     <TextBlock
                         x:Uid="Dialogs_DownloadResourceDialog_Text4"
                         Margin="0,-2,0,0"
                         Text="Download to designated location" />
                 </CheckBox>
                 <CheckBox
-                    IsChecked="{Binding IsModpack, Mode=TwoWay}"
+                    IsChecked="{x:Bind VM.IsModpack, Mode=TwoWay}"
                     IsEnabled="False"
-                    Visibility="{Binding CheckBox3}">
+                    Visibility="{x:Bind VM.CheckBox3, Mode=OneWay}">
                     <TextBlock
                         x:Uid="Dialogs_DownloadResourceDialog_Text5"
                         Margin="0,-2,0,0"
@@ -627,8 +628,8 @@
 
                 <AutoSuggestBox
                     QuerySubmitted="AutoSuggestBox_QuerySubmitted"
-                    Text="{Binding DesignatedFilePath, Mode=TwoWay}"
-                    Visibility="{Binding DownloadToDesignated, Converter={ThemeResource BoolToVisibilityConverter}}">
+                    Text="{x:Bind VM.DesignatedFilePath, Mode=TwoWay}"
+                    Visibility="{x:Bind VM.DownloadToDesignated, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                     <AutoSuggestBox.QueryIcon>
                         <FontIcon FontSize="14" Glyph="&#xED43;" />
                     </AutoSuggestBox.QueryIcon>
@@ -657,9 +658,9 @@
                 <Button
                     Grid.Column="0"
                     HorizontalAlignment="Stretch"
-                    Command="{Binding ConfirmCommand}"
+                    Command="{x:Bind VM.ConfirmCommand}"
                     ElementSoundMode="FocusOnly"
-                    IsEnabled="{Binding CanConfirm}"
+                    IsEnabled="{x:Bind VM.CanConfirm, Mode=OneWay}"
                     IsTabStop="False"
                     Style="{ThemeResource AccentButtonStyle}">
                     <TextBlock x:Uid="Buttons_Confirm" Text="Confirm" />
@@ -667,7 +668,7 @@
                 <Button
                     Grid.Column="2"
                     HorizontalAlignment="Stretch"
-                    Command="{Binding CancelCommand}"
+                    Command="{x:Bind VM.CancelCommand}"
                     ElementSoundMode="FocusOnly"
                     IsTabStop="False">
                     <TextBlock x:Uid="Buttons_Cancel" Text="Cancel" />

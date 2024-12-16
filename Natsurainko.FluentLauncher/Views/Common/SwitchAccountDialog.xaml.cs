@@ -1,13 +1,16 @@
 using Microsoft.UI.Xaml.Controls;
+using Natsurainko.FluentLauncher.ViewModels.Common;
 
 namespace Natsurainko.FluentLauncher.Views.Common;
 
 public sealed partial class SwitchAccountDialog : ContentDialog
 {
+    SwitchAccountDialogViewModel VM => (SwitchAccountDialogViewModel)DataContext;
+
     public SwitchAccountDialog()
     {
-        this.XamlRoot = MainWindow.XamlRoot;
-        this.InitializeComponent();
+        XamlRoot = MainWindow.XamlRoot;
+        InitializeComponent();
     }
 
     private void ContentDialog_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

@@ -11,11 +11,13 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:selector="using:Natsurainko.FluentLauncher.XamlHelpers.Selectors"
+    xmlns:data="using:Nrk.FluentCore.Resources"
+    xmlns:installer="using:Nrk.FluentCore.GameManagement.Installer"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     Unloaded="Page_Unloaded"
     mc:Ignorable="d">
     <Page.Resources>
-        <DataTemplate x:Key="MinecraftItemTemplate">
+        <DataTemplate x:Key="MinecraftItemTemplate" x:DataType="installer:VersionManifestItem">
             <controls:SettingsCard
                 Padding="20,0"
                 HorizontalAlignment="Stretch"
@@ -38,19 +40,19 @@
                             BorderThickness="2"
                             CornerRadius="4">
                             <Border.Background>
-                                <ImageBrush ImageSource="{Binding Converter={ThemeResource InstanceIconConverter}}" />
+                                <ImageBrush ImageSource="{x:Bind Converter={StaticResource InstanceIconConverter}}" />
                             </Border.Background>
                         </Border>
                         <StackPanel Grid.Column="2" VerticalAlignment="Center">
                             <TextBlock
                                 Style="{ThemeResource BaseTextBlockStyle}"
-                                Text="{Binding Id}"
+                                Text="{x:Bind Id}"
                                 TextTrimming="CharacterEllipsis"
                                 TextWrapping="NoWrap" />
                             <TextBlock
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
-                                Text="{Binding Converter={ThemeResource InstanceDescriptionConverter}}"
+                                Text="{x:Bind Converter={StaticResource InstanceDescriptionConverter}}"
                                 TextTrimming="CharacterEllipsis"
                                 TextWrapping="NoWrap" />
                         </StackPanel>
@@ -65,13 +67,13 @@
                 </i:Interaction.Behaviors>
             </controls:SettingsCard>
         </DataTemplate>
-        <DataTemplate x:Key="CurseForgeResourceTemplate">
+        <DataTemplate x:Key="CurseForgeResourceTemplate" x:DataType="data:CurseForgeResource">
             <controls:SettingsCard
                 Padding="20,15"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 BorderThickness="1"
-                CommandParameter="{Binding}"
+                CommandParameter="{x:Bind}"
                 IsClickEnabled="True">
                 <controls:SettingsCard.Header>
                     <Grid Background="Transparent">
@@ -90,7 +92,7 @@
                             <Border CornerRadius="4">
                                 <Image>
                                     <Image.Source>
-                                        <BitmapImage UriSource="{Binding IconUrl}" />
+                                        <BitmapImage UriSource="{x:Bind IconUrl}" />
                                     </Image.Source>
                                 </Image>
                             </Border>
@@ -98,20 +100,20 @@
                         <StackPanel Grid.Column="2" VerticalAlignment="Center">
                             <TextBlock
                                 Style="{ThemeResource BaseTextBlockStyle}"
-                                Text="{Binding Name}"
+                                Text="{x:Bind Name}"
                                 TextTrimming="CharacterEllipsis"
                                 TextWrapping="NoWrap" />
                             <TextBlock
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 MaxLines="1"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
-                                Text="{Binding Summary}"
+                                Text="{x:Bind Summary}"
                                 TextTrimming="CharacterEllipsis"
                                 TextWrapping="NoWrap" />
                         </StackPanel>
                     </Grid>
                 </controls:SettingsCard.Header>
-                <Button CommandParameter="{Binding}">
+                <Button CommandParameter="{x:Bind}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <FontIcon FontSize="14" Glyph="&#xe896;" />
                         <TextBlock x:Uid="Buttons_Download" Text="Download" />
@@ -132,13 +134,13 @@
                 </i:Interaction.Behaviors>
             </controls:SettingsCard>
         </DataTemplate>
-        <DataTemplate x:Key="ModrinthResourceTemplate">
+        <DataTemplate x:Key="ModrinthResourceTemplate" x:DataType="data:ModrinthResource">
             <controls:SettingsCard
                 Padding="20,15"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 BorderThickness="1"
-                CommandParameter="{Binding}"
+                CommandParameter="{x:Bind}"
                 IsClickEnabled="True">
                 <controls:SettingsCard.Header>
                     <Grid Background="Transparent">
@@ -157,7 +159,7 @@
                             <Border CornerRadius="4">
                                 <Image>
                                     <Image.Source>
-                                        <BitmapImage UriSource="{Binding IconUrl}" />
+                                        <BitmapImage UriSource="{x:Bind IconUrl}" />
                                     </Image.Source>
                                 </Image>
                             </Border>
@@ -165,20 +167,20 @@
                         <StackPanel Grid.Column="2" VerticalAlignment="Center">
                             <TextBlock
                                 Style="{ThemeResource BaseTextBlockStyle}"
-                                Text="{Binding Name}"
+                                Text="{x:Bind Name}"
                                 TextTrimming="CharacterEllipsis"
                                 TextWrapping="NoWrap" />
                             <TextBlock
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 MaxLines="1"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
-                                Text="{Binding Summary}"
+                                Text="{x:Bind Summary}"
                                 TextTrimming="CharacterEllipsis"
                                 TextWrapping="NoWrap" />
                         </StackPanel>
                     </Grid>
                 </controls:SettingsCard.Header>
-                <Button CommandParameter="{Binding}">
+                <Button CommandParameter="{x:Bind}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <FontIcon FontSize="14" Glyph="&#xe896;" />
                         <TextBlock x:Uid="Buttons_Download" Text="Download" />

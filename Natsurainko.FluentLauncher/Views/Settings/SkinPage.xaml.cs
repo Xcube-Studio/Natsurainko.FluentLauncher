@@ -14,12 +14,14 @@ public sealed partial class SkinPage : Page, IBreadcrumbBarAware
 {
     public string Route => "Skin";
 
+    SkinViewModel VM => (SkinViewModel)DataContext;
+
     public SkinPage()
     {
-        this.InitializeComponent();
+        InitializeComponent();
 
-        this.Loaded += Page_Loaded;
-        this.Unloaded += Page_Unloaded;
+        Loaded += Page_Loaded;
+        Unloaded += Page_Unloaded;
     }
 
     private void Page_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

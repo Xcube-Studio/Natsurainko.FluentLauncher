@@ -10,12 +10,14 @@ public sealed partial class AccountPage : Page, IBreadcrumbBarAware
 {
     public string Route => "Account";
 
+    AccountViewModel VM => (AccountViewModel)DataContext;
+
     public AccountPage()
     {
         InitializeComponent();
 
-        this.Loaded += AccountPage_Loaded;
-        this.Unloaded += AccountPage_Unloaded;
+        Loaded += AccountPage_Loaded;
+        Unloaded += AccountPage_Unloaded;
     }
 
     private void AccountPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

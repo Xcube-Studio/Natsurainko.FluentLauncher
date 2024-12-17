@@ -29,7 +29,7 @@
                     </controls:SettingsExpander.HeaderIcon>
                     <controls:SettingsExpander.Items>
                         <controls:SettingsCard x:Uid="Settings_AboutPage_SubCard1" Header="Update">
-                            <Button Command="{Binding CheckUpdateCommand}">
+                            <Button Command="{x:Bind VM.CheckUpdateCommand}">
                                 <TextBlock
                                     x:Uid="Settings_AboutPage_B1"
                                     Text="Check Updates in the Microsoft Store"
@@ -40,14 +40,14 @@
                             x:Uid="Settings_AboutPage_SubCard2"
                             ActionIcon="{xh:FontIcon Glyph=&#xE8A7;}"
                             ActionIconToolTip="Open GitHub profile"
-                            Command="{Binding OpenAuthorCommand}"
+                            Command="{x:Bind VM.OpenAuthorCommand}"
                             Header="The Developers of this Application"
                             IsClickEnabled="True" />
                     </controls:SettingsExpander.Items>
 
                     <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Style="{ThemeResource CaptionTextBlockStyle}">
-                        <Run Text="{Binding Edition}" />
-                        <Run Text="{Binding Version}" />
+                        <Run Text="{x:Bind VM.Edition, Mode=OneWay}" />
+                        <Run Text="{x:Bind VM.Version, Mode=OneWay}" />
                     </TextBlock>
                 </controls:SettingsExpander>
 
@@ -55,7 +55,7 @@
                     x:Uid="Settings_AboutPage_Card2"
                     ActionIcon="{xh:FontIcon Glyph=&#xE8A7;}"
                     ActionIconToolTip="Open GitHub profile"
-                    Command="{Binding OpenGitCommand}"
+                    Command="{x:Bind VM.OpenGitCommand}"
                     Description="Navigate to the GitHub repository"
                     Header="Sources"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe7c1;}"
@@ -76,7 +76,7 @@
                     x:Uid="Settings_AboutPage_Card4"
                     ActionIcon="{xh:FontIcon Glyph=&#xE8A7;}"
                     ActionIconToolTip="Open GitHub profile"
-                    Command="{Binding OpenLicenseCommand}"
+                    Command="{x:Bind VM.OpenLicenseCommand}"
                     Description="Navigate to the GitHub repository"
                     Header="Copyright &amp; License Information"
                     HeaderIcon="{xh:FontIcon Glyph=&#xF167;}"

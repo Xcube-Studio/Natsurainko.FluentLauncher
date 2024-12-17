@@ -5,12 +5,15 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Natsurainko.FluentLauncher.ViewModels.Settings;
 
 namespace Natsurainko.FluentLauncher.Views.Settings;
 
 public sealed partial class LaunchPage : Page, IBreadcrumbBarAware
 {
     public string Route => "Launch";
+
+    LaunchViewModel VM => (LaunchViewModel)DataContext;
 
     public LaunchPage()
     {

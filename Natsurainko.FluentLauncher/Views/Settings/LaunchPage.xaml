@@ -35,14 +35,8 @@
                     Margin="0,20,0,15"
                     HorizontalAlignment="Center"
                     Orientation="Horizontal"
-                    Spacing="10">
-                    <StackPanel.Visibility>
-                        <Binding Path="IsMinecraftFoldersEmpty">
-                            <Binding.Converter>
-                                <converters:BoolToVisibilityConverter />
-                            </Binding.Converter>
-                        </Binding>
-                    </StackPanel.Visibility>
+                    Spacing="10"
+                    Visibility="{x:Bind VM.IsMinecraftFoldersEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                     <FontIcon
                         FontSize="48"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
@@ -55,13 +49,13 @@
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Text="No Folder" />
                 </StackPanel>
-                <ItemsRepeater ItemsSource="{Binding MinecraftFolders}">
+                <ItemsRepeater ItemsSource="{x:Bind VM.MinecraftFolders, Mode=OneWay}">
                     <ItemsRepeater.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="x:String">
                             <controls:SettingsCard
                                 ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
-                                CommandParameter="{Binding}"
-                                Description="{Binding}"
+                                CommandParameter="{x:Bind}"
+                                Description="{x:Bind}"
                                 HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
                                 IsClickEnabled="True"
                                 Loaded="Card_Loaded"
@@ -88,7 +82,7 @@
                                     Name="Operations"
                                     Orientation="Horizontal"
                                     Spacing="10">
-                                    <Button CommandParameter="{Binding}" Style="{ThemeResource AccentButtonStyle}">
+                                    <Button CommandParameter="{x:Bind}" Style="{ThemeResource AccentButtonStyle}">
                                         <TextBlock x:Uid="Buttons_Activate" Text="Activate" />
                                         <i:Interaction.Behaviors>
                                             <behaviors:AncestorBindingBehavior
@@ -97,7 +91,7 @@
                                                 TargetPropertyName="Command" />
                                         </i:Interaction.Behaviors>
                                     </Button>
-                                    <Button CommandParameter="{Binding}">
+                                    <Button CommandParameter="{x:Bind}">
                                         <TextBlock x:Uid="Buttons_Remove" Text="Remove" />
                                         <i:Interaction.Behaviors>
                                             <behaviors:AncestorBindingBehavior
@@ -122,7 +116,7 @@
                 <controls:SettingsCard
                     x:Uid="Settings_LaunchPage_Card1"
                     ActionIcon="{xh:FontIcon Glyph=&#xe838;}"
-                    Command="{Binding BrowserFolderCommand}"
+                    Command="{x:Bind VM.BrowserFolderCommand}"
                     Description="The imported folders will be displayed in the list above"
                     Header="Import .minecraft Data Folder"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe8f4;}"
@@ -137,14 +131,8 @@
                     Margin="0,20,0,15"
                     HorizontalAlignment="Center"
                     Orientation="Horizontal"
-                    Spacing="10">
-                    <StackPanel.Visibility>
-                        <Binding Path="IsJavasEmpty">
-                            <Binding.Converter>
-                                <converters:BoolToVisibilityConverter />
-                            </Binding.Converter>
-                        </Binding>
-                    </StackPanel.Visibility>
+                    Spacing="10"
+                    Visibility="{x:Bind VM.IsJavasEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                     <FontIcon
                         FontSize="48"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
@@ -157,19 +145,19 @@
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Text="No Java Runtime" />
                 </StackPanel>
-                <ItemsRepeater ItemsSource="{Binding Javas}">
+                <ItemsRepeater ItemsSource="{x:Bind VM.Javas, Mode=OneWay}">
                     <ItemsRepeater.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="x:String">
                             <controls:SettingsCard
                                 ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
-                                CommandParameter="{Binding}"
-                                Description="{Binding}"
+                                CommandParameter="{x:Bind}"
+                                Description="{x:Bind}"
                                 IsClickEnabled="True"
                                 Loaded="Card_Loaded"
                                 Tag="ActiveJava">
                                 <controls:SettingsCard.Header>
                                     <StackPanel Orientation="Horizontal" Spacing="10">
-                                        <TextBlock Text="{Binding Converter={ThemeResource JavaInfoConverter}}" />
+                                        <TextBlock Text="{x:Bind Converter={StaticResource JavaInfoConverter}}" />
                                         <Border
                                             Name="EnableText"
                                             Padding="5,0,5,2"
@@ -186,13 +174,13 @@
                                     </StackPanel>
                                 </controls:SettingsCard.Header>
                                 <controls:SettingsCard.HeaderIcon>
-                                    <ImageIcon Source="{Binding Converter={ThemeResource JavaIconConverter}}" />
+                                    <ImageIcon Source="{x:Bind Converter={StaticResource JavaIconConverter}}" />
                                 </controls:SettingsCard.HeaderIcon>
                                 <StackPanel
                                     Name="Operations"
                                     Orientation="Horizontal"
                                     Spacing="10">
-                                    <Button CommandParameter="{Binding}" Style="{ThemeResource AccentButtonStyle}">
+                                    <Button CommandParameter="{x:Bind}" Style="{ThemeResource AccentButtonStyle}">
                                         <TextBlock x:Uid="Buttons_Activate" Text="Activate" />
                                         <i:Interaction.Behaviors>
                                             <behaviors:AncestorBindingBehavior
@@ -201,7 +189,7 @@
                                                 TargetPropertyName="Command" />
                                         </i:Interaction.Behaviors>
                                     </Button>
-                                    <Button CommandParameter="{Binding}">
+                                    <Button CommandParameter="{x:Bind}">
                                         <TextBlock x:Uid="Buttons_Remove" Text="Remove" />
                                         <i:Interaction.Behaviors>
                                             <behaviors:AncestorBindingBehavior
@@ -226,12 +214,12 @@
                 <controls:SettingsCard
                     x:Uid="Settings_LaunchPage_Card2"
                     ActionIcon="{xh:FontIcon Glyph=&#xe838;}"
-                    Command="{Binding BrowseJavaCommand}"
+                    Command="{x:Bind VM.BrowseJavaCommand}"
                     Description="The imported Javas will be displayed in the list above"
                     Header="Import Java Runtime"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe838;}"
                     IsClickEnabled="True">
-                    <Button Height="32" Command="{Binding SearchJavaCommand}">
+                    <Button Height="32" Command="{x:Bind VM.SearchJavaCommand}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <AnimatedIcon Height="21.5">
                                 <AnimatedIcon.Source>
@@ -250,27 +238,20 @@
                     Description="Select the appropriate version of Java from the list to launch game according to the Minecraft version"
                     Header="Automatically Select Java Runtime"
                     HeaderIcon="{xh:FontIcon Glyph=&#xeccb;}">
-                    <ToggleSwitch IsOn="{Binding EnableAutoJava, Mode=TwoWay}" />
+                    <ToggleSwitch IsOn="{x:Bind VM.EnableAutoJava, Mode=TwoWay}" />
                 </controls:SettingsCard>
                 <controls:SettingsCard
                     x:Uid="Settings_LaunchPage_Card4"
                     Description="The maximum running memory of the Java virtual machine"
                     Header="Java Runtime Memory"
-                    HeaderIcon="{xh:FontIcon Glyph=&#xe9e9;}">
-                    <controls:SettingsCard.Visibility>
-                        <Binding Path="EnableAutoMemory">
-                            <Binding.Converter>
-                                <converters:BoolToVisibilityConverter Inverted="True" />
-                            </Binding.Converter>
-                        </Binding>
-                    </controls:SettingsCard.Visibility>
-
+                    HeaderIcon="{xh:FontIcon Glyph=&#xe9e9;}"
+                    Visibility="{x:Bind VM.EnableAutoMemory, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
                     <StackPanel Orientation="Horizontal" Spacing="15">
                         <NumberBox
                             LargeChange="128"
                             SmallChange="16"
                             SpinButtonPlacementMode="Inline"
-                            Value="{Binding JavaMemory, Mode=TwoWay}" />
+                            Value="{x:Bind VM.JavaMemory, Mode=TwoWay}" />
                         <TextBlock VerticalAlignment="Center" Text="(MB)" />
                     </StackPanel>
                 </controls:SettingsCard>
@@ -279,7 +260,7 @@
                     Description="Calculate the memory allocated to Java based on the remaining physical memory on the system"
                     Header="Automatically set Java runtime memory"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe9d9;}">
-                    <ToggleSwitch IsOn="{Binding EnableAutoMemory, Mode=TwoWay}" />
+                    <ToggleSwitch IsOn="{x:Bind VM.EnableAutoMemory, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
                 <TextBlock
@@ -292,7 +273,7 @@
                     Description="The game will run at versions\${version} directory"
                     Header="Core Independent"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
-                    <ToggleSwitch IsOn="{Binding EnableIndependencyCore, Mode=TwoWay}" />
+                    <ToggleSwitch IsOn="{x:Bind VM.EnableIndependencyCore, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
@@ -300,7 +281,7 @@
                     Description="Automatic full screen mode after entering the game"
                     Header="Full Screen Mode"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE740;}">
-                    <ToggleSwitch IsOn="{Binding EnableFullScreen, Mode=TwoWay}" />
+                    <ToggleSwitch IsOn="{x:Bind VM.EnableFullScreen, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
@@ -312,12 +293,12 @@
                         <NumberBox
                             Width="100"
                             Minimum="0"
-                            Value="{Binding GameWindowWidth, Mode=TwoWay}" />
+                            Value="{x:Bind VM.GameWindowWidth, Mode=TwoWay}" />
                         <FontIcon FontSize="14" Glyph="&#xe947;" />
                         <NumberBox
                             Width="100"
                             Minimum="0"
-                            Value="{Binding GameWindowHeight, Mode=TwoWay}" />
+                            Value="{x:Bind VM.GameWindowHeight, Mode=TwoWay}" />
                     </StackPanel>
                 </controls:SettingsCard>
 
@@ -326,7 +307,7 @@
                     Description="The server address to connect after entering the game"
                     Header="Server Address"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE967;}">
-                    <TextBox Width="400" Text="{Binding GameServerAddress, Mode=TwoWay}">
+                    <TextBox Width="400" Text="{x:Bind VM.GameServerAddress, Mode=TwoWay}">
                         <i:Interaction.Behaviors>
                             <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                         </i:Interaction.Behaviors>
@@ -337,7 +318,7 @@
                     x:Uid="Settings_LaunchPage_Card10"
                     Header="Game Window Title"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE76F;}">
-                    <TextBox Width="400" Text="{Binding GameWindowTitle, Mode=TwoWay}">
+                    <TextBox Width="400" Text="{x:Bind VM.GameWindowTitle, Mode=TwoWay}">
                         <i:Interaction.Behaviors>
                             <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                         </i:Interaction.Behaviors>
@@ -358,13 +339,13 @@
                         <TextBlock
                             VerticalAlignment="Center"
                             Style="{ThemeResource BaseTextBlockStyle}"
-                            Text="{Binding MaxQuickLaunchLatestItem}" />
+                            Text="{x:Bind VM.MaxQuickLaunchLatestItem, Mode=OneWay}" />
 
                         <Slider
                             Width="128"
                             Maximum="16"
                             Minimum="3"
-                            Value="{Binding MaxQuickLaunchLatestItem, Mode=TwoWay}">
+                            Value="{x:Bind VM.MaxQuickLaunchLatestItem, Mode=TwoWay}">
                             <i:Interaction.Behaviors>
                                 <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                             </i:Interaction.Behaviors>

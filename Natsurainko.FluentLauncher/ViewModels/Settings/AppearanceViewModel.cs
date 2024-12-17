@@ -64,9 +64,13 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     [NotifyPropertyChangedFor(nameof(CurrentThemeColor))]
     public partial Color? CustomThemeColor { get; set; }
 
+    public void SetCustomThemeColor(Color color) => CustomThemeColor = color;
+
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.CustomBackgroundColor))]
     public partial Color? CustomBackgroundColor { get; set; }
+
+    public void SetCustomBackgroundColor(Color color) => CustomBackgroundColor = color;
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.UseBackgroundMask))]

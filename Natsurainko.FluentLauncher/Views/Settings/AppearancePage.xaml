@@ -344,6 +344,10 @@
             </Setter>
         </Style>
         <converters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" Inverted="True" />
+        <x:Int32 x:Key="Const0">0</x:Int32>
+        <x:Int32 x:Key="Const1">1</x:Int32>
+        <x:Int32 x:Key="Const2">2</x:Int32>
+        <x:Int32 x:Key="Const3">3</x:Int32>
     </Page.Resources>
 
     <ScrollViewer>
@@ -368,7 +372,7 @@
                     Header="Display Theme"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe706;}">
 
-                    <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items1}" SelectedIndex="{Binding DisplayTheme, Mode=TwoWay}">
+                    <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items1}" SelectedIndex="{x:Bind VM.DisplayTheme, Mode=TwoWay}">
                         <i:Interaction.Behaviors>
                             <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
                             <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
@@ -384,9 +388,9 @@
 
                     <Button>
                         <Button.Background>
-                            <SolidColorBrush Color="{Binding CurrentThemeColor}" />
+                            <SolidColorBrush Color="{x:Bind VM.CurrentThemeColor, Mode=OneWay}" />
                         </Button.Background>
-                        <TextBlock Text="{Binding CurrentThemeColor, Converter={ThemeResource ColorHexCodeConverter}}" />
+                        <TextBlock Text="{x:Bind VM.CurrentThemeColor, Mode=OneWay, Converter={StaticResource ColorHexCodeConverter}}" />
                     </Button>
 
                     <controls:SettingsExpander.Items>
@@ -394,19 +398,19 @@
                             x:Uid="Settings_AppearancePage_SubCard1"
                             Description="Adaptable to the system and available in varying shades of color"
                             Header="Use the system accent color">
-                            <ToggleSwitch IsOn="{Binding UseSystemAccentColor, Mode=TwoWay}" />
+                            <ToggleSwitch IsOn="{x:Bind VM.UseSystemAccentColor, Mode=TwoWay}" />
                         </controls:SettingsCard>
                         <controls:SettingsCard
                             x:Uid="Settings_AppearancePage_SubCard2"
                             Description="All theme colors of varying shades will use this single color"
                             Header="Customize theme color"
-                            IsEnabled="{Binding UseSystemAccentColor, Converter={ThemeResource InvertBoolConverter}}">
+                            IsEnabled="{x:Bind VM.UseSystemAccentColor, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}">
                             <StackPanel Orientation="Horizontal" Spacing="10">
                                 <Button>
                                     <Button.Background>
-                                        <SolidColorBrush Color="{Binding CustomThemeColor}" />
+                                        <SolidColorBrush Color="{x:Bind VM.CustomThemeColor.GetValueOrDefault(), Mode=OneWay}" />
                                     </Button.Background>
-                                    <TextBlock Text="{Binding CustomThemeColor, Converter={ThemeResource ColorHexCodeConverter}}" />
+                                    <TextBlock Text="{x:Bind VM.CustomThemeColor, Mode=OneWay, Converter={StaticResource ColorHexCodeConverter}}" />
                                 </Button>
                                 <Button
                                     x:Uid="Settings_AppearancePage_ColorSelectorButton"
@@ -415,7 +419,7 @@
                                     Tag="themeColor">
                                     <i:Interaction.Behaviors>
                                         <core:EventTriggerBehavior EventName="Loaded">
-                                            <actions:ModifiedInvokeCommandAction Command="{Binding LoadedCommand}" />
+                                            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadedCommand}" />
                                         </core:EventTriggerBehavior>
                                     </i:Interaction.Behaviors>
                                     <Button.Flyout>
@@ -427,11 +431,11 @@
                                                 </Style>
                                             </Flyout.FlyoutPresenterStyle>
                                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <controls:ColorPicker Color="{Binding CustomThemeColor, Mode=TwoWay}" />
+                                                <controls:ColorPicker Color="{x:Bind VM.CustomThemeColor.GetValueOrDefault(), Mode=TwoWay, BindBack=VM.SetCustomThemeColor}" />
                                                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                                                    <Button
-                                                        Command="{Binding SelectColorConfirmCommand}"
-                                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                                                    <Button x:Name="selectColorConfirmButton"
+                                                        Command="{x:Bind VM.SelectColorConfirmCommand}"
+                                                        CommandParameter="{x:Bind selectColorConfirmButton}"
                                                         Style="{ThemeResource AccentButtonStyle}"
                                                         Tag="themeColor">
                                                         <TextBlock x:Uid="Buttons_Confirm" Text="Confirm" />
@@ -445,10 +449,10 @@
                         </controls:SettingsCard>
                         <controls:SettingsCard
                             x:Uid="Settings_AppearancePage_SubCard6"
-                            Command="{Binding UseImageThemeColorCommand}"
+                            Command="{x:Bind VM.UseImageThemeColorCommand}"
                             Header="Use image theme color"
                             IsClickEnabled="True"
-                            IsEnabled="{Binding CanUseImageThemeColor}">
+                            IsEnabled="{x:Bind VM.CanUseImageThemeColor, Mode=OneWay}">
                             <controls:SettingsCard.Description>
                                 <StackPanel>
                                     <TextBlock
@@ -461,7 +465,7 @@
                                         Foreground="{ThemeResource SystemErrorTextColor}"
                                         Style="{ThemeResource CaptionTextBlockStyle}"
                                         Text="Must use valid image background"
-                                        Visibility="{Binding CanUseImageThemeColor, Converter={ThemeResource InvertedBoolToVisibilityConverter}}" />
+                                        Visibility="{x:Bind VM.CanUseImageThemeColor, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
                                 </StackPanel>
                             </controls:SettingsCard.Description>
                         </controls:SettingsCard>
@@ -474,20 +478,14 @@
                     Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
                     Text="Background" />
 
-                <controls:SettingsExpander IsEnabled="{Binding MicaIsSupported}">
+                <controls:SettingsExpander IsEnabled="{x:Bind VM.MicaIsSupported, Mode=OneWay}">
                     <controls:SettingsExpander.Header>
                         <RadioButton
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
                             GroupName="Background"
-                            Style="{ThemeResource RadioButtonStyle}">
-                            <RadioButton.IsChecked>
-                                <Binding Converter="{ThemeResource RadioButtonSelectedIndexConverter}" Path="BackgroundMode">
-                                    <Binding.ConverterParameter>
-                                        <x:Int32>0</x:Int32>
-                                    </Binding.ConverterParameter>
-                                </Binding>
-                            </RadioButton.IsChecked>
+                            Style="{ThemeResource RadioButtonStyle}"
+                            IsChecked="{x:Bind VM.BackgroundMode, Mode=OneWay, Converter={StaticResource RadioButtonSelectedIndexConverter}, ConverterParameter={StaticResource Const0}}">
                             <StackPanel>
                                 <TextBlock x:Uid="Settings_AppearancePage_H1" Text="Mica Background" />
                                 <TextBlock
@@ -499,20 +497,12 @@
                                     x:Uid="Settings_AppearancePage_Text1"
                                     Foreground="{ThemeResource SystemErrorTextColor}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="Unsupported System Version">
-                                    <TextBlock.Visibility>
-                                        <Binding Path="MicaIsSupported">
-                                            <Binding.Converter>
-                                                <converters:BoolToVisibilityConverter Inverted="True" />
-                                            </Binding.Converter>
-                                        </Binding>
-                                    </TextBlock.Visibility>
-                                </TextBlock>
+                                    Text="Unsupported System Version" Visibility="{x:Bind VM.MicaIsSupported, Converter={StaticResource InvertedBoolToVisibilityConverter}}"/>
                             </StackPanel>
 
                             <i:Interaction.Behaviors>
                                 <core:EventTriggerBehavior EventName="Checked">
-                                    <actions:ModifiedInvokeCommandAction Command="{Binding RadioButtonCheckedCommand}">
+                                    <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.RadioButtonCheckedCommand}">
                                         <actions:ModifiedInvokeCommandAction.CommandParameter>
                                             <x:Int32>0</x:Int32>
                                         </actions:ModifiedInvokeCommandAction.CommandParameter>
@@ -523,7 +513,7 @@
                     </controls:SettingsExpander.Header>
                     <controls:SettingsExpander.Items>
                         <controls:SettingsCard x:Uid="Settings_AppearancePage_SubCard3" Header="Mica Viausl Effect Kind">
-                            <ComboBox SelectedIndex="{Binding MicaKind, Mode=TwoWay}">
+                            <ComboBox SelectedIndex="{x:Bind VM.MicaKind, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
                                     <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
@@ -534,20 +524,14 @@
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
-                <controls:SettingsCard IsEnabled="{Binding AcrylicIsSupported}">
+                <controls:SettingsCard IsEnabled="{x:Bind VM.AcrylicIsSupported, Mode=OneWay}">
                     <controls:SettingsCard.Header>
                         <RadioButton
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
                             GroupName="Background"
-                            Style="{ThemeResource RadioButtonStyle}">
-                            <RadioButton.IsChecked>
-                                <Binding Converter="{ThemeResource RadioButtonSelectedIndexConverter}" Path="BackgroundMode">
-                                    <Binding.ConverterParameter>
-                                        <x:Int32>1</x:Int32>
-                                    </Binding.ConverterParameter>
-                                </Binding>
-                            </RadioButton.IsChecked>
+                            Style="{ThemeResource RadioButtonStyle}"
+                            IsChecked="{x:Bind VM.BackgroundMode, Mode=OneWay, Converter={StaticResource RadioButtonSelectedIndexConverter}, ConverterParameter={StaticResource Const1}}">
                             <StackPanel>
                                 <TextBlock x:Uid="Settings_AppearancePage_H2" Text="Acrylic Background" />
                                 <TextBlock
@@ -559,20 +543,13 @@
                                     x:Uid="Settings_AppearancePage_Text1"
                                     Foreground="{ThemeResource SystemErrorTextColor}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="Unsupported System Version">
-                                    <TextBlock.Visibility>
-                                        <Binding Path="AcrylicIsSupported">
-                                            <Binding.Converter>
-                                                <converters:BoolToVisibilityConverter Inverted="True" />
-                                            </Binding.Converter>
-                                        </Binding>
-                                    </TextBlock.Visibility>
-                                </TextBlock>
+                                    Text="Unsupported System Version"
+                                    Visibility="{x:Bind VM.AcrylicIsSupported, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}"/>
                             </StackPanel>
 
                             <i:Interaction.Behaviors>
                                 <core:EventTriggerBehavior EventName="Checked">
-                                    <actions:ModifiedInvokeCommandAction Command="{Binding RadioButtonCheckedCommand}">
+                                    <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.RadioButtonCheckedCommand}">
                                         <actions:ModifiedInvokeCommandAction.CommandParameter>
                                             <x:Int32>1</x:Int32>
                                         </actions:ModifiedInvokeCommandAction.CommandParameter>
@@ -588,14 +565,8 @@
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
                             GroupName="Background"
-                            Style="{ThemeResource RadioButtonStyle}">
-                            <RadioButton.IsChecked>
-                                <Binding Converter="{ThemeResource RadioButtonSelectedIndexConverter}" Path="BackgroundMode">
-                                    <Binding.ConverterParameter>
-                                        <x:Int32>2</x:Int32>
-                                    </Binding.ConverterParameter>
-                                </Binding>
-                            </RadioButton.IsChecked>
+                            Style="{ThemeResource RadioButtonStyle}"
+                            IsChecked="{x:Bind VM.BackgroundMode, Mode=OneWay, Converter={StaticResource RadioButtonSelectedIndexConverter}, ConverterParameter={StaticResource Const2}}">
                             <StackPanel>
                                 <TextBlock x:Uid="Settings_AppearancePage_H3" Text="Solid Color Background" />
                                 <TextBlock
@@ -607,7 +578,7 @@
 
                             <i:Interaction.Behaviors>
                                 <core:EventTriggerBehavior EventName="Checked">
-                                    <actions:ModifiedInvokeCommandAction Command="{Binding RadioButtonCheckedCommand}">
+                                    <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.RadioButtonCheckedCommand}">
                                         <actions:ModifiedInvokeCommandAction.CommandParameter>
                                             <x:Int32>2</x:Int32>
                                         </actions:ModifiedInvokeCommandAction.CommandParameter>
@@ -622,7 +593,7 @@
                             HorizontalContentAlignment="Left"
                             Header="Application background color">
                             <StackPanel Orientation="Horizontal" Spacing="10">
-                                <GridView Margin="0,0,0,-15" SelectedIndex="{Binding SolidSelectedIndex, Mode=TwoWay}">
+                                <GridView Margin="0,0,0,-15" SelectedIndex="{x:Bind VM.SolidSelectedIndex, Mode=TwoWay}">
                                     <GridViewItem>
                                         <Border
                                             Width="64"
@@ -638,7 +609,7 @@
                                             CornerRadius="4"
                                             ToolTipService.ToolTip="Customize">
                                             <Border.Background>
-                                                <SolidColorBrush Color="{Binding CustomBackgroundColor}" />
+                                                <SolidColorBrush Color="{x:Bind VM.CustomBackgroundColor.GetValueOrDefault(), Mode=OneWay}" />
                                             </Border.Background>
                                         </Border>
                                     </GridViewItem>
@@ -650,7 +621,7 @@
                                     Tag="backgroundColor">
                                     <i:Interaction.Behaviors>
                                         <core:EventTriggerBehavior EventName="Loaded">
-                                            <actions:ModifiedInvokeCommandAction Command="{Binding LoadedCommand}" />
+                                            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadedCommand}" />
                                         </core:EventTriggerBehavior>
                                     </i:Interaction.Behaviors>
                                     <Button.Flyout>
@@ -662,11 +633,11 @@
                                                 </Style>
                                             </Flyout.FlyoutPresenterStyle>
                                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <controls:ColorPicker Color="{Binding CustomBackgroundColor, Mode=TwoWay}" />
+                                                <controls:ColorPicker Color="{x:Bind VM.CustomBackgroundColor.GetValueOrDefault(), Mode=TwoWay, BindBack=VM.SetCustomBackgroundColor}" />
                                                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                                                    <Button
-                                                        Command="{Binding SelectColorConfirmCommand}"
-                                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                                                    <Button x:Name="selectColorConfirmButton2"
+                                                        Command="{x:Bind VM.SelectColorConfirmCommand}"
+                                                        CommandParameter="{x:Bind selectColorConfirmButton2}"
                                                         Style="{ThemeResource AccentButtonStyle}"
                                                         Tag="backgroundColor">
                                                         <TextBlock x:Uid="Buttons_Confirm" Text="Confirm" />
@@ -686,14 +657,8 @@
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
                             GroupName="Background"
-                            Style="{ThemeResource RadioButtonStyle}">
-                            <RadioButton.IsChecked>
-                                <Binding Converter="{ThemeResource RadioButtonSelectedIndexConverter}" Path="BackgroundMode">
-                                    <Binding.ConverterParameter>
-                                        <x:Int32>3</x:Int32>
-                                    </Binding.ConverterParameter>
-                                </Binding>
-                            </RadioButton.IsChecked>
+                            Style="{ThemeResource RadioButtonStyle}"
+                            IsChecked="{x:Bind VM.BackgroundMode, Mode=OneWay, Converter={StaticResource RadioButtonSelectedIndexConverter}, ConverterParameter={StaticResource Const3}}">
                             <StackPanel>
                                 <TextBlock x:Uid="Settings_AppearancePage_H4" Text="Image Background" />
                                 <TextBlock
@@ -705,20 +670,13 @@
                                     x:Uid="Settings_AppearancePage_Text2"
                                     Foreground="{ThemeResource SystemErrorTextColor}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="File is not existed">
-                                    <TextBlock.Visibility>
-                                        <Binding Path="ImageFileExists">
-                                            <Binding.Converter>
-                                                <converters:BoolToVisibilityConverter Inverted="True" />
-                                            </Binding.Converter>
-                                        </Binding>
-                                    </TextBlock.Visibility>
-                                </TextBlock>
+                                    Text="File is not existed"
+                                    Visibility="{x:Bind VM.ImageFileExists, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}"/>
                             </StackPanel>
 
                             <i:Interaction.Behaviors>
                                 <core:EventTriggerBehavior EventName="Checked">
-                                    <actions:ModifiedInvokeCommandAction Command="{Binding RadioButtonCheckedCommand}">
+                                    <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.RadioButtonCheckedCommand}">
                                         <actions:ModifiedInvokeCommandAction.CommandParameter>
                                             <x:Int32>3</x:Int32>
                                         </actions:ModifiedInvokeCommandAction.CommandParameter>
@@ -732,7 +690,7 @@
                             <AutoSuggestBox
                                 Width="200"
                                 QuerySubmitted="AutoSuggestBox_QuerySubmitted"
-                                Text="{Binding ImageFilePath, Mode=TwoWay}">
+                                Text="{x:Bind VM.ImageFilePath, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                                 </i:Interaction.Behaviors>
@@ -764,7 +722,7 @@
                     Description="Display theme color mask in the title bar and Gaussian blur mask in the navigation sidebar to enhance the clarity of some controls under special background images, effective after restarting the app"
                     Header="Use Background Mask"
                     HeaderIcon="{xh:FontIcon Glyph=&#xef1f;}">
-                    <ToggleSwitch IsOn="{Binding UseBackgroundMask, Mode=TwoWay}" />
+                    <ToggleSwitch IsOn="{x:Bind VM.UseBackgroundMask, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
@@ -772,7 +730,7 @@
                     Description="Display Gaussian blur background mask on some controls on the home page to enhance clarity"
                     Header="Use HomePage Controls Mask"
                     HeaderIcon="{xh:FontIcon Glyph=&#xef1f;}">
-                    <ToggleSwitch IsOn="{Binding UseHomeControlsMask, Mode=TwoWay}" />
+                    <ToggleSwitch IsOn="{x:Bind VM.UseHomeControlsMask, Mode=TwoWay}" />
                 </controls:SettingsCard>
             </StackPanel>
         </Border>

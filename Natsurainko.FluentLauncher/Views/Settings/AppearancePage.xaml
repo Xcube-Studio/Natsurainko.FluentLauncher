@@ -485,7 +485,7 @@
                             VerticalContentAlignment="Center"
                             GroupName="Background"
                             Style="{ThemeResource RadioButtonStyle}"
-                            IsChecked="{x:Bind VM.BackgroundMode, Mode=OneWay, Converter={StaticResource RadioButtonSelectedIndexConverter}, ConverterParameter={StaticResource Const0}}">
+                            IsChecked="{x:Bind VM.BackgroundMode.Equals(0), Mode=OneWay}">
                             <StackPanel>
                                 <TextBlock x:Uid="Settings_AppearancePage_H1" Text="Mica Background" />
                                 <TextBlock
@@ -531,7 +531,7 @@
                             VerticalContentAlignment="Center"
                             GroupName="Background"
                             Style="{ThemeResource RadioButtonStyle}"
-                            IsChecked="{x:Bind VM.BackgroundMode, Mode=OneWay, Converter={StaticResource RadioButtonSelectedIndexConverter}, ConverterParameter={StaticResource Const1}}">
+                            IsChecked="{x:Bind VM.BackgroundMode.Equals(1), Mode=OneWay}">
                             <StackPanel>
                                 <TextBlock x:Uid="Settings_AppearancePage_H2" Text="Acrylic Background" />
                                 <TextBlock
@@ -566,7 +566,7 @@
                             VerticalContentAlignment="Center"
                             GroupName="Background"
                             Style="{ThemeResource RadioButtonStyle}"
-                            IsChecked="{x:Bind VM.BackgroundMode, Mode=OneWay, Converter={StaticResource RadioButtonSelectedIndexConverter}, ConverterParameter={StaticResource Const2}}">
+                            IsChecked="{x:Bind VM.BackgroundMode.Equals(2), Mode=OneWay}">
                             <StackPanel>
                                 <TextBlock x:Uid="Settings_AppearancePage_H3" Text="Solid Color Background" />
                                 <TextBlock
@@ -658,7 +658,7 @@
                             VerticalContentAlignment="Center"
                             GroupName="Background"
                             Style="{ThemeResource RadioButtonStyle}"
-                            IsChecked="{x:Bind VM.BackgroundMode, Mode=OneWay, Converter={StaticResource RadioButtonSelectedIndexConverter}, ConverterParameter={StaticResource Const3}}">
+                            IsChecked="{x:Bind VM.BackgroundMode.Equals(3), Mode=OneWay}">
                             <StackPanel>
                                 <TextBlock x:Uid="Settings_AppearancePage_H4" Text="Image Background" />
                                 <TextBlock

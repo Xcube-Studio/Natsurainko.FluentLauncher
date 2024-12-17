@@ -192,14 +192,14 @@
                     x:Uid="Downloads_DetailsPage_T1"
                     Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
                     Text="Screenshots"
-                    Visibility="{x:Bind VM.HasScreenshot, Mode=OneWay, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                    Visibility="{x:Bind VM.HasScreenshot, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                 <FlipView
                     Height="400"
                     BorderBrush="{ThemeResource SettingsCardBorderBrush}"
                     BorderThickness="1"
                     ItemsSource="{x:Bind VM.ScreenshotUrls, Mode=OneWay}"
-                    Visibility="{x:Bind VM.HasScreenshot, Mode=OneWay, Converter={ThemeResource BoolToVisibilityConverter}}">
+                    Visibility="{x:Bind VM.HasScreenshot, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                     <FlipView.ItemTemplate>
                         <DataTemplate x:DataType="x:String">
                             <Grid CornerRadius="4">
@@ -233,7 +233,7 @@
                     BorderThickness="1"
                     CornerRadius="8">
                     <Grid>
-                        <old_controls:MarkdownTextBlock Background="Transparent" Visibility="{x:Bind VM.IsHtmlDescription, Mode=OneWay, Converter={ThemeResource InvertedBoolToVisibilityConverter}}">
+                        <old_controls:MarkdownTextBlock Background="Transparent" Visibility="{x:Bind VM.IsHtmlDescription, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
                             <i:Interaction.Behaviors>
                                 <core:EventTriggerBehavior EventName="Loaded">
                                     <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.MarkdownTextBlockLoadedEventCommand}" />
@@ -251,7 +251,7 @@
                         </labs:MarkdownTextBlock>
                         -->
 
-                        <WebView2 DefaultBackgroundColor="Transparent" Visibility="{x:Bind VM.IsHtmlDescription, Mode=OneWay, Converter={ThemeResource BoolToVisibilityConverter}}">
+                        <WebView2 DefaultBackgroundColor="Transparent" Visibility="{x:Bind VM.IsHtmlDescription, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                             <i:Interaction.Behaviors>
                                 <core:EventTriggerBehavior EventName="Loaded">
                                     <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.WebView2LoadedEventCommand}" />

@@ -371,7 +371,7 @@
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>
                 </ItemsRepeater>
-                <ProgressRing IsActive="{x:Bind VM.LoadingCurseForgeResource, Mode=OneWay}" Visibility="{x:Bind VM.LoadingCurseForgeResource, Mode=OneWay, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                <ProgressRing IsActive="{x:Bind VM.LoadingCurseForgeResource, Mode=OneWay}" Visibility="{x:Bind VM.LoadingCurseForgeResource, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                 <Grid Margin="1,30,0,6">
                     <TextBlock
@@ -492,7 +492,7 @@
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>
                 </ItemsRepeater>
-                <ProgressRing IsActive="{x:Bind VM.LoadingModrinthResource, Mode=OneWay}" Visibility="{x:Bind VM.LoadingModrinthResource, Mode=OneWay, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                <ProgressRing IsActive="{x:Bind VM.LoadingModrinthResource, Mode=OneWay}" Visibility="{x:Bind VM.LoadingModrinthResource, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
             </StackPanel>
         </Border>
 

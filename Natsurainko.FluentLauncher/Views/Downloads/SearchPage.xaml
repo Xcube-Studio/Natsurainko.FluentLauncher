@@ -259,7 +259,7 @@
                     <StackPanel
                         Orientation="Horizontal"
                         Spacing="5"
-                        Visibility="{x:Bind VM.IsSearchMinecraft, Mode=OneWay, Converter={ThemeResource InvertedBoolToVisibilityConverter}}">
+                        Visibility="{x:Bind VM.IsSearchMinecraft, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
                         <FontIcon
                             FontSize="13"
                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
@@ -283,7 +283,7 @@
                         IsChecked="{x:Bind VM.EnableVersionFilter, Mode=TwoWay}"
                         Visibility="{x:Bind VM.IsSearchMinecraft, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
 
-                    <ContentControl IsEnabled="{x:Bind VM.EnableVersionFilter, Mode=OneWay}" Visibility="{x:Bind VM.IsSearchMinecraft, Mode=OneWay, Converter={ThemeResource InvertedBoolToVisibilityConverter}}">
+                    <ContentControl IsEnabled="{x:Bind VM.EnableVersionFilter, Mode=OneWay}" Visibility="{x:Bind VM.IsSearchMinecraft, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <FontIcon
                                 FontSize="13"

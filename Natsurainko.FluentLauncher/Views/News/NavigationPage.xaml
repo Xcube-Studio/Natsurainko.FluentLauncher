@@ -9,6 +9,9 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+    <Page.Resources>
+        <converters:BreadcrumbBarLocalizationConverter x:Key="BreadcrumbBarLocalizationConverter" BasePath="News_NavigationPage" />
+    </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -22,23 +25,13 @@
             MaxWidth="1020"
             Margin="{ThemeResource PageMarginWithBreadcrumbBar}"
             ItemsSource="{x:Bind VM.Routes, Mode=OneWay}">
-            <BreadcrumbBar.Resources>
-                <converters:BreadcrumbBarLocalizationConverter x:Key="BreadcrumbBarLocalizationConverter" BasePath="News_NavigationPage" />
-            </BreadcrumbBar.Resources>
-
             <BreadcrumbBar.ItemTemplate>
                 <DataTemplate x:DataType="x:String">
-                    <BreadcrumbBarItem Content="{x:Bind}">
-                        <BreadcrumbBarItem.ContentTemplate>
-                            <DataTemplate>
-                                <TextBlock
-                                    Margin="10,0"
-                                    Style="{ThemeResource TitleTextBlockStyle}"
-                                    Text="{x:Bind Converter={StaticResource BreadcrumbBarLocalizationConverter}}"
-                                    TextTrimming="CharacterEllipsis" />
-                            </DataTemplate>
-                        </BreadcrumbBarItem.ContentTemplate>
-                    </BreadcrumbBarItem>
+                    <TextBlock
+                        Margin="10,0"
+                        Style="{ThemeResource TitleTextBlockStyle}"
+                        Text="{x:Bind Converter={StaticResource BreadcrumbBarLocalizationConverter}}"
+                        TextTrimming="CharacterEllipsis" />
                 </DataTemplate>
             </BreadcrumbBar.ItemTemplate>
 

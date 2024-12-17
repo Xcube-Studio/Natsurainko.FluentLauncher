@@ -197,7 +197,7 @@
                                                 <controls:WrapLayout HorizontalSpacing="5" VerticalSpacing="5" />
                                             </ItemsRepeater.Layout>
                                             <ItemsRepeater.ItemTemplate>
-                                                <DataTemplate>
+                                                <DataTemplate x:DataType="x:String">
                                                     <Border
                                                         Padding="5,1"
                                                         Background="{ThemeResource ButtonBackground}"

@@ -73,7 +73,7 @@
                                         SelectedItem="{x:Bind SelectedInstallData, Mode=TwoWay}"
                                         Visibility="{x:Bind IsSupported, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <ComboBox.ItemTemplate>
-                                            <DataTemplate>
+                                            <DataTemplate x:DataType="x:Object">
                                                 <TextBlock Text="{x:Bind Converter={StaticResource InstallDataLoaderVersionConverter}}" />
                                             </DataTemplate>
                                         </ComboBox.ItemTemplate>

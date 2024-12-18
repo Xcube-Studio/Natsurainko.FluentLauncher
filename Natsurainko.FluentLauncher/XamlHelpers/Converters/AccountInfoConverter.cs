@@ -29,7 +29,7 @@ internal partial class AccountInfoConverter : IValueConverter
         return NeedProperty switch
         {
             "LastRefreshTime" => value is MicrosoftAccount microsoftAccount
-                ? microsoftAccount.LastRefreshTime
+                ? microsoftAccount.LastRefreshTime.ToString()
                 : null,
             "LastRefreshVisibility" => value is MicrosoftAccount
                 ? Visibility.Visible

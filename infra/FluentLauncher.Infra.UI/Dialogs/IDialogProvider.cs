@@ -4,6 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace FluentLauncher.Infra.UI.Dialogs;
 
+/// <summary>
+/// A factory for providing dialogs.
+/// </summary>
 public interface IDialogProvider
 {
     IReadOnlyDictionary<string, DialogDescriptor> RegisteredDialogs { get; }

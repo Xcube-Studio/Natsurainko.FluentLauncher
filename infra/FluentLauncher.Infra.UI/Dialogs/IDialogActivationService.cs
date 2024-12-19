@@ -6,7 +6,7 @@ namespace FluentLauncher.Infra.UI.Dialogs;
 /// Service for an object that can show dialogs. For example, a window in a GUI app.
 /// </summary>
 /// <typeparam name="TResult">The type of the result returned by the dialog. For example, Confirmed/Cancelled.</typeparam>
-public interface IDialogService<TResult>
+public interface IDialogActivationService<TResult>
 {
     /// <summary>
     /// Shows a dialog with the given dialog ID.

@@ -13,7 +13,9 @@ public class WinUINavigationService : INavigationService
 {
     private INavigationProvider? _navigationProvider;
     private IServiceScope? _scope;
+
     private readonly IPageProvider _pageProvider;
+    private readonly IParentScopeProvider _parentScopeProvider;
 
     private Frame Frame => _navigationProvider?.NavigationControl as Frame ?? throw new InvalidOperationException("E001");
 
@@ -29,21 +31,28 @@ public class WinUINavigationService : INavigationService
         private set => _scope = value;
     }
 
-    public WinUINavigationService(IPageProvider pageProvider)
+    public WinUINavigationService(IPageProvider pageProvider, IParentScopeProvider parentScopeProvider)
     {
         _pageProvider = pageProvider;
+        _parentScopeProvider = parentScopeProvider;
     }
 
-    public void InitializeNavigation(INavigationProvider navigationProvider, IServiceScope scope, INavigationService? parent)
+    public void InitializeNavigation(INavigationProvider navigationProvider, IServiceScope scope)
     {
         NavigationProvider = navigationProvider;
         Scope = scope;
-        Parent = parent;
     }
 
     #region Navigation
 
-    public INavigationService? Parent { get; private set; }
+    public INavigationService? Parent
+    {
+        get
+        {
+            IServiceScope? parentScope = _parentScopeProvider.ParentScope;
+            return parentScope?.ServiceProvider.GetRequiredService<INavigationService>();
+        }
+    }
 
     public bool CanGoBack => Frame.CanGoBack;
 
@@ -100,7 +109,7 @@ public class WinUINavigationService : INavigationService
 
                 // Configure navigation service in the child scope
                 INavigationService childNavService = childScope.ServiceProvider.GetRequiredService<INavigationService>();
-                childNavService.InitializeNavigation(navPage, childScope, this);
+                childNavService.InitializeNavigation(navPage, childScope);
 
                 // Configures VM in the child scope (after navigation service is initialized)
                 if (pageInfo.ViewModelType is not null)

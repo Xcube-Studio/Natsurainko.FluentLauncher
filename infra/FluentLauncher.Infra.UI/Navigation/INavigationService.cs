@@ -22,6 +22,8 @@ public interface INavigationService
     void GoForward();
     void NavigateTo(string key, object? parameter = null);
 
+    // TODO: Decouple navigation and scoping
+
     /// <summary>
     /// Called after the navigation provider is initialized
     /// </summary>
@@ -30,5 +32,5 @@ public interface INavigationService
     // This is needed because IServiceScope cannot be the dependecy of an INavigationService, and
     // every INavigationProvider depends on an INavigationService.
     // Therefore, they can only be set after the navigation provider and its scope are created.
-    void InitializeNavigation(INavigationProvider navigationProvider, IServiceScope scope, INavigationService? parent);
+    void InitializeNavigation(INavigationProvider navigationProvider, IServiceScope scope);
 }

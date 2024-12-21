@@ -5,12 +5,12 @@ using System.Diagnostics.CodeAnalysis;
 namespace FluentLauncher.Infra.UI;
 
 /// <summary>
-/// Provides the parent scope of this service scope.
+/// Provides a hierarchy of <seealso cref="IServiceScope"/> instances. This should be added as a scoped service.
 /// </summary>
 public interface IServiceScopeHierarchy
 {
     /// <summary>
-    /// Parent scope of this service scope. If this is the root scope, this property will be <see langword="null"/>.
+    /// Parent scope of the current service scope. If this is the root scope, this property will be <see langword="null"/>.
     /// </summary>
     IServiceScope? ParentScope { get; }
 
@@ -60,7 +60,7 @@ public static class ServiceScopeExtensions
     /// Get the root scope of the given service scope.
     /// </summary>
     /// <param name="scope">The service scope to get the root scope of.</param>
-    /// <returns>The root <see cref="IServiceScope"/> of <paramref name="scope"/></returns>
+    /// <returns>The root <see cref="IServiceScope"/> of <paramref name="scope"/>.</returns>
     public static IServiceScope GetRootScope(this IServiceScope scope)
     {
         while (scope.GetParentScope() is IServiceScope parentScope)

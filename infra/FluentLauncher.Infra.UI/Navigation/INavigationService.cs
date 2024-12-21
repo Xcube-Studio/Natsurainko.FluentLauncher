@@ -27,5 +27,5 @@ public interface INavigationService
     /// Called after the navigation provider is initialized
     /// </summary>
     /// <param name="navigationProvider">The window or page that provides navigation</param>
-    void InitializeNavigation(INavigationProvider navigationProvider);
+    void Initialize(INavigationProvider navigationProvider);
 }

@@ -7,7 +7,7 @@ namespace FluentLauncher.Infra.UI;
 /// <summary>
 /// Provides the parent scope of this service scope.
 /// </summary>
-public interface IParentScopeProvider
+public interface IServiceScopeHierarchy
 {
     /// <summary>
     /// Parent scope of this service scope. If this is the root scope, this property will be <see langword="null"/>.
@@ -15,29 +15,36 @@ public interface IParentScopeProvider
     IServiceScope? ParentScope { get; }
 
     /// <summary>
+    /// Current service scope.
+    /// </summary>
+    IServiceScope CurrentScope { get; }
+
+    /// <summary>
     /// Initialize this service when a child scope is created.
     /// </summary>
     /// <param name="parentScope">Parent scope of this service scope.</param>
-    void Initialize(IServiceScope parentScope);
+    void Initialize(IServiceScope? parentScope, IServiceScope currentScope);
 }
 
 /// <summary>
-/// Default implementation of <see cref="IParentScopeProvider"/>
+/// Default implementation of <see cref="IServiceScopeHierarchy"/>
 /// </summary>
-public class ParentScopeProvider : IParentScopeProvider
+public class ServiceScopeHierarchy : IServiceScopeHierarchy
 {
     /// <inheritdoc/>
     public IServiceScope? ParentScope { get; private set; }
 
+    public IServiceScope CurrentScope { get; private set; } = null!;
+
     /// <inheritdoc/>
-    [MemberNotNull(nameof(ParentScope))]
-    public void Initialize(IServiceScope parentScope)
+    public void Initialize(IServiceScope? parentScope, IServiceScope currentScope)
     {
         ParentScope = parentScope;
+        CurrentScope = currentScope;
     }
 }
 
-public static class ServiceScopeHierarchyExtensions
+public static class ServiceScopeExtensions
 {
     /// <summary>
     /// Get the parent scope of the given service scope.
@@ -46,7 +53,7 @@ public static class ServiceScopeHierarchyExtensions
     /// <returns>The parent <see cref="IServiceScope"/> of <paramref name="scope"/></returns>
     public static IServiceScope? GetParentScope(this IServiceScope scope)
     {
-        return scope.ServiceProvider.GetRequiredService<IParentScopeProvider>().ParentScope;
+        return scope.ServiceProvider.GetRequiredService<IServiceScopeHierarchy>().ParentScope;
     }
 
     /// <summary>
@@ -73,7 +80,7 @@ public static class ServiceScopeHierarchyExtensions
         IServiceScope childScope = scope.ServiceProvider.CreateScope();
 
         // Initialize the IParentScopeProvider in the child scope
-        childScope.ServiceProvider.GetRequiredService<IParentScopeProvider>().Initialize(scope);
+        childScope.ServiceProvider.GetRequiredService<IServiceScopeHierarchy>().Initialize(scope, childScope);
 
         return childScope;
     }

@@ -12,12 +12,14 @@ namespace FluentLauncher.Infra.WinUI.Navigation;
 public class WinUINavigationService : INavigationService
 {
     private INavigationProvider? _navigationProvider;
-    private IServiceScope? _scope;
 
     private readonly IPageProvider _pageProvider;
-    private readonly IParentScopeProvider _parentScopeProvider;
+    private readonly IServiceScopeHierarchy _scopeHierarchy;
 
-    private Frame Frame => _navigationProvider?.NavigationControl as Frame ?? throw new InvalidOperationException("E001");
+    private Frame Frame => _navigationProvider?.NavigationControl as Frame
+        ?? throw new InvalidOperationException("E001");
+
+    private IServiceScope CurrentScope => _scopeHierarchy.CurrentScope;
 
     public INavigationProvider NavigationProvider
     {
@@ -25,33 +27,24 @@ public class WinUINavigationService : INavigationService
         private set => _navigationProvider = value;
     }
 
-    public IServiceScope Scope
-    {
-        get => _scope ?? throw new InvalidOperationException("E001");
-        private set => _scope = value;
-    }
-
-    public WinUINavigationService(IPageProvider pageProvider, IParentScopeProvider parentScopeProvider)
-    {
-        _pageProvider = pageProvider;
-        _parentScopeProvider = parentScopeProvider;
-    }
-
-    public void InitializeNavigation(INavigationProvider navigationProvider, IServiceScope scope)
-    {
-        NavigationProvider = navigationProvider;
-        Scope = scope;
-    }
-
-    #region Navigation
-
     public INavigationService? Parent
     {
         get
         {
-            IServiceScope? parentScope = _parentScopeProvider.ParentScope;
+            IServiceScope? parentScope = _scopeHierarchy.ParentScope;
             return parentScope?.ServiceProvider.GetRequiredService<INavigationService>();
         }
+    }
+
+    public WinUINavigationService(IPageProvider pageProvider, IServiceScopeHierarchy scopeHierarchy)
+    {
+        _pageProvider = pageProvider;
+        _scopeHierarchy = scopeHierarchy;
+    }
+
+    public void InitializeNavigation(INavigationProvider navigationProvider)
+    {
+        NavigationProvider = navigationProvider;
     }
 
     public bool CanGoBack => Frame.CanGoBack;
@@ -102,14 +95,14 @@ public class WinUINavigationService : INavigationService
 
         if (Frame.Content is Page page)
         {
-            if (Frame.Content is INavigationProvider navPage)
+            if (Frame.Content is INavigationProvider navigationPage)
             {
                 // Create child scope
-                var childScope = Scope.CreateChildScope();
+                var childScope = CurrentScope.CreateChildScope();
 
                 // Configure navigation service in the child scope
-                INavigationService childNavService = childScope.ServiceProvider.GetRequiredService<INavigationService>();
-                childNavService.InitializeNavigation(navPage, childScope);
+                INavigationService childNavigationService = childScope.ServiceProvider.GetRequiredService<INavigationService>();
+                childNavigationService.InitializeNavigation(navigationPage);
 
                 // Configures VM in the child scope (after navigation service is initialized)
                 if (pageInfo.ViewModelType is not null)
@@ -119,7 +112,7 @@ public class WinUINavigationService : INavigationService
             {
                 // Configures VM
                 if (pageInfo.ViewModelType is not null)
-                    page.DataContext = Scope.ServiceProvider.GetRequiredService(pageInfo.ViewModelType);
+                    page.DataContext = CurrentScope.ServiceProvider.GetRequiredService(pageInfo.ViewModelType);
             }
 
             // After navigation
@@ -128,6 +121,4 @@ public class WinUINavigationService : INavigationService
                 vmAfter.OnNavigatedTo(parameter);
         }
     }
-
-    #endregion
 }

@@ -48,6 +48,7 @@ public abstract class ActivationService<TWindowBase> : IActivationService where 
 
         // Creates a root scope for resources owned by the window
         IServiceScope scope = _serviceProvider.CreateScope();
+        scope.ServiceProvider.GetRequiredService<IServiceScopeHierarchy>().Initialize(null, scope);
 
         TWindowBase window = (TWindowBase)scope.ServiceProvider.GetRequiredService(windowType);
 
@@ -56,7 +57,7 @@ public abstract class ActivationService<TWindowBase> : IActivationService where 
         if (window is INavigationProvider navProvider)
         {
             var navService = scope.ServiceProvider.GetRequiredService<INavigationService>();
-            navService.InitializeNavigation(navProvider, scope);
+            navService.InitializeNavigation(navProvider);
         }
 
         // Configures the scope to be disposed when the window is closed

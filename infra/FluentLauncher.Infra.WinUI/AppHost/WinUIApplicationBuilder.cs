@@ -49,7 +49,7 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
     private void ConfigureExtendedWinUIServices()
     {
         // Configure IParentScopeProvider
-        Services.AddScoped<IParentScopeProvider, ParentScopeProvider>();
+        Services.AddScoped<IServiceScopeHierarchy, ServiceScopeHierarchy>();
 
         // Configure IActivationService
         foreach (var (key, descriptor) in Windows.RegisteredWindows)

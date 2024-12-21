@@ -46,7 +46,7 @@ public abstract class ActivationService<TWindowBase> : IActivationService where 
             }
         }
 
-        // Creates a new scope for resources owned by the window
+        // Creates a root scope for resources owned by the window
         IServiceScope scope = _serviceProvider.CreateScope();
 
         TWindowBase window = (TWindowBase)scope.ServiceProvider.GetRequiredService(windowType);

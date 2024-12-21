@@ -1,4 +1,5 @@
-﻿using FluentLauncher.Infra.UI.Navigation;
+﻿using FluentLauncher.Infra.UI;
+using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Pages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
@@ -94,16 +95,16 @@ public class WinUINavigationService : INavigationService
         {
             if (Frame.Content is INavigationProvider navPage)
             {
-                // Create subscope
-                var subScope = Scope.ServiceProvider.CreateScope();
+                // Create child scope
+                var childScope = Scope.CreateChildScope();
 
-                // Configure sub navigation service
-                INavigationService subNavService = subScope.ServiceProvider.GetRequiredService<INavigationService>();
-                subNavService.InitializeNavigation(navPage, subScope, this);
+                // Configure navigation service in the child scope
+                INavigationService childNavService = childScope.ServiceProvider.GetRequiredService<INavigationService>();
+                childNavService.InitializeNavigation(navPage, childScope, this);
 
-                // Configures VM in the subscope (after navigation service is initialized)
+                // Configures VM in the child scope (after navigation service is initialized)
                 if (pageInfo.ViewModelType is not null)
-                    page.DataContext = subScope.ServiceProvider.GetRequiredService(pageInfo.ViewModelType);
+                    page.DataContext = childScope.ServiceProvider.GetRequiredService(pageInfo.ViewModelType);
             }
             else
             {

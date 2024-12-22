@@ -9,7 +9,6 @@ public sealed partial class SwitchAccountDialog : ContentDialog
 
     public SwitchAccountDialog()
     {
-        XamlRoot = MainWindow.XamlRoot;
         InitializeComponent();
     }
 

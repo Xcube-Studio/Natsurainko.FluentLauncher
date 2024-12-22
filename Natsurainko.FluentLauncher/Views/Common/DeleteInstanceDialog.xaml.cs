@@ -9,8 +9,6 @@ public sealed partial class DeleteInstanceDialog : ContentDialog
 
     public DeleteInstanceDialog()
     {
-        XamlRoot = MainWindow.XamlRoot;
-
         InitializeComponent();
     }
 }

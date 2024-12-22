@@ -9,9 +9,7 @@ public sealed partial class DownloadResourceDialog : ContentDialog
 
     public DownloadResourceDialog()
     {
-        XamlRoot = MainWindow.XamlRoot;
-
-        InitializeComponent();
+       InitializeComponent();
     }
 
     private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)

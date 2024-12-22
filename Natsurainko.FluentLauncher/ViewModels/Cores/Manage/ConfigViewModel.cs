@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Navigation;
+using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Utils.Extensions;
@@ -33,9 +35,12 @@ internal partial class ConfigViewModel : ObservableObject, INavigationAware
     [ObservableProperty]
     public partial Account TargetedAccount { get; set; }
 
-    public ConfigViewModel(AccountService accountService)
+    private readonly IDialogActivationService<ContentDialogResult> _dialogs;
+
+    public ConfigViewModel(AccountService accountService, IDialogActivationService<ContentDialogResult> dialogs)
     {
         Accounts = accountService.Accounts;
+        _dialogs = dialogs;
     }
 
     void INavigationAware.OnNavigatedTo(object parameter)
@@ -79,11 +84,7 @@ internal partial class ConfigViewModel : ObservableObject, INavigationAware
     [RelayCommand]
     public async Task AddArgument()
     {
-        await new AddVmArgumentDialog()
-        {
-            DataContext = new AddVmArgumentDialogViewModel(VmArguments.Add)
-        }.ShowAsync();
-
+        await _dialogs.ShowAsync("AddVmArgumentDialog", (object)VmArguments.Add);
         InstanceConfig.VmParameters = [.. VmArguments];
     }
 

@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Navigation;
+using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
@@ -28,6 +30,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     private readonly CacheInterfaceService _cacheInterfaceService;
     private readonly SearchProviderService _searchProviderService;
     private readonly NotificationService _notificationService;
+    private readonly IDialogActivationService<ContentDialogResult> _dialogs;
 
     private readonly CurseForgeClient _curseForgeClient;
     private readonly ModrinthClient _modrinthClient;
@@ -39,13 +42,15 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         SearchProviderService searchProviderService,
         NotificationService notificationService,
         CurseForgeClient curseForgeClient,
-        ModrinthClient modrinthClient)
+        ModrinthClient modrinthClient,
+        IDialogActivationService<ContentDialogResult> dialogs)
     {
         _navigationService = navigationService;
         _gameService = gameService;
         _cacheInterfaceService = cacheInterfaceService;
         _searchProviderService = searchProviderService;
         _notificationService = notificationService;
+        _dialogs = dialogs;
 
         _curseForgeClient = curseForgeClient;
         _modrinthClient = modrinthClient;
@@ -231,7 +236,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     void SearchMoreModrinth() => _navigationService.NavigateTo("Download/Search", new SearchOptions { ResourceSource = 2 });
 
     [RelayCommand]
-    async Task DownloadResource(object resource) => await new DownloadResourceDialog() { DataContext = new DownloadResourceDialogViewModel(resource, _navigationService) }.ShowAsync();
+    async Task DownloadResource(object resource) => await _dialogs.ShowAsync("DownloadResourceDialog", (resource, _navigationService));
 
     [RelayCommand]
     void ResourceDetails(object resource) => _navigationService.NavigateTo("Download/Details", resource);

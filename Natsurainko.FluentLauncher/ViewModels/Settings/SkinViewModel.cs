@@ -2,8 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using FluentLauncher.Infra.Settings.Mvvm;
+using FluentLauncher.Infra.UI.Dialogs;
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.WinUI;
+using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
@@ -34,17 +36,20 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
     private readonly AccountService _accountService;
     private readonly CacheSkinService _cacheSkinService;
     private readonly NotificationService _notificationService;
+    private readonly IDialogActivationService<ContentDialogResult> _dialogs;
 
     public SkinViewModel(
         SettingsService settingsService,
         AccountService accountService,
         CacheSkinService cacheSkinService,
-        NotificationService notificationService)
+        NotificationService notificationService,
+        IDialogActivationService<ContentDialogResult> dialogs)
     {
         _settingsService = settingsService;
         _accountService = accountService;
         _cacheSkinService = cacheSkinService;
         _notificationService = notificationService;
+        _dialogs = dialogs;
 
         ActiveAccount = accountService.ActiveAccount!;
 
@@ -155,8 +160,8 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
     [RelayCommand]
     public async Task UploadSkin()
     {
-        await new UploadSkinDialog() { DataContext = new UploadSkinDialogViewModel(ActiveAccount) }.ShowAsync();
-        _ = Task.Run(LoadModel);
+        await _dialogs.ShowAsync("UploadSkinDialog", ActiveAccount);
+        await LoadModel();
     }
 
     [RelayCommand]

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FluentLauncher.Infra.UI.Dialogs;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Network;
@@ -14,16 +15,18 @@ using System.Threading.Tasks;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
-public partial class UploadSkinDialogViewModel : ObservableObject
+public partial class UploadSkinDialogViewModel : ObservableObject, IDialogParameterAware
 {
-    private readonly Account _account;
+    private Account _account = null!;
     private ContentDialog _dialog;
 
     private readonly NotificationService _notificationService = App.GetService<NotificationService>();
 
-    public UploadSkinDialogViewModel(Account account)
+    public UploadSkinDialogViewModel() { }
+
+    void IDialogParameterAware.HandleParameter(object param)
     {
-        _account = account;
+        _account = (Account)param;
     }
 
     [ObservableProperty]

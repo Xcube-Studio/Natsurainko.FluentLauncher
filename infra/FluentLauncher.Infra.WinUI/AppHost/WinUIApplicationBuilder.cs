@@ -1,6 +1,9 @@
-﻿using FluentLauncher.Infra.UI.Navigation;
+﻿using FluentLauncher.Infra.UI;
+using FluentLauncher.Infra.UI.Dialogs;
+using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Pages;
 using FluentLauncher.Infra.UI.Windows;
+using FluentLauncher.Infra.WinUI.Dialogs;
 using FluentLauncher.Infra.WinUI.Navigation;
 using FluentLauncher.Infra.WinUI.Pages;
 using FluentLauncher.Infra.WinUI.Windows;
@@ -10,6 +13,7 @@ using Microsoft.Extensions.Diagnostics.Metrics;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 
@@ -25,6 +29,8 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
     public WinUIActivationServiceBuilder Windows { get; } = new();
 
     public WinUIPageProviderBuilder Pages { get; } = new();
+
+    public WinUIDialogProviderBuilder Dialogs { get; } = new();
 
     public WinUIApplicationBuilder(Func<Application> createApplicationFunc)
     {
@@ -47,6 +53,9 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
 
     private void ConfigureExtendedWinUIServices()
     {
+        // Configure IParentScopeProvider
+        Services.AddScoped<IServiceScopeHierarchy, ServiceScopeHierarchy>();
+
         // Configure IActivationService
         foreach (var (key, descriptor) in Windows.RegisteredWindows)
         {
@@ -54,6 +63,35 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
             Services.AddScoped(descriptor.WindowType);
         }
         Services.AddSingleton<IActivationService, WinUIActivationService>(Windows.Build);
+
+        // Configure IWindowService
+        Services.AddScoped<IWindowService>(sp =>
+        {
+            IServiceScope? parentScope = sp.GetRequiredService<IServiceScopeHierarchy>().ParentScope;
+            if (parentScope is null)
+                return new WinUIWindowService();
+            else
+                return parentScope.GetRootScope().ServiceProvider.GetRequiredService<IWindowService>();
+        });
+
+        // Configure IDialogProvider
+        foreach (var (key, descriptor) in Dialogs.RegisteredDialogs)
+        {
+            Services.AddTransient(descriptor.DialogType);
+            if (descriptor.ViewModelType is not null)
+                Services.AddTransient(descriptor.ViewModelType);
+        }
+        Services.AddSingleton<IDialogProvider, WinUIDialogProvider>(Dialogs.Build);
+
+        // Configure IDialogActivationService
+        Services.AddScoped<IDialogActivationService<ContentDialogResult>>(sp =>
+        {
+            IServiceScope? parentScope = sp.GetRequiredService<IServiceScopeHierarchy>().ParentScope;
+            if (parentScope is null)
+                return new WinUIDialogActivationService(sp.GetRequiredService<IDialogProvider>(), sp.GetRequiredService<IWindowService>());
+            else
+                return parentScope.GetRootScope().ServiceProvider.GetRequiredService<IDialogActivationService<ContentDialogResult>>();
+        });
 
         // Configure INavigationService
         Services.AddScoped<INavigationService, WinUINavigationService>();

@@ -13,6 +13,7 @@
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
+        <ThemeShadow x:Name="SharedShadow" />
         <Style x:Key="DropDownButtonStyle" TargetType="DropDownButton">
             <Setter Property="Background" Value="{ThemeResource ButtonBackground}" />
             <Setter Property="Foreground" Value="{ThemeResource ButtonForeground}" />
@@ -193,12 +194,13 @@
                         Name="HyperlinkButtonArea"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
-                        CornerRadius="{ThemeResource ControlCornerRadius}" />
+                        CornerRadius="8" />
                     <HyperlinkButton
                         Name="HyperlinkButton"
                         Background="Transparent"
                         BorderBrush="Transparent"
-                        Command="{x:Bind VM.GoToAccountCommand}">
+                        Command="{x:Bind VM.GoToAccountCommand}"
+                        CornerRadius="8">
                         <StackPanel>
                             <TextBlock
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
@@ -212,6 +214,7 @@
                     x:Name="LaunchButton"
                     Grid.Column="4"
                     VerticalAlignment="Bottom"
+                    CornerRadius="8"
                     Command="{x:Bind VM.LaunchCommand}"
                     Style="{ThemeResource AccentButtonStyle}">
                     <ToolTipService.ToolTip>
@@ -247,12 +250,13 @@
                         Name="DropDownButtonArea"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
-                        CornerRadius="{ThemeResource ControlCornerRadius}" />
+                        CornerRadius="8" />
                     <DropDownButton
                         x:Name="DropDownButton"
                         Background="Transparent"
                         BorderBrush="Transparent"
                         Click="DropDownButton_Click"
+                        CornerRadius="8"
                         Style="{ThemeResource DropDownButtonStyle}">
                         <TextBlock
                             Grid.Column="2"

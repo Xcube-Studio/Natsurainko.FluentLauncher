@@ -9,8 +9,6 @@ public sealed partial class AddVmArgumentDialog : ContentDialog
 
     public AddVmArgumentDialog()
     {
-        XamlRoot = MainWindow.XamlRoot;
-
         InitializeComponent();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Launch;
@@ -13,12 +14,12 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
-internal partial class DeleteInstanceDialogViewModel : ObservableObject
+internal partial class DeleteInstanceDialogViewModel : ObservableObject, IDialogParameterAware
 {
-    private readonly MinecraftInstance _minecraftInstance;
     private readonly INavigationService _navigationService;
     private readonly NotificationService _notificationService;
     private readonly GameService _gameService;
+    private MinecraftInstance _minecraftInstance = null!;
 
     private ContentDialog _dialog = null!; // Set in LoadEvent
 
@@ -28,15 +29,18 @@ internal partial class DeleteInstanceDialogViewModel : ObservableObject
     public partial bool DeleteCoreSettings { get; set; } = true;
 
     public DeleteInstanceDialogViewModel(
-        MinecraftInstance minecraftInstance,
         INavigationService navigationService,
         NotificationService notificationService,
         GameService gameService)
     {
-        _minecraftInstance = minecraftInstance;
         _navigationService = navigationService;
         _notificationService = notificationService;
         _gameService = gameService;
+    }
+
+    void IDialogParameterAware.HandleParameter(object param)
+    {
+        _minecraftInstance = (MinecraftInstance)param;
     }
 
     [RelayCommand]

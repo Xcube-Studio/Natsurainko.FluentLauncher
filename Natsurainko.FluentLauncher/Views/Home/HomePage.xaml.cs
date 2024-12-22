@@ -10,7 +10,6 @@ namespace Natsurainko.FluentLauncher.Views.Home;
 
 public sealed partial class HomePage : Page
 {
-    private readonly ThemeShadow _themeShadow = new();
     private readonly SettingsService _settingsService = App.GetService<SettingsService>();
 
     HomeViewModel VM => (HomeViewModel)DataContext;
@@ -22,41 +21,37 @@ public sealed partial class HomePage : Page
 
     private void Page_Loaded(object sender, RoutedEventArgs e)
     {
-        _themeShadow.Receivers.Add(Grid);
+        var themeDictionaries = (App.Current.Resources.ThemeDictionaries[this.ActualTheme == ElementTheme.Light ? "Light" : "Dark"] as ResourceDictionary)!;
 
         if (_settingsService.UseHomeControlsMask)
         {
-            Brush maskColorBrush = this.ActualTheme == ElementTheme.Light
-                    ? new SolidColorBrush(Color.FromArgb(128, 255, 255, 255))
-                    : new SolidColorBrush(Color.FromArgb(76, 58, 58, 58));
-
             Brush foregroundBrush = this.ActualTheme == ElementTheme.Light
                 ? new SolidColorBrush(Color.FromArgb(255, 26, 26, 26))
                 : new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
 
-            DropDownButton.Shadow = _themeShadow;
-            DropDownButton.Translation += new System.Numerics.Vector3(0, 0, 32);
-            DropDownButtonArea.Background = new CommunityToolkit.WinUI.Media.BackdropBlurBrush() { Amount = 16 };
-            DropDownButton.Background = maskColorBrush;
+            LaunchButton.Shadow = SharedShadow;
+            LaunchButton.Translation += new System.Numerics.Vector3(0, 0, 16);
 
-            HyperlinkButton.Shadow = _themeShadow;
-            HyperlinkButton.Translation += new System.Numerics.Vector3(0, 0, 32);
-            HyperlinkButtonArea.Background = new CommunityToolkit.WinUI.Media.BackdropBlurBrush() { Amount = 16 };
-            HyperlinkButton.Background = maskColorBrush;
+            DropDownButton.Shadow = SharedShadow;
+            DropDownButton.Translation += new System.Numerics.Vector3(0, 0, 16);
+            DropDownButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
+
+            HyperlinkButton.Shadow = SharedShadow;
+            HyperlinkButton.Translation += new System.Numerics.Vector3(0, 0, 16);
+            HyperlinkButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
             HyperlinkButton.Foreground = foregroundBrush;
 
             this.ActualThemeChanged += (_, e) =>
             {
-                Brush maskColorBrush = this.ActualTheme == ElementTheme.Light
-                    ? new SolidColorBrush(Color.FromArgb(128, 255, 255, 255))
-                    : new SolidColorBrush(Color.FromArgb(76, 58, 58, 58));
+                var themeDictionaries = (App.Current.Resources.ThemeDictionaries[this.ActualTheme == ElementTheme.Light ? "Light" : "Dark"] as ResourceDictionary)!;
 
                 Brush foregroundBrush = this.ActualTheme == ElementTheme.Light
                     ? new SolidColorBrush(Color.FromArgb(255, 26, 26, 26))
                     : new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
 
-                DropDownButton.Background = maskColorBrush;
-                HyperlinkButton.Background = maskColorBrush;
+                DropDownButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
+
+                HyperlinkButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
                 HyperlinkButton.Foreground = foregroundBrush;
             };
         }

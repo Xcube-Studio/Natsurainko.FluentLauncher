@@ -9,8 +9,6 @@ public sealed partial class UploadSkinDialog : ContentDialog
 
     public UploadSkinDialog()
     {
-        XamlRoot = MainWindow.XamlRoot;
-
         InitializeComponent();
     }
 

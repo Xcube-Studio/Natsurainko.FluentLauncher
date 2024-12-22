@@ -1,4 +1,6 @@
-﻿using FluentLauncher.Infra.UI.Windows;
+﻿using FluentLauncher.Infra.UI.Navigation;
+using FluentLauncher.Infra.UI.Windows;
+using FluentLauncher.Infra.WinUI.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using System;
@@ -15,12 +17,19 @@ public class WinUIActivationService : ActivationService<Window>
         IServiceProvider serviceProvider)
         : base(registeredWindows, serviceProvider) { }
 
-    protected override IWindowService ActivateWindow(Window window)
+    protected override void InitializeWindowService(IWindowService windowService, Window window)
+    {
+        ((WinUIWindowService)windowService).InitializeService(window);
+    }
+
+    protected override void InitializeNavigationService(INavigationService navigationService, INavigationProvider navigationProvider)
+    {
+        ((WinUINavigationService)navigationService).InitializeService(navigationProvider);
+    }
+
+    protected override void ActivateWindow(Window window)
     {
         window.Activate();
-        var windowService = new WinUIWindowService(window);
-        _activeWindows.Add((window, windowService));
-        return windowService;
     }
 
     protected override void ConfigureWindowClose(Window window, IServiceScope scope)

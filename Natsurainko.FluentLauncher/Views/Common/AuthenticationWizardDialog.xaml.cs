@@ -11,12 +11,6 @@ public sealed partial class AuthenticationWizardDialog : ContentDialog
 
     public AuthenticationWizardDialog()
     {
-        XamlRoot = MainWindow.XamlRoot;
-
         InitializeComponent();
-        DataContext = new AuthenticationWizardDialogViewModel(
-            App.GetService<AccountService>(),
-            App.GetService<NotificationService>(),
-            App.GetService<AuthenticationService>());
     }
 }

@@ -3,7 +3,7 @@
 /// <summary>
 /// Interface for a dialog view model that can receive a parameter.
 /// </summary>
-interface IDialogParameterAware
+public interface IDialogParameterAware
 {
     /// <summary>
     /// Sets the parameter for the dialog view model.

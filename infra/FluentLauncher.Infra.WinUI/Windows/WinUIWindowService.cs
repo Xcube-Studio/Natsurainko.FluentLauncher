@@ -9,24 +9,24 @@ namespace FluentLauncher.Infra.WinUI.Windows;
 /// </summary>
 public class WinUIWindowService : IWindowService
 {
-    private Window _window = null!;
+    public Window Window { get; private set; } = null!;
 
     public string Title
     {
-        get => _window.Title;
-        set => _window.Title = value;
+        get => Window.Title;
+        set => Window.Title = value;
     }
 
     public WinUIWindowService() { }
 
-    public void Close() => _window.Close();
+    public void Close() => Window.Close();
 
-    public void Minimize() => _window.Hide();
+    public void Minimize() => Window.Hide();
 
-    public void Activate() => _window.Activate();
+    public void Activate() => Window.Activate();
 
     public void InitializeService(Window window)
     {
-        _window = window;
+        Window = window;
     }
 }

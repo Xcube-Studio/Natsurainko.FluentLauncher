@@ -57,10 +57,10 @@ public abstract class ActivationService<TWindowBase> : IActivationService where 
 
         // If the window supports navigation, initialize the navigation service in the window scope
         // The navigation service may have been instantiated and injected into 'window' already.
-        if (window is INavigationProvider navProvider)
+        if (window is INavigationProvider navigationProvider)
         {
-            var navService = scope.ServiceProvider.GetRequiredService<INavigationService>();
-            navService.Initialize(navProvider);
+            INavigationService navigationService = scope.ServiceProvider.GetRequiredService<INavigationService>();
+            InitializeNavigationService(navigationService, navigationProvider);
         }
 
         // Configures the scope to be disposed when the window is closed
@@ -78,6 +78,13 @@ public abstract class ActivationService<TWindowBase> : IActivationService where 
     /// <param name="windowService"></param>
     /// <param name="window"></param>
     protected abstract void InitializeWindowService(IWindowService windowService, TWindowBase window);
+
+    /// <summary>
+    /// Initialize the <paramref name="navigationService"/> for the given <paramref name="navigationProvider"/>.
+    /// </summary>
+    /// <param name="navigationService"></param>
+    /// <param name="navigationProvider"></param>
+    protected abstract void InitializeNavigationService(INavigationService navigationService, INavigationProvider navigationProvider);
 
     /// <summary>
     /// Activate the <paramref name="window"/> resolved and return an <see cref="IWindowService"/> that can be used to control it.

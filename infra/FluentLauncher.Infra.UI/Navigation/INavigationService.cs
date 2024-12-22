@@ -22,10 +22,4 @@ public interface INavigationService
     void GoBack();
     void GoForward();
     void NavigateTo(string key, object? parameter = null);
-
-    /// <summary>
-    /// Called after the navigation provider is initialized
-    /// </summary>
-    /// <param name="navigationProvider">The window or page that provides navigation</param>
-    void Initialize(INavigationProvider navigationProvider);
 }

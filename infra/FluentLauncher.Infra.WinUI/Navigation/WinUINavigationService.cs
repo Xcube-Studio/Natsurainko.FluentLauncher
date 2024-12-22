@@ -42,7 +42,7 @@ public class WinUINavigationService : INavigationService
         _scopeHierarchy = scopeHierarchy;
     }
 
-    public void Initialize(INavigationProvider navigationProvider)
+    public void InitializeService(INavigationProvider navigationProvider)
     {
         NavigationProvider = navigationProvider;
     }
@@ -102,7 +102,7 @@ public class WinUINavigationService : INavigationService
 
                 // Configure navigation service in the child scope
                 INavigationService childNavigationService = childScope.ServiceProvider.GetRequiredService<INavigationService>();
-                childNavigationService.Initialize(navigationPage);
+                ((WinUINavigationService)childNavigationService).InitializeService(navigationPage);
 
                 // Configures VM in the child scope (after navigation service is initialized)
                 if (pageInfo.ViewModelType is not null)

@@ -1,4 +1,6 @@
-﻿using FluentLauncher.Infra.UI.Windows;
+﻿using FluentLauncher.Infra.UI.Navigation;
+using FluentLauncher.Infra.UI.Windows;
+using FluentLauncher.Infra.WinUI.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using System;
@@ -18,6 +20,11 @@ public class WinUIActivationService : ActivationService<Window>
     protected override void InitializeWindowService(IWindowService windowService, Window window)
     {
         ((WinUIWindowService)windowService).InitializeService(window);
+    }
+
+    protected override void InitializeNavigationService(INavigationService navigationService, INavigationProvider navigationProvider)
+    {
+        ((WinUINavigationService)navigationService).InitializeService(navigationProvider);
     }
 
     protected override void ActivateWindow(Window window)

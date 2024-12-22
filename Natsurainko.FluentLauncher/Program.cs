@@ -84,6 +84,20 @@ pages.WithPage<Views.Settings.SkinPage, ViewModels.Settings.SkinViewModel>("Sett
 
 #endregion
 
+#region Configure WinUI dialogs
+
+var dialogs = builder.Dialogs;
+
+dialogs.WithDialog<Views.Common.AddVmArgumentDialog, ViewModels.Common.AddVmArgumentDialogViewModel>("AddVmArgumentDialog");
+dialogs.WithDialog<Views.Common.AuthenticationWizardDialog, ViewModels.Common.AuthenticationWizardDialogViewModel>("AuthenticationWizardDialog");
+dialogs.WithDialog<Views.Common.DeleteInstanceDialog, ViewModels.Common.DeleteInstanceDialogViewModel>("DeleteInstanceDialog");
+dialogs.WithDialog<Views.Common.DownloadResourceDialog, ViewModels.Common.DownloadResourceDialogViewModel>("DownloadResourceDialog");
+dialogs.WithDialog<Views.Common.ExceptionDialog, ViewModels.Common.ExceptionDialogViewModel>("ExceptionDialog");
+dialogs.WithDialog<Views.Common.SwitchAccountDialog, ViewModels.Common.SwitchAccountDialogViewModel>("SwitchAccountDialog");
+dialogs.WithDialog<Views.Common.UploadSkinDialog, ViewModels.Common.UploadSkinDialogViewModel>("UploadSkinDialog");
+
+#endregion
+
 #region Services
 
 var services = builder.Services;

@@ -22,14 +22,14 @@ class WinUIDialogActivationService : IDialogActivationService<ContentDialogResul
         _xamlRoot = ((WinUIWindowService)windowService).Window.Content.XamlRoot;
     }
 
-    public Task<ContentDialogResult> ShowDialogAsync(string key)
+    public Task<ContentDialogResult> ShowAsync(string key)
     {
         var dialog = (ContentDialog)_dialogProvider.GetDialog(key);
         dialog.XamlRoot = _xamlRoot;
         return dialog.ShowAsync().AsTask();
     }
 
-    public Task<ContentDialogResult> ShowDialogAsync(string key, object param)
+    public Task<ContentDialogResult> ShowAsync(string key, object param)
     {
         var dialog = (ContentDialog)_dialogProvider.GetDialog(key);
         dialog.XamlRoot = _xamlRoot;

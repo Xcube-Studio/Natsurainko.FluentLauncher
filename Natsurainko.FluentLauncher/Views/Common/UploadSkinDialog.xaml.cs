@@ -7,9 +7,7 @@ public sealed partial class UploadSkinDialog : ContentDialog
 {
     public UploadSkinDialog()
     {
-        this.XamlRoot = MainWindow.XamlRoot;
-
-        this.InitializeComponent();
+        InitializeComponent();
     }
 
     private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -22,29 +23,42 @@ using System.Threading.Tasks;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
-internal partial class DownloadResourceDialogViewModel : ObservableObject
+internal partial class DownloadResourceDialogViewModel : ObservableObject, IDialogParameterAware
 {
     private ContentDialog _dialog;
     private GameResourceFile[] ResourceFileItems;
 
-    private readonly object _resource;
-    private readonly INavigationService _navigationService;
+    private readonly CurseForgeClient _curseForgeClient;
+    private readonly ModrinthClient _modrinthClient;
 
-    private readonly CurseForgeClient _curseForgeClient = App.GetService<CurseForgeClient>();
-    private readonly ModrinthClient _modrinthClient = App.GetService<ModrinthClient>();
+    private readonly GameService _gameService;
+    private readonly DownloadService _downloadService;
+    private readonly NotificationService _notificationService;
 
-    private readonly GameService _gameService = App.GetService<GameService>();
-    private readonly DownloadService _downloadService = App.GetService<DownloadService>();
-    private readonly NotificationService _notificationService = App.GetService<NotificationService>();
+    private object _resource = null!;
 
     public MinecraftInstance MinecraftInstance { get; private set; }
 
-    public DownloadResourceDialogViewModel(object resource, INavigationService navigationService)
+    public DownloadResourceDialogViewModel(
+        CurseForgeClient curseForgeClient,
+        ModrinthClient modrinthClient,
+        GameService gameService,
+        DownloadService downloadService,
+        NotificationService notificaitonService)
     {
-        _resource = resource;
-        _navigationService = navigationService;
+        _curseForgeClient = curseForgeClient;
+        _modrinthClient = modrinthClient;
+
+        _gameService = gameService;
+        _downloadService = downloadService;
+        _notificationService = notificaitonService;
 
         MinecraftInstance = _gameService.ActiveGame;
+    }
+
+    void IDialogParameterAware.HandleParameter(object param)
+    {
+        (_resource, _) = ((object, INavigationService))param;
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)

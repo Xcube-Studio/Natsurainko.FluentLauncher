@@ -9,7 +9,7 @@ namespace FluentLauncher.Infra.WinUI.Windows;
 /// </summary>
 public class WinUIWindowService : IWindowService
 {
-    private readonly Window _window;
+    private Window _window = null!;
 
     public string Title
     {
@@ -17,14 +17,16 @@ public class WinUIWindowService : IWindowService
         set => _window.Title = value;
     }
 
-    public WinUIWindowService(Window window)
-    {
-        _window = window;
-    }
+    public WinUIWindowService() { }
 
     public void Close() => _window.Close();
 
     public void Minimize() => _window.Hide();
 
     public void Activate() => _window.Activate();
+
+    public void InitializeService(Window window)
+    {
+        _window = window;
+    }
 }

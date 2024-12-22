@@ -1,4 +1,5 @@
-﻿using FluentLauncher.Infra.UI.Navigation;
+﻿using FluentLauncher.Infra.UI;
+using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Pages;
 using FluentLauncher.Infra.UI.Windows;
 using FluentLauncher.Infra.WinUI.Navigation;
@@ -47,6 +48,9 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
 
     private void ConfigureExtendedWinUIServices()
     {
+        // Configure IParentScopeProvider
+        Services.AddScoped<IServiceScopeHierarchy, ServiceScopeHierarchy>();
+
         // Configure IActivationService
         foreach (var (key, descriptor) in Windows.RegisteredWindows)
         {
@@ -54,6 +58,16 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
             Services.AddScoped(descriptor.WindowType);
         }
         Services.AddSingleton<IActivationService, WinUIActivationService>(Windows.Build);
+
+        // Configure IWindowService
+        Services.AddScoped<IWindowService>(sp =>
+        {
+            IServiceScope? parentScope = sp.GetRequiredService<IServiceScopeHierarchy>().ParentScope;
+            if (parentScope is null)
+                return new WinUIWindowService(); // root scope
+            else
+                return parentScope.GetRootScope().ServiceProvider.GetRequiredService<IWindowService>();
+        });
 
         // Configure INavigationService
         Services.AddScoped<INavigationService, WinUINavigationService>();

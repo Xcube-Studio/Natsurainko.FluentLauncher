@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI.UI.Controls;
+using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -21,6 +22,7 @@ internal partial class DetailsViewModel : ObservableObject, INavigationAware
     private object _resource;
 
     private readonly INavigationService _navigationService;
+    private readonly IDialogActivationService<ContentDialogResult> _dialogs;
 
     private readonly CurseForgeClient _curseForgeClient;
     private readonly ModrinthClient _modrinthClient;
@@ -28,11 +30,13 @@ internal partial class DetailsViewModel : ObservableObject, INavigationAware
     public DetailsViewModel(
         INavigationService navigationService,
         CurseForgeClient curseForgeClient,
-        ModrinthClient modrinthClient)
+        ModrinthClient modrinthClient,
+        IDialogActivationService<ContentDialogResult> dialogs)
     {
         _navigationService = navigationService;
         _curseForgeClient = curseForgeClient;
         _modrinthClient = modrinthClient;
+        _dialogs = dialogs;
     }
 
     [ObservableProperty]
@@ -100,7 +104,7 @@ internal partial class DetailsViewModel : ObservableObject, INavigationAware
     }
 
     [RelayCommand]
-    async Task DownloadResource() => await new DownloadResourceDialog() { DataContext = new DownloadResourceDialogViewModel(_resource, _navigationService) }.ShowAsync();
+    async Task DownloadResource() => await _dialogs.ShowAsync("DownloadResourceDialog", (_resource, _navigationService));
 
     [RelayCommand]
     public async Task MarkdownTextBlockLoadedEvent(object args)

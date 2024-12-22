@@ -12,12 +12,12 @@ public interface IDialogActivationService<TResult>
     /// Shows a dialog with the given dialog ID.
     /// </summary>
     /// <param name="key">The key of the dialog to show.</param>
-    Task<TResult> ShowDialogAsync(string key);
+    Task<TResult> ShowAsync(string key);
 
     /// <summary>
     /// Shows a dialog with the given dialog ID.
     /// </summary>
     /// <param name="key">The key of the dialog to show.</param>
     /// <param name="param">Parameter passed to the dialog.</param>
-    Task<TResult> ShowDialogAsync(string key, object param);
+    Task<TResult> ShowAsync(string key, object param);
 }

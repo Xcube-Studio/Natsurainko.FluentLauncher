@@ -120,7 +120,7 @@ public partial class App : Application
             {
                 try
                 {
-                    await new ExceptionDialog(errorMessage).ShowAsync();
+                    await new ExceptionDialog(errorMessage) { XamlRoot = MainWindow.XamlRoot }.ShowAsync();
                 }
                 catch
                 {

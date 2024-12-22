@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
+using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
@@ -35,6 +36,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     private readonly GameService _gameService;
     private readonly NotificationService _notificationService;
     private readonly AccountService _accountService;
+    private readonly IDialogActivationService<ContentDialogResult> _dialogs;
 
     #endregion
 
@@ -43,13 +45,15 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
         SettingsService settings,
         GameService gameService,
         NotificationService notificationService,
-        AccountService accountService)
+        AccountService accountService,
+        IDialogActivationService<ContentDialogResult> dialogs)
     {
         _navigationService = navigationService;
         _settings = settings;
         _gameService = gameService;
         _notificationService = notificationService;
         _accountService = accountService;
+        _dialogs = dialogs;
 
         // Init accounts
         Accounts = accountService.Accounts;
@@ -334,8 +338,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     }
 
     [RelayCommand]
-    public void Login(Button parameter)
-        => _ = new AuthenticationWizardDialog { XamlRoot = parameter.XamlRoot }.ShowAsync();
+    public async Task Login(Button parameter) => await _dialogs.ShowAsync("AuthenticationWizardDialog");
 
     [RelayCommand]
     public void RemoveAccount(Account account)

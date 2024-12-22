@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Navigation;
+using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI;
@@ -24,6 +26,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     private readonly GameService _gameService;
     private readonly NotificationService _notificationService;
     private readonly QuickLaunchService _quickLaunchService;
+    private readonly IDialogActivationService<ContentDialogResult> _dialogs;
 
     private JumpList jumpList;
 
@@ -36,12 +39,14 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         GameService gameService, 
         INavigationService navigationService, 
         NotificationService notificationService,
-        QuickLaunchService quickLaunchService)
+        QuickLaunchService quickLaunchService,
+        IDialogActivationService<ContentDialogResult> dialogs)
     {
         _gameService = gameService;
         _navigationService = navigationService;
         _notificationService = notificationService;
         _quickLaunchService = quickLaunchService;
+        _dialogs = dialogs;
     }
 
     [ObservableProperty]
@@ -102,10 +107,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     public async Task OpenVersionFolder() => await Launcher.LaunchFolderPathAsync(MinecraftInstance.GetGameDirectory());
 
     [RelayCommand]
-    public async Task DeleteGame() => await new DeleteInstanceDialog()
-    {
-        DataContext = new DeleteInstanceDialogViewModel(MinecraftInstance, _navigationService, _notificationService, _gameService)
-    }.ShowAsync();
+    public async Task DeleteGame() => await _dialogs.ShowAsync("DeleteInstanceDialog", MinecraftInstance);
 
     protected override async void OnPropertyChanged(PropertyChangedEventArgs e)
     {

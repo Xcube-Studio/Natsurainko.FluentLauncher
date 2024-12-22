@@ -51,6 +51,9 @@ public abstract class ActivationService<TWindowBase> : IActivationService where 
         scope.ServiceProvider.GetRequiredService<IServiceScopeHierarchy>().Initialize(null, scope);
 
         TWindowBase window = (TWindowBase)scope.ServiceProvider.GetRequiredService(windowType);
+        IWindowService windowService = scope.ServiceProvider.GetRequiredService<IWindowService>();
+        InitializeWindowService(windowService, window);
+        _activeWindows.Add((window, windowService));
 
         // If the window supports navigation, initialize the navigation service in the window scope
         // The navigation service may have been instantiated and injected into 'window' already.
@@ -64,8 +67,17 @@ public abstract class ActivationService<TWindowBase> : IActivationService where 
         ConfigureWindowClose(window, scope);
 
         // Activates the window
-        return ActivateWindow(window);
+        ActivateWindow(window);
+
+        return windowService;
     }
+
+    /// <summary>
+    /// Initialize the <paramref name="windowService"/> for the given <paramref name="window"/>.
+    /// </summary>
+    /// <param name="windowService"></param>
+    /// <param name="window"></param>
+    protected abstract void InitializeWindowService(IWindowService windowService, TWindowBase window);
 
     /// <summary>
     /// Activate the <paramref name="window"/> resolved and return an <see cref="IWindowService"/> that can be used to control it.
@@ -73,7 +85,7 @@ public abstract class ActivationService<TWindowBase> : IActivationService where 
     /// <remarks>Must update <see cref="_activeWindows"/> after the <paramref name="window"/> is successfully activated.</remarks>
     /// <param name="window"></param>
     /// <returns></returns>
-    protected abstract IWindowService ActivateWindow(TWindowBase window);
+    protected abstract void ActivateWindow(TWindowBase window);
 
     /// <summary>
     /// Configure the <paramref name="window"/> to dispose the <paramref name="scope"/> and removes itself from ActiveWindows when it is closed.

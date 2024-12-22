@@ -59,6 +59,16 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
         }
         Services.AddSingleton<IActivationService, WinUIActivationService>(Windows.Build);
 
+        // Configure IWindowService
+        Services.AddScoped<IWindowService>(sp =>
+        {
+            IServiceScope? parentScope = sp.GetRequiredService<IServiceScopeHierarchy>().ParentScope;
+            if (parentScope is null)
+                return new WinUIWindowService(); // root scope
+            else
+                return parentScope.GetRootScope().ServiceProvider.GetRequiredService<IWindowService>();
+        });
+
         // Configure INavigationService
         Services.AddScoped<INavigationService, WinUINavigationService>();
 

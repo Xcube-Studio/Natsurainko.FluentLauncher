@@ -15,12 +15,14 @@ public class WinUIActivationService : ActivationService<Window>
         IServiceProvider serviceProvider)
         : base(registeredWindows, serviceProvider) { }
 
-    protected override IWindowService ActivateWindow(Window window)
+    protected override void InitializeWindowService(IWindowService windowService, Window window)
+    {
+        ((WinUIWindowService)windowService).InitializeService(window);
+    }
+
+    protected override void ActivateWindow(Window window)
     {
         window.Activate();
-        var windowService = new WinUIWindowService(window);
-        _activeWindows.Add((window, windowService));
-        return windowService;
     }
 
     protected override void ConfigureWindowClose(Window window, IServiceScope scope)

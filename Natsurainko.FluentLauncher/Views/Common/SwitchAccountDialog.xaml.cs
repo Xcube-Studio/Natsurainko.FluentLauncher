@@ -6,8 +6,7 @@ public sealed partial class SwitchAccountDialog : ContentDialog
 {
     public SwitchAccountDialog()
     {
-        this.XamlRoot = MainWindow.XamlRoot;
-        this.InitializeComponent();
+        InitializeComponent();
     }
 
     private void ContentDialog_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

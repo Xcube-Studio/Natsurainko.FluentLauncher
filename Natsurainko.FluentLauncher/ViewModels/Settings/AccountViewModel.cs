@@ -96,14 +96,7 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     }
 
     [RelayCommand]
-    public void Switch()
-    {
-        var switchAccountDialog = new SwitchAccountDialog
-        {
-            DataContext = App.Services.GetService<SwitchAccountDialogViewModel>()
-        };
-        _ = switchAccountDialog.ShowAsync();
-    }
+    public async Task Switch() => await _dialogs.ShowAsync("SwitchAccountDialog");
 
     [RelayCommand]
     public void OpenSkinFile()

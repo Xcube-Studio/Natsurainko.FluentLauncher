@@ -68,10 +68,12 @@ internal class AppearanceService
             case 0:
                 if (MicaController.IsSupported())
                     RegisteredWindow!.SystemBackdrop = new MicaBackdrop() { Kind = (MicaKind)_settingsService.MicaKind };
+                control.Background = new SolidColorBrush(Colors.Transparent);
                 break;
             case 1:
                 if (DesktopAcrylicController.IsSupported())
-                    RegisteredWindow!.SystemBackdrop = new DesktopAcrylicBackdrop();
+                    RegisteredWindow!.SystemBackdrop = new DesktopAcrylicBackdrop(); 
+                control.Background = new SolidColorBrush(Colors.Transparent);
                 break;
             case 2:
                 control.Background = _settingsService.SolidSelectedIndex == 0 || _settingsService.CustomBackgroundColor == null

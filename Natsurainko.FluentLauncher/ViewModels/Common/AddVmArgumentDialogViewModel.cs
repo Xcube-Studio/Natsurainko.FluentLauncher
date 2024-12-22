@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FluentLauncher.Infra.UI.Dialogs;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Utils;
 using System;
@@ -7,18 +8,20 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
-internal partial class AddVmArgumentDialogViewModel : ObservableObject
+internal partial class AddVmArgumentDialogViewModel : ObservableObject, IDialogParameterAware
 {
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddCommand))]
     public partial string? Argument { get; set; }
 
-    private readonly Action<string> _addAction;
+    private Action<string> _addAction = null!;
     private ContentDialog _dialog = null!;
 
-    public AddVmArgumentDialogViewModel(Action<string> addAction)
+    public AddVmArgumentDialogViewModel() { }
+
+    void IDialogParameterAware.HandleParameter(object param)
     {
-        _addAction = addAction;
+        _addAction = (Action<string>)param;
     }
 
     [RelayCommand]

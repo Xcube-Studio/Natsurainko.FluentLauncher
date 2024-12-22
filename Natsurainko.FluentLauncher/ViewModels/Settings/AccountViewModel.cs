@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
+using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
@@ -29,6 +31,7 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     private readonly NotificationService _notificationService;
     private readonly INavigationService _navigationService;
     private readonly CacheSkinService _cacheSkinService;
+    private readonly IDialogActivationService<ContentDialogResult> _dialogs;
 
     public AccountViewModel(
         SettingsService settingsService,
@@ -36,7 +39,8 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
         AuthenticationService authenticationService,
         NotificationService notificationService,
         INavigationService navigationService,
-        CacheSkinService cacheSkinService)
+        CacheSkinService cacheSkinService,
+        IDialogActivationService<ContentDialogResult> dialogs)
     {
         _settingsService = settingsService;
         _accountService = accountService;
@@ -44,6 +48,7 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
         _notificationService = notificationService;
         _navigationService = navigationService;
         _cacheSkinService = cacheSkinService;
+        _dialogs = dialogs;
 
         Accounts = accountService.Accounts;
         ActiveAccount = accountService.ActiveAccount;
@@ -75,7 +80,7 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     }
 
     [RelayCommand]
-    public async Task Login() => await new AuthenticationWizardDialog().ShowAsync();
+    public async Task Login() => await _dialogs.ShowAsync("AuthenticationWizardDialog");
 
     [RelayCommand]
     public async Task Refresh()

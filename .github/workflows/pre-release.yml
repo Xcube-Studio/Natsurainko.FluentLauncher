@@ -98,14 +98,17 @@ jobs:
           git tag -a "pre-release-$SHORT_SHA" -m "pre-release-$SHORT_SHA"
           git push origin "pre-release-$SHORT_SHA"
 
-      - name: Download Artifacts
+      - name: Download Artifacts (msixbundle)
         uses: actions/download-artifact@v4
         with:
+          name: .msixbundle
           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
-          name: |
-            .msixbundle,
-            dependencies-x64,
-            dependencies-arm64
+
+      - name: Download Artifacts (dependencies)
+        uses: actions/download-artifact@v4
+        with:
+          pattern: dependencies-*
+          path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
 
       - name: Create Release
         uses: ncipollo/release-action@v1.12.0

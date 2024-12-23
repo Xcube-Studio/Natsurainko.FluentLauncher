@@ -114,7 +114,7 @@ jobs:
         if: ${{ inputs.output_dependencies }}
         run: |
           # Create dependencies archive
-          Compress-Archive -Path "${{ env.Packages_Directory }}\Dependencies\${{ matrix.architecture }}" -DestinationPath "$directory\Dependencies.zip"
+          Compress-Archive -Path "${{ env.Packages_Directory }}\*\Dependencies\${{ matrix.architecture }}\*" -DestinationPath "$directory\Dependencies.zip"
 
       - name: Upload dependencies archive
         if: ${{ inputs.output_dependencies }}

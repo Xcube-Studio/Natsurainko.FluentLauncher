@@ -101,8 +101,11 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: .msixbundle
           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
+          name: |
+            .msixbundle,
+            dependencies-x64,
+            dependencies-arm64
 
       - name: Create Release
         uses: ncipollo/release-action@v1.12.0

@@ -110,18 +110,12 @@ jobs:
           # Move .msix for upload to artifacts
           mv ${{ env.Packages_Directory }}\*\*.msix "$packageName.msix"
 
-      - name: Create dependencies archive
-        if: ${{ inputs.output_dependencies }}
-        run: |
-          # Create dependencies archive
-          Compress-Archive -Path "${{ env.Packages_Directory }}\*\Dependencies\${{ matrix.architecture }}\*" -DestinationPath "$directory\Dependencies.zip"
-
-      - name: Upload dependencies archive
+      - name: Upload dependencies
         if: ${{ inputs.output_dependencies }}
         uses: actions/upload-artifact@v4
         with:
           name: dependencies-${{ matrix.architecture }}
-          path: "${{ steps.preparation.outputs.directory }}\\Dependencies.zip"
+          path: "${{ env.Packages_Directory }}\*\Dependencies\${{ matrix.architecture }}\*"
 
       # Decode the base64 encoded pfx and sign the package
       - name: Sign .msix

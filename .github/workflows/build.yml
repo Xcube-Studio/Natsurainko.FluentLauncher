@@ -121,7 +121,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dependencies-${{ matrix.architecture }}
-          path: "${{ steps.preparation.outputs.directory }}\Dependencies.zip"
+          path: "${{ steps.preparation.outputs.directory }}\\Dependencies.zip"
 
       # Decode the base64 encoded pfx and sign the package
       - name: Sign .msix

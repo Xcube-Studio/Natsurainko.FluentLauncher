@@ -28,6 +28,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       create_package: true
+      create_msixupload: true
     secrets:
       pfx_base64_encoded: ${{ secrets.PFX_BASE64_ENCODED }}
 

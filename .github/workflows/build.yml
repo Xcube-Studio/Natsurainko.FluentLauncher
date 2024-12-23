@@ -8,6 +8,10 @@ on:
         required: false
         type: boolean
         default: false
+      create_msixupload:
+        required: false
+        type: boolean
+        default: false
     secrets:
       pfx_base64_encoded:
         required: true
@@ -126,7 +130,7 @@ jobs:
           path: ${{ steps.preparation.outputs.packageName }}.msix
 
       - name: Create .msixupload
-        if: ${{ inputs.create_package }}
+        if: ${{ inputs.create_package && inputs.create_msixupload }}
         id: create_msixupload
         env:
           PackageName: ${{ steps.preparation.outputs.packageName }}
@@ -153,7 +157,7 @@ jobs:
           mv "$env:PackageName.zip" "$env:PackageName.msixupload"
 
       - name: Upload .msixupload to artifacts
-        if: ${{ inputs.create_package }}
+        if: ${{ inputs.create_package && inputs.create_msixupload }}
         uses: actions/upload-artifact@v4
         with:
           name: msixupload-${{ matrix.architecture }}

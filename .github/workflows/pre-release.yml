@@ -113,7 +113,7 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1.12.0
         with:
-          artifacts: "${{ github.workspace }}/${{env.Artifacts_Path}}/*.msixbundle,${{ github.workspace }}/${{env.Artifacts_Path}}*.zip"
+          artifacts: "${{ github.workspace }}/${{env.Artifacts_Path}}/*.msixbundle,${{ github.workspace }}/${{env.Artifacts_Path}}/dependencies-*"
           allowUpdates: true
           generateReleaseNotes: true
           prerelease: true

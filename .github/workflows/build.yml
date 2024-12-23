@@ -12,6 +12,10 @@ on:
         required: false
         type: boolean
         default: false
+      output_dependencies:
+        required: false
+        type: boolean
+        default: false
     secrets:
       pfx_base64_encoded:
         required: true
@@ -42,7 +46,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 7.0.x
+          dotnet-version: 8.0.x
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
@@ -105,6 +109,19 @@ jobs:
 
           # Move .msix for upload to artifacts
           mv ${{ env.Packages_Directory }}\*\*.msix "$packageName.msix"
+
+      - name: Create dependencies archive
+        if: ${{ inputs.output_dependencies }}
+        run: |
+          # Create dependencies archive
+          Compress-Archive -Path "${{ env.Packages_Directory }}\Dependencies\${{ matrix.architecture }}\*" -DestinationPath "$directory\Dependencies.zip"
+
+      - name: Upload dependencies archive
+        if: ${{ inputs.output_dependencies }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependencies-${{ matrix.architecture }}
+          path: "${{ steps.preparation.outputs.directory }}\Dependencies.zip"
 
       # Decode the base64 encoded pfx and sign the package
       - name: Sign .msix

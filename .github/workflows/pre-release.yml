@@ -9,6 +9,7 @@ jobs:
     name: Compile
     uses: ./.github/workflows/build.yml
     with:
+      output_dependencies: true
       create_package: true
     secrets:
       pfx_base64_encoded: ${{ secrets.PFX_BASE64_ENCODED }}
@@ -106,7 +107,7 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1.12.0
         with:
-          artifacts: "${{ github.workspace }}/${{env.Artifacts_Path}}/*.msixbundle"
+          artifacts: "${{ github.workspace }}/${{env.Artifacts_Path}}/*.msixbundle,${{ github.workspace }}/${{env.Artifacts_Path}}*.zip"
           allowUpdates: true
           generateReleaseNotes: true
           prerelease: true

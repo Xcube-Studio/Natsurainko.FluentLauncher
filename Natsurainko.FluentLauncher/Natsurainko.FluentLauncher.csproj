@@ -27,6 +27,7 @@
     <Nullable>enable</Nullable>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <WindowsPackageType>MSIX</WindowsPackageType>
   </PropertyGroup>
 
     <!-- NativeAOT -->
@@ -90,6 +91,13 @@
     <ProjectReference Include="..\infra\FluentLauncher.Infra.WinUI\FluentLauncher.Infra.WinUI.csproj" />
     <ProjectReference Include="..\Natsurainko.FluentCore\Natsurainko.FluentCore\Natsurainko.FluentCore.csproj" />
     <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+
+  <!-- Appx Manifest -->
+  <ItemGroup>
+    <AppxManifest Include="Package-Stable.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
   </ItemGroup>
 
   <!-- Compile XAML files -->

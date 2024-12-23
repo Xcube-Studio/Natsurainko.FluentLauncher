@@ -1,0 +1,113 @@
+name: Pre-Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  # Reuse the build job from build.yml
+  Compile:
+    name: Compile
+    uses: ./.github/workflows/build.yml
+    with:
+      create_package: true
+    secrets:
+      pfx_base64_encoded: ${{ secrets.PFX_BASE64_ENCODED }}
+
+  Pack:
+    name: Pack .msixbundle
+    needs: Compile
+    runs-on: windows-latest
+    env:
+      SigningKey_Path: SigningKey.pfx
+      Artifacts_Path: .artifacts
+
+    steps:
+      - name: Download .msix from artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: msix-*
+          merge-multiple: true
+          path: ${{ env.Artifacts_Path }}
+
+      - name: Get Package Information
+        id: get_package_info
+        run: |
+          # Get the name of the .msix file
+          $file = Get-Item -Path "${{ env.Artifacts_Path }}\*.msix"
+          if ($file -is [array]) {
+            $file = $file[0]
+          }
+
+          # Extract the package name with version number
+          $fileName = [System.IO.Path]::GetFileNameWithoutExtension($file.FullName)
+          $bundleFileName = $fileName -replace '^(.*?Natsurainko\.FluentLauncher)_(\d+\.\d+\.\d+\.\d+)(_x64|_arm64)$', '$1_$2.msixbundle'
+          $version = $fileName -replace '^(.*?Natsurainko\.FluentLauncher)_(\d+\.\d+\.\d+\.\d+)(_x64|_arm64)$', '$2'
+          echo "::set-output name=bundleFileName::$bundleFileName"
+          echo "::set-output name=version::$version"
+
+      - name: Create .msixbundle
+        run: |
+          # Get makeappx.exe
+          $makeappx = Get-Item -Path "C:\Program Files (x86)\Windows Kits\10\bin\*\x64\makeappx.exe"
+          if ($makeappx -is [array]) {
+            $makeappx = $makeappx[0]
+          }
+
+          # Create the .msixbundle using makeappx.exe
+          & $makeappx.FullName bundle /d "${{ env.Artifacts_Path }}" /p "${{ steps.get_package_info.outputs.bundleFileName }}" /bv "${{ steps.get_package_info.outputs.version }}"
+
+      # Decode the base 64 encoded pfx and sign the package
+      - name: Sign .msixbundle
+        run: |
+          # Get signtool.exe
+          $signtool = Get-Item -Path "C:\Program Files (x86)\Windows Kits\10\bin\*\x64\signtool.exe"
+          if ($signtool -is [array]) {
+            $signtool = $signtool[0]
+          }
+
+          # Sign .msixbundle
+          $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.PFX_BASE64_ENCODED }}")
+          [IO.File]::WriteAllBytes("${{ env.SigningKey_Path }}", $pfx_cert_byte)
+          & $signtool sign /f "${{ env.SigningKey_Path }}" /fd SHA256 /td SHA256 "${{ steps.get_package_info.outputs.bundleFileName }}"
+          rm "${{ env.SigningKey_Path }}"
+
+      - name: Upload .msixbundle to artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: .msixbundle
+          path: ${{ steps.get_package_info.outputs.bundleFileName }}
+
+  Release:
+    runs-on: ubuntu-latest
+    name: Release
+    needs: [Compile, Pack]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Config User
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "GitHub-actions[bot]"
+
+      - name: Create Tag
+        run: |
+          SHORT_SHA=${GITHUB_SHA:0:7}
+          echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_ENV
+          git tag -a "pre-release-$SHORT_SHA" -m "pre-release-$SHORT_SHA"
+          git push origin "pre-release-$SHORT_SHA"
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: .msixbundle
+          path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1.12.0
+        with:
+          artifacts: "${{ github.workspace }}/${{env.Artifacts_Path}}/*.msixbundle"
+          allowUpdates: true
+          generateReleaseNotes: true
+          prerelease: true
+          tag: "pre-release-${{ env.SHORT_SHA }}"

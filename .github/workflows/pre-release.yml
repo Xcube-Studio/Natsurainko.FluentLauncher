@@ -98,11 +98,59 @@ jobs:
           git tag -a "pre-release-$SHORT_SHA" -m "pre-release-$SHORT_SHA"
           git push origin "pre-release-$SHORT_SHA"
 
-      - name: Download Artifacts (msixbundle)
+      - name: Download x64 msixbundle
+        uses: actions/download-artifact@v4
+        with:
+          name: msix-x64
+          path: "${{ github.workspace }}/updatePackage-x64"
+
+      - name: Download x64 dependencies
+        uses: actions/download-artifact@v4
+        with:
+          name: dependencies-x64
+          path: "${{ github.workspace }}/updatePackage-x64/dependencies"
+
+      - name: Create x64 update package
+        run: |
+          
+          cd ${{ github.workspace }}/updatePackage-x64
+          mv *.msix msix-x64.msix
+
+          cd ${{ github.workspace }}
+          zip -r updatePackage-x64.zip updatePackage-x64/*
+
+      - name: Download arm64 msixbundle
+        uses: actions/download-artifact@v4
+        with:
+          name: msix-arm64
+          path: "${{ github.workspace }}/updatePackage-arm64"
+
+      - name: Download arm64 dependencies
+        uses: actions/download-artifact@v4
+        with:
+          name: dependencies-arm64
+          path: "${{ github.workspace }}/updatePackage-arm64/dependencies"
+
+      - name: Create arm64 update package
+        run: |
+          
+          cd ${{ github.workspace }}/updatePackage-arm64
+          mv *.msix msix-arm64.msix
+
+          cd ${{ github.workspace }}
+          zip -r updatePackage-arm64.zip updatePackage-arm64/*
+      
+      - name: Download msixbundle
         uses: actions/download-artifact@v4
         with:
           name: .msixbundle
           path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
+
+      - name: Rename msixbundle
+        run: |
+          
+          cd ${{ github.workspace }}
+          mv *.msixbundle package.msixbundle
 
       - name: Download Artifacts (dependencies)
         uses: actions/download-artifact@v4
@@ -113,7 +161,7 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1.12.0
         with:
-          artifacts: "${{ github.workspace }}/${{env.Artifacts_Path}}/*.msixbundle,${{ github.workspace }}/${{env.Artifacts_Path}}/*/dependencies-*"
+          artifacts: "${{ github.workspace }}/updatePackage-*.zip,${{ github.workspace }}/package.msixbundle"
           allowUpdates: true
           generateReleaseNotes: true
           prerelease: true

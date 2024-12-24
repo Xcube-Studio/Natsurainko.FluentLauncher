@@ -16,6 +16,10 @@ on:
         required: false
         type: boolean
         default: false
+      output_certification:
+        required: false
+        type: boolean
+        default: false
     secrets:
       pfx_base64_encoded:
         required: true
@@ -110,18 +114,12 @@ jobs:
           # Move .msix for upload to artifacts
           mv ${{ env.Packages_Directory }}\*\*.msix "$packageName.msix"
 
-      - name: Create dependencies archive
-        if: ${{ inputs.output_dependencies }}
-        run: |
-          # Create dependencies archive
-          Compress-Archive -Path "${{ env.Packages_Directory }}\*\Dependencies\${{ matrix.architecture }}\*" -DestinationPath "$directory\dependencies-${{ matrix.architecture }}.zip"
-
       - name: Upload dependencies archive
         if: ${{ inputs.output_dependencies }}
         uses: actions/upload-artifact@v4
         with:
           name: dependencies-${{ matrix.architecture }}
-          path: "${{ steps.preparation.outputs.directory }}/dependencies-${{ matrix.architecture }}.zip"
+          path: "${{ env.Packages_Directory }}/*/Dependencies/${{ matrix.architecture }}/*"
 
       # Decode the base64 encoded pfx and sign the package
       - name: Sign .msix
@@ -138,7 +136,7 @@ jobs:
           [IO.File]::WriteAllBytes("${{ env.SigningKey_Path }}", $pfx_cert_byte)
           & $signtool sign /f "${{ env.SigningKey_Path }}" /fd SHA256 /td SHA256 "${{ steps.preparation.outputs.packageName }}.msix"
           rm "${{ env.SigningKey_Path }}"
-
+          
       - name: Upload .msix to artifacts
         if: ${{ inputs.create_package }}
         uses: actions/upload-artifact@v4

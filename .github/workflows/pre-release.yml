@@ -115,9 +115,7 @@ jobs:
           
           cd ${{ github.workspace }}/updatePackage-x64
           mv *.msix msix-x64.msix
-
-          cd ${{ github.workspace }}
-          zip -r updatePackage-x64.zip updatePackage-x64/*
+          zip -r ../updatePackage-x64.zip ./*
 
       - name: Download arm64 msixbundle
         uses: actions/download-artifact@v4
@@ -136,9 +134,7 @@ jobs:
           
           cd ${{ github.workspace }}/updatePackage-arm64
           mv *.msix msix-arm64.msix
-
-          cd ${{ github.workspace }}
-          zip -r updatePackage-arm64.zip updatePackage-arm64/*
+          zip -r ../updatePackage-arm64.zip ./*
       
       - name: Download msixbundle
         uses: actions/download-artifact@v4

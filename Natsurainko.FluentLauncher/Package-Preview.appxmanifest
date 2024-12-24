@@ -14,7 +14,7 @@
     Version="2.3.2.0" />
 
   <Properties>
-    <DisplayName>Natsurianko.FluentLauncher</DisplayName>
+    <DisplayName>Fluent Launcher (Preview)</DisplayName>
     <PublisherDisplayName>Xcube Studio</PublisherDisplayName>
     <Logo>Assets\PackageIcons\StoreLogo.png</Logo>
   </Properties>
@@ -36,8 +36,8 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="Fluent Launcher"
-        Description="Natsurainko.FluentLauncher"
+        DisplayName="Fluent Launcher (Preview)"
+        Description="Fluent Launcher (Preview)"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\PackageIcons\Square150x150Logo.png"
         Square44x44Logo="Assets\PackageIcons\Square44x44Logo.png">

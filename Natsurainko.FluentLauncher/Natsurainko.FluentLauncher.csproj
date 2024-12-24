@@ -11,6 +11,7 @@
     <UseWinUI>true</UseWinUI>
     <DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
     <Configurations>Debug;Release;Debug-AOT;Release-AOT</Configurations>
+    <FluentLauncherReleaseChannel>Dev</FluentLauncherReleaseChannel>
 
     <!-- Packaging -->
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -95,7 +96,7 @@
 
   <!-- Appx Manifest -->
   <ItemGroup>
-    <AppxManifest Include="Package-Stable.appxmanifest">
+    <AppxManifest Include="Package-$(FluentLauncherReleaseChannel).appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
   </ItemGroup>

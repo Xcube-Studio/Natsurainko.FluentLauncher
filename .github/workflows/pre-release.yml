@@ -112,6 +112,10 @@ jobs:
 
       - name: Create x64 update package
         run: |
+
+          cd ${{ github.workspace }}/updatePackage-x64/dependencies
+          unzip -j updatePackage-x64.zip -d ./
+          rm updatePackage-x64.zip
           
           cd ${{ github.workspace }}/updatePackage-x64
           mv *.msix msix-x64.msix
@@ -132,6 +136,10 @@ jobs:
       - name: Create arm64 update package
         run: |
           
+          cd ${{ github.workspace }}/updatePackage-arm64/dependencies
+          unzip -j updatePackage-arm64.zip -d ./
+          rm updatePackage-arm64.zip
+
           cd ${{ github.workspace }}/updatePackage-arm64
           mv *.msix msix-arm64.msix
           zip -r ../updatePackage-arm64.zip ./*

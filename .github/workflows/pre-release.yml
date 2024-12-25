@@ -114,8 +114,8 @@ jobs:
         run: |
 
           cd ${{ github.workspace }}/updatePackage-x64/dependencies
-          unzip -j updatePackage-x64.zip -d ./
-          rm updatePackage-x64.zip
+          unzip -j dependencies-x64.zip -d ./
+          rm dependencies-x64.zip
           
           cd ${{ github.workspace }}/updatePackage-x64
           mv *.msix msix-x64.msix
@@ -137,8 +137,8 @@ jobs:
         run: |
           
           cd ${{ github.workspace }}/updatePackage-arm64/dependencies
-          unzip -j updatePackage-arm64.zip -d ./
-          rm updatePackage-arm64.zip
+          unzip -j dependencies-arm64.zip -d ./
+          rm dependencies-arm64.zip
 
           cd ${{ github.workspace }}/updatePackage-arm64
           mv *.msix msix-arm64.msix

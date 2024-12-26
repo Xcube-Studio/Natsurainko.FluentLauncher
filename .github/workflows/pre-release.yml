@@ -185,7 +185,7 @@ jobs:
         run: |
           $SHORT_SHA = $env:GITHUB_SHA.Substring(0, 7)
           echo "SHORT_SHA=$SHORT_SHA" >> $env:GITHUB_ENV
-          git tag -a "pre-release-$SHORT_SHA" -m "pre-release-$SHORT_SHA"
+          git tag -a "pre-release-${{ env.currentPreviewVersion }}-${{ env.SHORT_SHA }}" -m "pre-release-${{ env.currentPreviewVersion }}-${{ env.SHORT_SHA }}"
           git push origin "pre-release-${{ env.currentPreviewVersion }}-${{ env.SHORT_SHA }}"
 
       - name: Create Release

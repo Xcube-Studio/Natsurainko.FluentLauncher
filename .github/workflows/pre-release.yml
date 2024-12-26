@@ -179,7 +179,10 @@ jobs:
 
           $currentPreviewVersion = $jsonObject.currentPreviewVersion
           
-          echo "json=$json" >> $env:GITHUB_ENV
+          $jsonEscaped = $json -replace '(["\$)', '\\$1' -replace '\r?\n', '\\n'
+
+          # 存储转义后的 JSON 到环境变量
+          echo "json=$jsonEscaped" >> $env:GITHUB_ENV
           echo "currentPreviewVersion=$currentPreviewVersion" >> $env:GITHUB_ENV
 
       - name: Create Tag

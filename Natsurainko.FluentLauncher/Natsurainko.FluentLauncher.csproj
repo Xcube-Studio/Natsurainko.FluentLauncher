@@ -11,7 +11,7 @@
     <UseWinUI>true</UseWinUI>
     <Configurations>Debug;Release;Debug-AOT;Release-AOT</Configurations>
     <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
-    <FluentLauncherReleaseChannel>Stable</FluentLauncherReleaseChannel>
+    <FluentLauncherReleaseChannel>Dev</FluentLauncherReleaseChannel>
 
     <!-- Packaging -->
     <ApplicationManifest>app.manifest</ApplicationManifest>

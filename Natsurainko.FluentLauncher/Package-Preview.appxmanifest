@@ -9,7 +9,7 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="26553XcubeStudio.Natsurianko.FluentLauncher"
+    Name="26553XcubeStudio.Natsurianko.FluentLauncher.Pre"
     Publisher="CN=053EFB0E-6705-4A11-94B9-980C4C9E0047"
     Version="2.3.2.0" />
 

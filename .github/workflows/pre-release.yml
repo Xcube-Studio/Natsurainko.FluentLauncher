@@ -196,4 +196,4 @@ jobs:
           generateReleaseNotes: true
           prerelease: true
           tag: "pre-release-${{ env.currentPreviewVersion }}-${{ env.SHORT_SHA }}"
-          body: "```json${{ env.json }}```"
+          body: "``` json\n${{ env.json }}\n```"

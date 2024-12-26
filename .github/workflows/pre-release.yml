@@ -156,11 +156,9 @@ jobs:
 
       - name: Create Release Information
         run: |
-          $SHORT_SHA = $env:GITHUB_SHA.Substring(0, 7)
-          echo "SHORT_SHA=$SHORT_SHA" >> $env:GITHUB_ENV
-
           [xml]$xmlContent = Get-Content -Path "Natsurainko.FluentLauncher\Package-Preview.appxmanifest"
           $version = $xmlContent.Package.Identity.Version
+          $commit = $env:GITHUB_SHA.Substring(0, 7)
 
           $url = "https://github.com/Xcube-Studio/FluentLauncher.PreviewChannel.PackageInstaller/releases/download/v0.0.1/PackageInstaller-x64.exe"
           $installerPath = "PackageInstaller-64.exe"
@@ -176,7 +174,7 @@ jobs:
               exit 1
           }
           
-          $json = & .\$installerPath generateReleaseJson --updatePackageFiles "${{ github.workspace }}\updatePackage-x64.zip" "${{ github.workspace }}\updatePackage-arm64.zip" --stableVersion $version --commit "${{ env.SHORT_SHA }}" | Out-String
+          $json = & .\$installerPath generateReleaseJson --updatePackageFiles "${{ github.workspace }}\updatePackage-x64.zip" "${{ github.workspace }}\updatePackage-arm64.zip" --stableVersion $version --commit $commit | Out-String
           $jsonObject = $json | ConvertFrom-Json
 
           $currentPreviewVersion = $jsonObject.currentPreviewVersion
@@ -186,6 +184,8 @@ jobs:
 
       - name: Create Tag
         run: |
+          $SHORT_SHA = $env:GITHUB_SHA.Substring(0, 7)
+          echo "SHORT_SHA=$SHORT_SHA" >> $env:GITHUB_ENV
           git tag -a "pre-release-${{ env.currentPreviewVersion }}-${{ env.SHORT_SHA }}" -m "pre-release-${{ env.currentPreviewVersion }}-${{ env.SHORT_SHA }}"
           git push origin "pre-release-${{ env.currentPreviewVersion }}-${{ env.SHORT_SHA }}"
 

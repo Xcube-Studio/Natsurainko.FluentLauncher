@@ -18,11 +18,11 @@
 
 | 功能                                     | 状态               |
 | ---------------------------------------- | ------------------ |
-| 启动过程异步化（等待 FluentCore 更新）      | [ ]                |
-| 游戏整合包导入                             | [ ]                |
-| NativeAOT 支持 (等待 Windows App SDK 更新) | [ ]                |
-| 升级到 CommunityToolkit 8.1 （等待发布）   | 预览版测试中 [ ]    |
-| 皮肤管理与 3D 预览                         | 已完成 [x]         |
+| NativeAOT 支持                            | In progress [ ]                     |
+| 分 Stable、Preview、Dev 通道分发           | In progress [ ]                     |
+| 升级到 CommunityToolkit 8.1               | Blocked by MarkdownTextBlock [ ]    |
+| Little Skin 的 OAuth 支持                 | [ ]                                 |
+| 游戏整合包导入                             | [ ]                                 |
 
 ## 功能列表 ✨
 
@@ -53,7 +53,6 @@
 ## 安装本应用 ✈️
 
 #### *一定需要安装 [.NET 8 运行时](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0) (不论是从哪种渠道安装)*
-> 注 2.2.9.0 及之前版本使用 .net7.0 编译， 2.3.0.0 (未发布) 将使用 .net8.0 编译
 
 + 从 Microsoft Store 获取我们的应用
 <a href="https://apps.microsoft.com/detail/Natsurianko.FluentLauncher/9p4nqqxq942p">
@@ -99,7 +98,7 @@ https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-L
 ## 主要贡献者 🧑‍💻
 
 * **natsurainko** - *启动核心 启动器*
-* **gavinY** - *启动器 后端架构*
+* **gavinY** - *启动器后端架构、启动核心*
 * **xingxing520** - *启动器发布 微软商店服务*
 等其他贡献者与参与测试人员
 

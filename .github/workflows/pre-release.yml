@@ -79,7 +79,7 @@ jobs:
           path: ${{ steps.get_package_info.outputs.bundleFileName }}
 
   Release:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     name: Release
     needs: [Compile, Pack]
     steps:
@@ -91,82 +91,107 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "GitHub-actions[bot]"
 
-      - name: Create Tag
-        run: |
-          SHORT_SHA=${GITHUB_SHA:0:7}
-          echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_ENV
-          git tag -a "pre-release-$SHORT_SHA" -m "pre-release-$SHORT_SHA"
-          git push origin "pre-release-$SHORT_SHA"
-
       - name: Download x64 msixbundle
         uses: actions/download-artifact@v4
         with:
           name: msix-x64
-          path: "${{ github.workspace }}/updatePackage-x64"
+          path: "${{ github.workspace }}\\updatePackage-x64"
 
       - name: Download x64 dependencies
         uses: actions/download-artifact@v4
         with:
           name: dependencies-x64
-          path: "${{ github.workspace }}/updatePackage-x64/dependencies"
+          path: "${{ github.workspace }}\\updatePackage-x64\\dependencies"
 
       - name: Create x64 update package
         run: |
+          cd "${{ github.workspace }}\\updatePackage-x64\\dependencies"
+          tar -xf dependencies-x64.zip -C ./
+          Remove-Item dependencies-x64.zip
 
-          cd ${{ github.workspace }}/updatePackage-x64/dependencies
-          unzip -j dependencies-x64.zip -d ./
-          rm dependencies-x64.zip
-          
-          cd ${{ github.workspace }}/updatePackage-x64
-          mv *.msix msix-x64.msix
-          zip -r ../updatePackage-x64.zip ./*
+          cd "${{ github.workspace }}\\updatePackage-x64"
+          Rename-Item *.msix msix-x64.msix
+          Compress-Archive -Path .\\* -DestinationPath ..\\updatePackage-x64.zip
 
       - name: Download arm64 msixbundle
         uses: actions/download-artifact@v4
         with:
           name: msix-arm64
-          path: "${{ github.workspace }}/updatePackage-arm64"
+          path: "${{ github.workspace }}\\updatePackage-arm64"
 
       - name: Download arm64 dependencies
         uses: actions/download-artifact@v4
         with:
           name: dependencies-arm64
-          path: "${{ github.workspace }}/updatePackage-arm64/dependencies"
+          path: "${{ github.workspace }}\\updatePackage-arm64\\dependencies"
 
       - name: Create arm64 update package
         run: |
-          
-          cd ${{ github.workspace }}/updatePackage-arm64/dependencies
-          unzip -j dependencies-arm64.zip -d ./
-          rm dependencies-arm64.zip
+          cd "${{ github.workspace }}\\updatePackage-arm64\\dependencies"
+          tar -xf dependencies-arm64.zip -C ./
+          Remove-Item dependencies-arm64.zip
 
-          cd ${{ github.workspace }}/updatePackage-arm64
-          mv *.msix msix-arm64.msix
-          zip -r ../updatePackage-arm64.zip ./*
-      
+          cd "${{ github.workspace }}\\updatePackage-arm64"
+          Rename-Item *.msix msix-arm64.msix
+          Compress-Archive -Path .\\* -DestinationPath ..\\updatePackage-arm64.zip
+
       - name: Download msixbundle
         uses: actions/download-artifact@v4
         with:
           name: .msixbundle
-          path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
+          path: "${{ github.workspace }}\\${{env.Artifacts_Path}}"
 
       - name: Rename msixbundle
         run: |
-          
-          cd ${{ github.workspace }}
-          mv *.msixbundle package.msixbundle
+          cd "${{ github.workspace }}"
+          Rename-Item *.msixbundle package.msixbundle
 
       - name: Download Artifacts (dependencies)
         uses: actions/download-artifact@v4
         with:
           pattern: dependencies-*
-          path: "${{ github.workspace }}/${{env.Artifacts_Path}}"
+          path: "${{ github.workspace }}\\${{env.Artifacts_Path}}"
+
+      - name: Create Release Information
+        run: |
+          [xml]$xmlContent = Get-Content -Path "Natsurainko.FluentLauncher\Package-Preview.appxmanifest"
+          $version = $xmlContent.Package.Identity.Version
+
+          $url = "https://github.com/Xcube-Studio/FluentLauncher.PreviewChannel.PackageInstaller/releases/download/v0.0.1/PackageInstaller-64.exe"
+          $installerPath = "PackageInstaller-64.exe"
+
+          $ErrorActionPreference = "Stop"
+          $ErrorVariable = "DownloadError"
+
+          try {
+              Invoke-WebRequest -Uri $url -OutFile $installerPath -ErrorAction Stop -ErrorVariable DownloadError
+              Write-Output "File downloaded successfully to $installerPath"
+          } catch {
+              Write-Error "Download failed: $($DownloadError[0])"
+              exit 1
+          }
+          
+          $json = & .\$installerPath generateReleaseJson --updatePackageFiles "${{ github.workspace }}\updatePackage-x64.zip" "${{ github.workspace }}\updatePackage-arm64.zip" --stableVersion $version --commit "${{ env.SHORT_SHA }}"
+          $jsonObject = $json | ConvertFrom-Json
+
+          $currentPreviewVersion = $jsonObject.currentPreviewVersion
+          
+          echo "json=$json" >> $env:GITHUB_ENV
+          echo "currentPreviewVersion=$currentPreviewVersion" >> $env:GITHUB_ENV
+
+      - name: Create Tag
+        run: |
+          $SHORT_SHA = $env:GITHUB_SHA.Substring(0, 7)
+          echo "SHORT_SHA=$SHORT_SHA" >> $env:GITHUB_ENV
+          git tag -a "pre-release-$SHORT_SHA" -m "pre-release-$SHORT_SHA"
+          git push origin "pre-release-${{ env.currentPreviewVersion }}-${{ env.SHORT_SHA }}"
 
       - name: Create Release
         uses: ncipollo/release-action@v1.12.0
         with:
-          artifacts: "${{ github.workspace }}/updatePackage-*.zip,${{ github.workspace }}/package.msixbundle"
+          artifacts: "${{ github.workspace }}\\updatePackage-*.zip,${{ github.workspace }}\\package.msixbundle"
           allowUpdates: true
           generateReleaseNotes: true
           prerelease: true
-          tag: "pre-release-${{ env.SHORT_SHA }}"
+          tag: "pre-release-${{ env.currentPreviewVersion }}-${{ env.SHORT_SHA }}"
+          body: "```json${{ env.json }}```"

@@ -159,7 +159,7 @@ jobs:
           [xml]$xmlContent = Get-Content -Path "Natsurainko.FluentLauncher\Package-Preview.appxmanifest"
           $version = $xmlContent.Package.Identity.Version
 
-          $url = "https://github.com/Xcube-Studio/FluentLauncher.PreviewChannel.PackageInstaller/releases/download/v0.0.1/PackageInstaller-64.exe"
+          $url = "https://github.com/Xcube-Studio/FluentLauncher.PreviewChannel.PackageInstaller/releases/download/v0.0.1/PackageInstaller-x64.exe"
           $installerPath = "PackageInstaller-64.exe"
 
           $ErrorActionPreference = "Stop"

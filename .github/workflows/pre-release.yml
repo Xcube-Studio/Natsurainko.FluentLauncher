@@ -11,6 +11,8 @@ jobs:
     with:
       output_dependencies: true
       create_package: true
+      use_preview_version: true
+      channel: "Preview"
     secrets:
       pfx_base64_encoded: ${{ secrets.PFX_BASE64_ENCODED }}
 

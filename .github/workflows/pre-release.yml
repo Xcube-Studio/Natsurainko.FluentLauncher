@@ -174,8 +174,8 @@ jobs:
               exit 1
           }
           
-          & .\$installerPath generateReleaseMarkdown --markdownPath "${{ github.workspace }}\body.md" --updatePackageFiles "${{ github.workspace }}\updatePackage-x64.zip" "${{ github.workspace }}\updatePackage-arm64.zip" --stableVersion $version --commit $commit
-          $jsonObject = Get-Content -Path "${{ github.workspace }}\body.md" | ConvertFrom-Json
+          $json = & .\$installerPath generateReleaseMarkdown --markdownPath "${{ github.workspace }}\body.md" --updatePackageFiles "${{ github.workspace }}\updatePackage-x64.zip" "${{ github.workspace }}\updatePackage-arm64.zip" --stableVersion $version --commit $commit
+          $jsonObject = $json | ConvertFrom-Json
 
           $currentPreviewVersion = $jsonObject.currentPreviewVersion
 

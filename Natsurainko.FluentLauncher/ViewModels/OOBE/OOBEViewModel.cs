@@ -155,6 +155,8 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
 
     public string Version => App.Version.GetVersionString();
 
+    public string Channel => App.AppChannel.ToUpper();
+
 #if DEBUG 
     public string Edition { get; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Debug");
 #else 

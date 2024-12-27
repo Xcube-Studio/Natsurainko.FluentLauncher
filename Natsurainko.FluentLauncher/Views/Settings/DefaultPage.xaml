@@ -91,10 +91,23 @@
                         <ImageIcon Source="ms-appx:///Assets/AppIcon.png" />
                     </controls:SettingsCard.HeaderIcon>
 
-                    <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Style="{ThemeResource CaptionTextBlockStyle}">
-                        <Run Text="{Binding Edition}" />
-                        <Run Text="{Binding Version}" />
-                    </TextBlock>
+                    <StackPanel>
+                        <Border
+                            Padding="5,0"
+                            HorizontalAlignment="Right"
+                            Background="{ThemeResource SystemAccentColor}"
+                            CornerRadius="2">
+                            <TextBlock
+                                FontWeight="SemiBold"
+                                Foreground="White"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                Text="{Binding Channel}" />
+                        </Border>
+                        <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Style="{ThemeResource CaptionTextBlockStyle}">
+                            <Run Text="{Binding Edition}" />
+                            <Run Text="{Binding Version}" />
+                        </TextBlock>
+                    </StackPanel>
                 </controls:SettingsCard>
             </StackPanel>
         </Border>

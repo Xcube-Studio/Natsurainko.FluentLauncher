@@ -27,6 +27,14 @@ public partial class App : Application
 
     public static Windows.ApplicationModel.PackageVersion Version => Windows.ApplicationModel.Package.Current.Id.Version;
 
+#if FLUENT_LAUNCHER_DEV_CHANNEL
+    public static string AppChannel => "Dev";
+#elif FLUENT_LAUNCHER_PREVIEW_CHANNEL
+    public static string AppChannel => "Preview";
+#elif FLUENT_LAUNCHER_STABLE_CHANNEL
+    public static string AppChannel => "Stable";
+#endif
+
     public App()
     {
         InitializeComponent();

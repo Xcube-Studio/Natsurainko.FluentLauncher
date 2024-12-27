@@ -161,7 +161,7 @@ jobs:
           $commit = $env:GITHUB_SHA.Substring(0, 7)
 
           $url = "https://github.com/Xcube-Studio/FluentLauncher.PreviewChannel.PackageInstaller/releases/download/v0.0.1/PackageInstaller-x64.exe"
-          $installerPath = "PackageInstaller-64.exe"
+          $installerPath = "PackageInstaller-x64.exe"
 
           $ErrorActionPreference = "Stop"
           $ErrorVariable = "DownloadError"
@@ -174,8 +174,8 @@ jobs:
               exit 1
           }
           
-          .\$installerPath generateReleaseJson --markdownPath "${{ github.workspace }}\\body.md" --updatePackageFiles "${{ github.workspace }}\updatePackage-x64.zip" "${{ github.workspace }}\updatePackage-arm64.zip" --stableVersion $version --commit $commit | Out-String
-          $jsonObject = Get-Content -Path "${{ github.workspace }}\\body.md" | ConvertFrom-Json
+          .\$installerPath generateReleaseJson --markdownPath "${{ github.workspace }}\body.md" --updatePackageFiles "${{ github.workspace }}\updatePackage-x64.zip" "${{ github.workspace }}\updatePackage-arm64.zip" --stableVersion $version --commit $commit
+          $jsonObject = Get-Content -Path "${{ github.workspace }}\body.md" | ConvertFrom-Json
 
           $currentPreviewVersion = $jsonObject.currentPreviewVersion
 

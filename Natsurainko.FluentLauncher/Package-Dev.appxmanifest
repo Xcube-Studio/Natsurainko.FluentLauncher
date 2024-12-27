@@ -16,7 +16,7 @@
   <Properties>
     <DisplayName>Fluent Launcher (Dev)</DisplayName>
     <PublisherDisplayName>Xcube Studio</PublisherDisplayName>
-    <Logo>Assets\PackageIcons\StoreLogo.png</Logo>
+    <Logo>Assets\PackageIcons\Dev\StoreLogo.png</Logo>
   </Properties>
 
   <Dependencies>
@@ -39,10 +39,11 @@
         DisplayName="Fluent Launcher (Dev)"
         Description="Fluent Launcher (Dev)"
         BackgroundColor="transparent"
-        Square150x150Logo="Assets\PackageIcons\Square150x150Logo.png"
-        Square44x44Logo="Assets\PackageIcons\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Assets\PackageIcons\Wide310x150Logo.png"  Square71x71Logo="Assets\PackageIcons\SmallTile.png" Square310x310Logo="Assets\PackageIcons\LargeTile.png" ShortName="Fluent Launcher"/>
-        <uap:SplashScreen Image="Assets\PackageIcons\SplashScreen.png" />
+        Square150x150Logo="Assets\PackageIcons\Dev\Square150x150Logo.png"
+        Square44x44Logo="Assets\PackageIcons\Dev\Square44x44Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Assets\PackageIcons\Dev\Wide310x150Logo.png"  Square71x71Logo="Assets\PackageIcons\Dev\SmallTile.png" Square310x310Logo="Assets\PackageIcons\Dev\LargeTile.png" ShortName="Fluent Launcher"/>
+        <uap:SplashScreen Image="Assets\PackageIcons\Dev\SplashScreen.png"/>
+        
       </uap:VisualElements>
 
       <Extensions>

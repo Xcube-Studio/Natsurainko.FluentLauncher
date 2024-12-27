@@ -174,16 +174,10 @@ jobs:
               exit 1
           }
           
-          $json = & .\$installerPath generateReleaseJson --updatePackageFiles "${{ github.workspace }}\updatePackage-x64.zip" "${{ github.workspace }}\updatePackage-arm64.zip" --stableVersion $version --commit $commit | Out-String
-          $jsonObject = $json | ConvertFrom-Json
+          .\$installerPath generateReleaseJson --markdownPath "${{ github.workspace }}\\body.md" --updatePackageFiles "${{ github.workspace }}\updatePackage-x64.zip" "${{ github.workspace }}\updatePackage-arm64.zip" --stableVersion $version --commit $commit | Out-String
+          $jsonObject = Get-Content -Path "${{ github.workspace }}\\body.md" | ConvertFrom-Json
 
           $currentPreviewVersion = $jsonObject.currentPreviewVersion
-          
-          $jsonEscaped = $json -replace '(["\$)', '\\$1' -replace '\r?\n', '\\n'
-
-          # 存储转义后的 JSON 到环境变量
-          echo "json=$jsonEscaped" >> $env:GITHUB_ENV
-          echo "currentPreviewVersion=$currentPreviewVersion" >> $env:GITHUB_ENV
 
       - name: Create Tag
         run: |
@@ -200,7 +194,4 @@ jobs:
           generateReleaseNotes: true
           prerelease: true
           tag: "pre-release-${{ env.currentPreviewVersion }}-${{ env.SHORT_SHA }}"
-          body: | 
-            ``` json
-            ${{ env.json }}
-            ```
+          bodyFile: "${{ github.workspace }}\\body.md"

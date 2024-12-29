@@ -9,8 +9,9 @@
     <Platforms>x64;ARM64</Platforms>
     <RuntimeIdentifier>win-$(Platform)</RuntimeIdentifier>
     <UseWinUI>true</UseWinUI>
-    <DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
     <Configurations>Debug;Release;Debug-AOT;Release-AOT</Configurations>
+    <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+    <FluentLauncherReleaseChannel>Dev</FluentLauncherReleaseChannel>
 
     <!-- Packaging -->
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -27,6 +28,18 @@
     <Nullable>enable</Nullable>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <WindowsPackageType>MSIX</WindowsPackageType>
+  </PropertyGroup>
+
+  <!-- Constants for release channel -->
+  <PropertyGroup Condition="$(FluentLauncherReleaseChannel) == 'Preview'">
+    <DefineConstants>$(DefineConstants);FLUENT_LAUNCHER_PREVIEW_CHANNEL</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(FluentLauncherReleaseChannel) == 'Stable'">
+    <DefineConstants>$(DefineConstants);FLUENT_LAUNCHER_STABLE_CHANNEL</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(FluentLauncherReleaseChannel) == 'Dev'">
+    <DefineConstants>$(DefineConstants);FLUENT_LAUNCHER_DEV_CHANNEL</DefineConstants>
   </PropertyGroup>
 
     <!-- NativeAOT -->
@@ -93,6 +106,13 @@
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 
+  <!-- Appx Manifest -->
+  <ItemGroup>
+    <AppxManifest Include="Package-$(FluentLauncherReleaseChannel).appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+  </ItemGroup>
+
   <!-- Compile XAML files -->
   <ItemGroup>
     <Page Update="**\*.xaml">
@@ -109,6 +129,108 @@
     </None>
     <None Remove="Assets\Icons\OptiFabricIcon.png" />
     <None Remove="Assets\MinecraftTen.ttf" />
+    <None Remove="Assets\PackageIcons\Dev\icon-dev.png" />
+    <None Remove="Assets\PackageIcons\Dev\LargeTile.scale-100.png" />
+    <None Remove="Assets\PackageIcons\Dev\LargeTile.scale-125.png" />
+    <None Remove="Assets\PackageIcons\Dev\LargeTile.scale-150.png" />
+    <None Remove="Assets\PackageIcons\Dev\LargeTile.scale-200.png" />
+    <None Remove="Assets\PackageIcons\Dev\LargeTile.scale-400.png" />
+    <None Remove="Assets\PackageIcons\Dev\SmallTile.scale-100.png" />
+    <None Remove="Assets\PackageIcons\Dev\SmallTile.scale-125.png" />
+    <None Remove="Assets\PackageIcons\Dev\SmallTile.scale-150.png" />
+    <None Remove="Assets\PackageIcons\Dev\SmallTile.scale-200.png" />
+    <None Remove="Assets\PackageIcons\Dev\SmallTile.scale-400.png" />
+    <None Remove="Assets\PackageIcons\Dev\SplashScreen.scale-100.png" />
+    <None Remove="Assets\PackageIcons\Dev\SplashScreen.scale-125.png" />
+    <None Remove="Assets\PackageIcons\Dev\SplashScreen.scale-150.png" />
+    <None Remove="Assets\PackageIcons\Dev\SplashScreen.scale-200.png" />
+    <None Remove="Assets\PackageIcons\Dev\SplashScreen.scale-400.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square150x150Logo.scale-100.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square150x150Logo.scale-125.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square150x150Logo.scale-150.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square150x150Logo.scale-200.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square150x150Logo.scale-400.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square44x44Logo.altform-lightunplated_targetsize-16.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square44x44Logo.altform-lightunplated_targetsize-24.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square44x44Logo.altform-lightunplated_targetsize-256.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square44x44Logo.altform-lightunplated_targetsize-32.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square44x44Logo.altform-lightunplated_targetsize-48.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square44x44Logo.altform-unplated_targetsize-16.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square44x44Logo.altform-unplated_targetsize-24.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square44x44Logo.altform-unplated_targetsize-256.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square44x44Logo.altform-unplated_targetsize-32.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square44x44Logo.altform-unplated_targetsize-48.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square44x44Logo.scale-100.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square44x44Logo.scale-125.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square44x44Logo.scale-150.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square44x44Logo.scale-200.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square44x44Logo.scale-400.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square44x44Logo.targetsize-16.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square44x44Logo.targetsize-24.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square44x44Logo.targetsize-256.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square44x44Logo.targetsize-32.png" />
+    <None Remove="Assets\PackageIcons\Dev\Square44x44Logo.targetsize-48.png" />
+    <None Remove="Assets\PackageIcons\Dev\StoreLogo.scale-100.png" />
+    <None Remove="Assets\PackageIcons\Dev\StoreLogo.scale-125.png" />
+    <None Remove="Assets\PackageIcons\Dev\StoreLogo.scale-150.png" />
+    <None Remove="Assets\PackageIcons\Dev\StoreLogo.scale-200.png" />
+    <None Remove="Assets\PackageIcons\Dev\StoreLogo.scale-400.png" />
+    <None Remove="Assets\PackageIcons\Dev\Wide310x150Logo.scale-100.png" />
+    <None Remove="Assets\PackageIcons\Dev\Wide310x150Logo.scale-125.png" />
+    <None Remove="Assets\PackageIcons\Dev\Wide310x150Logo.scale-150.png" />
+    <None Remove="Assets\PackageIcons\Dev\Wide310x150Logo.scale-200.png" />
+    <None Remove="Assets\PackageIcons\Dev\Wide310x150Logo.scale-400.png" />
+    <None Remove="Assets\PackageIcons\Pre\icon-pre.png" />
+    <None Remove="Assets\PackageIcons\Pre\LargeTile.scale-100.png" />
+    <None Remove="Assets\PackageIcons\Pre\LargeTile.scale-125.png" />
+    <None Remove="Assets\PackageIcons\Pre\LargeTile.scale-150.png" />
+    <None Remove="Assets\PackageIcons\Pre\LargeTile.scale-200.png" />
+    <None Remove="Assets\PackageIcons\Pre\LargeTile.scale-400.png" />
+    <None Remove="Assets\PackageIcons\Pre\SmallTile.scale-100.png" />
+    <None Remove="Assets\PackageIcons\Pre\SmallTile.scale-125.png" />
+    <None Remove="Assets\PackageIcons\Pre\SmallTile.scale-150.png" />
+    <None Remove="Assets\PackageIcons\Pre\SmallTile.scale-200.png" />
+    <None Remove="Assets\PackageIcons\Pre\SmallTile.scale-400.png" />
+    <None Remove="Assets\PackageIcons\Pre\SplashScreen.scale-100.png" />
+    <None Remove="Assets\PackageIcons\Pre\SplashScreen.scale-125.png" />
+    <None Remove="Assets\PackageIcons\Pre\SplashScreen.scale-150.png" />
+    <None Remove="Assets\PackageIcons\Pre\SplashScreen.scale-200.png" />
+    <None Remove="Assets\PackageIcons\Pre\SplashScreen.scale-400.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square150x150Logo.scale-100.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square150x150Logo.scale-125.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square150x150Logo.scale-150.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square150x150Logo.scale-200.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square150x150Logo.scale-400.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square44x44Logo.altform-lightunplated_targetsize-16.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square44x44Logo.altform-lightunplated_targetsize-24.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square44x44Logo.altform-lightunplated_targetsize-256.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square44x44Logo.altform-lightunplated_targetsize-32.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square44x44Logo.altform-lightunplated_targetsize-48.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square44x44Logo.altform-unplated_targetsize-16.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square44x44Logo.altform-unplated_targetsize-24.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square44x44Logo.altform-unplated_targetsize-256.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square44x44Logo.altform-unplated_targetsize-32.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square44x44Logo.altform-unplated_targetsize-48.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square44x44Logo.scale-100.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square44x44Logo.scale-125.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square44x44Logo.scale-150.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square44x44Logo.scale-200.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square44x44Logo.scale-400.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square44x44Logo.targetsize-16.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square44x44Logo.targetsize-24.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square44x44Logo.targetsize-256.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square44x44Logo.targetsize-32.png" />
+    <None Remove="Assets\PackageIcons\Pre\Square44x44Logo.targetsize-48.png" />
+    <None Remove="Assets\PackageIcons\Pre\StoreLogo.scale-100.png" />
+    <None Remove="Assets\PackageIcons\Pre\StoreLogo.scale-125.png" />
+    <None Remove="Assets\PackageIcons\Pre\StoreLogo.scale-150.png" />
+    <None Remove="Assets\PackageIcons\Pre\StoreLogo.scale-200.png" />
+    <None Remove="Assets\PackageIcons\Pre\StoreLogo.scale-400.png" />
+    <None Remove="Assets\PackageIcons\Pre\Wide310x150Logo.scale-100.png" />
+    <None Remove="Assets\PackageIcons\Pre\Wide310x150Logo.scale-125.png" />
+    <None Remove="Assets\PackageIcons\Pre\Wide310x150Logo.scale-150.png" />
+    <None Remove="Assets\PackageIcons\Pre\Wide310x150Logo.scale-200.png" />
+    <None Remove="Assets\PackageIcons\Pre\Wide310x150Logo.scale-400.png" />
     <None Remove="Assets\Rig_alex.obj" />
     <None Remove="Assets\Rig_steve.obj" />
     <Content Remove="Assets\Libs\authlib-injector-1.2.5.jar" />

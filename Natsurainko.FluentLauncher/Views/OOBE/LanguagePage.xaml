@@ -39,10 +39,25 @@
                 Grid.Column="1"
                 Margin="16,0,0,0"
                 VerticalAlignment="Center">
-                <TextBlock FontSize="18" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
-                    <Run Text="{x:Bind Edition}" />
-                    <Run Text="{x:Bind Version}" />
-                </TextBlock>
+                <StackPanel
+                    Margin="2,0,0,0"
+                    Orientation="Horizontal"
+                    Spacing="5">
+                    <TextBlock VerticalAlignment="Center" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
+                        <Run Text="{x:Bind VM.Edition}" />
+                        <Run Text="{x:Bind VM.Version}" />
+                    </TextBlock>
+                    <Border
+                        Padding="5,0"
+                        VerticalAlignment="Center"
+                        Background="{StaticResource SystemAccentColor}"
+                        CornerRadius="4">
+                        <TextBlock
+                            FontWeight="SemiBold"
+                            Foreground="White"
+                            Text="{x:Bind VM.Channel}" />
+                    </Border>
+                </StackPanel>
                 <TextBlock
                     Margin="0,-7.5,0,0"
                     FontSize="36"
@@ -57,7 +72,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="50" />
+                <RowDefinition Height="25" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <TextBlock
@@ -74,7 +89,7 @@
 
             <ComboBox
                 Grid.Row="3"
-                ItemsSource="{x:Bind Languages}"
+                ItemsSource="{x:Bind VM.Languages}"
                 SelectedItem="{x:Bind VM.CurrentLanguage, Mode=TwoWay}" />
         </Grid>
     </Grid>

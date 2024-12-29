@@ -41,6 +41,8 @@ internal partial class DefaultViewModel : SettingsViewModelBase, ISettingsViewMo
     public partial string Edition { get; set; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Release");
 #endif
 
+    public string Channel => App.AppChannel.ToUpper();
+
     partial void OnCurrentLanguageChanged(string oldValue, string newValue)
     {
         if (Languages.Contains(CurrentLanguage) && oldValue is not null) // oldValue is null at startup

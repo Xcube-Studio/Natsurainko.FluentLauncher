@@ -151,6 +151,18 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     [BindToSetting(Path = nameof(SettingsService.CurrentLanguage))]
     public partial string CurrentLanguage { get; set; }
 
+    public List<string> Languages { get; } = ResourceUtils.Languages;
+
+    public string Version => App.Version.GetVersionString();
+
+    public string Channel => App.AppChannel.ToUpper();
+
+#if DEBUG 
+    public string Edition { get; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Debug");
+#else 
+    public string Edition { get; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Release");
+#endif
+
     partial void OnCurrentLanguageChanged(string oldValue, string newValue)
     {
         if (ResourceUtils.Languages.Contains(CurrentLanguage) && oldValue is not null) // oldValue is null at startup

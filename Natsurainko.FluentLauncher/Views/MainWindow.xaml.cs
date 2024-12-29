@@ -47,8 +47,6 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
 
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
     {
-        _navigationService.NavigateTo(_settingsService.FinishGuide ? "ShellPage" : "OOBENavigationPage");
-
         this.CenterOnScreen();
 
         if (_settingsService.AppWindowState == WindowState.Maximized)
@@ -109,5 +107,9 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
         this.Activated += MainWindow_Activated;
     }
 
-    private void Frame_Loaded(object sender, RoutedEventArgs e) => XamlRoot = Frame.XamlRoot;
+    private void Frame_Loaded(object sender, RoutedEventArgs e)
+    {
+        XamlRoot = Frame.XamlRoot;
+        _navigationService.NavigateTo(_settingsService.FinishGuide ? "ShellPage" : "OOBENavigationPage");
+    }
 }

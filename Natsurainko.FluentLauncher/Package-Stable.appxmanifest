@@ -14,7 +14,7 @@
     Version="2.3.2.0" />
 
   <Properties>
-    <DisplayName>Natsurianko.FluentLauncher</DisplayName>
+    <DisplayName>Fluent Launcher</DisplayName>
     <PublisherDisplayName>Xcube Studio</PublisherDisplayName>
     <Logo>Assets\PackageIcons\StoreLogo.png</Logo>
   </Properties>

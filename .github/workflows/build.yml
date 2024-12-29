@@ -8,6 +8,26 @@ on:
         required: false
         type: boolean
         default: false
+      use_preview_version:
+        required: false
+        type: boolean
+        default: false
+      create_msixupload:
+        required: false
+        type: boolean
+        default: false
+      output_dependencies:
+        required: false
+        type: boolean
+        default: false
+      output_certification:
+        required: false
+        type: boolean
+        default: false
+      channel:
+        required: false
+        type: string
+        default: "Dev"
     secrets:
       pfx_base64_encoded:
         required: true
@@ -38,7 +58,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 7.0.x
+          dotnet-version: 8.0.x
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
@@ -66,6 +86,11 @@ jobs:
       - name: Prepare FluentLauncher.Localization
         run: .\update-localization.ps1
 
+      # Modify Preview Channel Package.appxmanifest
+      - name: Modify Preview Channel Package.appxmanifest
+        if: ${{ inputs.use_preview_version }}
+        run: .\modify-previewManifest.ps1
+
       # Create the app package by building and packaging the Windows Application Packaging project
       - name: Create app package
         env:
@@ -75,7 +100,7 @@ jobs:
           Appx_Package_Build_Mode: SideloadOnly
           Appx_Package_Dir: ${{ env.Packages_DirectoryName }}\ # DO NOT REMOVE THE TRAILING SLASH
         run: |
-          msbuild $env:Solution_Name /p:AllowUnsafeBlocks=true /p:Platform=$env:Platform /p:AppxBundlePlatforms="$env:Appx_Bundle_Platforms" /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
+          msbuild $env:Solution_Name /p:AllowUnsafeBlocks=true /p:FluentLauncherReleaseChannel=${{ inputs.channel }} /p:Platform=$env:Platform /p:AppxBundlePlatforms="$env:Appx_Bundle_Platforms" /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
 
       - name: Prepare for bundling
         if: ${{ inputs.create_package }}
@@ -101,7 +126,20 @@ jobs:
 
           # Move .msix for upload to artifacts
           mv ${{ env.Packages_Directory }}\*\*.msix "$packageName.msix"
+      
+      - name: Create dependencies archive
+        if: ${{ inputs.output_dependencies }}
+        run: |
+          # Create dependencies archive
+          Compress-Archive -Path "${{ env.Packages_Directory }}\*\Dependencies\${{ matrix.architecture }}\*" -DestinationPath "$directory\dependencies-${{ matrix.architecture }}.zip"
 
+      - name: Upload dependencies archive
+        if: ${{ inputs.output_dependencies }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependencies-${{ matrix.architecture }}
+          path: "${{ steps.preparation.outputs.directory }}/dependencies-${{ matrix.architecture }}.zip"
+      
       # Decode the base64 encoded pfx and sign the package
       - name: Sign .msix
         if: ${{ inputs.create_package }}
@@ -126,7 +164,7 @@ jobs:
           path: ${{ steps.preparation.outputs.packageName }}.msix
 
       - name: Create .msixupload
-        if: ${{ inputs.create_package }}
+        if: ${{ inputs.create_package && inputs.create_msixupload }}
         id: create_msixupload
         env:
           PackageName: ${{ steps.preparation.outputs.packageName }}
@@ -153,7 +191,7 @@ jobs:
           mv "$env:PackageName.zip" "$env:PackageName.msixupload"
 
       - name: Upload .msixupload to artifacts
-        if: ${{ inputs.create_package }}
+        if: ${{ inputs.create_package && inputs.create_msixupload }}
         uses: actions/upload-artifact@v4
         with:
           name: msixupload-${{ matrix.architecture }}

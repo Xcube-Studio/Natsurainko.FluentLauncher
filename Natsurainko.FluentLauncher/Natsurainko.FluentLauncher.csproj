@@ -4,7 +4,6 @@
     <LangVersion>preview</LangVersion>
     <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
-    <WindowsSdkPackageVersion>10.0.22621.38</WindowsSdkPackageVersion>
     <RootNamespace>Natsurainko.FluentLauncher</RootNamespace>
     <Platforms>x64;ARM64</Platforms>
     <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
@@ -128,7 +127,6 @@
     </None>
     <None Remove="Assets\Icons\OptiFabricIcon.png" />
     <None Remove="Assets\MinecraftTen.ttf" />
-    <None Remove="Assets\PackageIcons\Dev\icon-dev.png" />
     <None Remove="Assets\PackageIcons\Dev\LargeTile.scale-100.png" />
     <None Remove="Assets\PackageIcons\Dev\LargeTile.scale-125.png" />
     <None Remove="Assets\PackageIcons\Dev\LargeTile.scale-150.png" />
@@ -179,7 +177,6 @@
     <None Remove="Assets\PackageIcons\Dev\Wide310x150Logo.scale-150.png" />
     <None Remove="Assets\PackageIcons\Dev\Wide310x150Logo.scale-200.png" />
     <None Remove="Assets\PackageIcons\Dev\Wide310x150Logo.scale-400.png" />
-    <None Remove="Assets\PackageIcons\Pre\icon-pre.png" />
     <None Remove="Assets\PackageIcons\Pre\LargeTile.scale-100.png" />
     <None Remove="Assets\PackageIcons\Pre\LargeTile.scale-125.png" />
     <None Remove="Assets\PackageIcons\Pre\LargeTile.scale-150.png" />

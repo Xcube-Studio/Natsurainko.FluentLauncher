@@ -11,6 +11,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:old_controls="using:CommunityToolkit.WinUI.UI.Controls"
     x:Name="Dialog"
+    IsEnabled="{Binding Enable}"
     Style="{ThemeResource DefaultContentDialogStyle}"
     mc:Ignorable="d">
 
@@ -163,7 +164,6 @@
                     HorizontalAlignment="Stretch"
                     Command="{Binding CancelCommand}"
                     ElementSoundMode="FocusOnly"
-                    IsEnabled="{Binding CanCancel}"
                     IsTabStop="False">
                     <TextBlock x:Uid="Buttons_Cancel" Text="Cancel" />
                 </Button>

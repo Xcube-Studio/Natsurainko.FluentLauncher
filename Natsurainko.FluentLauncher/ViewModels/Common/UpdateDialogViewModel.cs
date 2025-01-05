@@ -46,7 +46,7 @@ internal partial class UpdateDialogViewModel : ObservableObject, IDialogParamete
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ProrgessVisibility))]
-    [NotifyPropertyChangedFor(nameof(CanCancel))]
+    [NotifyPropertyChangedFor(nameof(Enable))]
     [NotifyCanExecuteChangedFor(nameof(UpdateCommand))]
     public partial bool Running { get; set; }
 
@@ -63,7 +63,7 @@ internal partial class UpdateDialogViewModel : ObservableObject, IDialogParamete
 
     public string ProgressText => Progress.ToString("P0");
 
-    public bool CanCancel => !Running;
+    public bool Enable => !Running;
 
     void IDialogParameterAware.HandleParameter(object param)
     {
@@ -82,18 +82,18 @@ internal partial class UpdateDialogViewModel : ObservableObject, IDialogParamete
     }
 
     [RelayCommand]
-    async Task Update()
+    void Update() => Task.Run(async () =>
     {
-        Running = true;
+        App.DispatcherQueue.TryEnqueue(() => Running = true);
 
         #region Check for installer update
-        ActionName = "Check Package Installer Update";
+        App.DispatcherQueue.TryEnqueue(() => ActionName = "Check Package Installer Update");
 
         var (installerHasUpate, installerDownloadUrl) = await _updateService.CheckInstallerUpdateRelease();
 
         if (installerHasUpate)
         {
-            ActionName = "Downloading Package Installer";
+            App.DispatcherQueue.TryEnqueue(() => ActionName = "Downloading Package Installer");
 
             // Download installer
             var downloadTask = _updateService.CreatePackageInstallerDownloadTask(installerDownloadUrl!, ProxyUrl);
@@ -117,7 +117,7 @@ internal partial class UpdateDialogViewModel : ObservableObject, IDialogParamete
 
         #region Download update package
 
-        ActionName = "Downloading Update Package";
+        App.DispatcherQueue.TryEnqueue(() => ActionName = "Downloading Update Package");
 
         var packageDownloadTask = _updateService.CreateUpdatePackageDownloadTask(_releaseJson, ProxyUrl);
         packageDownloadTask.BytesDownloaded += (size) =>
@@ -138,20 +138,26 @@ internal partial class UpdateDialogViewModel : ObservableObject, IDialogParamete
 
         #region Install update
 
-        ActionName = "Running Package Installer";
-        IsIndeterminate = true;
+        App.DispatcherQueue.TryEnqueue(() =>
+        {
+            ActionName = "Running Package Installer";
+            IsIndeterminate = true;
+        });
 
         var (success, error) = await _updateService.RunInstaller();
         if (!success)
         {
-            Running = false;
-            _dialog.Hide();
+            App.DispatcherQueue.TryEnqueue(() =>
+            {
+                Running = false;
+                _dialog.Hide();
+            });
         }
 
         #endregion
-    }
+    });
 
-    [RelayCommand(CanExecute = nameof(CanCancel))]
+    [RelayCommand]
     void Cancel() => _dialog.Hide();
 }
 

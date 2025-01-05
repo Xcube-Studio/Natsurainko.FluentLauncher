@@ -77,7 +77,7 @@ internal partial class UpdateService
 
     public DownloadTask CreatePackageInstallerDownloadTask(string installerDownloadUrl, string? proxy = null)
     {
-        if (proxy != null)
+        if (!string.IsNullOrEmpty(proxy))
             installerDownloadUrl = proxy + installerDownloadUrl;
 
         return _downloadService.Downloader.CreateDownloadTask(
@@ -91,7 +91,7 @@ internal partial class UpdateService
             .FirstOrDefault(x => x!["name"]!.GetValue<string>() == $"updatePackage-{architecture}.zip")!
             ["browser_download_url"]!.GetValue<string>();
 
-        if (proxy != null)
+        if (!string.IsNullOrEmpty(proxy))
             downloadUrl = proxy + downloadUrl;
 
         return _downloadService.Downloader.CreateDownloadTask(

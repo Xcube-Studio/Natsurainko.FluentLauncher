@@ -51,6 +51,15 @@ internal partial class UpdateDialogViewModel : ObservableObject, IDialogParamete
     [NotifyCanExecuteChangedFor(nameof(UpdateCommand))]
     public partial bool Running { get; set; }
 
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ProxyBoxVisibility))] 
+    public partial bool UseProxy { get; set; }
+
+    [ObservableProperty]
+    public partial string ProxyUrl { get; set; }
+
+    public Visibility ProxyBoxVisibility => UseProxy ? Visibility.Visible : Visibility.Collapsed;
+
     public Visibility ProrgessVisibility => Running ? Visibility.Visible : Visibility.Collapsed;
 
     public string ProgressText => Progress.ToString("P0");
@@ -88,7 +97,7 @@ internal partial class UpdateDialogViewModel : ObservableObject, IDialogParamete
             ActionName = "Downloading Package Installer";
 
             // Download installer
-            var downloadTask = _updateService.CreatePackageInstallerDownloadTask(installerDownloadUrl!);
+            var downloadTask = _updateService.CreatePackageInstallerDownloadTask(installerDownloadUrl!, ProxyUrl);
 
             downloadTask.BytesDownloaded += (size) =>
             {
@@ -111,7 +120,7 @@ internal partial class UpdateDialogViewModel : ObservableObject, IDialogParamete
 
         ActionName = "Downloading Update Package";
 
-        var packageDownloadTask = _updateService.CreateUpdatePackageDownloadTask(_releaseJson);
+        var packageDownloadTask = _updateService.CreateUpdatePackageDownloadTask(_releaseJson, ProxyUrl);
         packageDownloadTask.BytesDownloaded += (size) =>
         {
             double progress = packageDownloadTask.TotalBytes is null ? 0 : packageDownloadTask.DownloadedBytes / (double)packageDownloadTask.TotalBytes;

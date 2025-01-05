@@ -84,6 +84,20 @@
                             <old_controls:MarkdownTextBlock Text="{Binding Body}" />
                         </ScrollViewer>
                     </Expander>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <CheckBox Content="Use GitHub Proxy" IsChecked="{Binding UseProxy, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Column="2"
+                            PlaceholderText="example: https://gh-proxy.com/"
+                            Text="{Binding ProxyUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Visibility="{Binding ProxyBoxVisibility}" />
+                    </Grid>
                 </StackPanel>
                 <StackPanel Spacing="5" Visibility="{Binding ProrgessVisibility}">
                     <Grid>

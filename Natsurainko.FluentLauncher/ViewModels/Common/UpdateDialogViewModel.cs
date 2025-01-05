@@ -8,6 +8,7 @@ using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.GameManagement.Downloader;
 using System.Text.Json.Nodes;
+using System.Threading;
 using System.Threading.Tasks;
 
 #nullable disable
@@ -82,31 +83,55 @@ internal partial class UpdateDialogViewModel : ObservableObject, IDialogParamete
     }
 
     [RelayCommand]
-    void Update() => Task.Run(async () =>
+    async Task Update()
     {
-        App.DispatcherQueue.TryEnqueue(() => Running = true);
+        Running = true;
 
         #region Check for installer update
-        App.DispatcherQueue.TryEnqueue(() => ActionName = "Check Package Installer Update");
+        ActionName = "Check Package Installer Update";
 
         var (installerHasUpate, installerDownloadUrl) = await _updateService.CheckInstallerUpdateRelease();
 
         if (installerHasUpate)
         {
-            App.DispatcherQueue.TryEnqueue(() => ActionName = "Downloading Package Installer");
+            ActionName = "Downloading Package Installer";
 
-            // Download installer
             var downloadTask = _updateService.CreatePackageInstallerDownloadTask(installerDownloadUrl!, ProxyUrl);
-
-            downloadTask.BytesDownloaded += (size) =>
+            using (System.Timers.Timer timer = new(500))
             {
-                double progress = downloadTask.TotalBytes is null ? 0 : downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes;
-                App.DispatcherQueue.TryEnqueue(() => Progress = progress);
-            };
+                timer.Elapsed += (sender, e) => App.DispatcherQueue.TryEnqueue(() => 
+                    Progress = downloadTask.TotalBytes is null ? 0 : downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes);
+                timer.Start();
 
-            var result = await downloadTask.StartAsync();
+                var result = await downloadTask.StartAsync();
+                timer.Stop();
+                Progress = downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes;
 
-            if (result.Type == Nrk.FluentCore.GameManagement.Downloader.DownloadResultType.Failed)
+                if (result.Type == Nrk.FluentCore.GameManagement.Downloader.DownloadResultType.Failed)
+                {
+                    // Show error dialog
+                    return;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Download update package
+        ActionName = "Downloading Update Package";
+
+        var packageDownloadTask = _updateService.CreateUpdatePackageDownloadTask(_releaseJson, ProxyUrl);
+        using (System.Timers.Timer timer = new(500))
+        {
+            timer.Elapsed += (sender, e) => App.DispatcherQueue.TryEnqueue(() =>
+                Progress = packageDownloadTask.TotalBytes is null ? 0 : packageDownloadTask.DownloadedBytes / (double)packageDownloadTask.TotalBytes);
+            timer.Start();
+
+            var packageResult = await packageDownloadTask.StartAsync();
+            timer.Stop();
+            Progress = packageDownloadTask.DownloadedBytes / (double)packageDownloadTask.TotalBytes;
+
+            if (packageResult.Type == Nrk.FluentCore.GameManagement.Downloader.DownloadResultType.Failed)
             {
                 // Show error dialog
                 return;
@@ -115,47 +140,20 @@ internal partial class UpdateDialogViewModel : ObservableObject, IDialogParamete
 
         #endregion
 
-        #region Download update package
-
-        App.DispatcherQueue.TryEnqueue(() => ActionName = "Downloading Update Package");
-
-        var packageDownloadTask = _updateService.CreateUpdatePackageDownloadTask(_releaseJson, ProxyUrl);
-        packageDownloadTask.BytesDownloaded += (size) =>
-        {
-            double progress = packageDownloadTask.TotalBytes is null ? 0 : packageDownloadTask.DownloadedBytes / (double)packageDownloadTask.TotalBytes;
-            App.DispatcherQueue.TryEnqueue(() => Progress = progress);
-        };
-
-        var packageResult = await packageDownloadTask.StartAsync();
-
-        if (packageResult.Type == Nrk.FluentCore.GameManagement.Downloader.DownloadResultType.Failed)
-        {
-            // Show error dialog
-            return;
-        }
-
-        #endregion
-
         #region Install update
 
-        App.DispatcherQueue.TryEnqueue(() =>
-        {
-            ActionName = "Running Package Installer";
-            IsIndeterminate = true;
-        });
+        ActionName = "Running Package Installer";
+        IsIndeterminate = true;
 
         var (success, error) = await _updateService.RunInstaller();
         if (!success)
         {
-            App.DispatcherQueue.TryEnqueue(() =>
-            {
-                Running = false;
-                _dialog.Hide();
-            });
+            Running = false;
+            _dialog.Hide();
         }
 
         #endregion
-    });
+    }
 
     [RelayCommand]
     void Cancel() => _dialog.Hide();

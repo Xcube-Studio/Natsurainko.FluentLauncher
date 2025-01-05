@@ -28,7 +28,10 @@
                         <ImageIcon Source="ms-appx:///Assets/AppIcon.png" />
                     </controls:SettingsExpander.HeaderIcon>
                     <controls:SettingsExpander.Items>
-                        <controls:SettingsCard x:Uid="Settings_AboutPage_SubCard1" Header="Update">
+                        <controls:SettingsCard
+                            x:Name="AboutCard"
+                            x:Uid="Settings_AboutPage_SubCard1"
+                            Header="Update">
                             <Button Command="{Binding CheckUpdateCommand}">
                                 <TextBlock
                                     x:Name="CheckUpdateText"

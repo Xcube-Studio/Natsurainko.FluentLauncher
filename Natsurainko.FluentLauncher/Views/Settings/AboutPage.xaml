@@ -31,6 +31,7 @@
                         <controls:SettingsCard x:Uid="Settings_AboutPage_SubCard1" Header="Update">
                             <Button Command="{Binding CheckUpdateCommand}">
                                 <TextBlock
+                                    x:Name="CheckUpdateText"
                                     x:Uid="Settings_AboutPage_B1"
                                     Text="Check Updates in the Microsoft Store"
                                     TextTrimming="CharacterEllipsis" />

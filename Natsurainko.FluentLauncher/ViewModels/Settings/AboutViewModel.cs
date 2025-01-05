@@ -16,11 +16,13 @@ internal partial class AboutViewModel : ObservableObject
 {
 #if FLUENT_LAUNCHER_PREVIEW_CHANNEL
     private readonly UpdateService _updateService;
+    private readonly NotificationService _notificationService;
     private readonly IDialogActivationService<ContentDialogResult> _dialogs;
 
-    public AboutViewModel(UpdateService updateService, IDialogActivationService<ContentDialogResult> dialogs)
+    public AboutViewModel(UpdateService updateService, IDialogActivationService<ContentDialogResult> dialogs, NotificationService notificationService)
     {
-        _updateService = updateService;
+        _updateService = updateService;        
+        _notificationService = notificationService;
         _dialogs = dialogs;
     }
 #endif
@@ -45,6 +47,7 @@ internal partial class AboutViewModel : ObservableObject
 
         if (hasUpdate && releaseJsonResult is JsonNode releaseJson)
             await _dialogs.ShowAsync("UpdateDialog", releaseJson);
+        else _notificationService.NotifyWithoutContent("this is the latest version", icon: "\uECC5");
     }
 #else
     [RelayCommand]

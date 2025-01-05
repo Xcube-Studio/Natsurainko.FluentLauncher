@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Dialogs;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Network;
+using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using System;

@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿#if FLUENT_LAUNCHER_PREVIEW_CHANNEL
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Dialogs;
 using Microsoft.UI.Xaml;
@@ -8,8 +9,6 @@ using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.GameManagement.Downloader;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
-
-#if FLUENT_LAUNCHER_PREVIEW_CHANNEL
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Common;

@@ -95,6 +95,10 @@ dialogs.WithDialog<Views.Common.DownloadResourceDialog, ViewModels.Common.Downlo
 dialogs.WithDialog<Views.Common.SwitchAccountDialog, ViewModels.Common.SwitchAccountDialogViewModel>("SwitchAccountDialog");
 dialogs.WithDialog<Views.Common.UploadSkinDialog, ViewModels.Common.UploadSkinDialogViewModel>("UploadSkinDialog");
 
+#if FLUENT_LAUNCHER_PREVIEW_CHANNEL
+dialogs.WithDialog<Views.Common.UpdateDialog, ViewModels.Common.UpdateDialogViewModel>("UpdateDialog");
+#endif
+
 #endregion
 
 #region Services
@@ -119,10 +123,13 @@ services.AddSingleton<NotificationService>();
 services.AddSingleton<AppearanceService>();
 services.AddSingleton<CacheSkinService>();
 services.AddSingleton<CacheInterfaceService>();
-//services.AddSingleton<JumpListService>();
 services.AddSingleton<QuickLaunchService>();
 services.AddSingleton<SearchProviderService>();
 services.AddSingleton<InstanceConfigService>();
+
+#if FLUENT_LAUNCHER_PREVIEW_CHANNEL
+services.AddSingleton<UpdateService>();
+#endif
 
 // ModClient
 services.AddSingleton<ModrinthClient>();

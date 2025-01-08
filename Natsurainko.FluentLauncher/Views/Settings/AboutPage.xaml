@@ -49,7 +49,7 @@
                             IsClickEnabled="True" />
                     </controls:SettingsExpander.Items>
 
-                    <StackPanel>
+                    <StackPanel Name="ReleaseInfoStackPanel">
                         <Border
                             Padding="5,0"
                             HorizontalAlignment="Right"
@@ -61,7 +61,11 @@
                                 Style="{ThemeResource CaptionTextBlockStyle}"
                                 Text="{Binding Channel}" />
                         </Border>
-                        <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Style="{ThemeResource CaptionTextBlockStyle}">
+                        <TextBlock
+                            Margin="10,0,0,0"
+                            VerticalAlignment="Center"
+                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                            Style="{ThemeResource CaptionTextBlockStyle}">
                             <Run Text="{Binding Edition}" />
                             <Run Text="{Binding Version}" />
                         </TextBlock>
@@ -141,6 +145,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="border.Margin" Value="20, 0, 20, 20" />
+                        <Setter Target="ReleaseInfoStackPanel.Orientation" Value="Horizontal" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

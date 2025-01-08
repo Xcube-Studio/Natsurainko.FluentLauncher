@@ -1,5 +1,6 @@
 ﻿#if FLUENT_LAUNCHER_PREVIEW_CHANNEL
 using Natsurainko.FluentLauncher.Services.Storage;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement.Downloader;
 using System;
 using System.Diagnostics;
@@ -26,7 +27,7 @@ internal partial class UpdateService
     public UpdateService(DownloadService downloadService, LocalStorageService localStorageService)
     {
         _httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0");
-        _httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("Natsurainko.FluentLauncher", Version.GetVersionString()));
+        _httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("Natsurainko.FluentLauncher", App.Version.GetVersionString()));
         _downloadService = downloadService;
         _localStorageService = localStorageService;
     }

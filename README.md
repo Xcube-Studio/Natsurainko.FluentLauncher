@@ -60,7 +60,9 @@
 <a href="https://apps.microsoft.com/detail/Natsurianko.FluentLauncher/9p4nqqxq942p">
 	<img src="https://get.microsoft.com/images/en-us%20dark.svg" width="200"/>
 </a>
-+ 手动安装 Releases 中的 msixbundle 包 [(如何安装 Msixbundle 包?)](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85-Msixbundle-%E5%8C%85)
+
++ 手动安装 Releases 中的 msixbundle 包 
+  + [如何安装 Msixbundle 包?](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85-Msixbundle-%E5%8C%85)
 
 ### *预览版通道 (Preview)*
 

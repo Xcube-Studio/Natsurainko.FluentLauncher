@@ -1,0 +1,11 @@
+name: Run-SyncService
+on:
+  workflow_dispatch:
+jobs:
+  steps:
+    - name: CallSync
+      run: |
+        curl -X POST https://api.github.com/repos/Xcube-Studio/Sync2Oss/dispatches \
+        -H "Accept: application/vnd.github.everest-preview+json" \
+        -H "Authorization: token ${{ secrets.GIT_HUB_ACCESS_TOKEN }}" \
+        --data '{"event_type": "FLPreview"}'

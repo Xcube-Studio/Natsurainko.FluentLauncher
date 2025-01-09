@@ -190,3 +190,6 @@ jobs:
           prerelease: true
           tag: "pre-release-v${{ env.currentPreviewVersion }}-${{ env.commit }}"
           bodyFile: "${{ github.workspace }}\\body.md"
+      
+      - name: CallSyncSerivce
+        uses: ./.github/workflows/RunSyncService.yml

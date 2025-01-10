@@ -6,9 +6,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Utils;
-using Nrk.FluentCore.GameManagement.Downloader;
 using System.Text.Json.Nodes;
-using System.Threading;
 using System.Threading.Tasks;
 
 #nullable disable
@@ -56,7 +54,7 @@ internal partial class UpdateDialogViewModel : ObservableObject, IDialogParamete
     public partial bool UseProxy { get; set; }
 
     [ObservableProperty]
-    public partial string ProxyUrl { get; set; }
+    public partial string ProxyUrl { get; set; } = "https://source.cubestructor.cc";
 
     public Visibility ProxyBoxVisibility => UseProxy ? Visibility.Visible : Visibility.Collapsed;
 
@@ -89,6 +87,7 @@ internal partial class UpdateDialogViewModel : ObservableObject, IDialogParamete
 
         #region Check for installer update
         ActionName = "Check Package Installer Update";
+        ProxyUrl = ProxyUrl.TrimEnd("//".ToCharArray()).TrimEnd('/') + "/";
 
         var (installerHasUpate, installerDownloadUrl) = await _updateService.CheckInstallerUpdateRelease();
 

@@ -1,7 +1,7 @@
 name: Run-SyncService
 on:
   workflow_call:
-
+  workflow_dispatch:
 jobs:
   Sync:
     runs-on: ubuntu-latest

@@ -1,11 +1,12 @@
 name: Run-SyncService
 on:
-  workflow_dispatch:
+  workflow_call:
+
 jobs:
-  Run-SyncService:
+  Sync:
     runs-on: ubuntu-latest
     steps:
-      - name: CallSync
+      - name: Call-Sync
         run: |
           curl -X POST https://api.github.com/repos/Xcube-Studio/Sync2Oss/dispatches \
           -H "Accept: application/vnd.github.everest-preview+json" \

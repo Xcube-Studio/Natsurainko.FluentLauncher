@@ -9,6 +9,10 @@
 专为 Windows 11 设计的 Minecraft 启动器  
 提供简洁、流畅的视觉体验
 
+<kbd>[<img title="Ukraine" alt="Ukraine" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Ukraine.svg/1280px-Flag_of_Ukraine.svg.png" width="22">](docs/README.ua.md)</kbd>
+<kbd>[<img title="Russia" alt="Russia" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Russia.svg/1280px-Flag_of_Russia.svg.png" width="22">](docs/README.ru.md)</kbd>
+<kbd>[<img title="English" alt="English" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/640px-Flag_of_the_United_Kingdom_%283-5%29.svg.png" width="22">](docs/README_EN.md)</kbd>
+
 ### [英文版 README 文档 / English README document](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/blob/main/docs/README_EN.md)
 
 ## 窗口截图 🪟

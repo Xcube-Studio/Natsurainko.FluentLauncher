@@ -1,6 +1,11 @@
 name: Run-SyncService
 on:
   workflow_call:
+    inputs:
+      ghp:
+        required: false
+        type: string
+        default: '${{secrets.GIT_HUB_ACCESS_TOKEN}}'
   workflow_dispatch:
 jobs:
   Sync:
@@ -10,5 +15,5 @@ jobs:
         run: |
           curl -X POST https://api.github.com/repos/Xcube-Studio/Sync2Oss/dispatches \
           -H "Accept: application/vnd.github.everest-preview+json" \
-          -H "Authorization: token ${{ secrets.GIT_HUB_ACCESS_TOKEN }}" \
+          -H "Authorization: token ${{ inputs.ghp }}" \
           --data '{"event_type": "FLPreview"}'

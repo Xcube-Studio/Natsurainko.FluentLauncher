@@ -7,6 +7,11 @@ on:
         type: string
         default: '${{secrets.GIT_HUB_ACCESS_TOKEN}}'
   workflow_dispatch:
+    inputs:
+        ghp:
+          required: false
+          type: string
+          default: '${{secrets.GIT_HUB_ACCESS_TOKEN}}'
 jobs:
   Sync:
     runs-on: ubuntu-latest

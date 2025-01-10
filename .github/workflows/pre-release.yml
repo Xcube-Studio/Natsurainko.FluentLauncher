@@ -195,3 +195,5 @@ jobs:
     name: Sync
     needs: Release
     uses: ./.github/workflows/run-sync.yml
+    secrets: inherit
+      

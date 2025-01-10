@@ -193,4 +193,5 @@ jobs:
 
   Sync:
     name: Sync
+    needs: Release
     uses: ./.github/workflows/run-sync.yml

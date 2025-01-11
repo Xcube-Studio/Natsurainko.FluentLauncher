@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
@@ -147,20 +148,14 @@ internal partial class LoggerItem : ObservableObject
 {
     public LoggerItem(GameLoggerOutput output)
     {
-        App.DispatcherQueue.TryEnqueue(() =>
-        {
-            var richTextBlock = new RichTextBlock();
-            LoggerColorLightLanguage.Formatter.FormatRichTextBlock(output.FullData, new LoggerColorLightLanguage(), richTextBlock);
-            RichTextBlock = richTextBlock;
-        });
+        Output = output;
 
         ErrorVisibility = (output.Level == GameLoggerOutputLevel.Error || output.Level == GameLoggerOutputLevel.Fatal)
             ? Visibility.Visible
             : Visibility.Collapsed;
     }
 
-    [ObservableProperty]
-    public partial RichTextBlock RichTextBlock { get; set; }
+    public GameLoggerOutput Output { get; set; }
 
     [ObservableProperty]
     public partial Visibility ErrorVisibility { get; set; }

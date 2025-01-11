@@ -2,7 +2,10 @@
     x:Class="Natsurainko.FluentLauncher.Views.LoggerPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:pages="using:Natsurainko.FluentLauncher.ViewModels.Pages"
     d:DataContext="{d:DesignInstance Type=pages:LoggerViewModel}"
@@ -113,26 +116,27 @@
                 Padding="15,10"
                 x:FieldModifier="public">
                 <StackPanel>
-                    <ItemsRepeater ItemsSource="{x:Bind VM.FilterLoggerItems, Mode=OneWay}">
-                        <ItemsRepeater.ItemTemplate>
+                    <ItemsView ItemsSource="{x:Bind VM.FilterLoggerItems, Mode=OneWay}">
+                        <ItemsView.ItemTemplate>
                             <DataTemplate x:DataType="pages:LoggerItem">
-                                <Grid>
-                                    <Rectangle
-                                        Width="4"
-                                        Margin="-8"
-                                        HorizontalAlignment="Right"
-                                        Fill="Red"
-                                        Opacity="0.5"
-                                        Visibility="{x:Bind ErrorVisibility, Mode=OneWay}" />
-                                    <ContentControl
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        Content="{x:Bind RichTextBlock, Mode=OneWay}"
-                                        FontWeight="SemiBold" />
-                                </Grid>
+                                <ItemContainer>
+                                    <Grid>
+                                        <Rectangle
+                                            Width="4"
+                                            Margin="-8"
+                                            HorizontalAlignment="Right"
+                                            Fill="Red"
+                                            Opacity="0.5"
+                                            Visibility="{x:Bind ErrorVisibility, Mode=OneWay}" />
+                                        <Border
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            Child="{x:Bind Output, Converter={StaticResource LoggerItemConverter}}" />
+                                    </Grid>
+                                </ItemContainer>
                             </DataTemplate>
-                        </ItemsRepeater.ItemTemplate>
-                    </ItemsRepeater>
+                        </ItemsView.ItemTemplate>
+                    </ItemsView>
                     <Border Height="150" />
                 </StackPanel>
             </ScrollViewer>

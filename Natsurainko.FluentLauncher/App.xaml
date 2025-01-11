@@ -84,12 +84,14 @@
 
             <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-            <converters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" Inverted="true"/>
+            <converters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" Inverted="true" />
             <converters:ColorHexCodeConverter x:Key="ColorHexCodeConverter" />
 
             <converters:ResourceAuthorsConverter x:Key="ResourceAuthorsConverter" />
             <converters:SuggestionIconConverter x:Key="SuggestionIconConverter" />
             <converters:RadioButtonSelectedIndexConverter x:Key="RadioButtonSelectedIndexConverter" />
+
+            <converters:LoggerItemConverter x:Key="LoggerItemConverter" />
 
             <Style
                 x:Key="SettingsSectionHeaderTextBlockStyle"

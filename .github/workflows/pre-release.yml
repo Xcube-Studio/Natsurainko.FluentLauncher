@@ -188,7 +188,7 @@ jobs:
           allowUpdates: true
           generateReleaseNotes: true
           prerelease: true
-          tag: "pre-release-v${{ env.currentPreviewVersion }}-${{ env.commit }}"
+          tag: "pre-release-v${{ env.currentPreviewVersion }}"
           bodyFile: "${{ github.workspace }}\\body.md"
 
   Sync:

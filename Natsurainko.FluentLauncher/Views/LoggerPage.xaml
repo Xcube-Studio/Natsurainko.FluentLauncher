@@ -116,27 +116,25 @@
                 Padding="15,10"
                 x:FieldModifier="public">
                 <StackPanel>
-                    <ItemsView ItemsSource="{x:Bind VM.FilterLoggerItems, Mode=OneWay}">
-                        <ItemsView.ItemTemplate>
+                    <ItemsRepeater ItemsSource="{x:Bind VM.FilterLoggerItems, Mode=OneWay}">
+                        <ItemsRepeater.ItemTemplate>
                             <DataTemplate x:DataType="pages:LoggerItem">
-                                <ItemContainer>
-                                    <Grid>
-                                        <Rectangle
-                                            Width="4"
-                                            Margin="-8"
-                                            HorizontalAlignment="Right"
-                                            Fill="Red"
-                                            Opacity="0.5"
-                                            Visibility="{x:Bind ErrorVisibility, Mode=OneWay}" />
-                                        <Border
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Center"
-                                            Child="{x:Bind Output, Converter={StaticResource LoggerItemConverter}}" />
-                                    </Grid>
-                                </ItemContainer>
+                                <Grid>
+                                    <Rectangle
+                                        Width="4"
+                                        Margin="-8"
+                                        HorizontalAlignment="Right"
+                                        Fill="Red"
+                                        Opacity="0.5"
+                                        Visibility="{x:Bind ErrorVisibility, Mode=OneWay}" />
+                                    <Border
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Child="{x:Bind Output, Converter={StaticResource LoggerItemConverter}}" />
+                                </Grid>
                             </DataTemplate>
-                        </ItemsView.ItemTemplate>
-                    </ItemsView>
+                        </ItemsRepeater.ItemTemplate>
+                    </ItemsRepeater>
                     <Border Height="150" />
                 </StackPanel>
             </ScrollViewer>

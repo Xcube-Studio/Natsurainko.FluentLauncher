@@ -15,7 +15,7 @@
             Padding="16,10"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Stretch"
-            IsExpanded="{Binding IsExpanded}">
+            IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
             <Expander.Header>
                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid.ColumnDefinitions>

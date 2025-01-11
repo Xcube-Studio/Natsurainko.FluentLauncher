@@ -68,7 +68,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
             PaneToggleButtonGrid.Translation += new System.Numerics.Vector3(20, 0, 0);
         }
 
-        Column2.MinWidth = e.NewSize.Width >= 680 ? 48 : 150;
+        Column2.MinWidth = e.NewSize.Width >= 680 ? 48 : 155;
 
         NavigationViewControl.PaneDisplayMode = e.NewSize.Width <= 640 ? NavigationViewPaneDisplayMode.LeftMinimal : NavigationViewPaneDisplayMode.LeftCompact;
         TopNavViewPaneToggleButtonsBorder.Width = e.NewSize.Width <= 640 ? 120 : 48;

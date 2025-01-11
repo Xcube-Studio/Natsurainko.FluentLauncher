@@ -17,10 +17,10 @@ using Nrk.FluentCore.GameManagement.Installer;
 using Nrk.FluentCore.GameManagement.Instances;
 using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Utils;
-using PInvoke;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -28,6 +28,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
+using Windows.Win32;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
 
@@ -431,7 +432,7 @@ internal class LaunchService
                 {
                     while (mcProcess.State == MinecraftProcessState.Running)
                     {
-                        User32.SetWindowText(mcProcess.MainWindowHandle, preCheckData.GameWindowTitle);
+                        PInvoke.SetWindowText((Windows.Win32.Foundation.HWND)mcProcess.MainWindowHandle, preCheckData.GameWindowTitle);
                         await Task.Delay(1000);
                     }
                 }

@@ -5,7 +5,7 @@ $absoluteManifestPath = Resolve-Path -Path $manifestPath
 $version = $xmlContent.Package.Identity.Version
 Write-Output "Stable Identity.Version: $version"
 
-$url = "https://github.com/Xcube-Studio/FluentLauncher.PreviewChannel.PackageInstaller/releases/download/v0.0.1/PackageInstaller-x64.exe"
+$url = "https://github.com/Xcube-Studio/FluentLauncher.PreviewChannel.PackageInstaller/releases/download/v0.0.2/PackageInstaller-x64.exe"
 $installerPath = "PackageInstaller-64.exe"
 
 $ErrorActionPreference = "Stop"

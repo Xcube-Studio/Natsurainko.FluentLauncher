@@ -160,7 +160,7 @@ jobs:
           $version = $xmlContent.Package.Identity.Version
           $commit = $env:GITHUB_SHA.Substring(0, 7)
 
-          $url = "https://github.com/Xcube-Studio/FluentLauncher.PreviewChannel.PackageInstaller/releases/download/v0.0.1/PackageInstaller-x64.exe"
+          $url = "https://github.com/Xcube-Studio/FluentLauncher.PreviewChannel.PackageInstaller/releases/download/v0.0.2/PackageInstaller-x64.exe"
           $installerPath = "PackageInstaller-x64.exe"
 
           $ErrorActionPreference = "Stop"
@@ -190,3 +190,10 @@ jobs:
           prerelease: true
           tag: "pre-release-v${{ env.currentPreviewVersion }}-${{ env.commit }}"
           bodyFile: "${{ github.workspace }}\\body.md"
+
+  Sync:
+    name: Sync
+    needs: Release
+    uses: ./.github/workflows/run-sync.yml
+    secrets: inherit
+      

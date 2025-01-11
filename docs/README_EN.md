@@ -1,4 +1,4 @@
-# <img src="https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/blob/main/docs/images/AppIcon.png" alt="Logo" width="24" height="24"> Fluent Launcher
+# <img src="../docs/images/AppIcon.png" alt="Logo" width="24" height="24"> Fluent Launcher
 ![](https://img.shields.io/badge/license-MIT-green)
 ![](https://img.shields.io/github/repo-size/Xcube-Studio/Natsurainko.FluentLauncher)
 ![](https://img.shields.io/github/stars/Xcube-Studio/Natsurainko.FluentLauncher)
@@ -10,17 +10,17 @@ Minecraft launcher for Windows 11
 Provides a clean and smooth visual experience
 
 ## Screenshots 🪟
-<img src="images/image5.png">
+<img src="../docs/images/home.png">
 
 ## Future Plans 📝
 
 | Functions | Status |
 | ---------------------------------------- | ------------------ |
-| Asynchronising the startup process (waiting for FluentCore update) | [ ] |
-| Importing Game Packs | [ ] | 
-| NativeAOT support (awaiting Windows App SDK update) | [ ] |
-| Upgrade to CommunityToolkit 8.1 (awaiting release) | Preview Version Testing [ ] |
-| Skin Management and 3D Preview | Finished [x] |
+| NativeAOT support | In progress [ ] |
+| Distributed in Stable, Preview, Dev channels | In progress [ ] |
+| Upgrade to CommunityToolkit 8.1 | Blocked by MarkdownTextBlock [ ] |
+| OAuth support for Little Skin | [ ] |
+| Game integration package import | [ ] |
 
 ## List of Functions ✨
 
@@ -48,19 +48,32 @@ Provides a clean and smooth visual experience
   + [x] Download resources from CurseForge
   + [x] Download resources from Modrinth
 
-## Install this application ✈️
+## Application Distribution ✈️
 
-#### *[.NET 8 Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) must be installed (regardless of the source)*
-> Note: 2.2.9.0 and earlier versions are compiled with .net7.0, 2.3.0.0 (unreleased) will be compiled with .net8.0
+#### *[.NET 8 runtime](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0) must be installed to run the application (regardless of which channel you install it from)*
 
-+ Get our app from the Microsoft Store
+### *Stable Channel*
+
++ Get our app from the Microsoft Store  
 <a href="https://apps.microsoft.com/detail/Natsurianko.FluentLauncher/9p4nqqxq942p">
-	<img src="https://get.microsoft.com/images/en-us%20dark.svg" width="200"/>
+  <img src="https://get.microsoft.com/images/en-us%20dark.svg" width="200"/>
 </a>
 
-+ Download the msixbundle for the latest Build from Action and install it manually.
-  	+ [How to install Msixbundle package?](https://github-com.translate.goog/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85-Msixbundle-%E5%8C%85?_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=wapp)
-+ Clone this repository and compile the program manually from the source code
++ Manually install the msixbundle package in Releases
+	+ [How to install Msixbundle package?](https://github-com.translate.goog/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85-Msixbundle-%E5%8C%85?_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=wapp)
+
+### *Preview Channel*
+
++ Download [FluentLauncher.PreviewChannel.PackageInstaller](https://github.com/Xcube-Studio/FluentLauncher.PreviewChannel.PackageInstaller/releases/tag/v0.0.2) and the Preview update package in Releases (such as `updatePackage-x64.zip` file) **(Please download the file that suits your system architecture)**
++ Put both in the same directory
++ Run FluentLauncher.PreviewChannel.PackageInstaller
+
+*Preview channel supports app self-update, you can check for updates in `Settings-About` page*
+
+### *Dev Channel*
+
+Clone this repository and compile the program manually from source code
+For details on compilation, see [How to compile the source code](#Developments)
 
 ## Developments 🔧
 

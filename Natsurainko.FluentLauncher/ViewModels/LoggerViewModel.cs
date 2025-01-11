@@ -64,11 +64,13 @@ internal partial class LoggerViewModel : ObservableObject
         var saveFileDialog = new SaveFileDialog { FileName = "latest.log" };
 
         if (saveFileDialog.ShowDialog().GetValueOrDefault())
+        {
             File.WriteAllLines(saveFileDialog.FileName, _gameLoggerOutputs.Select(x => x.FullData));
 
-        App.GetService<NotificationService>().NotifyWithoutContent(
-            ResourceUtils.GetValue("Notifications", "_ExportLog"),
-            icon: "\ue74e");
+            App.GetService<NotificationService>().NotifyWithoutContent(
+                ResourceUtils.GetValue("Notifications", "_ExportLog"),
+                icon: "\ue74e");
+        }
     }
 
     private void EnabledLevel_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

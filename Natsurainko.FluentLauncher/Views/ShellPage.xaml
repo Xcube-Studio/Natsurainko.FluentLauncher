@@ -363,7 +363,7 @@
                 <ColumnDefinition
                     x:Name="Column2"
                     Width="Auto"
-                    MinWidth="150" />
+                    MinWidth="155" />
             </Grid.ColumnDefinitions>
 
             <Border

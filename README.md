@@ -9,20 +9,32 @@
 专为 Windows 11 设计的 Minecraft 启动器  
 提供简洁、流畅的视觉体验
 
-### [英文版 README 文档 / English README document](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/blob/main/docs/README_EN.md)
+<details>
+
+<summary> README IN OTHER LANGUAGES </summary>
+
+### README IN OTHER LANGUAGES
+
+[**English README**](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/blob/main/docs/README_EN.md)  
+[**Russia README**](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/blob/main/docs/README_ru.md)  
+[**Ukraine README**](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/blob/main/docs/README_ua.md)  
+
+> README_ru & README_ua contributed by @BANSAFAn
+
+</details>
 
 ## 窗口截图 🪟
-<img src="docs/images/image0.png">
+<img src="docs/images/home.png">
 
 ## 未来路线计划 📝
 
 | 功能                                     | 状态               |
 | ---------------------------------------- | ------------------ |
-| NativeAOT 支持                            | In progress [ ]                     |
-| 分 Stable、Preview、Dev 通道分发           | In progress [ ]                     |
-| 升级到 CommunityToolkit 8.1               | Blocked by MarkdownTextBlock [ ]    |
-| Little Skin 的 OAuth 支持                 | [ ]                                 |
-| 游戏整合包导入                             | [ ]                                 |
+| NativeAOT 支持                            | 进行中 [ ] |
+| 分 Stable、Preview、Dev 通道分发           | 进行中 [ ] |
+| 升级到 CommunityToolkit 8.1               | Blocked by MarkdownTextBlock [ ] |
+| Little Skin 的 OAuth 支持                 | [ ] |
+| 游戏整合包导入                             | [ ] |
 
 ## 功能列表 ✨
 
@@ -50,18 +62,32 @@
   + [x] 下载 CurseForge 上的资源
   + [x] 下载 Modrinth 上的资源
 
-## 安装本应用 ✈️
+## 应用分发 ✈️
 
-#### *一定需要安装 [.NET 8 运行时](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0) (不论是从哪种渠道安装)*
+#### *一定需要安装才能运行应用 [.NET 8 运行时](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0) (不论是从哪种通道安装)*
 
-+ 从 Microsoft Store 获取我们的应用
+### *稳定版通道 (Stable)*
+
++ 从 Microsoft Store 安装  
 <a href="https://apps.microsoft.com/detail/Natsurianko.FluentLauncher/9p4nqqxq942p">
 	<img src="https://get.microsoft.com/images/en-us%20dark.svg" width="200"/>
 </a>
 
-+  从 Action 下载最近一次的 Build 的 msixbundle 安装包进行手动安装 
-	+ [如何安装 Msixbundle 包 ?](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85-Msixbundle-%E5%8C%85)
-+ 克隆本仓库，从源码手动编译程序
++ 手动安装 Releases 中的 msixbundle 包 
+  + [如何安装 Msixbundle 包?](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85-Msixbundle-%E5%8C%85)
+
+### *预览版通道 (Preview)*
+
++ 下载 [FluentLauncher.PreviewChannel.PackageInstaller](https://github.com/Xcube-Studio/FluentLauncher.PreviewChannel.PackageInstaller/releases/tag/v0.0.2) 以及 Releases 中的 Preview 更新包 (如 `updatePackage-x64.zip` 文件) **(请下载适合自己系统架构的文件)**
++ 将两者放在同一目录下
++ 运行 FluentLauncher.PreviewChannel.PackageInstaller 即可
+
+*预览版通道支持应用自更新，可以在 `设置-关于` 页面检查更新*
+
+### *开发板通道 (Dev)*
+
+克隆本仓库，从源码手动编译程序  
+编译详见 [如何编译源代码](#如何编译源代码)
 
 ## 开发事宜 🔧
 

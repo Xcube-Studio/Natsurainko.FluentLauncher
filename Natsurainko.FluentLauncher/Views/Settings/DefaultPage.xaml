@@ -91,7 +91,7 @@
                         <ImageIcon Source="ms-appx:///Assets/AppIcon.png" />
                     </controls:SettingsCard.HeaderIcon>
 
-                    <StackPanel>
+                    <StackPanel Name="ReleaseInfoStackPanel">
                         <Border
                             Padding="5,0"
                             HorizontalAlignment="Right"
@@ -103,7 +103,11 @@
                                 Style="{StaticResource CaptionTextBlockStyle}"
                                 Text="{x:Bind VM.Channel}" />
                         </Border>
-                        <TextBlock Foreground="{StaticResource ApplicationSecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextBlockStyle}">
+                        <TextBlock
+                            Margin="10,0,0,0"
+                            VerticalAlignment="Center"
+                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                            Style="{ThemeResource CaptionTextBlockStyle}">
                             <Run Text="{x:Bind VM.Edition}" />
                             <Run Text="{x:Bind VM.Version}" />
                         </TextBlock>
@@ -130,6 +134,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="border.Margin" Value="20, 0, 20, 20" />
+                        <Setter Target="ReleaseInfoStackPanel.Orientation" Value="Horizontal" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

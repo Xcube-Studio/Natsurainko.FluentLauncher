@@ -1,5 +1,6 @@
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Settings;
@@ -97,6 +98,7 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
         AppWindow.TitleBar.ButtonForegroundColor = BackgroundGrid.ActualTheme == ElementTheme.Light ? Colors.Black : Colors.White;
         AppWindow.TitleBar.ButtonHoverForegroundColor = BackgroundGrid.ActualTheme == ElementTheme.Light ? Colors.Black : Colors.White;
         AppWindow.TitleBar.ButtonHoverBackgroundColor = hoverColor;
+        AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
 
         (MinWidth, MinHeight) = _settingsService.FinishGuide ? (516, 328) : (_settingsService.AppWindowWidth, _settingsService.AppWindowHeight);
         (Width, Height) = (_settingsService.AppWindowWidth, _settingsService.AppWindowHeight);

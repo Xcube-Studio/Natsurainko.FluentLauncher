@@ -4,7 +4,6 @@
     <LangVersion>preview</LangVersion>
     <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
-    <WindowsSdkPackageVersion>10.0.22621.38</WindowsSdkPackageVersion>
     <RootNamespace>Natsurainko.FluentLauncher</RootNamespace>
     <Platforms>x64;ARM64</Platforms>
     <RuntimeIdentifier>win-$(Platform)</RuntimeIdentifier>
@@ -81,22 +80,24 @@
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
     <PackageReference Include="HelixToolkit.SharpDX.Assimp" Version="2.25.0" />
     <PackageReference Include="HelixToolkit.WinUI" Version="2.25.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.106">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
     <PackageReference Include="NbtToolkit" Version="0.1.2-beta" />
-    <PackageReference Include="PInvoke.User32" Version="0.7.124" />
     <PackageReference Include="ReverseMarkdown" Version="4.6.0" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
-    <PackageReference Include="System.Drawing.Common" Version="8.0.11" />
     <PackageReference Include="System.Management" Version="8.0.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+    <PackageReference Include="System.Text.Json" Version="9.0.0" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="WindowsAPICodePack.Shell.CommonFileDialogs" Version="1.1.5" />
-    <PackageReference Include="WinUIEx" Version="2.4.0" />
+    <PackageReference Include="WinUIEx" Version="2.5.0" />
 
     <!-- Projects -->
     <ProjectReference Include="..\infra\FluentLauncher.Infra.Settings.SourceGenerators\FluentLauncher.Infra.Settings.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
@@ -129,7 +130,6 @@
     </None>
     <None Remove="Assets\Icons\OptiFabricIcon.png" />
     <None Remove="Assets\MinecraftTen.ttf" />
-    <None Remove="Assets\PackageIcons\Dev\icon-dev.png" />
     <None Remove="Assets\PackageIcons\Dev\LargeTile.scale-100.png" />
     <None Remove="Assets\PackageIcons\Dev\LargeTile.scale-125.png" />
     <None Remove="Assets\PackageIcons\Dev\LargeTile.scale-150.png" />
@@ -180,7 +180,6 @@
     <None Remove="Assets\PackageIcons\Dev\Wide310x150Logo.scale-150.png" />
     <None Remove="Assets\PackageIcons\Dev\Wide310x150Logo.scale-200.png" />
     <None Remove="Assets\PackageIcons\Dev\Wide310x150Logo.scale-400.png" />
-    <None Remove="Assets\PackageIcons\Pre\icon-pre.png" />
     <None Remove="Assets\PackageIcons\Pre\LargeTile.scale-100.png" />
     <None Remove="Assets\PackageIcons\Pre\LargeTile.scale-125.png" />
     <None Remove="Assets\PackageIcons\Pre\LargeTile.scale-150.png" />

@@ -7,8 +7,6 @@ using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-using Natsurainko.FluentLauncher.ViewModels.Common;
-using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.GameManagement;
 using Nrk.FluentCore.GameManagement.Instances;
 using System;
@@ -23,7 +21,6 @@ namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
 internal partial class DefaultViewModel : ObservableObject, INavigationAware
 {
     private readonly INavigationService _navigationService;
-    private readonly GameService _gameService;
     private readonly NotificationService _notificationService;
     private readonly QuickLaunchService _quickLaunchService;
     private readonly IDialogActivationService<ContentDialogResult> _dialogs;
@@ -36,13 +33,11 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     public partial InstanceConfig InstanceConfig { get; set; }
 
     public DefaultViewModel(
-        GameService gameService, 
         INavigationService navigationService, 
         NotificationService notificationService,
         QuickLaunchService quickLaunchService,
         IDialogActivationService<ContentDialogResult> dialogs)
     {
-        _gameService = gameService;
         _navigationService = navigationService;
         _notificationService = notificationService;
         _quickLaunchService = quickLaunchService;
@@ -107,7 +102,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     public async Task OpenVersionFolder() => await Launcher.LaunchFolderPathAsync(MinecraftInstance.GetGameDirectory());
 
     [RelayCommand]
-    public async Task DeleteGame() => await _dialogs.ShowAsync("DeleteInstanceDialog", MinecraftInstance);
+    public async Task DeleteGame() => await _dialogs.ShowAsync("DeleteInstanceDialog", (MinecraftInstance, _navigationService));
 
     protected override async void OnPropertyChanged(PropertyChangedEventArgs e)
     {

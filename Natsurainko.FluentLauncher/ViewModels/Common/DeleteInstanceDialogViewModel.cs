@@ -16,11 +16,11 @@ namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
 internal partial class DeleteInstanceDialogViewModel : ObservableObject, IDialogParameterAware
 {
-    private readonly INavigationService _navigationService;
     private readonly NotificationService _notificationService;
     private readonly GameService _gameService;
-    private MinecraftInstance _minecraftInstance = null!;
 
+    private MinecraftInstance _minecraftInstance = null!;
+    private INavigationService _navigationService = null!;
     private ContentDialog _dialog = null!; // Set in LoadEvent
 
     public string Title => $"\"{_minecraftInstance.InstanceId}\"";
@@ -29,18 +29,19 @@ internal partial class DeleteInstanceDialogViewModel : ObservableObject, IDialog
     public partial bool DeleteCoreSettings { get; set; } = true;
 
     public DeleteInstanceDialogViewModel(
-        INavigationService navigationService,
         NotificationService notificationService,
         GameService gameService)
     {
-        _navigationService = navigationService;
         _notificationService = notificationService;
         _gameService = gameService;
     }
 
     void IDialogParameterAware.HandleParameter(object param)
     {
-        _minecraftInstance = (MinecraftInstance)param;
+        var (instance, service) = ((MinecraftInstance, INavigationService))param;
+
+        _navigationService = service;
+        _minecraftInstance = instance;
     }
 
     [RelayCommand]

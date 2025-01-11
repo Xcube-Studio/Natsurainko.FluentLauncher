@@ -7,7 +7,7 @@ using System.Collections.Generic;
 #nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
-public class SaveInfoConverter : IValueConverter
+public partial class SaveInfoConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {

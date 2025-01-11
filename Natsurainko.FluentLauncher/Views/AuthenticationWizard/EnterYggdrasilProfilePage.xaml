@@ -17,10 +17,10 @@
         Spacing="10">
         <i:Interaction.Behaviors>
             <core:EventTriggerBehavior EventName="DragEnter">
-                <actions:ModifiedInvokeCommandAction Command="{Binding DragEnterEventCommand}" />
+                <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.DragEnterEventCommand}" />
             </core:EventTriggerBehavior>
             <core:EventTriggerBehavior EventName="Drop">
-                <actions:ModifiedInvokeCommandAction Command="{Binding DropEventCommand}" />
+                <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.DropEventCommand}" />
             </core:EventTriggerBehavior>
         </i:Interaction.Behaviors>
 
@@ -28,16 +28,16 @@
             x:Uid="AuthenticationWizard_EnterYggdrasilProfilePage_TB1"
             BorderBrush="{ThemeResource ButtonBorderBrush}"
             PlaceholderText="Yggdrasil Server Url:"
-            Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            Text="{x:Bind VM.Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <TextBox
             x:Uid="AuthenticationWizard_EnterYggdrasilProfilePage_TB2"
             BorderBrush="{ThemeResource ButtonBorderBrush}"
             PlaceholderText="Email:"
-            Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            Text="{x:Bind VM.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <PasswordBox
             x:Uid="AuthenticationWizard_EnterYggdrasilProfilePage_TB3"
             BorderBrush="{ThemeResource ButtonBorderBrush}"
-            Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Password="{x:Bind VM.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             PlaceholderText="Password:" />
     </StackPanel>
 </Page>

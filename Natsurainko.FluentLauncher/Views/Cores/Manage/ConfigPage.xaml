@@ -8,6 +8,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    xmlns:data="using:Nrk.FluentCore.Authentication"
     Unloaded="Page_Unloaded"
     mc:Ignorable="d">
 
@@ -27,13 +28,13 @@
                     Description="Only if you enable this item, the following settings will take effect"
                     Header="Enable specific core settings"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
-                    <ToggleSwitch IsOn="{Binding InstanceConfig.EnableSpecialSetting, Mode=TwoWay}" />
+                    <ToggleSwitch IsOn="{x:Bind VM.InstanceConfig.EnableSpecialSetting, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
                 <ContentControl
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Stretch"
-                    IsEnabled="{Binding InstanceConfig.EnableSpecialSetting}">
+                    IsEnabled="{x:Bind VM.InstanceConfig.EnableSpecialSetting, Mode=OneWay}">
                     <StackPanel Spacing="4">
                         <TextBlock
                             x:Uid="Cores_Manage_ConfigPage_T1"
@@ -45,7 +46,7 @@
                             Description="The game will run at versions\${version} directory"
                             Header="Core independent"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
-                            <ToggleSwitch IsOn="{Binding InstanceConfig.EnableIndependencyCore, Mode=TwoWay}" />
+                            <ToggleSwitch IsOn="{x:Bind VM.InstanceConfig.EnableIndependencyCore, Mode=TwoWay}" />
                         </controls:SettingsCard>
 
                         <controls:SettingsCard
@@ -53,7 +54,7 @@
                             Description="Automatic full screen mode after entering the game"
                             Header="Full Screen Mode"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE740;}">
-                            <ToggleSwitch IsOn="{Binding InstanceConfig.EnableFullScreen, Mode=TwoWay}" />
+                            <ToggleSwitch IsOn="{x:Bind VM.InstanceConfig.EnableFullScreen, Mode=TwoWay}" />
                         </controls:SettingsCard>
 
                         <controls:SettingsCard
@@ -65,12 +66,12 @@
                                 <NumberBox
                                     Width="100"
                                     Minimum="0"
-                                    Value="{Binding InstanceConfig.GameWindowWidth, Mode=TwoWay}" />
+                                    Value="{x:Bind VM.InstanceConfig.GameWindowWidth, Mode=TwoWay}" />
                                 <FontIcon FontSize="14" Glyph="&#xe947;" />
                                 <NumberBox
                                     Width="100"
                                     Minimum="0"
-                                    Value="{Binding InstanceConfig.GameWindowHeight, Mode=TwoWay}" />
+                                    Value="{x:Bind VM.InstanceConfig.GameWindowHeight, Mode=TwoWay}" />
                             </StackPanel>
                         </controls:SettingsCard>
 
@@ -79,7 +80,7 @@
                             Description="The server address to connect after entering the game"
                             Header="Server Address"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE967;}">
-                            <TextBox Width="400" Text="{Binding InstanceConfig.ServerAddress, Mode=TwoWay}">
+                            <TextBox Width="400" Text="{x:Bind VM.InstanceConfig.ServerAddress, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                                 </i:Interaction.Behaviors>
@@ -90,7 +91,7 @@
                             x:Uid="Cores_Manage_ConfigPage_Card6"
                             Header="Game Window Title"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE76F;}">
-                            <TextBox Width="400" Text="{Binding InstanceConfig.GameWindowTitle, Mode=TwoWay}">
+                            <TextBox Width="400" Text="{x:Bind VM.InstanceConfig.GameWindowTitle, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                                 </i:Interaction.Behaviors>
@@ -111,11 +112,11 @@
                                 <ComboBox
                                     x:Name="ComboBox"
                                     Width="150"
-                                    IsEnabled="{Binding ElementName=AccountToggleSwitch, Path=IsOn}"
-                                    ItemsSource="{Binding Accounts}"
-                                    SelectedItem="{Binding TargetedAccount, Mode=TwoWay}">
+                                    IsEnabled="{x:Bind AccountToggleSwitch.IsOn, Mode=OneWay}"
+                                    ItemsSource="{x:Bind VM.Accounts, Mode=OneTime}"
+                                    SelectedItem="{x:Bind VM.TargetedAccount, Mode=TwoWay}">
                                     <ComboBox.ItemTemplate>
-                                        <DataTemplate>
+                                        <DataTemplate x:DataType="data:Account">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto" />
@@ -130,7 +131,7 @@
                                                     Grid.Row="0"
                                                     Grid.Column="2"
                                                     FontWeight="SemiBold"
-                                                    Text="{Binding Name}"
+                                                    Text="{x:Bind Name}"
                                                     TextTrimming="CharacterEllipsis" />
                                                 <TextBlock
                                                     Grid.Row="1"
@@ -140,16 +141,8 @@
                                                     Style="{ThemeResource CaptionTextBlockStyle}"
                                                     TextTrimming="CharacterEllipsis"
                                                     TextWrapping="NoWrap">
-                                                    <Run Text="{Binding Type, Converter={ThemeResource AccountInfoConverter}}" />
-                                                    <Run>
-                                                        <Run.Text>
-                                                            <Binding Converter="{ThemeResource AccountInfoConverter}">
-                                                                <Binding.ConverterParameter>
-                                                                    <x:String>YggdrasilServerUrl</x:String>
-                                                                </Binding.ConverterParameter>
-                                                            </Binding>
-                                                        </Run.Text>
-                                                    </Run>
+                                                    <Run Text="{x:Bind Type, Converter={StaticResource AccountInfoConverter}}" />
+                                                    <Run Text="{x:Bind Converter={StaticResource AccountInfoConverter}, ConverterParameter='YggdrasilServerUrl'}"/>
                                                 </TextBlock>
                                             </Grid>
                                         </DataTemplate>
@@ -158,7 +151,7 @@
                                         <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                                     </i:Interaction.Behaviors>
                                 </ComboBox>
-                                <ToggleSwitch Name="AccountToggleSwitch" IsOn="{Binding InstanceConfig.EnableTargetedAccount, Mode=TwoWay}" />
+                                <ToggleSwitch Name="AccountToggleSwitch" IsOn="{x:Bind VM.InstanceConfig.EnableTargetedAccount, Mode=TwoWay}" />
                             </StackPanel>
                         </controls:SettingsCard>
 
@@ -173,14 +166,14 @@
                             Header="Additional JVM parameter settings"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE713;}"
                             IsExpanded="True"
-                            ItemsSource="{Binding VmArguments}">
+                            ItemsSource="{x:Bind VM.VmArguments, Mode=OneWay}">
                             <controls:SettingsExpander.ItemTemplate>
-                                <DataTemplate>
+                                <DataTemplate x:DataType="x:String">
                                     <controls:SettingsCard>
                                         <controls:SettingsCard.Header>
-                                            <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                            <TextBlock Text="{x:Bind}" TextTrimming="CharacterEllipsis" />
                                         </controls:SettingsCard.Header>
-                                        <Button Grid.Column="2" CommandParameter="{Binding}">
+                                        <Button Grid.Column="2" CommandParameter="{x:Bind}">
                                             <StackPanel Orientation="Horizontal" Spacing="5">
                                                 <FontIcon FontSize="16" Glyph="&#xE738;" />
                                                 <TextBlock x:Uid="Buttons_Remove" Text="Remove" />
@@ -197,7 +190,7 @@
                                 </DataTemplate>
                             </controls:SettingsExpander.ItemTemplate>
 
-                            <Button Command="{Binding AddArgumentCommand}">
+                            <Button Command="{x:Bind VM.AddArgumentCommand}">
                                 <StackPanel Orientation="Horizontal" Spacing="5">
                                     <FontIcon FontSize="16" Glyph="&#xE710;" />
                                     <TextBlock x:Uid="Buttons_Add" Text="Add" />

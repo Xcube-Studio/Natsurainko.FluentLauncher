@@ -101,7 +101,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     bool CanNext() => CurrentPageIndex switch
     {
         // Language page
-        0 => Languages.Contains(CurrentLanguage),
+        0 => ResourceUtils.Languages.Contains(CurrentLanguage),
         // Minecraft folder page
         1 => !string.IsNullOrEmpty(ActiveMinecraftFolder),
         // Java page
@@ -165,7 +165,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
 
     partial void OnCurrentLanguageChanged(string oldValue, string newValue)
     {
-        if (Languages.Contains(CurrentLanguage) && oldValue is not null) // oldValue is null at startup
+        if (ResourceUtils.Languages.Contains(CurrentLanguage) && oldValue is not null) // oldValue is null at startup
             ResourceUtils.ApplyLanguage(CurrentLanguage);
     }
 

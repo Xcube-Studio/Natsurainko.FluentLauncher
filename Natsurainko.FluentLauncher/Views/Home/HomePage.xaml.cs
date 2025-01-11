@@ -12,9 +12,11 @@ public sealed partial class HomePage : Page
 {
     private readonly SettingsService _settingsService = App.GetService<SettingsService>();
 
+    HomeViewModel VM => (HomeViewModel)DataContext;
+
     public HomePage()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 
     private void Page_Loaded(object sender, RoutedEventArgs e)

@@ -7,6 +7,7 @@
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Common"
     d:DataContext="{d:DesignInstance Type=vm:ExceptionDialogViewModel}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    x:DefaultBindMode="OneWay"
     mc:Ignorable="d">
 
     <Grid Padding="16,8,16,16">
@@ -35,7 +36,7 @@
             CornerRadius="5"
             HorizontalScrollBarVisibility="Auto">
             <Grid Margin="10,5,0,0">
-                <TextBlock IsTextSelectionEnabled="True" Text="{Binding ErrorMessage, Mode=OneTime}" />
+                <TextBlock IsTextSelectionEnabled="True" Text="{x:Bind VM.ErrorMessage, Mode=OneWay}" />
             </Grid>
         </ScrollViewer>
 
@@ -43,7 +44,7 @@
             x:Uid="ExceptionPage_Button"
             Grid.Row="2"
             Margin="0,8,0,0"
-            Command="{Binding CopyAndLaunchGitHubCommand}"
+            Command="{x:Bind VM.CopyAndLaunchGitHubCommand}"
             Content="Copy and go to GitHub"
             Style="{ThemeResource AccentButtonStyle}" />
     </Grid>

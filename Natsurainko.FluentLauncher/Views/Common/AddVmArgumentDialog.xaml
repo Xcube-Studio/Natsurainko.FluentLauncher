@@ -45,10 +45,10 @@
             Background="Transparent">
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="Loaded">
-                    <actions:ModifiedInvokeCommandAction Command="{Binding LoadEventCommand}" />
+                    <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadEventCommand}" />
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
-            <AutoSuggestBox Text="{Binding Argument, Mode=TwoWay}" />
+            <AutoSuggestBox Text="{x:Bind VM.Argument, Mode=TwoWay}" />
         </Grid>
         <Rectangle
             Grid.Row="1"
@@ -72,7 +72,7 @@
                 <Button
                     Grid.Column="0"
                     HorizontalAlignment="Stretch"
-                    Command="{Binding AddCommand}"
+                    Command="{x:Bind VM.AddCommand}"
                     ElementSoundMode="FocusOnly"
                     IsTabStop="False"
                     Style="{ThemeResource AccentButtonStyle}">
@@ -81,7 +81,7 @@
                 <Button
                     Grid.Column="2"
                     HorizontalAlignment="Stretch"
-                    Command="{Binding CancelCommand}"
+                    Command="{x:Bind VM.CancelCommand}"
                     ElementSoundMode="FocusOnly"
                     IsTabStop="False">
                     <TextBlock x:Uid="Buttons_Cancel" Text="Cancel" />

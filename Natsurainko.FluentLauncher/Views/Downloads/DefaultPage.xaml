@@ -10,6 +10,9 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.Media"
+    xmlns:data="using:Natsurainko.FluentLauncher.Models.UI"
+    xmlns:installer="using:Nrk.FluentCore.GameManagement.Installer"
+    xmlns:res="using:Nrk.FluentCore.Resources"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     Unloaded="Page_Unloaded"
     mc:Ignorable="d">
@@ -72,10 +75,10 @@
 
     <i:Interaction.Behaviors>
         <core:EventTriggerBehavior EventName="Unloaded">
-            <actions:ModifiedInvokeCommandAction Command="{Binding UnloadedCommand}" />
+            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.UnloadedCommand}" />
         </core:EventTriggerBehavior>
         <core:EventTriggerBehavior EventName="Loaded">
-            <actions:ModifiedInvokeCommandAction Command="{Binding LoadedCommand}" />
+            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadedCommand}" />
         </core:EventTriggerBehavior>
     </i:Interaction.Behaviors>
 
@@ -100,9 +103,9 @@
                     Height="400"
                     BorderBrush="{ThemeResource SettingsCardBorderBrush}"
                     BorderThickness="1"
-                    ItemsSource="{Binding PatchNoteDatas}">
+                    ItemsSource="{x:Bind VM.PatchNoteDatas, Mode=OneWay}">
                     <FlipView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="data:PatchNoteData">
                             <Grid CornerRadius="4">
                                 <Image
                                     HorizontalAlignment="Center"
@@ -111,7 +114,7 @@
                                     <i:Interaction.Behaviors>
                                         <bh:ImageSourceLoadBehavior
                                             x:Name="ImageSourceLoadBehavior"
-                                            ImageSourceUrl="{Binding ImageUrl}"
+                                            ImageSourceUrl="{x:Bind ImageUrl}"
                                             LoadFromInternet="True"
                                             SourcePropertyName="Source" />
                                     </i:Interaction.Behaviors>
@@ -129,12 +132,12 @@
                                         <TextBlock
                                             FontFamily="{ThemeResource MinecraftTen}"
                                             Style="{ThemeResource TitleLargeTextBlockStyle}"
-                                            Text="{Binding Title}"
+                                            Text="{x:Bind Title}"
                                             TextWrapping="WrapWholeWords" />
 
                                         <Button
                                             Height="32"
-                                            CommandParameter="{Binding}"
+                                            CommandParameter="{x:Bind}"
                                             Style="{ThemeResource AccentButtonStyle}">
                                             <StackPanel Orientation="Horizontal" Spacing="5">
                                                 <FontIcon FontSize="14" Glyph="&#xe896;" />
@@ -169,7 +172,7 @@
                     <HyperlinkButton
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        Command="{Binding SearchAllMinecarftCommand}">
+                        Command="{x:Bind VM.SearchAllMinecarftCommand}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <FontIcon FontSize="14" Glyph="&#xe71d;" />
                             <TextBlock x:Uid="Downloads_DefaultPage_Text2" Text="Show All.." />
@@ -177,7 +180,7 @@
                     </HyperlinkButton>
                 </Grid>
 
-                <ItemsRepeater ItemsSource="{Binding VersionManifestItems}">
+                <ItemsRepeater ItemsSource="{x:Bind VM.VersionManifestItems, Mode=OneWay}">
                     <ItemsRepeater.Layout>
                         <UniformGridLayout
                             ItemsJustification="Start"
@@ -186,14 +189,14 @@
                             MinItemWidth="300" />
                     </ItemsRepeater.Layout>
                     <ItemsRepeater.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="installer:VersionManifestItem">
                             <controls:SettingsCard
                                 Padding="20,0"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
                                 ActionIcon="{xh:FontIcon Glyph=&#xe896;}"
                                 BorderThickness="1"
-                                CommandParameter="{Binding}"
+                                CommandParameter="{x:Bind}"
                                 IsClickEnabled="True">
                                 <controls:SettingsCard.Header>
                                     <Grid Background="Transparent">
@@ -210,19 +213,19 @@
                                             BorderThickness="2"
                                             CornerRadius="4">
                                             <Border CornerRadius="4">
-                                                <Image Source="{Binding Converter={ThemeResource InstanceIconConverter}}" />
+                                                <Image Source="{x:Bind Converter={StaticResource InstanceIconConverter}}" />
                                             </Border>
                                         </Border>
                                         <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                             <TextBlock
                                                 Style="{ThemeResource BaseTextBlockStyle}"
-                                                Text="{Binding Id}"
+                                                Text="{x:Bind Id}"
                                                 TextTrimming="CharacterEllipsis"
                                                 TextWrapping="NoWrap" />
                                             <TextBlock
                                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                                 Style="{ThemeResource CaptionTextBlockStyle}"
-                                                Text="{Binding Converter={ThemeResource InstanceDescriptionConverter}}"
+                                                Text="{x:Bind Converter={StaticResource InstanceDescriptionConverter}}"
                                                 TextTrimming="CharacterEllipsis"
                                                 TextWrapping="NoWrap" />
                                         </StackPanel>
@@ -249,7 +252,7 @@
                     <HyperlinkButton
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        Command="{Binding SearchMoreCurseForgeCommand}">
+                        Command="{x:Bind VM.SearchMoreCurseForgeCommand}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <FontIcon FontSize="14" Glyph="&#xe721;" />
                             <TextBlock x:Uid="Downloads_DefaultPage_Text3" Text="Search More.." />
@@ -257,7 +260,7 @@
                     </HyperlinkButton>
                 </Grid>
 
-                <ItemsRepeater ItemsSource="{Binding CurseForgeResources}">
+                <ItemsRepeater ItemsSource="{x:Bind VM.CurseForgeResources, Mode=OneWay}">
                     <ItemsRepeater.Layout>
                         <UniformGridLayout
                             ItemsJustification="Start"
@@ -268,7 +271,7 @@
                             MinRowSpacing="4" />
                     </ItemsRepeater.Layout>
                     <ItemsRepeater.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="res:CurseForgeResource">
                             <Button
                                 Padding="16"
                                 HorizontalAlignment="Stretch"
@@ -276,7 +279,7 @@
                                 HorizontalContentAlignment="Stretch"
                                 VerticalContentAlignment="Stretch"
                                 BorderBrush="{ThemeResource SettingsCardBorderBrush}"
-                                CommandParameter="{Binding}">
+                                CommandParameter="{x:Bind}">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
@@ -303,7 +306,7 @@
                                                 <Image>
                                                     <i:Interaction.Behaviors>
                                                         <bh:ImageSourceLoadBehavior
-                                                            ImageSourceUrl="{Binding IconUrl}"
+                                                            ImageSourceUrl="{x:Bind IconUrl}"
                                                             LoadFromInternet="True"
                                                             SourcePropertyName="Source" />
                                                     </i:Interaction.Behaviors>
@@ -318,19 +321,19 @@
                                             </Grid.RowDefinitions>
                                             <TextBlock
                                                 Style="{ThemeResource BaseTextBlockStyle}"
-                                                Text="{Binding Name}"
+                                                Text="{x:Bind Name}"
                                                 TextWrapping="WrapWholeWords" />
-                                            <ItemsRepeater Grid.Row="2" ItemsSource="{Binding Authors}">
+                                            <ItemsRepeater Grid.Row="2" ItemsSource="{x:Bind Authors}">
                                                 <ItemsRepeater.Layout>
                                                     <controls:WrapLayout HorizontalSpacing="5" />
                                                 </ItemsRepeater.Layout>
                                                 <ItemsRepeater.ItemTemplate>
-                                                    <DataTemplate>
+                                                    <DataTemplate x:DataType="x:String">
                                                         <TextBlock
                                                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                                             Style="{ThemeResource CaptionTextBlockStyle}"
-                                                            Text="{Binding}"
-                                                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                                                            Text="{x:Bind}"
+                                                            ToolTipService.ToolTip="{x:Bind}" />
                                                     </DataTemplate>
                                                 </ItemsRepeater.ItemTemplate>
                                             </ItemsRepeater>
@@ -340,12 +343,12 @@
                                         Grid.Row="2"
                                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                         Style="{ThemeResource CaptionTextBlockStyle}"
-                                        Text="{Binding Summary}"
+                                        Text="{x:Bind Summary}"
                                         TextTrimming="CharacterEllipsis" />
                                     <Button
                                         Grid.Row="4"
                                         HorizontalAlignment="Stretch"
-                                        CommandParameter="{Binding}">
+                                        CommandParameter="{x:Bind}">
                                         <StackPanel Orientation="Horizontal" Spacing="10">
                                             <FontIcon FontSize="14" Glyph="&#xe896;" />
                                             <TextBlock x:Uid="Buttons_Download" Text="Download" />
@@ -368,7 +371,7 @@
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>
                 </ItemsRepeater>
-                <ProgressRing IsActive="{Binding LoadingCurseForgeResource}" Visibility="{Binding LoadingCurseForgeResource, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                <ProgressRing IsActive="{x:Bind VM.LoadingCurseForgeResource, Mode=OneWay}" Visibility="{x:Bind VM.LoadingCurseForgeResource, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                 <Grid Margin="1,30,0,6">
                     <TextBlock
@@ -379,7 +382,7 @@
                     <HyperlinkButton
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        Command="{Binding SearchMoreModrinthCommand}">
+                        Command="{x:Bind VM.SearchMoreModrinthCommand}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <FontIcon FontSize="14" Glyph="&#xe721;" />
                             <TextBlock x:Uid="Downloads_DefaultPage_Text3" Text="Search More.." />
@@ -387,7 +390,7 @@
                     </HyperlinkButton>
                 </Grid>
 
-                <ItemsRepeater ItemsSource="{Binding ModrinthResources}">
+                <ItemsRepeater ItemsSource="{x:Bind VM.ModrinthResources, Mode=OneWay}">
                     <ItemsRepeater.Layout>
                         <UniformGridLayout
                             ItemsJustification="Start"
@@ -398,7 +401,7 @@
                             MinRowSpacing="4" />
                     </ItemsRepeater.Layout>
                     <ItemsRepeater.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="res:ModrinthResource">
                             <Button
                                 Padding="16"
                                 HorizontalAlignment="Stretch"
@@ -406,7 +409,7 @@
                                 HorizontalContentAlignment="Stretch"
                                 VerticalContentAlignment="Stretch"
                                 BorderBrush="{ThemeResource SettingsCardBorderBrush}"
-                                CommandParameter="{Binding}">
+                                CommandParameter="{x:Bind}">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
@@ -433,7 +436,7 @@
                                                 <Image>
                                                     <i:Interaction.Behaviors>
                                                         <bh:ImageSourceLoadBehavior
-                                                            ImageSourceUrl="{Binding IconUrl}"
+                                                            ImageSourceUrl="{x:Bind IconUrl}"
                                                             LoadFromInternet="True"
                                                             SourcePropertyName="Source" />
                                                     </i:Interaction.Behaviors>
@@ -448,25 +451,25 @@
                                             </Grid.RowDefinitions>
                                             <TextBlock
                                                 Style="{ThemeResource BaseTextBlockStyle}"
-                                                Text="{Binding Name}"
+                                                Text="{x:Bind Name}"
                                                 TextWrapping="WrapWholeWords" />
                                             <TextBlock
                                                 Grid.Row="2"
                                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                                 Style="{ThemeResource CaptionTextBlockStyle}"
-                                                Text="{Binding Author}" />
+                                                Text="{x:Bind Author}" />
                                         </Grid>
                                     </Grid>
                                     <TextBlock
                                         Grid.Row="2"
                                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                         Style="{ThemeResource CaptionTextBlockStyle}"
-                                        Text="{Binding Summary}"
+                                        Text="{x:Bind Summary}"
                                         TextTrimming="CharacterEllipsis" />
                                     <Button
                                         Grid.Row="4"
                                         HorizontalAlignment="Stretch"
-                                        CommandParameter="{Binding}">
+                                        CommandParameter="{x:Bind}">
                                         <StackPanel Orientation="Horizontal" Spacing="10">
                                             <FontIcon FontSize="14" Glyph="&#xe896;" />
                                             <TextBlock x:Uid="Buttons_Download" Text="Download" />
@@ -489,7 +492,7 @@
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>
                 </ItemsRepeater>
-                <ProgressRing IsActive="{Binding LoadingModrinthResource}" Visibility="{Binding LoadingModrinthResource, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                <ProgressRing IsActive="{x:Bind VM.LoadingModrinthResource, Mode=OneWay}" Visibility="{x:Bind VM.LoadingModrinthResource, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
             </StackPanel>
         </Border>
 

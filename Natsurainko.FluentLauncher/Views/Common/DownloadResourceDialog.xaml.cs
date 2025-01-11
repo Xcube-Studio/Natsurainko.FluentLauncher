@@ -7,10 +7,12 @@ namespace Natsurainko.FluentLauncher.Views.Common;
 
 public sealed partial class DownloadResourceDialog : ContentDialog
 {
-    public DownloadResourceDialog(SettingsService _settingsService)
+    DownloadResourceDialogViewModel VM => (DownloadResourceDialogViewModel)DataContext;
+
+    public DownloadResourceDialog(SettingsService settingsService)
     {
         InitializeComponent();
-        this.RequestedTheme = (ElementTheme)_settingsService.DisplayTheme;
+        RequestedTheme = (ElementTheme)settingsService.DisplayTheme;
     }
 
     private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)

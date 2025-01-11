@@ -32,7 +32,7 @@
                     x:Uid="Settings_DownloadPage_Card1"
                     Header="Current download sources"
                     HeaderIcon="{xh:FontIcon Glyph=&#xEBD3;}">
-                    <ComboBox SelectedItem="{Binding CurrentDownloadSource, Mode=TwoWay}">
+                    <ComboBox SelectedItem="{x:Bind VM.CurrentDownloadSource, Mode=TwoWay}">
                         <x:String>Mojang</x:String>
                         <x:String>Bmclapi</x:String>
                     </ComboBox>
@@ -47,13 +47,13 @@
                         <TextBlock
                             VerticalAlignment="Center"
                             Style="{ThemeResource BaseTextBlockStyle}"
-                            Text="{Binding MaxDownloadThreads}" />
+                            Text="{x:Bind VM.MaxDownloadThreads, Mode=OneWay}" />
 
                         <Slider
                             Width="128"
                             Maximum="256"
                             Minimum="32"
-                            Value="{Binding MaxDownloadThreads, Mode=TwoWay}">
+                            Value="{x:Bind VM.MaxDownloadThreads, Mode=TwoWay}">
                             <i:Interaction.Behaviors>
                                 <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                             </i:Interaction.Behaviors>
@@ -66,7 +66,7 @@
                     Description="Can effectively speed up when encountering large files"
                     Header="Enable fragmented download of large files"
                     HeaderIcon="{xh:FontIcon Glyph=&#xEC4A;}">
-                    <ToggleSwitch IsOn="{Binding EnableFragmentDownload, Mode=TwoWay}" />
+                    <ToggleSwitch IsOn="{x:Bind VM.EnableFragmentDownload, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
                 <TextBlock
@@ -77,14 +77,14 @@
                 <controls:SettingsCard
                     x:Uid="Settings_DownloadPage_Card4"
                     ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
-                    Command="{Binding OpenCacheFolderCommand}"
-                    CommandParameter="{Binding CoreConfigurationsFolder}"
+                    Command="{x:Bind VM.OpenCacheFolderCommand}"
+                    CommandParameter="{x:Bind VM.CoreConfigurationsFolder, Mode=OneWay}"
                     Header="Specific core configuration storage directory"
                     HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
                     IsClickEnabled="True">
                     <controls:SettingsCard.Description>
                         <TextBlock
-                            Text="{Binding CoreConfigurationsFolder}"
+                            Text="{x:Bind VM.CoreConfigurationsFolder, Mode=OneWay}"
                             TextTrimming="CharacterEllipsis"
                             TextWrapping="NoWrap" />
                     </controls:SettingsCard.Description>
@@ -93,14 +93,14 @@
                 <controls:SettingsCard
                     x:Uid="Settings_DownloadPage_Card5"
                     ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
-                    Command="{Binding OpenCacheFolderCommand}"
-                    CommandParameter="{Binding LauncherCacheFolder}"
+                    Command="{x:Bind VM.OpenCacheFolderCommand}"
+                    CommandParameter="{x:Bind VM.LauncherCacheFolder, Mode=OneWay}"
                     Header="Launcher cache folder (including caches of images, texts, interfaces, etc.)"
                     HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
                     IsClickEnabled="True">
                     <controls:SettingsCard.Description>
                         <TextBlock
-                            Text="{Binding LauncherCacheFolder}"
+                            Text="{x:Bind VM.LauncherCacheFolder, Mode=OneWay}"
                             TextTrimming="CharacterEllipsis"
                             TextWrapping="NoWrap" />
                     </controls:SettingsCard.Description>

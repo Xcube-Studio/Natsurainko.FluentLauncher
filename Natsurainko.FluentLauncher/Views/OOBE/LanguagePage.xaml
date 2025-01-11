@@ -44,18 +44,18 @@
                     Orientation="Horizontal"
                     Spacing="5">
                     <TextBlock VerticalAlignment="Center" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
-                        <Run Text="{Binding Edition}" />
-                        <Run Text="{Binding Version}" />
+                        <Run Text="{x:Bind VM.Edition}" />
+                        <Run Text="{x:Bind VM.Version}" />
                     </TextBlock>
                     <Border
                         Padding="5,0"
                         VerticalAlignment="Center"
-                        Background="{ThemeResource SystemAccentColor}"
+                        Background="{StaticResource SystemAccentColor}"
                         CornerRadius="4">
                         <TextBlock
                             FontWeight="SemiBold"
                             Foreground="White"
-                            Text="{Binding Channel}" />
+                            Text="{x:Bind VM.Channel}" />
                     </Border>
                 </StackPanel>
                 <TextBlock
@@ -89,8 +89,8 @@
 
             <ComboBox
                 Grid.Row="3"
-                ItemsSource="{Binding Languages}"
-                SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}" />
+                ItemsSource="{x:Bind VM.Languages}"
+                SelectedItem="{x:Bind VM.CurrentLanguage, Mode=TwoWay}" />
         </Grid>
     </Grid>
 </Page>

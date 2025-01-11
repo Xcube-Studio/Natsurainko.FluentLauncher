@@ -5,7 +5,7 @@ using System;
 #nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
-internal class ResourceAuthorsConverter : IValueConverter
+internal partial class ResourceAuthorsConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {

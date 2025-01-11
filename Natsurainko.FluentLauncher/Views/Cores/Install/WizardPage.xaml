@@ -20,7 +20,7 @@
         </Grid.RowDefinitions>
         <i:Interaction.Behaviors>
             <core:EventTriggerBehavior EventName="Loaded">
-                <actions:ModifiedInvokeCommandAction Command="{Binding LoadEventCommand}" />
+                <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadEventCommand}" />
             </core:EventTriggerBehavior>
         </i:Interaction.Behaviors>
 
@@ -29,19 +29,19 @@
             MaxWidth="1060"
             Margin="{ThemeResource PageMarginWithInstallWizardPageStackPanel}"
             Padding="{ThemeResource PagePaddingWithInstallWizardPageStackPanel}">
-            <BreadcrumbBar Margin="-10,0" ItemsSource="{Binding BreadcrumbBarItemsSource}">
+            <BreadcrumbBar Margin="-10,0" ItemsSource="{x:Bind VM.BreadcrumbBarItemsSource, Mode=OneWay}">
                 <i:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="ItemClicked">
-                        <actions:ModifiedInvokeCommandAction Command="{Binding BreadcrumbBarClickedCommand}" />
+                        <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.BreadcrumbBarClickedCommand}" />
                     </core:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
                 <BreadcrumbBar.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="x:String">
                         <TextBlock
                             Margin="10,0"
                             FontSize="16"
                             Style="{ThemeResource BaseTextBlockStyle}"
-                            Text="{Binding}"
+                            Text="{x:Bind}"
                             TextTrimming="CharacterEllipsis" />
                     </DataTemplate>
                 </BreadcrumbBar.ItemTemplate>
@@ -49,14 +49,14 @@
             <TextBlock
                 FontSize="24"
                 Style="{ThemeResource BaseTextBlockStyle}"
-                Text="{Binding ElementName=contentFrame, Path=Content.Tag}"
+                Text="{x:Bind ((FrameworkElement)contentFrame.Content).Tag, Mode=OneWay}"
                 TextWrapping="WrapWholeWords" />
         </StackPanel>
         <Frame
             x:Name="contentFrame"
             Grid.Row="1"
             Padding="{ThemeResource PagePaddingWithInstallWizardPageFrame}"
-            DataContext="{Binding CurrentFrameDataContext}">
+            DataContext="{x:Bind VM.CurrentFrameDataContext, Mode=OneWay}">
             <Frame.ContentTransitions>
                 <TransitionCollection>
                     <RepositionThemeTransition />
@@ -90,9 +90,9 @@
                 <Button
                     Grid.Column="4"
                     HorizontalAlignment="Stretch"
-                    Command="{Binding NextCommand}"
+                    Command="{x:Bind VM.NextCommand}"
                     ElementSoundMode="FocusOnly"
-                    IsEnabled="{Binding CurrentFrameDataContext.CanNext}"
+                    IsEnabled="{x:Bind VM.CurrentFrameDataContext.CanNext, Mode=OneWay}"
                     IsTabStop="False"
                     Style="{ThemeResource AccentButtonStyle}">
                     <TextBlock x:Uid="Buttons_Next" Text="Next" />
@@ -100,17 +100,17 @@
                 <Button
                     Grid.Column="2"
                     HorizontalAlignment="Stretch"
-                    Command="{Binding PreviousCommand}"
+                    Command="{x:Bind VM.PreviousCommand}"
                     ElementSoundMode="FocusOnly"
-                    IsEnabled="{Binding CurrentFrameDataContext.CanPrevious}"
+                    IsEnabled="{x:Bind VM.CurrentFrameDataContext.CanPrevious, Mode=OneWay}"
                     IsTabStop="False">
                     <TextBlock x:Uid="Buttons_Back" Text="Back" />
                 </Button>
                 <Button
                     HorizontalAlignment="Stretch"
-                    Command="{Binding CancelCommand}"
+                    Command="{x:Bind VM.CancelCommand}"
                     ElementSoundMode="FocusOnly"
-                    IsEnabled="{Binding CurrentFrameDataContext.CanCancel}"
+                    IsEnabled="{x:Bind VM.CurrentFrameDataContext.CanCancel, Mode=OneWay}"
                     IsTabStop="False">
                     <TextBlock x:Uid="Buttons_Cancel" Text="Cancel" />
                 </Button>

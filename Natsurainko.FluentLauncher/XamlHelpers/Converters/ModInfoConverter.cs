@@ -8,7 +8,7 @@ using System.Linq;
 #nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
-internal class ModInfoConverter : IValueConverter
+internal partial class ModInfoConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {

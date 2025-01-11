@@ -8,7 +8,7 @@ public sealed partial class UpdateDialog : ContentDialog
 {
     public UpdateDialog(SettingsService _settingsService)
     {
-        this.InitializeComponent();
-        this.RequestedTheme = (ElementTheme)_settingsService.DisplayTheme;
+        InitializeComponent();
+        RequestedTheme = (ElementTheme)_settingsService.DisplayTheme;
     }
 }

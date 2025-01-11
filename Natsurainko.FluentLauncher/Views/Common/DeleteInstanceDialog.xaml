@@ -14,7 +14,7 @@
     <ContentDialog.Title>
         <TextBlock Margin="24,24,24,0">
             <Run x:Uid="Dialogs_DeleteGameDialog_T" Text="Delete Core" />
-            <Run Text="{Binding Title}" />
+            <Run Text="{x:Bind VM.Title, Mode=OneWay}" />
         </TextBlock>
     </ContentDialog.Title>
     <ContentDialog.Resources>
@@ -38,7 +38,7 @@
         </Grid.Resources>
         <i:Interaction.Behaviors>
             <core:EventTriggerBehavior EventName="Loaded">
-                <actions:ModifiedInvokeCommandAction Command="{Binding LoadEventCommand}" />
+                <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadEventCommand}" />
             </core:EventTriggerBehavior>
         </i:Interaction.Behaviors>
 
@@ -54,13 +54,13 @@
             <TextBlock Style="{ThemeResource BaseTextBlockStyle}">
                 <Run x:Uid="Dialogs_DeleteGameDialog_D1" Text="Are you sure you want to delete this core?" />
                 <LineBreak />
-                <Run Text="{Binding Title}" />
+                <Run Text="{x:Bind VM.Title, Mode=OneWay}" />
                 <Run x:Uid="Dialogs_DeleteGameDialog_D2" Text="will be lost forever! (A long time)" />
             </TextBlock>
             <CheckBox
                 x:Uid="Dialogs_DeleteGameDialog_CheckBox"
                 Content="Delete together with stored core settings"
-                IsChecked="{Binding DeleteCoreSettings, Mode=TwoWay}" />
+                IsChecked="{x:Bind VM.DeleteCoreSettings, Mode=TwoWay}" />
         </StackPanel>
 
         <Rectangle
@@ -87,7 +87,7 @@
                     HorizontalAlignment="Stretch"
                     Background="{ThemeResource DeleteButtonBackground}"
                     BorderBrush="{ThemeResource DeleteButtonBorder}"
-                    Command="{Binding DeleteCommand}"
+                    Command="{x:Bind VM.DeleteCommand}"
                     ElementSoundMode="FocusOnly"
                     IsTabStop="False"
                     Style="{ThemeResource ButtonRevealStyle}">
@@ -99,7 +99,7 @@
                 <Button
                     Grid.Column="2"
                     HorizontalAlignment="Stretch"
-                    Command="{Binding CancelCommand}"
+                    Command="{x:Bind VM.CancelCommand}"
                     ElementSoundMode="FocusOnly"
                     IsTabStop="False">
                     <TextBlock x:Uid="Buttons_Cancel" Text="Cancel" />

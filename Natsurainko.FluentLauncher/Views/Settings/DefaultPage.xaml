@@ -23,7 +23,7 @@
 
                 <controls:SettingsCard
                     x:Uid="Settings_DefaultPage_Card1"
-                    Command="{Binding CardClickCommand}"
+                    Command="{x:Bind VM.CardClickCommand}"
                     CommandParameter="Settings/Launch"
                     Description="Set up your .minecraft folder, Java runtime, and global game settings"
                     Header="Launch settings"
@@ -32,7 +32,7 @@
 
                 <controls:SettingsCard
                     x:Uid="Settings_DefaultPage_Card2"
-                    Command="{Binding CardClickCommand}"
+                    Command="{x:Bind VM.CardClickCommand}"
                     CommandParameter="Settings/Account"
                     Description="Manage login accounts and set skins for games"
                     Header="Account &amp; Skin settings"
@@ -41,7 +41,7 @@
 
                 <controls:SettingsCard
                     x:Uid="Settings_DefaultPage_Card3"
-                    Command="{Binding CardClickCommand}"
+                    Command="{x:Bind VM.CardClickCommand}"
                     CommandParameter="Settings/Download"
                     Description="Adjust download performance, set download sources, and manage cache"
                     Header="Download &amp; Cache settings"
@@ -50,7 +50,7 @@
 
                 <controls:SettingsCard
                     x:Uid="Settings_DefaultPage_Card4"
-                    Command="{Binding CardClickCommand}"
+                    Command="{x:Bind VM.CardClickCommand}"
                     CommandParameter="Settings/Appearance"
                     Description="Set the application background and set the light/dark mode"
                     Header="Appearance settings"
@@ -66,7 +66,7 @@
                     x:Uid="Settings_DefaultPage_Card5"
                     Header="Language Settings"
                     HeaderIcon="{xh:FontIcon Glyph=&#xf2b7;}">
-                    <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}">
+                    <ComboBox ItemsSource="{x:Bind VM.Languages, Mode=OneWay}" SelectedItem="{x:Bind VM.CurrentLanguage, Mode=TwoWay}">
                         <i:Interaction.Behaviors>
                             <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
                             <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
@@ -81,7 +81,7 @@
 
                 <controls:SettingsCard
                     x:Uid="Settings_DefaultPage_Card6"
-                    Command="{Binding CardClickCommand}"
+                    Command="{x:Bind VM.CardClickCommand}"
                     CommandParameter="Settings/About"
                     Description="Xcube Studio ©2022-2024. All rights reserved."
                     Header="Fluent Launcher"
@@ -95,21 +95,21 @@
                         <Border
                             Padding="5,0"
                             HorizontalAlignment="Right"
-                            Background="{ThemeResource SystemAccentColor}"
+                            Background="{StaticResource SystemAccentColor}"
                             CornerRadius="2">
                             <TextBlock
                                 FontWeight="SemiBold"
                                 Foreground="White"
-                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                Text="{Binding Channel}" />
+                                Style="{StaticResource CaptionTextBlockStyle}"
+                                Text="{x:Bind VM.Channel}" />
                         </Border>
                         <TextBlock
                             Margin="10,0,0,0"
                             VerticalAlignment="Center"
                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                             Style="{ThemeResource CaptionTextBlockStyle}">
-                            <Run Text="{Binding Edition}" />
-                            <Run Text="{Binding Version}" />
+                            <Run Text="{x:Bind VM.Edition}" />
+                            <Run Text="{x:Bind VM.Version}" />
                         </TextBlock>
                     </StackPanel>
                 </controls:SettingsCard>

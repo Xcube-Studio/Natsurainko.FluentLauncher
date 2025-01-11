@@ -1,17 +1,15 @@
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 
-namespace Natsurainko.FluentLauncher.Views
+namespace Natsurainko.FluentLauncher.Views;
+
+public sealed partial class ExceptionPage : Page
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class ExceptionPage : Page
+    ExceptionDialogViewModel VM => (ExceptionDialogViewModel)DataContext;
+
+    public ExceptionPage(string errorMessage = "")
     {
-        public ExceptionPage(string errorMessage = "")
-        {
-            InitializeComponent();
-            DataContext = new ExceptionDialogViewModel(errorMessage);
-        }
+        InitializeComponent();
+        DataContext = new ExceptionDialogViewModel(errorMessage);
     }
 }

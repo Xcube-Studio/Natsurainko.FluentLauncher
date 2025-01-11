@@ -42,7 +42,7 @@
             Background="Transparent">
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="Loaded">
-                    <actions:ModifiedInvokeCommandAction Command="{Binding LoadEventCommand}" />
+                    <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadEventCommand}" />
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
             <StackPanel Spacing="10">
@@ -50,7 +50,7 @@
                     x:Uid="Dialogs_UploadSkinDialog_Box"
                     Header="Skin File Path"
                     QuerySubmitted="AutoSuggestBox_QuerySubmitted"
-                    Text="{Binding FilePath, Mode=TwoWay}">
+                    Text="{x:Bind VM.FilePath, Mode=TwoWay}">
                     <AutoSuggestBox.QueryIcon>
                         <FontIcon FontSize="14" Glyph="&#xED43;" />
                     </AutoSuggestBox.QueryIcon>
@@ -58,7 +58,7 @@
                 <CheckBox
                     x:Uid="Dialogs_UploadSkinDialog_CheckBox"
                     Content="Use slim Minecraft character shape"
-                    IsChecked="{Binding IsSlimModel, Mode=TwoWay}" />
+                    IsChecked="{x:Bind VM.IsSlimModel, Mode=TwoWay}" />
             </StackPanel>
         </Grid>
         <Rectangle
@@ -83,7 +83,7 @@
                 <Button
                     Grid.Column="0"
                     HorizontalAlignment="Stretch"
-                    Command="{Binding UploadCommand}"
+                    Command="{x:Bind VM.UploadCommand}"
                     ElementSoundMode="FocusOnly"
                     IsTabStop="False"
                     Style="{ThemeResource AccentButtonStyle}">
@@ -92,7 +92,7 @@
                 <Button
                     Grid.Column="2"
                     HorizontalAlignment="Stretch"
-                    Command="{Binding CancelCommand}"
+                    Command="{x:Bind VM.CancelCommand}"
                     ElementSoundMode="FocusOnly"
                     IsTabStop="False">
                     <TextBlock x:Uid="Buttons_Cancel" Text="Cancel" />

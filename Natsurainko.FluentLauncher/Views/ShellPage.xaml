@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    xmlns:searchService="using:Natsurainko.FluentLauncher.Services.UI"
     Loaded="Page_Loaded"
     SizeChanged="Page_SizeChanged"
     mc:Ignorable="d">
@@ -318,7 +319,7 @@
                     Icon="{xh:FontIcon Glyph=&#xE945;}"
                     Tag="Tasks/Launch">
                     <NavigationViewItem.InfoBadge>
-                        <InfoBadge Opacity="{Binding LaunchTasksInfoBadgeOpacity}" Value="{Binding RunningLaunchTasks}" />
+                        <InfoBadge Opacity="{x:Bind VM.LaunchTasksInfoBadgeOpacity, Mode=OneWay}" Value="{x:Bind VM.RunningLaunchTasks, Mode=OneWay}" />
                     </NavigationViewItem.InfoBadge>
                 </NavigationViewItem>
                 <NavigationViewItem
@@ -327,7 +328,7 @@
                     Icon="{xh:FontIcon Glyph=&#xe896;}"
                     Tag="Tasks/Download">
                     <NavigationViewItem.InfoBadge>
-                        <InfoBadge Opacity="{Binding DownloadTasksInfoBadgeOpacity}" Value="{Binding RunningDownloadTasks}" />
+                        <InfoBadge Opacity="{x:Bind VM.DownloadTasksInfoBadgeOpacity, Mode=OneWay}" Value="{x:Bind VM.RunningDownloadTasks, Mode=OneWay}" />
                     </NavigationViewItem.InfoBadge>
                 </NavigationViewItem>
                 <NavigationViewItem
@@ -418,7 +419,7 @@
                     </AutoSuggestBox.QueryIcon>
 
                     <AutoSuggestBox.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="searchService:Suggestion">
                             <Grid Padding="0,10">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -438,23 +439,22 @@
                                         <ContentControl
                                             HorizontalContentAlignment="Center"
                                             VerticalContentAlignment="Center"
-                                            Content="{Binding Converter={ThemeResource SuggestionIconConverter}}" />
+                                            Content="{x:Bind Converter={StaticResource SuggestionIconConverter}}" />
                                     </Border>
                                 </Grid>
 
                                 <StackPanel Grid.Column="2">
-                                    <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding Title}" />
+                                    <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind Title}" />
                                     <TextBlock
                                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                         Style="{ThemeResource CaptionTextBlockStyle}"
-                                        Text="{Binding Description}" />
+                                        Text="{x:Bind Description}" />
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
                     </AutoSuggestBox.ItemTemplate>
                 </AutoSuggestBox>
             </Grid>
-
         </Grid>
     </Grid>
 </Page>

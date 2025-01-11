@@ -9,11 +9,12 @@ namespace Natsurainko.FluentLauncher.Views.Cores.Manage;
 public sealed partial class NavigationPage : Page, INavigationProvider
 {
     object INavigationProvider.NavigationControl => contentFrame;
-    private NavigationViewModel VM => (NavigationViewModel)DataContext;
+
+    NavigationViewModel VM => (NavigationViewModel)DataContext;
 
     public NavigationPage()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 
     private void ContentFrame_Navigated(object sender, NavigationEventArgs e)

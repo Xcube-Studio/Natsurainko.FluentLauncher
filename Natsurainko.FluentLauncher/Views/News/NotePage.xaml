@@ -20,7 +20,7 @@
             HorizontalAlignment="Center"
             FontFamily="{ThemeResource MinecraftTen}"
             Style="{ThemeResource TitleLargeTextBlockStyle}"
-            Text="{Binding PatchNoteData.Title}"
+            Text="{x:Bind VM.PatchNoteData.Title, Mode=OneWay}"
             TextWrapping="WrapWholeWords" />
         <WebView2
             Name="webView2"
@@ -30,7 +30,7 @@
             DefaultBackgroundColor="Transparent">
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="Loaded">
-                    <actions:ModifiedInvokeCommandAction Command="{Binding LoadedEventCommand}" />
+                    <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadedEventCommand}" />
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
         </WebView2>

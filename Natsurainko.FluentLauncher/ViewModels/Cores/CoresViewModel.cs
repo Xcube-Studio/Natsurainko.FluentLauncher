@@ -68,7 +68,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     public partial int SortByIndex { get; set; }
 
     [ObservableProperty]
-    public partial IEnumerable<MinecraftInstance> DisplayMinecraftInstances { get; set; }
+    public partial List<MinecraftInstance> DisplayMinecraftInstances { get; set; }
 
     public string DisplayFolderPath => (string.IsNullOrEmpty(ActiveMinecraftFolder) || !Directory.Exists(ActiveMinecraftFolder))
         ? ResourceUtils.GetValue("Cores", "CoresPage", "_FolderError")
@@ -94,16 +94,16 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
             };
         });
 
-        IReadOnlyList<MinecraftInstance> list = SortByIndex.Equals(0)
+        List<MinecraftInstance> list = SortByIndex.Equals(0)
             ? [.. infos.OrderBy(x => x.InstanceId)]
             : [..infos.OrderByDescending(x => x.GetConfig().LastLaunchTime)];
 
         App.DispatcherQueue.TryEnqueue(() => DisplayMinecraftInstances = list);
     }
 
-    IEnumerable<SearchProviderService.Suggestion> ProviderSuggestions(string searchText)
+    IEnumerable<Suggestion> ProviderSuggestions(string searchText)
     {
-        yield return new SearchProviderService.Suggestion
+        yield return new Suggestion
         {
             Title = ResourceUtils.GetValue("SearchSuggest", "_T1").Replace("{searchText}", searchText),
             Description = ResourceUtils.GetValue("SearchSuggest", "_D1"),

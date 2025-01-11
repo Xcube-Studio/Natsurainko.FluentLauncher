@@ -7,9 +7,11 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:acc="using:Nrk.FluentCore.Authentication"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Uid="AuthenticationWizard_ChooseAccountTypePage_Page"
     d:DataContext="{d:DesignInstance Type=authenticationwizard:ChooseAccountTypeViewModel}"
+    Unloaded="Page_Unloaded"
     Background="Transparent"
     Tag="Choose Account Type (1/3)"
     mc:Ignorable="d">
@@ -21,17 +23,10 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <StackPanel Spacing="10">
-            <RadioButton>
-                <RadioButton.IsChecked>
-                    <Binding Converter="{ThemeResource RadioButtonSelectedIndexConverter}" Path="SelectedAccountType">
-                        <Binding.ConverterParameter>
-                            <x:Int32>1</x:Int32>
-                        </Binding.ConverterParameter>
-                    </Binding>
-                </RadioButton.IsChecked>
+            <RadioButton IsChecked="{x:Bind VM.SelectedAccountType.Equals(acc:AccountType.Microsoft), Mode=OneWay}">
                 <i:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="Checked">
-                        <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}">
+                        <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.CheckedCommand}">
                             <actions:ModifiedInvokeCommandAction.CommandParameter>
                                 <x:Int32>1</x:Int32>
                             </actions:ModifiedInvokeCommandAction.CommandParameter>
@@ -50,17 +45,10 @@
                         Text="Genuine account to play online servers" />
                 </StackPanel>
             </RadioButton>
-            <RadioButton>
-                <RadioButton.IsChecked>
-                    <Binding Converter="{ThemeResource RadioButtonSelectedIndexConverter}" Path="SelectedAccountType">
-                        <Binding.ConverterParameter>
-                            <x:Int32>2</x:Int32>
-                        </Binding.ConverterParameter>
-                    </Binding>
-                </RadioButton.IsChecked>
+            <RadioButton IsChecked="{x:Bind VM.SelectedAccountType.Equals(acc:AccountType.Yggdrasil), Mode=OneWay}">
                 <i:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="Checked">
-                        <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}">
+                        <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.CheckedCommand}">
                             <actions:ModifiedInvokeCommandAction.CommandParameter>
                                 <x:Int32>2</x:Int32>
                             </actions:ModifiedInvokeCommandAction.CommandParameter>
@@ -79,17 +67,10 @@
                         Text="Can enter the third-party Yggdrasil verification server" />
                 </StackPanel>
             </RadioButton>
-            <RadioButton>
-                <RadioButton.IsChecked>
-                    <Binding Converter="{ThemeResource RadioButtonSelectedIndexConverter}" Path="SelectedAccountType">
-                        <Binding.ConverterParameter>
-                            <x:Int32>0</x:Int32>
-                        </Binding.ConverterParameter>
-                    </Binding>
-                </RadioButton.IsChecked>
+            <RadioButton IsChecked="{x:Bind VM.SelectedAccountType.Equals(acc:AccountType.Offline), Mode=OneWay}">
                 <i:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="Checked">
-                        <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}">
+                        <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.CheckedCommand}">
                             <actions:ModifiedInvokeCommandAction.CommandParameter>
                                 <x:Int32>0</x:Int32>
                             </actions:ModifiedInvokeCommandAction.CommandParameter>

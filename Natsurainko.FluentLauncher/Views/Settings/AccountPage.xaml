@@ -40,13 +40,13 @@
                             <userControls:AccountAvatar
                                 Width="36"
                                 Height="36"
-                                Account="{Binding ActiveAccount}" />
+                                Account="{x:Bind VM.ActiveAccount, Mode=OneWay}" />
                             <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding ActiveAccount.Name}" />
+                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind VM.ActiveAccount.Name, Mode=OneWay}" />
                                 <TextBlock
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="{Binding ActiveAccount.Type, Converter={ThemeResource AccountInfoConverter}}" />
+                                    Text="{x:Bind VM.ActiveAccount.Type, Mode=OneWay, Converter={StaticResource AccountInfoConverter}}" />
                             </StackPanel>
                         </Grid>
                     </controls:SettingsExpander.Header>
@@ -55,31 +55,16 @@
                             <controls:SettingsCard.Header>
                                 <TextBlock>
                                     <Run Text="Uuid:" />
-                                    <Run Text="{Binding ActiveAccount.Uuid}" />
+                                    <Run Text="{x:Bind VM.ActiveAccount.Uuid, Mode=OneWay}" />
                                 </TextBlock>
                             </controls:SettingsCard.Header>
                         </controls:SettingsCard>
-                        <controls:SettingsCard>
-                            <controls:SettingsCard.Visibility>
-                                <Binding Converter="{ThemeResource AccountInfoConverter}" Path="ActiveAccount">
-                                    <Binding.ConverterParameter>
-                                        <x:String>LastRefreshVisibility</x:String>
-                                    </Binding.ConverterParameter>
-                                </Binding>
-                            </controls:SettingsCard.Visibility>
+                        <controls:SettingsCard Visibility="{x:Bind VM.ActiveAccount, Mode=OneWay, Converter={StaticResource AccountInfoConverter}, ConverterParameter='LastRefreshVisibility'}">
 
                             <controls:SettingsCard.Header>
                                 <TextBlock>
                                     <Run x:Uid="Settings_AccountPage_SH1" Text="Last Refresh Time:" />
-                                    <Run>
-                                        <Run.Text>
-                                            <Binding Converter="{ThemeResource AccountInfoConverter}" Path="ActiveAccount">
-                                                <Binding.ConverterParameter>
-                                                    <x:String>LastRefreshTime</x:String>
-                                                </Binding.ConverterParameter>
-                                            </Binding>
-                                        </Run.Text>
-                                    </Run>
+                                    <Run Text="{x:Bind VM.ActiveAccount, Mode=OneWay, Converter={StaticResource AccountInfoConverter}, ConverterParameter='LastRefreshTime'}"/>
                                 </TextBlock>
                             </controls:SettingsCard.Header>
                         </controls:SettingsCard>
@@ -88,7 +73,7 @@
                         Margin="10,0,0,0"
                         Orientation="Horizontal"
                         Spacing="10">
-                        <Button Command="{Binding RefreshCommand}">
+                        <Button Command="{x:Bind VM.RefreshCommand}">
                             <StackPanel Orientation="Horizontal">
                                 <FontIcon FontSize="16" Glyph="&#xe72c;" />
                                 <TextBlock
@@ -97,7 +82,7 @@
                                     Text="Refresh" />
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding SwitchCommand}">
+                        <Button Command="{x:Bind VM.SwitchCommand}">
                             <StackPanel Orientation="Horizontal">
                                 <FontIcon FontSize="16" Glyph="&#xE748;" />
                                 <TextBlock
@@ -114,7 +99,7 @@
                     Description="Sign in with a Microsoft account or from a third-party Yggdrasil server, or use an offline account"
                     Header="Add new account"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe8fa;}">
-                    <Button Command="{Binding LoginCommand}">
+                    <Button Command="{x:Bind VM.LoginCommand}">
                         <StackPanel Orientation="Horizontal">
                             <FontIcon FontSize="16" Glyph="&#xe8fa;" />
                             <TextBlock
@@ -132,17 +117,11 @@
 
                 <controls:SettingsCard
                     x:Uid="Settings_AccountPage_Card4"
-                    Command="{Binding GoToSkinPageCommand}"
+                    Command="{x:Bind VM.GoToSkinPageCommand}"
                     Header="Manage skins and capes"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe728;}"
-                    IsClickEnabled="True">
-                    <controls:SettingsCard.IsEnabled>
-                        <Binding Path="IsOfflineAccount">
-                            <Binding.Converter>
-                                <converters:InvertBoolConverter />
-                            </Binding.Converter>
-                        </Binding>
-                    </controls:SettingsCard.IsEnabled>
+                    IsClickEnabled="True"
+                    IsEnabled="{x:Bind VM.IsOfflineAccount, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}">
                     <controls:SettingsCard.Description>
                         <StackPanel>
                             <TextBlock
@@ -155,51 +134,32 @@
                                 Foreground="{ThemeResource SystemErrorTextColor}"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
                                 Text="Offline accounts do not support skin function"
-                                Visibility="{Binding IsOfflineAccount, Converter={ThemeResource BoolToVisibilityConverter}}" />
+                                Visibility="{x:Bind VM.IsOfflineAccount, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
                         </StackPanel>
                     </controls:SettingsCard.Description>
                 </controls:SettingsCard>
                 <controls:SettingsCard
                     x:Uid="Settings_AccountPage_Card5"
                     ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
-                    Command="{Binding OpenSkinFileCommand}"
+                    Command="{x:Bind VM.OpenSkinFileCommand}"
                     Header="Open the current skin file in Explorer"
                     HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
-                    IsClickEnabled="True">
-                    <controls:SettingsCard.IsEnabled>
-                        <Binding Path="IsOfflineAccount">
-                            <Binding.Converter>
-                                <converters:InvertBoolConverter />
-                            </Binding.Converter>
-                        </Binding>
-                    </controls:SettingsCard.IsEnabled>
+                    IsClickEnabled="True"
+                    IsEnabled="{x:Bind VM.IsOfflineAccount, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}">
                     <controls:SettingsCard.Description>
                         <StackPanel>
                             <TextBlock
-                                Text="{Binding SkinFile}"
+                                Text="{x:Bind VM.SkinFile, Mode=OneWay}"
                                 TextTrimming="CharacterEllipsis"
-                                TextWrapping="NoWrap">
-                                <TextBlock.Visibility>
-                                    <Binding Path="IsOfflineAccount">
-                                        <Binding.Converter>
-                                            <converters:BoolToVisibilityConverter Inverted="True" />
-                                        </Binding.Converter>
-                                    </Binding>
-                                </TextBlock.Visibility>
+                                TextWrapping="NoWrap"
+                                Visibility="{x:Bind VM.IsOfflineAccount, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
                             </TextBlock>
                             <TextBlock
                                 x:Uid="Settings_AccountPage_Text2"
                                 Foreground="{ThemeResource SystemErrorTextColor}"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
-                                Text="Offline accounts do not support skin function">
-                                <TextBlock.Visibility>
-                                    <Binding Path="IsOfflineAccount">
-                                        <Binding.Converter>
-                                            <converters:BoolToVisibilityConverter />
-                                        </Binding.Converter>
-                                    </Binding>
-                                </TextBlock.Visibility>
-                            </TextBlock>
+                                Text="Offline accounts do not support skin function"
+                                Visibility="{x:Bind VM.IsOfflineAccount, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </StackPanel>
                     </controls:SettingsCard.Description>
                 </controls:SettingsCard>
@@ -214,7 +174,7 @@
                     Description="Will run Minecraft in trial mode"
                     Header="Launch the game with a Demo account"
                     HeaderIcon="{xh:FontIcon Glyph=&#xEC7A;}">
-                    <ToggleSwitch IsOn="{Binding EnableDemoUser, Mode=TwoWay}" />
+                    <ToggleSwitch IsOn="{x:Bind VM.EnableDemoUser, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
@@ -222,7 +182,7 @@
                     Description="Automatically refresh Token before each launch"
                     Header="Auto refresh account"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE72C;}">
-                    <ToggleSwitch IsOn="{Binding AutoRefresh, Mode=TwoWay}" />
+                    <ToggleSwitch IsOn="{x:Bind VM.AutoRefresh, Mode=TwoWay}" />
                 </controls:SettingsCard>
             </StackPanel>
         </Border>

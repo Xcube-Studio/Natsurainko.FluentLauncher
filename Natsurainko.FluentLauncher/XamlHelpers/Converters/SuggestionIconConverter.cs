@@ -9,16 +9,16 @@ using System;
 #nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
-internal class SuggestionIconConverter : IValueConverter
+internal partial class SuggestionIconConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is not SearchProviderService.Suggestion suggeastion)
+        if (value is not Suggestion suggeastion)
             return null;
 
-        if (suggeastion.SuggestionIconType == SearchProviderService.SuggestionIconType.Glyph)
+        if (suggeastion.SuggestionIconType == SuggestionIconType.Glyph)
             return new Microsoft.UI.Xaml.Controls.FontIcon() { FontSize = 18, Glyph = suggeastion.Icon };
-        else if (suggeastion.SuggestionIconType == SearchProviderService.SuggestionIconType.UriIcon)
+        else if (suggeastion.SuggestionIconType == SuggestionIconType.UriIcon)
             return new Image { Source = new BitmapImage(new Uri(suggeastion.Icon, UriKind.RelativeOrAbsolute)) };
         else
         {

@@ -7,10 +7,12 @@ namespace Natsurainko.FluentLauncher.Views.Common;
 
 public sealed partial class UploadSkinDialog : ContentDialog
 {
-    public UploadSkinDialog(SettingsService _settingsService)
+    UploadSkinDialogViewModel VM => (UploadSkinDialogViewModel)DataContext;
+
+    public UploadSkinDialog(SettingsService settingsService)
     {
         InitializeComponent();
-        this.RequestedTheme = (ElementTheme)_settingsService.DisplayTheme;
+        RequestedTheme = (ElementTheme)settingsService.DisplayTheme;
     }
 
     private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)

@@ -5,6 +5,7 @@
     xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
     xmlns:authenticationwizard="using:Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:models="using:Natsurainko.FluentLauncher.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -15,17 +16,10 @@
     mc:Ignorable="d">
 
     <StackPanel Spacing="10">
-        <RadioButton>
-            <RadioButton.IsChecked>
-                <Binding Converter="{ThemeResource RadioButtonSelectedIndexConverter}" Path="SelectedMicrosoftAuthMethod">
-                    <Binding.ConverterParameter>
-                        <x:Int32>0</x:Int32>
-                    </Binding.ConverterParameter>
-                </Binding>
-            </RadioButton.IsChecked>
+        <RadioButton IsChecked="{x:Bind VM.SelectedMicrosoftAuthMethod.Equals(models:MicrosoftAuthMethod.BuiltInBrowser), Mode=OneWay}">
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="Checked">
-                    <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}">
+                    <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.CheckedCommand}">
                         <actions:ModifiedInvokeCommandAction.CommandParameter>
                             <x:Int32>0</x:Int32>
                         </actions:ModifiedInvokeCommandAction.CommandParameter>
@@ -44,17 +38,10 @@
                     Text="The built-in browser can be slow on poor connections" />
             </StackPanel>
         </RadioButton>
-        <RadioButton>
-            <RadioButton.IsChecked>
-                <Binding Converter="{ThemeResource RadioButtonSelectedIndexConverter}" Path="SelectedMicrosoftAuthMethod">
-                    <Binding.ConverterParameter>
-                        <x:Int32>1</x:Int32>
-                    </Binding.ConverterParameter>
-                </Binding>
-            </RadioButton.IsChecked>
+        <RadioButton IsChecked="{x:Bind VM.SelectedMicrosoftAuthMethod.Equals(models:MicrosoftAuthMethod.DeviceFlowCode), Mode=OneWay}">
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="Checked">
-                    <actions:ModifiedInvokeCommandAction Command="{Binding CheckedCommand}">
+                    <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.CheckedCommand}">
                         <actions:ModifiedInvokeCommandAction.CommandParameter>
                             <x:Int32>1</x:Int32>
                         </actions:ModifiedInvokeCommandAction.CommandParameter>

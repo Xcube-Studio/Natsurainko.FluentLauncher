@@ -3,7 +3,7 @@ using System;
 
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
-public class RadioButtonSelectedIndexConverter : IValueConverter
+public partial class RadioButtonSelectedIndexConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {

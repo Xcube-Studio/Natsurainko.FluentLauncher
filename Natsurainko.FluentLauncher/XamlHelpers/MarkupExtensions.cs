@@ -7,7 +7,7 @@ using System.Linq;
 namespace Natsurainko.FluentLauncher.XamlHelpers;
 
 [MarkupExtensionReturnType(ReturnType = typeof(Microsoft.UI.Xaml.Controls.FontIcon))]
-public class FontIcon : MarkupExtension
+public partial class FontIcon : MarkupExtension
 {
     public string Glyph { get; set; }
 
@@ -17,8 +17,8 @@ public class FontIcon : MarkupExtension
     }
 }
 
-[MarkupExtensionReturnType(ReturnType = typeof(Microsoft.UI.Xaml.Controls.ComboBox))]
-public class ComboBox : MarkupExtension
+[MarkupExtensionReturnType(ReturnType = typeof(string[]))]
+public partial class ComboBox : MarkupExtension
 {
     public string ResourceKey { get; set; }
 

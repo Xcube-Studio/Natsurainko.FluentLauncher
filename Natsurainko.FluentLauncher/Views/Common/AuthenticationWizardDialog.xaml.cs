@@ -1,6 +1,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.ViewModels.Common;
 
 namespace Natsurainko.FluentLauncher.Views.Common;
 
@@ -8,9 +9,9 @@ public sealed partial class AuthenticationWizardDialog : ContentDialog
 {
     AuthenticationWizardDialogViewModel VM => (AuthenticationWizardDialogViewModel)DataContext;
 
-    public AuthenticationWizardDialog()
+    public AuthenticationWizardDialog(SettingsService settingsService)
     {
         InitializeComponent();
-        this.RequestedTheme = (ElementTheme)_settingsService.DisplayTheme;
+        RequestedTheme = (ElementTheme)settingsService.DisplayTheme;
     }
 }

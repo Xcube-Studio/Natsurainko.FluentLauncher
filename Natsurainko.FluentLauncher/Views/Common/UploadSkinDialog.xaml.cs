@@ -9,10 +9,10 @@ public sealed partial class UploadSkinDialog : ContentDialog
 {
     UploadSkinDialogViewModel VM => (UploadSkinDialogViewModel)DataContext;
 
-    public UploadSkinDialog()
+    public UploadSkinDialog(SettingsService settingsService)
     {
         InitializeComponent();
-        this.RequestedTheme = (ElementTheme)_settingsService.DisplayTheme;
+        RequestedTheme = (ElementTheme)settingsService.DisplayTheme;
     }
 
     private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)

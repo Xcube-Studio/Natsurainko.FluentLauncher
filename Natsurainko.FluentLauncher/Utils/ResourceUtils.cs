@@ -14,6 +14,7 @@ internal static class ResourceUtils
     [
         "en-US, English",
         "ru-RU, Русский",
+        "uk-UA, Український",
         "zh-Hans, 简体中文",
         "zh-Hant, 繁體中文"
     ];

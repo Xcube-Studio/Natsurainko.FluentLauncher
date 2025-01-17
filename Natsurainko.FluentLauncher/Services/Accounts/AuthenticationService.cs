@@ -1,5 +1,7 @@
 ﻿using Nrk.FluentCore.Authentication;
+using Nrk.FluentCore.Authentication.Yggdrasil.OAuth;
 using System;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,6 +34,18 @@ internal class AuthenticationService
     public Task<YggdrasilAccount[]> LoginYggdrasilAsync(string serverUrl, string email, string password, CancellationToken cancellationToken = default)
         => new YggdrasilAuthenticator(serverUrl).LoginAsync(email, password, cancellationToken);
 
+    //public async Task<YggdrasilAccount> LoginYggdrasilAsync(string serverUrl, OAuth2TokenResponse oAuth2TokenResponse, CancellationToken cancellationToken = default)
+    //{
+    //    var authAuthenticator = await YggdrasilOAuthAuthenticator.CreateFromServerPublicClientAsync(serverUrl);
+    //    return await authAuthenticator.LoginAsync(oAuth2TokenResponse, cancellationToken);
+    //}
+
+    //public async Task<OAuth2TokenResponse> AuthYggdrasilFromDeviceFlowAsync(string serverUrl, Action<OAuth2DeviceCodeResponse> receiveUserCodeAction, CancellationToken cancellationToken = default)
+    //{
+    //    var authAuthenticator = await YggdrasilOAuthAuthenticator.CreateFromServerPublicClientAsync(serverUrl);
+    //    return await authAuthenticator.AuthFromDeviceFlowAsync(receiveUserCodeAction, cancellationToken);
+    //}
+
     public OfflineAccount LoginOffline(string name, string? uuid)
         => _offlineAuthenticator.Login(name, uuid == null ? null : Guid.Parse(uuid));
 
@@ -40,6 +54,19 @@ internal class AuthenticationService
 
     public Task<YggdrasilAccount> RefreshAsync(YggdrasilAccount account, CancellationToken cancellationToken = default)
         => new YggdrasilAuthenticator(account.YggdrasilServerUrl, account.ClientToken).RefreshAsync(account, cancellationToken);
+
+    //public async Task<YggdrasilAccount> RefreshAsync(YggdrasilAccount account, CancellationToken cancellationToken = default)
+    //{
+    //    if (!account.MetaData.TryGetValue("authType", out var authType) || authType != "OAuth")
+    //    {
+    //        return await new YggdrasilAuthenticator(account.YggdrasilServerUrl, account.MetaData["client_token"]).RefreshAsync(account, cancellationToken);
+    //    }
+    //    else
+    //    {
+    //        var authAuthenticator = await YggdrasilOAuthAuthenticator.CreateFromServerPublicClientAsync(account.YggdrasilServerUrl);
+    //        return await authAuthenticator.RefreshAsync(account, cancellationToken);
+    //    }
+    //}
 
     public OfflineAccount Refresh(OfflineAccount account)
         => _offlineAuthenticator.Refresh(account);

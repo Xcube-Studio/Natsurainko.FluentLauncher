@@ -1,12 +1,14 @@
-$localizer = ".\FluentLauncher.Localization\build.bat"
+$localizerProject = ".\FluentLauncher.Localization\FluentLauncher.Infra.Localizer"
 
 # Check if localizer exists
-if (-not (Test-Path $localizer)) {
+if (-not (Test-Path $localizerProject)) {
     Write-Host "Localization tool not found! Check the localization project submodule."
     exit
 }
 
 # Check modification dates
+$csvFolder = ".\FluentLauncher.Localization\Views"
+$reswFolder = ".\Natsurainko.FluentLauncher\Assets\Strings"
 
 # Function to get the most recent modification date in a directory
 function Get-MostRecentModificationDate {
@@ -19,23 +21,14 @@ function Get-MostRecentModificationDate {
 }
 
 # Get the most recent modification dates
-$latestViewsDate = Get-MostRecentModificationDate -path ".\FluentLauncher.Localization\Views"
-$latestStringsDate = Get-MostRecentModificationDate -path ".\Natsurainko.FluentLauncher\Strings"
+$latestCsvDate = Get-MostRecentModificationDate -path $csvFolder
+$latestReswDate = Get-MostRecentModificationDate -path $reswFolder
 
 # Compare dates and exit if no compilation is needed
-if ($latestStringsDate -ge $latestViewsDate) {
+if ($latestReswDate -ge $latestCsvDate) {
     Write-Host "Skipped generation of resw files. Translations are up-to-date."
     exit
 }
 
-# Change directory and call build.bat
-Set-Location .\FluentLauncher.Localization
-Write-Output `n | & ".\build.bat"
-
-# Copy resw files generated to the FluentLauncher project
-$source = Join-Path (Get-Location) "Strings"
-$target = Join-Path $PSScriptRoot "Natsurainko.FluentLauncher"
-Copy-Item -Path $source -Destination $target -Recurse -Force
-
-# Display message
-Write-Host "COPIED $source TO $target"
+# Generate .resw files if trnaslations are updated
+dotnet run --project $localizerProject -- --src $csvFolder --out $reswFolder --languages en-US zh-Hans zh-Hant ru-RU uk-UA --default-language en-US

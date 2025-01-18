@@ -1,8 +1,7 @@
 ﻿using Microsoft.Windows.ApplicationModel.Resources;
-using Microsoft.Windows.AppLifecycle;
+using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Services.Settings;
 using System.Collections.Generic;
-using Windows.Globalization;
 
 namespace Natsurainko.FluentLauncher.Utils;
 
@@ -33,7 +32,5 @@ internal static class ResourceUtils
     {
         ApplicationLanguages.PrimaryLanguageOverride = language.Split(',')[0];
         App.GetService<SettingsService>().CurrentLanguage = language;
-
-        AppInstance.Restart(string.Empty);
     }
 }

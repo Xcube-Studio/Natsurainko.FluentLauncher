@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging.Messages;
 using FluentLauncher.Infra.Settings.Mvvm;
 using FluentLauncher.Infra.UI.Dialogs;
 using HelixToolkit.SharpDX.Core;
@@ -11,7 +10,6 @@ using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.ViewModels.Common;
-using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Utils;
 using System;
@@ -20,7 +18,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json.Nodes;
-using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Graphics.Imaging;
@@ -75,7 +72,7 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
 
             #region Create Skin Texture Stream
 
-            using var fileStream = File.OpenRead(_cacheSkinService.GetSkinFilePath(ActiveAccount));
+            using var fileStream = File.Open(_cacheSkinService.GetSkinFilePath(ActiveAccount), FileMode.Open, FileAccess.Read, FileShare.Read);
             using var randomAccessStream = fileStream.AsRandomAccessStream();
 
             var decoder = await BitmapDecoder.CreateAsync(randomAccessStream);
@@ -105,6 +102,8 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
 
                 foreach (var object3D in object3Ds)
                     ModelGeometry.Add(new MeshGeometryModel3D() { Material = material, Geometry = object3D.Geometry });
+
+                stream.Dispose();
             });
         }
         catch (Exception ex)

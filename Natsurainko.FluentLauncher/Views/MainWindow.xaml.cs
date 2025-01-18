@@ -1,14 +1,15 @@
+using FluentLauncher.Infra.Settings;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using System.IO;
 using Windows.ApplicationModel;
-using Windows.Globalization;
 using WinUIEx;
 
 namespace Natsurainko.FluentLauncher.Views;
@@ -34,10 +35,10 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
         _notificationService = notificationService;
         _navigationService = navigationService;
 
-        App.MainWindow = this;
-
         if (string.IsNullOrEmpty(ApplicationLanguages.PrimaryLanguageOverride))
             ResourceUtils.ApplyLanguage(_settingsService.CurrentLanguage);
+
+        App.MainWindow = this;
 
         App.GetService<AppearanceService>().RegisterWindow(this);
         InitializeComponent();
@@ -62,7 +63,7 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
         _settingsService.AppWindowHeight = App.MainWindow.Height;
     }
 
-    private void MainWindow_WindowStateChanged(object? sender, WindowState e)
+    private void MainWindow_WindowStateChanged(object? sender, WindowState e)   
     {
         _settingsService.AppWindowState = e;
     }
@@ -113,5 +114,8 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
     {
         XamlRoot = Frame.XamlRoot;
         _navigationService.NavigateTo(_settingsService.FinishGuide ? "ShellPage" : "OOBENavigationPage");
+
+        _settingsService.CurrentLanguageChanged += (SettingsContainer sender, SettingChangedEventArgs e) =>
+            _navigationService.NavigateTo(_settingsService.FinishGuide ? "ShellPage" : "OOBENavigationPage");
     }
 }

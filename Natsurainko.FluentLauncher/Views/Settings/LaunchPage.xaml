@@ -325,6 +325,14 @@
                     </TextBox>
                 </controls:SettingsCard>
 
+                <controls:SettingsCard
+                    x:Uid="Settings_LaunchPage_Card12"
+                    Description="File verification methods will affect the launch time. Verifying the file Sha1 is more accurate, but much slower than verifying the file size."
+                    Header="Preferred Game File Verification Method"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xE721;}">
+                    <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items1}" SelectedIndex="{x:Bind VM.GameFilePreferredVerificationMethod, Mode=TwoWay}" />
+                </controls:SettingsCard>
+
                 <TextBlock
                     x:Uid="Settings_LaunchPage_T4"
                     Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"

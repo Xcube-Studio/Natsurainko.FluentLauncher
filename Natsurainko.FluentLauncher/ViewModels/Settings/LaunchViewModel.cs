@@ -86,6 +86,10 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     [BindToSetting(Path = nameof(SettingsService.MaxQuickLaunchLatestItem))]
     public partial int MaxQuickLaunchLatestItem { get; set; }
 
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.GameFilePreferredVerificationMethod))]
+    public partial int GameFilePreferredVerificationMethod { get; set; }
+
     #endregion
 
     public bool IsMinecraftFoldersEmpty => MinecraftFolders.Count == 0;

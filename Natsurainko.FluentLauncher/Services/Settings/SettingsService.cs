@@ -59,6 +59,9 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(Default = "", Converter = typeof(JsonStringConverter<string>))]
     public partial string GameWindowTitle { get; set; }
 
+    [SettingItem(Default = 0, Converter = typeof(JsonStringConverter<int>))]
+    public partial int GameFilePreferredVerificationMethod { get; set; }
+
     #endregion
 
     #region Quick Launch Settings
@@ -131,7 +134,7 @@ public partial class SettingsService : SettingsContainer
 
     #region Appearance Mask Settings
 
-    [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
+    [SettingItem(Default = true, Converter = typeof(JsonStringConverter<bool>))]
     public partial bool UseBackgroundMask { get; set; }
 
     [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
@@ -141,10 +144,10 @@ public partial class SettingsService : SettingsContainer
 
     #region Application Window
 
-    [SettingItem(Default = 500, Converter = typeof(JsonStringConverter<double>))]
+    [SettingItem(Default = 760, Converter = typeof(JsonStringConverter<double>))]
     public partial double AppWindowHeight { get; set; }
 
-    [SettingItem(Default = 950, Converter = typeof(JsonStringConverter<double>))]
+    [SettingItem(Default = 1235, Converter = typeof(JsonStringConverter<double>))]
     public partial double AppWindowWidth { get; set; }
 
     [SettingItem(Default = WinUIEx.WindowState.Normal, Converter = typeof(JsonStringConverter<WinUIEx.WindowState>))]

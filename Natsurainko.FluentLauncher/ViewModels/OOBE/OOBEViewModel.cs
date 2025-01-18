@@ -11,7 +11,6 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Environment;
 using System;
@@ -368,5 +367,4 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
 
         _settings.FinishGuide = true;
     }
-
 }

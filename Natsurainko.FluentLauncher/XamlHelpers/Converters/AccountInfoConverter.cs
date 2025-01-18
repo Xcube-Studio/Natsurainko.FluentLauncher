@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Data;
+using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Authentication;
 using System;
@@ -13,7 +14,10 @@ internal partial class AccountInfoConverter : IValueConverter
     {
         if (value is AccountType accountType)
         {
-            var account = ResourceUtils.GetValue("Converters", "_Account");
+            string account = ResourceUtils.GetValue("Converters", "_Account");
+
+            if (!ApplicationLanguages.PrimaryLanguageOverride.StartsWith("zh-"))
+                account = " " + account;
 
             return accountType switch
             {

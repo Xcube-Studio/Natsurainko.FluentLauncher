@@ -364,7 +364,10 @@ internal class LaunchService
             LaunchStageProgress.Starting()
         ));
 
-        var dependencyResolver = new DependencyResolver(instance);
+        var dependencyResolver = new DependencyResolver(instance)
+        {
+            DefalutPreferredVerificationMethod = (DependencyResolver.PreferredVerificationMethod)_settingsService.GameFilePreferredVerificationMethod
+        };
 
         dependencyResolver.InvalidDependenciesDetermined += (_, e)
             => progress?.Report(new(

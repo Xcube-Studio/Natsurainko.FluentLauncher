@@ -5,10 +5,10 @@
     xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:data="using:Nrk.FluentCore.GameManagement.Mods"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
-    xmlns:data="using:Nrk.FluentCore.GameManagement.Mods"
     mc:Ignorable="d">
 
     <ScrollViewer>
@@ -43,8 +43,8 @@
                     Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
                     Text="Mods" />
 
-                <ItemsControl ItemsSource="{x:Bind VM.Mods, Mode=OneWay}">
-                    <ItemsControl.ItemTemplate>
+                <ItemsRepeater ItemsSource="{x:Bind VM.Mods, Mode=OneWay}">
+                    <ItemsRepeater.ItemTemplate>
                         <DataTemplate x:DataType="data:MinecraftMod">
                             <controls:SettingsCard
                                 HorizontalAlignment="Stretch"
@@ -117,8 +117,8 @@
                                 </i:Interaction.Behaviors>
                             </controls:SettingsCard>
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
 
                 <StackPanel
                     Grid.Row="2"

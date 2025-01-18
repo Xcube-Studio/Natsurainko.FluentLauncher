@@ -1,7 +1,5 @@
 ﻿using Nrk.FluentCore.Authentication;
-using Nrk.FluentCore.Authentication.Yggdrasil.OAuth;
 using System;
-using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 

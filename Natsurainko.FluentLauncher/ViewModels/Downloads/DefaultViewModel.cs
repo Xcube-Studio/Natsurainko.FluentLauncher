@@ -224,8 +224,6 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         }
     }
 
-    void QueryReceiver(string searchText) => _navigationService.NavigateTo("Download/Search", new SearchOptions { SearchText = searchText });
-
     [RelayCommand]
     void SearchAllMinecarft() => _navigationService.NavigateTo("Download/Search", new SearchOptions { ResourceType = 1 });
 
@@ -289,9 +287,6 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     [RelayCommand]
     void Loaded()
     {
-        if (_searchProviderService.QueryReceiverOwner != this)
-            _searchProviderService.OccupyQueryReceiver(this, QueryReceiver);
-
         if (!_searchProviderService.ContainsSuggestionProvider(this))
             _searchProviderService.RegisterSuggestionProvider(this, ProviderSuggestions);
     }

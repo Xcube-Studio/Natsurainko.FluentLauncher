@@ -100,7 +100,7 @@
 
                                         <i:Interaction.Behaviors>
                                             <behaviors:AncestorBindingBehavior
-                                                AncestorType="ItemsControl"
+                                                AncestorType="ItemsRepeater"
                                                 Binding="{Binding DataContext.DeleteModCommand}"
                                                 TargetPropertyName="Command" />
                                         </i:Interaction.Behaviors>

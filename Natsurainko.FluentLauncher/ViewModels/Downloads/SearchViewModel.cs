@@ -35,6 +35,10 @@ internal partial class SearchViewModel : ObservableObject, INavigationAware
     private readonly CurseForgeClient _curseForgeClient;
     private readonly ModrinthClient _modrinthClient;
 
+    private bool _needToSwitchBackSearchProvider;
+    private object _lastSearchProviderOwner;
+    private Action<string> _lastQueryReceiver;
+
     public SearchViewModel(
         INavigationService navigationService,
         GameService gameService,
@@ -256,7 +260,16 @@ internal partial class SearchViewModel : ObservableObject, INavigationAware
     void Loaded()
     {
         if (_searchProviderService.QueryReceiverOwner != this)
+        {
+            if (_searchProviderService.QueryReceiverOwner is NavigationViewModel)
+            {
+                _needToSwitchBackSearchProvider = true;
+                _lastSearchProviderOwner = _searchProviderService.QueryReceiverOwner;
+                _lastQueryReceiver = _searchProviderService.QueryReceiver;
+            }
+
             _searchProviderService.OccupyQueryReceiver(this, QueryReceiver);
+        }
 
         if (!_searchProviderService.ContainsSuggestionProvider(this))
             _searchProviderService.RegisterSuggestionProvider(this, ProviderSuggestions);
@@ -266,5 +279,11 @@ internal partial class SearchViewModel : ObservableObject, INavigationAware
     void Unloaded()
     {
         _searchProviderService.UnregisterSuggestionProvider(this);
+
+        if (_needToSwitchBackSearchProvider)
+        {
+            _searchProviderService.OccupyQueryReceiver(_lastSearchProviderOwner, _lastQueryReceiver);
+            _needToSwitchBackSearchProvider = false;
+        }
     }
 }

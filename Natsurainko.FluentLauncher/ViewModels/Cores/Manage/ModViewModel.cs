@@ -57,9 +57,16 @@ public partial class ModViewModel : ObservableObject, INavigationAware
 
     private async void LoadModList()
     {
-        Mods.Clear();
+        try
+        {
+            Mods.Clear();
 
-        await foreach (var saveInfo in ModsManager.EnumerateModsAsync())
-            App.DispatcherQueue.TryEnqueue(() => Mods.Add(saveInfo));
+            await foreach (var saveInfo in ModsManager.EnumerateModsAsync())
+                App.DispatcherQueue.TryEnqueue(() => Mods.Add(saveInfo));
+        }
+        catch
+        {
+
+        }
     }
 }

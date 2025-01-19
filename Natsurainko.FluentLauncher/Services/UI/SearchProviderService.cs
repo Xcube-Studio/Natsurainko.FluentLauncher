@@ -9,14 +9,15 @@ using System.Collections.Generic;
 #nullable disable
 namespace Natsurainko.FluentLauncher.Services.UI;
 
-internal partial class SearchProviderService : ObservableObject
+public partial class SearchProviderService : ObservableObject
 {
     private AutoSuggestBox _autoSuggestBox;
 
     private Dictionary<object, Func<string, IEnumerable<Suggestion>>> SuggestionProviders = new Dictionary<object, Func<string, IEnumerable<Suggestion>>>();
 
     public object QueryReceiverOwner { get; private set; }
-    private Action<string> QueryReceiver;
+
+    public Action<string> QueryReceiver { get; private set; }
 
     public void BindingSearchBox(AutoSuggestBox autoSuggestBox)
     {

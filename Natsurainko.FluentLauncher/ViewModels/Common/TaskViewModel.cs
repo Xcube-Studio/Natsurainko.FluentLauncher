@@ -50,6 +50,7 @@ internal abstract partial class TaskViewModel : ObservableObject
 {
     protected readonly CancellationTokenSource _tokenSource = new();
     public readonly Stopwatch Stopwatch = new();
+    protected string _stopwatchElapsedFormat = "hh\\:mm\\:ss";
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
@@ -106,11 +107,12 @@ internal abstract partial class TaskViewModel : ObservableObject
         System.Timers.Timer timer = new(TimeSpan.FromSeconds(1));
         timer.Elapsed += (object sender, System.Timers.ElapsedEventArgs e) =>
         {
-            App.DispatcherQueue.TryEnqueue(() => TimeUsage = Stopwatch.Elapsed.ToString("hh\\:mm\\:ss"));
+            App.DispatcherQueue.TryEnqueue(() => TimeUsage = Stopwatch.Elapsed.ToString(_stopwatchElapsedFormat));
 
             if (this.TaskState == TaskState.Failed || this.TaskState == TaskState.Finished || this.TaskState == TaskState.Cancelled)
             {
-                Stopwatch.Stop();
+                if (Stopwatch.IsRunning)
+                    Stopwatch.Stop();
 
                 timer.Stop();
                 timer.Dispose();
@@ -678,6 +680,8 @@ internal partial class LaunchTaskViewModel : TaskViewModel
         StageViewModels = launchProgressViewModel.Stages.Values;
         TaskTitle = _instance.GetDisplayName();
         IsExpanded = true;
+
+        _stopwatchElapsedFormat = "mm\\:ss\\.fffff";
     }
 
     [ObservableProperty]
@@ -753,6 +757,10 @@ internal partial class LaunchTaskViewModel : TaskViewModel
             });
 
             NotifyException();
+        }
+        finally
+        {
+            Stopwatch.Stop();
         }
 
         if (resultState == TaskState.Running)
@@ -841,12 +849,10 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     }
 
     [RelayCommand(CanExecute = nameof(IsGameRunning))]
-    public void KillProcess()
+    void KillProcess()
     {
         _isMcProcessKilled = true;
-        //McProcess!.Kill(); // not null when game is running
-
-        McProcess!.Process.KillProcessTree();
+        McProcess!.Process.KillProcessTree(); // not null when game is running
     }
 
     [RelayCommand]

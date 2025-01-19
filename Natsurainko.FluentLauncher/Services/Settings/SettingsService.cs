@@ -144,7 +144,7 @@ public partial class SettingsService : SettingsContainer
 
     #region Application Window
 
-    [SettingItem(Default = 760, Converter = typeof(JsonStringConverter<double>))]
+    [SettingItem(Default = 675, Converter = typeof(JsonStringConverter<double>))]
     public partial double AppWindowHeight { get; set; }
 
     [SettingItem(Default = 1235, Converter = typeof(JsonStringConverter<double>))]

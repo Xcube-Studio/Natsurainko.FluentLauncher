@@ -64,7 +64,7 @@
                             <controls:SettingsCard.Header>
                                 <TextBlock>
                                     <Run x:Uid="Settings_AccountPage_SH1" Text="Last Refresh Time:" />
-                                    <Run Text="{x:Bind VM.ActiveAccount, Mode=OneWay, Converter={StaticResource AccountInfoConverter}, ConverterParameter='LastRefreshTime'}"/>
+                                    <Run Text="{x:Bind VM.ActiveAccount, Mode=OneWay, Converter={StaticResource AccountInfoConverter}, ConverterParameter='LastRefreshTime'}" />
                                 </TextBlock>
                             </controls:SettingsCard.Header>
                         </controls:SettingsCard>
@@ -123,19 +123,11 @@
                     IsClickEnabled="True"
                     IsEnabled="{x:Bind VM.IsOfflineAccount, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}">
                     <controls:SettingsCard.Description>
-                        <StackPanel>
-                            <TextBlock
-                                x:Uid="Settings_AccountPage_Text1"
-                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                Text="Preview the current skin, or change the skin" />
-                            <TextBlock
-                                x:Uid="Settings_AccountPage_Text2"
-                                Foreground="{ThemeResource SystemErrorTextColor}"
-                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                Text="Offline accounts do not support skin function"
-                                Visibility="{x:Bind VM.IsOfflineAccount, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
-                        </StackPanel>
+                        <TextBlock
+                            x:Uid="Settings_AccountPage_Text1"
+                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                            Style="{ThemeResource CaptionTextBlockStyle}"
+                            Text="Preview the current skin, or change the skin" />
                     </controls:SettingsCard.Description>
                 </controls:SettingsCard>
                 <controls:SettingsCard
@@ -147,22 +139,19 @@
                     IsClickEnabled="True"
                     IsEnabled="{x:Bind VM.IsOfflineAccount, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}">
                     <controls:SettingsCard.Description>
-                        <StackPanel>
-                            <TextBlock
-                                Text="{x:Bind VM.SkinFile, Mode=OneWay}"
-                                TextTrimming="CharacterEllipsis"
-                                TextWrapping="NoWrap"
-                                Visibility="{x:Bind VM.IsOfflineAccount, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
-                            </TextBlock>
-                            <TextBlock
-                                x:Uid="Settings_AccountPage_Text2"
-                                Foreground="{ThemeResource SystemErrorTextColor}"
-                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                Text="Offline accounts do not support skin function"
-                                Visibility="{x:Bind VM.IsOfflineAccount, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                        </StackPanel>
+                        <TextBlock
+                            Text="{x:Bind VM.SkinFile, Mode=OneWay}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap"
+                            Visibility="{x:Bind VM.IsOfflineAccount, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
                     </controls:SettingsCard.Description>
                 </controls:SettingsCard>
+                <TextBlock
+                    x:Uid="Settings_AccountPage_Text2"
+                    Foreground="{ThemeResource SystemErrorTextColor}"
+                    Style="{ThemeResource CaptionTextBlockStyle}"
+                    Text="Offline accounts do not support skin function"
+                    Visibility="{x:Bind VM.IsOfflineAccount, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                 <TextBlock
                     x:Uid="Settings_AccountPage_T3"

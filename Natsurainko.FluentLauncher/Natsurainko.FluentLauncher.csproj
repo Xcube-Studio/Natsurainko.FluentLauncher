@@ -101,6 +101,8 @@
 
     <!-- Projects -->
     <ProjectReference Include="..\infra\FluentLauncher.Infra.Settings.SourceGenerators\FluentLauncher.Infra.Settings.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\FluentLauncher.Localization\FluentLauncher.Infra.LocalizedStrings.SourceGenerators\FluentLauncher.Infra.LocalizedStrings.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\FluentLauncher.Localization\FluentLauncher.Infra.LocalizedStrings\FluentLauncher.Infra.LocalizedStrings.csproj" />
     <ProjectReference Include="..\infra\FluentLauncher.Infra.Settings\FluentLauncher.Infra.Settings.csproj" />
     <ProjectReference Include="..\infra\FluentLauncher.Infra.WinUI\FluentLauncher.Infra.WinUI.csproj" />
     <ProjectReference Include="..\Natsurainko.FluentCore\Natsurainko.FluentCore\Natsurainko.FluentCore.csproj" />
@@ -244,6 +246,12 @@
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="cd ..&#xD;&#xA;pwsh ./update-localization.ps1" />
   </Target>
+
+  <!-- Add .resw files as additional files for source generation -->
+  <ItemGroup>
+    <AdditionalFiles Include="Assets\Strings\*.resw" />
+  </ItemGroup>
+
   <ItemGroup>
     <CustomAdditionalCompileInputs Remove="Views\Settings\SkinPage.xaml" />
   </ItemGroup>

@@ -31,9 +31,9 @@ public class NotificationService
         var exceptionViewModel = new NotifyExceptionViewModel(exception);
 
         if (!string.IsNullOrEmpty(errorDescriptionKey))
-            exceptionViewModel.Description = ResourceUtils.GetValue("Notifications", errorDescriptionKey) + "\r\n" + exceptionViewModel.Description;
+            exceptionViewModel.Description = LocalizedStrings.GetString($"Notifications_{errorDescriptionKey}") + "\r\n" + exceptionViewModel.Description;
 
-        NotifyWithSpecialContent(ResourceUtils.GetValue("Notifications", errorTitleKey), "ExceptionNotifyTemplate", exceptionViewModel, "\uE711", 60 * 1000);
+        NotifyWithSpecialContent(LocalizedStrings.GetString($"Notifications_{errorTitleKey}"), "ExceptionNotifyTemplate", exceptionViewModel, "\uE711", 60 * 1000);
     }
 
     public void NotifyMessage(string title, string text, string description = "", string icon = "\uE7E7", int delay = 5000)

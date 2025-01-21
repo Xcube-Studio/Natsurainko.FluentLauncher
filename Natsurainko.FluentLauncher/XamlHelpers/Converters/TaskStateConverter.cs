@@ -11,7 +11,7 @@ internal partial class TaskStateConverter : IValueConverter
     public object Convert(object value, Type targetType, object parameter, string language)
     {
         if (value is TaskState state)
-            return ResourceUtils.GetValue("Converters", $"_TaskState_{state}");
+            return LocalizedStrings.GetString($"Converters__TaskState_{state}");
 
         return null;
     }

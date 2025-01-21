@@ -22,7 +22,7 @@ public partial class ChooseModLoaderData : ObservableObject
     public ChooseModLoaderData(ModLoaderType type, VersionManifestItem manifestItem, List<ChooseModLoaderData> chooseModLoaders)
     {
         Type = type;
-        Description = ResourceUtils.GetValue("CoreInstallWizard", "ChooseModLoaderPage", $"_{Type}");
+        Description = LocalizedStrings.GetString($"CoreInstallWizard_ChooseModLoaderPage__{Type}");
 
         _manifestItem = manifestItem;
         _chooseModLoaders = chooseModLoaders;

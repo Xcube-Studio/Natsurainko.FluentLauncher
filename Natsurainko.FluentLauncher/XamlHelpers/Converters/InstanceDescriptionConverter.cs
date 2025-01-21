@@ -21,7 +21,7 @@ public partial class InstanceDescriptionConverter : IValueConverter
             var strings = new List<string>
             {
                 game.Version.VersionId,
-                ResourceUtils.GetValue("Converters", "_" + game.Version.Type switch
+                LocalizedStrings.GetString("Converters__" + game.Version.Type switch
                 {
                     MinecraftVersionType.Release => "Release",
                     MinecraftVersionType.Snapshot => "Snapshot",
@@ -38,7 +38,7 @@ public partial class InstanceDescriptionConverter : IValueConverter
         }
 
         if (value is VersionManifestItem manifestItem)
-            return ResourceUtils.GetValue("Converters", "_" + manifestItem.Type switch
+            return LocalizedStrings.GetString("Converters__" + manifestItem.Type switch
             {
                 "release" => "Release",
                 "snapshot" => "Snapshot",

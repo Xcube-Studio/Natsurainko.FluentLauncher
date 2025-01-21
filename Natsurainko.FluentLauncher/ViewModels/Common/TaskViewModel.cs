@@ -476,7 +476,7 @@ class LaunchProgressViewModel : IProgress<LaunchProgress>
     {
         foreach (var name in Enum.GetNames(typeof(LaunchStage)))
             Stages.Add((LaunchStage)Enum.Parse(typeof(LaunchStage), name), new LaunchStageViewModel 
-                { TaskName = ResourceUtils.GetValue("Tasks", "LaunchPage", $"_TaskName_{name}") });
+                { TaskName = LocalizedStrings.GetString($"Tasks_LaunchPage__TaskName_{name}") });
     }
 
     public virtual void Report(LaunchProgress value)

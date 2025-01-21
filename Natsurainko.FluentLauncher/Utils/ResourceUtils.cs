@@ -7,8 +7,6 @@ namespace Natsurainko.FluentLauncher.Utils;
 
 internal static class ResourceUtils
 {
-    private static readonly ResourceManager resourceManager = new();
-
     public static List<string> Languages =
     [
         "en-US, English",
@@ -17,16 +15,6 @@ internal static class ResourceUtils
         "zh-Hans, 简体中文",
         "zh-Hant, 繁體中文"
     ];
-
-    public static string GetValue(params string[] strings)
-    {
-        return resourceManager.MainResourceMap.GetValue($"Resources/{string.Join('_', strings)}").ValueAsString;
-    }
-
-    public static string[] GetItems(params string[] strings)
-    {
-        return resourceManager.MainResourceMap.GetValue($"Resources/{string.Join('_', strings)}").ValueAsString.Split(";");
-    }
 
     public static void ApplyLanguage(string language)
     {

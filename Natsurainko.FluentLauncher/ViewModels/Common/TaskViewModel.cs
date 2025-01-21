@@ -472,7 +472,7 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
         //}
 
         App.GetService<NotificationService>().NotifyException(
-            "_InstallInstanceThrowException",
+            LocalizedStrings.Notifications__InstallInstanceThrowException,
             Exception,
             errorDescriptionKey);
     }

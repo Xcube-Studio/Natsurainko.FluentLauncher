@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.WinUI.UI.Controls;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
@@ -457,7 +456,25 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
     [RelayCommand]
     void NotifyException()
     {
+        string errorDescriptionKey = string.Empty;
 
+        //if (Exception is InvalidOperationException)
+        //{
+
+        //}
+        //else if (Exception is YggdrasilAuthenticationException)
+        //{
+        //    errorDescriptionKey = "_LaunchGameThrowYggdrasilAuthenticationException";
+        //}
+        //else if (Exception is MicrosoftAuthenticationException)
+        //{
+        //    errorDescriptionKey = "_LaunchGameThrowMicrosoftAuthenticationException";
+        //}
+
+        App.GetService<NotificationService>().NotifyException(
+            "_InstallInstanceThrowException",
+            Exception,
+            errorDescriptionKey);
     }
 
     [RelayCommand(CanExecute = nameof(CanLaunch))]

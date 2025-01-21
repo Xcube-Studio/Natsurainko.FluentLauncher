@@ -114,7 +114,7 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
         catch (Exception ex)
         {
             _dialog.Hide();
-            _notificationService.NotifyException("_AccountYggdrasilProfileConfirmationFailed", ex);
+            _notificationService.NotifyException(LocalizedStrings.Notifications__AccountYggdrasilProfileConfirmationFailed, ex);
 
             return;
         }

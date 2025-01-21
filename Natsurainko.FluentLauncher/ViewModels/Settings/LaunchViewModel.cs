@@ -228,7 +228,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
         }
         catch (Exception ex) 
         {
-            _notificationService.NotifyException("_AddSearchedJavaFailedT", ex);
+            _notificationService.NotifyException(LocalizedStrings.Notifications__AddSearchedJavaFailedT, ex);
         }
     }
 

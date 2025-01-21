@@ -866,7 +866,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     [RelayCommand]
     void NotifyException()
     {
-        string errorDescriptionKey = string.Empty;
+        string errorDescription = string.Empty;
 
         if (Exception is InvalidOperationException)
         {
@@ -874,17 +874,17 @@ internal partial class LaunchTaskViewModel : TaskViewModel
         }
         else if (Exception is YggdrasilAuthenticationException)
         {
-            errorDescriptionKey = "_LaunchGameThrowYggdrasilAuthenticationException";
+            errorDescription = LocalizedStrings.Notifications__LaunchGameThrowYggdrasilAuthenticationException;
         }
         else if (Exception is MicrosoftAuthenticationException)
         {
-            errorDescriptionKey = "_LaunchGameThrowMicrosoftAuthenticationException";
+            errorDescription = LocalizedStrings.Notifications__LaunchGameThrowMicrosoftAuthenticationException;
         }
 
         App.GetService<NotificationService>().NotifyException(
-            "_LaunchGameThrowException",
+            LocalizedStrings.Notifications__LaunchGameThrowException,
             Exception,
-            errorDescriptionKey);
+            errorDescription);
     }
 }
 

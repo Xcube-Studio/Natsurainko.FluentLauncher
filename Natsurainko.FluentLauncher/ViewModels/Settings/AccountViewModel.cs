@@ -88,10 +88,14 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
         await _accountService.RefreshAccountAsync(ActiveAccount).ContinueWith(task => 
         {
             if (task.IsFaulted)
-                _notificationService.NotifyException("_AccountRefreshFailedTitle", task.Exception, "_AccountRefreshFailedDescription");
-            else _notificationService.NotifyMessage(
-                LocalizedStrings.Notifications__AccountRefreshedTitle,
-                LocalizedStrings.Notifications__AccountRefreshedDescription.Replace("${name}", _accountService.ActiveAccount.Name));
+                _notificationService.NotifyException(
+                    LocalizedStrings.Notifications__AccountRefreshFailedTitle,
+                    task.Exception,
+                    LocalizedStrings.Notifications__AccountRefreshFailedDescription);
+            else
+                _notificationService.NotifyMessage(
+                    LocalizedStrings.Notifications__AccountRefreshedTitle,
+                    LocalizedStrings.Notifications__AccountRefreshedDescription.Replace("${name}", _accountService.ActiveAccount.Name));
         });
     }
 

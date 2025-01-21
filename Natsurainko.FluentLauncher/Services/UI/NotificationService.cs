@@ -26,14 +26,14 @@ public class NotificationService
         _themeShadow.Receivers.Add(shadowReceiver);
     }
 
-    public void NotifyException(string errorTitleKey, Exception exception, string errorDescriptionKey = "")
+    public void NotifyException(string title, Exception exception, string description = "")
     {
         var exceptionViewModel = new NotifyExceptionViewModel(exception);
 
-        if (!string.IsNullOrEmpty(errorDescriptionKey))
-            exceptionViewModel.Description = LocalizedStrings.GetString($"Notifications_{errorDescriptionKey}") + "\r\n" + exceptionViewModel.Description;
+        if (!string.IsNullOrEmpty(description))
+            exceptionViewModel.Description = $"{description}\r\n{exceptionViewModel.Description}";
 
-        NotifyWithSpecialContent(LocalizedStrings.GetString($"Notifications_{errorTitleKey}"), "ExceptionNotifyTemplate", exceptionViewModel, "\uE711", 60 * 1000);
+        NotifyWithSpecialContent(title, "ExceptionNotifyTemplate", exceptionViewModel, "\uE711", 60 * 1000);
     }
 
     public void NotifyMessage(string title, string text, string description = "", string icon = "\uE7E7", int delay = 5000)

@@ -306,7 +306,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
         }
         catch (Exception ex)
         {
-            _notificationService.NotifyException("_AddSearchedJavaFailedT", ex);
+            _notificationService.NotifyException(LocalizedStrings.Notifications__AddSearchedJavaFailedT, ex);
         }
     }
 

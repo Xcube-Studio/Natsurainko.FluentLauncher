@@ -14,16 +14,16 @@ internal partial class AccountInfoConverter : IValueConverter
     {
         if (value is AccountType accountType)
         {
-            string account = ResourceUtils.GetValue("Converters", "_Account");
+            string account = LocalizedStrings.Converters__Account;
 
             if (!ApplicationLanguages.PrimaryLanguageOverride.StartsWith("zh-"))
                 account = " " + account;
 
             return accountType switch
             {
-                AccountType.Microsoft => ResourceUtils.GetValue("Converters", "_Microsoft") + account,
-                AccountType.Yggdrasil => ResourceUtils.GetValue("Converters", "_Yggdrasil") + account,
-                _ => ResourceUtils.GetValue("Converters", "_Offline") + account,
+                AccountType.Microsoft => LocalizedStrings.Converters__Microsoft + account,
+                AccountType.Yggdrasil => LocalizedStrings.Converters__Yggdrasil + account,
+                _ => LocalizedStrings.Converters__Offline + account,
             };
         }
 

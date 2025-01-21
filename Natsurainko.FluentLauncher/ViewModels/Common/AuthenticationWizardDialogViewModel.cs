@@ -127,7 +127,7 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
                 _accountService.RemoveAccount(item, true);
 
             _notificationService.NotifyWithoutContent(
-                ResourceUtils.GetValue("Notifications", "_AccountExisted"),
+                LocalizedStrings.Notifications__AccountExisted,
                 icon: "\uecc5");
         }
 
@@ -137,7 +137,7 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
         _dialog.Hide();
 
         _notificationService.NotifyWithSpecialContent(
-            ResourceUtils.GetValue("Notifications", "_AccountAddSuccessful"),
+            LocalizedStrings.Notifications__AccountAddSuccessful,
             "AuthenticationSuccessfulNotifyTemplate",
             account, "\uE73E");
     }

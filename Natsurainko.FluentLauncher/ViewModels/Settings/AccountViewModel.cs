@@ -90,8 +90,8 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
             if (task.IsFaulted)
                 _notificationService.NotifyException("_AccountRefreshFailedTitle", task.Exception, "_AccountRefreshFailedDescription");
             else _notificationService.NotifyMessage(
-                ResourceUtils.GetValue("Notifications", "_AccountRefreshedTitle"),
-                ResourceUtils.GetValue("Notifications", "_AccountRefreshedDescription").Replace("${name}", _accountService.ActiveAccount.Name));
+                LocalizedStrings.Notifications__AccountRefreshedTitle,
+                LocalizedStrings.Notifications__AccountRefreshedDescription.Replace("${name}", _accountService.ActiveAccount.Name));
         });
     }
 

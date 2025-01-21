@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace Natsurainko.FluentLauncher.Utils;
 
 [GeneratedLocalizedStrings]
-partial class LocalizedStrings
+static partial class LocalizedStrings
 {
+
 }

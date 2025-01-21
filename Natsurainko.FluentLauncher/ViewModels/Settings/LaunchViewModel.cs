@@ -140,8 +140,8 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
             if (MinecraftFolders.Contains(folder.Path))
             {
                 _notificationService.NotifyMessage(
-                    ResourceUtils.GetValue("Notifications", "_AddFolderExistedT"),
-                    ResourceUtils.GetValue("Notifications", "_AddFolderExistedD"),
+                    LocalizedStrings.Notifications__AddFolderExistedT,
+                    LocalizedStrings.Notifications__AddFolderExistedD,
                     icon: "\uF89A");
 
                 return;
@@ -195,8 +195,8 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
             if (Javas.Contains(openFileDialog.FileName))
             {
                 _notificationService.NotifyMessage(
-                    ResourceUtils.GetValue("Notifications", "_AddJavaExistedT"),
-                    ResourceUtils.GetValue("Notifications", "_AddJavaExistedD"),
+                    LocalizedStrings.Notifications__AddJavaExistedT,
+                     LocalizedStrings.Notifications__AddJavaExistedD,
                     icon: "\uF89A");
 
                 return;
@@ -223,7 +223,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
             OnPropertyChanged(nameof(Javas));
 
             _notificationService.NotifyWithoutContent(
-                ResourceUtils.GetValue("Notifications", "_AddSearchedJavaT"),
+                LocalizedStrings.Notifications__AddSearchedJavaT,
                 icon: "\uE73E");
         }
         catch (Exception ex) 

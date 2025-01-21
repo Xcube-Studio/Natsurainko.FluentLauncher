@@ -53,7 +53,7 @@ public partial class ChooseModLoaderData : ObservableObject
     public partial string Description { get; set; }
 
     [ObservableProperty]
-    public partial string DisplayText { get; set; } = ResourceUtils.GetValue("CoreInstallWizard", "ChooseModLoaderPage", "_Loading");
+    public partial string DisplayText { get; set; } = LocalizedStrings.CoreInstallWizard_ChooseModLoaderPage__Loading;
 
     [ObservableProperty]
     public partial object[] InstallDatas { get; set; }
@@ -109,7 +109,7 @@ public partial class ChooseModLoaderData : ObservableObject
                 SelectedInstallData = InstallDatas.FirstOrDefault();
                 IsSupported = true;
             }
-            else DisplayText = ResourceUtils.GetValue("CoreInstallWizard", "ChooseModLoaderPage", "_NotSupported");
+            else DisplayText = LocalizedStrings.CoreInstallWizard_ChooseModLoaderPage__NotSupported;
         });
     }
 

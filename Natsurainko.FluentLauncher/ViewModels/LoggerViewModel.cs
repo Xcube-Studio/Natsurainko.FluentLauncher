@@ -69,7 +69,7 @@ internal partial class LoggerViewModel : ObservableObject
             File.WriteAllLines(saveFileDialog.FileName, _gameLoggerOutputs.Select(x => x.FullData));
 
             App.GetService<NotificationService>().NotifyWithoutContent(
-                ResourceUtils.GetValue("Notifications", "_ExportLog"),
+                LocalizedStrings.Notifications__ExportLog,
                 icon: "\ue74e");
         }
     }

@@ -215,7 +215,7 @@ internal partial class SearchViewModel : ObservableObject, INavigationAware
             foreach (var item in VersionManifestItems.Where(x => x.Id.Contains(searchText)).Take(2))
             {
                 yield return SuggestionHelper.FromVersionManifestItem(item,
-                    ResourceUtils.GetValue("SearchSuggest", "_D2"),
+                    LocalizedStrings.SearchSuggest__D2,
                     () => _navigationService.Parent.NavigateTo("Cores/Install", item));
             }
         }
@@ -225,7 +225,7 @@ internal partial class SearchViewModel : ObservableObject, INavigationAware
             foreach (var item in VersionManifestItems.Where(x => x.Id.Contains(searchText)).Take(5))
             {
                 yield return SuggestionHelper.FromVersionManifestItem(item,
-                    ResourceUtils.GetValue("SearchSuggest", "_D2"),
+                    LocalizedStrings.SearchSuggest__D2,
                     () => _navigationService.Parent.NavigateTo("Cores/Install", item));
             }
         }
@@ -246,7 +246,7 @@ internal partial class SearchViewModel : ObservableObject, INavigationAware
         if (string.IsNullOrEmpty(_gameService.ActiveMinecraftFolder))
         {
             _notificationService.NotifyWithSpecialContent(
-                ResourceUtils.GetValue("Notifications", "_NoMinecraftFolder"),
+                LocalizedStrings.Notifications__NoMinecraftFolder,
                 "NoMinecraftFolderNotifyTemplate",
                 GoToSettingsCommand, "\uE711");
 

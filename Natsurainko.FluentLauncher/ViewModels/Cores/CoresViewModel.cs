@@ -71,7 +71,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     public partial List<MinecraftInstance> DisplayMinecraftInstances { get; set; }
 
     public string DisplayFolderPath => (string.IsNullOrEmpty(ActiveMinecraftFolder) || !Directory.Exists(ActiveMinecraftFolder))
-        ? ResourceUtils.GetValue("Cores", "CoresPage", "_FolderError")
+        ? LocalizedStrings.Cores_CoresPage__FolderError
         : ActiveMinecraftFolder;
 
     private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -105,8 +105,8 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
     {
         yield return new Suggestion
         {
-            Title = ResourceUtils.GetValue("SearchSuggest", "_T1").Replace("{searchText}", searchText),
-            Description = ResourceUtils.GetValue("SearchSuggest", "_D1"),
+            Title = LocalizedStrings.SearchSuggest__T1.Replace("{searchText}", searchText),
+            Description = LocalizedStrings.SearchSuggest__D1,
             InvokeAction = () => _navigationService.NavigateTo("Download/Navigation", new SearchOptions
             {
                 SearchText = searchText,
@@ -119,7 +119,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
             if (item.InstanceId.Contains(searchText))
             {
                 yield return SuggestionHelper.FromMinecraftInstance(item,
-                    ResourceUtils.GetValue("SearchSuggest", "_D3"),
+                    LocalizedStrings.SearchSuggest__D3,
                     () => _navigationService.NavigateTo("CoreManage/Navigation", item));
             }
         }
@@ -137,7 +137,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
         if (string.IsNullOrEmpty(_gameService.ActiveMinecraftFolder))
         {
             _notificationService.NotifyWithSpecialContent(
-                ResourceUtils.GetValue("Notifications", "_NoMinecraftFolder"),
+                LocalizedStrings.Notifications__NoMinecraftFolder,
                 "NoMinecraftFolderNotifyTemplate",
                 GoToSettingsCommand, "\uE711");
 

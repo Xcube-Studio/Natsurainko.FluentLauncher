@@ -66,7 +66,7 @@ internal partial class WizardViewModel : ObservableObject, INavigationAware
 
         BreadcrumbBarItemsSource =
         [
-            ResourceUtils.GetValue("Downloads", "CoreInstallWizardPage", "_BreadcrumbBar_First"),
+            LocalizedStrings.Downloads_CoreInstallWizardPage__BreadcrumbBar_First,
             _manifestItem.Id
         ];
 

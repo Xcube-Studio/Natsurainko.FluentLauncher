@@ -25,12 +25,12 @@ public partial class ComboBox : MarkupExtension
     protected override object ProvideValue(IXamlServiceProvider serviceProvider)
     {
         var uriContext = serviceProvider.GetService(typeof(IUriContext)) as IUriContext;
-
-        return ResourceUtils.GetItems(uriContext.BaseUri.AbsolutePath.ToString()
+        var path = uriContext.BaseUri.AbsolutePath.ToString()
             .Replace("/Views/", string.Empty)
             .Replace(".xaml", string.Empty)
             .Split('/')
             .Append(ResourceKey)
-            .ToArray()); ;
+            .ToArray();
+        return LocalizedStrings.GetStrings(string.Join('_', path));
     }
 }

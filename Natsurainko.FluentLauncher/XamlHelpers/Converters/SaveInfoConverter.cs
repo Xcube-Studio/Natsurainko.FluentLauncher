@@ -15,14 +15,14 @@ public partial class SaveInfoConverter : IValueConverter
             return null;
 
         var tags = new List<string>();
-        tags.Add(ResourceUtils.GetValue("Converters", $"_SaveGameType_{saveInfo.GameType}"));
+        tags.Add(LocalizedStrings.GetString($"Converters__SaveGameType_{saveInfo.GameType}"));
 
         if (saveInfo.AllowCommands)
-            tags.Add(ResourceUtils.GetValue("Converters", "_SaveCommands"));
+            tags.Add(LocalizedStrings.Converters__SaveCommands);
 
-        tags.Add(ResourceUtils.GetValue("Converters", "_SaveVersion").Replace("${version}", saveInfo.Version));
+        tags.Add(LocalizedStrings.Converters__SaveVersion.Replace("${version}", saveInfo.Version));
 
-        tags.Add(ResourceUtils.GetValue("Converters", "_SaveSeed").Replace("${seed}", saveInfo.Seed.ToString()));
+        tags.Add(LocalizedStrings.Converters__SaveSeed.Replace("${seed}", saveInfo.Seed.ToString()));
         return string.Join(", ", tags);
     }
 

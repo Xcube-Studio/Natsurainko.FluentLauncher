@@ -9,6 +9,7 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Utils;
@@ -108,7 +109,10 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
         }
         catch (Exception ex)
         {
-            _notificationService.NotifyException("_SkinDisplayExceptionT", ex, "_SkinDisplayExceptionD");
+            _notificationService.NotifyException(
+                LocalizedStrings.Notifications__SkinDisplayExceptionT,
+                ex,
+                LocalizedStrings.Notifications__SkinDisplayExceptionD);
         }
     }
 

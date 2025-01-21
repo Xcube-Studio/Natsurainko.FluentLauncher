@@ -173,7 +173,7 @@ internal partial class DownloadResourceDialogViewModel : ObservableObject, IDial
         _downloadService.DownloadResourceFile(SelectedItem, fileName);
         _dialog.Hide();
 
-        _notificationService.NotifyWithoutContent(ResourceUtils.GetValue("Notifications", "_AddDownloadTask"), icon: "\ue896");
+        _notificationService.NotifyWithoutContent(LocalizedStrings.Notifications__AddDownloadTask, icon: "\ue896");
     }
 
     public void SaveFile()

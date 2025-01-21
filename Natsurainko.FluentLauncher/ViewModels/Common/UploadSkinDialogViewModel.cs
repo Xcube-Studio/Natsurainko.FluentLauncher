@@ -57,7 +57,7 @@ public partial class UploadSkinDialogViewModel : ObservableObject, IDialogParame
         }
         catch (Exception ex)
         {
-            _notificationService.NotifyException("_SkinUploadException", ex);
+            _notificationService.NotifyException(LocalizedStrings.Notifications__SkinUploadException, ex);
         }
 
         App.DispatcherQueue.TryEnqueue(_dialog.Hide);

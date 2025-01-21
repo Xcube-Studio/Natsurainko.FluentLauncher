@@ -36,7 +36,7 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
         _navigationService = navigationService;
 
         if (string.IsNullOrEmpty(ApplicationLanguages.PrimaryLanguageOverride))
-            ResourceUtils.ApplyLanguage(_settingsService.CurrentLanguage);
+            LocalizedStrings.ApplyLanguage(_settingsService.CurrentLanguage);
 
         App.MainWindow = this;
 

@@ -88,7 +88,7 @@ internal partial class DeleteInstanceDialogViewModel : ObservableObject, IDialog
             });
 
             _notificationService.NotifyWithoutContent(
-                ResourceUtils.GetValue("Notifications", "_DeleteGameTitle"),
+                LocalizedStrings.Notifications__DeleteGameTitle,
                 icon: "\uE73E");
         }
         else
@@ -96,8 +96,8 @@ internal partial class DeleteInstanceDialogViewModel : ObservableObject, IDialog
             App.DispatcherQueue.TryEnqueue(() => _dialog.Hide());
 
             _notificationService.NotifyMessage(
-                ResourceUtils.GetValue("Notifications", "_DeleteGameFailedT"),
-                ResourceUtils.GetValue("Notifications", "_DeleteGameFailedD"),
+                LocalizedStrings.Notifications__DeleteGameFailedT,
+                LocalizedStrings.Notifications__DeleteGameFailedD,
                 icon: "\uE711");
         }
     });

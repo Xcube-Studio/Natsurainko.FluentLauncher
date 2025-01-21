@@ -100,7 +100,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     bool CanNext() => CurrentPageIndex switch
     {
         // Language page
-        0 => ResourceUtils.Languages.Contains(CurrentLanguage),
+        0 => LocalizedStrings.SupportedLanguages.Contains(CurrentLanguage),
         // Minecraft folder page
         1 => !string.IsNullOrEmpty(ActiveMinecraftFolder),
         // Java page
@@ -150,22 +150,22 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     [BindToSetting(Path = nameof(SettingsService.CurrentLanguage))]
     public partial string CurrentLanguage { get; set; }
 
-    public List<string> Languages { get; } = ResourceUtils.Languages;
+    public List<string> Languages { get; } = LocalizedStrings.SupportedLanguages;
 
     public string Version => App.Version.GetVersionString();
 
     public string Channel => App.AppChannel.ToUpper();
 
 #if DEBUG 
-    public string Edition { get; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Debug");
+    public string Edition { get; } = LocalizedStrings.Settings_AboutPage__Debug;
 #else 
-    public string Edition { get; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Release");
+    public string Edition { get; } = LocalizedStrings.Settings_AboutPage__Release;
 #endif
 
     partial void OnCurrentLanguageChanged(string oldValue, string newValue)
     {
-        if (ResourceUtils.Languages.Contains(CurrentLanguage) && oldValue is not null) // oldValue is null at startup
-            ResourceUtils.ApplyLanguage(CurrentLanguage);
+        if (LocalizedStrings.SupportedLanguages.Contains(CurrentLanguage) && oldValue is not null) // oldValue is null at startup
+            LocalizedStrings.ApplyLanguage(CurrentLanguage);
     }
 
     #endregion
@@ -196,8 +196,8 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
             if (MinecraftFolders.Contains(folder.Path))
             {
                 _notificationService.NotifyMessage(
-                    ResourceUtils.GetValue("Notifications", "_AddFolderExistedT"),
-                    ResourceUtils.GetValue("Notifications", "_AddFolderExistedD"),
+                    LocalizedStrings.Notifications__AddFolderExistedT,
+                    LocalizedStrings.Notifications__AddFolderExistedD,
                     icon: "\uF89A");
 
                 return;
@@ -216,8 +216,8 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
         if (!Directory.Exists(OfficialLauncherPath))
         {
             _notificationService.NotifyMessage(
-                ResourceUtils.GetValue("Notifications", "_AddOfficialFolderNotExistT"),
-                ResourceUtils.GetValue("Notifications", "_AddOfficialFolderNotExistD").Replace("${path}", OfficialLauncherPath),
+                LocalizedStrings.Notifications__AddOfficialFolderNotExistT,
+                LocalizedStrings.Notifications__AddOfficialFolderNotExistD.Replace("${path}", OfficialLauncherPath),
                 icon: "\uF89A");
 
             return;
@@ -227,8 +227,8 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
         if (MinecraftFolders.Contains(OfficialLauncherPath))
         {
             _notificationService.NotifyMessage(
-                ResourceUtils.GetValue("Notifications", "_AddOfficiaFolderExistedT"),
-                ResourceUtils.GetValue("Notifications", "_AddOfficiaFolderExistedD").Replace("${path}", OfficialLauncherPath),
+                LocalizedStrings.Notifications__AddOfficiaFolderExistedT,
+                LocalizedStrings.Notifications__AddOfficiaFolderExistedD.Replace("${path}", OfficialLauncherPath),
                 icon: "\uF89A");
 
             return;
@@ -239,8 +239,8 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
         _gameService.AddMinecraftFolder(OfficialLauncherPath);
 
         _notificationService.NotifyMessage(
-            ResourceUtils.GetValue("Notifications", "_AddOfficiaFolderAddedT"),
-            ResourceUtils.GetValue("Notifications", "_AddOfficiaFolderAddedD").Replace("${path}", OfficialLauncherPath),
+            LocalizedStrings.Notifications__AddOfficiaFolderAddedT,
+            LocalizedStrings.Notifications__AddOfficiaFolderAddedD.Replace("${path}", OfficialLauncherPath),
             icon: "\uE73E");
     }
 
@@ -273,8 +273,8 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
             if (JavaRuntimes.Contains(openFileDialog.FileName))
             {
                 _notificationService.NotifyMessage(
-                    ResourceUtils.GetValue("Notifications", "_AddJavaExistedT"),
-                    ResourceUtils.GetValue("Notifications", "_AddJavaExistedD"),
+                    LocalizedStrings.Notifications__AddJavaExistedT,
+                    LocalizedStrings.Notifications__AddJavaExistedD,
                     icon: "\uF89A");
 
                 return;
@@ -301,12 +301,12 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
             OnPropertyChanged(nameof(JavaRuntimes));
 
             _notificationService.NotifyWithoutContent(
-                ResourceUtils.GetValue("Notifications", "_AddSearchedJavaT"),
+                LocalizedStrings.Notifications__AddSearchedJavaT,
                 icon: "\uE73E");
         }
         catch (Exception ex)
         {
-            _notificationService.NotifyException("_AddSearchedJavaFailedT", ex);
+            _notificationService.NotifyException(LocalizedStrings.Notifications__AddSearchedJavaFailedT, ex);
         }
     }
 
@@ -353,9 +353,9 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
         get
         {
             if (CurrentPageIndex == OOBEPageKeys.Length - 1)
-                return ResourceUtils.GetValue("OOBE_OOBEViewModel__ButtonGetStarted");
+                return LocalizedStrings.OOBE_OOBEViewModel__ButtonGetStarted;
             else
-                return ResourceUtils.GetValue("OOBE_OOBEViewModel__ButtonNext");
+                return LocalizedStrings.OOBE_OOBEViewModel__ButtonNext;
         }
     }
 

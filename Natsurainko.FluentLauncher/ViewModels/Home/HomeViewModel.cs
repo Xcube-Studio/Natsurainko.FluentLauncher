@@ -49,7 +49,7 @@ internal partial class HomeViewModel : ObservableObject
     public Visibility AccountTag => ActiveAccount is null ? Visibility.Collapsed : Visibility.Visible;
 
     public string DropDownButtonDisplayText => ActiveMinecraftInstance == null
-        ? ResourceUtils.GetValue("Home", "HomePage", "_NoCore")
+        ? LocalizedStrings.Home_HomePage__NoCore
         : ActiveMinecraftInstance.GetDisplayName();
 
     [ObservableProperty]
@@ -83,8 +83,8 @@ internal partial class HomeViewModel : ObservableObject
     {
         yield return new Suggestion
         {
-            Title = ResourceUtils.GetValue("SearchSuggest", "_T1").Replace("{searchText}", searchText),
-            Description = ResourceUtils.GetValue("SearchSuggest", "_D1"),
+            Title = LocalizedStrings.SearchSuggest__T1.Replace("{searchText}", searchText),
+            Description = LocalizedStrings.SearchSuggest__D1,
             InvokeAction = () => _navigationService.NavigateTo("Download/Navigation", new SearchOptions
             {
                 SearchText = searchText,
@@ -97,7 +97,7 @@ internal partial class HomeViewModel : ObservableObject
             if (item.InstanceId.Contains(searchText))
             {
                 yield return SuggestionHelper.FromMinecraftInstance(item,
-                    ResourceUtils.GetValue("SearchSuggest", "_D4"), 
+                    LocalizedStrings.SearchSuggest__D4,
                     () => _launchService.LaunchFromUI(item));
             }
         }

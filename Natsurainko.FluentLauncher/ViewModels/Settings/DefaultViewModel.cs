@@ -17,7 +17,7 @@ internal partial class DefaultViewModel : SettingsViewModelBase, ISettingsViewMo
     private readonly SettingsService _settingsService;
     private readonly INavigationService _navigationService;
 
-    public List<string> Languages { get; } = ResourceUtils.Languages;
+    public List<string> Languages { get; } = LocalizedStrings.SupportedLanguages;
 
     public DefaultViewModel(SettingsService settingsService, INavigationService navigationService)
     {
@@ -35,10 +35,10 @@ internal partial class DefaultViewModel : SettingsViewModelBase, ISettingsViewMo
 
 #if DEBUG
     [ObservableProperty]
-    public partial string Edition { get; set; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Debug");
+    public partial string Edition { get; set; } = LocalizedStrings.Settings_AboutPage__Debug;
 #else
     [ObservableProperty]
-    public partial string Edition { get; set; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Release");
+    public partial string Edition { get; set; } = LocalizedStrings.Settings_AboutPage__Release;
 #endif
 
     public string Channel => App.AppChannel.ToUpper();
@@ -46,7 +46,7 @@ internal partial class DefaultViewModel : SettingsViewModelBase, ISettingsViewMo
     partial void OnCurrentLanguageChanged(string oldValue, string newValue)
     {
         if (Languages.Contains(CurrentLanguage) && oldValue is not null) // oldValue is null at startup
-            ResourceUtils.ApplyLanguage(CurrentLanguage);
+            LocalizedStrings.ApplyLanguage(CurrentLanguage);
     }
 
     [RelayCommand]

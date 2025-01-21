@@ -20,7 +20,7 @@ public partial class BreadcrumbBarLocalizationConverter : IValueConverter
         if (IgnoredText.Contains(text))
             return text;
 
-        return ResourceUtils.GetValue(BasePath, $"_{text}");
+        return LocalizedStrings.GetString($"{BasePath}__{text}");
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)

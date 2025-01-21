@@ -182,8 +182,8 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     {
         yield return new Suggestion
         {
-            Title = ResourceUtils.GetValue("SearchSuggest", "_T1").Replace("{searchText}", searchText),
-            Description = ResourceUtils.GetValue("SearchSuggest", "_D1"),
+            Title = LocalizedStrings.SearchSuggest__T1.Replace("{searchText}", searchText),
+            Description = LocalizedStrings.SearchSuggest__D1,
             InvokeAction = () => _navigationService.NavigateTo("Download/Search", new SearchOptions
             {
                 SearchText = searchText,
@@ -193,8 +193,8 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
         yield return new Suggestion
         {
-            Title = ResourceUtils.GetValue("SearchSuggest", "_T2").Replace("{searchText}", searchText),
-            Description = ResourceUtils.GetValue("SearchSuggest", "_D1"),
+            Title = LocalizedStrings.SearchSuggest__T2.Replace("{searchText}", searchText),
+            Description = LocalizedStrings.SearchSuggest__D1,
             InvokeAction = () => _navigationService.NavigateTo("Download/Search", new SearchOptions
             {
                 SearchText = searchText,
@@ -204,8 +204,8 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
         yield return new Suggestion
         {
-            Title = ResourceUtils.GetValue("SearchSuggest", "_T3").Replace("{searchText}", searchText),
-            Description = ResourceUtils.GetValue("SearchSuggest", "_D1"),
+            Title = LocalizedStrings.SearchSuggest__T3.Replace("{searchText}", searchText),
+            Description = LocalizedStrings.SearchSuggest__D1,
             InvokeAction = () => _navigationService.NavigateTo("Download/Search", new SearchOptions
             {
                 SearchText = searchText,
@@ -218,7 +218,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             if (item.Id.Contains(searchText))
             {
                 yield return SuggestionHelper.FromVersionManifestItem(item,
-                    ResourceUtils.GetValue("SearchSuggest", "_D2"),
+                    LocalizedStrings.SearchSuggest__D2,
                     () => _navigationService.Parent.NavigateTo("Cores/Install", item));
             }
         }
@@ -248,7 +248,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         if (string.IsNullOrEmpty(_gameService.ActiveMinecraftFolder))
         {
             _notificationService.NotifyWithSpecialContent(
-                ResourceUtils.GetValue("Notifications", "_NoMinecraftFolder"),
+                LocalizedStrings.Notifications__NoMinecraftFolder,
                 "NoMinecraftFolderNotifyTemplate",
                 GoToSettingsCommand, "\uE711");
 
@@ -274,7 +274,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         if (string.IsNullOrEmpty(_gameService.ActiveMinecraftFolder))
         {
             _notificationService.NotifyWithSpecialContent(
-                ResourceUtils.GetValue("Notifications", "_NoMinecraftFolder"),
+                LocalizedStrings.Notifications__NoMinecraftFolder,
                 "NoMinecraftFolderNotifyTemplate",
                 GoToSettingsCommand, "\uE711");
 

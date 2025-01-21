@@ -32,10 +32,10 @@ internal partial class AboutViewModel : ObservableObject
 
 #if DEBUG
     [ObservableProperty]
-    public partial string Edition { get; set; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Debug");
+    public partial string Edition { get; set; } = LocalizedStrings.Settings_AboutPage__Debug;
 #else
     [ObservableProperty]
-    public partial string Edition { get; set; } = ResourceUtils.GetValue("Settings", "AboutPage", "_Release");
+    public partial string Edition { get; set; } = LocalizedStrings.Settings_AboutPage__Release;
 #endif
 
     public string Channel => App.AppChannel.ToUpper();

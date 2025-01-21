@@ -21,14 +21,14 @@ public partial class InstanceDescriptionConverter : IValueConverter
             var strings = new List<string>
             {
                 game.Version.VersionId,
-                ResourceUtils.GetValue("Converters", "_" + game.Version.Type switch
+                game.Version.Type switch
                 {
-                    MinecraftVersionType.Release => "Release",
-                    MinecraftVersionType.Snapshot => "Snapshot",
-                    MinecraftVersionType.OldBeta => "Old Beta",
-                    MinecraftVersionType.OldAlpha => "Old Alpha",
-                    _ => "Unknown"
-                })
+                    MinecraftVersionType.Release => LocalizedStrings.Converters__Release,
+                    MinecraftVersionType.Snapshot => LocalizedStrings.Converters__Snapshot,
+                    MinecraftVersionType.OldBeta => LocalizedStrings.Converters__Old_Beta,
+                    MinecraftVersionType.OldAlpha => LocalizedStrings.Converters__Old_Alpha,
+                    _ => LocalizedStrings.Converters__Unknown
+                }
             };
 
             if (EnableShowModLoaderType)
@@ -38,14 +38,14 @@ public partial class InstanceDescriptionConverter : IValueConverter
         }
 
         if (value is VersionManifestItem manifestItem)
-            return ResourceUtils.GetValue("Converters", "_" + manifestItem.Type switch
+            return manifestItem.Type switch
             {
-                "release" => "Release",
-                "snapshot" => "Snapshot",
-                "old_beta" => "Old Beta",
-                "old_alpha" => "Old Alpha",
-                _ => "Unknown"
-            });
+                "release" => LocalizedStrings.Converters__Release,
+                "snapshot" => LocalizedStrings.Converters__Snapshot,
+                "old_beta" => LocalizedStrings.Converters__Old_Beta,
+                "old_alpha" => LocalizedStrings.Converters__Old_Alpha,
+                _ => LocalizedStrings.Converters__Unknown
+            };
 
         return null;
     }

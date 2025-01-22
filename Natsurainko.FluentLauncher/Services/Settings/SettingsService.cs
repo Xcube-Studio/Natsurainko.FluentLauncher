@@ -97,7 +97,7 @@ public partial class SettingsService : SettingsContainer
 
     #endregion
 
-    [SettingItem(Default = "en-US", Converter = typeof(JsonStringConverter<string>))] // TODO: remove default value; set to system language if null
+    [SettingItem(Default = "")]
     public partial string CurrentLanguage { get; set; }
 
     #region Appearance Theme Settings
@@ -238,6 +238,12 @@ public partial class SettingsService : SettingsContainer
             SettingsVersion = 3u;
         }
 
+        if (SettingsVersion == 3u) // Version 3: Before Release 2.3.3.0
+        {
+            MigrateFrom_2_3_3_0();
+            SettingsVersion = 4u;
+        }
+
         //if (SettingsVersion == N) // Version N: Release vNext
         //{
         //    SettingsVersion = N + 1;
@@ -325,5 +331,21 @@ public partial class SettingsService : SettingsContainer
 
         if (clientId is not null)
             appsettings.Values["ActiveInstanceId"] = clientId;
+    }
+
+    private static void MigrateFrom_2_3_3_0()
+    {
+        if (!MsixPackageUtils.IsPackaged)
+            return;
+
+        var appsettings = ApplicationData.Current.LocalSettings;
+
+        // The language setting now only stores the language code, e.g. "en-US, English" -> "en-US"
+        if (appsettings.Values["CurrentLanguage"] is string oldLanguageOption && !string.IsNullOrEmpty(oldLanguageOption))
+        {
+            string[] split = oldLanguageOption.Replace("\"", "").Split(',');
+            if (split.Length >= 1)
+                appsettings.Values["CurrentLanguage"] = split[0]; // Store the language code only
+        }
     }
 }

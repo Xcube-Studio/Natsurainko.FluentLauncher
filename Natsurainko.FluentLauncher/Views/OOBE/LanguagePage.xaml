@@ -2,8 +2,11 @@
     x:Class="Natsurainko.FluentLauncher.Views.OOBE.LanguagePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:Natsurainko.FluentLauncher.Models"
+    xmlns:utils="using:Natsurainko.FluentLauncher.Utils"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
     d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
     mc:Ignorable="d">
@@ -89,8 +92,25 @@
 
             <ComboBox
                 Grid.Row="3"
-                ItemsSource="{x:Bind VM.Languages}"
-                SelectedItem="{x:Bind VM.CurrentLanguage, Mode=TwoWay}" />
+                ItemsSource="{x:Bind utils:LocalizedStrings.SupportedLanguages}"
+                SelectedItem="{x:Bind VM.CurrentLanguage, Mode=TwoWay, Converter={StaticResource LanguageInfoConverter}}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="models:LanguageInfo">
+                        <controls:DockPanel>
+                            <TextBlock
+                                Margin="0,0,8,0"
+                                HorizontalAlignment="Left"
+                                controls:DockPanel.Dock="Left"
+                                Text="{x:Bind DisplayName}" />
+                            <TextBlock
+                                HorizontalAlignment="Right"
+                                controls:DockPanel.Dock="Right"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                Text="{x:Bind LanguageCode}" />
+                        </controls:DockPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
         </Grid>
     </Grid>
 </Page>

@@ -5,6 +5,7 @@ using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
+using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
@@ -100,7 +101,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     bool CanNext() => CurrentPageIndex switch
     {
         // Language page
-        0 => LocalizedStrings.SupportedLanguages.Contains(CurrentLanguage),
+        0 => LocalizedStrings.SupportedLanguages.Select(lang => lang.LanguageCode).Contains(CurrentLanguage),
         // Minecraft folder page
         1 => !string.IsNullOrEmpty(ActiveMinecraftFolder),
         // Java page
@@ -150,8 +151,6 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     [BindToSetting(Path = nameof(SettingsService.CurrentLanguage))]
     public partial string CurrentLanguage { get; set; }
 
-    public List<string> Languages { get; } = LocalizedStrings.SupportedLanguages;
-
     public string Version => App.Version.GetVersionString();
 
     public string Channel => App.AppChannel.ToUpper();
@@ -164,7 +163,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
 
     partial void OnCurrentLanguageChanged(string oldValue, string newValue)
     {
-        if (LocalizedStrings.SupportedLanguages.Contains(CurrentLanguage) && oldValue is not null) // oldValue is null at startup
+        if (oldValue is not null) // oldValue is null at startup
             LocalizedStrings.ApplyLanguage(CurrentLanguage);
     }
 

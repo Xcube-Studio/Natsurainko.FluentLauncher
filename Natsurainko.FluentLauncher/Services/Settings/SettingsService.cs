@@ -97,7 +97,7 @@ public partial class SettingsService : SettingsContainer
 
     #endregion
 
-    [SettingItem(Default = "en-US, English", Converter = typeof(JsonStringConverter<string>))] // TODO: remove default value; set to system language if null
+    [SettingItem(Default = "en-US", Converter = typeof(JsonStringConverter<string>))] // TODO: remove default value; set to system language if null
     public partial string CurrentLanguage { get; set; }
 
     #region Appearance Theme Settings

@@ -7,6 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:Natsurainko.FluentLauncher.Models"
+    xmlns:utils="using:Natsurainko.FluentLauncher.Utils"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     mc:Ignorable="d">
 
@@ -66,11 +68,27 @@
                     x:Uid="Settings_DefaultPage_Card5"
                     Header="Language Settings"
                     HeaderIcon="{xh:FontIcon Glyph=&#xf2b7;}">
-                    <ComboBox ItemsSource="{x:Bind VM.Languages, Mode=OneWay}" SelectedItem="{x:Bind VM.CurrentLanguage, Mode=TwoWay}">
+                    <ComboBox ItemsSource="{x:Bind utils:LocalizedStrings.SupportedLanguages}" SelectedItem="{x:Bind VM.CurrentLanguage, Mode=TwoWay, Converter={StaticResource LanguageInfoConverter}}">
                         <i:Interaction.Behaviors>
                             <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
                             <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                         </i:Interaction.Behaviors>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="models:LanguageInfo">
+                                <controls:DockPanel>
+                                    <TextBlock
+                                        Margin="0,0,8,0"
+                                        HorizontalAlignment="Left"
+                                        controls:DockPanel.Dock="Left"
+                                        Text="{x:Bind DisplayName}" />
+                                    <TextBlock
+                                        HorizontalAlignment="Right"
+                                        controls:DockPanel.Dock="Right"
+                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        Text="{x:Bind LanguageCode}" />
+                                </controls:DockPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
                     </ComboBox>
                 </controls:SettingsCard>
 

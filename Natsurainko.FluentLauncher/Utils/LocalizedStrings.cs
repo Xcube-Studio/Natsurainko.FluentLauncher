@@ -1,5 +1,6 @@
 ﻿using FluentLauncher.Infra.LocalizedStrings;
 using Microsoft.Windows.Globalization;
+using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Settings;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,12 @@ namespace Natsurainko.FluentLauncher.Utils;
 [GeneratedLocalizedStrings]
 static partial class LocalizedStrings
 {
-    public static List<string> SupportedLanguages = [
-        "en-US, English",
-        "ru-RU, Русский",
-        "uk-UA, Український",
-        "zh-Hans, 简体中文",
-        "zh-Hant, 繁體中文"
+    public static List<LanguageInfo> SupportedLanguages = [
+        new LanguageInfo("en-US", "English"),
+        new LanguageInfo("ru-RU", "Русский"),
+        new LanguageInfo("uk-UA", "Український"),
+        new LanguageInfo("zh-Hans", "简体中文"),
+        new LanguageInfo("zh-Hant", "繁體中文")
     ];
 
     /// <summary>

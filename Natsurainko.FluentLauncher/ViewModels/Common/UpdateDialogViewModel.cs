@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Utils;
+using System.Diagnostics;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
@@ -56,6 +57,12 @@ internal partial class UpdateDialogViewModel : ObservableObject, IDialogParamete
     [ObservableProperty]
     public partial string ProxyUrl { get; set; } = "https://source.cubestructor.cc";
 
+    [ObservableProperty]
+    public partial Visibility ErrorTipVisibility { get; set; } = Visibility.Collapsed;
+
+    [ObservableProperty]
+    public partial string ErrorLogPath { get; set; }
+
     public Visibility ProxyBoxVisibility => UseProxy ? Visibility.Visible : Visibility.Collapsed;
 
     public Visibility ProrgessVisibility => Running ? Visibility.Visible : Visibility.Collapsed;
@@ -83,6 +90,8 @@ internal partial class UpdateDialogViewModel : ObservableObject, IDialogParamete
     [RelayCommand]
     async Task Update()
     {
+        IsIndeterminate = false;
+        ErrorTipVisibility = Visibility.Collapsed;
         Running = true;
 
         #region Check for installer update
@@ -95,7 +104,7 @@ internal partial class UpdateDialogViewModel : ObservableObject, IDialogParamete
         {
             ActionName = "Downloading Package Installer";
 
-            var downloadTask = _updateService.CreatePackageInstallerDownloadTask(installerDownloadUrl!, ProxyUrl);
+            var downloadTask = _updateService.CreatePackageInstallerDownloadTask(installerDownloadUrl!, UseProxy ? ProxyUrl : null);
             using (System.Timers.Timer timer = new(500))
             {
                 timer.Elapsed += (sender, e) => App.DispatcherQueue.TryEnqueue(() => 
@@ -119,7 +128,7 @@ internal partial class UpdateDialogViewModel : ObservableObject, IDialogParamete
         #region Download update package
         ActionName = "Downloading Update Package";
 
-        var packageDownloadTask = _updateService.CreateUpdatePackageDownloadTask(_releaseJson, ProxyUrl);
+        var packageDownloadTask = _updateService.CreateUpdatePackageDownloadTask(_releaseJson, UseProxy ? ProxyUrl : null);
         using (System.Timers.Timer timer = new(500))
         {
             timer.Elapsed += (sender, e) => App.DispatcherQueue.TryEnqueue(() =>
@@ -144,18 +153,26 @@ internal partial class UpdateDialogViewModel : ObservableObject, IDialogParamete
         ActionName = "Running Package Installer";
         IsIndeterminate = true;
 
-        var (success, error) = await _updateService.RunInstaller();
+        var (success, logFile) = await _updateService.RunInstaller();
+
         if (!success)
         {
             Running = false;
-            _dialog.Hide();
+            ErrorLogPath = logFile;
+            ErrorTipVisibility = Visibility.Visible;
         }
 
-        #endregion
+        #endregion  
     }
 
     [RelayCommand]
     void Cancel() => _dialog.Hide();
+
+    [RelayCommand]
+    void ShowErrorLog()
+    {
+        using var _ = Process.Start("notepad.exe", ErrorLogPath);
+    }
 }
 
 #endif

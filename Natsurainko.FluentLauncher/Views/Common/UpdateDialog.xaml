@@ -129,6 +129,18 @@
                         Foreground="{ThemeResource SystemFillColorCaution}"
                         Text="This may take some time, please do not force close the app" />
                 </StackPanel>
+                <StackPanel
+                    Orientation="Vertical"
+                    Spacing="5"
+                    Visibility="{Binding ErrorTipVisibility}">
+                    <TextBlock
+                        Foreground="{ThemeResource SystemErrorTextColor}"
+                        Text="Update failed. A problem occurred during the installation process. The following is the installation log. Click to open it."
+                        TextWrapping="WrapWholeWords" />
+                    <HyperlinkButton Command="{Binding ShowErrorLogCommand}">
+                        <TextBlock Text="{Binding ErrorLogPath}" TextTrimming="CharacterEllipsis" />
+                    </HyperlinkButton>
+                </StackPanel>
             </StackPanel>
         </Grid>
         <Rectangle

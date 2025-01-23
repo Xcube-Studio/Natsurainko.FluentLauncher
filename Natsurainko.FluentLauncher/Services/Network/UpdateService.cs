@@ -103,6 +103,8 @@ internal partial class UpdateService
     public async Task<(bool, string?)> RunInstaller()
     {
         string architecture = GetArchitecture();
+        string logFileName = $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.log";
+
         FileInfo file = _localStorageService.GetFile($"launcher-update\\PackageInstaller-{architecture}.exe");
 
         if (!file.Exists) throw new FileNotFoundException("PackageInstaller not found");
@@ -116,16 +118,15 @@ internal partial class UpdateService
                 Verb = "runas",
                 //RedirectStandardOutput = true,
                 //RedirectStandardError = true,
-                WorkingDirectory = file.DirectoryName
+                WorkingDirectory = file.DirectoryName,
+                Arguments = $"--logFilePath {logFileName}"
             }
         };
 
         process.Start();
-        //process.BeginErrorReadLine();
-        //process.BeginOutputReadLine();
 
         await process.WaitForExitAsync();
-        return (false, ""); // If the installer exited without error, the launcher should be closed during the installation.
+        return (false, _localStorageService.GetFile($"launcher-update\\{logFileName}").FullName); // If the installer exited without error, the launcher should be closed during the installation.
     }
 
     private static string GetArchitecture() => RuntimeInformation.ProcessArchitecture switch

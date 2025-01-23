@@ -4,16 +4,21 @@ using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
 using Natsurainko.FluentLauncher.Services.Launch;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Utils;
+using ReverseMarkdown.Converters;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
+using Windows.System.UserProfile;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -53,12 +58,43 @@ public partial class App : Application
         App.GetService<AppearanceService>().RegisterApp(this);
         App.GetService<QuickLaunchService>().CleanRemovedJumpListItem();
 
+        ConfigureLanguage();
+
         // Global exception handler
         UnhandledException += (_, e) =>
         {
             e.Handled = true;
             ProcessException(e.Exception);
         };
+    }
+
+    private void ConfigureLanguage()
+    {
+        var settings = App.GetService<SettingsService>();
+        var selectedLangCode = settings.CurrentLanguage;
+
+        // Choose language using system language preference on first launch
+        if (selectedLangCode == "")
+        {
+            foreach (string langCode in GlobalizationPreferences.Languages)
+            {
+                // Match the language preference with supported languages
+                // StartsWith is used to match the language code with the region code, for example "zh-hans-CN" with "zh-Hans"
+                if (LocalizedStrings.SupportedLanguages.Any(x => langCode.StartsWith(x.LanguageCode)))
+                {
+                    selectedLangCode = langCode;
+                    settings.CurrentLanguage = langCode;
+                    break;
+                }
+            }
+
+            // Fall back to English if no match
+            if (selectedLangCode == "")
+                selectedLangCode = "en-US";
+        }
+
+        // Apply the language
+        LocalizedStrings.ApplyLanguage(selectedLangCode);
     }
 
     protected override async void OnLaunched(LaunchActivatedEventArgs args)

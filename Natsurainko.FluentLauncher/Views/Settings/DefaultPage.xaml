@@ -8,6 +8,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:Natsurainko.FluentLauncher.Models"
+    xmlns:mycontrols="using:Natsurainko.FluentLauncher.UserControls"
     xmlns:utils="using:Natsurainko.FluentLauncher.Utils"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     mc:Ignorable="d">
@@ -68,12 +69,12 @@
                     x:Uid="Settings_DefaultPage_Card5"
                     Header="Language Settings"
                     HeaderIcon="{xh:FontIcon Glyph=&#xf2b7;}">
-                    <ComboBox ItemsSource="{x:Bind utils:LocalizedStrings.SupportedLanguages}" SelectedItem="{x:Bind VM.CurrentLanguage, Mode=TwoWay, Converter={StaticResource LanguageInfoConverter}}">
+                    <mycontrols:NoScrollingComboBox ItemsSource="{x:Bind utils:LocalizedStrings.SupportedLanguages}" SelectedItem="{x:Bind VM.CurrentLanguage, Mode=TwoWay, Converter={StaticResource LanguageInfoConverter}}">
                         <i:Interaction.Behaviors>
                             <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
                             <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
                         </i:Interaction.Behaviors>
-                        <ComboBox.ItemTemplate>
+                        <mycontrols:NoScrollingComboBox.ItemTemplate>
                             <DataTemplate x:DataType="models:LanguageInfo">
                                 <controls:DockPanel>
                                     <TextBlock
@@ -88,8 +89,8 @@
                                         Text="{x:Bind LanguageCode}" />
                                 </controls:DockPanel>
                             </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
+                        </mycontrols:NoScrollingComboBox.ItemTemplate>
+                    </mycontrols:NoScrollingComboBox>
                 </controls:SettingsCard>
 
                 <TextBlock

@@ -8,6 +8,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:Natsurainko.FluentLauncher.Models"
+    xmlns:mycontrols="using:Natsurainko.FluentLauncher.UserControls"
     xmlns:utils="using:Natsurainko.FluentLauncher.Utils"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
     d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
@@ -92,14 +93,14 @@
                 Text="Please choose your language before we start setting up Fluent Launcher."
                 TextWrapping="WrapWholeWords" />
 
-            <ComboBox
+            <mycontrols:NoScrollingComboBox
                 Grid.Row="3"
                 ItemsSource="{x:Bind utils:LocalizedStrings.SupportedLanguages}"
                 SelectedItem="{x:Bind VM.CurrentLanguage, Mode=TwoWay, Converter={StaticResource LanguageInfoConverter}}">
                 <i:Interaction.Behaviors>
                     <behaviors:SetComboBoxWidthFromItemsBehavior SetWidthFromItems="True" />
                 </i:Interaction.Behaviors>
-                <ComboBox.ItemTemplate>
+                <mycontrols:NoScrollingComboBox.ItemTemplate>
                     <DataTemplate x:DataType="models:LanguageInfo">
                         <controls:DockPanel>
                             <TextBlock
@@ -114,8 +115,8 @@
                                 Text="{x:Bind LanguageCode}" />
                         </controls:DockPanel>
                     </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
+                </mycontrols:NoScrollingComboBox.ItemTemplate>
+            </mycontrols:NoScrollingComboBox>
         </Grid>
     </Grid>
 </Page>

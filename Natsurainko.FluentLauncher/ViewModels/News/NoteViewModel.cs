@@ -18,7 +18,6 @@ internal partial class NoteViewModel : ObservableObject, INavigationAware
 {
     private readonly CacheInterfaceService _cacheInterfaceService;
 
-
     public NoteViewModel(CacheInterfaceService cacheInterfaceService)
     {
         _cacheInterfaceService = cacheInterfaceService;
@@ -55,11 +54,8 @@ internal partial class NoteViewModel : ObservableObject, INavigationAware
             {
                 await sender.EnsureCoreWebView2Async();
 
-                if (App.Current.RequestedTheme == ApplicationTheme.Dark)
-                {
-                    sender.CoreWebView2.Profile.PreferredColorScheme = CoreWebView2PreferredColorScheme.Dark;
-                    body = "<meta name=\"color-scheme\" content=\"dark light\">\r\n" + body;
-                }
+                sender.CoreWebView2.Profile.PreferredColorScheme = sender.ActualTheme == ElementTheme.Dark ? CoreWebView2PreferredColorScheme.Dark : CoreWebView2PreferredColorScheme.Light;
+                body = $"<meta name=\"color-scheme\" content=\"{(sender.ActualTheme == ElementTheme.Dark ? "dark light" : "light dark")}\">\r\n" + body;
 
                 sender.NavigateToString(body);
             });

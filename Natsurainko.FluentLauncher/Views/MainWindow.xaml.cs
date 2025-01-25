@@ -18,13 +18,14 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
 {
     public Frame ContentFrame => Frame;
 
-    object INavigationProvider.NavigationControl => Frame;
-
     public static XamlRoot XamlRoot { get; set; } = null!;
 
     private readonly INavigationService _navigationService;
     private readonly SettingsService _settingsService;
     private readonly NotificationService _notificationService;
+
+    object INavigationProvider.NavigationControl => Frame;
+    INavigationService INavigationProvider.NavigationService => _navigationService;
 
     public MainWindow(
         SettingsService settingsService,

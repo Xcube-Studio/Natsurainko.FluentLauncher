@@ -11,14 +11,14 @@ namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
 public partial class NavigationViewModel : ObservableObject, INavigationAware
 {
-    private readonly INavigationService _navigationService;
+    public INavigationService NavigationService { get; init; }
 
     [ObservableProperty]
     public partial ObservableCollection<string> Routes { get; set; }
 
     public NavigationViewModel(INavigationService navigationService)
     {
-        _navigationService = navigationService;
+        NavigationService = navigationService;
     }
 
     void INavigationAware.OnNavigatedTo(object parameter)
@@ -31,13 +31,13 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
         else
         {
             Routes = [];
-            _navigationService.NavigateTo("Settings/Default"); // Default page
+            NavigationService.NavigateTo("Settings/Default"); // Default page
         }
     }
 
     public void NavigateTo(string pageKey, object parameter = null)
     {
-        _navigationService.NavigateTo(pageKey, parameter);
+        NavigationService.NavigateTo(pageKey, parameter);
         Routes = new(pageKey == "Settings/Default" ? ["Settings"] : pageKey.Split('/'));
     }
 

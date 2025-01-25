@@ -27,18 +27,14 @@ namespace Natsurainko.FluentLauncher.ViewModels.OOBE;
 
 internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISettingsViewModel
 {
-    #region Dependencies
-
     [SettingsProvider]
     private readonly SettingsService _settings;
-
-    private readonly INavigationService _navigationService;
     private readonly GameService _gameService;
     private readonly NotificationService _notificationService;
     private readonly AccountService _accountService;
     private readonly IDialogActivationService<ContentDialogResult> _dialogs;
 
-    #endregion
+    public INavigationService NavigationService { get; init; }
 
     public OOBEViewModel(
         INavigationService navigationService,
@@ -48,7 +44,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
         AccountService accountService,
         IDialogActivationService<ContentDialogResult> dialogs)
     {
-        _navigationService = navigationService;
+        NavigationService = navigationService;
         _settings = settings;
         _gameService = gameService;
         _notificationService = notificationService;
@@ -80,7 +76,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
 
     void INavigationAware.OnNavigatedTo(object parameter)
     {
-        _navigationService.NavigateTo("OOBELanguagePage"); // Default page
+        NavigationService.NavigateTo("OOBELanguagePage"); // Default page
     }
 
     [RelayCommand(CanExecute = nameof(CanNext))]
@@ -93,7 +89,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
         }
 
         CurrentPageIndex++;
-        _navigationService.NavigateTo(OOBEPageKeys[CurrentPageIndex]);
+        NavigationService.NavigateTo(OOBEPageKeys[CurrentPageIndex]);
         BackCommand.NotifyCanExecuteChanged();
         NextCommand.NotifyCanExecuteChanged();
     }
@@ -120,7 +116,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     public void Back()
     {
         CurrentPageIndex--;
-        _navigationService.NavigateTo(OOBEPageKeys[CurrentPageIndex]);
+        NavigationService.NavigateTo(OOBEPageKeys[CurrentPageIndex]);
         BackCommand.NotifyCanExecuteChanged();
         NextCommand.NotifyCanExecuteChanged();
     }
@@ -137,7 +133,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     public void NavigateTo(int pageIndex)
     {
         CurrentPageIndex = pageIndex;
-        _navigationService.NavigateTo(OOBEPageKeys[pageIndex]);
+        NavigationService.NavigateTo(OOBEPageKeys[pageIndex]);
         BackCommand.NotifyCanExecuteChanged();
         NextCommand.NotifyCanExecuteChanged();
     }
@@ -361,7 +357,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     [RelayCommand]
     public void Start()
     {
-        _navigationService.Parent?.NavigateTo("ShellPage");
+        NavigationService.Parent?.NavigateTo("ShellPage");
         (App.MainWindow.MinWidth, App.MainWindow.MinHeight) = (516, 328);
 
         _settings.FinishGuide = true;

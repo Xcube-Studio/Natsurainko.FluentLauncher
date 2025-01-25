@@ -8,6 +8,8 @@ namespace Natsurainko.FluentLauncher.Views.News;
 public sealed partial class NavigationPage : Page, INavigationProvider
 {
     object INavigationProvider.NavigationControl => contentFrame;
+    INavigationService INavigationProvider.NavigationService => VM.NavigationService;
+
     private NavigationViewModel VM => (NavigationViewModel)DataContext;
 
     public NavigationPage()

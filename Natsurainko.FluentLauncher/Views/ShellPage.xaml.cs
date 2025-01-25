@@ -22,14 +22,15 @@ public sealed partial class ShellPage : Page, INavigationProvider
 {
     public static Frame ContentFrame { get; private set; } = null!; // Initialized on Page_Loaded
 
-    object INavigationProvider.NavigationControl => contentFrame;
-
     ShellViewModel VM => (ShellViewModel)DataContext;
 
     private readonly SettingsService _settings = App.GetService<SettingsService>();
     private readonly SearchProviderService _searchProviderService = App.GetService<SearchProviderService>();
 
     private bool isUpdatingNavigationItemSelection = false;
+
+    object INavigationProvider.NavigationControl => contentFrame;
+    INavigationService INavigationProvider.NavigationService => VM.NavigationService;
 
     public ShellPage()
     {

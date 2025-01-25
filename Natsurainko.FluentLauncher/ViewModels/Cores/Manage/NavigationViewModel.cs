@@ -14,7 +14,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
 
 public partial class NavigationViewModel : ObservableObject, INavigationAware
 {
-    private readonly INavigationService _navigationService;
+    public INavigationService NavigationService { get; init; }
 
     [ObservableProperty]
     public partial ObservableCollection<string> Routes { get; set; }
@@ -24,7 +24,7 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
 
     public NavigationViewModel(INavigationService navigationService)
     {
-        _navigationService = navigationService;
+        NavigationService = navigationService;
     }
 
     void INavigationAware.OnNavigatedTo(object parameter)
@@ -33,12 +33,12 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
         InstanceId = MinecraftInstance.GetDisplayName();
 
         Routes = [];
-        _navigationService.NavigateTo("CoreManage/Default", MinecraftInstance);
+        NavigationService.NavigateTo("CoreManage/Default", MinecraftInstance);
     }
 
     public void NavigateTo(string pageKey, object parameter = null)
     {
-        _navigationService.NavigateTo(pageKey, parameter);
+        NavigationService.NavigateTo(pageKey, parameter);
 
         if (pageKey == "CoreManage/Default")
         {
@@ -57,7 +57,7 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
         var breadcrumbBarItemClickedEventArgs = args.As<BreadcrumbBar, BreadcrumbBarItemClickedEventArgs>().args;
 
         if (breadcrumbBarItemClickedEventArgs.Item.ToString() == "CoreManage")
-            _navigationService.Parent.NavigateTo("CoresPage");
+            NavigationService.Parent.NavigateTo("CoresPage");
         else if (breadcrumbBarItemClickedEventArgs.Item.ToString() == InstanceId)
             NavigateTo("CoreManage/Default", MinecraftInstance);
         else NavigateTo(string.Join('/', Routes.ToArray()[..^1]).Replace($"/{InstanceId}/", "/"), MinecraftInstance);

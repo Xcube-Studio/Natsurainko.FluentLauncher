@@ -13,15 +13,16 @@ namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 
 public partial class NavigationViewModel : ObservableObject, INavigationAware
 {
-    private readonly INavigationService _navigationService;
     private readonly SearchProviderService _searchProviderService;
+
+    public INavigationService NavigationService { get; init; }
 
     [ObservableProperty]
     public partial ObservableCollection<string> Routes { get; set; }
 
     public NavigationViewModel(INavigationService navigationService, SearchProviderService searchProviderService)
     {
-        _navigationService = navigationService;
+        NavigationService = navigationService;
         _searchProviderService = searchProviderService;
     }
 
@@ -40,13 +41,13 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
         else
         {
             Routes = [];
-            _navigationService.NavigateTo("Download/Default"); // Default page
+            NavigationService.NavigateTo("Download/Default"); // Default page
         }
     }
 
     public void NavigateTo(string pageKey, object parameter = null)
     {
-        _navigationService.NavigateTo(pageKey, parameter);
+        NavigationService.NavigateTo(pageKey, parameter);
         Routes = new(pageKey == "Download/Default" ? ["Download"] : pageKey.Split('/'));
     }
 

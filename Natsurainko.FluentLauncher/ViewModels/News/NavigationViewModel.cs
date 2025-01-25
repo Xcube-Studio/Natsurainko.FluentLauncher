@@ -11,14 +11,14 @@ namespace Natsurainko.FluentLauncher.ViewModels.News;
 
 public partial class NavigationViewModel : ObservableObject, INavigationAware
 {
-    private readonly INavigationService _navigationService;
+    public INavigationService NavigationService { get; init; }
 
     [ObservableProperty]
     public partial ObservableCollection<string> Routes { get; set; }
 
     public NavigationViewModel(INavigationService navigationService)
     {
-        _navigationService = navigationService;
+        NavigationService = navigationService;
     }
 
     void INavigationAware.OnNavigatedTo(object parameter)
@@ -31,13 +31,13 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
         else
         {
             Routes = [];
-            _navigationService.NavigateTo("News/Default"); // Default page
+            NavigationService.NavigateTo("News/Default"); // Default page
         }
     }
 
     public void NavigateTo(string pageKey, object parameter = null)
     {
-        _navigationService.NavigateTo(pageKey, parameter);
+        NavigationService.NavigateTo(pageKey, parameter);
         Routes = new(pageKey == "News/Default" ? ["News"] : pageKey.Split('/'));
     }
 

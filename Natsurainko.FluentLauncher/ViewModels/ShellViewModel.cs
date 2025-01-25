@@ -16,11 +16,10 @@ internal partial class ShellViewModel : ObservableObject, INavigationAware
 {
     private readonly LaunchService _launchService;
     private readonly DownloadService _downloadService;
-    private readonly INavigationService _shellNavigationService;
 
     public bool _onNavigatedTo = false;
 
-    public INavigationService NavigationService => _shellNavigationService;
+    public INavigationService NavigationService { get; init; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(LaunchTasksInfoBadgeOpacity))]
@@ -41,7 +40,7 @@ internal partial class ShellViewModel : ObservableObject, INavigationAware
     {
         _launchService = launchService;
         _downloadService = downloadService;
-        _shellNavigationService = shellNavigationService;
+        NavigationService = shellNavigationService;
 
         _launchService.TaskListStateChanged += (_, e) =>
             App.DispatcherQueue.TryEnqueue(() =>
@@ -55,20 +54,20 @@ internal partial class ShellViewModel : ObservableObject, INavigationAware
                     .Where(x => x.TaskState == TaskState.Running || x.TaskState == TaskState.Prepared)
                     .Count());
 
-        WeakReferenceMessenger.Default.Register<GlobalNavigationMessage>(this!, (r, m) =>
+        WeakReferenceMessenger.Default.Register(this!, (MessageHandler<object, GlobalNavigationMessage>)((r, m) =>
         {
             ShellViewModel vm = (r as ShellViewModel)!;
-            App.DispatcherQueue.TryEnqueue(() => vm.NavigationService.NavigateTo(m.Value));
-        });
+            App.DispatcherQueue.TryEnqueue((Microsoft.UI.Dispatching.DispatcherQueueHandler)(() => vm.NavigationService.NavigateTo(m.Value)));
+        }));
     }
 
     void INavigationAware.OnNavigatedTo(object? parameter)
     {
         if (parameter is string pageKey)
         {
-            _shellNavigationService.NavigateTo(pageKey);
+            NavigationService.NavigateTo(pageKey);
             _onNavigatedTo = true;
         }
-        else _shellNavigationService.NavigateTo("HomePage");
+        else NavigationService.NavigateTo("HomePage");
     }
 }

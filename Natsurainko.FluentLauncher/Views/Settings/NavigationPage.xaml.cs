@@ -8,6 +8,8 @@ namespace Natsurainko.FluentLauncher.Views.Settings;
 public sealed partial class NavigationPage : Page, INavigationProvider
 {
     object INavigationProvider.NavigationControl => contentFrame;
+    INavigationService INavigationProvider.NavigationService => VM.NavigationService;
+
     private NavigationViewModel VM => (NavigationViewModel)DataContext;
 
     public NavigationPage()
@@ -18,6 +20,13 @@ public sealed partial class NavigationPage : Page, INavigationProvider
     private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
     {
         var breadcrumbBarAware = (contentFrame.Content as Page) as IBreadcrumbBarAware;
-        VM.Routes.Add(breadcrumbBarAware!.Route);
+        if (e.NavigationMode == NavigationMode.Back)
+        {
+            VM.Routes.RemoveAt(VM.Routes.Count - 1);
+        }
+        else
+        {
+            VM.Routes.Add(breadcrumbBarAware!.Route);
+        }
     }
 }

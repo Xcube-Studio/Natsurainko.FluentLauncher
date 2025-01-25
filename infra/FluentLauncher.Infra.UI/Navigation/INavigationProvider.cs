@@ -9,4 +9,9 @@ public interface INavigationProvider
     /// The UI element that provides navigation
     /// </summary>
     object NavigationControl { get; }
+
+    /// <summary>
+    /// The navigation service of the navigation control
+    /// </summary>
+    INavigationService NavigationService { get; }
 }

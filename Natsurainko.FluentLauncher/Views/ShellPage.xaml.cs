@@ -124,14 +124,15 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
 
     private void NavigationViewControl_BackRequested(NavigationView _, NavigationViewBackRequestedEventArgs args)
     {
-        if (contentFrame.Content is INavigationProvider childPage && childPage.NavigationService.CanGoBack)
-        {
-            childPage.NavigationService.GoBack();
-        }
-        else
-        {
+        // TODO: Implement chained navigaiton
+        //if (contentFrame.Content is INavigationProvider childPage && childPage.NavigationService.CanGoBack)
+        //{
+        //    childPage.NavigationService.GoBack();
+        //}
+        //else
+        //{
             VM.NavigationService.GoBack();
-        }
+        //}
         OnPropertyChanged(nameof(CanGoBack));
     }
 

@@ -259,7 +259,7 @@
             BackRequested="NavigationViewControl_BackRequested"
             Canvas.ZIndex="0"
             IsBackButtonVisible="Visible"
-            IsBackEnabled="{Binding CanGoBack, ElementName=contentFrame}"
+            IsBackEnabled="{x:Bind CanGoBack, Mode=OneWay}"
             IsPaneToggleButtonVisible="True"
             IsSettingsVisible="False"
             ItemInvoked="NavigationViewControl_ItemInvoked"

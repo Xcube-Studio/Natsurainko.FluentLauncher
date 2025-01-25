@@ -12,13 +12,14 @@ using Natsurainko.FluentLauncher.ViewModels;
 using Natsurainko.FluentLauncher.Views.Home;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Windows.Foundation;
 using Windows.Graphics;
 
 namespace Natsurainko.FluentLauncher.Views;
 
-public sealed partial class ShellPage : Page, INavigationProvider
+public sealed partial class ShellPage : Page, INavigationProvider, INotifyPropertyChanged
 {
     public static Frame ContentFrame { get; private set; } = null!; // Initialized on Page_Loaded
 
@@ -29,8 +30,21 @@ public sealed partial class ShellPage : Page, INavigationProvider
 
     private bool isUpdatingNavigationItemSelection = false;
 
+    public event PropertyChangedEventHandler? PropertyChanged;
+
     object INavigationProvider.NavigationControl => contentFrame;
     INavigationService INavigationProvider.NavigationService => VM.NavigationService;
+
+    public bool CanGoBack
+    {
+        get
+        {
+            if (contentFrame.Content is INavigationProvider childPage)
+                return contentFrame.CanGoBack | childPage.NavigationService.CanGoBack;
+            else
+                return contentFrame.CanGoBack;
+        }
+    }
 
     public ShellPage()
     {
@@ -108,7 +122,18 @@ public sealed partial class ShellPage : Page, INavigationProvider
             SearchBoxAreaGrid.Translation -= new System.Numerics.Vector3(0, 44, 0);
     }
 
-    private void NavigationViewControl_BackRequested(NavigationView _, NavigationViewBackRequestedEventArgs args) => VM.NavigationService.GoBack();
+    private void NavigationViewControl_BackRequested(NavigationView _, NavigationViewBackRequestedEventArgs args)
+    {
+        if (contentFrame.Content is INavigationProvider childPage && childPage.NavigationService.CanGoBack)
+        {
+            childPage.NavigationService.GoBack();
+        }
+        else
+        {
+            VM.NavigationService.GoBack();
+        }
+        OnPropertyChanged(nameof(CanGoBack));
+    }
 
     private void NavigationViewControl_ItemInvoked(NavigationView _, NavigationViewItemInvokedEventArgs args)
     {
@@ -119,6 +144,7 @@ public sealed partial class ShellPage : Page, INavigationProvider
             ?? throw new ArgumentNullException("The invoked item's tag is null.");
 
         VM.NavigationService.NavigateTo(pageTag);
+        OnPropertyChanged(nameof(CanGoBack));
     }
 
     private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
@@ -305,5 +331,10 @@ public sealed partial class ShellPage : Page, INavigationProvider
             }
         }
         return result;
+    }
+
+    private void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

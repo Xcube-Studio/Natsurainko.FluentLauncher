@@ -34,54 +34,51 @@
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
-        <StackPanel
-            Name="stackPanel"
+        <controls:WrapPanel
             MaxWidth="1000"
-            Margin="{ThemeResource PageMarginWithStackPanel}"
-            Spacing="15">
-
-            <controls:WrapPanel HorizontalSpacing="15" VerticalSpacing="15">
-                <Button Command="{x:Bind VM.SearchAllMinecraftCommand}" Style="{ThemeResource AccentButtonStyle}">
-                    <StackPanel Orientation="Horizontal" Spacing="5">
-                        <FontIcon FontSize="14" Glyph="&#xE896;" />
-                        <TextBlock x:Uid="Cores_CoresPage_InstallButton" Text="Install cores" />
-                    </StackPanel>
-                </Button>
-                <Button IsEnabled="False" Style="{ThemeResource AccentButtonStyle}">
-                    <StackPanel Orientation="Horizontal" Spacing="5">
-                        <FontIcon FontSize="14" Glyph="&#xe8b5;" />
-                        <TextBlock x:Uid="Cores_CoresPage_ImportButton" Text="Import Modpack" />
-                    </StackPanel>
-                </Button>
-
+            Margin="{ThemeResource PageMarginCoresPage}"
+            HorizontalSpacing="15"
+            VerticalSpacing="15">
+            <Button Command="{x:Bind VM.SearchAllMinecraftCommand}" Style="{ThemeResource AccentButtonStyle}">
                 <StackPanel Orientation="Horizontal" Spacing="5">
-                    <FontIcon
-                        FontSize="13"
-                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                        Glyph="&#xE71C;" />
-                    <TextBlock
-                        x:Uid="Cores_CoresPage_Text1"
-                        VerticalAlignment="Center"
-                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                        Text="Filter: " />
-                    <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items1}" SelectedIndex="{x:Bind VM.FilterIndex, Mode=TwoWay}" />
+                    <FontIcon FontSize="14" Glyph="&#xE896;" />
+                    <TextBlock x:Uid="Cores_CoresPage_InstallButton" Text="Install cores" />
                 </StackPanel>
+            </Button>
+            <Button IsEnabled="False" Style="{ThemeResource AccentButtonStyle}">
                 <StackPanel Orientation="Horizontal" Spacing="5">
-                    <FontIcon
-                        FontSize="13"
-                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                        Glyph="&#xE8CB;" />
-                    <TextBlock
-                        x:Uid="Cores_CoresPage_Text2"
-                        VerticalAlignment="Center"
-                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                        Text="Sort by: " />
-                    <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items2}" SelectedIndex="{x:Bind VM.SortByIndex, Mode=TwoWay}" />
+                    <FontIcon FontSize="14" Glyph="&#xe8b5;" />
+                    <TextBlock x:Uid="Cores_CoresPage_ImportButton" Text="Import Modpack" />
                 </StackPanel>
+            </Button>
 
-                <HyperlinkButton Command="{x:Bind VM.NavigateFolderCommand}" Content="{x:Bind VM.DisplayFolderPath, Mode=OneWay}" />
-            </controls:WrapPanel>
-        </StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="5">
+                <FontIcon
+                    FontSize="13"
+                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                    Glyph="&#xE71C;" />
+                <TextBlock
+                    x:Uid="Cores_CoresPage_Text1"
+                    VerticalAlignment="Center"
+                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                    Text="Filter: " />
+                <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items1}" SelectedIndex="{x:Bind VM.FilterIndex, Mode=TwoWay}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="5">
+                <FontIcon
+                    FontSize="13"
+                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                    Glyph="&#xE8CB;" />
+                <TextBlock
+                    x:Uid="Cores_CoresPage_Text2"
+                    VerticalAlignment="Center"
+                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                    Text="Sort by: " />
+                <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items2}" SelectedIndex="{x:Bind VM.SortByIndex, Mode=TwoWay}" />
+            </StackPanel>
+
+            <HyperlinkButton Command="{x:Bind VM.NavigateFolderCommand}" Content="{x:Bind VM.DisplayFolderPath, Mode=OneWay}" />
+        </controls:WrapPanel>
 
         <ScrollViewer
             Name="scrollViewer"

@@ -42,13 +42,13 @@
             <Button Command="{x:Bind VM.SearchAllMinecraftCommand}" Style="{ThemeResource AccentButtonStyle}">
                 <StackPanel Orientation="Horizontal" Spacing="5">
                     <FontIcon FontSize="14" Glyph="&#xE896;" />
-                    <TextBlock x:Uid="Cores_CoresPage_InstallButton" Text="Install cores" />
+                    <TextBlock x:Uid="Cores_DefaultPage_InstallButton" Text="Install cores" />
                 </StackPanel>
             </Button>
             <Button IsEnabled="False" Style="{ThemeResource AccentButtonStyle}">
                 <StackPanel Orientation="Horizontal" Spacing="5">
                     <FontIcon FontSize="14" Glyph="&#xe8b5;" />
-                    <TextBlock x:Uid="Cores_CoresPage_ImportButton" Text="Import Modpack" />
+                    <TextBlock x:Uid="Cores_DefaultPage_ImportButton" Text="Import Modpack" />
                 </StackPanel>
             </Button>
 
@@ -166,7 +166,7 @@
                 Glyph="&#xe74c;" />
             <StackPanel VerticalAlignment="Center">
                 <TextBlock
-                    x:Uid="Cores_CoresPage_Text3"
+                    x:Uid="Cores_DefaultPage_Text3"
                     Margin="10,0"
                     VerticalAlignment="Center"
                     FontSize="24"
@@ -175,7 +175,7 @@
                     Text="No Core" />
                 <HyperlinkButton Margin="0,0,0,-5" Command="{x:Bind VM.GoToSettingsCommand}">
                     <TextBlock
-                        x:Uid="Cores_CoresPage_Text4"
+                        x:Uid="Cores_DefaultPage_Text4"
                         FontWeight="SemiBold"
                         Text="Go To Settings" />
                 </HyperlinkButton>

@@ -50,19 +50,9 @@
                     Orientation="Horizontal"
                     Spacing="5">
                     <TextBlock VerticalAlignment="Center" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">
-                        <Run Text="{x:Bind VM.Edition}" />
+                        <Run Text="{x:Bind VM.AppChannel}" />
                         <Run Text="{x:Bind VM.Version}" />
                     </TextBlock>
-                    <Border
-                        Padding="5,0"
-                        VerticalAlignment="Center"
-                        Background="{StaticResource SystemAccentColor}"
-                        CornerRadius="4">
-                        <TextBlock
-                            FontWeight="SemiBold"
-                            Foreground="White"
-                            Text="{x:Bind VM.Channel}" />
-                    </Border>
                 </StackPanel>
                 <TextBlock
                     Margin="0,-7.5,0,0"

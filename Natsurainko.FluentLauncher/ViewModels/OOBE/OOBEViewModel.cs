@@ -148,14 +148,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     public partial string CurrentLanguage { get; set; }
 
     public string Version => App.Version.GetVersionString();
-
-    public string Channel => App.AppChannel.ToUpper();
-
-#if DEBUG 
-    public string Edition { get; } = LocalizedStrings.Settings_AboutPage__Debug;
-#else 
-    public string Edition { get; } = LocalizedStrings.Settings_AboutPage__Release;
-#endif
+    public string AppChannel => App.AppChannel;
 
     partial void OnCurrentLanguageChanged(string oldValue, string newValue)
     {

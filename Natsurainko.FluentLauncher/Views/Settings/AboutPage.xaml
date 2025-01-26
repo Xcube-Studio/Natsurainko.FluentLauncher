@@ -49,27 +49,14 @@
                             IsClickEnabled="True" />
                     </controls:SettingsExpander.Items>
 
-                    <StackPanel Name="ReleaseInfoStackPanel">
-                        <Border
-                            Padding="5,0"
-                            HorizontalAlignment="Right"
-                            Background="{StaticResource SystemAccentColor}"
-                            CornerRadius="2">
-                            <TextBlock
-                                FontWeight="SemiBold"
-                                Foreground="White"
-                                Style="{StaticResource CaptionTextBlockStyle}"
-                                Text="{x:Bind VM.Channel}" />
-                        </Border>
-                        <TextBlock
+                    <TextBlock
                             Margin="10,0,0,0"
                             VerticalAlignment="Center"
                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                             Style="{ThemeResource CaptionTextBlockStyle}">
-                            <Run Text="{x:Bind VM.Edition}" />
+                            <Run Text="{x:Bind VM.AppChannel}" />
                             <Run Text="{x:Bind VM.Version}" />
-                        </TextBlock>
-                    </StackPanel>
+                    </TextBlock>
                 </controls:SettingsExpander>
 
                 <controls:SettingsCard

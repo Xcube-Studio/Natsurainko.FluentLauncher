@@ -32,16 +32,7 @@ internal partial class DefaultViewModel : SettingsViewModelBase, ISettingsViewMo
     public partial string CurrentLanguage { get; set; }
 
     public string Version => App.Version.GetVersionString();
-
-#if DEBUG
-    [ObservableProperty]
-    public partial string Edition { get; set; } = LocalizedStrings.Settings_AboutPage__Debug;
-#else
-    [ObservableProperty]
-    public partial string Edition { get; set; } = LocalizedStrings.Settings_AboutPage__Release;
-#endif
-
-    public string Channel => App.AppChannel.ToUpper();
+    public string AppChannel => App.AppChannel;
 
     partial void OnCurrentLanguageChanged(string oldValue, string newValue)
     {

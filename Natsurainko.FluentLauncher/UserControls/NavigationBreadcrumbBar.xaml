@@ -14,7 +14,7 @@
     <BreadcrumbBar
         x:Name="bar"
         ItemClicked="bar_ItemClicked"
-        ItemsSource="{x:Bind Items}">
+        ItemsSource="{x:Bind Items, Mode=OneWay}">
 
         <BreadcrumbBar.ItemTemplate>
             <DataTemplate x:DataType="x:String">

@@ -2,21 +2,37 @@ using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Natsurainko.FluentLauncher.UserControls;
 
-public sealed partial class NavigationBreadcrumbBar : UserControl
+public sealed partial class NavigationBreadcrumbBar : UserControl, INotifyPropertyChanged
 {
     private Stack<string[]> _backStack = new();
 
     public string LocalizationBasePath { get; set; } = "";
 
-    public ObservableCollection<string> Items { get; } = new();
+    public ObservableCollection<string> Items
+    {
+        get => field;
+        set
+        {
+            // Save last path
+            string[] lastPath = new string[field.Count];
+            field.CopyTo(lastPath, 0);
+            _backStack.Push(lastPath);
+
+            // Replace
+            field = value;
+            OnPropertyChanged(nameof(Items));
+        }
+    } = new();
 
     public bool CanGoBack => _backStack.Count > 0;
 
     public event EventHandler<string[]>? ItemClicked;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     public NavigationBreadcrumbBar()
     {
@@ -25,7 +41,7 @@ public sealed partial class NavigationBreadcrumbBar : UserControl
 
     public void AddItem(string page)
     {
-        _backStack.Push(Items.ToArray());
+        _backStack.Push([.. Items]);
         Items.Add(page);
     }
 
@@ -46,5 +62,10 @@ public sealed partial class NavigationBreadcrumbBar : UserControl
         {
             Items.RemoveAt(i);
         }
+    }
+
+    private void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

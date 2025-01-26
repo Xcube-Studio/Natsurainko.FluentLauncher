@@ -2,6 +2,7 @@ using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.ViewModels.Settings;
+using System.Collections.Specialized;
 
 namespace Natsurainko.FluentLauncher.Views.Settings;
 
@@ -29,5 +30,10 @@ public sealed partial class NavigationPage : Page, INavigationProvider
     private void breadcrumbBar_ItemClicked(object sender, string[] args)
     {
         VM.HandleNavigationBreadcrumBarItemClicked(args);
+    }
+
+    private void Page_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        breadcrumbBar.Items = VM.DisplayedPath;
     }
 }

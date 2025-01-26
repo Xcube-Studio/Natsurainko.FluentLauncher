@@ -18,7 +18,6 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
     public INavigationService NavigationService { get; init; }
 
     public ObservableCollection<string> DisplayedPath { get; } = new();
-    public MinecraftInstance MinecraftInstance { get; private set; } = null!;
 
     public NavigationViewModel(INavigationService navigationService)
     {

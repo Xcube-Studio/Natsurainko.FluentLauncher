@@ -26,7 +26,7 @@
                 </StackPanel.ChildrenTransitions>
 
                 <TextBlock
-                    x:Uid="Cores_Manage_DefaultPage_T1"
+                    x:Uid="Cores_InstancePage_T1"
                     Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
                     Text="Basic Configuration" />
 
@@ -102,7 +102,7 @@
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
-                    x:Uid="Cores_Manage_DefaultPage_Card1"
+                    x:Uid="Cores_InstancePage_Card1"
                     Description="Only as a display name, the actual Id will not be modified"
                     Header="Core Nickname"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE8AC;}">
@@ -110,7 +110,7 @@
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
-                    x:Uid="Cores_Manage_DefaultPage_Card2"
+                    x:Uid="Cores_InstancePage_Card2"
                     Command="{x:Bind VM.CardClickCommand}"
                     CommandParameter="Cores/Config"
                     Description="Set additional JVM parameters, game accounts, core independence, etc."
@@ -119,7 +119,7 @@
                     IsClickEnabled="True" />
 
                 <controls:SettingsCard
-                    x:Uid="Cores_Manage_DefaultPage_Card6"
+                    x:Uid="Cores_InstancePage_Card6"
                     Description="Pin to the taskbar and quickly launch the game through the taskbar menu"
                     Header="Pin to Quick Launch"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe718;}">
@@ -127,12 +127,12 @@
                 </controls:SettingsCard>
 
                 <TextBlock
-                    x:Uid="Cores_Manage_DefaultPage_T2"
+                    x:Uid="Cores_InstancePage_T2"
                     Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
                     Text="Resource Management" />
 
                 <controls:SettingsCard
-                    x:Uid="Cores_Manage_DefaultPage_Card3"
+                    x:Uid="Cores_InstancePage_Card3"
                     Command="{x:Bind VM.CardClickCommand}"
                     CommandParameter="Cores/Mod"
                     Description="Import, enable/disable, delete modules"
@@ -141,7 +141,7 @@
                     IsClickEnabled="True" />
 
                 <controls:SettingsCard
-                    x:Uid="Cores_Manage_DefaultPage_Card4"
+                    x:Uid="Cores_InstancePage_Card4"
                     Command="{x:Bind VM.CardClickCommand}"
                     CommandParameter="Cores/Save"
                     Description="View and manage your game saves"
@@ -150,18 +150,18 @@
                     IsClickEnabled="True" />
 
                 <TextBlock
-                    x:Uid="Cores_Manage_DefaultPage_T3"
+                    x:Uid="Cores_InstancePage_T3"
                     Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
                     Text="Storage stats" />
 
                 <controls:SettingsCard
-                    x:Uid="Cores_Manage_DefaultPage_Card5"
+                    x:Uid="Cores_InstancePage_Card5"
                     Header="Storage space usage"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe7c3;}">
                     <controls:SettingsCard.Description>
                         <TextBlock>
-                            <Run x:Uid="Cores_Manage_DefaultPage_Text1" Text="Referenced" /> <Run Text="{x:Bind VM.GameStorageInfo.LibrariesCount, Mode=OneWay}" /> <Run x:Uid="Cores_Manage_DefaultPage_Text2" Text="Libraries;" />
-                            <Run x:Uid="Cores_Manage_DefaultPage_Text1" Text="Referenced" /> <Run Text="{x:Bind VM.GameStorageInfo.AssetsCount, Mode=OneWay}" /> <Run x:Uid="Cores_Manage_DefaultPage_Text3" Text="Assets;" />
+                            <Run x:Uid="Cores_InstancePage_Text1" Text="Referenced" /> <Run Text="{x:Bind VM.GameStorageInfo.LibrariesCount, Mode=OneWay}" /> <Run x:Uid="Cores_InstancePage_Text2" Text="Libraries;" />
+                            <Run x:Uid="Cores_InstancePage_Text1" Text="Referenced" /> <Run Text="{x:Bind VM.GameStorageInfo.AssetsCount, Mode=OneWay}" /> <Run x:Uid="Cores_InstancePage_Text3" Text="Assets;" />
                         </TextBlock>
                     </controls:SettingsCard.Description>
                     <TextBlock Text="{x:Bind VM.FormatSize, Mode=OneWay}" />

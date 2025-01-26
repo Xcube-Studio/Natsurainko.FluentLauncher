@@ -13,8 +13,7 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
 {
     public INavigationService NavigationService { get; init; }
 
-    [ObservableProperty]
-    public partial ObservableCollection<string> Routes { get; set; }
+    public ObservableCollection<string> DisplayedPath { get; } = new();
 
     public NavigationViewModel(INavigationService navigationService)
     {
@@ -24,30 +23,34 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
     void INavigationAware.OnNavigatedTo(object parameter)
     {
         if (parameter is string pageKey)
-        {
-            Routes = new(pageKey.Split('/'));
             NavigateTo(pageKey);
-        }
         else
-        {
-            Routes = [];
-            NavigationService.NavigateTo("News/Default"); // Default page
-        }
+            NavigateTo("News/Default"); // Default page
     }
 
     public void NavigateTo(string pageKey, object parameter = null)
     {
-        NavigationService.NavigateTo(pageKey, parameter);
-        Routes = new(pageKey == "News/Default" ? ["News"] : pageKey.Split('/'));
+        NavigationService.NavigateTo(pageKey, parameter); // Default page
+        if (pageKey == "News/Default")
+        {
+            DisplayedPath.Clear();
+            DisplayedPath.Add("News");
+        }
+        else
+        {
+            DisplayedPath.Clear();
+            foreach (string item in pageKey.Split("/"))
+            {
+                DisplayedPath.Add(item);
+            }
+        }
     }
 
-    [RelayCommand]
-    public void ItemClickedEvent(object args)
+    public void HandleNavigationBreadcrumBarItemClicked(string[] routes)
     {
-        var breadcrumbBarItemClickedEventArgs = args.As<BreadcrumbBar, BreadcrumbBarItemClickedEventArgs>().args;
-
-        if (breadcrumbBarItemClickedEventArgs.Item.ToString() == "News")
+        if (routes.Length >= 1 && routes[0] == "News")
             NavigateTo("News/Default");
-        else NavigateTo(string.Join('/', Routes.ToArray()[..^1]));
+        else
+            NavigateTo(string.Join('/', routes));
     }
 }

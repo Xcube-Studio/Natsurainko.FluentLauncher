@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
+using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
@@ -80,10 +81,14 @@ public partial class App : Application
             {
                 // Match the language preference with supported languages
                 // StartsWith is used to match the language code with the region code, for example "zh-hans-CN" with "zh-Hans"
-                if (LocalizedStrings.SupportedLanguages.Any(x => langCode.StartsWith(x.LanguageCode)))
+                var suitableLanguages = LocalizedStrings.SupportedLanguages.Where(x => langCode.StartsWith(x.LanguageCode));
+                if (suitableLanguages.Any())
                 {
-                    selectedLangCode = langCode;
-                    settings.CurrentLanguage = langCode;
+                    // Store a LanguageCode in LocalizedStrings.SupportedLanguages ​​for conversion by LanguageCodeToLanguageInfoConverter.
+                    // Storing langCode directly, such as "zh-Hans-CN", will cause Converter to throw an exception.
+
+                    selectedLangCode = suitableLanguages.First().LanguageCode;
+                    settings.CurrentLanguage = selectedLangCode;
                     break;
                 }
             }

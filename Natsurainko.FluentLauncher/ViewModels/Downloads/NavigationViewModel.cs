@@ -7,8 +7,8 @@ using Natsurainko.FluentLauncher.Services.UI.Data;
 using Natsurainko.FluentLauncher.Utils;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection.Metadata;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 
 public partial class NavigationViewModel : ObservableObject, INavigationAware
@@ -17,8 +17,7 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
 
     public INavigationService NavigationService { get; init; }
 
-    [ObservableProperty]
-    public partial ObservableCollection<string> Routes { get; set; }
+    public ObservableCollection<string> DisplayedPath { get; } = new();
 
     public NavigationViewModel(INavigationService navigationService, SearchProviderService searchProviderService)
     {
@@ -26,47 +25,56 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
         _searchProviderService = searchProviderService;
     }
 
-    void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object? parameter)
     {
         if (parameter is SearchOptions)
         {
-            Routes = new("Download/Search".Split('/'));
             NavigateTo("Download/Search", parameter);
         }
         else if (parameter is string pageKey)
         {
-            Routes = new(pageKey.Split('/'));
             NavigateTo(pageKey);
         }
         else
         {
-            Routes = [];
-            NavigationService.NavigateTo("Download/Default"); // Default page
+            NavigateTo("Download/Default"); // Default page
         }
     }
-
-    public void NavigateTo(string pageKey, object parameter = null)
-    {
-        NavigationService.NavigateTo(pageKey, parameter);
-        Routes = new(pageKey == "Download/Default" ? ["Download"] : pageKey.Split('/'));
-    }
-
-    void QueryReceiver(string searchText) => NavigateTo("Download/Search", new SearchOptions { SearchText = searchText });
 
     [RelayCommand]
     void Loaded()
     {
-        if (_searchProviderService.QueryReceiverOwner != this)
-            _searchProviderService.OccupyQueryReceiver(this, QueryReceiver);
+        if (_searchProviderService.QueryReceiverOwner == this) return;
+
+        _searchProviderService.OccupyQueryReceiver(this, (searchText) =>
+        {
+            NavigationService.NavigateTo("Download/Search", new SearchOptions { SearchText = searchText });
+        });
     }
 
-    [RelayCommand]
-    void ItemClickedEvent(object args)
+    public void HandleNavigationBreadcrumBarItemClicked(string[] routes)
     {
-        var breadcrumbBarItemClickedEventArgs = args.As<BreadcrumbBar, BreadcrumbBarItemClickedEventArgs>().args;
-
-        if (breadcrumbBarItemClickedEventArgs.Item.ToString() == "Download")
+        if (routes.Length >= 1 && routes[0] == "Download")
             NavigateTo("Download/Default");
-        else NavigateTo(string.Join('/', Routes.ToArray()[..^1]));
+        else
+            NavigateTo(string.Join('/', routes));
+    }
+
+    private void NavigateTo(string pageKey, object? parameter = null)
+    {
+        NavigationService.NavigateTo(pageKey, parameter); // Default page
+        if (pageKey == "Download/Default")
+        {
+            DisplayedPath.Clear();
+            DisplayedPath.Add("Download");
+        }
+        else
+        {
+            DisplayedPath.Clear();
+            foreach (string item in pageKey.Split("/"))
+            {
+                DisplayedPath.Add(item);
+            }
+        }
     }
 }

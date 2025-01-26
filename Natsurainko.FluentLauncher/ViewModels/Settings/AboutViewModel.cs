@@ -29,16 +29,7 @@ internal partial class AboutViewModel : ObservableObject
 #endif
 
     public string Version => App.Version.GetVersionString();
-
-#if DEBUG
-    [ObservableProperty]
-    public partial string Edition { get; set; } = LocalizedStrings.Settings_AboutPage__Debug;
-#else
-    [ObservableProperty]
-    public partial string Edition { get; set; } = LocalizedStrings.Settings_AboutPage__Release;
-#endif
-
-    public string Channel => App.AppChannel.ToUpper();
+    public string AppChannel => App.AppChannel;
 
 #if FLUENT_LAUNCHER_PREVIEW_CHANNEL
     [RelayCommand]

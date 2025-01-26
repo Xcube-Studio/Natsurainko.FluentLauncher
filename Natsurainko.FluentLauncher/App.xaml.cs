@@ -34,11 +34,11 @@ public partial class App : Application
     public static Windows.ApplicationModel.PackageVersion Version => Windows.ApplicationModel.Package.Current.Id.Version;
 
 #if FLUENT_LAUNCHER_DEV_CHANNEL
-    public static string AppChannel => "Dev";
+    public static string AppChannel => LocalizedStrings.Settings_AboutPage__DevChannel;
 #elif FLUENT_LAUNCHER_PREVIEW_CHANNEL
-    public static string AppChannel => "Preview";
+    public static string AppChannel => LocalizedStrings.Settings_AboutPage__PreviewChannel;
 #elif FLUENT_LAUNCHER_STABLE_CHANNEL
-    public static string AppChannel => "Stable";
+    public static string AppChannel => LocalizedStrings.Settings_AboutPage__StableChannel;
 #endif
 
     public App()

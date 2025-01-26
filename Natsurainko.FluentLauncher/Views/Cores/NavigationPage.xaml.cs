@@ -3,6 +3,8 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Cores;
+using Natsurainko.FluentLauncher.XamlHelpers.Converters;
+using Nrk.FluentCore.GameManagement.Instances;
 
 namespace Natsurainko.FluentLauncher.Views.Cores;
 
@@ -27,11 +29,22 @@ public sealed partial class NavigationPage : Page, INavigationProvider
         }
         else
         {
-            breadcrumbBar.AddItem(breadcrumbBarAware.Route);
-            //if (e.SourcePageType == typeof(DefaultPage))
-            //    breadcrumbBar.AddItem(VM.MinecraftInstance.GetDisplayName());
-        }
+            if (contentFrame.Content.GetType() == typeof(InstancePage))
+            {
+                var instance = (MinecraftInstance)e.Parameter;
+                string instanceId = instance.InstanceId;
 
+                var converter = (BreadcrumbBarLocalizationConverter)breadcrumbBar.Resources["BreadcrumbBarLocalizationConverter"];
+                if (!converter.IgnoredText.Contains(instanceId))
+                    converter.IgnoredText.Add(instanceId);
+
+                breadcrumbBar.AddItem(instance.InstanceId);
+            }
+            else
+            {
+                breadcrumbBar.AddItem(breadcrumbBarAware.Route);
+            }
+        }
     }
 
     private void breadcrumbBar_ItemClicked(object sender, string[] args)

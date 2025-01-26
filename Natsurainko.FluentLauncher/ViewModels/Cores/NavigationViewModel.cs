@@ -20,8 +20,6 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
     public ObservableCollection<string> DisplayedPath { get; } = new();
     public MinecraftInstance MinecraftInstance { get; private set; } = null!;
 
-    public string InstanceId { get; private set; } = null!; // 缓存游戏名称，防止昵称修改后名称对不上
-
     public NavigationViewModel(INavigationService navigationService)
     {
         NavigationService = navigationService;
@@ -29,20 +27,13 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
 
     void INavigationAware.OnNavigatedTo(object? parameter)
     {
-        //if (parameter is null)
-        //    throw new ArgumentNullException(nameof(parameter));
-
-        //MinecraftInstance = (MinecraftInstance)parameter;
-        //InstanceId = MinecraftInstance.GetDisplayName();
-
-        NavigateTo("Cores/Default");
+        if (parameter is MinecraftInstance instance)
+            NavigateTo("Cores/Instance", instance);
+        else if (parameter is string pageKey)
+            NavigateTo(pageKey);
+        else
+            NavigateTo("Cores/Default");
     }
-
-    //public void HandleBreadcrumbBarLoading(object args)
-    //{
-    //    var converter = (BreadcrumbBarLocalizationConverter)args;
-    //    converter.IgnoredText.Add(InstanceId);
-    //}
 
     public void HandleNavigationBreadcrumBarItemClicked(string[] routes)
     {
@@ -61,7 +52,12 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
         {
             DisplayedPath.Clear();
             DisplayedPath.Add("Cores");
-            //DisplayedPath.Add(InstanceId);
+        }
+        else if (pageKey == "Cores/Instance")
+        {
+            DisplayedPath.Clear();
+            DisplayedPath.Add("Cores");
+            DisplayedPath.Add(((MinecraftInstance)parameter!).InstanceId);
         }
         else
         {

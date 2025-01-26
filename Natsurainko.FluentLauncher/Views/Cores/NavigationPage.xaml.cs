@@ -28,8 +28,8 @@ public sealed partial class NavigationPage : Page, INavigationProvider
         else
         {
             breadcrumbBar.AddItem(breadcrumbBarAware.Route);
-            if (e.SourcePageType == typeof(DefaultPage))
-                breadcrumbBar.AddItem(VM.MinecraftInstance.GetDisplayName());
+            //if (e.SourcePageType == typeof(DefaultPage))
+            //    breadcrumbBar.AddItem(VM.MinecraftInstance.GetDisplayName());
         }
 
     }
@@ -39,10 +39,10 @@ public sealed partial class NavigationPage : Page, INavigationProvider
         VM.HandleNavigationBreadcrumBarItemClicked(args);
     }
 
-    private void breadcrumbBar_Loading(Microsoft.UI.Xaml.FrameworkElement sender, object args)
-    {
-        VM.HandleBreadcrumbBarLoading(breadcrumbBar.Resources["BreadcrumbBarLocalizationConverter"]);
-    }
+    //private void breadcrumbBar_Loading(Microsoft.UI.Xaml.FrameworkElement sender, object args)
+    //{
+    //    VM.HandleBreadcrumbBarLoading(breadcrumbBar.Resources["BreadcrumbBarLocalizationConverter"]);
+    //}
 
     private void Page_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {

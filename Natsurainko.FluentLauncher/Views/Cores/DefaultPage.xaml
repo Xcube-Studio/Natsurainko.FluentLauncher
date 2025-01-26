@@ -39,10 +39,6 @@
             MaxWidth="1000"
             Margin="{ThemeResource PageMarginWithStackPanel}"
             Spacing="15">
-            <TextBlock
-                x:Uid="Cores_CoresPage_Title"
-                Style="{ThemeResource TitleTextBlockStyle}"
-                Text="CoresPage" />
 
             <controls:WrapPanel HorizontalSpacing="15" VerticalSpacing="15">
                 <Button Command="{x:Bind VM.SearchAllMinecraftCommand}" Style="{ThemeResource AccentButtonStyle}">

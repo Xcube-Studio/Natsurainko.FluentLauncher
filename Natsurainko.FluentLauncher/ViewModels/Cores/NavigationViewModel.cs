@@ -29,27 +29,27 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
 
     void INavigationAware.OnNavigatedTo(object? parameter)
     {
-        if (parameter is null)
-            throw new ArgumentNullException(nameof(parameter));
+        //if (parameter is null)
+        //    throw new ArgumentNullException(nameof(parameter));
 
-        MinecraftInstance = (MinecraftInstance)parameter;
-        InstanceId = MinecraftInstance.GetDisplayName();
+        //MinecraftInstance = (MinecraftInstance)parameter;
+        //InstanceId = MinecraftInstance.GetDisplayName();
 
-        NavigateTo("CoreManage/Default", MinecraftInstance);
+        NavigateTo("Cores/Default");
     }
 
-    public void HandleBreadcrumbBarLoading(object args)
-    {
-        var converter = (BreadcrumbBarLocalizationConverter)args;
-        converter.IgnoredText.Add(InstanceId);
-    }
+    //public void HandleBreadcrumbBarLoading(object args)
+    //{
+    //    var converter = (BreadcrumbBarLocalizationConverter)args;
+    //    converter.IgnoredText.Add(InstanceId);
+    //}
 
     public void HandleNavigationBreadcrumBarItemClicked(string[] routes)
     {
-        if (routes.Length >= 1 && routes[0] == "CoreManage")
-            NavigateTo("CoresPage");
-        else if (routes[^1] == InstanceId)
-            NavigateTo("CoreManage/Default", MinecraftInstance);
+        if (routes.Length >= 1 && routes[0] == "Cores")
+            NavigateTo("Cores/Default");
+        //else if (routes[^1] == InstanceId)
+        //    NavigateTo("Core/Instance", MinecraftInstance);
         else
             NavigateTo(string.Join('/', routes));
     }
@@ -57,11 +57,11 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
     public void NavigateTo(string pageKey, object? parameter = null)
     {
         NavigationService.NavigateTo(pageKey, parameter); // Default page
-        if (pageKey == "CoreManage/Default")
+        if (pageKey == "Cores/Default")
         {
             DisplayedPath.Clear();
-            DisplayedPath.Add("CoreManage");
-            DisplayedPath.Add(InstanceId);
+            DisplayedPath.Add("Cores");
+            //DisplayedPath.Add(InstanceId);
         }
         else
         {

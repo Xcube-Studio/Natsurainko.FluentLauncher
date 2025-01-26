@@ -12,7 +12,7 @@
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
-        <converters:BreadcrumbBarLocalizationConverter x:Key="BreadcrumbBarLocalizationConverter" BasePath="Cores_Manage_NavigationPage" />
+        <converters:BreadcrumbBarLocalizationConverter x:Key="BreadcrumbBarLocalizationConverter" BasePath="Cores_NavigationPage" />
     </Page.Resources>
 
     <Grid>
@@ -27,8 +27,7 @@
             MaxWidth="1020"
             Margin="{ThemeResource PageMarginWithBreadcrumbBar}"
             ItemClicked="breadcrumbBar_ItemClicked"
-            Loading="breadcrumbBar_Loading"
-            LocalizationBasePath="Cores_Manage_NavigationPage" />
+            LocalizationBasePath="Cores_NavigationPage" />
 
         <Frame
             x:Name="contentFrame"

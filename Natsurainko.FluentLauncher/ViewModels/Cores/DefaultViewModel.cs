@@ -1,122 +1,169 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using FluentLauncher.Infra.UI.Dialogs;
+using FluentLauncher.Infra.Settings.Mvvm;
 using FluentLauncher.Infra.UI.Navigation;
-using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.Models.Launch;
+using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Services.UI.Data;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement;
 using Nrk.FluentCore.GameManagement.Instances;
-using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.System;
-using Windows.UI.StartScreen;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
-internal partial class InstanceViewModel : ObservableObject, INavigationAware
+internal partial class DefaultViewModel : ObservableObject, ISettingsViewModel
 {
+    [SettingsProvider]
+    private readonly SettingsService _settingsService;
     private readonly INavigationService _navigationService;
+    private readonly GameService _gameService;
     private readonly NotificationService _notificationService;
-    private readonly QuickLaunchService _quickLaunchService;
-    private readonly IDialogActivationService<ContentDialogResult> _dialogs;
+    private readonly SearchProviderService _searchProviderService;
 
-    private JumpList jumpList;
+    public ReadOnlyObservableCollection<MinecraftInstance> MinecraftInstances { get; init; }
 
-    public MinecraftInstance MinecraftInstance { get; private set; }
-
-    [ObservableProperty]
-    public partial InstanceConfig InstanceConfig { get; set; }
-
-    public InstanceViewModel(
-        INavigationService navigationService, 
+    public DefaultViewModel(
+        GameService gameService,
+        SettingsService settingsService,
+        INavigationService navigationService,
         NotificationService notificationService,
-        QuickLaunchService quickLaunchService,
-        IDialogActivationService<ContentDialogResult> dialogs)
+        SearchProviderService searchProviderService)
     {
+        _gameService = gameService;
+        _settingsService = settingsService;
         _navigationService = navigationService;
         _notificationService = notificationService;
-        _quickLaunchService = quickLaunchService;
-        _dialogs = dialogs;
+        _searchProviderService = searchProviderService;
+
+        MinecraftInstances = _gameService.Games;
+
+        (this as ISettingsViewModel).InitializeSettings();
+
+        Task.Run(UpdateDisplayMinecraftInstances);
+        PropertyChanged += OnPropertyChanged;
     }
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(FormatSize))]
-    public partial GameStorageInfo GameStorageInfo { get; set; }
+    [NotifyPropertyChangedFor(nameof(DisplayFolderPath))]
+    [BindToSetting(Path = nameof(SettingsService.ActiveMinecraftFolder))]
+    public partial string ActiveMinecraftFolder { get; set; }
 
     [ObservableProperty]
-    public partial bool Pinned { get; set; }
+    [BindToSetting(Path = nameof(SettingsService.CoresFilterIndex))]
+    public partial int FilterIndex { get; set; }
 
-    public string FormatSize
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.CoresSortByIndex))]
+    public partial int SortByIndex { get; set; }
+
+    [ObservableProperty]
+    public partial List<MinecraftInstance> DisplayMinecraftInstances { get; set; }
+
+    public string DisplayFolderPath => (string.IsNullOrEmpty(ActiveMinecraftFolder) || !Directory.Exists(ActiveMinecraftFolder))
+        ? LocalizedStrings.Cores_DefaultPage__FolderError
+        : ActiveMinecraftFolder;
+
+    private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        get
+        if (e.PropertyName == nameof(FilterIndex) ||
+            e.PropertyName == nameof(SortByIndex))
+            Task.Run(UpdateDisplayMinecraftInstances);
+    }
+
+    private void UpdateDisplayMinecraftInstances()
+    {
+        var infos = MinecraftInstances.Where(x =>
         {
-            if (GameStorageInfo == null)
-                return string.Empty;
-
-            double d = GameStorageInfo.TotalSize;
-            int i = 0;
-
-            while ((d > 1024) && (i < 5))
+            return FilterIndex switch
             {
-                d /= 1024;
-                i++;
-            }
-
-            var unit = new string[] { "B", "KB", "MB", "GB", "TB" };
-            return string.Format("{0} {1}", Math.Round(d, 2), unit[i]);
-        }
-    }
-
-    async void INavigationAware.OnNavigatedTo(object parameter)
-    {
-        MinecraftInstance = parameter as MinecraftInstance;
-        InstanceConfig = MinecraftInstance.GetConfig();
-
-        _ = Task.Run(() =>
-        {
-            var gameStorageInfo = MinecraftInstance.GetStatistics();
-            App.DispatcherQueue.TryEnqueue(() => GameStorageInfo = gameStorageInfo);
+                1 => x.Version.Type == MinecraftVersionType.Release,
+                2 => x.Version.Type == MinecraftVersionType.Snapshot,
+                3 => x.Version.Type == MinecraftVersionType.OldBeta || x.Version.Type == MinecraftVersionType.OldAlpha,
+                _ => true
+            };
         });
 
-        jumpList = await JumpList.LoadCurrentAsync();
-        Pinned = _quickLaunchService.IsExisted(jumpList, MinecraftInstance, out var item, QuickLaunchService.PinnedUri);
+        List<MinecraftInstance> list = SortByIndex.Equals(0)
+            ? [.. infos.OrderBy(x => x.InstanceId)]
+            : [..infos.OrderByDescending(x => x.GetConfig().LastLaunchTime)];
 
-        InstanceConfig.PropertyChanged += InstanceConfig_PropertyChanged;
+        App.DispatcherQueue.TryEnqueue(() => DisplayMinecraftInstances = list);
     }
 
-    private void InstanceConfig_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    IEnumerable<Suggestion> ProviderSuggestions(string searchText)
     {
-        if (e.PropertyName == "NickName" && !string.IsNullOrEmpty(InstanceConfig.NickName))
-            InstanceConfig.NickName = InstanceConfig.NickName;
-    }
-
-    [RelayCommand]
-    void CardClick(string tag) => _navigationService.NavigateTo(tag, MinecraftInstance);
-
-    [RelayCommand]
-    public async Task OpenVersionFolder() => await Launcher.LaunchFolderPathAsync(MinecraftInstance.GetGameDirectory());
-
-    [RelayCommand]
-    public async Task DeleteGame() => await _dialogs.ShowAsync("DeleteInstanceDialog", (MinecraftInstance, _navigationService));
-
-    protected override async void OnPropertyChanged(PropertyChangedEventArgs e)
-    {
-        base.OnPropertyChanged(e);
-
-        if (e.PropertyName == nameof(Pinned) && jumpList != null)
+        yield return new Suggestion
         {
-            if (Pinned)
-                await _quickLaunchService.AddPinMinecraftInstance(MinecraftInstance);
-            else if (!Pinned && _quickLaunchService.IsExisted(jumpList, MinecraftInstance, out var jumpListItem, QuickLaunchService.PinnedUri))
+            Title = LocalizedStrings.SearchSuggest__T1.Replace("{searchText}", searchText),
+            Description = LocalizedStrings.SearchSuggest__D1,
+            InvokeAction = () => _navigationService.NavigateTo("Download/Navigation", new SearchOptions
             {
-                jumpList.Items.Remove(jumpListItem);
-                await jumpList.SaveAsync();
+                SearchText = searchText,
+                ResourceType = 1
+            })
+        };
+
+        foreach (var item in MinecraftInstances)
+        {
+            if (item.InstanceId.Contains(searchText))
+            {
+                yield return SuggestionHelper.FromMinecraftInstance(item,
+                    LocalizedStrings.SearchSuggest__D3,
+                    () => _navigationService.NavigateTo("CoreManage/Navigation", item));
             }
         }
+    }
+
+    [RelayCommand]
+    public void GoToSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Launch");
+
+    [RelayCommand]
+    public void GoToCoreSettings(MinecraftInstance MinecraftInstance) => _navigationService.NavigateTo("CoreManage/Navigation", MinecraftInstance);
+
+    [RelayCommand]
+    public void SearchAllMinecraft()
+    {
+        if (string.IsNullOrEmpty(_gameService.ActiveMinecraftFolder))
+        {
+            _notificationService.NotifyWithSpecialContent(
+                LocalizedStrings.Notifications__NoMinecraftFolder,
+                "NoMinecraftFolderNotifyTemplate",
+                GoToSettingsCommand, "\uE711");
+
+            return;
+        }
+
+        _navigationService.NavigateTo("Download/Navigation", new SearchOptions { ResourceType = 1 });
+    }
+
+    [RelayCommand]
+    public void NavigateFolder()
+    {
+        if (Directory.Exists(ActiveMinecraftFolder))
+            _ = Launcher.LaunchFolderPathAsync(ActiveMinecraftFolder);
+    }
+
+    [RelayCommand]
+    void Loaded()
+    {
+        if (!_searchProviderService.ContainsSuggestionProvider(this))
+            _searchProviderService.RegisterSuggestionProvider(this, ProviderSuggestions);
+    }
+
+    [RelayCommand]
+    void Unloaded()
+    {
+        _searchProviderService.UnregisterSuggestionProvider(this);
     }
 }

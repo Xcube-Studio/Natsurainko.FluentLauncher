@@ -112,7 +112,7 @@
                 <controls:SettingsCard
                     x:Uid="Cores_Manage_DefaultPage_Card2"
                     Command="{x:Bind VM.CardClickCommand}"
-                    CommandParameter="CoreManage/Config"
+                    CommandParameter="Cores/Config"
                     Description="Set additional JVM parameters, game accounts, core independence, etc."
                     Header="Game launch settings"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe945;}"
@@ -134,7 +134,7 @@
                 <controls:SettingsCard
                     x:Uid="Cores_Manage_DefaultPage_Card3"
                     Command="{x:Bind VM.CardClickCommand}"
-                    CommandParameter="CoreManage/Mod"
+                    CommandParameter="Cores/Mod"
                     Description="Import, enable/disable, delete modules"
                     Header="Module Management"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe8f1;}"
@@ -143,7 +143,7 @@
                 <controls:SettingsCard
                     x:Uid="Cores_Manage_DefaultPage_Card4"
                     Command="{x:Bind VM.CardClickCommand}"
-                    CommandParameter="CoreManage/Save"
+                    CommandParameter="Cores/Save"
                     Description="View and manage your game saves"
                     Header="Save Management"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE81E;}"

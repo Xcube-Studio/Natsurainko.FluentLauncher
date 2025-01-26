@@ -26,6 +26,7 @@ internal partial class DefaultViewModel : ObservableObject, ISettingsViewModel
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;
+    private readonly INavigationService _shellNavigationService;
     private readonly INavigationService _navigationService;
     private readonly GameService _gameService;
     private readonly NotificationService _notificationService;
@@ -43,6 +44,7 @@ internal partial class DefaultViewModel : ObservableObject, ISettingsViewModel
         _gameService = gameService;
         _settingsService = settingsService;
         _navigationService = navigationService;
+        _shellNavigationService = navigationService.Parent!;
         _notificationService = notificationService;
         _searchProviderService = searchProviderService;
 
@@ -107,7 +109,7 @@ internal partial class DefaultViewModel : ObservableObject, ISettingsViewModel
         {
             Title = LocalizedStrings.SearchSuggest__T1.Replace("{searchText}", searchText),
             Description = LocalizedStrings.SearchSuggest__D1,
-            InvokeAction = () => _navigationService.NavigateTo("Download/Navigation", new SearchOptions
+            InvokeAction = () => _shellNavigationService.NavigateTo("Download/Navigation", new SearchOptions
             {
                 SearchText = searchText,
                 ResourceType = 1
@@ -120,16 +122,18 @@ internal partial class DefaultViewModel : ObservableObject, ISettingsViewModel
             {
                 yield return SuggestionHelper.FromMinecraftInstance(item,
                     LocalizedStrings.SearchSuggest__D3,
-                    () => _navigationService.NavigateTo("CoreManage/Navigation", item));
+                    () => _shellNavigationService.NavigateTo("Cores/Navigation", item));
             }
         }
     }
 
     [RelayCommand]
-    public void GoToSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Launch");
+    public void GoToSettings()
+        => _shellNavigationService.NavigateTo("Settings/Navigation", "Settings/Launch");
 
     [RelayCommand]
-    public void GoToCoreSettings(MinecraftInstance MinecraftInstance) => _navigationService.NavigateTo("CoreManage/Navigation", MinecraftInstance);
+    public void GoToCoreSettings(MinecraftInstance MinecraftInstance)
+        => _navigationService.NavigateTo("Cores/Instance", MinecraftInstance);
 
     [RelayCommand]
     public void SearchAllMinecraft()
@@ -144,7 +148,7 @@ internal partial class DefaultViewModel : ObservableObject, ISettingsViewModel
             return;
         }
 
-        _navigationService.NavigateTo("Download/Navigation", new SearchOptions { ResourceType = 1 });
+        _shellNavigationService.NavigateTo("Download/Navigation", new SearchOptions { ResourceType = 1 });
     }
 
     [RelayCommand]

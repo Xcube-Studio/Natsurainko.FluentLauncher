@@ -19,6 +19,8 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
 
     public ObservableCollection<string> DisplayedPath { get; } = new();
 
+    public MinecraftInstance? CurrentInstance { get; set; }
+
     public NavigationViewModel(INavigationService navigationService)
     {
         NavigationService = navigationService;
@@ -27,19 +29,26 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
     void INavigationAware.OnNavigatedTo(object? parameter)
     {
         if (parameter is MinecraftInstance instance)
+        {
+            CurrentInstance = instance;
             NavigateTo("Cores/Instance", instance);
+        }
         else if (parameter is string pageKey)
+        {
             NavigateTo(pageKey);
+        }
         else
+        {
             NavigateTo("Cores/Default");
+        }
     }
 
     public void HandleNavigationBreadcrumBarItemClicked(string[] routes)
     {
-        if (routes.Length >= 1 && routes[0] == "Cores")
+        if (routes.Length == 1 && routes[0] == "Cores")
             NavigateTo("Cores/Default");
-        //else if (routes[^1] == InstanceId)
-        //    NavigateTo("Core/Instance", MinecraftInstance);
+        else if (routes.Length == 2)
+            NavigateTo("Cores/Instance", CurrentInstance);
         else
             NavigateTo(string.Join('/', routes));
     }

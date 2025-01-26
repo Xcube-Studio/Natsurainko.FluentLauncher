@@ -32,13 +32,14 @@ public sealed partial class NavigationPage : Page, INavigationProvider
             if (contentFrame.Content.GetType() == typeof(InstancePage))
             {
                 var instance = (MinecraftInstance)e.Parameter;
+                VM.CurrentInstance = instance;
                 string instanceId = instance.InstanceId;
 
                 var converter = (BreadcrumbBarLocalizationConverter)breadcrumbBar.Resources["BreadcrumbBarLocalizationConverter"];
                 if (!converter.IgnoredText.Contains(instanceId))
                     converter.IgnoredText.Add(instanceId);
 
-                breadcrumbBar.AddItem(instance.InstanceId);
+                breadcrumbBar.SetPath($"Cores/{instance.InstanceId}");
             }
             else
             {

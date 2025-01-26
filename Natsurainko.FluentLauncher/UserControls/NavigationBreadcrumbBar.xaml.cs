@@ -45,6 +45,16 @@ public sealed partial class NavigationBreadcrumbBar : UserControl, INotifyProper
         Items.Add(page);
     }
 
+    public void SetPath(string path)
+    {
+        _backStack.Push([.. Items]);
+        Items.Clear();
+        foreach (string item in path.Split('/'))
+        {
+            Items.Add(item);
+        }
+    }
+
     public void GoBack()
     {
         Items.Clear();

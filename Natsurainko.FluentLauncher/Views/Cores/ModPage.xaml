@@ -24,7 +24,7 @@
                 </StackPanel.ChildrenTransitions>
 
                 <controls:SettingsCard
-                    x:Uid="Cores_Manage_ModPage_Card1"
+                    x:Uid="Cores_ModPage_Card1"
                     ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
                     Command="{x:Bind VM.OpenModsFolderCommand}"
                     Description="{x:Bind VM.ModsFolder, Mode=OneWay}"
@@ -32,7 +32,7 @@
                     HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
                     IsClickEnabled="True" />
                 <controls:SettingsCard
-                    x:Uid="Cores_Manage_ModPage_Card2"
+                    x:Uid="Cores_ModPage_Card2"
                     Description="Even if the mods listed below exist, they will not be loaded"
                     Foreground="{ThemeResource SystemErrorTextColor}"
                     Header="This game does not have a mod loader or the modder does not support mods"
@@ -40,7 +40,7 @@
                     Visibility="{x:Bind VM.NotSupportMod, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                 <TextBlock
-                    x:Uid="Cores_Manage_ModPage_T1"
+                    x:Uid="Cores_ModPage_T1"
                     Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
                     Text="Mods" />
 
@@ -134,7 +134,7 @@
                         Glyph="&#xe74c;" />
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock
-                            x:Uid="Cores_Manage_ModPage_Text1"
+                            x:Uid="Cores_ModPage_Text1"
                             Margin="10,0"
                             VerticalAlignment="Center"
                             FontSize="24"
@@ -143,7 +143,7 @@
                             Text="No Mod" />
                         <HyperlinkButton Margin="0,0,0,-5">
                             <TextBlock
-                                x:Uid="Cores_Manage_ModPage_Text2"
+                                x:Uid="Cores_ModPage_Text2"
                                 FontWeight="SemiBold"
                                 Text="Go To Downloads" />
                         </HyperlinkButton>

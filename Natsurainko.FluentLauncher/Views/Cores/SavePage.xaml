@@ -23,7 +23,7 @@
                 </StackPanel.ChildrenTransitions>
 
                 <controls:SettingsCard
-                    x:Uid="Cores_Manage_SavePage_Card1"
+                    x:Uid="Cores_SavePage_Card1"
                     ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
                     Command="{x:Bind VM.OpenSavesFolderCommand}"
                     Description="{x:Bind VM.SavesFolder, Mode=OneWay}"
@@ -32,7 +32,7 @@
                     IsClickEnabled="True" />
 
                 <TextBlock
-                    x:Uid="Cores_Manage_SavePage_T1"
+                    x:Uid="Cores_SavePage_T1"
                     Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
                     Text="Saves" />
 
@@ -113,7 +113,7 @@
                         Glyph="&#xe74c;" />
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock
-                            x:Uid="Cores_Manage_SavePage_Text1"
+                            x:Uid="Cores_SavePage_Text1"
                             Margin="10,0"
                             VerticalAlignment="Center"
                             FontSize="24"

@@ -6,67 +6,70 @@ using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.XamlHelpers.Converters;
 using Nrk.FluentCore.GameManagement.Instances;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Windows.Devices.Display.Core;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
 
 public partial class NavigationViewModel : ObservableObject, INavigationAware
 {
     public INavigationService NavigationService { get; init; }
 
-    [ObservableProperty]
-    public partial ObservableCollection<string> Routes { get; set; }
-    public MinecraftInstance MinecraftInstance { get; private set; }
+    public ObservableCollection<string> DisplayedPath { get; } = new();
+    public MinecraftInstance MinecraftInstance { get; private set; } = null!;
 
-    public string InstanceId { get; private set; } // 缓存游戏名称，防止昵称修改后名称对不上
+    public string InstanceId { get; private set; } = null!; // 缓存游戏名称，防止昵称修改后名称对不上
 
     public NavigationViewModel(INavigationService navigationService)
     {
         NavigationService = navigationService;
     }
 
-    void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object? parameter)
     {
-        MinecraftInstance = parameter as MinecraftInstance;
+        if (parameter is null)
+            throw new ArgumentNullException(nameof(parameter));
+
+        MinecraftInstance = (MinecraftInstance)parameter;
         InstanceId = MinecraftInstance.GetDisplayName();
 
-        Routes = [];
-        NavigationService.NavigateTo("CoreManage/Default", MinecraftInstance);
+        NavigateTo("CoreManage/Default", MinecraftInstance);
     }
 
-    public void NavigateTo(string pageKey, object parameter = null)
+    public void HandleBreadcrumbBarLoading(object args)
     {
-        NavigationService.NavigateTo(pageKey, parameter);
+        var converter = (BreadcrumbBarLocalizationConverter)args;
+        converter.IgnoredText.Add(InstanceId);
+    }
 
+    public void HandleNavigationBreadcrumBarItemClicked(string[] routes)
+    {
+        if (routes.Length >= 1 && routes[0] == "CoreManage")
+            NavigateTo("CoresPage");
+        else if (routes[^1] == InstanceId)
+            NavigateTo("CoreManage/Default", MinecraftInstance);
+        else
+            NavigateTo(string.Join('/', routes));
+    }
+
+    public void NavigateTo(string pageKey, object? parameter = null)
+    {
+        NavigationService.NavigateTo(pageKey, parameter); // Default page
         if (pageKey == "CoreManage/Default")
         {
-            Routes = new(["CoreManage", InstanceId]);
+            DisplayedPath.Clear();
+            DisplayedPath.Add("CoreManage");
+            DisplayedPath.Add(InstanceId);
         }
         else
         {
-            Routes = new(pageKey.Split('/'));
-            Routes.Insert(1, InstanceId);
+            DisplayedPath.Clear();
+            foreach (string item in pageKey.Split("/"))
+            {
+                DisplayedPath.Add(item);
+            }
         }
-    }
-
-    [RelayCommand]
-    public void ItemClickedEvent(object args)
-    {
-        var breadcrumbBarItemClickedEventArgs = args.As<BreadcrumbBar, BreadcrumbBarItemClickedEventArgs>().args;
-
-        if (breadcrumbBarItemClickedEventArgs.Item.ToString() == "CoreManage")
-            NavigationService.Parent.NavigateTo("CoresPage");
-        else if (breadcrumbBarItemClickedEventArgs.Item.ToString() == InstanceId)
-            NavigateTo("CoreManage/Default", MinecraftInstance);
-        else NavigateTo(string.Join('/', Routes.ToArray()[..^1]).Replace($"/{InstanceId}/", "/"), MinecraftInstance);
-    }
-
-    [RelayCommand]
-    public void BreadcrumbBarLoadingEvent(object args)
-    {
-        var converter = args as BreadcrumbBarLocalizationConverter;
-        converter.IgnoredText.Add(InstanceId);
     }
 }

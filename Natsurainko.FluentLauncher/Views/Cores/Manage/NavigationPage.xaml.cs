@@ -20,10 +20,32 @@ public sealed partial class NavigationPage : Page, INavigationProvider
 
     private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
     {
-        var breadcrumbBarAware = (contentFrame.Content as Page) as IBreadcrumbBarAware;
-        VM.Routes.Add(breadcrumbBarAware!.Route);
+        var breadcrumbBarAware = (IBreadcrumbBarAware)(contentFrame.Content);
+        if (e.NavigationMode == NavigationMode.Back)
+        {
+            breadcrumbBar.GoBack();
+        }
+        else
+        {
+            breadcrumbBar.AddItem(breadcrumbBarAware.Route);
+            if (e.SourcePageType == typeof(DefaultPage))
+                breadcrumbBar.AddItem(VM.MinecraftInstance.GetDisplayName());
+        }
 
-        if (e.SourcePageType == typeof(DefaultPage))
-            VM.Routes.Add(VM.MinecraftInstance.GetDisplayName());
+    }
+
+    private void breadcrumbBar_ItemClicked(object sender, string[] args)
+    {
+        VM.HandleNavigationBreadcrumBarItemClicked(args);
+    }
+
+    private void breadcrumbBar_Loading(Microsoft.UI.Xaml.FrameworkElement sender, object args)
+    {
+        VM.HandleBreadcrumbBarLoading(breadcrumbBar.Resources["BreadcrumbBarLocalizationConverter"]);
+    }
+
+    private void Page_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        breadcrumbBar.Items = VM.DisplayedPath;
     }
 }

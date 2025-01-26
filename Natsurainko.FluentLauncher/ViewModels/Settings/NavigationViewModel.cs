@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using FluentLauncher.Infra.UI.Navigation;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
@@ -19,31 +18,31 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
     void INavigationAware.OnNavigatedTo(object? parameter)
     {
         if (parameter is string pageKey)
-        {
-            NavigationService.NavigateTo(pageKey);
-            foreach (string item in pageKey.Split('/'))
-            {
-                DisplayedPath.Add(item);
-            }
-        }
+            NavigateTo(pageKey);
         else
-        {
-            NavigationService.NavigateTo("Settings/Default"); // Default page
-            DisplayedPath.Add("Settings");
-        }
+            NavigateTo("Settings/Default"); // Default page
     }
 
     public void HandleNavigationBreadcrumBarItemClicked(string[] routes)
     {
         if (routes.Length >=1 && routes[0] == "Settings")
+            NavigateTo("Settings/Default");
+        else
+            NavigateTo(string.Join('/', routes));
+    }
+
+    private void NavigateTo(string pageKey)
+    {
+        NavigationService.NavigateTo(pageKey); // Default page
+        if (pageKey == "Settings/Default")
         {
-            NavigationService.NavigateTo("Settings/Default"); // Default page
+            DisplayedPath.Clear();
             DisplayedPath.Add("Settings");
         }
         else
         {
-            NavigationService.NavigateTo(string.Join('/', routes));
-            foreach (string item in routes)
+            DisplayedPath.Clear();
+            foreach (string item in pageKey.Split("/"))
             {
                 DisplayedPath.Add(item);
             }

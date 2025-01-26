@@ -57,6 +57,7 @@
 
             <Thickness x:Key="PageMarginWithBreadcrumbBar">30,15</Thickness>
             <Thickness x:Key="PageMarginWithBorder">40,0,40,25</Thickness>
+            <Thickness x:Key="PageMarginCoresPage">40,0,40,16</Thickness>
             <Thickness x:Key="PageMarginWithStackPanel">40,20</Thickness>
             <Thickness x:Key="PagePaddingWithScrollViewer">40,0</Thickness>
             <Thickness x:Key="PageEndMarginWithScrollViewer">0,0,0,25</Thickness>

@@ -8,11 +8,11 @@
     xmlns:converters="using:Natsurainko.FluentLauncher.XamlHelpers.Converters"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:data="using:Nrk.FluentCore.Resources"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:installer="using:Nrk.FluentCore.GameManagement.Installer"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:selector="using:Natsurainko.FluentLauncher.XamlHelpers.Selectors"
-    xmlns:data="using:Nrk.FluentCore.Resources"
-    xmlns:installer="using:Nrk.FluentCore.GameManagement.Installer"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     Unloaded="Page_Unloaded"
     mc:Ignorable="d">

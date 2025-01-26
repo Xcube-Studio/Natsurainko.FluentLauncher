@@ -5,9 +5,9 @@
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:converters="using:Natsurainko.FluentLauncher.XamlHelpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:data="using:Natsurainko.FluentLauncher.Models.UI"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Cores.Install"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:data="using:Natsurainko.FluentLauncher.Models.UI"
     x:Uid="CoreInstallWizard_ChooseModLoaderPage_Page"
     Tag="Mod Loader Options (1/3)"
     mc:Ignorable="d">
@@ -65,8 +65,7 @@
                                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                             Style="{ThemeResource CaptionTextBlockStyle}"
                                             Text="{x:Bind DisplayText, Mode=OneWay}"
-                                            Visibility="{x:Bind IsSupported, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
-                                        </TextBlock>
+                                            Visibility="{x:Bind IsSupported, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
                                     </StackPanel>
                                     <ComboBox
                                         ItemsSource="{x:Bind InstallDatas, Mode=OneWay}"

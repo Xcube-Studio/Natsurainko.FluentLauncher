@@ -1,16 +1,18 @@
 <Page
-    x:Class="Natsurainko.FluentLauncher.Views.Cores.Manage.NavigationPage"
+    x:Class="Natsurainko.FluentLauncher.Views.Cores.NavigationPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
+    xmlns:controls="using:Natsurainko.FluentLauncher.UserControls"
     xmlns:converters="using:Natsurainko.FluentLauncher.XamlHelpers.Converters"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
-        <converters:BreadcrumbBarLocalizationConverter x:Key="BreadcrumbBarLocalizationConverter" BasePath="Cores_Manage_NavigationPage" />
+        <converters:BreadcrumbBarLocalizationConverter x:Key="BreadcrumbBarLocalizationConverter" BasePath="Cores_NavigationPage" />
     </Page.Resources>
 
     <Grid>
@@ -19,32 +21,13 @@
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
-        <BreadcrumbBar
-            Name="breadcrumbBar"
+        <controls:NavigationBreadcrumbBar
+            x:Name="breadcrumbBar"
             Grid.Row="0"
             MaxWidth="1020"
             Margin="{ThemeResource PageMarginWithBreadcrumbBar}"
-            ItemsSource="{x:Bind VM.Routes, Mode=OneWay}">
-
-            <i:Interaction.Behaviors>
-                <core:EventTriggerBehavior EventName="ItemClicked">
-                    <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.ItemClickedEventCommand}" />
-                </core:EventTriggerBehavior>
-                <core:EventTriggerBehavior EventName="Loading">
-                    <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.BreadcrumbBarLoadingEventCommand}" CommandParameter="{StaticResource BreadcrumbBarLocalizationConverter}" />
-                </core:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
-
-            <BreadcrumbBar.ItemTemplate>
-                <DataTemplate x:DataType="x:String">
-                    <TextBlock
-                        Margin="10,0"
-                        Style="{ThemeResource TitleTextBlockStyle}"
-                        Text="{x:Bind Converter={StaticResource BreadcrumbBarLocalizationConverter}}"
-                        TextTrimming="CharacterEllipsis" />
-                </DataTemplate>
-            </BreadcrumbBar.ItemTemplate>
-        </BreadcrumbBar>
+            ItemClicked="breadcrumbBar_ItemClicked"
+            LocalizationBasePath="Cores_NavigationPage" />
 
         <Frame
             x:Name="contentFrame"

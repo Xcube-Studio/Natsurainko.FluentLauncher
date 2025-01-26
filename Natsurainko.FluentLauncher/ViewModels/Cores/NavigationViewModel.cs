@@ -2,34 +2,36 @@
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.Services.UI;
-using Natsurainko.FluentLauncher.Services.UI.Data;
 using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Utils.Extensions;
+using Natsurainko.FluentLauncher.XamlHelpers.Converters;
+using Nrk.FluentCore.GameManagement.Instances;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection.Metadata;
+using Windows.Devices.Display.Core;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
+namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
 public partial class NavigationViewModel : ObservableObject, INavigationAware
 {
-    private readonly SearchProviderService _searchProviderService;
-
     public INavigationService NavigationService { get; init; }
 
     public ObservableCollection<string> DisplayedPath { get; } = new();
 
-    public NavigationViewModel(INavigationService navigationService, SearchProviderService searchProviderService)
+    public MinecraftInstance? CurrentInstance { get; set; }
+
+    public NavigationViewModel(INavigationService navigationService)
     {
         NavigationService = navigationService;
-        _searchProviderService = searchProviderService;
     }
 
     void INavigationAware.OnNavigatedTo(object? parameter)
     {
-        if (parameter is SearchOptions)
+        if (parameter is MinecraftInstance instance)
         {
-            NavigateTo("Download/Search", parameter);
+            CurrentInstance = instance;
+            NavigateTo("Cores/Instance", instance);
         }
         else if (parameter is string pageKey)
         {
@@ -37,36 +39,33 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
         }
         else
         {
-            NavigateTo("Download/Default"); // Default page
+            NavigateTo("Cores/Default");
         }
-    }
-
-    [RelayCommand]
-    void Loaded()
-    {
-        if (_searchProviderService.QueryReceiverOwner == this) return;
-
-        _searchProviderService.OccupyQueryReceiver(this, (searchText) =>
-        {
-            NavigationService.NavigateTo("Download/Search", new SearchOptions { SearchText = searchText });
-        });
     }
 
     public void HandleNavigationBreadcrumBarItemClicked(string[] routes)
     {
-        if (routes.Length >= 1 && routes[0] == "Download")
-            NavigateTo("Download/Default");
+        if (routes.Length == 1 && routes[0] == "Cores")
+            NavigateTo("Cores/Default");
+        else if (routes.Length == 2)
+            NavigateTo("Cores/Instance", CurrentInstance);
         else
             NavigateTo(string.Join('/', routes));
     }
 
-    private void NavigateTo(string pageKey, object? parameter = null)
+    public void NavigateTo(string pageKey, object? parameter = null)
     {
         NavigationService.NavigateTo(pageKey, parameter); // Default page
-        if (pageKey == "Download/Default")
+        if (pageKey == "Cores/Default")
         {
             DisplayedPath.Clear();
-            DisplayedPath.Add("Download");
+            DisplayedPath.Add("Cores");
+        }
+        else if (pageKey == "Cores/Instance")
+        {
+            DisplayedPath.Clear();
+            DisplayedPath.Add("Cores");
+            DisplayedPath.Add(((MinecraftInstance)parameter!).InstanceId);
         }
         else
         {

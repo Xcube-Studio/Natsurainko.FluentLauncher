@@ -19,14 +19,15 @@ public sealed partial class NavigationPage : Page, INavigationProvider
 
     private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
     {
-        var breadcrumbBarAware = (contentFrame.Content as Page) as IBreadcrumbBarAware;
+        var breadcrumbBarAware = (IBreadcrumbBarAware)(contentFrame.Content);
         if (e.NavigationMode == NavigationMode.Back)
-        {
-            VM.Routes.RemoveAt(VM.Routes.Count - 1);
-        }
+            breadcrumbBar.GoBack();
         else
-        {
-            VM.Routes.Add(breadcrumbBarAware!.Route);
-        }
+            breadcrumbBar.AddItem(breadcrumbBarAware.Route);
+    }
+
+    private void breadcrumbBar_ItemClicked(object sender, string[] args)
+    {
+        VM.HandleNavigationBreadcrumBarItemClicked(args);
     }
 }

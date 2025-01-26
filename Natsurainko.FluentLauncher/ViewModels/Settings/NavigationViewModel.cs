@@ -6,48 +6,32 @@ using Natsurainko.FluentLauncher.Utils;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
 public partial class NavigationViewModel : ObservableObject, INavigationAware
 {
     public INavigationService NavigationService { get; init; }
 
-    [ObservableProperty]
-    public partial ObservableCollection<string> Routes { get; set; }
-
     public NavigationViewModel(INavigationService navigationService)
     {
         NavigationService = navigationService;
     }
 
-    void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object? parameter)
     {
         if (parameter is string pageKey)
-        {
-            Routes = new(pageKey.Split('/'));
-            NavigateTo(pageKey);
-        }
+            NavigationService.NavigateTo(pageKey);
         else
-        {
-            Routes = [];
             NavigationService.NavigateTo("Settings/Default"); // Default page
-        }
     }
 
-    public void NavigateTo(string pageKey, object parameter = null)
+    public void HandleNavigationBreadcrumBarItemClicked(object args)
     {
-        NavigationService.NavigateTo(pageKey, parameter);
-        Routes = new(pageKey == "Settings/Default" ? ["Settings"] : pageKey.Split('/'));
-    }
+        var routes = (string[])args;
 
-    [RelayCommand]
-    public void ItemClickedEvent(object args)
-    {
-        var breadcrumbBarItemClickedEventArgs = args.As<BreadcrumbBar, BreadcrumbBarItemClickedEventArgs>().args;
-
-        if (breadcrumbBarItemClickedEventArgs.Item.ToString() == "Settings")
-            NavigateTo("Settings/Default");
-        else NavigateTo(string.Join('/', Routes.ToArray()[..^1]));
+        if (routes.Length >=1 && routes[0] == "Settings")
+            NavigationService.NavigateTo("Settings/Default");
+        else
+            NavigationService.NavigateTo(string.Join('/', routes.ToArray()));
     }
 }

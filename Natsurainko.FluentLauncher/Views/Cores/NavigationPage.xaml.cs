@@ -2,9 +2,9 @@ using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-using Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
+using Natsurainko.FluentLauncher.ViewModels.Cores;
 
-namespace Natsurainko.FluentLauncher.Views.Cores.Manage;
+namespace Natsurainko.FluentLauncher.Views.Cores;
 
 public sealed partial class NavigationPage : Page, INavigationProvider
 {

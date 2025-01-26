@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Windows.System;
 
 #nullable disable
-namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
+namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
 internal partial class SaveViewModel : ObservableObject, INavigationAware
 {

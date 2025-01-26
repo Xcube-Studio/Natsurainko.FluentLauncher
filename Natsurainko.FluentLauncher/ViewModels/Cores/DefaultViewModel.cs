@@ -16,9 +16,9 @@ using Windows.System;
 using Windows.UI.StartScreen;
 
 #nullable disable
-namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
+namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
-internal partial class DefaultViewModel : ObservableObject, INavigationAware
+internal partial class InstanceViewModel : ObservableObject, INavigationAware
 {
     private readonly INavigationService _navigationService;
     private readonly NotificationService _notificationService;
@@ -32,7 +32,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     [ObservableProperty]
     public partial InstanceConfig InstanceConfig { get; set; }
 
-    public DefaultViewModel(
+    public InstanceViewModel(
         INavigationService navigationService, 
         NotificationService notificationService,
         QuickLaunchService quickLaunchService,

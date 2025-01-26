@@ -3,11 +3,11 @@ using Natsurainko.FluentLauncher.ViewModels.Cores;
 
 namespace Natsurainko.FluentLauncher.Views.Cores;
 
-public sealed partial class CoresPage : Page
+public sealed partial class DefaultPage : Page
 {
-    CoresViewModel VM => (CoresViewModel)DataContext;
+    DefaultViewModel VM => (DefaultViewModel)DataContext;
 
-    public CoresPage()
+    public DefaultPage()
     {
         InitializeComponent();
     }

@@ -22,7 +22,7 @@ using Windows.System;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
-internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
+internal partial class DefaultViewModel : ObservableObject, ISettingsViewModel
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;
@@ -33,7 +33,7 @@ internal partial class CoresViewModel : ObservableObject, ISettingsViewModel
 
     public ReadOnlyObservableCollection<MinecraftInstance> MinecraftInstances { get; init; }
 
-    public CoresViewModel(
+    public DefaultViewModel(
         GameService gameService,
         SettingsService settingsService,
         INavigationService navigationService,

@@ -11,7 +11,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Windows.Devices.Display.Core;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
+namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
 public partial class NavigationViewModel : ObservableObject, INavigationAware
 {

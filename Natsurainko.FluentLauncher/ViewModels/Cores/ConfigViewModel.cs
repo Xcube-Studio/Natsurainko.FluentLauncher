@@ -17,7 +17,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 #nullable disable
-namespace Natsurainko.FluentLauncher.ViewModels.Cores.Manage;
+namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
 internal partial class ConfigViewModel : ObservableObject, INavigationAware
 {

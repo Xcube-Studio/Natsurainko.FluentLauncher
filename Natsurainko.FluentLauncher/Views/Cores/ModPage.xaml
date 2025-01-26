@@ -1,5 +1,5 @@
 <Page
-    x:Class="Natsurainko.FluentLauncher.Views.Cores.Manage.ModPage"
+    x:Class="Natsurainko.FluentLauncher.Views.Cores.ModPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"

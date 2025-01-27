@@ -241,7 +241,7 @@
             x:Name="TopNavViewPaneBackground"
             Width="89"
             Height="44"
-            Margin="20,2,0,2"
+            Margin="0,2,0,2"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Background="{ThemeResource NavigationViewUnfoldedPaneBackground}"

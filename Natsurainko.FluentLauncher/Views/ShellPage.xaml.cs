@@ -70,8 +70,8 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
             NavViewPaneBackground.Translation += new System.Numerics.Vector3(48, 0, 0);
             TopNavViewPaneBackground.Translation -= new System.Numerics.Vector3(110, 0, 0);
 
-            var PaneToggleButtonGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneToggleButtonGrid")!;
-            PaneToggleButtonGrid.Translation -= new System.Numerics.Vector3(20, 0, 0);
+            //var PaneToggleButtonGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneToggleButtonGrid")!;
+            //PaneToggleButtonGrid.Translation -= new System.Numerics.Vector3(20, 0, 0);
         }
 
         if (e.PreviousSize.Width > 640 && e.NewSize.Width <= 640)
@@ -245,12 +245,12 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         var PaneContentGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneContentGrid")!;
         PaneContentGrid.Padding = new Thickness(1,0,0,0);
 
-        var PaneToggleButtonGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneToggleButtonGrid")!;
-        PaneToggleButtonGrid.Translation += new System.Numerics.Vector3(20, 0, 0);
-        PaneToggleButtonGrid.TranslationTransition = new Vector3Transition()
-        {
-            Duration = TimeSpan.FromMilliseconds(500)
-        };
+        //var PaneToggleButtonGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneToggleButtonGrid")!;
+        //PaneToggleButtonGrid.Translation += new System.Numerics.Vector3(20, 0, 0);
+        //PaneToggleButtonGrid.TranslationTransition = new Vector3Transition()
+        //{
+        //    Duration = TimeSpan.FromMilliseconds(500)
+        //};
     }
 
     private void UpdateTitleBarDragArea()
@@ -336,5 +336,17 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
     private void OnPropertyChanged(string propertyName)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
+    {
+        if (args.DisplayMode == NavigationViewDisplayMode.Minimal)
+        {
+            appTitleGrid.Margin = new Thickness(0, 0, 0, 0);
+        }
+        else
+        {
+            appTitleGrid.Margin = new Thickness(8, -80, 0, 0);
+        }
     }
 }

@@ -258,6 +258,7 @@
             Grid.RowSpan="3"
             BackRequested="NavigationViewControl_BackRequested"
             Canvas.ZIndex="0"
+            DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
             IsBackButtonVisible="Visible"
             IsBackEnabled="{x:Bind CanGoBack, Mode=OneWay}"
             IsPaneToggleButtonVisible="True"
@@ -271,7 +272,7 @@
                 <SolidColorBrush x:Key="NavigationViewContentGridBorderBrush" Color="Transparent" />
             </NavigationView.Resources>
             <NavigationView.PaneHeader>
-                <Grid Padding="35,0,0,0">
+                <Grid x:Name="appTitleGrid" Margin="8,-80,0,0">
                     <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                         <Border VerticalAlignment="Center" CornerRadius="2.5">
                             <Image
@@ -280,10 +281,9 @@
                                 Source="/Assets/AppIcon.png" />
                         </Border>
                         <TextBlock
-                            Margin="15,0,0,0"
+                            Margin="12,0,0,0"
                             VerticalAlignment="Center"
-                            FontWeight="SemiBold"
-                            Opacity="0.8"
+                            Style="{ThemeResource CaptionTextBlockStyle}"
                             Text="Fluent Launcher" />
                     </StackPanel>
                 </Grid>

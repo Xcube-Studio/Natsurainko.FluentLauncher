@@ -84,7 +84,7 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         Column2.MinWidth = e.NewSize.Width >= 680 ? 48 : 155;
 
         NavigationViewControl.PaneDisplayMode = e.NewSize.Width <= 640 ? NavigationViewPaneDisplayMode.LeftMinimal : NavigationViewPaneDisplayMode.LeftCompact;
-        TopNavViewPaneToggleButtonsBorder.Width = e.NewSize.Width <= 640 ? 120 : 48;
+        TopNavViewPaneToggleButtonsBorder.Width = e.NewSize.Width <= 640 ? 84 : 48;
 
         UpdateSearchBoxArea();
 
@@ -271,7 +271,6 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         var transform = AutoSuggestBox.TransformToVisual(AppTitleBar);
         var absolutePosition = transform.TransformPoint(new Point(0, 0));
 
-        
         if (NavigationViewControl.IsPaneOpen)
         {
             // Allow dragging over the entire title bar when the search box is hidden
@@ -286,7 +285,6 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         }
         else
         {
-
             var rectLeft = new RectInt32()
             {
                 X = (int)(Column0.ActualWidth * scaleAdjustment),

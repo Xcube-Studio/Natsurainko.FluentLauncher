@@ -358,12 +358,12 @@
             IsHitTestVisible="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="Column0" Width="Auto" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="32" />
                 <ColumnDefinition x:Name="Column1" Width="1*" />
                 <ColumnDefinition
                     x:Name="Column2"
                     Width="Auto"
-                    MinWidth="155" />
+                    MinWidth="196" />
             </Grid.ColumnDefinitions>
 
             <Border
@@ -377,8 +377,7 @@
                 Grid.Column="2"
                 MaxWidth="380"
                 Margin="0,2"
-                CornerRadius="8"
-                Translation="0,0,16">
+                CornerRadius="8">
                 <Border
                     x:Name="SearchBoxAreaBackgroundBorder"
                     Background="{ThemeResource NavigationViewUnfoldedPaneBackground}"
@@ -387,7 +386,7 @@
                 <AutoSuggestBox
                     x:Name="AutoSuggestBox"
                     x:Uid="ShellPage_AutoSuggestBox"
-                    Margin="5,0"
+                    Margin="8,0"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Center"
                     VerticalContentAlignment="Center"

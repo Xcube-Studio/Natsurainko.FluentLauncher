@@ -79,8 +79,8 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
             NavViewPaneBackground.Translation -= new System.Numerics.Vector3(48, 0, 0);
             TopNavViewPaneBackground.Translation += new System.Numerics.Vector3(110, 0, 0);
 
-            var PaneToggleButtonGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneToggleButtonGrid")!;
-            PaneToggleButtonGrid.Translation += new System.Numerics.Vector3(20, 0, 0);
+            //var PaneToggleButtonGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneToggleButtonGrid")!;
+            //PaneToggleButtonGrid.Translation += new System.Numerics.Vector3(20, 0, 0);
         }
 
         Column2.MinWidth = e.NewSize.Width >= 680 ? 48 : 155;
@@ -342,7 +342,7 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
     {
         if (args.DisplayMode == NavigationViewDisplayMode.Minimal)
         {
-            appTitleGrid.Margin = new Thickness(0, 0, 0, 0);
+            appTitleGrid.Margin = new Thickness(16, 0, 0, 0);
         }
         else
         {

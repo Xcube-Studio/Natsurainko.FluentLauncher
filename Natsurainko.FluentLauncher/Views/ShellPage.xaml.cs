@@ -21,8 +21,6 @@ namespace Natsurainko.FluentLauncher.Views;
 
 public sealed partial class ShellPage : Page, INavigationProvider, INotifyPropertyChanged
 {
-    public static Frame ContentFrame { get; private set; } = null!; // Initialized on Page_Loaded
-
     ShellViewModel VM => (ShellViewModel)DataContext;
 
     private readonly SettingsService _settings = App.GetService<SettingsService>();
@@ -197,7 +195,6 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
 
     void ConfigurePage()
     {
-        ContentFrame = contentFrame;
         NavigationViewControl.IsPaneOpen = _settings.NavigationViewIsPaneOpen;
         SearchBoxAreaGrid.Shadow = _settings.UseBackgroundMask ? SharedShadow : null;
 

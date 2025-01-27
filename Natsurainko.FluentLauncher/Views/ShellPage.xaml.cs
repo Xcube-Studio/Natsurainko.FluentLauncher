@@ -271,25 +271,38 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         var transform = AutoSuggestBox.TransformToVisual(AppTitleBar);
         var absolutePosition = transform.TransformPoint(new Point(0, 0));
 
-        var dragRects = new List<RectInt32>
+        
+        if (NavigationViewControl.IsPaneOpen)
         {
-            new()
+            // Allow dragging over the entire title bar when the search box is hidden
+            var rect = new RectInt32()
+            {
+                X = (int)(Column0.ActualWidth * scaleAdjustment),
+                Y = 0,
+                Width = (int)((AppTitleBar.ActualWidth - Column0.ActualWidth) * scaleAdjustment),
+                Height = height
+            };
+            App.MainWindow.AppWindow.TitleBar.SetDragRectangles([rect]);
+        }
+        else
+        {
+
+            var rectLeft = new RectInt32()
             {
                 X = (int)(Column0.ActualWidth * scaleAdjustment),
                 Y = 0,
                 Width = (int)((absolutePosition.X - Column0.ActualWidth) * scaleAdjustment),
                 Height = height
-            },
-            new()
+            };
+            var rectRight = new RectInt32()
             {
                 X = (int)((absolutePosition.X + AutoSuggestBox.ActualWidth) * scaleAdjustment),
                 Y = 0,
                 Width = (int)((AppTitleBar.ActualWidth - (absolutePosition.X + AutoSuggestBox.ActualWidth)) * scaleAdjustment),
                 Height = height
-            }
-        };
-
-        App.MainWindow.AppWindow.TitleBar.SetDragRectangles([.. dragRects]);
+            };
+            App.MainWindow.AppWindow.TitleBar.SetDragRectangles([rectLeft, rectRight]);
+        }
     }
 
     private void UpdateSearchBoxArea()

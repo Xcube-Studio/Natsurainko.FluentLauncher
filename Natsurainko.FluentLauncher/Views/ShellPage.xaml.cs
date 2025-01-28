@@ -21,8 +21,6 @@ namespace Natsurainko.FluentLauncher.Views;
 
 public sealed partial class ShellPage : Page, INavigationProvider, INotifyPropertyChanged
 {
-    public static Frame ContentFrame { get; private set; } = null!; // Initialized on Page_Loaded
-
     ShellViewModel VM => (ShellViewModel)DataContext;
 
     private readonly SettingsService _settings = App.GetService<SettingsService>();
@@ -70,8 +68,8 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
             NavViewPaneBackground.Translation += new System.Numerics.Vector3(48, 0, 0);
             TopNavViewPaneBackground.Translation -= new System.Numerics.Vector3(110, 0, 0);
 
-            var PaneToggleButtonGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneToggleButtonGrid")!;
-            PaneToggleButtonGrid.Translation -= new System.Numerics.Vector3(20, 0, 0);
+            //var PaneToggleButtonGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneToggleButtonGrid")!;
+            //PaneToggleButtonGrid.Translation -= new System.Numerics.Vector3(20, 0, 0);
         }
 
         if (e.PreviousSize.Width > 640 && e.NewSize.Width <= 640)
@@ -79,14 +77,12 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
             NavViewPaneBackground.Translation -= new System.Numerics.Vector3(48, 0, 0);
             TopNavViewPaneBackground.Translation += new System.Numerics.Vector3(110, 0, 0);
 
-            var PaneToggleButtonGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneToggleButtonGrid")!;
-            PaneToggleButtonGrid.Translation += new System.Numerics.Vector3(20, 0, 0);
+            //var PaneToggleButtonGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneToggleButtonGrid")!;
+            //PaneToggleButtonGrid.Translation += new System.Numerics.Vector3(20, 0, 0);
         }
 
-        Column2.MinWidth = e.NewSize.Width >= 680 ? 48 : 155;
-
         NavigationViewControl.PaneDisplayMode = e.NewSize.Width <= 640 ? NavigationViewPaneDisplayMode.LeftMinimal : NavigationViewPaneDisplayMode.LeftCompact;
-        TopNavViewPaneToggleButtonsBorder.Width = e.NewSize.Width <= 640 ? 120 : 48;
+        TopNavViewPaneToggleButtonsBorder.Width = e.NewSize.Width <= 640 ? 84 : 48;
 
         UpdateSearchBoxArea();
 
@@ -176,7 +172,10 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
     #region TitleBar Controls Events
 
     private void AutoSuggestBox_Loaded(object sender, RoutedEventArgs e)
-         => _searchProviderService.BindingSearchBox(AutoSuggestBox);
+    {
+        _searchProviderService.BindingSearchBox(AutoSuggestBox);
+        UpdateSearchBoxArea();
+    }
 
     #endregion
 
@@ -197,7 +196,6 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
 
     void ConfigurePage()
     {
-        ContentFrame = contentFrame;
         NavigationViewControl.IsPaneOpen = _settings.NavigationViewIsPaneOpen;
         SearchBoxAreaGrid.Shadow = _settings.UseBackgroundMask ? SharedShadow : null;
 
@@ -245,12 +243,12 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         var PaneContentGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneContentGrid")!;
         PaneContentGrid.Padding = new Thickness(1,0,0,0);
 
-        var PaneToggleButtonGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneToggleButtonGrid")!;
-        PaneToggleButtonGrid.Translation += new System.Numerics.Vector3(20, 0, 0);
-        PaneToggleButtonGrid.TranslationTransition = new Vector3Transition()
-        {
-            Duration = TimeSpan.FromMilliseconds(500)
-        };
+        //var PaneToggleButtonGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneToggleButtonGrid")!;
+        //PaneToggleButtonGrid.Translation += new System.Numerics.Vector3(20, 0, 0);
+        //PaneToggleButtonGrid.TranslationTransition = new Vector3Transition()
+        //{
+        //    Duration = TimeSpan.FromMilliseconds(500)
+        //};
     }
 
     private void UpdateTitleBarDragArea()
@@ -271,33 +269,41 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
             return;
         }
 
-        var transform = AutoSuggestBox.TransformToVisual(AppTitleBar);
-        var absolutePosition = transform.TransformPoint(new Point(0, 0));
-
-        var dragRects = new List<RectInt32>
+        if (NavigationViewControl.IsPaneOpen)
         {
-            new()
+            // Allow dragging over the entire title bar when the search box is hidden
+            var rect = new RectInt32()
             {
                 X = (int)(Column0.ActualWidth * scaleAdjustment),
                 Y = 0,
-                Width = (int)((absolutePosition.X - Column0.ActualWidth) * scaleAdjustment),
+                Width = (int)((AppTitleBar.ActualWidth - Column0.ActualWidth) * scaleAdjustment),
                 Height = height
-            },
-            new()
+            };
+            App.MainWindow.AppWindow.TitleBar.SetDragRectangles([rect]);
+        }
+        else
+        {
+            var rectLeft = new RectInt32()
             {
-                X = (int)((absolutePosition.X + AutoSuggestBox.ActualWidth) * scaleAdjustment),
+                X = (int)(Column0.ActualWidth * scaleAdjustment),
                 Y = 0,
-                Width = (int)((AppTitleBar.ActualWidth - (absolutePosition.X + AutoSuggestBox.ActualWidth)) * scaleAdjustment),
+                Width = (int)((SearchBoxAreaGrid.Margin.Left - Column0.ActualWidth + AutoSuggestBox.Margin.Left) * scaleAdjustment),
                 Height = height
-            }
-        };
-
-        App.MainWindow.AppWindow.TitleBar.SetDragRectangles([.. dragRects]);
+            };
+            var rectRight = new RectInt32()
+            {
+                X = (int)((AppTitleBar.ActualWidth - SearchBoxAreaGrid.Margin.Right - AutoSuggestBox.Margin.Right) * scaleAdjustment),
+                Y = 0,
+                Width = (int)((SearchBoxAreaGrid.Margin.Right + AutoSuggestBox.Margin.Right) * scaleAdjustment),
+                Height = height
+            };
+            App.MainWindow.AppWindow.TitleBar.SetDragRectangles([rectLeft, rectRight]);
+        }
     }
 
     private void UpdateSearchBoxArea()
     {
-        if (this.ActualWidth <= 640 || typeof(HomePage).Equals(contentFrame.Content.GetType()))
+        if (ActualWidth <= 640 || typeof(HomePage).Equals(contentFrame.Content.GetType()))
         {
             SearchBoxAreaGrid.Translation = new System.Numerics.Vector3(0, 0, 16);
             SearchBoxAreaBackgroundBorder.Opacity = 1;
@@ -307,6 +313,20 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
             SearchBoxAreaGrid.Translation = new System.Numerics.Vector3(0, 0, 0);
             SearchBoxAreaBackgroundBorder.Opacity = 0;
         }
+
+        // Update search box margin to ensure space from the buttons on both sides
+        double leftBound = Column0.ActualWidth + 32;
+        double rightBound = Column2.ActualWidth + 32;
+        double totalWidth = AppTitleBar.ActualWidth;
+        const double searchBoxMaxWidth = 380;
+
+        // Center the search box while keeping enough space
+        double center = totalWidth / 2;
+        double leftMargin = Math.Max(center - searchBoxMaxWidth / 2, leftBound);
+        double rightMargin = Math.Max(totalWidth - (center + searchBoxMaxWidth / 2), rightBound);
+
+        // Set width using left and right margin
+        SearchBoxAreaGrid.Margin = new Thickness(leftMargin, 0, rightMargin, 0);
     }
 
     private static T? FindControl<T>(UIElement parent, Type targetType, string ControlName) where T : FrameworkElement
@@ -336,5 +356,17 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
     private void OnPropertyChanged(string propertyName)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
+    {
+        if (args.DisplayMode == NavigationViewDisplayMode.Minimal)
+        {
+            appTitleGrid.Margin = new Thickness(16, 0, 0, 0);
+        }
+        else
+        {
+            appTitleGrid.Margin = new Thickness(8, -80, 0, 0);
+        }
     }
 }

@@ -241,7 +241,7 @@
             x:Name="TopNavViewPaneBackground"
             Width="89"
             Height="44"
-            Margin="20,2,0,2"
+            Margin="0,2,0,2"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Background="{ThemeResource NavigationViewUnfoldedPaneBackground}"
@@ -258,6 +258,7 @@
             Grid.RowSpan="3"
             BackRequested="NavigationViewControl_BackRequested"
             Canvas.ZIndex="0"
+            DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
             IsBackButtonVisible="Visible"
             IsBackEnabled="{x:Bind CanGoBack, Mode=OneWay}"
             IsPaneToggleButtonVisible="True"
@@ -271,7 +272,7 @@
                 <SolidColorBrush x:Key="NavigationViewContentGridBorderBrush" Color="Transparent" />
             </NavigationView.Resources>
             <NavigationView.PaneHeader>
-                <Grid Padding="35,0,0,0">
+                <Grid x:Name="appTitleGrid" Margin="8,-80,0,0">
                     <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                         <Border VerticalAlignment="Center" CornerRadius="2.5">
                             <Image
@@ -280,10 +281,9 @@
                                 Source="/Assets/AppIcon.png" />
                         </Border>
                         <TextBlock
-                            Margin="15,0,0,0"
+                            Margin="12,0,0,0"
                             VerticalAlignment="Center"
-                            FontWeight="SemiBold"
-                            Opacity="0.8"
+                            Style="{ThemeResource CaptionTextBlockStyle}"
                             Text="Fluent Launcher" />
                     </StackPanel>
                 </Grid>
@@ -354,16 +354,13 @@
 
         <Grid
             x:Name="AppTitleBar"
+            Padding="0,2"
             x:FieldModifier="public"
             IsHitTestVisible="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="Column0" Width="Auto" />
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition x:Name="Column1" Width="1*" />
-                <ColumnDefinition
-                    x:Name="Column2"
-                    Width="Auto"
-                    MinWidth="155" />
+                <ColumnDefinition x:Name="Column2" Width="144" />
             </Grid.ColumnDefinitions>
 
             <Border
@@ -374,11 +371,8 @@
 
             <Grid
                 x:Name="SearchBoxAreaGrid"
-                Grid.Column="2"
-                MaxWidth="380"
-                Margin="0,2"
-                CornerRadius="8"
-                Translation="0,0,16">
+                Grid.ColumnSpan="3"
+                CornerRadius="8">
                 <Border
                     x:Name="SearchBoxAreaBackgroundBorder"
                     Background="{ThemeResource NavigationViewUnfoldedPaneBackground}"
@@ -387,8 +381,7 @@
                 <AutoSuggestBox
                     x:Name="AutoSuggestBox"
                     x:Uid="ShellPage_AutoSuggestBox"
-                    Margin="5,0"
-                    HorizontalAlignment="Stretch"
+                    Margin="6,0"
                     VerticalAlignment="Center"
                     VerticalContentAlignment="Center"
                     Loaded="AutoSuggestBox_Loaded"

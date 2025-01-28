@@ -374,9 +374,10 @@
 
             <Grid
                 x:Name="SearchBoxAreaGrid"
-                Grid.Column="2"
+                Grid.ColumnSpan="4"
                 MaxWidth="380"
                 Margin="0,2"
+                HorizontalAlignment="Stretch"
                 CornerRadius="8">
                 <Border
                     x:Name="SearchBoxAreaBackgroundBorder"
@@ -386,8 +387,7 @@
                 <AutoSuggestBox
                     x:Name="AutoSuggestBox"
                     x:Uid="ShellPage_AutoSuggestBox"
-                    Margin="8,0"
-                    HorizontalAlignment="Stretch"
+                    Margin="6,0"
                     VerticalAlignment="Center"
                     VerticalContentAlignment="Center"
                     Loaded="AutoSuggestBox_Loaded"

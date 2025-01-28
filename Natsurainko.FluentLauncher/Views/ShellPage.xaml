@@ -354,16 +354,13 @@
 
         <Grid
             x:Name="AppTitleBar"
+            Padding="0,2"
             x:FieldModifier="public"
             IsHitTestVisible="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="Column0" Width="Auto" />
-                <ColumnDefinition Width="32" />
                 <ColumnDefinition x:Name="Column1" Width="1*" />
-                <ColumnDefinition
-                    x:Name="Column2"
-                    Width="Auto"
-                    MinWidth="196" />
+                <ColumnDefinition x:Name="Column2" Width="144" />
             </Grid.ColumnDefinitions>
 
             <Border
@@ -374,10 +371,7 @@
 
             <Grid
                 x:Name="SearchBoxAreaGrid"
-                Grid.ColumnSpan="4"
-                MaxWidth="380"
-                Margin="0,2"
-                HorizontalAlignment="Stretch"
+                Grid.ColumnSpan="3"
                 CornerRadius="8">
                 <Border
                     x:Name="SearchBoxAreaBackgroundBorder"

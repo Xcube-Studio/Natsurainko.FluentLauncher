@@ -81,8 +81,6 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
             //PaneToggleButtonGrid.Translation += new System.Numerics.Vector3(20, 0, 0);
         }
 
-        Column2.MinWidth = e.NewSize.Width >= 680 ? 48 : 155;
-
         NavigationViewControl.PaneDisplayMode = e.NewSize.Width <= 640 ? NavigationViewPaneDisplayMode.LeftMinimal : NavigationViewPaneDisplayMode.LeftCompact;
         TopNavViewPaneToggleButtonsBorder.Width = e.NewSize.Width <= 640 ? 84 : 48;
 
@@ -174,7 +172,10 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
     #region TitleBar Controls Events
 
     private void AutoSuggestBox_Loaded(object sender, RoutedEventArgs e)
-         => _searchProviderService.BindingSearchBox(AutoSuggestBox);
+    {
+        _searchProviderService.BindingSearchBox(AutoSuggestBox);
+        UpdateSearchBoxArea();
+    }
 
     #endregion
 
@@ -305,7 +306,7 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
 
     private void UpdateSearchBoxArea()
     {
-        if (this.ActualWidth <= 640 || typeof(HomePage).Equals(contentFrame.Content.GetType()))
+        if (ActualWidth <= 640 || typeof(HomePage).Equals(contentFrame.Content.GetType()))
         {
             SearchBoxAreaGrid.Translation = new System.Numerics.Vector3(0, 0, 16);
             SearchBoxAreaBackgroundBorder.Opacity = 1;
@@ -315,6 +316,20 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
             SearchBoxAreaGrid.Translation = new System.Numerics.Vector3(0, 0, 0);
             SearchBoxAreaBackgroundBorder.Opacity = 0;
         }
+
+        // Update search box margin to ensure space from the buttons on both sides
+        double leftBound = Column0.ActualWidth + 32;
+        double rightBound = Column2.ActualWidth + 32;
+        double totalWidth = AppTitleBar.ActualWidth;
+        const double searchBoxMaxWidth = 380;
+
+        // Center the search box while keeping enough space
+        double center = totalWidth / 2;
+        double leftMargin = Math.Max(center - searchBoxMaxWidth / 2, leftBound);
+        double rightMargin = Math.Max(totalWidth - (center + searchBoxMaxWidth / 2), rightBound);
+
+        // Set width using left and right margin
+        SearchBoxAreaGrid.Margin = new Thickness(leftMargin, 0, rightMargin, 0);
     }
 
     private static T? FindControl<T>(UIElement parent, Type targetType, string ControlName) where T : FrameworkElement

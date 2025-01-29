@@ -55,7 +55,12 @@ internal class AccountAvatarLoadBehavior : DependencyObject, IBehavior
         border.Unloaded += Border_Unloaded;
     }
 
-    public void Detach() { }
+    public void Detach()
+    {
+        Border border = (Border)AssociatedObject;
+        border.Loaded -= Border_Loaded;
+        border.Unloaded -= Border_Unloaded;
+    }
 
     private async void RenderAvatar()
     {

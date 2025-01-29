@@ -251,14 +251,12 @@
                                             </DataTemplate>
                                         </ListView.ItemTemplate>
                                     </ListView>
-                                    <Line
-                                        x:Name="accountSelectorSeparatorBar"
+                                    <Border
+                                        Height="1"
                                         Margin="0,1,0,3"
                                         HorizontalAlignment="Stretch"
-                                        Stroke="{ThemeResource ControlStrokeColorDefaultBrush}"
-                                        StrokeThickness="1"
-                                        X1="0"
-                                        X2="{x:Bind accountSelectorSeparatorBar.ActualWidth, Mode=OneWay}" />
+                                        BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+                                        BorderThickness="1" />
                                     <Button
                                         Margin="-2,0"
                                         HorizontalAlignment="Stretch"

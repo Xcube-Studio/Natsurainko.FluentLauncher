@@ -222,8 +222,9 @@
                         </Grid>
                         <Button.Flyout>
                             <Flyout x:Name="accountSelectorFlyout" Placement="TopEdgeAlignedLeft">
+                                <StackPanel Margin="-6" Spacing="4">
                                 <ListView
-                                    Margin="-12,-6,-12,-8"
+                                        Margin="-6,0"
                                     ItemsSource="{x:Bind VM.Accounts}"
                                     SelectedItem="{x:Bind VM.ActiveAccount, Mode=TwoWay}"
                                     SelectionChanged="AccountSelector_SelectionChanged">
@@ -250,6 +251,52 @@
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
                                 </ListView>
+                                    <Line
+                                        x:Name="accountSelectorSeparatorBar"
+                                        HorizontalAlignment="Stretch"
+                                        Stroke="{ThemeResource ControlStrokeColorDefaultBrush}"
+                                        StrokeThickness="1"
+                                        X1="0"
+                                        X2="{x:Bind accountSelectorSeparatorBar.ActualWidth, Mode=OneWay}" />
+                                    <Button
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Left"
+                                        Background="Transparent"
+                                        BorderThickness="0">
+                                        <Button.Resources>
+                                            <StaticResource x:Key="ButtonBackgroundPressed" ResourceKey="MenuFlyoutItemBackgroundPressed" />
+                                            <StaticResource x:Key="ButtonBackgroundPointerOver" ResourceKey="MenuFlyoutItemBackgroundPointerOver" />
+                                            <StaticResource x:Key="ButtonForegroundPressed" ResourceKey="ButtonForeground" />
+                                        </Button.Resources>
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <FontIcon
+                                                Margin="0,2,0,0"
+                                                VerticalAlignment="Center"
+                                                FontSize="14"
+                                                Glyph="&#xE710;" />
+                                            <TextBlock Text="Add an account" />
+                                        </StackPanel>
+                                    </Button>
+                                    <Button
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Left"
+                                        Background="Transparent"
+                                        BorderThickness="0">
+                                        <Button.Resources>
+                                            <StaticResource x:Key="ButtonBackgroundPressed" ResourceKey="MenuFlyoutItemBackgroundPressed" />
+                                            <StaticResource x:Key="ButtonBackgroundPointerOver" ResourceKey="MenuFlyoutItemBackgroundPointerOver" />
+                                            <StaticResource x:Key="ButtonForegroundPressed" ResourceKey="ButtonForeground" />
+                                        </Button.Resources>
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <FontIcon
+                                                Margin="0,2,0,0"
+                                                VerticalAlignment="Center"
+                                                FontSize="14"
+                                                Glyph="&#xE77B;" />
+                                            <TextBlock Text="Manage accounts" />
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
                             </Flyout>
                         </Button.Flyout>
                     </Button>

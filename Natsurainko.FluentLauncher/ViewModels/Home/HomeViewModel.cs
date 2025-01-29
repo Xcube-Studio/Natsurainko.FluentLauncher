@@ -74,9 +74,6 @@ internal partial class HomeViewModel : ObservableObject
     private void Launch() => _launchService.LaunchFromUI(ActiveMinecraftInstance);
 
     [RelayCommand]
-    public void GoToAccount() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Account");
-
-    [RelayCommand]
     public void GoToSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Launch");
 
     IEnumerable<Suggestion> ProviderSuggestions(string searchText)

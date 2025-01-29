@@ -7,9 +7,10 @@
     xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:data="using:Nrk.FluentCore.GameManagement.Instances"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:data="using:Nrk.FluentCore.GameManagement.Instances"
+    xmlns:userControls="using:Natsurainko.FluentLauncher.UserControls"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
@@ -195,27 +196,37 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         CornerRadius="8" />
-                    <HyperlinkButton
-                        Name="HyperlinkButton"
+                    <Button
+                        Name="AccountSelectorButton"
                         Background="Transparent"
                         BorderBrush="Transparent"
-                        Command="{x:Bind VM.GoToAccountCommand}"
                         CornerRadius="8">
-                        <StackPanel>
-                            <TextBlock
-                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                Text="{x:Bind VM.ActiveAccount.Type, Converter={StaticResource AccountInfoConverter}, Mode=OneWay}" />
-                            <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Text="{x:Bind VM.ActiveAccount.Name, Mode=OneWay}" />
-                        </StackPanel>
-                    </HyperlinkButton>
+                        <Grid Margin="-2,2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <userControls:AccountAvatar
+                                Width="36"
+                                Height="36"
+                                Account="{x:Bind VM.ActiveAccount, Mode=OneWay}" />
+                            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind VM.ActiveAccount.Name, Mode=OneWay}" />
+                                <TextBlock
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                    Text="{x:Bind VM.ActiveAccount.Type, Mode=OneWay, Converter={StaticResource AccountInfoConverter}}" />
+                            </StackPanel>
+                        </Grid>
+                    </Button>
                 </Grid>
                 <Button
                     x:Name="LaunchButton"
                     Grid.Column="4"
                     VerticalAlignment="Bottom"
-                    CornerRadius="8"
                     Command="{x:Bind VM.LaunchCommand}"
+                    CornerRadius="8"
                     Style="{ThemeResource AccentButtonStyle}">
                     <ToolTipService.ToolTip>
                         <TextBlock x:Uid="Home_HomePage_LaunchButton" />

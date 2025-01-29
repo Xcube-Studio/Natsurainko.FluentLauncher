@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:auth="using:Nrk.FluentCore.Authentication"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -219,6 +220,38 @@
                                     Text="{x:Bind VM.ActiveAccount.Type, Mode=OneWay, Converter={StaticResource AccountInfoConverter}}" />
                             </StackPanel>
                         </Grid>
+                        <Button.Flyout>
+                            <Flyout x:Name="accountSelectorFlyout" Placement="TopEdgeAlignedLeft">
+                                <ListView
+                                    Margin="-12,-6,-12,-8"
+                                    ItemsSource="{x:Bind VM.Accounts}"
+                                    SelectedItem="{x:Bind VM.ActiveAccount, Mode=TwoWay}"
+                                    SelectionChanged="AccountSelector_SelectionChanged">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="auth:Account">
+                                            <Grid Margin="0,8">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="8" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <userControls:AccountAvatar
+                                                    Width="36"
+                                                    Height="36"
+                                                    Account="{x:Bind}" />
+                                                <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                                    <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind Name}" />
+                                                    <TextBlock
+                                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                        Text="{x:Bind Type, Mode=OneWay, Converter={StaticResource AccountInfoConverter}}" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </Flyout>
+                        </Button.Flyout>
                     </Button>
                 </Grid>
                 <Button

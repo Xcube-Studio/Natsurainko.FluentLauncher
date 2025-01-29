@@ -40,6 +40,7 @@ internal partial class HomeViewModel : ObservableObject
         _navigationService = navigationService;
         _searchProviderService = searchProviderService;
 
+        Accounts = accountService.Accounts;
         ActiveAccount = accountService.ActiveAccount;
 
         MinecraftInstances = _gameService.Games;
@@ -55,6 +56,8 @@ internal partial class HomeViewModel : ObservableObject
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(AccountTag))]
     public partial Account ActiveAccount { get; set; }
+
+    public ReadOnlyObservableCollection<Account> Accounts { get; init; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(DropDownButtonDisplayText))]

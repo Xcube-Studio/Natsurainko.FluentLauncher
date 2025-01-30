@@ -59,8 +59,7 @@
                                 </TextBlock>
                             </controls:SettingsCard.Header>
                         </controls:SettingsCard>
-                        <controls:SettingsCard Visibility="{x:Bind VM.ActiveAccount, Mode=OneWay, Converter={StaticResource AccountInfoConverter}, ConverterParameter='LastRefreshVisibility'}">
-
+                        <controls:SettingsCard>
                             <controls:SettingsCard.Header>
                                 <TextBlock>
                                     <Run x:Uid="Settings_AccountPage_SH1" Text="Last Refresh Time:" />

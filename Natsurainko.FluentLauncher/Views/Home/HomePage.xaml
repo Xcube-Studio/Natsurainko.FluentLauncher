@@ -180,7 +180,7 @@
             VerticalAlignment="Bottom">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
-                <RowDefinition Height="5" />
+                <RowDefinition Height="15" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid Grid.Row="2" Margin="0,0,0,20">
@@ -209,8 +209,8 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <userControls:AccountAvatar
-                                Width="36"
-                                Height="36"
+                                Width="32"
+                                Height="32"
                                 Account="{x:Bind VM.ActiveAccount, Mode=OneWay}" />
                             <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                 <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind VM.ActiveAccount.Name, Mode=OneWay}" />
@@ -222,7 +222,7 @@
                         </Grid>
                         <Button.Flyout>
                             <Flyout x:Name="accountSelectorFlyout" Placement="TopEdgeAlignedLeft">
-                                <StackPanel Margin="-6" Spacing="2">
+                                <StackPanel Margin="-8,-10,-8,-10" Spacing="3">
                                     <ListView
                                         Margin="-6,0"
                                         ItemsSource="{x:Bind VM.Accounts}"
@@ -237,8 +237,8 @@
                                                         <ColumnDefinition Width="*" />
                                                     </Grid.ColumnDefinitions>
                                                     <userControls:AccountAvatar
-                                                        Width="36"
-                                                        Height="36"
+                                                        Width="32"
+                                                        Height="32"
                                                         Account="{x:Bind}" />
                                                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                                         <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind Name}" />
@@ -253,14 +253,14 @@
                                     </ListView>
                                     <Border
                                         Height="1"
-                                        Margin="0,1,0,3"
+                                        Margin="-8,1,-8,3"
                                         HorizontalAlignment="Stretch"
                                         BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
                                         BorderThickness="1" />
                                     <Button
                                         Margin="-2,0"
                                         HorizontalAlignment="Stretch"
-                                        HorizontalContentAlignment="Left"
+                                        HorizontalContentAlignment="Stretch"
                                         Background="Transparent"
                                         BorderThickness="0"
                                         Click="HideAccountFlyoutHandler"
@@ -270,19 +270,28 @@
                                             <StaticResource x:Key="ButtonBackgroundPointerOver" ResourceKey="MenuFlyoutItemBackgroundPointerOver" />
                                             <StaticResource x:Key="ButtonForegroundPressed" ResourceKey="ButtonForeground" />
                                         </Button.Resources>
-                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="10" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
                                             <FontIcon
-                                                Margin="0,2,0,0"
                                                 VerticalAlignment="Center"
                                                 FontSize="14"
                                                 Glyph="&#xe8fa;" />
-                                            <TextBlock x:Uid="Home_HomePage_AddAccountTB" Text="Add an account" />
-                                        </StackPanel>
+
+                                            <TextBlock
+                                                x:Uid="Home_HomePage_AddAccountTB"
+                                                Grid.Column="2"
+                                                HorizontalAlignment="Left"
+                                                Text="Add an account" />
+                                        </Grid>
                                     </Button>
                                     <Button
                                         Margin="-2,0"
                                         HorizontalAlignment="Stretch"
-                                        HorizontalContentAlignment="Left"
+                                        HorizontalContentAlignment="Stretch"
                                         Background="Transparent"
                                         BorderThickness="0"
                                         Click="HideAccountFlyoutHandler"
@@ -292,14 +301,23 @@
                                             <StaticResource x:Key="ButtonBackgroundPointerOver" ResourceKey="MenuFlyoutItemBackgroundPointerOver" />
                                             <StaticResource x:Key="ButtonForegroundPressed" ResourceKey="ButtonForeground" />
                                         </Button.Resources>
-                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="10" />
+                                                <ColumnDefinition Width="1*" />
+                                            </Grid.ColumnDefinitions>
                                             <FontIcon
-                                                Margin="0,2,0,0"
                                                 VerticalAlignment="Center"
                                                 FontSize="14"
                                                 Glyph="&#xE77B;" />
-                                            <TextBlock x:Uid="Home_HomePage_ManageAccountsTB" Text="Manage accounts" />
-                                        </StackPanel>
+
+                                            <TextBlock
+                                                x:Uid="Home_HomePage_ManageAccountsTB"
+                                                Grid.Column="2"
+                                                HorizontalAlignment="Left"
+                                                Text="Manage accounts" />
+                                        </Grid>
                                     </Button>
                                 </StackPanel>
                             </Flyout>
@@ -335,139 +353,131 @@
                 </Button>
             </Grid>
             <Grid HorizontalAlignment="Right">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="1*" />
-                </Grid.ColumnDefinitions>
-
-                <Grid Grid.Column="2" HorizontalAlignment="Right">
-                    <Border
-                        Name="DropDownButtonArea"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        CornerRadius="8" />
-                    <DropDownButton
-                        x:Name="DropDownButton"
-                        Background="Transparent"
-                        BorderBrush="Transparent"
-                        Click="DropDownButton_Click"
-                        CornerRadius="8"
-                        Style="{ThemeResource DropDownButtonStyle}">
-                        <TextBlock
-                            Grid.Column="2"
-                            HorizontalTextAlignment="Right"
-                            Style="{ThemeResource TitleLargeTextBlockStyle}"
-                            Text="{x:Bind VM.DropDownButtonDisplayText, Mode=OneWay}"
-                            TextTrimming="CharacterEllipsis" />
-                        <DropDownButton.Flyout>
-                            <Flyout Opened="Flyout_Opened" Placement="TopEdgeAlignedRight">
-                                <Flyout.FlyoutPresenterStyle>
-                                    <Style TargetType="FlyoutPresenter">
-                                        <Setter Property="BorderBrush">
-                                            <Setter.Value>
-                                                <SolidColorBrush Color="{StaticResource ControlStrokeColorDefault}" />
-                                            </Setter.Value>
-                                        </Setter>
-                                        <Setter Property="Background" Value="{ThemeResource AcrylicInAppFillColorDefaultBrush}" />
-                                        <Setter Property="CornerRadius" Value="8" />
-                                    </Style>
-                                </Flyout.FlyoutPresenterStyle>
-                                <Grid>
-                                    <ListView
-                                        x:Name="listView"
-                                        MinWidth="250"
-                                        MaxWidth="425"
-                                        MaxHeight="250"
-                                        Margin="-10,-7.5"
-                                        ItemsSource="{x:Bind VM.MinecraftInstances, Mode=OneWay}"
-                                        SelectedItem="{x:Bind VM.ActiveMinecraftInstance, Mode=TwoWay}">
-                                        <ListView.ItemTemplate>
-                                            <DataTemplate x:DataType="data:MinecraftInstance">
-                                                <Grid
-                                                    x:Name="DataGrid"
-                                                    Padding="0,7.5"
-                                                    Background="Transparent">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="10" />
-                                                        <ColumnDefinition Width="1*" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <Border
-                                                        Width="36"
-                                                        Height="36"
-                                                        VerticalAlignment="Center"
-                                                        BorderBrush="{ThemeResource IconBorder}"
-                                                        BorderThickness="2"
-                                                        CornerRadius="4">
-                                                        <Border CornerRadius="4">
-                                                            <Image Source="{Binding Converter={StaticResource InstanceIconConverter}}" />
-                                                        </Border>
+                <Border
+                    Name="DropDownButtonArea"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    CornerRadius="8" />
+                <DropDownButton
+                    x:Name="DropDownButton"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Click="DropDownButton_Click"
+                    CornerRadius="8"
+                    Style="{ThemeResource DropDownButtonStyle}">
+                    <TextBlock
+                        Grid.Column="2"
+                        HorizontalTextAlignment="Right"
+                        Style="{ThemeResource TitleLargeTextBlockStyle}"
+                        Text="{x:Bind VM.DropDownButtonDisplayText, Mode=OneWay}"
+                        TextTrimming="CharacterEllipsis" />
+                    <DropDownButton.Flyout>
+                        <Flyout Opened="Flyout_Opened" Placement="TopEdgeAlignedRight">
+                            <Flyout.FlyoutPresenterStyle>
+                                <Style TargetType="FlyoutPresenter">
+                                    <Setter Property="BorderBrush">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="{StaticResource ControlStrokeColorDefault}" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="Background" Value="{ThemeResource AcrylicInAppFillColorDefaultBrush}" />
+                                    <Setter Property="CornerRadius" Value="8" />
+                                </Style>
+                            </Flyout.FlyoutPresenterStyle>
+                            <Grid>
+                                <ListView
+                                    x:Name="listView"
+                                    MinWidth="250"
+                                    MaxWidth="425"
+                                    MaxHeight="250"
+                                    Margin="-10,-7.5"
+                                    ItemsSource="{x:Bind VM.MinecraftInstances, Mode=OneWay}"
+                                    SelectedItem="{x:Bind VM.ActiveMinecraftInstance, Mode=TwoWay}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="data:MinecraftInstance">
+                                            <Grid
+                                                x:Name="DataGrid"
+                                                Padding="0,7.5"
+                                                Background="Transparent">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="10" />
+                                                    <ColumnDefinition Width="1*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border
+                                                    Width="36"
+                                                    Height="36"
+                                                    VerticalAlignment="Center"
+                                                    BorderBrush="{ThemeResource IconBorder}"
+                                                    BorderThickness="2"
+                                                    CornerRadius="4">
+                                                    <Border CornerRadius="4">
+                                                        <Image Source="{Binding Converter={StaticResource InstanceIconConverter}}" />
                                                     </Border>
-                                                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                                                        <TextBlock
-                                                            Style="{ThemeResource BaseTextBlockStyle}"
-                                                            Text="{x:Bind Converter={StaticResource InstanceDisplayNameConverter}}"
-                                                            TextTrimming="CharacterEllipsis"
-                                                            TextWrapping="NoWrap"
-                                                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
-                                                        <ItemsRepeater ItemsSource="{x:Bind Converter={StaticResource InstanceDescriptionConverter}}">
-                                                            <ItemsRepeater.Layout>
-                                                                <StackLayout Orientation="Horizontal" Spacing="5" />
-                                                            </ItemsRepeater.Layout>
-                                                            <ItemsRepeater.ItemTemplate>
-                                                                <DataTemplate x:DataType="x:String">
-                                                                    <TextBlock
-                                                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                                                        Style="{ThemeResource CaptionTextBlockStyle}"
-                                                                        Text="{x:Bind}"
-                                                                        ToolTipService.ToolTip="{x:Bind}" />
-                                                                </DataTemplate>
-                                                            </ItemsRepeater.ItemTemplate>
-                                                        </ItemsRepeater>
-                                                    </StackPanel>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ListView.ItemTemplate>
-                                    </ListView>
-                                    <StackPanel
-                                        Grid.Row="2"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Orientation="Horizontal"
-                                        Spacing="5">
-                                        <FontIcon
-                                            FontSize="56"
+                                                </Border>
+                                                <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                                    <TextBlock
+                                                        Style="{ThemeResource BaseTextBlockStyle}"
+                                                        Text="{x:Bind Converter={StaticResource InstanceDisplayNameConverter}}"
+                                                        TextTrimming="CharacterEllipsis"
+                                                        TextWrapping="NoWrap"
+                                                        ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                                                    <ItemsRepeater ItemsSource="{x:Bind Converter={StaticResource InstanceDescriptionConverter}}">
+                                                        <ItemsRepeater.Layout>
+                                                            <StackLayout Orientation="Horizontal" Spacing="5" />
+                                                        </ItemsRepeater.Layout>
+                                                        <ItemsRepeater.ItemTemplate>
+                                                            <DataTemplate x:DataType="x:String">
+                                                                <TextBlock
+                                                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                    Text="{x:Bind}"
+                                                                    ToolTipService.ToolTip="{x:Bind}" />
+                                                            </DataTemplate>
+                                                        </ItemsRepeater.ItemTemplate>
+                                                    </ItemsRepeater>
+                                                </StackPanel>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                                <StackPanel
+                                    Grid.Row="2"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal"
+                                    Spacing="5">
+                                    <FontIcon
+                                        FontSize="56"
+                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                        Glyph="&#xe74c;" />
+
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock
+                                            x:Uid="Cores_CoresPage_Text3"
+                                            Margin="10,0"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            FontWeight="SemiBold"
                                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                            Glyph="&#xe74c;" />
-
-                                        <StackPanel VerticalAlignment="Center">
+                                            Text="No Core" />
+                                        <HyperlinkButton Margin="0,0,0,-5" Command="{x:Bind VM.GoToSettingsCommand}">
                                             <TextBlock
-                                                x:Uid="Cores_CoresPage_Text3"
-                                                Margin="10,0"
-                                                VerticalAlignment="Center"
-                                                FontSize="16"
+                                                x:Uid="Cores_CoresPage_Text4"
                                                 FontWeight="SemiBold"
-                                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                                Text="No Core" />
-                                            <HyperlinkButton Margin="0,0,0,-5" Command="{x:Bind VM.GoToSettingsCommand}">
-                                                <TextBlock
-                                                    x:Uid="Cores_CoresPage_Text4"
-                                                    FontWeight="SemiBold"
-                                                    Text="Go To Settings" />
-                                            </HyperlinkButton>
-                                        </StackPanel>
-
-                                        <i:Interaction.Behaviors>
-                                            <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{x:Bind VM.MinecraftInstances, Mode=OneWay}" />
-                                        </i:Interaction.Behaviors>
+                                                Text="Go To Settings" />
+                                        </HyperlinkButton>
                                     </StackPanel>
 
-                                </Grid>
-                            </Flyout>
-                        </DropDownButton.Flyout>
-                    </DropDownButton>
-                </Grid>
+                                    <i:Interaction.Behaviors>
+                                        <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{x:Bind VM.MinecraftInstances, Mode=OneWay}" />
+                                    </i:Interaction.Behaviors>
+                                </StackPanel>
+
+                            </Grid>
+                        </Flyout>
+                    </DropDownButton.Flyout>
+                </DropDownButton>
             </Grid>
         </Grid>
 

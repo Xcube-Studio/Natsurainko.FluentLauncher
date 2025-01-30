@@ -2,18 +2,17 @@
     x:Class="Natsurainko.FluentLauncher.Views.AuthenticationWizard.ChooseAccountTypePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
-    xmlns:authenticationwizard="using:Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:acc="using:Nrk.FluentCore.Authentication"
+    xmlns:authenticationwizard="using:Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.AuthenticationWizard"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Uid="AuthenticationWizard_ChooseAccountTypePage_Page"
     d:DataContext="{d:DesignInstance Type=authenticationwizard:ChooseAccountTypeViewModel}"
-    Unloaded="Page_Unloaded"
     Background="Transparent"
+    Loaded="Page_Loaded"
     Tag="Choose Account Type (1/3)"
+    Unloaded="Page_Unloaded"
     mc:Ignorable="d">
 
     <Grid>
@@ -22,74 +21,39 @@
             <RowDefinition Height="10" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <StackPanel Spacing="10">
-            <RadioButton IsChecked="{x:Bind VM.SelectedAccountType.Equals(acc:AccountType.Microsoft), Mode=OneWay}">
-                <i:Interaction.Behaviors>
-                    <core:EventTriggerBehavior EventName="Checked">
-                        <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.CheckedCommand}">
-                            <actions:ModifiedInvokeCommandAction.CommandParameter>
-                                <x:Int32>1</x:Int32>
-                            </actions:ModifiedInvokeCommandAction.CommandParameter>
-                        </actions:ModifiedInvokeCommandAction>
-                    </core:EventTriggerBehavior>
-                </i:Interaction.Behaviors>
-                <StackPanel>
-                    <TextBlock
-                        x:Uid="AuthenticationWizard_ChooseAccountTypePage_H1"
-                        Style="{ThemeResource BaseTextBlockStyle}"
-                        Text="Microsoft Account" />
-                    <TextBlock
-                        x:Uid="AuthenticationWizard_ChooseAccountTypePage_D1"
-                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                        Style="{ThemeResource CaptionTextBlockStyle}"
-                        Text="Genuine account to play online servers" />
-                </StackPanel>
-            </RadioButton>
-            <RadioButton IsChecked="{x:Bind VM.SelectedAccountType.Equals(acc:AccountType.Yggdrasil), Mode=OneWay}">
-                <i:Interaction.Behaviors>
-                    <core:EventTriggerBehavior EventName="Checked">
-                        <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.CheckedCommand}">
-                            <actions:ModifiedInvokeCommandAction.CommandParameter>
-                                <x:Int32>2</x:Int32>
-                            </actions:ModifiedInvokeCommandAction.CommandParameter>
-                        </actions:ModifiedInvokeCommandAction>
-                    </core:EventTriggerBehavior>
-                </i:Interaction.Behaviors>
-                <StackPanel>
-                    <TextBlock
-                        x:Uid="AuthenticationWizard_ChooseAccountTypePage_H2"
-                        Style="{ThemeResource BaseTextBlockStyle}"
-                        Text="Yggdrasil Account" />
-                    <TextBlock
-                        x:Uid="AuthenticationWizard_ChooseAccountTypePage_D2"
-                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                        Style="{ThemeResource CaptionTextBlockStyle}"
-                        Text="Can enter the third-party Yggdrasil verification server" />
-                </StackPanel>
-            </RadioButton>
-            <RadioButton IsChecked="{x:Bind VM.SelectedAccountType.Equals(acc:AccountType.Offline), Mode=OneWay}">
-                <i:Interaction.Behaviors>
-                    <core:EventTriggerBehavior EventName="Checked">
-                        <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.CheckedCommand}">
-                            <actions:ModifiedInvokeCommandAction.CommandParameter>
-                                <x:Int32>0</x:Int32>
-                            </actions:ModifiedInvokeCommandAction.CommandParameter>
-                        </actions:ModifiedInvokeCommandAction>
-                    </core:EventTriggerBehavior>
-                </i:Interaction.Behaviors>
-                <StackPanel>
-                    <TextBlock
-                        x:Uid="AuthenticationWizard_ChooseAccountTypePage_H3"
-                        Style="{ThemeResource BaseTextBlockStyle}"
-                        Text="Offline Account" />
-                    <TextBlock
-                        x:Uid="AuthenticationWizard_ChooseAccountTypePage_D3"
-                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                        Style="{ThemeResource CaptionTextBlockStyle}"
-                        Text="Can only be played locally and offline" />
-                </StackPanel>
-            </RadioButton>
-        </StackPanel>
+        <ItemsView
+            Name="ItemsView"
+            MaxWidth="300"
+            ItemsSource="{x:Bind VM.AccountTypes}"
+            SelectionMode="Single">
+            <ItemsView.ItemTemplate>
+                <DataTemplate x:DataType="acc:AccountType">
+                    <ItemContainer Margin="0,5">
+                        <Grid Padding="15,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <ContentControl
+                                Width="28"
+                                Height="28"
+                                VerticalAlignment="Center"
+                                Template="{x:Bind local:ChooseAccountTypePage.GetAccountTypeIcon((acc:AccountType))}" />
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind local:ChooseAccountTypePage.GetAccountTypeTitle((acc:AccountType))}" />
+                                <TextBlock
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                    Text="{x:Bind local:ChooseAccountTypePage.GetAccountTypeDescription((acc:AccountType))}" />
+                            </StackPanel>
+                        </Grid>
+
+                    </ItemContainer>
+                </DataTemplate>
+            </ItemsView.ItemTemplate>
+        </ItemsView>
         <StackPanel Grid.Row="2">
             <HyperlinkButton>
                 <TextBlock

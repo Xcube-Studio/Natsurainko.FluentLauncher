@@ -109,6 +109,47 @@
                 BasedOn="{StaticResource BodyStrongTextBlockStyle}"
                 TargetType="TextBlock" />
 
+            <ControlTemplate x:Key="MicrosoftIcon">
+                <Path
+                    Width="28"
+                    Height="28"
+                    Data="M11.55 21H3v-8.55h8.55V21zM21 21h-8.55v-8.55H21V21zm-9.45-9.45H3V3h8.55v8.55zm9.45 0h-8.55V3H21v8.55z"
+                    Fill="{ThemeResource ApplicationForegroundThemeBrush}"
+                    Stretch="Uniform" />
+            </ControlTemplate>
+            <ControlTemplate x:Key="YggdrasilIcon">
+                <Path
+                    Width="28"
+                    Height="28"
+                    Data="M7.5 5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM7 12.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m.5 1.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM5 4.5A2.5 2.5 0 0 1 7.5 2h5A2.5 2.5 0 0 1 15 4.5v11a2.5 2.5 0 0 1-2.5 2.5h-5A2.5 2.5 0 0 1 5 15.5zM7.5 3A1.5 1.5 0 0 0 6 4.5v11A1.5 1.5 0 0 0 7.5 17h5a1.5 1.5 0 0 0 1.5-1.5v-11A1.5 1.5 0 0 0 12.5 3z"
+                    Fill="{ThemeResource ApplicationForegroundThemeBrush}"
+                    Stretch="Uniform" />
+            </ControlTemplate>
+            <ControlTemplate x:Key="OfflineIcon">
+                <Path
+                    Width="28"
+                    Height="28"
+                    Data="M17.854 2.146a.5.5 0 0 1 0 .708l-1.668 1.668a4.04 4.04 0 0 1-.332 5.331l-.3.3l-.003.003l-.309.309a1.05 1.05 0 0 1-1.484 0L9.535 6.242a1.05 1.05 0 0 1 0-1.485l.611-.61a4.036 4.036 0 0 1 5.332-.332l1.668-1.669a.5.5 0 0 1 .708 0M15.14 4.847a3.037 3.037 0 0 0-4.286.006l-.3.3a.49.49 0 0 0 0 .693l3.6 3.6c.19.191.5.192.691.002l.002-.002l.3-.3a3.036 3.036 0 0 0 .006-4.286l-.007-.006zm-5.786 3.8a.5.5 0 0 1 0 .707L7.707 11L9 12.293l1.646-1.647a.5.5 0 0 1 .708.708L9.707 13l.447.447a1.49 1.49 0 0 1 0 2.107l-.3.3a4.036 4.036 0 0 1-5.332.332l-1.668 1.668a.5.5 0 0 1-.708-.708l1.669-1.668a4.036 4.036 0 0 1 .331-5.331l.3-.3a1.49 1.49 0 0 1 2.108 0l.446.446l1.646-1.647a.5.5 0 0 1 .708 0m-4.495 6.505a3.036 3.036 0 0 0 4.287-.005l.3-.3a.49.49 0 0 0 0-.693l-3.6-3.6a.49.49 0 0 0-.692 0l-.3.3a3.036 3.036 0 0 0 0 4.292z"
+                    Fill="{ThemeResource ApplicationForegroundThemeBrush}"
+                    Stretch="Uniform" />
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="BuiltInBrowserIcon">
+                <Path
+                    Width="28"
+                    Height="28"
+                    Data="M6.75 3h14.5C23.28 3 25 4.712 25 6.75v14.5A3.75 3.75 0 0 1 21.25 25H6.75A3.75 3.75 0 0 1 3 21.25V6.75C3 4.712 4.72 3 6.75 3M4.5 21.25a2.25 2.25 0 0 0 2.25 2.25h14.5a2.25 2.25 0 0 0 2.25-2.25V9.5h-19z"
+                    Fill="{ThemeResource ApplicationForegroundThemeBrush}"
+                    Stretch="Uniform" />
+            </ControlTemplate>
+            <ControlTemplate x:Key="DeviceFlowCodeIcon">
+                <Path
+                    Width="28"
+                    Height="28"
+                    Data="M17.5 12a5.5 5.5 0 1 1 0 11a5.5 5.5 0 0 1 0-11zm.011 2l-.084.005l-.055.012l-.083.03l-.074.042l-.056.045l-2.513 2.512l-.057.07a.5.5 0 0 0 0 .568l.057.07l.07.057a.5.5 0 0 0 .568 0l.07-.057l1.645-1.646L17 21l.008.09a.5.5 0 0 0 .402.402l.09.008l.09-.008a.5.5 0 0 0 .402-.402L18 21l-.001-5.294l1.647 1.648l.07.057a.5.5 0 0 0 .695-.695l-.057-.07l-2.548-2.542l-.048-.032l-.067-.034l-.063-.021l-.054-.012A.5.5 0 0 0 17.51 14zM6.25 3h11.5a3.25 3.25 0 0 1 3.245 3.066L21 6.25l.001 5.773a6.47 6.47 0 0 0-1.5-.71L19.5 8h-15v9.75a1.75 1.75 0 0 0 1.606 1.744l.144.006h5.064a6.47 6.47 0 0 0 .709 1.501L6.25 21a3.25 3.25 0 0 1-3.245-3.066L3 17.75V6.25a3.25 3.25 0 0 1 3.066-3.245L6.25 3z"
+                    Fill="{ThemeResource ApplicationForegroundThemeBrush}"
+                    Stretch="Uniform" />
+            </ControlTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

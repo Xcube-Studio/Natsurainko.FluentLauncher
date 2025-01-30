@@ -65,7 +65,7 @@ public sealed partial class HomePage : Page
         listView.ScrollIntoView(vm.ActiveMinecraftInstance);
     }
 
-    private void AccountSelector_SelectionChanged(object sender, RoutedEventArgs e)
+    private void HideAccountFlyoutHandler(object sender, RoutedEventArgs e)
     {
         accountSelectorFlyout.Hide();
     }

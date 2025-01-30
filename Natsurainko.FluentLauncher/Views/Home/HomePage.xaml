@@ -227,7 +227,7 @@
                                         Margin="-6,0"
                                         ItemsSource="{x:Bind VM.Accounts}"
                                         SelectedItem="{x:Bind VM.ActiveAccount, Mode=TwoWay}"
-                                        SelectionChanged="AccountSelector_SelectionChanged">
+                                        SelectionChanged="HideAccountFlyoutHandler">
                                         <ListView.ItemTemplate>
                                             <DataTemplate x:DataType="auth:Account">
                                                 <Grid Margin="0,8">
@@ -262,7 +262,9 @@
                                         HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Left"
                                         Background="Transparent"
-                                        BorderThickness="0">
+                                        BorderThickness="0"
+                                        Click="HideAccountFlyoutHandler"
+                                        Command="{x:Bind VM.AddAccountCommand}">
                                         <Button.Resources>
                                             <StaticResource x:Key="ButtonBackgroundPressed" ResourceKey="MenuFlyoutItemBackgroundPressed" />
                                             <StaticResource x:Key="ButtonBackgroundPointerOver" ResourceKey="MenuFlyoutItemBackgroundPointerOver" />
@@ -282,7 +284,9 @@
                                         HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Left"
                                         Background="Transparent"
-                                        BorderThickness="0">
+                                        BorderThickness="0"
+                                        Click="HideAccountFlyoutHandler"
+                                        Command="{x:Bind VM.GoToAccountSettingsCommand}">
                                         <Button.Resources>
                                             <StaticResource x:Key="ButtonBackgroundPressed" ResourceKey="MenuFlyoutItemBackgroundPressed" />
                                             <StaticResource x:Key="ButtonBackgroundPointerOver" ResourceKey="MenuFlyoutItemBackgroundPointerOver" />

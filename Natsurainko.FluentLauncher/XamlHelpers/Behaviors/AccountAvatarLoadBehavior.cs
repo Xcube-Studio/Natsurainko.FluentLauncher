@@ -73,8 +73,8 @@ internal class AccountAvatarLoadBehavior : Behavior<Border>
                         (int)AssociatedObject.ActualWidth,
                         (int)AssociatedObject.ActualHeight);
 
-                //BackgroundLayout.Source = backgroundSource1;
-                //ForegroundLayout.Source = null;
+                BackgroundLayout.Source = backgroundSource1;
+                ForegroundLayout.Source = null;
 
                 ProgressRing.IsActive = false;
                 return;
@@ -98,8 +98,8 @@ internal class AccountAvatarLoadBehavior : Behavior<Border>
             var backgroundSource = await StretchImageSizeAsync(backgroundBitmap, (int)AssociatedObject.ActualWidth, (int)AssociatedObject.ActualHeight);
             var foregroundSource = await StretchImageSizeAsync(foregroundBitmap, (int)AssociatedObject.ActualWidth, (int)AssociatedObject.ActualHeight);
 
-            //BackgroundLayout.Source = backgroundSource;
-            //ForegroundLayout.Source = foregroundSource;
+            BackgroundLayout.Source = backgroundSource;
+            ForegroundLayout.Source = foregroundSource;
 
             ProgressRing.IsActive = false;
         }
@@ -135,7 +135,7 @@ internal class AccountAvatarLoadBehavior : Behavior<Border>
             ScaledHeight = (uint)height
         };
 
-        using var bmp = await decoder.GetSoftwareBitmapAsync(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied, transform, ExifOrientationMode.RespectExifOrientation, ColorManagementMode.ColorManageToSRgb);
+        var bmp = await decoder.GetSoftwareBitmapAsync(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied, transform, ExifOrientationMode.RespectExifOrientation, ColorManagementMode.ColorManageToSRgb);
         var source = new SoftwareBitmapSource();
         await source.SetBitmapAsync(bmp);
 

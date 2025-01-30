@@ -8,6 +8,7 @@ using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Nrk.FluentCore.Authentication;
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
@@ -16,10 +17,9 @@ using Graphics = System.Drawing.Graphics;
 using GraphicsUnit = System.Drawing.GraphicsUnit;
 using Rectangle = System.Drawing.Rectangle;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Behaviors;
 
-internal class AccountAvatarLoadBehavior : DependencyObject, IBehavior
+internal class AccountAvatarLoadBehavior : Behavior<Border>
 {
     public Account Account
     {
@@ -30,34 +30,30 @@ internal class AccountAvatarLoadBehavior : DependencyObject, IBehavior
     public static readonly DependencyProperty AccountProperty =
         DependencyProperty.Register("Account", typeof(Account), typeof(AccountAvatarLoadBehavior), new PropertyMetadata(null, OnAccountChanged));
 
-    public string ForegroundImageName { get; set; }
+    public string ForegroundImageName { get; set; } = null!; // set in XAML
 
-    public string BackgroundImageName { get; set; }
+    public string BackgroundImageName { get; set; } = null!;
 
-    public string ProgressName { get; set; }
+    public string ProgressName { get; set; } = null!;
 
-    public DependencyObject AssociatedObject { get; set; }
-
-    private Image ForegroundLayout;
-    private Image BackgroundLayout;
-    private ProgressRing ProgressRing;
+    private Image ForegroundLayout = null!; // set in Border_Loaded
+    private Image BackgroundLayout = null!;
+    private ProgressRing ProgressRing = null!;
     private readonly CacheSkinService _cacheSkinService = App.GetService<CacheSkinService>();
 
-    public void Attach(DependencyObject associatedObject)
+    protected override void OnAttached()
     {
-        if (associatedObject is not Border)
-            return;
-
-        AssociatedObject = associatedObject;
-        Border border = (Border)associatedObject;
-
-        border.Loaded += Border_Loaded;
-        border.Unloaded += Border_Unloaded;
+        AssociatedObject.Loaded += Border_Loaded;
+        AssociatedObject.Unloaded += Border_Unloaded;
     }
 
-    public void Detach() { }
+    protected override void OnDetaching()
+    {
+        AssociatedObject.Loaded -= Border_Loaded;
+        AssociatedObject.Unloaded -= Border_Unloaded;
+    }
 
-    private async void RenderAvatar()
+    private async Task RenderAvatar()
     {
         try
         {
@@ -65,18 +61,19 @@ internal class AccountAvatarLoadBehavior : DependencyObject, IBehavior
             if (ProgressRing == null || BackgroundLayout == null || ForegroundLayout == null) return;
 
             ProgressRing.IsActive = true;
-            Border border = (Border)AssociatedObject;
 
             var filePath = _cacheSkinService.GetSkinFilePath(Account);
 
             if (Account.Type == AccountType.Offline)
             {
-                BackgroundLayout.Source = await StretchImageSizeAsync(
-                    new Bitmap(
-                        System.Drawing.Image.FromFile(
-                            (await StorageFile.GetFileFromApplicationUriAsync(new Uri(filePath))).Path)),
-                    (int)border.ActualWidth,
-                    (int)border.ActualHeight);
+                var backgroundSource1 = await StretchImageSizeAsync(
+                        new Bitmap(
+                            System.Drawing.Image.FromFile(
+                                (await StorageFile.GetFileFromApplicationUriAsync(new Uri(filePath))).Path)),
+                        (int)AssociatedObject.ActualWidth,
+                        (int)AssociatedObject.ActualHeight);
+
+                BackgroundLayout.Source = backgroundSource1;
                 ForegroundLayout.Source = null;
 
                 ProgressRing.IsActive = false;
@@ -98,12 +95,15 @@ internal class AccountAvatarLoadBehavior : DependencyObject, IBehavior
             using var backgroundBitmap = GetAreaFromImage(originImage, new(8, 8, 8, 8));
             using var foregroundBitmap = GetAreaFromImage(originImage, new(40, 8, 8, 8));
 
-            BackgroundLayout.Source = await StretchImageSizeAsync(backgroundBitmap, (int)border.ActualWidth, (int)border.ActualHeight);
-            ForegroundLayout.Source = await StretchImageSizeAsync(foregroundBitmap, (int)border.ActualWidth, (int)border.ActualHeight);
+            var backgroundSource = await StretchImageSizeAsync(backgroundBitmap, (int)AssociatedObject.ActualWidth, (int)AssociatedObject.ActualHeight);
+            var foregroundSource = await StretchImageSizeAsync(foregroundBitmap, (int)AssociatedObject.ActualWidth, (int)AssociatedObject.ActualHeight);
+
+            BackgroundLayout.Source = backgroundSource;
+            ForegroundLayout.Source = foregroundSource;
 
             ProgressRing.IsActive = false;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             //App.GetService<NotificationService>().NotifyException(null, ex);
         }
@@ -135,7 +135,7 @@ internal class AccountAvatarLoadBehavior : DependencyObject, IBehavior
             ScaledHeight = (uint)height
         };
 
-        using var bmp = await decoder.GetSoftwareBitmapAsync(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied, transform, ExifOrientationMode.RespectExifOrientation, ColorManagementMode.ColorManageToSRgb);
+        var bmp = await decoder.GetSoftwareBitmapAsync(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied, transform, ExifOrientationMode.RespectExifOrientation, ColorManagementMode.ColorManageToSRgb);
         var source = new SoftwareBitmapSource();
         await source.SetBitmapAsync(bmp);
 
@@ -147,7 +147,7 @@ internal class AccountAvatarLoadBehavior : DependencyObject, IBehavior
     private static void OnAccountChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
     {
         if (dependencyObject is AccountAvatarLoadBehavior behavior)
-            App.DispatcherQueue.TryEnqueue(behavior.RenderAvatar);
+            App.DispatcherQueue.TryEnqueue(() => _ = behavior.RenderAvatar());
     }
 
     private void Border_Unloaded(object sender, RoutedEventArgs e)
@@ -157,22 +157,20 @@ internal class AccountAvatarLoadBehavior : DependencyObject, IBehavior
 
     private void Border_Loaded(object sender, RoutedEventArgs e)
     {
-        Border border = (Border)AssociatedObject;
-
-        ForegroundLayout = border.FindName(ForegroundImageName) as Image;
-        BackgroundLayout = border.FindName(BackgroundImageName) as Image;
-        ProgressRing = border.FindName(ProgressName) as ProgressRing;
+        ForegroundLayout = (Image)AssociatedObject.FindName(ForegroundImageName);
+        BackgroundLayout = (Image)AssociatedObject.FindName(BackgroundImageName);
+        ProgressRing = (ProgressRing)AssociatedObject.FindName(ProgressName);
 
         ForegroundLayout.Source = null;
         BackgroundLayout.Source = null;
         ProgressRing.IsActive = false;
 
-        RenderAvatar();
-
         WeakReferenceMessenger.Default.Register<AccountSkinCacheUpdatedMessage>(this, (r, m) =>
         {
             if (m.Value.Type == Account.Type && m.Value.Uuid == Account.Uuid)
-                App.DispatcherQueue.TryEnqueue(RenderAvatar);
+                App.DispatcherQueue.TryEnqueue(() => _ = RenderAvatar());
         });
+
+        _ = RenderAvatar();
     }
 }

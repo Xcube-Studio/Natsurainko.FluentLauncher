@@ -13,11 +13,17 @@ using Nrk.FluentCore.GameManagement.Instances;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using System.Threading.Tasks;
+using FluentLauncher.Infra.UI.Dialogs;
+using Microsoft.UI.Xaml.Controls;
+using CommunityToolkit.Mvvm.Messaging;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Home;
 
-internal partial class HomeViewModel : ObservableObject
+internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAccountChangedMessage>
 {
     public ReadOnlyObservableCollection<MinecraftInstance> MinecraftInstances { get; private set; }
 
@@ -26,24 +32,30 @@ internal partial class HomeViewModel : ObservableObject
     private readonly LaunchService _launchService;
     private readonly INavigationService _navigationService;
     private readonly SearchProviderService _searchProviderService;
+    private readonly IDialogActivationService<ContentDialogResult> _dialogService;
 
     public HomeViewModel(
         GameService gameService,
         AccountService accountService,
         LaunchService launchService,
         INavigationService navigationService,
-        SearchProviderService searchProviderService)
+        SearchProviderService searchProviderService,
+        IDialogActivationService<ContentDialogResult> dialogService)
     {
         _accountService = accountService;
         _gameService = gameService;
         _launchService = launchService;
         _navigationService = navigationService;
         _searchProviderService = searchProviderService;
+        _dialogService = dialogService;
 
+        Accounts = accountService.Accounts;
         ActiveAccount = accountService.ActiveAccount;
 
         MinecraftInstances = _gameService.Games;
         ActiveMinecraftInstance = _gameService.ActiveGame;
+
+        IsActive = true;
     }
 
     public Visibility AccountTag => ActiveAccount is null ? Visibility.Collapsed : Visibility.Visible;
@@ -55,6 +67,8 @@ internal partial class HomeViewModel : ObservableObject
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(AccountTag))]
     public partial Account ActiveAccount { get; set; }
+
+    public ReadOnlyObservableCollection<Account> Accounts { get; init; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(DropDownButtonDisplayText))]
@@ -74,10 +88,13 @@ internal partial class HomeViewModel : ObservableObject
     private void Launch() => _launchService.LaunchFromUI(ActiveMinecraftInstance);
 
     [RelayCommand]
-    public void GoToAccount() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Account");
+    public void GoToSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Launch");
 
     [RelayCommand]
-    public void GoToSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Launch");
+    public void GoToAccountSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Account");
+
+    [RelayCommand]
+    public async Task AddAccount() => await _dialogService.ShowAsync("AuthenticationWizardDialog");
 
     IEnumerable<Suggestion> ProviderSuggestions(string searchText)
     {
@@ -114,5 +131,10 @@ internal partial class HomeViewModel : ObservableObject
     void Unloaded()
     {
         _searchProviderService.UnregisterSuggestionProvider(this);
+    }
+
+    void IRecipient<ActiveAccountChangedMessage>.Receive(ActiveAccountChangedMessage message)
+    {
+        ActiveAccount = message.Value;
     }
 }

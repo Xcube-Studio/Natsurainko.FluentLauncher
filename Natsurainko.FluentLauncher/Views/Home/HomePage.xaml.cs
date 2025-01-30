@@ -36,10 +36,10 @@ public sealed partial class HomePage : Page
             DropDownButton.Translation += new System.Numerics.Vector3(0, 0, 16);
             DropDownButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
 
-            HyperlinkButton.Shadow = SharedShadow;
-            HyperlinkButton.Translation += new System.Numerics.Vector3(0, 0, 16);
+            AccountSelectorButton.Shadow = SharedShadow;
+            AccountSelectorButton.Translation += new System.Numerics.Vector3(0, 0, 16);
             HyperlinkButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
-            HyperlinkButton.Foreground = foregroundBrush;
+            AccountSelectorButton.Foreground = foregroundBrush;
 
             this.ActualThemeChanged += (_, e) =>
             {
@@ -52,7 +52,7 @@ public sealed partial class HomePage : Page
                 DropDownButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
 
                 HyperlinkButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
-                HyperlinkButton.Foreground = foregroundBrush;
+                AccountSelectorButton.Foreground = foregroundBrush;
             };
         }
 
@@ -63,6 +63,11 @@ public sealed partial class HomePage : Page
     {
         var vm = (HomeViewModel)DataContext;
         listView.ScrollIntoView(vm.ActiveMinecraftInstance);
+    }
+
+    private void HideAccountFlyoutHandler(object sender, RoutedEventArgs e)
+    {
+        accountSelectorFlyout.Hide();
     }
 
     private void DropDownButton_Click(object sender, RoutedEventArgs e)

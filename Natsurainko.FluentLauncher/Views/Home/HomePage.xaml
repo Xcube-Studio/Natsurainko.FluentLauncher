@@ -4,12 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:auth="using:Nrk.FluentCore.Authentication"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:data="using:Nrk.FluentCore.GameManagement.Instances"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:data="using:Nrk.FluentCore.GameManagement.Instances"
+    xmlns:userControls="using:Natsurainko.FluentLauncher.UserControls"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
@@ -195,27 +197,121 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         CornerRadius="8" />
-                    <HyperlinkButton
-                        Name="HyperlinkButton"
+                    <Button
+                        Name="AccountSelectorButton"
                         Background="Transparent"
                         BorderBrush="Transparent"
-                        Command="{x:Bind VM.GoToAccountCommand}"
                         CornerRadius="8">
-                        <StackPanel>
-                            <TextBlock
-                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                Text="{x:Bind VM.ActiveAccount.Type, Converter={StaticResource AccountInfoConverter}, Mode=OneWay}" />
-                            <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Text="{x:Bind VM.ActiveAccount.Name, Mode=OneWay}" />
-                        </StackPanel>
-                    </HyperlinkButton>
+                        <Grid Margin="-2,2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <userControls:AccountAvatar
+                                Width="36"
+                                Height="36"
+                                Account="{x:Bind VM.ActiveAccount, Mode=OneWay}" />
+                            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind VM.ActiveAccount.Name, Mode=OneWay}" />
+                                <TextBlock
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                    Text="{x:Bind VM.ActiveAccount.Type, Mode=OneWay, Converter={StaticResource AccountInfoConverter}}" />
+                            </StackPanel>
+                        </Grid>
+                        <Button.Flyout>
+                            <Flyout x:Name="accountSelectorFlyout" Placement="TopEdgeAlignedLeft">
+                                <StackPanel Margin="-6" Spacing="2">
+                                    <ListView
+                                        Margin="-6,0"
+                                        ItemsSource="{x:Bind VM.Accounts}"
+                                        SelectedItem="{x:Bind VM.ActiveAccount, Mode=TwoWay}"
+                                        SelectionChanged="HideAccountFlyoutHandler">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate x:DataType="auth:Account">
+                                                <Grid Margin="0,8">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="8" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <userControls:AccountAvatar
+                                                        Width="36"
+                                                        Height="36"
+                                                        Account="{x:Bind}" />
+                                                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                                        <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind Name}" />
+                                                        <TextBlock
+                                                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                            Style="{ThemeResource CaptionTextBlockStyle}"
+                                                            Text="{x:Bind Type, Mode=OneWay, Converter={StaticResource AccountInfoConverter}}" />
+                                                    </StackPanel>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                    <Border
+                                        Height="1"
+                                        Margin="0,1,0,3"
+                                        HorizontalAlignment="Stretch"
+                                        BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+                                        BorderThickness="1" />
+                                    <Button
+                                        Margin="-2,0"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Left"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Click="HideAccountFlyoutHandler"
+                                        Command="{x:Bind VM.AddAccountCommand}">
+                                        <Button.Resources>
+                                            <StaticResource x:Key="ButtonBackgroundPressed" ResourceKey="MenuFlyoutItemBackgroundPressed" />
+                                            <StaticResource x:Key="ButtonBackgroundPointerOver" ResourceKey="MenuFlyoutItemBackgroundPointerOver" />
+                                            <StaticResource x:Key="ButtonForegroundPressed" ResourceKey="ButtonForeground" />
+                                        </Button.Resources>
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <FontIcon
+                                                Margin="0,2,0,0"
+                                                VerticalAlignment="Center"
+                                                FontSize="14"
+                                                Glyph="&#xe8fa;" />
+                                            <TextBlock x:Uid="Home_HomePage_AddAccountTB" Text="Add an account" />
+                                        </StackPanel>
+                                    </Button>
+                                    <Button
+                                        Margin="-2,0"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Left"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Click="HideAccountFlyoutHandler"
+                                        Command="{x:Bind VM.GoToAccountSettingsCommand}">
+                                        <Button.Resources>
+                                            <StaticResource x:Key="ButtonBackgroundPressed" ResourceKey="MenuFlyoutItemBackgroundPressed" />
+                                            <StaticResource x:Key="ButtonBackgroundPointerOver" ResourceKey="MenuFlyoutItemBackgroundPointerOver" />
+                                            <StaticResource x:Key="ButtonForegroundPressed" ResourceKey="ButtonForeground" />
+                                        </Button.Resources>
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <FontIcon
+                                                Margin="0,2,0,0"
+                                                VerticalAlignment="Center"
+                                                FontSize="14"
+                                                Glyph="&#xE77B;" />
+                                            <TextBlock x:Uid="Home_HomePage_ManageAccountsTB" Text="Manage accounts" />
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
                 </Grid>
                 <Button
                     x:Name="LaunchButton"
                     Grid.Column="4"
                     VerticalAlignment="Bottom"
-                    CornerRadius="8"
                     Command="{x:Bind VM.LaunchCommand}"
+                    CornerRadius="8"
                     Style="{ThemeResource AccentButtonStyle}">
                     <ToolTipService.ToolTip>
                         <TextBlock x:Uid="Home_HomePage_LaunchButton" />

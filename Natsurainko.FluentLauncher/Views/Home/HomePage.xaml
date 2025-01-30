@@ -276,7 +276,7 @@
                                                 VerticalAlignment="Center"
                                                 FontSize="14"
                                                 Glyph="&#xe8fa;" />
-                                            <TextBlock Text="Add an account" />
+                                            <TextBlock x:Uid="Home_HomePage_AddAccountTB" Text="Add an account" />
                                         </StackPanel>
                                     </Button>
                                     <Button
@@ -298,7 +298,7 @@
                                                 VerticalAlignment="Center"
                                                 FontSize="14"
                                                 Glyph="&#xE77B;" />
-                                            <TextBlock Text="Manage accounts" />
+                                            <TextBlock x:Uid="Home_HomePage_ManageAccountsTB" Text="Manage accounts" />
                                         </StackPanel>
                                     </Button>
                                 </StackPanel>

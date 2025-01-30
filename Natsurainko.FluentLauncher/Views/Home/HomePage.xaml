@@ -236,10 +236,10 @@
                                                         <ColumnDefinition Width="8" />
                                                         <ColumnDefinition Width="*" />
                                                     </Grid.ColumnDefinitions>
-                                                    <!--<userControls:AccountAvatar
+                                                    <userControls:AccountAvatar
                                                         Width="36"
                                                         Height="36"
-                                                        Account="{x:Bind}" />-->
+                                                        Account="{x:Bind}" />
                                                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                                         <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind Name}" />
                                                         <TextBlock

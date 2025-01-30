@@ -275,7 +275,7 @@
                                                 Margin="0,2,0,0"
                                                 VerticalAlignment="Center"
                                                 FontSize="14"
-                                                Glyph="&#xE710;" />
+                                                Glyph="&#xe8fa;" />
                                             <TextBlock Text="Add an account" />
                                         </StackPanel>
                                     </Button>

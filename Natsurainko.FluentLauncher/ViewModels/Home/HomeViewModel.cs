@@ -17,11 +17,13 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using System.Threading.Tasks;
 using FluentLauncher.Infra.UI.Dialogs;
 using Microsoft.UI.Xaml.Controls;
+using CommunityToolkit.Mvvm.Messaging;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Home;
 
-internal partial class HomeViewModel : ObservableObject
+internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAccountChangedMessage>
 {
     public ReadOnlyObservableCollection<MinecraftInstance> MinecraftInstances { get; private set; }
 
@@ -52,6 +54,8 @@ internal partial class HomeViewModel : ObservableObject
 
         MinecraftInstances = _gameService.Games;
         ActiveMinecraftInstance = _gameService.ActiveGame;
+
+        IsActive = true;
     }
 
     public Visibility AccountTag => ActiveAccount is null ? Visibility.Collapsed : Visibility.Visible;
@@ -127,5 +131,10 @@ internal partial class HomeViewModel : ObservableObject
     void Unloaded()
     {
         _searchProviderService.UnregisterSuggestionProvider(this);
+    }
+
+    void IRecipient<ActiveAccountChangedMessage>.Receive(ActiveAccountChangedMessage message)
+    {
+        ActiveAccount = message.Value;
     }
 }

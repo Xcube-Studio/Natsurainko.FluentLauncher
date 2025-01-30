@@ -38,7 +38,7 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         get
         {
             if (contentFrame.Content is INavigationProvider childPage)
-                return contentFrame.CanGoBack | childPage.NavigationService.CanGoBack;
+                return contentFrame.CanGoBack || childPage.NavigationService.CanGoBack;
             else
                 return contentFrame.CanGoBack;
         }
@@ -165,6 +165,7 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         else BlurBorder.Opacity = 0;
 
         UpdateSearchBoxArea();
+        OnPropertyChanged(nameof(CanGoBack));
     }
 
     #endregion

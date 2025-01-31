@@ -50,12 +50,11 @@
                     </controls:SettingsExpander.Items>
 
                     <TextBlock
-                            Margin="10,0,0,0"
-                            VerticalAlignment="Center"
-                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                            Style="{ThemeResource CaptionTextBlockStyle}">
-                            <Run Text="{x:Bind VM.AppChannel}" />
-                            <Run Text="{x:Bind VM.Version}" />
+                        VerticalAlignment="Center"
+                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                        Style="{ThemeResource CaptionTextBlockStyle}">
+                        <Run Text="{x:Bind VM.AppChannel}" />
+                        <Run Text="{x:Bind VM.Version}" />
                     </TextBlock>
                 </controls:SettingsExpander>
 

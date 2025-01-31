@@ -80,6 +80,10 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     [BindToSetting(Path = nameof(SettingsService.UseHomeControlsMask))]
     public partial bool UseHomeControlsMask { get; set; }
 
+    [ObservableProperty]
+    [BindToSetting(Path = nameof(SettingsService.HomeLaunchButtonSize))]
+    public partial int HomeLaunchButtonSize { get; set; }
+
     public Color CurrentThemeColor => UseSystemAccentColor ? (Color)App.Current.Resources["RawSystemAccentColor"] : CustomThemeColor.GetValueOrDefault();
 
     public bool AcrylicIsSupported => DesktopAcrylicController.IsSupported();

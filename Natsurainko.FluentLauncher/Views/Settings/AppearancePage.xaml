@@ -433,7 +433,8 @@
                                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                                                 <controls:ColorPicker Color="{x:Bind VM.CustomThemeColor.GetValueOrDefault(), Mode=TwoWay, BindBack=VM.SetCustomThemeColor}" />
                                                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                                                    <Button x:Name="selectColorConfirmButton"
+                                                    <Button
+                                                        x:Name="selectColorConfirmButton"
                                                         Command="{x:Bind VM.SelectColorConfirmCommand}"
                                                         CommandParameter="{x:Bind selectColorConfirmButton}"
                                                         Style="{ThemeResource AccentButtonStyle}"
@@ -484,8 +485,8 @@
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
                             GroupName="Background"
-                            Style="{ThemeResource RadioButtonStyle}"
-                            IsChecked="{x:Bind VM.BackgroundMode.Equals(0), Mode=OneWay}">
+                            IsChecked="{x:Bind VM.BackgroundMode.Equals(0), Mode=OneWay}"
+                            Style="{ThemeResource RadioButtonStyle}">
                             <StackPanel>
                                 <TextBlock x:Uid="Settings_AppearancePage_H1" Text="Mica Background" />
                                 <TextBlock
@@ -497,7 +498,8 @@
                                     x:Uid="Settings_AppearancePage_Text1"
                                     Foreground="{ThemeResource SystemErrorTextColor}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="Unsupported System Version" Visibility="{x:Bind VM.MicaIsSupported, Converter={StaticResource InvertedBoolToVisibilityConverter}}"/>
+                                    Text="Unsupported System Version"
+                                    Visibility="{x:Bind VM.MicaIsSupported, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
                             </StackPanel>
 
                             <i:Interaction.Behaviors>
@@ -530,8 +532,8 @@
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
                             GroupName="Background"
-                            Style="{ThemeResource RadioButtonStyle}"
-                            IsChecked="{x:Bind VM.BackgroundMode.Equals(1), Mode=OneWay}">
+                            IsChecked="{x:Bind VM.BackgroundMode.Equals(1), Mode=OneWay}"
+                            Style="{ThemeResource RadioButtonStyle}">
                             <StackPanel>
                                 <TextBlock x:Uid="Settings_AppearancePage_H2" Text="Acrylic Background" />
                                 <TextBlock
@@ -544,7 +546,7 @@
                                     Foreground="{ThemeResource SystemErrorTextColor}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
                                     Text="Unsupported System Version"
-                                    Visibility="{x:Bind VM.AcrylicIsSupported, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}"/>
+                                    Visibility="{x:Bind VM.AcrylicIsSupported, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
                             </StackPanel>
 
                             <i:Interaction.Behaviors>
@@ -565,8 +567,8 @@
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
                             GroupName="Background"
-                            Style="{ThemeResource RadioButtonStyle}"
-                            IsChecked="{x:Bind VM.BackgroundMode.Equals(2), Mode=OneWay}">
+                            IsChecked="{x:Bind VM.BackgroundMode.Equals(2), Mode=OneWay}"
+                            Style="{ThemeResource RadioButtonStyle}">
                             <StackPanel>
                                 <TextBlock x:Uid="Settings_AppearancePage_H3" Text="Solid Color Background" />
                                 <TextBlock
@@ -635,7 +637,8 @@
                                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                                                 <controls:ColorPicker Color="{x:Bind VM.CustomBackgroundColor.GetValueOrDefault(), Mode=TwoWay, BindBack=VM.SetCustomBackgroundColor}" />
                                                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                                                    <Button x:Name="selectColorConfirmButton2"
+                                                    <Button
+                                                        x:Name="selectColorConfirmButton2"
                                                         Command="{x:Bind VM.SelectColorConfirmCommand}"
                                                         CommandParameter="{x:Bind selectColorConfirmButton2}"
                                                         Style="{ThemeResource AccentButtonStyle}"
@@ -657,8 +660,8 @@
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
                             GroupName="Background"
-                            Style="{ThemeResource RadioButtonStyle}"
-                            IsChecked="{x:Bind VM.BackgroundMode.Equals(3), Mode=OneWay}">
+                            IsChecked="{x:Bind VM.BackgroundMode.Equals(3), Mode=OneWay}"
+                            Style="{ThemeResource RadioButtonStyle}">
                             <StackPanel>
                                 <TextBlock x:Uid="Settings_AppearancePage_H4" Text="Image Background" />
                                 <TextBlock
@@ -671,7 +674,7 @@
                                     Foreground="{ThemeResource SystemErrorTextColor}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
                                     Text="File is not existed"
-                                    Visibility="{x:Bind VM.ImageFileExists, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}"/>
+                                    Visibility="{x:Bind VM.ImageFileExists, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
                             </StackPanel>
 
                             <i:Interaction.Behaviors>
@@ -725,12 +728,21 @@
                     <ToggleSwitch IsOn="{x:Bind VM.UseBackgroundMask, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
+                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Home" />
+
                 <controls:SettingsCard
                     x:Uid="Settings_AppearancePage_Card4"
                     Description="Display Gaussian blur background mask on some controls on the home page to enhance clarity"
                     Header="Use HomePage Controls Mask"
                     HeaderIcon="{xh:FontIcon Glyph=&#xef1f;}">
                     <ToggleSwitch IsOn="{x:Bind VM.UseHomeControlsMask, Mode=TwoWay}" />
+                </controls:SettingsCard>
+
+                <controls:SettingsCard Header="Home Launch Button Size" HeaderIcon="{xh:FontIcon Glyph=&#xe743;}">
+                    <ComboBox SelectedIndex="{x:Bind VM.HomeLaunchButtonSize, Mode=TwoWay}">
+                        <x:String>Normal</x:String>
+                        <x:String>Large</x:String>
+                    </ComboBox>
                 </controls:SettingsCard>
             </StackPanel>
         </Border>

@@ -55,7 +55,7 @@
             </ItemsView.ItemTemplate>
         </ItemsView>
         <StackPanel Grid.Row="2">
-            <HyperlinkButton>
+            <HyperlinkButton NavigateUri="https://www.minecraft.net/en-us/store/minecraft-java-bedrock-edition-pc">
                 <TextBlock
                     x:Uid="AuthenticationWizard_ChooseAccountTypePage_NoMc"
                     Style="{ThemeResource BaseTextBlockStyle}"

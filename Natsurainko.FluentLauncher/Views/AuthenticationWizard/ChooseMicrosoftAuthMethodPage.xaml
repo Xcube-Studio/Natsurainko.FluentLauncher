@@ -42,7 +42,6 @@
                                 Text="{x:Bind local:ChooseMicrosoftAuthMethodPage.GetMicrosoftAuthMethodDescription((models:MicrosoftAuthMethod))}" />
                         </StackPanel>
                     </Grid>
-
                 </ItemContainer>
             </DataTemplate>
         </ItemsView.ItemTemplate>

@@ -327,9 +327,11 @@
                 <Button
                     x:Name="LaunchButton"
                     Grid.Column="4"
-                    VerticalAlignment="Bottom"
+                    VerticalAlignment="Center"
                     Command="{x:Bind VM.LaunchCommand}"
                     CornerRadius="8"
+                    FontSize="14"
+                    FontWeight="SemiBold"
                     Style="{ThemeResource AccentButtonStyle}">
                     <ToolTipService.ToolTip>
                         <TextBlock x:Uid="Home_HomePage_LaunchButton" />
@@ -343,10 +345,12 @@
                             <ColumnDefinition Width="10" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
-                        <FontIcon FontSize="14" Glyph="&#xF5B0;" />
+                        <FontIcon FontSize="{x:Bind LaunchButton.FontSize, Mode=OneWay}" Glyph="&#xF5B0;" />
                         <TextBlock
                             x:Uid="Home_HomePage_LaunchButton"
                             Grid.Column="2"
+                            FontSize="{x:Bind LaunchButton.FontSize, Mode=OneWay}"
+                            FontWeight="{x:Bind LaunchButton.FontWeight, Mode=OneWay}"
                             Style="{ThemeResource BodyStrongTextBlockStyle}"
                             Text="Launch" />
                     </Grid>

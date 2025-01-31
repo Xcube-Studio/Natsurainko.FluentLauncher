@@ -59,7 +59,7 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(Default = "", Converter = typeof(JsonStringConverter<string>))]
     public partial string GameWindowTitle { get; set; }
 
-    [SettingItem(Default = 0, Converter = typeof(JsonStringConverter<int>))]
+    [SettingItem(Default = 1, Converter = typeof(JsonStringConverter<int>))]
     public partial int GameFilePreferredVerificationMethod { get; set; }
 
     #endregion
@@ -137,8 +137,15 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(Default = true, Converter = typeof(JsonStringConverter<bool>))]
     public partial bool UseBackgroundMask { get; set; }
 
+    #endregion
+
+    #region Appearance Home Settings
+
     [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
     public partial bool UseHomeControlsMask { get; set; }
+
+    [SettingItem(Default = 0, Converter = typeof(JsonStringConverter<int>))]
+    public partial int HomeLaunchButtonSize { get; set; }
 
     #endregion
 

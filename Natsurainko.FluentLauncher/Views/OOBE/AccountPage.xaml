@@ -6,9 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:Nrk.FluentCore.Authentication"
     xmlns:userControls="using:Natsurainko.FluentLauncher.UserControls"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
-    xmlns:models="using:Nrk.FluentCore.Authentication"
     d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
@@ -45,7 +45,8 @@
 
             <StackPanel Grid.Row="4" Spacing="10">
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <Button x:Name="loginButton"
+                    <Button
+                        x:Name="loginButton"
                         Command="{x:Bind VM.LoginCommand}"
                         CommandParameter="{x:Bind loginButton}"
                         Style="{ThemeResource AccentButtonStyle}">

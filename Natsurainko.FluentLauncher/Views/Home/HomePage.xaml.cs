@@ -1,3 +1,4 @@
+using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
@@ -54,6 +55,13 @@ public sealed partial class HomePage : Page
                 HyperlinkButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
                 AccountSelectorButton.Foreground = foregroundBrush;
             };
+        }
+
+        if (_settingsService.HomeLaunchButtonSize == 1)
+        {
+            LaunchButton.VerticalAlignment = VerticalAlignment.Stretch;
+            //LaunchButton.FontSize = 16;
+            //LaunchButton.FontWeight = FontWeights.Bold;
         }
 
         LaunchButton.Focus(FocusState.Programmatic);

@@ -17,10 +17,10 @@ Provides a clean and smooth visual experience
 | Functions | Status |
 | ---------------------------------------- | ------------------ |
 | NativeAOT support | In progress [ ] |
-| Distributed in Stable, Preview, Dev channels | In progress [ ] |
 | Upgrade to CommunityToolkit 8.1 | Blocked by MarkdownTextBlock [ ] |
 | OAuth support for Little Skin | [ ] |
 | Game integration package import | [ ] |
+| Distributed in Stable, Preview, Dev channels | Finished [x] |
 
 ## List of Functions ✨
 

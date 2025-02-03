@@ -84,6 +84,9 @@ internal class AccountAvatarLoadBehavior : Behavior<Border>
             {
                 _ = _cacheSkinService.CacheSkinOfAccount(Account);
                 ProgressRing.IsActive = false;
+
+                BackgroundLayout.Source = null;
+                ForegroundLayout.Source = null;
                 return;
             }
 

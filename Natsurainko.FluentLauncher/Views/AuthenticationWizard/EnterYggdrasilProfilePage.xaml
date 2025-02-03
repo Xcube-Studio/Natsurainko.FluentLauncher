@@ -15,6 +15,10 @@
         AllowDrop="True"
         Background="Transparent"
         Spacing="10">
+        <StackPanel.ChildrenTransitions>
+            <EntranceThemeTransition FromVerticalOffset="50" />
+            <RepositionThemeTransition IsStaggeringEnabled="False" />
+        </StackPanel.ChildrenTransitions>
 
         <i:Interaction.Behaviors>
             <core:EventTriggerBehavior EventName="DragEnter">

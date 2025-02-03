@@ -71,8 +71,6 @@
             <Thickness x:Key="BackgroundBorder">0,1,0,0</Thickness>
             <CornerRadius x:Key="NavigationViewOverlayCornerRadius">8,8,8,8</CornerRadius>
 
-            <converters:AccountInfoConverter x:Key="AccountInfoConverter" />
-
             <converters:JavaIconConverter x:Key="JavaIconConverter" />
             <converters:JavaInfoConverter x:Key="JavaInfoConverter" />
 

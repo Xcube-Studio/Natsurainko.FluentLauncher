@@ -3,7 +3,6 @@ using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.ViewModels.Settings;
-using Nrk.FluentCore.Authentication;
 
 namespace Natsurainko.FluentLauncher.Views.Settings;
 
@@ -37,6 +36,4 @@ public sealed partial class AccountPage : Page, IBreadcrumbBarAware
         var vm = this.DataContext as AccountViewModel;
         WeakReferenceMessenger.Default.Unregister<ActiveAccountChangedMessage>(vm!);
     }
-
-    bool IsLoadLastRefreshCard(AccountType accountType) => accountType == AccountType.Microsoft;
 }

@@ -43,10 +43,10 @@
                                 Account="{x:Bind VM.ActiveAccount, Mode=OneWay}" />
                             <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                 <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind VM.ActiveAccount.Name, Mode=OneWay}" />
-                                <TextBlock
-                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                    Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="{x:Bind VM.ActiveAccount.Type, Mode=OneWay, Converter={StaticResource AccountInfoConverter}}" />
+                                <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Style="{ThemeResource CaptionTextBlockStyle}">
+                                    <Run Text="{x:Bind VM.GetAccountTypeName(VM.ActiveAccount.Type), Mode=OneWay}" />
+                                    <Run Text="{x:Bind VM.TryGetYggdrasilServerName(VM.ActiveAccount), Mode=OneWay}" />
+                                </TextBlock>
                             </StackPanel>
                         </Grid>
                     </controls:SettingsExpander.Header>
@@ -59,11 +59,11 @@
                                 </TextBlock>
                             </controls:SettingsCard.Header>
                         </controls:SettingsCard>
-                        <controls:SettingsCard>
+                        <controls:SettingsCard Visibility="{x:Bind VM.IsLoadLastRefreshCard(VM.ActiveAccount.Type), Mode=OneWay}">
                             <controls:SettingsCard.Header>
                                 <TextBlock>
                                     <Run x:Uid="Settings_AccountPage_SH1" Text="Last Refresh Time:" />
-                                    <Run Text="{x:Bind VM.ActiveAccount, Mode=OneWay, Converter={StaticResource AccountInfoConverter}, ConverterParameter='LastRefreshTime'}" />
+                                    <Run Text="{x:Bind VM.TryGetLastRefreshTime(VM.ActiveAccount), Mode=OneWay}" />
                                 </TextBlock>
                             </controls:SettingsCard.Header>
                         </controls:SettingsCard>
@@ -139,7 +139,7 @@
                     IsEnabled="{x:Bind VM.IsOfflineAccount, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}">
                     <controls:SettingsCard.Description>
                         <TextBlock
-                            Text="{x:Bind VM.SkinFile, Mode=OneWay}"
+                            Text="{x:Bind VM.GetSkinFilePath(VM.ActiveAccount), Mode=OneWay}"
                             TextTrimming="CharacterEllipsis"
                             TextWrapping="NoWrap"
                             Visibility="{x:Bind VM.IsOfflineAccount, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />

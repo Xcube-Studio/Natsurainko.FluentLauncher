@@ -29,8 +29,8 @@ internal class AuthenticationService
         CancellationToken cancellationToken = default)
         => _microsoftAuthenticator.AuthMsaFromDeviceFlowAsync(receiveUserCodeAction, cancellationToken);
 
-    public Task<YggdrasilAccount[]> LoginYggdrasilAsync(string serverUrl, string email, string password, CancellationToken cancellationToken = default)
-        => new YggdrasilAuthenticator(serverUrl).LoginAsync(email, password, cancellationToken);
+    public Task<YggdrasilAccount[]> LoginYggdrasilAsync(string serverUrl, string email, string password, string serverName, CancellationToken cancellationToken = default)
+        => new YggdrasilAuthenticator(serverUrl) { ServerName = serverName }.LoginAsync(email, password, cancellationToken);
 
     //public async Task<YggdrasilAccount> LoginYggdrasilAsync(string serverUrl, OAuth2TokenResponse oAuth2TokenResponse, CancellationToken cancellationToken = default)
     //{

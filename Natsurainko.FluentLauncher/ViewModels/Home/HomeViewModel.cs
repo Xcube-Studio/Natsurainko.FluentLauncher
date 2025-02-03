@@ -1,11 +1,15 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Data;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Authentication;
@@ -13,12 +17,7 @@ using Nrk.FluentCore.GameManagement.Instances;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using System.Threading.Tasks;
-using FluentLauncher.Infra.UI.Dialogs;
-using Microsoft.UI.Xaml.Controls;
-using CommunityToolkit.Mvvm.Messaging;
-using Natsurainko.FluentLauncher.Services.UI.Messaging;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Home;

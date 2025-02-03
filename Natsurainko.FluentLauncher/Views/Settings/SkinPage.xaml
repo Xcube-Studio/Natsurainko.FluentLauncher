@@ -41,10 +41,10 @@
                                 Account="{x:Bind VM.ActiveAccount, Mode=OneWay}" />
                             <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                 <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind VM.ActiveAccount.Name, Mode=OneWay}" />
-                                <TextBlock
-                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                    Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="{x:Bind VM.ActiveAccount.Type, Mode=OneWay, Converter={StaticResource AccountInfoConverter}}" />
+                                <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Style="{ThemeResource CaptionTextBlockStyle}">
+                                    <Run Text="{x:Bind VM.GetAccountTypeName(VM.ActiveAccount.Type), Mode=OneWay}" />
+                                    <Run Text="{x:Bind VM.TryGetYggdrasilServerName(VM.ActiveAccount), Mode=OneWay}" />
+                                </TextBlock>
                             </StackPanel>
                         </Grid>
                     </controls:SettingsCard.Header>

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
+using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
@@ -101,6 +102,32 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
         base.OnPropertyChanged(e);
     }
 
+    static string GetAccountTypeName(AccountType accountType)
+    {
+        string account = LocalizedStrings.Converters__Account;
+
+        if (!ApplicationLanguages.PrimaryLanguageOverride.StartsWith("zh-"))
+            account = " " + account;
+
+        return accountType switch
+        {
+            AccountType.Microsoft => LocalizedStrings.Converters__Microsoft + account,
+            AccountType.Yggdrasil => LocalizedStrings.Converters__Yggdrasil + account,
+            _ => LocalizedStrings.Converters__Offline + account,
+        };
+    }
+
+    static string TryGetYggdrasilServerName(Account account)
+    {
+        if (account is YggdrasilAccount yggdrasilAccount)
+        {
+            if (yggdrasilAccount.MetaData.TryGetValue("server_name", out var serverName))
+                return serverName;
+        }
+
+        return string.Empty;
+    }
+
     private async Task Finish()
     {
         var vm = (ConfirmProfileViewModel)CurrentFrameDataContext;
@@ -139,6 +166,11 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
         _notificationService.NotifyWithSpecialContent(
             LocalizedStrings.Notifications__AccountAddSuccessful,
             "AuthenticationSuccessfulNotifyTemplate",
-            account, "\uE73E");
+            new
+            {
+                Account = account,
+                AccountTypeName = GetAccountTypeName(account.Type),
+                YggdrasilServerName = TryGetYggdrasilServerName(account)
+            }, "\uE73E");
     }
 }

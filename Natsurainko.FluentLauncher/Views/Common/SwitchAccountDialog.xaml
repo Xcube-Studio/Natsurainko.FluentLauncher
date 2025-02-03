@@ -2,11 +2,13 @@
     x:Class="Natsurainko.FluentLauncher.Views.Common.SwitchAccountDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:acc="using:Nrk.FluentCore.Authentication"
     xmlns:common="using:Natsurainko.FluentLauncher.ViewModels.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:data="using:Nrk.FluentCore.Authentication"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Common"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:userControls="using:Natsurainko.FluentLauncher.UserControls"
-    xmlns:data="using:Nrk.FluentCore.Authentication"
     x:Uid="Dialogs_SwitchAccountDialog"
     Title="Switch Account"
     d:DataContext="{d:DesignInstance Type=common:SwitchAccountDialogViewModel}"
@@ -61,8 +63,8 @@
                             Style="{ThemeResource CaptionTextBlockStyle}"
                             TextTrimming="CharacterEllipsis"
                             TextWrapping="WrapWholeWords">
-                            <Run Text="{x:Bind Type, Converter={StaticResource AccountInfoConverter}}" />
-                            <Run Text="{x:Bind Converter={StaticResource AccountInfoConverter}, ConverterParameter='YggdrasilServerUrl'}"/>
+                            <Run Text="{x:Bind local:SwitchAccountDialog.GetAccountTypeName(Type)}" />
+                            <Run Text="{x:Bind local:SwitchAccountDialog.TryGetYggdrasilServerName((acc:Account))}" />
                         </TextBlock>
                     </Grid>
                 </DataTemplate>

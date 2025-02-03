@@ -142,7 +142,7 @@
         <StackPanel Padding="20,0" Spacing="5">
             <TextBlock FontWeight="SemiBold">
                 <Run x:Uid="Notifications_AccountAddWelcome" Text="Welcome Back," />
-                <Run Text="{Binding Name}" />
+                <Run Text="{Binding Account.Name}" />
             </TextBlock>
             <ListViewItem Margin="-10,0" Padding="20,10">
                 <Grid>
@@ -161,12 +161,12 @@
                         Grid.Column="0"
                         Width="32"
                         Height="32"
-                        Account="{Binding}" />
+                        Account="{Binding Account}" />
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="2"
                         FontWeight="SemiBold"
-                        Text="{Binding Name}"
+                        Text="{Binding Account.Name}"
                         TextTrimming="CharacterEllipsis" />
                     <TextBlock
                         Grid.Row="1"
@@ -175,8 +175,10 @@
                         HorizontalAlignment="Left"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Style="{ThemeResource CaptionTextBlockStyle}"
-                        Text="{Binding Type, Converter={ThemeResource AccountInfoConverter}}"
-                        TextTrimming="CharacterEllipsis" />
+                        TextTrimming="CharacterEllipsis">
+                        <Run Text="{Binding AccountTypeName}" />
+                        <Run Text="{Binding YggdrasilServerName}" />
+                    </TextBlock>
                 </Grid>
             </ListViewItem>
         </StackPanel>

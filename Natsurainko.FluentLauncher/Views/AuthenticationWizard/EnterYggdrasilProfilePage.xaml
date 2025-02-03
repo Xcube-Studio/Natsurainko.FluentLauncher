@@ -15,6 +15,7 @@
         AllowDrop="True"
         Background="Transparent"
         Spacing="10">
+
         <i:Interaction.Behaviors>
             <core:EventTriggerBehavior EventName="DragEnter">
                 <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.DragEnterEventCommand}" />
@@ -29,15 +30,47 @@
             BorderBrush="{ThemeResource ButtonBorderBrush}"
             PlaceholderText="Yggdrasil Server Url:"
             Text="{x:Bind VM.Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <TextBox
-            x:Uid="AuthenticationWizard_EnterYggdrasilProfilePage_TB2"
-            BorderBrush="{ThemeResource ButtonBorderBrush}"
-            PlaceholderText="Email:"
-            Text="{x:Bind VM.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <PasswordBox
-            x:Uid="AuthenticationWizard_EnterYggdrasilProfilePage_TB3"
-            BorderBrush="{ThemeResource ButtonBorderBrush}"
-            Password="{x:Bind VM.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            PlaceholderText="Password:" />
+        <StackPanel Orientation="Horizontal">
+            <StackPanel
+                x:Name="ValidatingServerPanel"
+                x:Load="{x:Bind VM.ValidatingServer, Mode=OneWay}"
+                Orientation="Horizontal"
+                Spacing="10">
+                <ProgressRing Width="16" Height="16" />
+                <TextBlock Text="Validating Server" />
+            </StackPanel>
+            <StackPanel
+                x:Name="ValidationResultPanel"
+                x:Load="{x:Bind VM.ValidatingServer, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}"
+                Orientation="Horizontal"
+                Spacing="10">
+                <FontIcon FontSize="14" Glyph="{x:Bind VM.ValidationResultIcon, Mode=OneWay}" />
+                <TextBlock x:Name="SucceedValidationText" x:Load="{x:Bind VM.IsValidServer, Mode=OneWay}">
+                    <Run Text="Found:" />
+                    <Run Text="{x:Bind VM.ServerName, Mode=OneWay}" />
+                </TextBlock>
+
+                <TextBlock
+                    x:Name="FailedValidationText"
+                    x:Load="{x:Bind VM.IsValidServer, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}"
+                    Text="Invalid Server Url" />
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel
+            x:Name="LoginInputPanel"
+            x:Load="{x:Bind VM.IsValidServer, Mode=OneWay}"
+            Spacing="10">
+            <TextBox
+                x:Uid="AuthenticationWizard_EnterYggdrasilProfilePage_TB2"
+                BorderBrush="{ThemeResource ButtonBorderBrush}"
+                PlaceholderText="Email:"
+                Text="{x:Bind VM.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <PasswordBox
+                x:Uid="AuthenticationWizard_EnterYggdrasilProfilePage_TB3"
+                BorderBrush="{ThemeResource ButtonBorderBrush}"
+                Password="{x:Bind VM.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                PlaceholderText="Password:" />
+        </StackPanel>
     </StackPanel>
 </Page>

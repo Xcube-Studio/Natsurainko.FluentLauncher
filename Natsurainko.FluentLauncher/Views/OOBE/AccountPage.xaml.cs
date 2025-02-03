@@ -1,7 +1,10 @@
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.OOBE;
+using Nrk.FluentCore.Authentication;
 
 namespace Natsurainko.FluentLauncher.Views.OOBE;
 
@@ -12,20 +15,6 @@ public sealed partial class AccountPage : Page
     public AccountPage()
     {
         InitializeComponent();
-    }
-
-    private void Grid_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
-    {
-        var grid = (Grid)sender;
-        var button = (Button)grid.FindName("DeleteButton");
-        button.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
-    }
-
-    private void Grid_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
-    {
-        var grid = (Grid)sender;
-        var button = (Button)grid.FindName("DeleteButton");
-        button.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
     }
 
     private void Page_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
@@ -50,4 +39,34 @@ public sealed partial class AccountPage : Page
 
         this.Unloaded += Page_Unloaded;
     }
+
+    #region Converters Methods
+
+    internal static string GetAccountTypeName(AccountType accountType)
+    {
+        string account = LocalizedStrings.Converters__Account;
+
+        if (!ApplicationLanguages.PrimaryLanguageOverride.StartsWith("zh-"))
+            account = " " + account;
+
+        return accountType switch
+        {
+            AccountType.Microsoft => LocalizedStrings.Converters__Microsoft + account,
+            AccountType.Yggdrasil => LocalizedStrings.Converters__Yggdrasil + account,
+            _ => LocalizedStrings.Converters__Offline + account,
+        };
+    }
+
+    internal static string TryGetYggdrasilServerName(Account account)
+    {
+        if (account is YggdrasilAccount yggdrasilAccount)
+        {
+            if (yggdrasilAccount.MetaData.TryGetValue("server_name", out var serverName))
+                return serverName;
+        }
+
+        return string.Empty;
+    }
+
+    #endregion
 }

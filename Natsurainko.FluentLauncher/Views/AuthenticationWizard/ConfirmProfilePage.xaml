@@ -9,6 +9,7 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.AuthenticationWizard"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:userControls="using:Natsurainko.FluentLauncher.UserControls"
     x:Uid="AuthenticationWizard_ConfirmProfilePage_Page"
@@ -63,8 +64,8 @@
                                 Style="{ThemeResource CaptionTextBlockStyle}"
                                 TextTrimming="CharacterEllipsis"
                                 TextWrapping="WrapWholeWords">
-                                <Run Text="{x:Bind Type, Converter={StaticResource AccountInfoConverter}}" />
-                                <Run Text="{x:Bind Converter={StaticResource AccountInfoConverter}, ConverterParameter='YggdrasilServerUrl'}" />
+                                <Run Text="{x:Bind local:ConfirmProfilePage.GetAccountTypeName(Type)}" />
+                                <Run Text="{x:Bind local:ConfirmProfilePage.TryGetYggdrasilServerName((acc:Account))}" />
                             </TextBlock>
                         </Grid>
                     </ItemContainer>

@@ -5,7 +5,10 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
+using Nrk.FluentCore.Utils;
 using System;
+using System.Text.Json.Nodes;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Windows.ApplicationModel.DataTransfer;
@@ -17,7 +20,10 @@ internal partial class EnterYggdrasilProfileViewModel : WizardViewModelBase
 {
     private readonly AuthenticationService _authenticationService;
 
-    public override bool CanNext => !(string.IsNullOrEmpty(Url) || string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password));
+    public override bool CanNext => !(!IsValidServer || string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password));
+
+    private CancellationTokenSource _cancellationTokenSource;
+    private const int UrlChangeDebounceDelayMillis = 1000;
 
     public EnterYggdrasilProfileViewModel()
     {
@@ -31,6 +37,18 @@ internal partial class EnterYggdrasilProfileViewModel : WizardViewModelBase
     public partial string Url { get; set; }
 
     [ObservableProperty]
+    public partial bool IsValidServer { get; set; }
+
+    [ObservableProperty]
+    public partial bool ValidatingServer { get; set; }
+
+    [ObservableProperty]
+    public partial string ValidationResultIcon { get; set; } = "\ue711";
+
+    [ObservableProperty]
+    public partial string ServerName { get; set; }
+
+    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanNext))]
     public partial string Email { get; set; }
 
@@ -40,8 +58,14 @@ internal partial class EnterYggdrasilProfileViewModel : WizardViewModelBase
 
     public override WizardViewModelBase GetNextViewModel()
     {
-        return new ConfirmProfileViewModel(async cancellationToken => await _authenticationService.LoginYggdrasilAsync(Url, Email, Password, cancellationToken)) 
+        return new ConfirmProfileViewModel(async cancellationToken => await _authenticationService.LoginYggdrasilAsync(Url, Email, Password, ServerName, cancellationToken)) 
             { LoadingProgressText = "Authenticating with Yggdrasil Server" };
+    }
+
+    partial void OnUrlChanged(string value)
+    {
+        IsValidServer = false;
+        DebounceRequestCheckServerUri();
     }
 
     [RelayCommand]
@@ -64,5 +88,57 @@ internal partial class EnterYggdrasilProfileViewModel : WizardViewModelBase
 
         if (text.StartsWith(pattern))
             Url = HttpUtility.UrlDecode(text[pattern.Length..]);
+    }
+
+    private void DebounceRequestCheckServerUri()
+    {
+        _cancellationTokenSource?.Cancel();
+        _cancellationTokenSource?.Dispose();
+        _cancellationTokenSource = new CancellationTokenSource();
+        ValidatingServer = true;
+
+        var token = _cancellationTokenSource.Token;
+
+        Task.Delay(UrlChangeDebounceDelayMillis).ContinueWith(async (task) =>
+        {
+            if (task.IsCanceled)
+                return;
+
+            await RequestCheckServerUri(token);
+        }, token);
+    }
+
+    private async Task RequestCheckServerUri(CancellationToken cancellationToken)
+    {
+        try
+        {
+            var metaDataJson = JsonNode.Parse(await HttpUtils.HttpClient.GetStringAsync(Url, cancellationToken));
+            var name = metaDataJson["meta"]?["serverName"]?.GetValue<string>();
+
+            if (cancellationToken.IsCancellationRequested)
+                return;
+
+            App.DispatcherQueue.TryEnqueue(() =>
+            {
+                ServerName = name;
+                IsValidServer = !string.IsNullOrEmpty(name);
+                ValidationResultIcon = IsValidServer ? "\ue73e" : "\ue711";
+            });
+        }
+        catch
+        {
+            if (cancellationToken.IsCancellationRequested)
+                return;
+
+            App.DispatcherQueue.TryEnqueue(() =>
+            {
+                ValidationResultIcon = "\ue711";
+                IsValidServer = false;
+            });
+        }
+        finally
+        {
+            App.DispatcherQueue.TryEnqueue(() => ValidatingServer = false);
+        }
     }
 }

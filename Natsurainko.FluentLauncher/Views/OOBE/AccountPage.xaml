@@ -2,9 +2,11 @@
     x:Class="Natsurainko.FluentLauncher.Views.OOBE.AccountPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:acc="using:Nrk.FluentCore.Authentication"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.OOBE"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:Nrk.FluentCore.Authentication"
     xmlns:userControls="using:Natsurainko.FluentLauncher.UserControls"
@@ -105,9 +107,11 @@
                                 <TextBlock
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="{x:Bind Type, Converter={StaticResource AccountInfoConverter}}"
                                     TextTrimming="CharacterEllipsis"
-                                    TextWrapping="NoWrap" />
+                                    TextWrapping="NoWrap">
+                                    <Run Text="{x:Bind local:AccountPage.GetAccountTypeName(Type), Mode=OneWay}" />
+                                    <Run Text="{x:Bind local:AccountPage.TryGetYggdrasilServerName((acc:Account)), Mode=OneWay}" />
+                                </TextBlock>
                             </StackPanel>
                             <Button
                                 x:Name="DeleteButton"

@@ -3,17 +3,16 @@ using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
 using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Navigation;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Common;
-using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Authentication;
-using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -27,7 +26,6 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     [SettingsProvider]
     private readonly SettingsService _settingsService;
     private readonly AccountService _accountService;
-    private readonly AuthenticationService _authenticationService;
     private readonly NotificationService _notificationService;
     private readonly INavigationService _navigationService;
     private readonly CacheSkinService _cacheSkinService;
@@ -36,7 +34,6 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     public AccountViewModel(
         SettingsService settingsService,
         AccountService accountService,
-        AuthenticationService authenticationService,
         NotificationService notificationService,
         INavigationService navigationService,
         CacheSkinService cacheSkinService,
@@ -44,7 +41,6 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     {
         _settingsService = settingsService;
         _accountService = accountService;
-        _authenticationService = authenticationService;
         _notificationService = notificationService;
         _navigationService = navigationService;
         _cacheSkinService = cacheSkinService;
@@ -65,19 +61,12 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     public partial bool AutoRefresh { get; set; }
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(SkinFile))]
     [NotifyPropertyChangedFor(nameof(IsOfflineAccount))]
     public partial Account ActiveAccount { get; set; }
+
     public ReadOnlyObservableCollection<Account> Accounts { get; init; }
 
-    public string SkinFile => _cacheSkinService.GetSkinFilePath(ActiveAccount);
-
     public bool IsOfflineAccount => ActiveAccount.Type == AccountType.Offline;
-
-    partial void OnActiveAccountChanged(Account value)
-    {
-        //if (value is not null) _accountService.ActivateAccount(value);
-    }
 
     [RelayCommand]
     public async Task Login() => await _dialogs.ShowAsync("AuthenticationWizardDialog");
@@ -105,12 +94,57 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     [RelayCommand]
     public void OpenSkinFile()
     {
-        if (!File.Exists(SkinFile))
-            return;
+        string skinFilePath = GetSkinFilePath(ActiveAccount);
+        if (!File.Exists(skinFilePath)) return;
 
-        using var process = Process.Start(new ProcessStartInfo("explorer.exe", $"/select,{SkinFile}"));
+        using var process = Process.Start(new ProcessStartInfo("explorer.exe", $"/select,{skinFilePath}"));
     }
 
     [RelayCommand]
     public void GoToSkinPage() => _navigationService.NavigateTo("Settings/Account/Skin");
+
+    #region Converters Methods
+
+    internal Visibility IsLoadLastRefreshCard(AccountType accountType) => accountType == AccountType.Microsoft ? Visibility.Visible : Visibility.Collapsed;
+
+    internal string GetAccountTypeName(AccountType accountType)
+    {
+        string account = LocalizedStrings.Converters__Account;
+
+        if (!ApplicationLanguages.PrimaryLanguageOverride.StartsWith("zh-"))
+            account = " " + account;
+
+        return accountType switch
+        {
+            AccountType.Microsoft => LocalizedStrings.Converters__Microsoft + account,
+            AccountType.Yggdrasil => LocalizedStrings.Converters__Yggdrasil + account,
+            _ => LocalizedStrings.Converters__Offline + account,
+        };
+    }
+
+    internal string TryGetLastRefreshTime(Account account)
+    {
+        if (account is MicrosoftAccount microsoftAccount)
+        {
+            return microsoftAccount.LastRefreshTime.ToLongTimeString()
+                + ", " + microsoftAccount.LastRefreshTime.ToLongDateString();
+        }
+
+        return string.Empty;
+    }
+
+    internal string TryGetYggdrasilServerName(Account account)
+    {
+        if (account is YggdrasilAccount yggdrasilAccount)
+        {
+            if (yggdrasilAccount.MetaData.TryGetValue("server_name", out var serverName))
+                return serverName;
+        }
+
+        return string.Empty;
+    }
+
+    internal string GetSkinFilePath(Account account) => _cacheSkinService.GetSkinFilePath(account);
+
+    #endregion
 }

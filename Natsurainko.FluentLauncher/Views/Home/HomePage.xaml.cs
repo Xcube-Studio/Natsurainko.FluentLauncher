@@ -1,9 +1,11 @@
-using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Home;
+using Nrk.FluentCore.Authentication;
 using Windows.Foundation;
 using Windows.UI;
 
@@ -58,11 +60,7 @@ public sealed partial class HomePage : Page
         }
 
         if (_settingsService.HomeLaunchButtonSize == 1)
-        {
             LaunchButton.VerticalAlignment = VerticalAlignment.Stretch;
-            //LaunchButton.FontSize = 16;
-            //LaunchButton.FontWeight = FontWeights.Bold;
-        }
 
         LaunchButton.Focus(FocusState.Programmatic);
     }
@@ -96,4 +94,34 @@ public sealed partial class HomePage : Page
             listView.Width = 430;
         }
     }
+
+    #region Converters Methods
+
+    internal static string GetAccountTypeName(AccountType accountType)
+    {
+        string account = LocalizedStrings.Converters__Account;
+
+        if (!ApplicationLanguages.PrimaryLanguageOverride.StartsWith("zh-"))
+            account = " " + account;
+
+        return accountType switch
+        {
+            AccountType.Microsoft => LocalizedStrings.Converters__Microsoft + account,
+            AccountType.Yggdrasil => LocalizedStrings.Converters__Yggdrasil + account,
+            _ => LocalizedStrings.Converters__Offline + account,
+        };
+    }
+
+    internal static string TryGetYggdrasilServerName(Account account)
+    {
+        if (account is YggdrasilAccount yggdrasilAccount)
+        {
+            if (yggdrasilAccount.MetaData.TryGetValue("server_name", out var serverName))
+                return serverName;
+        }
+
+        return string.Empty;
+    }
+
+    #endregion
 }

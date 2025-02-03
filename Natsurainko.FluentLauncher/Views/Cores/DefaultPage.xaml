@@ -35,6 +35,7 @@
         </Grid.RowDefinitions>
 
         <controls:WrapPanel
+            Name="wrapPanel"
             MaxWidth="1000"
             Margin="{ThemeResource PageMarginCoresPage}"
             HorizontalSpacing="15"
@@ -58,7 +59,7 @@
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                     Glyph="&#xE71C;" />
                 <TextBlock
-                    x:Uid="Cores_CoresPage_Text1"
+                    x:Uid="Cores_DefaultPage_Text1"
                     VerticalAlignment="Center"
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                     Text="Filter: " />
@@ -70,7 +71,7 @@
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                     Glyph="&#xE8CB;" />
                 <TextBlock
-                    x:Uid="Cores_CoresPage_Text2"
+                    x:Uid="Cores_DefaultPage_Text2"
                     VerticalAlignment="Center"
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                     Text="Sort by: " />
@@ -205,6 +206,7 @@
                     <VisualState.Setters>
                         <Setter Target="stackPanel.Margin" Value="20, 10, 20, 20" />
                         <Setter Target="scrollViewer.Padding" Value="20, 0" />
+                        <Setter Target="wrapPanel.Margin" Value="20, 0, 20, 16" />
                         <Setter Target="itemsRepeater.Margin" Value="0, 0, 0, 20" />
                     </VisualState.Setters>
                 </VisualState>

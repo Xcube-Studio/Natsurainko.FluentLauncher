@@ -41,7 +41,7 @@
                 Orientation="Horizontal"
                 Spacing="10">
                 <ProgressRing Width="16" Height="16" />
-                <TextBlock Text="Validating Server" />
+                <TextBlock x:Uid="AuthenticationWizard_EnterYggdrasilProfilePage_Text1" Text="Validating Server" />
             </StackPanel>
             <StackPanel
                 x:Name="ValidationResultPanel"
@@ -50,12 +50,13 @@
                 Spacing="10">
                 <FontIcon FontSize="14" Glyph="{x:Bind VM.ValidationResultIcon, Mode=OneWay}" />
                 <TextBlock x:Name="SucceedValidationText" x:Load="{x:Bind VM.IsValidServer, Mode=OneWay}">
-                    <Run Text="Found:" />
+                    <Run x:Uid="AuthenticationWizard_EnterYggdrasilProfilePage_Text2" Text="Found:" />
                     <Run Text="{x:Bind VM.ServerName, Mode=OneWay}" />
                 </TextBlock>
 
                 <TextBlock
                     x:Name="FailedValidationText"
+                    x:Uid="AuthenticationWizard_EnterYggdrasilProfilePage_Text3"
                     x:Load="{x:Bind VM.IsValidServer, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}"
                     Text="Invalid Server Url" />
             </StackPanel>

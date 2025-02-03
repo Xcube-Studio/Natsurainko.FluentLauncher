@@ -53,18 +53,22 @@
                     <controls:SettingsExpander.Items>
                         <controls:SettingsCard>
                             <controls:SettingsCard.Header>
-                                <TextBlock>
-                                    <Run Text="Uuid:" />
-                                    <Run Text="{x:Bind VM.ActiveAccount.Uuid, Mode=OneWay}" />
-                                </TextBlock>
+                                <RichTextBlock>
+                                    <Paragraph>
+                                        <Run x:Uid="Settings_AccountPage_Text3" Text="Uuid:" />
+                                        <Run Text="{x:Bind VM.ActiveAccount.Uuid, Mode=OneWay}" />
+                                    </Paragraph>
+                                </RichTextBlock>
                             </controls:SettingsCard.Header>
                         </controls:SettingsCard>
                         <controls:SettingsCard Visibility="{x:Bind VM.IsLoadLastRefreshCard(VM.ActiveAccount.Type), Mode=OneWay}">
                             <controls:SettingsCard.Header>
-                                <TextBlock>
-                                    <Run x:Uid="Settings_AccountPage_SH1" Text="Last Refresh Time:" />
-                                    <Run Text="{x:Bind VM.TryGetLastRefreshTime(VM.ActiveAccount), Mode=OneWay}" />
-                                </TextBlock>
+                                <RichTextBlock>
+                                    <Paragraph>
+                                        <Run x:Uid="Settings_AccountPage_Text4" Text="Last Refresh Time:" />
+                                        <Run Text="{x:Bind VM.TryGetLastRefreshTime(VM.ActiveAccount), Mode=OneWay}" />
+                                    </Paragraph>
+                                </RichTextBlock>
                             </controls:SettingsCard.Header>
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>

@@ -728,7 +728,10 @@
                     <ToggleSwitch IsOn="{x:Bind VM.UseBackgroundMask, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
-                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Home" />
+                <TextBlock
+                    x:Uid="Settings_AppearancePage_T4"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Home" />
 
                 <controls:SettingsCard
                     x:Uid="Settings_AppearancePage_Card4"
@@ -738,11 +741,11 @@
                     <ToggleSwitch IsOn="{x:Bind VM.UseHomeControlsMask, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
-                <controls:SettingsCard Header="Home Launch Button Size" HeaderIcon="{xh:FontIcon Glyph=&#xe743;}">
-                    <ComboBox SelectedIndex="{x:Bind VM.HomeLaunchButtonSize, Mode=TwoWay}">
-                        <x:String>Normal</x:String>
-                        <x:String>Large</x:String>
-                    </ComboBox>
+                <controls:SettingsCard
+                    x:Uid="Settings_AppearancePage_Card5"
+                    Header="Home Launch Button Size"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xe743;}">
+                    <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items3}" SelectedIndex="{x:Bind VM.HomeLaunchButtonSize, Mode=TwoWay}" />
                 </controls:SettingsCard>
             </StackPanel>
         </Border>

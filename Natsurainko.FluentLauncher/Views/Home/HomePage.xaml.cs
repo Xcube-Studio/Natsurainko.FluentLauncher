@@ -6,6 +6,7 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Home;
 using Nrk.FluentCore.Authentication;
+using System;
 using Windows.Foundation;
 using Windows.UI;
 
@@ -32,16 +33,15 @@ public sealed partial class HomePage : Page
                 ? new SolidColorBrush(Color.FromArgb(255, 26, 26, 26))
                 : new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
 
-            LaunchButton.Shadow = SharedShadow;
             LaunchButton.Translation += new System.Numerics.Vector3(0, 0, 16);
+            InstanceSelectorArea.Translation += new System.Numerics.Vector3(0, 0, 16);
+            AccountSelectorArea.Translation += new System.Numerics.Vector3(0, 0, 16);
+            LaunchingInfoArea.Translation += new System.Numerics.Vector3(0, 0, 16);
 
-            DropDownButton.Shadow = SharedShadow;
-            DropDownButton.Translation += new System.Numerics.Vector3(0, 0, 16);
-            DropDownButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
+            InstanceSelectorArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
+            AccountSelectorArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
+            LaunchingInfoArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
 
-            AccountSelectorButton.Shadow = SharedShadow;
-            AccountSelectorButton.Translation += new System.Numerics.Vector3(0, 0, 16);
-            HyperlinkButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
             AccountSelectorButton.Foreground = foregroundBrush;
 
             this.ActualThemeChanged += (_, e) =>
@@ -52,15 +52,39 @@ public sealed partial class HomePage : Page
                     ? new SolidColorBrush(Color.FromArgb(255, 26, 26, 26))
                     : new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
 
-                DropDownButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
+                InstanceSelectorArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
+                AccountSelectorArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
+                LaunchingInfoArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
 
-                HyperlinkButtonArea.Background = themeDictionaries["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
                 AccountSelectorButton.Foreground = foregroundBrush;
             };
         }
 
         if (_settingsService.HomeLaunchButtonSize == 1)
+        {
+            LaunchButtonIcon.FontSize = 18;
+            LaunchButton.FontSize = 16;
+
             LaunchButton.VerticalAlignment = VerticalAlignment.Stretch;
+        }
+
+        InstanceSelectorGrid.TranslationTransition = new Vector3Transition()
+        {
+            Duration = TimeSpan.FromMilliseconds(500)
+        };
+        LaunchingInfoGrid.TranslationTransition = new Vector3Transition()
+        {
+            Duration = TimeSpan.FromMilliseconds(500)
+        };
+
+        InstanceSelectorGrid.OpacityTransition = new ScalarTransition()
+        {
+            Duration = TimeSpan.FromMilliseconds(250)
+        };
+        LaunchingInfoGrid.OpacityTransition = new ScalarTransition()
+        {
+            Duration = TimeSpan.FromMilliseconds(250)
+        };
 
         LaunchButton.Focus(FocusState.Programmatic);
     }

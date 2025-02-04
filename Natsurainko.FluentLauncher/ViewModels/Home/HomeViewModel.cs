@@ -12,26 +12,35 @@ using Natsurainko.FluentLauncher.Services.UI.Data;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
+using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.GameManagement.Instances;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
+using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Home;
 
-internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAccountChangedMessage>
+internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAccountChangedMessage>, IRecipient<TrackLaunchTaskChangedMessage>
 {
-    public ReadOnlyObservableCollection<MinecraftInstance> MinecraftInstances { get; private set; }
-
     private readonly GameService _gameService;
     private readonly AccountService _accountService;
     private readonly LaunchService _launchService;
     private readonly INavigationService _navigationService;
     private readonly SearchProviderService _searchProviderService;
     private readonly IDialogActivationService<ContentDialogResult> _dialogService;
+
+    private CancellationTokenSource _cancellationTokenSource;
+
+    public ReadOnlyObservableCollection<MinecraftInstance> MinecraftInstances { get; private set; }
+
+    public ReadOnlyObservableCollection<Account> Accounts { get; init; }
+
+    private static LaunchTaskViewModel TrackingTask { get; set; } = null;
 
     public HomeViewModel(
         GameService gameService,
@@ -57,34 +66,81 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAcc
         IsActive = true;
     }
 
-    public Visibility AccountTag => ActiveAccount is null ? Visibility.Collapsed : Visibility.Visible;
-
-    public string DropDownButtonDisplayText => ActiveMinecraftInstance == null
-        ? LocalizedStrings.Home_HomePage__NoCore
-        : ActiveMinecraftInstance.GetDisplayName();
-
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(AccountTag))]
     public partial Account ActiveAccount { get; set; }
-
-    public ReadOnlyObservableCollection<Account> Accounts { get; init; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(DropDownButtonDisplayText))]
     public partial MinecraftInstance ActiveMinecraftInstance { get; set; }
 
-    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-    {
-        base.OnPropertyChanged(e);
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(LaunchButtonText))]
+    [NotifyPropertyChangedFor(nameof(LaunchButtonIcon))]
+    public partial bool IsTrackingTask { get; set; }
 
-        if (e.PropertyName == nameof(ActiveMinecraftInstance) && ActiveMinecraftInstance is not null)
-            _gameService.ActivateGame(ActiveMinecraftInstance);
+    [ObservableProperty]
+    public partial Vector3 LaunchingInfoGridVector3 { get; set; } = new(480, 0, 0);
+
+    [ObservableProperty]
+    public partial Vector3 InstanceSelectorGridVector3 { get; set; } = new();
+
+    [ObservableProperty]
+    public partial double LaunchingInfoGridOpacity { get; set; } = 0;
+
+    [ObservableProperty]
+    public partial double InstanceSelectorGridOpacity { get; set; } = 1;
+
+    public Visibility AccountTag => ActiveAccount is null ? Visibility.Collapsed : Visibility.Visible;
+
+    public string DropDownButtonDisplayText => ActiveMinecraftInstance == null ? LocalizedStrings.Home_HomePage__NoCore : ActiveMinecraftInstance.GetDisplayName();
+
+    public string LaunchButtonText => IsTrackingTask ? "Cancel Launching" : LocalizedStrings.Home_HomePage_LaunchButton_Text;
+
+    public string LaunchButtonIcon => IsTrackingTask ? "\uEE95" : "\uF5B0";
+
+    partial void OnIsTrackingTaskChanged(bool value)
+    {
+        if (IsTrackingTask)
+        {
+            InstanceSelectorGridVector3 = new Vector3(Convert.ToSingle(App.MainWindow.Width) + 120, 0, 0);
+            LaunchingInfoGridVector3 = new Vector3(0, 0, 0);
+
+            InstanceSelectorGridOpacity = 0;
+            LaunchingInfoGridOpacity = 1;
+        }
+        else
+        {
+            LaunchingInfoGridVector3 = new Vector3(480, 0, 0);
+            InstanceSelectorGridVector3 = new Vector3(0, 0, 0);
+
+            InstanceSelectorGridOpacity = 1;
+            LaunchingInfoGridOpacity = 0;
+        }
     }
 
-    private bool CanExecuteLaunch() => ActiveMinecraftInstance is not null;
+    partial void OnActiveMinecraftInstanceChanged(MinecraftInstance value)
+    {
+        if (value is not null)
+        {
+            _gameService.ActivateGame(value);
+        }
+    }
 
     [RelayCommand(CanExecute = nameof(CanExecuteLaunch))]
-    private void Launch() => _launchService.LaunchFromUI(ActiveMinecraftInstance);
+    private void Launch()
+    {
+        //=> _launchService.LaunchFromUI(ActiveMinecraftInstance);
+
+        if (IsTrackingTask)
+        {
+            
+
+            return;
+        }
+
+        _launchService.LaunchFromUIWithTrack(ActiveMinecraftInstance);
+    }
 
     [RelayCommand]
     public void GoToSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Launch");
@@ -94,6 +150,28 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAcc
 
     [RelayCommand]
     public async Task AddAccount() => await _dialogService.ShowAsync("AuthenticationWizardDialog");
+
+    [RelayCommand]
+    void Loaded()
+    {
+        if (!_searchProviderService.ContainsSuggestionProvider(this))
+            _searchProviderService.RegisterSuggestionProvider(this, ProviderSuggestions);
+
+        App.MainWindow.SizeChanged += SizeChanged;
+
+        if (TrackingTask != null && TrackingTask.TaskState == TaskState.Running)
+            IsTrackingTask = true;
+        else TrackingTask = null;
+    }
+
+    [RelayCommand]
+    void Unloaded()
+    {
+        _searchProviderService.UnregisterSuggestionProvider(this);
+
+        App.MainWindow.SizeChanged -= SizeChanged;
+        IsActive = false;
+    }
 
     IEnumerable<Suggestion> ProviderSuggestions(string searchText)
     {
@@ -119,21 +197,23 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAcc
         }
     }
 
-    [RelayCommand]
-    void Loaded()
-    {
-        if (!_searchProviderService.ContainsSuggestionProvider(this))
-            _searchProviderService.RegisterSuggestionProvider(this, ProviderSuggestions);
-    }
-
-    [RelayCommand]
-    void Unloaded()
-    {
-        _searchProviderService.UnregisterSuggestionProvider(this);
-    }
-
     void IRecipient<ActiveAccountChangedMessage>.Receive(ActiveAccountChangedMessage message)
     {
         ActiveAccount = message.Value;
     }
+
+    void IRecipient<TrackLaunchTaskChangedMessage>.Receive(TrackLaunchTaskChangedMessage message)
+    {
+        TrackingTask = message.Value;
+        App.DispatcherQueue.TryEnqueue(() => IsTrackingTask = message.Value != null);
+    }
+
+    void SizeChanged(object s, WindowSizeChangedEventArgs e)
+    {
+        if (!IsTrackingTask) return;
+
+        InstanceSelectorGridVector3 = new Vector3(Convert.ToSingle(App.MainWindow.Width) + 120, 0, 0);
+    }
+
+    bool CanExecuteLaunch() => ActiveMinecraftInstance is not null;
 }

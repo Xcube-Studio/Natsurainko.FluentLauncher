@@ -80,6 +80,28 @@ internal class LaunchService
         WeakReferenceMessenger.Default.Send(new GlobalNavigationMessage("Tasks/Launch"));
     }
 
+    public void LaunchFromUIWithTrack(MinecraftInstance instance)
+    {
+        var viewModel = new LaunchTaskViewModel(instance, this);
+        viewModel.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == "TaskState")
+            {
+                TaskListStateChanged?.Invoke(this, e);
+
+                if (viewModel.TaskState == TaskState.Prepared)
+                    return;
+
+                if (viewModel.TaskState != TaskState.Running || viewModel.ProcessLaunched)
+                    WeakReferenceMessenger.Default.Send(new TrackLaunchTaskChangedMessage(null));
+            }
+        };
+        App.DispatcherQueue.TryEnqueue(() => LaunchTasks.Insert(0, viewModel));
+
+        viewModel.Start();
+        WeakReferenceMessenger.Default.Send(new TrackLaunchTaskChangedMessage(viewModel));
+    }
+
     public async Task<MinecraftProcess> LaunchAsync(
         MinecraftInstance instance,
         DataReceivedEventHandler? outputDataReceivedHandler = null,

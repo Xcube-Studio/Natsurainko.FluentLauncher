@@ -393,8 +393,8 @@
                                                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                                         <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind Name}" />
                                                         <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Style="{ThemeResource CaptionTextBlockStyle}">
-                                                            <Run Text="{x:Bind local:HomePage.GetAccountTypeName(Type), Mode=OneWay}" />
-                                                            <Run Text="{x:Bind local:HomePage.TryGetYggdrasilServerName((acc:Account)), Mode=OneWay}" />
+                                                            <Run Text="{x:Bind local:HomePage.GetAccountTypeName(Type)}" />
+                                                            <Run Text="{x:Bind local:HomePage.TryGetYggdrasilServerName((acc:Account))}" />
                                                         </TextBlock>
                                                     </StackPanel>
                                                 </Grid>

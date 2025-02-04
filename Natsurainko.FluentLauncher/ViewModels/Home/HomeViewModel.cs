@@ -130,6 +130,8 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAcc
     void Unloaded()
     {
         _searchProviderService.UnregisterSuggestionProvider(this);
+
+        IsActive = false;
     }
 
     void IRecipient<ActiveAccountChangedMessage>.Receive(ActiveAccountChangedMessage message)

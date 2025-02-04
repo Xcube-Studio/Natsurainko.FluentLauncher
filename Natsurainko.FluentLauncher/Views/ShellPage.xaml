@@ -360,7 +360,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="Column0" Width="Auto" />
                 <ColumnDefinition x:Name="Column1" Width="1*" />
-                <ColumnDefinition x:Name="Column2" Width="144" />
+                <ColumnDefinition x:Name="Column2" Width="130" />
             </Grid.ColumnDefinitions>
 
             <Border

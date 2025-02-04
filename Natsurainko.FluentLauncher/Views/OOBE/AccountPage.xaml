@@ -109,8 +109,8 @@
                                     Style="{ThemeResource CaptionTextBlockStyle}"
                                     TextTrimming="CharacterEllipsis"
                                     TextWrapping="NoWrap">
-                                    <Run Text="{x:Bind local:AccountPage.GetAccountTypeName(Type), Mode=OneWay}" />
-                                    <Run Text="{x:Bind local:AccountPage.TryGetYggdrasilServerName((acc:Account)), Mode=OneWay}" />
+                                    <Run Text="{x:Bind local:AccountPage.GetAccountTypeName(Type)}" />
+                                    <Run Text="{x:Bind local:AccountPage.TryGetYggdrasilServerName((acc:Account))}" />
                                 </TextBlock>
                             </StackPanel>
                             <Button

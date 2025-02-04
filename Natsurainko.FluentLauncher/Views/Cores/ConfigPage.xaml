@@ -143,8 +143,8 @@
                                                     Style="{ThemeResource CaptionTextBlockStyle}"
                                                     TextTrimming="CharacterEllipsis"
                                                     TextWrapping="NoWrap">
-                                                    <Run Text="{x:Bind local:ConfigPage.GetAccountTypeName(Type), Mode=OneWay}" />
-                                                    <Run Text="{x:Bind local:ConfigPage.TryGetYggdrasilServerName((acc:Account)), Mode=OneWay}" />
+                                                    <Run Text="{x:Bind local:ConfigPage.GetAccountTypeName(Type)}" />
+                                                    <Run Text="{x:Bind local:ConfigPage.TryGetYggdrasilServerName((acc:Account))}" />
                                                 </TextBlock>
                                             </Grid>
                                         </DataTemplate>

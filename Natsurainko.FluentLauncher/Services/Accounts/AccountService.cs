@@ -131,7 +131,7 @@ internal class AccountService
 
     public void AddAccount(Account account)
     {
-        if (Accounts.Where(x => x.Type.Equals(account.Type) && x.Uuid.Equals(account.Uuid) && x.Name.Equals(account.Name)).Any())
+        if (Accounts.Any(x => x.ProfileEquals(account)))
             throw new Exception("There cannot be two accounts with the same account type and name and UUID");
 
         // _accounts.Add(account);

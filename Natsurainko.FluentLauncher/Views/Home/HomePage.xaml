@@ -337,8 +337,6 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="10" />
                     <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Grid VerticalAlignment="Bottom">
                     <Border
@@ -477,7 +475,7 @@
                 </Grid>
                 <Button
                     x:Name="LaunchButton"
-                    Grid.Column="4"
+                    Grid.Column="2"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
                     Command="{x:Bind VM.LaunchCommand}"
@@ -503,13 +501,15 @@
                             VerticalAlignment="Center"
                             FontSize="14"
                             Glyph="{x:Bind VM.LaunchButtonIcon, Mode=OneWay}" />
-                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                            <TextBlock
-                                FontSize="{x:Bind LaunchButton.FontSize, Mode=OneWay}"
-                                FontWeight="{x:Bind LaunchButton.FontWeight, Mode=OneWay}"
-                                Style="{ThemeResource BodyStrongTextBlockStyle}"
-                                Text="{x:Bind VM.LaunchButtonText, Mode=OneWay}" />
-                        </StackPanel>
+                        <TextBlock
+                            Grid.Column="2"
+                            VerticalAlignment="Center"
+                            FontSize="{x:Bind LaunchButton.FontSize, Mode=OneWay}"
+                            FontWeight="{x:Bind LaunchButton.FontWeight, Mode=OneWay}"
+                            Style="{ThemeResource BodyStrongTextBlockStyle}"
+                            Text="{x:Bind VM.LaunchButtonText, Mode=OneWay}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
                     </Grid>
                 </Button>
             </Grid>

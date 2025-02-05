@@ -25,7 +25,7 @@ using System.Threading.Tasks;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Home;
 
-internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAccountChangedMessage>, IRecipient<TrackLaunchTaskChangedMessage>
+internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaunchTaskChangedMessage>
 {
     private readonly GameService _gameService;
     private readonly AccountService _accountService;
@@ -99,7 +99,7 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAcc
 
     public string DropDownButtonDisplayText => ActiveMinecraftInstance == null ? LocalizedStrings.Home_HomePage__NoCore : ActiveMinecraftInstance.GetDisplayName();
 
-    public string LaunchButtonText => IsTrackingTask ? "Cancel Launching" : LocalizedStrings.Home_HomePage_LaunchButton_Text;
+    public string LaunchButtonText => IsTrackingTask ? LocalizedStrings.Home_HomePage__CancelLaunch.Replace("Minecraft", TrackingTask.TaskTitle) : LocalizedStrings.Home_HomePage_LaunchButton_Text;
 
     public string LaunchButtonIcon => IsTrackingTask ? "\uEE95" : "\uF5B0";
 
@@ -131,6 +131,11 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAcc
         }
     }
 
+    partial void OnActiveAccountChanged(Account value)
+    {
+        _accountService.ActivateAccount(value);
+    }
+
     [RelayCommand(CanExecute = nameof(CanExecuteLaunch))]
     private void Launch()
     {
@@ -140,20 +145,30 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAcc
             return;
         }
 
-        if (!IsTrackingTask)
-            _launchService.LaunchFromUIWithTrack(ActiveMinecraftInstance);
+        if (IsTrackingTask)
+        {
+            if (TrackingTask.CanCancel)
+                TrackingTask.Cancel();
+            return;
+        }
 
-        TrackingTask.Cancel();
+        _launchService.LaunchFromUIWithTrack(ActiveMinecraftInstance);
     }
 
     [RelayCommand]
-    public void GoToSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Launch");
+    void GoToSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Launch");
 
     [RelayCommand]
-    public void GoToAccountSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Account");
+    void GoToAccountSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Account");
 
     [RelayCommand]
-    public async Task AddAccount() => await _dialogService.ShowAsync("AuthenticationWizardDialog");
+    async Task AddAccount() => await _dialogService.ShowAsync("AuthenticationWizardDialog");
+
+    [RelayCommand]
+    void Continue() => WeakReferenceMessenger.Default.Send(new TrackLaunchTaskChangedMessage(null));
+
+    [RelayCommand]
+    void ShowDetails() => _navigationService.NavigateTo("Tasks/Launch");
 
     [RelayCommand]
     void Loaded()
@@ -165,8 +180,8 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAcc
 
         if (_trackingTask != null && _trackingTask.TaskState == TaskState.Running)
         {
-            IsTrackingTask = true;
             TrackingTask = _trackingTask;
+            IsTrackingTask = true;
         }
         else _trackingTask = null;
     }
@@ -204,18 +219,18 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAcc
         }
     }
 
-    void IRecipient<ActiveAccountChangedMessage>.Receive(ActiveAccountChangedMessage message)
-    {
-        ActiveAccount = message.Value;
-    }
+    //void IRecipient<ActiveAccountChangedMessage>.Receive(ActiveAccountChangedMessage message)
+    //{
+    //    ActiveAccount = message.Value;
+    //}
 
     void IRecipient<TrackLaunchTaskChangedMessage>.Receive(TrackLaunchTaskChangedMessage message)
     {
         _trackingTask = message.Value;
         App.DispatcherQueue.TryEnqueue(() =>
         {
-            IsTrackingTask = message.Value != null;
             TrackingTask = message.Value;
+            IsTrackingTask = message.Value != null;
         });
     }
 

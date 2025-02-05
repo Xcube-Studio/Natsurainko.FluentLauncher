@@ -681,8 +681,14 @@
                                 <Run Text="{x:Bind VM.TrackingTask.CurrentStage.ProgressPercentage, Mode=OneWay}" />
                                 <Run Text="{x:Bind VM.TrackingTask.CurrentStage.TaskName, Mode=OneWay}" />
                             </TextBlock>
-                            <HyperlinkButton Grid.Column="2" Padding="8,2">
-                                <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="Details" />
+                            <HyperlinkButton
+                                Grid.Column="2"
+                                Padding="8,2"
+                                Command="{x:Bind VM.ShowDetailsCommand}">
+                                <TextBlock
+                                    x:Uid="Home_HomePage_Details"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                    Text="Details" />
                             </HyperlinkButton>
                         </Grid>
                         <Border
@@ -693,8 +699,14 @@
                             VerticalAlignment="Stretch"
                             BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
                             BorderThickness="1" />
-                        <HyperlinkButton Grid.Column="2" Padding="8,2">
-                            <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="Continue" />
+                        <HyperlinkButton
+                            Grid.Column="2"
+                            Padding="8,2"
+                            Command="{x:Bind VM.ContinueCommand}">
+                            <TextBlock
+                                x:Uid="Home_HomePage_Continue"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                Text="Continue" />
                         </HyperlinkButton>
                     </Grid>
                 </Grid>

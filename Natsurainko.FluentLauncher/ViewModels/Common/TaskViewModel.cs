@@ -131,7 +131,6 @@ internal abstract partial class TaskViewModel : ObservableObject
         _tokenSource.Cancel();
         TaskState = TaskState.Canceling;
     }
-
 }
 
 #region Download Task

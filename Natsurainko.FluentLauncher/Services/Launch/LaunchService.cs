@@ -49,9 +49,9 @@ internal class LaunchService
     private readonly AccountService _accountService;
     private readonly SettingsService _settingsService;
 
-    public ObservableCollection<LaunchTaskViewModel> LaunchTasks { get; } = [];
-
     public event EventHandler? TaskListStateChanged;
+
+    public ObservableCollection<LaunchTaskViewModel> LaunchTasks { get; } = [];
 
     public LaunchService(
         SettingsService settingsService,
@@ -61,8 +61,6 @@ internal class LaunchService
         _settingsService = settingsService;
         _accountService = accountService;
         _downloadService = downloadService;
-
-        LaunchTasks.CollectionChanged += (_, e) => TaskListStateChanged?.Invoke(this, e);
     }
 
     public void LaunchFromUI(MinecraftInstance instance)
@@ -74,9 +72,9 @@ internal class LaunchService
                 TaskListStateChanged?.Invoke(this, e);
         };
 
-        App.DispatcherQueue.TryEnqueue(() => LaunchTasks.Insert(0, viewModel));
-
+        InsertTask(viewModel);
         viewModel.Start();
+
         WeakReferenceMessenger.Default.Send(new GlobalNavigationMessage("Tasks/Launch"));
     }
 
@@ -90,18 +88,28 @@ internal class LaunchService
                 TaskListStateChanged?.Invoke(this, e);
 
                 if (viewModel.TaskState != TaskState.Prepared && viewModel.TaskState != TaskState.Running)
-                    WeakReferenceMessenger.Default.Send(new TrackLaunchTaskChangedMessage(null));
+                    WeakReferenceMessenger.Default.Send(new TrackLaunchTaskChangedMessage(null)); // Cancel the tracking task
             }
             else if (e.PropertyName == "WaitedForInputIdle")
             {
                 if (viewModel.WaitedForInputIdle)
-                    WeakReferenceMessenger.Default.Send(new TrackLaunchTaskChangedMessage(null));
+                    WeakReferenceMessenger.Default.Send(new TrackLaunchTaskChangedMessage(null)); // Cancel the tracking task
             }
         };
-        App.DispatcherQueue.TryEnqueue(() => LaunchTasks.Insert(0, viewModel));
 
+        InsertTask(viewModel);
         viewModel.Start();
+
         WeakReferenceMessenger.Default.Send(new TrackLaunchTaskChangedMessage(viewModel));
+    }
+
+    private void InsertTask(LaunchTaskViewModel task)
+    {
+        App.DispatcherQueue.TryEnqueue(() =>
+        {
+            LaunchTasks.Insert(0, task);
+            TaskListStateChanged?.Invoke(this, EventArgs.Empty);
+        });
     }
 
     public async Task<MinecraftProcess> LaunchAsync(

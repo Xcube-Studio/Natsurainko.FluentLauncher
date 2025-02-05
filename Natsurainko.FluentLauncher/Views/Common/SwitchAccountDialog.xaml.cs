@@ -18,11 +18,6 @@ internal sealed partial class SwitchAccountDialog : ContentDialog
         RequestedTheme = (ElementTheme)settingsService.DisplayTheme;
     }
 
-    private void ContentDialog_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-        ListView.ItemsSource = null; // Unload Binding to AccountService.Accounts
-    }
-
     #region Converter Methods
 
     internal static string GetAccountTypeName(AccountType accountType)

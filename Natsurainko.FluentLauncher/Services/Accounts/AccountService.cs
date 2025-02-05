@@ -1,4 +1,5 @@
-﻿using Natsurainko.FluentLauncher.Services.Network;
+﻿extern alias ToolkitV7;
+using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Nrk.FluentCore.Authentication;
@@ -12,6 +13,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
+using ToolkitV7::CommunityToolkit.WinUI;
 
 namespace Natsurainko.FluentLauncher.Services.Accounts;
 
@@ -126,7 +128,7 @@ internal class AccountService
 
     public void AddAccount(Account account)
     {
-        if (Accounts.Where(x => x.Type.Equals(account.Type) && x.Uuid.Equals(account.Uuid) && x.Name.Equals(account.Name)).Any())
+        if (Accounts.Any(x => x.ProfileEquals(account)))
             throw new Exception("There cannot be two accounts with the same account type and name and UUID");
 
         _accounts.Add(account);
@@ -139,7 +141,7 @@ internal class AccountService
         if (ActiveAccount == account && !dontActive)
             this.ActivateAccount(_accounts.Count != 0 ? _accounts[0] : null);
 
-        return result;
+         return result;
     }
 
     public void ActivateAccount(Account? account)
@@ -167,8 +169,12 @@ internal class AccountService
             ?? throw new Exception($"{account} does not exist in AccountService");
 
         bool isActiveAccount = ActiveAccount == oldAccount;
-        RemoveAccount(oldAccount, true);
-        AddAccount(refreshedAccount);
+
+        await App.DispatcherQueue.EnqueueAsync(() =>
+        {
+            RemoveAccount(oldAccount, true);
+            AddAccount(refreshedAccount);
+        });
 
         if (isActiveAccount)
             ActivateAccount(refreshedAccount);

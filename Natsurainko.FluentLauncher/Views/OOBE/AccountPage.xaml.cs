@@ -33,8 +33,6 @@ public sealed partial class AccountPage : Page
         void Page_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
             WeakReferenceMessenger.Default.Unregister<ActiveAccountChangedMessage>(vm!);
-
-            ListView.ItemsSource = null; // Unload Binding to AccountService.Accounts
         }
 
         this.Unloaded += Page_Unloaded;

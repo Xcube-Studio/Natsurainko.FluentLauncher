@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Data;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
@@ -29,6 +30,7 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAcc
     private readonly GameService _gameService;
     private readonly AccountService _accountService;
     private readonly LaunchService _launchService;
+    private readonly SettingsService _settingsService;
     private readonly INavigationService _navigationService;
     private readonly SearchProviderService _searchProviderService;
     private readonly IDialogActivationService<ContentDialogResult> _dialogService;
@@ -43,6 +45,7 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAcc
         GameService gameService,
         AccountService accountService,
         LaunchService launchService,
+        SettingsService settingsService,
         INavigationService navigationService,
         SearchProviderService searchProviderService,
         IDialogActivationService<ContentDialogResult> dialogService)
@@ -50,6 +53,7 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAcc
         _accountService = accountService;
         _gameService = gameService;
         _launchService = launchService;
+        _settingsService = settingsService;
         _navigationService = navigationService;
         _searchProviderService = searchProviderService;
         _dialogService = dialogService;
@@ -130,16 +134,16 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAcc
     [RelayCommand(CanExecute = nameof(CanExecuteLaunch))]
     private void Launch()
     {
-        //=> _launchService.LaunchFromUI(ActiveMinecraftInstance);
-
-        if (IsTrackingTask)
+        if (!_settingsService.EnableHomeLaunchTaskTrack)
         {
-            
-
+            _launchService.LaunchFromUI(ActiveMinecraftInstance);
             return;
         }
 
-        _launchService.LaunchFromUIWithTrack(ActiveMinecraftInstance);
+        if (!IsTrackingTask)
+            _launchService.LaunchFromUIWithTrack(ActiveMinecraftInstance);
+
+        TrackingTask.Cancel();
     }
 
     [RelayCommand]

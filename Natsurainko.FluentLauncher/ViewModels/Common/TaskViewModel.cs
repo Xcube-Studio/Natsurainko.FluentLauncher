@@ -126,7 +126,7 @@ internal abstract partial class TaskViewModel : ObservableObject
     protected abstract void Run();
 
     [RelayCommand(CanExecute = nameof(CanCancel))]
-    void Cancel()
+    public void Cancel()
     {
         _tokenSource.Cancel();
         TaskState = TaskState.Canceling;

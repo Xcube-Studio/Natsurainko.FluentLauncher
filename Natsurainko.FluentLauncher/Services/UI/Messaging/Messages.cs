@@ -27,3 +27,13 @@ class GlobalNavigationMessage : ValueChangedMessage<string>
 {
     public GlobalNavigationMessage(string pageKey) : base(pageKey) { }
 }
+
+class AccountAddedMessage : ValueChangedMessage<Account>
+{
+    public AccountAddedMessage(Account value) : base(value) { }
+}
+
+class AccountRemovedMessage : ValueChangedMessage<Account>
+{
+    public AccountRemovedMessage(Account value) : base(value) { }
+}

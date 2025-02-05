@@ -1,6 +1,8 @@
-﻿using Natsurainko.FluentLauncher.Services.Network;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Nrk.FluentCore.Authentication;
 using System;
 using System.Collections.Generic;
@@ -74,6 +76,9 @@ internal class AccountService
             ActivateAccount(_accounts.Where(x => x.Uuid == uuid).FirstOrDefault());
 
         _accounts.CollectionChanged += (_, e) => SaveData();
+
+        WeakReferenceMessenger.Default.Register<AccountAddedMessage>(this, (r, m) => App.DispatcherQueue.TryEnqueue(() => _accounts.Add(m.Value)));
+        WeakReferenceMessenger.Default.Register<AccountRemovedMessage>(this, (r, m) => App.DispatcherQueue.TryEnqueue(() => _accounts.Remove(m.Value)));
     }
 
     /// <summary>
@@ -129,17 +134,19 @@ internal class AccountService
         if (Accounts.Where(x => x.Type.Equals(account.Type) && x.Uuid.Equals(account.Uuid) && x.Name.Equals(account.Name)).Any())
             throw new Exception("There cannot be two accounts with the same account type and name and UUID");
 
-        _accounts.Add(account);
+        // _accounts.Add(account);
+        WeakReferenceMessenger.Default.Send(new AccountAddedMessage(account));
     }
 
-    public bool RemoveAccount(Account account, bool dontActive = false)
+    public void RemoveAccount(Account account, bool dontActive = false)
     {
-        bool result = _accounts.Remove(account);
+        // bool result = _accounts.Remove(account);
+        WeakReferenceMessenger.Default.Send(new AccountRemovedMessage(account));
 
         if (ActiveAccount == account && !dontActive)
             this.ActivateAccount(_accounts.Count != 0 ? _accounts[0] : null);
 
-        return result;
+        // return result;
     }
 
     public void ActivateAccount(Account? account)

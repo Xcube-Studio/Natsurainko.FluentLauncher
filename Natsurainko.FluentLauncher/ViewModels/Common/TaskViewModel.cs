@@ -749,6 +749,9 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     public partial bool ProcessExited { get; set; }
 
     [ObservableProperty]
+    public partial bool WaitedForInputIdle { get; set; }
+
+    [ObservableProperty]
     public partial bool Crashed { get; set; } = false;
 
     [ObservableProperty]
@@ -834,8 +837,13 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     void AfterLaunchedProcess()
     {
         App.DispatcherQueue.TryEnqueue(() => ProcessLaunched = true);
-
         McProcess.Process.Exited += Process_Exited;
+
+        Task.Run(() =>
+        {
+            McProcess.Process.WaitForInputIdle(30 * 1000);
+            App.DispatcherQueue.TryEnqueue(() => WaitedForInputIdle = true);
+        });
     }
 
     void Process_Exited(object sender, EventArgs e)

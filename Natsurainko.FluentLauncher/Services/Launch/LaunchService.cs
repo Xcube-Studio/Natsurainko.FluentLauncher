@@ -92,9 +92,9 @@ internal class LaunchService
                 if (viewModel.TaskState != TaskState.Prepared && viewModel.TaskState != TaskState.Running)
                     WeakReferenceMessenger.Default.Send(new TrackLaunchTaskChangedMessage(null));
             }
-            else if (e.PropertyName == "ProcessLaunched")
+            else if (e.PropertyName == "WaitedForInputIdle")
             {
-                if (viewModel.ProcessLaunched)
+                if (viewModel.WaitedForInputIdle)
                     WeakReferenceMessenger.Default.Send(new TrackLaunchTaskChangedMessage(null));
             }
         };
@@ -554,28 +554,3 @@ record struct LaunchProgress(
         LaunchProcess
     }
 };
-
-
-/*
-public record struct LaunchProgress(
-    LaunchSessionState State,
-    DependencyResolver? DependencyResolver,
-    MinecraftProcess? MinecraftProcess,
-    Exception? Exception);
-
-public enum LaunchSessionState
-{
-    // Launch sequence
-    Created = 0,
-    Inspecting = 1,
-    Authenticating = 2,
-    CompletingResources = 3,
-    BuildingArguments = 4,
-    LaunchingProcess = 5,
-    GameRunning = 6,
-
-    GameExited = 7, // Game exited normally (exit code == 0)
-    Faulted = 8, // Failure before game started
-    Killed = 9, // Game killed by user
-    GameCrashed = 10 // Game crashed (exit code != 0)
-}*/

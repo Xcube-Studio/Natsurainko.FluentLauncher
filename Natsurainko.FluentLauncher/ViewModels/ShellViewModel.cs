@@ -5,10 +5,7 @@ using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.ViewModels.Common;
-using Natsurainko.FluentLauncher.ViewModels.OOBE;
-using System.Collections.ObjectModel;
 using System.Linq;
-
 
 namespace Natsurainko.FluentLauncher.ViewModels;
 
@@ -57,7 +54,7 @@ internal partial class ShellViewModel : ObservableObject, INavigationAware
         WeakReferenceMessenger.Default.Register(this!, (MessageHandler<object, GlobalNavigationMessage>)((r, m) =>
         {
             ShellViewModel vm = (r as ShellViewModel)!;
-            App.DispatcherQueue.TryEnqueue((Microsoft.UI.Dispatching.DispatcherQueueHandler)(() => vm.NavigationService.NavigateTo(m.Value)));
+            App.DispatcherQueue.TryEnqueue(() => vm.NavigationService.NavigateTo(m.Value));
         }));
     }
 

@@ -29,6 +29,13 @@ public sealed partial class AccountPage : Page
             vm.ActiveAccount = m.Value;
             vm.processingActiveAccountChangedMessage = false;
         });
+
+        void Page_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        {
+            WeakReferenceMessenger.Default.Unregister<ActiveAccountChangedMessage>(vm!);
+        }
+
+        this.Unloaded += Page_Unloaded;
     }
 
     #region Converters Methods
@@ -60,11 +67,4 @@ public sealed partial class AccountPage : Page
     }
 
     #endregion
-
-    private void Page_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-        var vm = this.DataContext as OOBEViewModel;
-
-        WeakReferenceMessenger.Default.Unregister<ActiveAccountChangedMessage>(vm!);
-    }
 }

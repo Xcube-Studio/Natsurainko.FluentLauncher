@@ -13,7 +13,6 @@
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.OOBE"
     d:DataContext="{d:DesignInstance vm:OOBEViewModel}"
     Loaded="Page_Loaded"
-    Unloaded="Page_Unloaded"
     mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Center">

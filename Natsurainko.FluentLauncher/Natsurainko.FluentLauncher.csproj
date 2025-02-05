@@ -78,6 +78,9 @@
     <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.1.240916" />
     <PackageReference Include="CommunityToolkit.WinUI.Media" Version="8.1.240916" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
+	  <PackageReference Include="CommunityToolkit.WinUI" Version="7.1.2">
+		  <Aliases>ToolkitV7</Aliases>
+	  </PackageReference>
     <PackageReference Include="HelixToolkit.SharpDX.Assimp" Version="2.25.0" />
     <PackageReference Include="HelixToolkit.WinUI" Version="2.25.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />

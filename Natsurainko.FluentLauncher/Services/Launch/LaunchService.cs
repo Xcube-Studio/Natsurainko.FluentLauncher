@@ -89,10 +89,12 @@ internal class LaunchService
             {
                 TaskListStateChanged?.Invoke(this, e);
 
-                if (viewModel.TaskState == TaskState.Prepared)
-                    return;
-
-                if (viewModel.TaskState != TaskState.Running || viewModel.ProcessLaunched)
+                if (viewModel.TaskState != TaskState.Prepared && viewModel.TaskState != TaskState.Running)
+                    WeakReferenceMessenger.Default.Send(new TrackLaunchTaskChangedMessage(null));
+            }
+            else if (e.PropertyName == "ProcessLaunched")
+            {
+                if (viewModel.ProcessLaunched)
                     WeakReferenceMessenger.Default.Send(new TrackLaunchTaskChangedMessage(null));
             }
         };

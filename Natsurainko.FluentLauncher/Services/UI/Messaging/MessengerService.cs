@@ -32,7 +32,7 @@ class MessengerService
         if (e == null)
             return;
 
-        WeakReferenceMessenger.Default.Send(new ActiveAccountChangedMessage(e));
+        App.DispatcherQueue.TryEnqueue(() => WeakReferenceMessenger.Default.Send(new ActiveAccountChangedMessage(e)));
     }
 
     private void SettingsService_SettingsStringValueChanged(SettingsContainer sender, SettingChangedEventArgs e)

@@ -677,9 +677,9 @@
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
                                 TextWrapping="NoWrap">
-                                <Run Text="(" /><Run Text="1" /><Run Text="/" /><Run Text="6" /><Run Text=")" />
-                                <Run Text="0%" />
-                                <Run Text="Check and complete the launch resources" />
+                                <Run Text="(" /><Run Text="{x:Bind VM.TrackingTask.CurrentStageNumber, Mode=OneWay}" /><Run Text="/" /><Run Text="5" /><Run Text=")" />
+                                <Run Text="{x:Bind VM.TrackingTask.CurrentStage.ProgressPercentage, Mode=OneWay}" />
+                                <Run Text="{x:Bind VM.TrackingTask.CurrentStage.TaskName, Mode=OneWay}" />
                             </TextBlock>
                             <HyperlinkButton Grid.Column="2" Padding="8,2">
                                 <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="Details" />

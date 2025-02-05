@@ -34,13 +34,11 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAcc
     private readonly SearchProviderService _searchProviderService;
     private readonly IDialogActivationService<ContentDialogResult> _dialogService;
 
-    private CancellationTokenSource _cancellationTokenSource;
+    private static LaunchTaskViewModel _trackingTask = null;
 
     public ReadOnlyObservableCollection<MinecraftInstance> MinecraftInstances { get; private set; }
 
     public ReadOnlyObservableCollection<Account> Accounts { get; init; }
-
-    private static LaunchTaskViewModel TrackingTask { get; set; } = null;
 
     public HomeViewModel(
         GameService gameService,
@@ -73,6 +71,9 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAcc
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(DropDownButtonDisplayText))]
     public partial MinecraftInstance ActiveMinecraftInstance { get; set; }
+
+    [ObservableProperty]
+    public partial LaunchTaskViewModel TrackingTask { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(LaunchButtonText))]
@@ -159,9 +160,12 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAcc
 
         App.MainWindow.SizeChanged += SizeChanged;
 
-        if (TrackingTask != null && TrackingTask.TaskState == TaskState.Running)
+        if (_trackingTask != null && _trackingTask.TaskState == TaskState.Running)
+        {
             IsTrackingTask = true;
-        else TrackingTask = null;
+            TrackingTask = _trackingTask;
+        }
+        else _trackingTask = null;
     }
 
     [RelayCommand]
@@ -204,8 +208,12 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<ActiveAcc
 
     void IRecipient<TrackLaunchTaskChangedMessage>.Receive(TrackLaunchTaskChangedMessage message)
     {
-        TrackingTask = message.Value;
-        App.DispatcherQueue.TryEnqueue(() => IsTrackingTask = message.Value != null);
+        _trackingTask = message.Value;
+        App.DispatcherQueue.TryEnqueue(() =>
+        {
+            IsTrackingTask = message.Value != null;
+            TrackingTask = message.Value;
+        });
     }
 
     void SizeChanged(object s, WindowSizeChangedEventArgs e)

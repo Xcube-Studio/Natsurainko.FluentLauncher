@@ -263,7 +263,7 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
     }
 
     void SizeChanged(object s, WindowSizeChangedEventArgs e)
-    
+    {
         if (!IsTrackingTask) return;
 
         InstanceSelectorGridVector3 = new Vector3(Convert.ToSingle(App.MainWindow.Width) + 120, 0, 0);

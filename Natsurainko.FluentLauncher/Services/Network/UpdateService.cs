@@ -49,7 +49,7 @@ internal partial class UpdateService
 
                 JsonNode jsonBody = JsonNode.Parse(match.Groups[1].Value)!;
 
-                if (jsonBody["build"]!.GetValue<int>() > App.Version.Revision)
+                if (Version.Parse(jsonBody["currentPreviewVersion"]!.GetValue<string>()) > Version.Parse(App.Version.GetVersionString()))
                     return (true, node);
             }
         }

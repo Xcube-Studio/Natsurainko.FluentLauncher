@@ -19,6 +19,7 @@ using Nrk.FluentCore.GameManagement.Instances;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Numerics;
 using System.Threading.Tasks;
 
@@ -35,6 +36,7 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
     private readonly SearchProviderService _searchProviderService;
     private readonly IDialogActivationService<ContentDialogResult> _dialogService;
 
+    private bool _registeredListener = false;
     private static LaunchTaskViewModel _trackingTask = null;
 
     public ReadOnlyObservableCollection<MinecraftInstance> MinecraftInstances { get; private set; }
@@ -79,7 +81,6 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
     public partial LaunchTaskViewModel TrackingTask { get; set; }
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(LaunchButtonText))]
     [NotifyPropertyChangedFor(nameof(LaunchButtonIcon))]
     public partial bool IsTrackingTask { get; set; }
 
@@ -95,11 +96,12 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
     [ObservableProperty]
     public partial double InstanceSelectorGridOpacity { get; set; } = 1;
 
+    [ObservableProperty]
+    public partial string LaunchButtonText { get; set; } = LocalizedStrings.Home_HomePage_LaunchButton_Text;
+
     public Visibility AccountTag => ActiveAccount is null ? Visibility.Collapsed : Visibility.Visible;
 
     public string DropDownButtonDisplayText => ActiveMinecraftInstance == null ? LocalizedStrings.Home_HomePage__NoCore : ActiveMinecraftInstance.GetDisplayName();
-
-    public string LaunchButtonText => IsTrackingTask ? LocalizedStrings.Home_HomePage__CancelLaunch.Replace("Minecraft", TrackingTask.TaskTitle) : LocalizedStrings.Home_HomePage_LaunchButton_Text;
 
     public string LaunchButtonIcon => IsTrackingTask ? "\uEE95" : "\uF5B0";
 
@@ -147,8 +149,11 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
 
         if (IsTrackingTask)
         {
-            if (TrackingTask.CanCancel)
+            if (TrackingTask.ProcessLaunched)
+                TrackingTask.KillProcess();
+            else if (TrackingTask.CanCancel)
                 TrackingTask.Cancel();
+
             return;
         }
 
@@ -182,14 +187,29 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
         {
             TrackingTask = _trackingTask;
             IsTrackingTask = true;
+            UpdateLaunchButtonText();
+
+            TrackingTask.PropertyChanged += TrackingTask_PropertyChanged;
+            _registeredListener = true;
         }
         else _trackingTask = null;
+    }
+
+    void TrackingTask_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == "ProcessLaunched")
+            UpdateLaunchButtonText();
     }
 
     [RelayCommand]
     void Unloaded()
     {
         _searchProviderService.UnregisterSuggestionProvider(this);
+        if (_registeredListener)
+        {
+            TrackingTask.PropertyChanged -= TrackingTask_PropertyChanged;
+            _registeredListener = false;
+        }
 
         App.MainWindow.SizeChanged -= SizeChanged;
         IsActive = false;
@@ -219,18 +239,26 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
         }
     }
 
-    //void IRecipient<ActiveAccountChangedMessage>.Receive(ActiveAccountChangedMessage message)
-    //{
-    //    ActiveAccount = message.Value;
-    //}
-
     void IRecipient<TrackLaunchTaskChangedMessage>.Receive(TrackLaunchTaskChangedMessage message)
     {
+        if (_registeredListener)
+        {
+            TrackingTask.PropertyChanged -= TrackingTask_PropertyChanged;
+            _registeredListener = false;
+        }
+
         _trackingTask = message.Value;
         App.DispatcherQueue.TryEnqueue(() =>
         {
             TrackingTask = message.Value;
             IsTrackingTask = message.Value != null;
+            UpdateLaunchButtonText();
+
+            if (IsTrackingTask)
+            {
+                TrackingTask.PropertyChanged += TrackingTask_PropertyChanged;
+                _registeredListener = true;
+            }
         });
     }
 
@@ -242,4 +270,18 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
     }
 
     bool CanExecuteLaunch() => ActiveMinecraftInstance is not null;
+
+    void UpdateLaunchButtonText()
+    {
+        if (IsTrackingTask)
+        {
+            if (TrackingTask.ProcessLaunched)
+                LaunchButtonText = LocalizedStrings.Home_HomePage__KillProcess.Replace("Minecraft", TrackingTask.TaskTitle);
+            else LaunchButtonText = LocalizedStrings.Home_HomePage__CancelLaunch.Replace("Minecraft", TrackingTask.TaskTitle);
+
+            return;
+        }
+
+        LaunchButtonText = LocalizedStrings.Home_HomePage_LaunchButton_Text;
+    }
 }

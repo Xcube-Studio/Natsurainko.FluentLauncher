@@ -840,7 +840,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
 
         Task.Run(() =>
         {
-            McProcess.Process.WaitForInputIdle(30 * 1000);
+            McProcess.Process.WaitForInputIdle(15 * 1000);
             App.DispatcherQueue.TryEnqueue(() => WaitedForInputIdle = true);
         });
     }
@@ -911,7 +911,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     }
 
     [RelayCommand(CanExecute = nameof(IsGameRunning))]
-    void KillProcess()
+    public void KillProcess()
     {
         _isMcProcessKilled = true;
         McProcess!.Process.KillProcessTree(); // not null when game is running

@@ -147,6 +147,9 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(Default = 0, Converter = typeof(JsonStringConverter<int>))]
     public partial int HomeLaunchButtonSize { get; set; }
 
+    [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
+    public partial bool EnableHomeLaunchTaskTrack { get; set; }
+
     #endregion
 
     #region Application Window

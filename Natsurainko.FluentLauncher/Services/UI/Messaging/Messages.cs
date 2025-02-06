@@ -1,7 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.Authentication;
 
 namespace Natsurainko.FluentLauncher.Services.UI.Messaging;
+
+class TrackLaunchTaskChangedMessage : ValueChangedMessage<LaunchTaskViewModel?>
+{
+    public TrackLaunchTaskChangedMessage(LaunchTaskViewModel? value) : base(value) { }
+}
 
 class ActiveAccountChangedMessage : ValueChangedMessage<Account>
 {

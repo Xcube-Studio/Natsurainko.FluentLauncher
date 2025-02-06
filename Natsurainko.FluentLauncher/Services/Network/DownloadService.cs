@@ -18,14 +18,14 @@ namespace Natsurainko.FluentLauncher.Services.Network;
 
 internal partial class DownloadService
 {
-    private readonly SettingsService _settingsService;
     private MultipartDownloader _downloader;
+    private readonly SettingsService _settingsService;
 
     public event EventHandler? TaskListStateChanged;
 
-    public IDownloader Downloader { get => _downloader; }
-
     public ObservableCollection<TaskViewModel> DownloadTasks { get; } = [];
+
+    public IDownloader Downloader { get => _downloader; }
 
     public DownloadService(SettingsService settingsService)
     {
@@ -37,12 +37,6 @@ internal partial class DownloadService
         _settingsService.CurrentDownloadSourceChanged += (_, _) => UpdateDownloader();
     }
 
-    void UpdateDownloader()
-    {
-        _downloader = new(HttpUtils.HttpClient, 1024 * 1024, 8, _settingsService.MaxDownloadThreads,
-            _settingsService.CurrentDownloadSource == "Bmclapi" ? DownloadMirrors.BmclApi : null);
-    }
-
     public void DownloadResourceFile(GameResourceFile file, string filePath)
     {
         var taskViewModel = new DownloadGameResourceTaskViewModel(file, filePath);
@@ -52,8 +46,7 @@ internal partial class DownloadService
                 TaskListStateChanged?.Invoke(this, e);
         };
 
-        App.DispatcherQueue.TryEnqueue(() => DownloadTasks.Insert(0, taskViewModel));
-
+        InsertTask(taskViewModel);
         taskViewModel.Start();
     }
 
@@ -69,9 +62,23 @@ internal partial class DownloadService
                 TaskListStateChanged?.Invoke(this, e);
         };
 
-        App.DispatcherQueue.TryEnqueue(() => DownloadTasks.Insert(0, taskViewModel));
-
+        InsertTask(taskViewModel);
         taskViewModel.Start();
+    }
+
+    private void InsertTask(TaskViewModel taskViewModel)
+    {
+        App.DispatcherQueue.TryEnqueue(() =>
+        {
+            DownloadTasks.Insert(0, taskViewModel);
+            TaskListStateChanged?.Invoke(this, EventArgs.Empty);
+        });
+    }
+
+    private void UpdateDownloader()
+    {
+        _downloader = new(HttpUtils.HttpClient, 1024 * 1024, 8, _settingsService.MaxDownloadThreads,
+            _settingsService.CurrentDownloadSource == "Bmclapi" ? DownloadMirrors.BmclApi : null);
     }
 
     IInstanceInstaller GetInstanceInstaller(

@@ -126,12 +126,11 @@ internal abstract partial class TaskViewModel : ObservableObject
     protected abstract void Run();
 
     [RelayCommand(CanExecute = nameof(CanCancel))]
-    void Cancel()
+    public void Cancel()
     {
         _tokenSource.Cancel();
         TaskState = TaskState.Canceling;
     }
-
 }
 
 #region Download Task
@@ -489,6 +488,22 @@ class LaunchProgressViewModel : IProgress<LaunchProgress>
 {
     public Dictionary<LaunchStage, LaunchStageViewModel> Stages { get; } = [];
 
+    private LaunchStage _currentStage;
+    public LaunchStage CurrentStage 
+    { 
+        get => _currentStage;
+        set 
+        {
+            if (_currentStage != value)
+            {
+                _currentStage = value;
+                CurrentStageChanged?.Invoke(this, Stages[value]);
+            }
+        } 
+    }
+
+    public event EventHandler<LaunchStageViewModel> CurrentStageChanged;
+
     public LaunchProgressViewModel()
     {
         foreach (var name in Enum.GetNames(typeof(LaunchStage)))
@@ -499,7 +514,12 @@ class LaunchProgressViewModel : IProgress<LaunchProgress>
     public virtual void Report(LaunchProgress value)
     {
         var vm = Stages[value.Stage];
-        App.DispatcherQueue.TryEnqueue(() => vm.UpdateProgress(value.StageProgress));
+
+        App.DispatcherQueue.TryEnqueue(() =>
+        {
+            CurrentStage = value.Stage;
+            vm.UpdateProgress(value.StageProgress);
+        });
     }
 }
 
@@ -585,7 +605,10 @@ partial class LaunchStageViewModel : ObservableObject
     public partial TaskState State { get; set; } = TaskState.Prepared;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ProgressPercentage))]
     public partial int TotalTasks { get; set; } = 1;
+
+    public string ProgressPercentage => (FinishedTasks / (double)TotalTasks).ToString("P1");
 
     public int FinishedTasks
     {
@@ -594,6 +617,7 @@ partial class LaunchStageViewModel : ObservableObject
         {
             _finishedTasks = value;
             OnPropertyChanged(nameof(FinishedTasks));
+            OnPropertyChanged(nameof(ProgressPercentage));
         }
     }
     private int _finishedTasks = 0;
@@ -625,6 +649,7 @@ partial class LaunchStageViewModel : ObservableObject
             case LaunchStageProgressType.IncrementFinishedTasks:
                 Interlocked.Increment(ref _finishedTasks);
                 OnPropertyChanged(nameof(FinishedTasks));
+                OnPropertyChanged(nameof(ProgressPercentage));
                 break;
 
             case LaunchStageProgressType.Finished:
@@ -699,6 +724,12 @@ internal partial class LaunchTaskViewModel : TaskViewModel
         IsExpanded = true;
 
         _stopwatchElapsedFormat = "mm\\:ss\\.fffff";
+
+        launchProgressViewModel.CurrentStageChanged += (sender, vm) =>
+        {
+            CurrentStage = vm;
+            CurrentStageNumber++;
+        };
     }
 
     [ObservableProperty]
@@ -717,7 +748,16 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     public partial bool ProcessExited { get; set; }
 
     [ObservableProperty]
+    public partial bool WaitedForInputIdle { get; set; }
+
+    [ObservableProperty]
     public partial bool Crashed { get; set; } = false;
+
+    [ObservableProperty]
+    public partial LaunchStageViewModel CurrentStage { get; set; }
+
+    [ObservableProperty]
+    public partial int CurrentStageNumber { get; set; } = 1;
 
     public override bool CanCancel => IsLaunching && TaskState != TaskState.Canceling;
 
@@ -796,8 +836,13 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     void AfterLaunchedProcess()
     {
         App.DispatcherQueue.TryEnqueue(() => ProcessLaunched = true);
-
         McProcess.Process.Exited += Process_Exited;
+
+        Task.Run(() =>
+        {
+            McProcess.Process.WaitForInputIdle(15 * 1000);
+            App.DispatcherQueue.TryEnqueue(() => WaitedForInputIdle = true);
+        });
     }
 
     void Process_Exited(object sender, EventArgs e)
@@ -866,7 +911,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     }
 
     [RelayCommand(CanExecute = nameof(IsGameRunning))]
-    void KillProcess()
+    public void KillProcess()
     {
         _isMcProcessKilled = true;
         McProcess!.Process.KillProcessTree(); // not null when game is running

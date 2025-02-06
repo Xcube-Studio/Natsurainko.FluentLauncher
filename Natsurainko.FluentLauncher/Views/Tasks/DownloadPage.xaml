@@ -5,7 +5,8 @@
     xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:selectors="using:Natsurainko.FluentLauncher.XamlHelpers.Selectors">
+    xmlns:selectors="using:Natsurainko.FluentLauncher.XamlHelpers.Selectors"
+    Unloaded="Page_Unloaded">
     <Page.Resources>
         <selectors:TaskTemplateSelector
             x:Key="TemplateSelector"

@@ -92,7 +92,7 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(Default = true, Converter = typeof(JsonStringConverter<bool>))]
     public partial bool EnableFragmentDownload { get; set; }
 
-    [SettingItem(Default = 128, Converter = typeof(JsonStringConverter<int>))]
+    [SettingItem(Default = 64, Converter = typeof(JsonStringConverter<int>))]
     public partial int MaxDownloadThreads { get; set; }
 
     #endregion

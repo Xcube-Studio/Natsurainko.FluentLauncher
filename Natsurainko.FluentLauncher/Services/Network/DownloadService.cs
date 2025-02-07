@@ -8,6 +8,7 @@ using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using static Nrk.FluentCore.GameManagement.Installer.FabricInstanceInstaller;
 using static Nrk.FluentCore.GameManagement.Installer.ForgeInstanceInstaller;
 using static Nrk.FluentCore.GameManagement.Installer.OptiFineInstanceInstaller;
@@ -30,11 +31,10 @@ internal partial class DownloadService
     public DownloadService(SettingsService settingsService)
     {
         _settingsService = settingsService;
-        _downloader = new(HttpUtils.HttpClient, 1024 * 1024, 8, _settingsService.MaxDownloadThreads, 
-            _settingsService.CurrentDownloadSource == "Bmclapi" ? DownloadMirrors.BmclApi : null);
+        SetDownloader();
 
-        _settingsService.MaxDownloadThreadsChanged += (_,_) => UpdateDownloader();
-        _settingsService.CurrentDownloadSourceChanged += (_, _) => UpdateDownloader();
+        _settingsService.MaxDownloadThreadsChanged += (_,_) => SetDownloader();
+        _settingsService.CurrentDownloadSourceChanged += (_, _) => SetDownloader();
     }
 
     public void DownloadResourceFile(GameResourceFile file, string filePath)
@@ -75,10 +75,15 @@ internal partial class DownloadService
         });
     }
 
-    private void UpdateDownloader()
+    [MemberNotNull(nameof(_downloader))]
+    private void SetDownloader()
     {
-        _downloader = new(HttpUtils.HttpClient, 1024 * 1024, 8, _settingsService.MaxDownloadThreads,
-            _settingsService.CurrentDownloadSource == "Bmclapi" ? DownloadMirrors.BmclApi : null);
+        _downloader = new(
+            httpClient: HttpUtils.HttpClient,
+            workersPerDownloadTask: 8,
+            concurrentDownloadTasks: _settingsService.MaxDownloadThreads,
+            enableMultiPartDownload: _settingsService.EnableFragmentDownload,
+            mirror: _settingsService.CurrentDownloadSource == "Bmclapi" ? DownloadMirrors.BmclApi : null);
     }
 
     IInstanceInstaller GetInstanceInstaller(

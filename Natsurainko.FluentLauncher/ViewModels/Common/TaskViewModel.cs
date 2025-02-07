@@ -49,7 +49,9 @@ internal abstract partial class TaskViewModel : ObservableObject
 {
     protected readonly CancellationTokenSource _tokenSource = new();
     public readonly Stopwatch Stopwatch = new();
+
     protected string _stopwatchElapsedFormat = "hh\\:mm\\:ss";
+    protected TimeSpan _timerTimeSpan = TimeSpan.FromSeconds(1);
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
@@ -103,7 +105,7 @@ internal abstract partial class TaskViewModel : ObservableObject
 
     public virtual void Start()
     {
-        System.Timers.Timer timer = new(TimeSpan.FromSeconds(1));
+        System.Timers.Timer timer = new(_timerTimeSpan);
         timer.Elapsed += (object sender, System.Timers.ElapsedEventArgs e) =>
         {
             App.DispatcherQueue.TryEnqueue(() => TimeUsage = Stopwatch.Elapsed.ToString(_stopwatchElapsedFormat));
@@ -724,6 +726,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
         IsExpanded = true;
 
         _stopwatchElapsedFormat = "mm\\:ss\\.fffff";
+        _timerTimeSpan = TimeSpan.FromMilliseconds(250);
 
         launchProgressViewModel.CurrentStageChanged += (sender, vm) =>
         {

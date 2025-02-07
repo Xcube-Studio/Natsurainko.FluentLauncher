@@ -749,6 +749,7 @@
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
+                    x:Uid="Settings_AppearancePage_Card6"
                     Description="Clicking the launch button on the home page will not navigate to the launch task page, but will directly display the progress info of the current item (at most one) on the page. At the same time, the button can be used to cancel the task."
                     Header="Use the Home Launch Button to Control Launch Tasks"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe724;}">

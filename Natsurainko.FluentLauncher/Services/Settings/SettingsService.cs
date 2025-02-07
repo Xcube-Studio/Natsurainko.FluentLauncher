@@ -144,7 +144,7 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
     public partial bool UseHomeControlsMask { get; set; }
 
-    [SettingItem(Default = 0, Converter = typeof(JsonStringConverter<int>))]
+    [SettingItem(Default = 1, Converter = typeof(JsonStringConverter<int>))]
     public partial int HomeLaunchButtonSize { get; set; }
 
     [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]

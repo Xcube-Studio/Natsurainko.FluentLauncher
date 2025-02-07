@@ -408,6 +408,9 @@
                             <AnimatedIcon.FallbackIconSource>
                                 <SymbolIconSource Symbol="Find" />
                             </AnimatedIcon.FallbackIconSource>
+                            <AnimatedIcon.RenderTransform>
+                                <ScaleTransform ScaleX="-1" />
+                            </AnimatedIcon.RenderTransform>
                         </AnimatedIcon>
                     </AutoSuggestBox.QueryIcon>
 

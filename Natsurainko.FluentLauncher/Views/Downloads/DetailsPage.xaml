@@ -8,8 +8,8 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI.MarkdownTextBlock"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:old_controls="using:CommunityToolkit.WinUI.UI.Controls"
     Background="Transparent"
     mc:Ignorable="d">
     <Page.Resources>
@@ -226,32 +226,27 @@
                     Text="Description" />
 
                 <Border
-                    MinHeight="500"
                     Padding="16"
                     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
                     BorderBrush="{ThemeResource SettingsCardBorderBrush}"
                     BorderThickness="1"
                     CornerRadius="8">
                     <Grid>
-                        <old_controls:MarkdownTextBlock Background="Transparent" Visibility="{x:Bind VM.IsHtmlDescription, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+                        <labs:MarkdownTextBlock
+                            Background="Transparent"
+                            Config="{x:Bind MarkdownConfig}"
+                            Visibility="{x:Bind VM.IsHtmlDescription, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
                             <i:Interaction.Behaviors>
                                 <core:EventTriggerBehavior EventName="Loaded">
                                     <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.MarkdownTextBlockLoadedEventCommand}" />
                                 </core:EventTriggerBehavior>
                             </i:Interaction.Behaviors>
-                        </old_controls:MarkdownTextBlock>
-
-                        <!--
-                        <labs:MarkdownTextBlock>
-                            <i:Interaction.Behaviors>
-                                <core:EventTriggerBehavior EventName="Loaded">
-                                    <actions:ModifiedInvokeCommandAction Command="{Binding MarkdownTextBlockLoadedEventCommand}" />
-                                </core:EventTriggerBehavior>
-                            </i:Interaction.Behaviors>
                         </labs:MarkdownTextBlock>
-                        -->
 
-                        <WebView2 DefaultBackgroundColor="Transparent" Visibility="{x:Bind VM.IsHtmlDescription, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <WebView2
+                            MinHeight="500"
+                            DefaultBackgroundColor="Transparent"
+                            Visibility="{x:Bind VM.IsHtmlDescription, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                             <i:Interaction.Behaviors>
                                 <core:EventTriggerBehavior EventName="Loaded">
                                     <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.WebView2LoadedEventCommand}" />

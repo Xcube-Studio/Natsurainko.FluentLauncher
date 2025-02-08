@@ -1,14 +1,12 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Labs.WinUI.MarkdownTextBlock;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.WinUI.UI.Controls;
 using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.ViewModels.Common;
-using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Resources;
 using System;
 using System.Linq;
@@ -109,29 +107,13 @@ internal partial class DetailsViewModel : ObservableObject, INavigationAware
     [RelayCommand]
     public async Task MarkdownTextBlockLoadedEvent(object args)
     {
-        var sender = args.As<object, object>().sender;
+        MarkdownTextBlock markdownTextBlock = args.As<MarkdownTextBlock, object>().sender;
 
-        if (sender is MarkdownTextBlock markdownText)
+        if (_resource is ModrinthResource modrinthResource)
         {
-            if (_resource is ModrinthResource modrinthResource)
-            {
-                var markdown = await _modrinthClient.GetResourceDescriptionAsync(modrinthResource.Id);
-                App.DispatcherQueue.TryEnqueue(() => markdownText.Text = markdown);
-            }
+            var markdown = await _modrinthClient.GetResourceDescriptionAsync(modrinthResource.Id);
+            App.DispatcherQueue.TryEnqueue(() => markdownTextBlock.Text = markdown);
         }
-
-        //if (sender is CommunityToolkit.Labs.WinUI.MarkdownTextBlock.MarkdownTextBlock markdownTextBlock)
-        //{
-        //    if (_resource is ModrinthResource modrinthResource)
-        //    {
-        //        var markdown = await _modrinthClient.GetResourceDescriptionAsync(modrinthResource.Id);
-        //        App.DispatcherQueue.TryEnqueue(() =>
-        //        {
-        //            markdownTextBlock.Config = new CommunityToolkit.Labs.WinUI.MarkdownTextBlock.MarkdownConfig();
-        //            markdownTextBlock.Text = markdown;
-        //        });
-        //    }
-        //}
     }
 
     [RelayCommand]

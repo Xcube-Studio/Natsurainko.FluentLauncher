@@ -1,4 +1,4 @@
-﻿extern alias ToolkitV7;
+﻿using CommunityToolkit.WinUI;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
@@ -13,7 +13,6 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
-using ToolkitV7::CommunityToolkit.WinUI;
 
 namespace Natsurainko.FluentLauncher.Services.Accounts;
 

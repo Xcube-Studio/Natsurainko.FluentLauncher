@@ -7,6 +7,7 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI.MarkdownTextBlock"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Common"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:old_controls="using:CommunityToolkit.WinUI.UI.Controls"
@@ -82,7 +83,10 @@
                             </Grid>
                         </Expander.Header>
                         <ScrollViewer MaxHeight="275" CornerRadius="8">
-                            <old_controls:MarkdownTextBlock Text="{Binding Body}" />
+                            <labs:MarkdownTextBlock
+                                Background="Transparent"
+                                Config="{x:Bind MarkdownConfig}"
+                                Text="{Binding Body}" />
                         </ScrollViewer>
                     </Expander>
                     <Grid>

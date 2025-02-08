@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Resources;
+using ReverseMarkdown;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -114,6 +115,21 @@ internal partial class DetailsViewModel : ObservableObject, INavigationAware
             var markdown = await _modrinthClient.GetResourceDescriptionAsync(modrinthResource.Id);
             App.DispatcherQueue.TryEnqueue(() => markdownTextBlock.Text = markdown);
         }
+        //else if (_resource is CurseForgeResource curseForgeResource)
+        //{
+        //    var body = await _curseForgeClient.GetResourceDescriptionAsync(curseForgeResource.Id);
+        //    var config = new ReverseMarkdown.Config
+        //    {
+        //        UnknownTags = Config.UnknownTagsOption.Drop,
+        //        GithubFlavored = true,
+        //        SmartHrefHandling = true,
+        //        WhitelistUriSchemes = []
+        //    };
+
+        //    var converter = new ReverseMarkdown.Converter(config);
+        //    var markdown = converter.Convert(body);
+        //    App.DispatcherQueue.TryEnqueue(() => markdownTextBlock.Text = markdown);
+        //}
     }
 
     [RelayCommand]

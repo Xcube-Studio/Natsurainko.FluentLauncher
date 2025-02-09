@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 #nullable disable
 namespace Natsurainko.FluentLauncher.Models.UI;
 
-public partial class ChooseModLoaderData : ObservableObject
+public partial class ChooseModLoaderData : ObservableObject 
 {
     private readonly VersionManifestItem _manifestItem;
     private readonly List<ChooseModLoaderData> _chooseModLoaders;

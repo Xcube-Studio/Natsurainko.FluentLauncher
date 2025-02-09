@@ -11,10 +11,8 @@ using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels;
 using Natsurainko.FluentLauncher.Views.Home;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Windows.Foundation;
 using Windows.Graphics;
 
 namespace Natsurainko.FluentLauncher.Views;
@@ -25,6 +23,7 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
 
     private readonly SettingsService _settings = App.GetService<SettingsService>();
     private readonly SearchProviderService _searchProviderService = App.GetService<SearchProviderService>();
+    private readonly IPageProvider pageProvider = App.GetService<IPageProvider>();
 
     private bool isUpdatingNavigationItemSelection = false;
 
@@ -136,7 +135,11 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         if (isUpdatingNavigationItemSelection)
             return;
 
-        var pageTag = ((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()
+        NavigationViewItem navigationViewItem = ((NavigationViewItem)args.InvokedItemContainer);
+
+        if (!navigationViewItem.SelectsOnInvoked) return;
+
+        string pageTag = navigationViewItem.Tag.ToString() 
             ?? throw new ArgumentNullException("The invoked item's tag is null.");
 
         VM.NavigationService.NavigateTo(pageTag);
@@ -147,11 +150,13 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
     {
         isUpdatingNavigationItemSelection = true;
 
-        foreach (NavigationViewItem item in NavigationViewControl.MenuItems.Union(NavigationViewControl.FooterMenuItems).Cast<NavigationViewItem>())
+        foreach (object menuItem in NavigationViewControl.MenuItems.Union(NavigationViewControl.FooterMenuItems))
         {
-            string tag = item.GetTag();
+            if (menuItem is not NavigationViewItem item) continue;
 
-            if (App.GetService<IPageProvider>().RegisteredPages[tag].PageType == e.SourcePageType)
+            string? tag = item.GetTag();
+
+            if (tag is not null && pageProvider.RegisteredPages[tag].PageType == e.SourcePageType)
             {
                 NavigationViewControl.SelectedItem = item;
                 break;

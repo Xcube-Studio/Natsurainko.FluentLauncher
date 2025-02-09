@@ -34,8 +34,7 @@
                             x:Uid="CoreInstallWizard_EnterCoreSettingsPage_NotAvailableText"
                             Style="{ThemeResource CaptionTextBlockStyle}"
                             Text="Id not available"
-                            Visibility="{x:Bind VM.CanNext, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
-                        </TextBlock>
+                            Visibility="{x:Bind VM.CanNext, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
                     </StackPanel>
                 </controls:SettingsCard>
 

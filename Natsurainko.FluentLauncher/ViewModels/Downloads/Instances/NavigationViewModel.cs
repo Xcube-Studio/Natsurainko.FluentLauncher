@@ -1,17 +1,18 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using FluentLauncher.Infra.UI.Navigation;
-using Nrk.FluentCore.GameManagement.Instances;
+using Natsurainko.FluentLauncher.Services.UI.Data;
+using Nrk.FluentCore.GameManagement.Installer;
 using System.Collections.ObjectModel;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Cores;
+namespace Natsurainko.FluentLauncher.ViewModels.Downloads.Instances;
 
-public partial class NavigationViewModel : ObservableObject, INavigationAware
+internal partial class NavigationViewModel : ObservableObject, INavigationAware
 {
     public INavigationService NavigationService { get; init; }
 
     public ObservableCollection<string> DisplayedPath { get; } = new();
 
-    public MinecraftInstance? CurrentInstance { get; set; }
+    public VersionManifestItem? CurrentInstance { get; set; }
 
     public NavigationViewModel(INavigationService navigationService)
     {
@@ -20,10 +21,9 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
 
     void INavigationAware.OnNavigatedTo(object? parameter)
     {
-        if (parameter is MinecraftInstance instance)
+        if (parameter is SearchOptions)
         {
-            CurrentInstance = instance;
-            NavigateTo("Cores/Instance", instance);
+            NavigateTo("InstancesDownload/Default", parameter);
         }
         else if (parameter is string pageKey)
         {
@@ -31,33 +31,27 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
         }
         else
         {
-            NavigateTo("Cores/Default");
+            NavigateTo("InstancesDownload/Default"); // Default page
         }
     }
 
     public void HandleNavigationBreadcrumBarItemClicked(string[] routes)
     {
-        if (routes.Length == 1 && routes[0] == "Cores")
-            NavigateTo("Cores/Default");
+        if (routes.Length >= 1 && routes[0] == "InstancesDownload")
+            NavigateTo("InstancesDownload/Default");
         else if (routes.Length == 2)
-            NavigateTo("Cores/Instance", CurrentInstance);
+            NavigateTo("InstancesDownload/Install", CurrentInstance);
         else
             NavigateTo(string.Join('/', routes));
     }
 
-    public void NavigateTo(string pageKey, object? parameter = null)
+    private void NavigateTo(string pageKey, object? parameter = null)
     {
         NavigationService.NavigateTo(pageKey, parameter); // Default page
-        if (pageKey == "Cores/Default")
+        if (pageKey == "InstancesDownload/Default")
         {
             DisplayedPath.Clear();
-            DisplayedPath.Add("Cores");
-        }
-        else if (pageKey == "Cores/Instance")
-        {
-            DisplayedPath.Clear();
-            DisplayedPath.Add("Cores");
-            DisplayedPath.Add(((MinecraftInstance)parameter!).InstanceId);
+            DisplayedPath.Add("InstancesDownload");
         }
         else
         {

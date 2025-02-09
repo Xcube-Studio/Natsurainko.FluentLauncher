@@ -300,11 +300,31 @@
                     Content="Cores"
                     Icon="{xh:FontIcon Glyph=&#xf158;}"
                     Tag="Cores/Navigation" />
+                <NavigationViewItemSeparator />
                 <NavigationViewItem
                     x:Uid="ShellPage_NV_Item_3"
-                    Content="Download resources"
+                    Content="Download Resources"
                     Icon="{xh:FontIcon Glyph=&#xe8f1;}"
-                    Tag="Download/Navigation" />
+                    IsExpanded="True"
+                    SelectsOnInvoked="False">
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem
+                            x:Uid="ShellPage_NV_SubItem_1"
+                            Content="Minecraft Instances"
+                            Icon="{xh:FontIcon Glyph=&#xf158;}"
+                            Tag="InstancesDownload/Navigation" />
+                        <NavigationViewItem
+                            x:Uid="ShellPage_NV_SubItem_2"
+                            Content="Mods"
+                            Icon="{xh:FontIcon Glyph=&#xe8f1;}"
+                            IsEnabled="False" />
+                        <NavigationViewItem
+                            x:Uid="ShellPage_NV_SubItem_3"
+                            Content="Modpacks"
+                            Icon="{xh:FontIcon Glyph=&#xe7b8;}"
+                            IsEnabled="False" />
+                    </NavigationViewItem.MenuItems>
+                </NavigationViewItem>
                 <NavigationViewItem
                     x:Uid="ShellPage_NV_Item_4"
                     Content="Minecraft News"

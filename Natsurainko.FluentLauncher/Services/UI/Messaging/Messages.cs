@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.Authentication;
+using System.Collections.Generic;
 
 namespace Natsurainko.FluentLauncher.Services.UI.Messaging;
 
@@ -27,6 +29,11 @@ class SettingsStringValueChangedMessage : ValueChangedMessage<string>
 class AccountSkinCacheUpdatedMessage : ValueChangedMessage<Account>
 {
     public AccountSkinCacheUpdatedMessage(Account value) : base(value) { }
+}
+
+class InstanceLoaderSelectedMessage : ValueChangedMessage<List<InstanceLoaderItem>>
+{
+    public InstanceLoaderSelectedMessage(List<InstanceLoaderItem> list) : base(list) { }
 }
 
 class GlobalNavigationMessage : ValueChangedMessage<string>

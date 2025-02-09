@@ -105,7 +105,11 @@
             <Style
                 x:Key="SettingsTitleSectionHeaderTextBlockStyle"
                 BasedOn="{StaticResource BodyStrongTextBlockStyle}"
-                TargetType="TextBlock" />
+                TargetType="TextBlock">
+                <Style.Setters>
+                    <Setter Property="Margin" Value="1,0,0,6" />
+                </Style.Setters>
+            </Style>
 
             <ControlTemplate x:Key="MicrosoftIcon">
                 <Path

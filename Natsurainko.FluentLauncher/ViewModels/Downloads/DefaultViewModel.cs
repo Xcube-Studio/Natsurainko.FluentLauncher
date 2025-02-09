@@ -86,7 +86,6 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             "cache-interfaces\\launchercontent.mojang.com\\javaPatchNotes.json")
         .ContinueWith(ParsePatchNotesTask);
 
-
         _cacheInterfaceService.RequestStringAsync(
             _cacheInterfaceService.VersionManifest,
             Services.Network.Data.InterfaceRequestMethod.PreferredLocal,

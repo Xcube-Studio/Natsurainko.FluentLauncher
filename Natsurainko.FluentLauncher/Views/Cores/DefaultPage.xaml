@@ -40,7 +40,7 @@
             Margin="{ThemeResource PageMarginCoresPage}"
             HorizontalSpacing="15"
             VerticalSpacing="15">
-            <Button Command="{x:Bind VM.SearchAllMinecraftCommand}" Style="{ThemeResource AccentButtonStyle}">
+            <Button Command="{x:Bind VM.InstallMinecraftCommand}" Style="{ThemeResource AccentButtonStyle}">
                 <StackPanel Orientation="Horizontal" Spacing="5">
                     <FontIcon FontSize="14" Glyph="&#xE896;" />
                     <TextBlock x:Uid="Cores_DefaultPage_InstallButton" Text="Install cores" />

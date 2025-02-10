@@ -11,6 +11,7 @@ using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels;
 using Natsurainko.FluentLauncher.Views.Home;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Windows.Graphics;
@@ -150,18 +151,27 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
     {
         isUpdatingNavigationItemSelection = true;
 
-        foreach (object menuItem in NavigationViewControl.MenuItems.Union(NavigationViewControl.FooterMenuItems))
+        void EnumerateTreeMenuItems(IEnumerable<object> menuItems)
         {
-            if (menuItem is not NavigationViewItem item) continue;
-
-            string? tag = item.GetTag();
-
-            if (tag is not null && pageProvider.RegisteredPages[tag].PageType == e.SourcePageType)
+            foreach (object item in menuItems)
             {
-                NavigationViewControl.SelectedItem = item;
-                break;
+                if (item is not NavigationViewItem navigationViewItem) 
+                    continue;
+
+                string? tag = navigationViewItem.GetTag();
+
+                if (tag is not null && pageProvider.RegisteredPages[tag].PageType == e.SourcePageType)
+                {
+                    NavigationViewControl.SelectedItem = navigationViewItem;
+                    break;
+                }
+
+                if (navigationViewItem.MenuItems != null && navigationViewItem.MenuItems.Count > 0)
+                    EnumerateTreeMenuItems(navigationViewItem.MenuItems);
             }
         }
+
+        EnumerateTreeMenuItems(NavigationViewControl.MenuItems.Union(NavigationViewControl.FooterMenuItems));
 
         isUpdatingNavigationItemSelection = false;
 

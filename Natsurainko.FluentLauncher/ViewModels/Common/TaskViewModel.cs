@@ -446,12 +446,6 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
             config.EnableIndependencyCore = true;
             config.EnableSpecialSetting = true;
         }
-
-        if (!string.IsNullOrEmpty(_instanceInstallConfig.NickName))
-        {
-            config.NickName = _instanceInstallConfig.NickName;
-            config.EnableSpecialSetting = true;
-        }
     }
 
     [RelayCommand]

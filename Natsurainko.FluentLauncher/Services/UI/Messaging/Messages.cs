@@ -36,6 +36,8 @@ class InstanceLoaderSelectedMessage : ValueChangedMessage<List<InstanceLoaderIte
     public InstanceLoaderSelectedMessage(List<InstanceLoaderItem> list) : base(list) { }
 }
 
+class InstanceLoaderQueryMessage { }
+
 class GlobalNavigationMessage : ValueChangedMessage<string>
 {
     public GlobalNavigationMessage(string pageKey) : base(pageKey) { }

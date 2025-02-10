@@ -108,7 +108,7 @@ internal partial class DefaultViewModel : ObservableObject, ISettingsViewModel
         {
             Title = LocalizedStrings.SearchSuggest__T1.Replace("{searchText}", searchText),
             Description = LocalizedStrings.SearchSuggest__D1,
-            InvokeAction = () => _shellNavigationService.NavigateTo("Download/Navigation", new SearchOptions
+            InvokeAction = () => _shellNavigationService.NavigateTo("InstancesDownload/Navigation", new SearchOptions
             {
                 SearchText = searchText,
                 ResourceType = 1
@@ -135,7 +135,7 @@ internal partial class DefaultViewModel : ObservableObject, ISettingsViewModel
         => _navigationService.NavigateTo("Cores/Instance", MinecraftInstance);
 
     [RelayCommand]
-    public void SearchAllMinecraft()
+    public void InstallMinecraft()
     {
         if (string.IsNullOrEmpty(_gameService.ActiveMinecraftFolder))
         {
@@ -147,7 +147,7 @@ internal partial class DefaultViewModel : ObservableObject, ISettingsViewModel
             return;
         }
 
-        _shellNavigationService.NavigateTo("Download/Navigation", new SearchOptions { ResourceType = 1 });
+        _shellNavigationService.NavigateTo("InstancesDownload/Navigation", new SearchOptions { ResourceType = 1 });
     }
 
     [RelayCommand]

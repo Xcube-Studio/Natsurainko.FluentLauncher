@@ -20,6 +20,8 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     private readonly SearchProviderService _searchProviderService;
     private readonly INavigationService _navigationService;
 
+    private string _versionManifestJson;
+
     public DefaultViewModel(
         CacheInterfaceService cacheInterfaceService, 
         SearchProviderService searchProviderService,
@@ -87,11 +89,17 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         {
             string versionManifestJson = task.Result;
 
+            if (!string.IsNullOrEmpty(_versionManifestJson) && versionManifestJson == _versionManifestJson)
+                return;
+
             VersionManifestJsonObject versionManifest = JsonNode.Parse(versionManifestJson)
                 .Deserialize(FLSerializerContext.Default.VersionManifestJsonObject);
 
             VersionManifestItem[] instances = versionManifest.Versions;
             VersionManifestItem[] latestInstances = [.. versionManifest.Latest.Select(kv => instances.First(i => i.Id == kv.Value))];
+
+            if (string.IsNullOrEmpty(_versionManifestJson))
+                _versionManifestJson = versionManifestJson;
 
             await App.DispatcherQueue.EnqueueAsync(() =>
             {

@@ -221,7 +221,7 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
         {
             Title = LocalizedStrings.SearchSuggest__T1.Replace("{searchText}", searchText),
             Description = LocalizedStrings.SearchSuggest__D1,
-            InvokeAction = () => _navigationService.NavigateTo("Download/Navigation", new SearchOptions
+            InvokeAction = () => _navigationService.NavigateTo("InstancesDownload/Navigation", new SearchOptions
             {
                 SearchText = searchText,
                 ResourceType = 1

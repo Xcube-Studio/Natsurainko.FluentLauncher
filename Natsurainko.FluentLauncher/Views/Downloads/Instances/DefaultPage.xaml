@@ -6,7 +6,6 @@
     xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
-    xmlns:converters="using:Natsurainko.FluentLauncher.XamlHelpers.Converters"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
@@ -113,15 +112,11 @@
                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                             Glyph="&#xe71c;" />
                         <TextBlock
+                            x:Uid="Downloads_Instances_DefaultPage_T3"
                             VerticalAlignment="Center"
                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                             Text="Release Type: " />
-                        <ComboBox SelectedIndex="{x:Bind VM.ReleaseTypeFilterIndex, Mode=TwoWay}">
-                            <x:String>Release</x:String>
-                            <x:String>Snapshot</x:String>
-                            <x:String>Old Beta</x:String>
-                            <x:String>Old Alpha</x:String>
-                        </ComboBox>
+                        <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items}" SelectedIndex="{x:Bind VM.ReleaseTypeFilterIndex, Mode=TwoWay}" />
                     </StackPanel>
                 </controls:WrapPanel>
 
@@ -135,6 +130,7 @@
                 <StackPanel x:Name="ContentStackPanel" x:Load="{x:Bind VM.Loading, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}">
                     <TextBlock
                         x:Name="T1"
+                        x:Uid="Downloads_Instances_DefaultPage_T1"
                         x:Load="{x:Bind VM.Searched, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
                         Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
                         Text="Latest" />
@@ -150,6 +146,7 @@
 
                     <TextBlock
                         x:Name="T2"
+                        x:Uid="Downloads_Instances_DefaultPage_T2"
                         x:Load="{x:Bind VM.Searched, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
                         Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
                         Text="All" />
@@ -172,12 +169,13 @@
                             Glyph="&#xe74c;" />
                         <StackPanel VerticalAlignment="Center">
                             <TextBlock
+                                x:Uid="Downloads_Instances_DefaultPage_T4"
                                 Margin="10,0"
                                 VerticalAlignment="Center"
                                 FontSize="24"
                                 FontWeight="SemiBold"
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                Text="Empty Search Result" />
+                                Text="No results found" />
                         </StackPanel>
 
                         <i:Interaction.Behaviors>

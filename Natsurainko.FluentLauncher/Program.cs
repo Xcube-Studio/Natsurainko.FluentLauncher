@@ -48,7 +48,7 @@ pages.WithPage<Views.ShellPage, ViewModels.ShellViewModel>("ShellPage");
 pages.WithPage<Views.Home.HomePage, ViewModels.Home.HomeViewModel>("HomePage");
 
 // Cores page
-pages.WithPage<Views.Cores.Install.WizardPage, ViewModels.Cores.Install.WizardViewModel>("Cores/Install");
+//pages.WithPage<Views.Cores.Install.WizardPage, ViewModels.Cores.Install.WizardViewModel>("Cores/Install");
 
 pages.WithPage<Views.Cores.NavigationPage, ViewModels.Cores.NavigationViewModel>("Cores/Navigation");
 pages.WithPage<Views.Cores.DefaultPage, ViewModels.Cores.DefaultViewModel>("Cores/Default");

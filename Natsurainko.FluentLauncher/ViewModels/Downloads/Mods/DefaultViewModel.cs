@@ -4,7 +4,6 @@ using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Navigation;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
-using Nrk.FluentCore.GameManagement.Installer;
 using Nrk.FluentCore.Resources;
 using System.Collections.Generic;
 using System.Linq;

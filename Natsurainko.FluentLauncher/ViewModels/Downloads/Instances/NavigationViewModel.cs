@@ -37,10 +37,10 @@ internal partial class NavigationViewModel : ObservableObject, INavigationAware
 
     public void HandleNavigationBreadcrumBarItemClicked(string[] routes)
     {
-        if (routes.Length >= 1 && routes[0] == "InstancesDownload")
+        if (routes.Length == 1 && routes[0] == "InstancesDownload")
             NavigateTo("InstancesDownload/Default");
-        else if (routes.Length == 2)
-            NavigateTo("InstancesDownload/Install", CurrentInstance);
+        //else if (routes.Length == 2)
+        //    NavigateTo("InstancesDownload/Install", CurrentInstance);
         else
             NavigateTo(string.Join('/', routes));
     }

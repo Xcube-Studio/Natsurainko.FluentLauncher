@@ -25,7 +25,7 @@ public partial class NavigationViewModel : ObservableObject, INavigationAware
 
     public void HandleNavigationBreadcrumBarItemClicked(string[] routes)
     {
-        if (routes.Length >=1 && routes[0] == "Settings")
+        if (routes.Length == 1 && routes[0] == "Settings")
             NavigateTo("Settings/Default");
         else
             NavigateTo(string.Join('/', routes));

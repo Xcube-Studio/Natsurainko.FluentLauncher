@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
+    xmlns:bh="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -39,9 +40,12 @@
                             CornerRadius="4">
                             <Border CornerRadius="4">
                                 <Image>
-                                    <Image.Source>
-                                        <BitmapImage UriSource="{x:Bind IconUrl}" />
-                                    </Image.Source>
+                                    <i:Interaction.Behaviors>
+                                        <bh:ImageSourceLoadBehavior
+                                            ImageSourceUrl="{x:Bind IconUrl, Mode=OneWay}"
+                                            LoadFromInternet="True"
+                                            SourcePropertyName="Source" />
+                                    </i:Interaction.Behaviors>
                                 </Image>
                             </Border>
                         </Border>
@@ -134,9 +138,12 @@
                             CornerRadius="4">
                             <Border CornerRadius="4">
                                 <Image>
-                                    <Image.Source>
-                                        <BitmapImage UriSource="{x:Bind IconUrl}" />
-                                    </Image.Source>
+                                    <i:Interaction.Behaviors>
+                                        <bh:ImageSourceLoadBehavior
+                                            ImageSourceUrl="{x:Bind IconUrl, Mode=OneWay}"
+                                            LoadFromInternet="True"
+                                            SourcePropertyName="Source" />
+                                    </i:Interaction.Behaviors>
                                 </Image>
                             </Border>
                         </Border>

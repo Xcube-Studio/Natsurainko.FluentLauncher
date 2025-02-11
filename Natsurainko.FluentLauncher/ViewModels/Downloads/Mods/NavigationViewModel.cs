@@ -34,7 +34,7 @@ internal class NavigationViewModel : ObservableObject, INavigationAware
 
     public void HandleNavigationBreadcrumBarItemClicked(string[] routes)
     {
-        if (routes.Length >= 1 && routes[0] == "ModsDownload")
+        if (routes.Length == 1 && routes[0] == "ModsDownload")
             NavigateTo("ModsDownload/Default");
         //else if (routes.Length == 2)
         //    NavigateTo("ModsDownload/Install", CurrentInstance);

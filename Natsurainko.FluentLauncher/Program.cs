@@ -68,6 +68,10 @@ pages.WithPage<Views.Downloads.Instances.NavigationPage, ViewModels.Downloads.In
 pages.WithPage<Views.Downloads.Instances.DefaultPage, ViewModels.Downloads.Instances.DefaultViewModel>("InstancesDownload/Default");
 pages.WithPage<Views.Downloads.Instances.InstallPage, ViewModels.Downloads.Instances.InstallViewModel>("InstancesDownload/Install");
 
+pages.WithPage<Views.Downloads.Mods.NavigationPage, ViewModels.Downloads.Mods.NavigationViewModel>("ModsDownload/Navigation");
+pages.WithPage<Views.Downloads.Mods.DefaultPage, ViewModels.Downloads.Mods.DefaultViewModel>("ModsDownload/Default");
+pages.WithPage<Views.Downloads.Mods.ModPage, ViewModels.Downloads.Mods.ModViewModel>("ModsDownload/Mod");
+
 pages.WithPage<Views.Downloads.NavigationPage, ViewModels.Downloads.NavigationViewModel>("Download/Navigation");
 pages.WithPage<Views.Downloads.DefaultPage, ViewModels.Downloads.DefaultViewModel>("Download/Default");
 pages.WithPage<Views.Downloads.SearchPage, ViewModels.Downloads.SearchViewModel>("Download/Search");

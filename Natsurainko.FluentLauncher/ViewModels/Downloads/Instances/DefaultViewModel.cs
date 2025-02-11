@@ -57,12 +57,6 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
     partial void OnReleaseTypeFilterIndexChanged(int value) => SearchReceiveHandle(SearchQuery);
 
-    [RelayCommand]
-    void Loaded() => _searchProviderService.OccupyQueryReceiver(this, SearchReceiveHandle);
-
-    [RelayCommand]
-    void CardClick(VersionManifestItem instance) => _navigationService.NavigateTo("InstancesDownload/Install", instance);
-
     void INavigationAware.OnNavigatedTo(object parameter)
     {
         _cacheInterfaceService.RequestStringAsync(
@@ -72,6 +66,12 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             "cache-interfaces\\piston-meta.mojang.com\\version_manifest_v2.json")
         .ContinueWith(ParseVersionManifestTask);
     }
+
+    [RelayCommand]
+    void Loaded() => _searchProviderService.OccupyQueryReceiver(this, SearchReceiveHandle);
+
+    [RelayCommand]
+    void CardClick(VersionManifestItem instance) => _navigationService.NavigateTo("InstancesDownload/Install", instance);
 
     async void ParseVersionManifestTask(Task<string> task)
     {

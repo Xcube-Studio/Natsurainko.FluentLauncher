@@ -106,16 +106,16 @@
                     Margin="0,15"
                     HorizontalSpacing="15"
                     VerticalSpacing="15">
-                    <StackPanel Orientation="Horizontal" Spacing="5">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
                         <FontIcon
-                            FontSize="13"
+                            FontSize="14"
                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                             Glyph="&#xe71c;" />
                         <TextBlock
                             x:Uid="Downloads_Instances_DefaultPage_T3"
                             VerticalAlignment="Center"
                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                            Text="Release Type: " />
+                            Text="Release Type" />
                         <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items}" SelectedIndex="{x:Bind VM.ReleaseTypeFilterIndex, Mode=TwoWay}" />
                     </StackPanel>
                 </controls:WrapPanel>

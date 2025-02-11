@@ -220,7 +220,7 @@ internal partial class InstanceModItem : ObservableObject
                 return LocalizedStrings.Downloads_Instances_InstallPage__Loading;
 
             if (!Supported)
-                return LocalizedStrings.Downloads_Instances_InstallPage__NotSupported;
+                return LocalizedStrings.Downloads_Instances_InstallPage__ModNotSupported;
 
             if (Conflicted)
                 return LocalizedStrings.Downloads_Instances_InstallPage__Conflicted;

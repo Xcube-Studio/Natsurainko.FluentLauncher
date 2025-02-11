@@ -20,11 +20,11 @@
     </Page.Resources>
 
     <i:Interaction.Behaviors>
-        <core:EventTriggerBehavior EventName="Unloaded">
-            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.UnloadedCommand}" />
-        </core:EventTriggerBehavior>
         <core:EventTriggerBehavior EventName="Loaded">
             <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadedCommand}" />
+        </core:EventTriggerBehavior>
+        <core:EventTriggerBehavior EventName="Unloaded">
+            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.UnloadedCommand}" />
         </core:EventTriggerBehavior>
     </i:Interaction.Behaviors>
 
@@ -53,7 +53,7 @@
                 </StackPanel>
             </Button>
 
-            <StackPanel Orientation="Horizontal" Spacing="5">
+            <StackPanel Orientation="Horizontal" Spacing="8">
                 <FontIcon
                     FontSize="13"
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
@@ -62,10 +62,10 @@
                     x:Uid="Cores_DefaultPage_Text1"
                     VerticalAlignment="Center"
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                    Text="Filter: " />
+                    Text="Filter" />
                 <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items1}" SelectedIndex="{x:Bind VM.FilterIndex, Mode=TwoWay}" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Spacing="5">
+            <StackPanel Orientation="Horizontal" Spacing="8">
                 <FontIcon
                     FontSize="13"
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
@@ -74,7 +74,7 @@
                     x:Uid="Cores_DefaultPage_Text2"
                     VerticalAlignment="Center"
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                    Text="Sort by: " />
+                    Text="Sort by" />
                 <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items2}" SelectedIndex="{x:Bind VM.SortByIndex, Mode=TwoWay}" />
             </StackPanel>
 

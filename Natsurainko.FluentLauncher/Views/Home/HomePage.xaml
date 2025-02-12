@@ -640,7 +640,6 @@
                                             <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{x:Bind VM.MinecraftInstances, Mode=OneWay}" />
                                         </i:Interaction.Behaviors>
                                     </StackPanel>
-
                                 </Grid>
                             </Flyout>
                         </DropDownButton.Flyout>

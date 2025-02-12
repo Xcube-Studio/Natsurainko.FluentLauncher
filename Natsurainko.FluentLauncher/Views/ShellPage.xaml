@@ -300,7 +300,6 @@
                     Content="Cores"
                     Icon="{xh:FontIcon Glyph=&#xf158;}"
                     Tag="Cores/Navigation" />
-                <NavigationViewItemSeparator />
                 <NavigationViewItem
                     x:Uid="ShellPage_NV_Item_3"
                     Content="Download Resources"

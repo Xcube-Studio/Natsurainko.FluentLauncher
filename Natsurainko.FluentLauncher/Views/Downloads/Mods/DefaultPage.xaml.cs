@@ -1,4 +1,5 @@
 using FluentLauncher.Infra.UI.Navigation;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Utils;
@@ -21,6 +22,8 @@ public sealed partial class DefaultPage : Page, IBreadcrumbBarAware
     {
         this.InitializeComponent();
     }
+
+    private void Page_Unloaded(object _, RoutedEventArgs __) => VM.IsActive = false;
 
     internal static IEnumerable<string> FilterCategories(IEnumerable<string> categories)
     {
@@ -90,7 +93,7 @@ public sealed partial class DefaultPage : Page, IBreadcrumbBarAware
         return category;
     }
 
-    static string GetVersionInfo(IEnumerable<string> versions)
+    internal static string GetVersionInfo(IEnumerable<string> versions)
     {
         List<Version> filteredVersions = [.. versions.Where(v => !v.Any(char.IsLetter)).Select(Version.Parse)];
         filteredVersions.Sort();

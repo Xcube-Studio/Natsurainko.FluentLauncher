@@ -32,15 +32,15 @@ public sealed partial class NavigationPage : Page, INavigationProvider
                 string modName = string.Empty;
 
                 if (e.Parameter is CurseForgeResource curseForgeResource)
-                    modName = curseForgeResource.Name;
+                    modName = curseForgeResource.Name.Replace('/', ' ');
                 else if (e.Parameter is ModrinthResource modrinthResource)
-                    modName = modrinthResource.Name;
+                    modName = modrinthResource.Name.Replace('/', ' ');
 
                 var converter = (BreadcrumbBarLocalizationConverter)breadcrumbBar.Resources["BreadcrumbBarLocalizationConverter"];
                 if (!converter.IgnoredText.Contains(modName))
                     converter.IgnoredText.Add(modName);
 
-                breadcrumbBar.SetPath($"InstancesDownload/{modName}");
+                breadcrumbBar.SetPath($"ModsDownload/{modName}");
             }
             else
             {

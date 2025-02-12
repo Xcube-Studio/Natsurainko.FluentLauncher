@@ -15,6 +15,7 @@
     xmlns:resources="using:Nrk.FluentCore.Resources"
     xmlns:selector="using:Natsurainko.FluentLauncher.XamlHelpers.Selectors"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    Unloaded="Page_Unloaded"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:Key="CurseForgeResourceTemplate" x:DataType="resources:CurseForgeResource">
@@ -40,12 +41,9 @@
                             CornerRadius="4">
                             <Border CornerRadius="4">
                                 <Image>
-                                    <i:Interaction.Behaviors>
-                                        <bh:ImageSourceLoadBehavior
-                                            ImageSourceUrl="{x:Bind IconUrl, Mode=OneWay}"
-                                            LoadFromInternet="True"
-                                            SourcePropertyName="Source" />
-                                    </i:Interaction.Behaviors>
+                                    <Image.Source>
+                                        <BitmapImage UriSource="{x:Bind IconUrl}" />
+                                    </Image.Source>
                                 </Image>
                             </Border>
                         </Border>
@@ -112,6 +110,13 @@
                         </StackPanel>
                     </Grid>
                 </controls:SettingsCard.Header>
+
+                <i:Interaction.Behaviors>
+                    <behaviors:AncestorBindingBehavior
+                        AncestorType="ScrollViewer"
+                        Binding="{Binding DataContext.CardClickCommand}"
+                        TargetPropertyName="Command" />
+                </i:Interaction.Behaviors>
             </controls:SettingsCard>
         </DataTemplate>
 
@@ -138,12 +143,9 @@
                             CornerRadius="4">
                             <Border CornerRadius="4">
                                 <Image>
-                                    <i:Interaction.Behaviors>
-                                        <bh:ImageSourceLoadBehavior
-                                            ImageSourceUrl="{x:Bind IconUrl, Mode=OneWay}"
-                                            LoadFromInternet="True"
-                                            SourcePropertyName="Source" />
-                                    </i:Interaction.Behaviors>
+                                    <Image.Source>
+                                        <BitmapImage UriSource="{x:Bind IconUrl}" />
+                                    </Image.Source>
                                 </Image>
                             </Border>
                         </Border>
@@ -210,6 +212,13 @@
                         </StackPanel>
                     </Grid>
                 </controls:SettingsCard.Header>
+
+                <i:Interaction.Behaviors>
+                    <behaviors:AncestorBindingBehavior
+                        AncestorType="ScrollViewer"
+                        Binding="{Binding DataContext.CardClickCommand}"
+                        TargetPropertyName="Command" />
+                </i:Interaction.Behaviors>
             </controls:SettingsCard>
         </DataTemplate>
 

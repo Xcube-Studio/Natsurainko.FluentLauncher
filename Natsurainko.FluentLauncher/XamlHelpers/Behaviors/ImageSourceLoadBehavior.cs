@@ -55,7 +55,6 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
 
     private bool isLoading = false;
     private bool isUnloaded = false;
-    private bool loaded = false;
 
     private CancellationTokenSource cancellationTokenSource;
     private readonly CacheInterfaceService _cacheInterfaceService = App.GetService<CacheInterfaceService>();
@@ -120,7 +119,6 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
     public async void LoadImage()
     {
         if (isLoading
-            || loaded
             || isUnloaded
             || AssociatedObject == null
             || SourceProperty == null
@@ -149,8 +147,6 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
             cancellationTokenSource.Token.ThrowIfCancellationRequested();
 
             AssociatedObject?.SetValue(SourceProperty, bitmapImage);
-
-            loaded = true;
         }
         catch (Exception) 
         {

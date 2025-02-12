@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads.Mods;
 
-internal partial class DefaultViewModel : ObservableObject, INavigationAware
+internal partial class DefaultViewModel : ObservableRecipient, INavigationAware
 {
     private readonly CurseForgeClient _curseForgeClient;
     private readonly ModrinthClient _modrinthClient;
@@ -31,6 +31,8 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         _modrinthClient = modrinthClient;
         _navigationService = navigationService;
         _searchProviderService = searchProviderService;
+
+        IsActive = true;
     }
 
     [ObservableProperty]
@@ -81,11 +83,13 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     [RelayCommand]
     void Loaded() => _searchProviderService.OccupyQueryReceiver(this, SearchReceiveHandle);
 
-    //[RelayCommand]
-    //void CardClick(VersionManifestItem instance) => _navigationService.NavigateTo("ModsDownload/Mod", instance);
+    [RelayCommand]
+    void CardClick(object mod) => _navigationService.NavigateTo("ModsDownload/Mod", mod);
 
     void SearchReceiveHandle(string query)
     {
+        if (!IsActive) return;
+
         _cancellationTokenSource?.Cancel();
         _cancellationTokenSource?.Dispose();
         _cancellationTokenSource = new CancellationTokenSource();

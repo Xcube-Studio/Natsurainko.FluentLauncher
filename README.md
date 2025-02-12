@@ -30,11 +30,11 @@
 
 | 功能                                     | 状态               |
 | ---------------------------------------- | ------------------ |
-| NativeAOT 支持                            | 进行中 [ ] |
-| 升级到 CommunityToolkit 8.1               | Blocked by MarkdownTextBlock [ ] |
 | Little Skin 的 OAuth 支持                 | [ ] |
+| 更新资源下载页面                           | 进行中 [ ] |
+| 更新新闻页面                              | [ ] |
 | 游戏整合包导入                             | [ ] |
-| 分 Stable、Preview、Dev 通道分发           | 已完成 [x] |
+| NativeAOT 支持                            | 已暂停 https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/issues/224 |
 
 ## 功能列表 ✨
 

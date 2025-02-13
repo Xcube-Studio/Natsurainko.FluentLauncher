@@ -48,7 +48,6 @@ pages.WithPage<Views.ShellPage, ViewModels.ShellViewModel>("ShellPage");
 pages.WithPage<Views.Home.HomePage, ViewModels.Home.HomeViewModel>("HomePage");
 
 // Cores page
-//pages.WithPage<Views.Cores.Install.WizardPage, ViewModels.Cores.Install.WizardViewModel>("Cores/Install");
 
 pages.WithPage<Views.Cores.NavigationPage, ViewModels.Cores.NavigationViewModel>("Cores/Navigation");
 pages.WithPage<Views.Cores.DefaultPage, ViewModels.Cores.DefaultViewModel>("Cores/Default");
@@ -71,11 +70,6 @@ pages.WithPage<Views.Downloads.Instances.InstallPage, ViewModels.Downloads.Insta
 pages.WithPage<Views.Downloads.Mods.NavigationPage, ViewModels.Downloads.Mods.NavigationViewModel>("ModsDownload/Navigation");
 pages.WithPage<Views.Downloads.Mods.DefaultPage, ViewModels.Downloads.Mods.DefaultViewModel>("ModsDownload/Default");
 pages.WithPage<Views.Downloads.Mods.ModPage, ViewModels.Downloads.Mods.ModViewModel>("ModsDownload/Mod");
-
-pages.WithPage<Views.Downloads.NavigationPage, ViewModels.Downloads.NavigationViewModel>("Download/Navigation");
-pages.WithPage<Views.Downloads.DefaultPage, ViewModels.Downloads.DefaultViewModel>("Download/Default");
-pages.WithPage<Views.Downloads.SearchPage, ViewModels.Downloads.SearchViewModel>("Download/Search");
-pages.WithPage<Views.Downloads.DetailsPage, ViewModels.Downloads.DetailsViewModel>("Download/Details");
 
 // Tasks page
 pages.WithPage<Views.Tasks.LaunchPage, ViewModels.Tasks.LaunchViewModel>("Tasks/Launch");

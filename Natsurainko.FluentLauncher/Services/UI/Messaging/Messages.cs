@@ -40,5 +40,10 @@ class InstanceLoaderQueryMessage { }
 
 class GlobalNavigationMessage : ValueChangedMessage<string>
 {
-    public GlobalNavigationMessage(string pageKey) : base(pageKey) { }
+    public object? Parameter { get; init; }
+
+    public GlobalNavigationMessage(string pageKey, object? parameter = null) : base(pageKey) 
+    {
+        Parameter = parameter;
+    }
 }

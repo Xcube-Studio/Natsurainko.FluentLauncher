@@ -297,7 +297,7 @@
                     Tag="HomePage" />
                 <NavigationViewItem
                     x:Uid="ShellPage_NV_Item_2"
-                    Content="Cores"
+                    Content="Instances"
                     Icon="{xh:FontIcon Glyph=&#xf158;}"
                     Tag="Cores/Navigation" />
                 <NavigationViewItem

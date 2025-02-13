@@ -13,7 +13,7 @@ public partial class SearchProviderService : ObservableObject
 {
     private AutoSuggestBox _autoSuggestBox;
 
-    private Dictionary<object, Func<string, IEnumerable<Suggestion>>> SuggestionProviders = new Dictionary<object, Func<string, IEnumerable<Suggestion>>>();
+    private readonly Dictionary<object, Func<string, IEnumerable<Suggestion>>> SuggestionProviders = [];
 
     public object QueryReceiverOwner { get; private set; }
 
@@ -86,6 +86,8 @@ public partial class SearchProviderService : ObservableObject
         QueryReceiverOwner = provider;
         QueryReceiver = action;
     }
+
+    public void ClearSearchBox() => _autoSuggestBox.Text = string.Empty;
 }
 
 public class Suggestion

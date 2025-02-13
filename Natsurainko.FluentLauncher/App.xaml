@@ -86,7 +86,6 @@
             <converters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" Inverted="true" />
             <converters:ColorHexCodeConverter x:Key="ColorHexCodeConverter" />
 
-            <converters:ResourceAuthorsConverter x:Key="ResourceAuthorsConverter" />
             <converters:SuggestionIconConverter x:Key="SuggestionIconConverter" />
             <converters:RadioButtonSelectedIndexConverter x:Key="RadioButtonSelectedIndexConverter" />
 

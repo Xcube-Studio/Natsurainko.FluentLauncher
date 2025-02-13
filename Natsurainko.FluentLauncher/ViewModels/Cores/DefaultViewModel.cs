@@ -1,11 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using FluentLauncher.Infra.Settings.Mvvm;
 using FluentLauncher.Infra.UI.Navigation;
+using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
-using Natsurainko.FluentLauncher.Services.UI.Data;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement;
@@ -25,11 +27,10 @@ internal partial class DefaultViewModel : ObservableObject, ISettingsViewModel
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;
-    private readonly INavigationService _shellNavigationService;
     private readonly INavigationService _navigationService;
     private readonly GameService _gameService;
-    private readonly NotificationService _notificationService;
     private readonly SearchProviderService _searchProviderService;
+    private readonly NotificationService _notificationService;
 
     public ReadOnlyObservableCollection<MinecraftInstance> MinecraftInstances { get; init; }
 
@@ -37,15 +38,14 @@ internal partial class DefaultViewModel : ObservableObject, ISettingsViewModel
         GameService gameService,
         SettingsService settingsService,
         INavigationService navigationService,
-        NotificationService notificationService,
-        SearchProviderService searchProviderService)
+        SearchProviderService searchProviderService,
+        NotificationService notificationService)
     {
         _gameService = gameService;
         _settingsService = settingsService;
         _navigationService = navigationService;
-        _shellNavigationService = navigationService.Parent!;
-        _notificationService = notificationService;
         _searchProviderService = searchProviderService;
+        _notificationService = notificationService;
 
         MinecraftInstances = _gameService.Games;
 
@@ -108,53 +108,32 @@ internal partial class DefaultViewModel : ObservableObject, ISettingsViewModel
         {
             Title = LocalizedStrings.SearchSuggest__T1.Replace("{searchText}", searchText),
             Description = LocalizedStrings.SearchSuggest__D1,
-            InvokeAction = () => _shellNavigationService.NavigateTo("InstancesDownload/Navigation", new SearchOptions
-            {
-                SearchText = searchText,
-                ResourceType = 1
-            })
+            InvokeAction = () => WeakReferenceMessenger.Default.Send(new GlobalNavigationMessage("InstancesDownload/Navigation", searchText))
         };
 
-        foreach (var item in MinecraftInstances)
-        {
-            if (item.InstanceId.Contains(searchText))
-            {
-                yield return SuggestionHelper.FromMinecraftInstance(item,
-                    LocalizedStrings.SearchSuggest__D3,
-                    () => _shellNavigationService.NavigateTo("Cores/Navigation", item));
-            }
-        }
+        foreach (var item in MinecraftInstances.Where(i => i.InstanceId.Contains(searchText)))
+            yield return SuggestionHelper.FromMinecraftInstance(item, LocalizedStrings.SearchSuggest__D3, () => GoToCoreSettings(item));
     }
 
     [RelayCommand]
-    public void GoToSettings()
-        => _shellNavigationService.NavigateTo("Settings/Navigation", "Settings/Launch");
+    void GoToSettings() => WeakReferenceMessenger.Default.Send(new GlobalNavigationMessage("Settings/Navigation", "Settings/Launch"));
 
     [RelayCommand]
-    public void GoToCoreSettings(MinecraftInstance MinecraftInstance)
-        => _navigationService.NavigateTo("Cores/Instance", MinecraftInstance);
+    void GoToCoreSettings(MinecraftInstance MinecraftInstance) => _navigationService.NavigateTo("Cores/Instance", MinecraftInstance);
 
     [RelayCommand]
-    public void InstallMinecraft()
+    void InstallMinecraft() => WeakReferenceMessenger.Default.Send(new GlobalNavigationMessage("InstancesDownload/Navigation"));
+
+    [RelayCommand]
+    void NavigateFolder()
     {
-        if (string.IsNullOrEmpty(_gameService.ActiveMinecraftFolder))
-        {
+        if (Directory.Exists(ActiveMinecraftFolder))
+            _ = Launcher.LaunchFolderPathAsync(ActiveMinecraftFolder);
+        else 
             _notificationService.NotifyWithSpecialContent(
                 LocalizedStrings.Notifications__NoMinecraftFolder,
                 "NoMinecraftFolderNotifyTemplate",
                 GoToSettingsCommand, "\uE711");
-
-            return;
-        }
-
-        _shellNavigationService.NavigateTo("InstancesDownload/Navigation", new SearchOptions { ResourceType = 1 });
-    }
-
-    [RelayCommand]
-    public void NavigateFolder()
-    {
-        if (Directory.Exists(ActiveMinecraftFolder))
-            _ = Launcher.LaunchFolderPathAsync(ActiveMinecraftFolder);
     }
 
     [RelayCommand]

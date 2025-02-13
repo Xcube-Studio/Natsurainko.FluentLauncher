@@ -77,7 +77,11 @@ internal partial class DefaultViewModel : ObservableRecipient, INavigationAware
     void INavigationAware.OnNavigatedTo(object? parameter)
     {
         UpdateFiltersSource();
-        SearchReceiveHandle(SearchQuery);
+
+        if (parameter is string query)
+            SearchReceiveHandle(query);
+        else
+            SearchReceiveHandle(SearchQuery);
     }
 
     [RelayCommand]
@@ -85,6 +89,13 @@ internal partial class DefaultViewModel : ObservableRecipient, INavigationAware
 
     [RelayCommand]
     void CardClick(object mod) => _navigationService.NavigateTo("ModsDownload/Mod", mod);
+
+    [RelayCommand]
+    void ClearSearchQuery()
+    {
+        _searchProviderService.ClearSearchBox();
+        SearchReceiveHandle(string.Empty);
+    }
 
     void SearchReceiveHandle(string query)
     {

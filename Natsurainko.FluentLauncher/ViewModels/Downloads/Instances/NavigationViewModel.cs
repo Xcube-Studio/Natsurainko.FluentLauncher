@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using FluentLauncher.Infra.UI.Navigation;
-using Natsurainko.FluentLauncher.Services.UI.Data;
 using Nrk.FluentCore.GameManagement.Installer;
 using System.Collections.ObjectModel;
 
@@ -10,7 +9,7 @@ internal partial class NavigationViewModel : ObservableObject, INavigationAware
 {
     public INavigationService NavigationService { get; init; }
 
-    public ObservableCollection<string> DisplayedPath { get; } = new();
+    public ObservableCollection<string> DisplayedPath { get; } = [];
 
     public VersionManifestItem? CurrentInstance { get; set; }
 
@@ -19,28 +18,12 @@ internal partial class NavigationViewModel : ObservableObject, INavigationAware
         NavigationService = navigationService;
     }
 
-    void INavigationAware.OnNavigatedTo(object? parameter)
-    {
-        if (parameter is SearchOptions)
-        {
-            NavigateTo("InstancesDownload/Default", parameter);
-        }
-        else if (parameter is string pageKey)
-        {
-            NavigateTo(pageKey);
-        }
-        else
-        {
-            NavigateTo("InstancesDownload/Default"); // Default page
-        }
-    }
+    void INavigationAware.OnNavigatedTo(object? parameter) => NavigateTo("InstancesDownload/Default", parameter); // Default page
 
     public void HandleNavigationBreadcrumBarItemClicked(string[] routes)
     {
         if (routes.Length == 1 && routes[0] == "InstancesDownload")
             NavigateTo("InstancesDownload/Default");
-        //else if (routes.Length == 2)
-        //    NavigateTo("InstancesDownload/Install", CurrentInstance);
         else
             NavigateTo(string.Join('/', routes));
     }

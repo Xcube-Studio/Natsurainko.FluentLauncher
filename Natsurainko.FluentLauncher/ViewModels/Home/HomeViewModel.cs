@@ -9,7 +9,6 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
-using Natsurainko.FluentLauncher.Services.UI.Data;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
@@ -74,7 +73,7 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
     public partial Account ActiveAccount { get; set; }
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(DropDownButtonDisplayText))]
+    [NotifyPropertyChangedFor(nameof(InstanceSelectorText))]
     public partial MinecraftInstance ActiveMinecraftInstance { get; set; }
 
     [ObservableProperty]
@@ -101,7 +100,9 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
 
     public Visibility AccountTag => ActiveAccount is null ? Visibility.Collapsed : Visibility.Visible;
 
-    public string DropDownButtonDisplayText => ActiveMinecraftInstance == null ? LocalizedStrings.Home_HomePage__NoCore : ActiveMinecraftInstance.GetDisplayName();
+    public string InstanceSelectorText => ActiveMinecraftInstance == null 
+        ? LocalizedStrings.Home_HomePage__NoInstanceSelected
+        : ActiveMinecraftInstance.GetDisplayName();
 
     public string LaunchButtonIcon => IsTrackingTask ? "\uEE95" : "\uF5B0";
 
@@ -161,7 +162,7 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
     }
 
     [RelayCommand]
-    void GoToSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Launch");
+    void GoToInstancesManage() => _navigationService.NavigateTo("Cores/Navigation");
 
     [RelayCommand]
     void GoToAccountSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Account");
@@ -221,11 +222,7 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
         {
             Title = LocalizedStrings.SearchSuggest__T1.Replace("{searchText}", searchText),
             Description = LocalizedStrings.SearchSuggest__D1,
-            InvokeAction = () => _navigationService.NavigateTo("InstancesDownload/Navigation", new SearchOptions
-            {
-                SearchText = searchText,
-                ResourceType = 1
-            })
+            InvokeAction = () => _navigationService.NavigateTo("InstancesDownload/Navigation", searchText)
         };
 
         foreach (var item in MinecraftInstances)

@@ -122,7 +122,11 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Compile Remove="Services\UI\Data\**" />
+    <EmbeddedResource Remove="Services\UI\Data\**" />
     <None Remove="**\*.xaml" />
+    <None Remove="Services\UI\Data\**" />
+    <Page Remove="Services\UI\Data\**" />
   </ItemGroup>
 
   <!-- Assets -->
@@ -250,6 +254,9 @@
   <!-- Add .resw files as additional files for source generation -->
   <ItemGroup>
     <AdditionalFiles Include="Assets\Strings\*.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Remove="Services\UI\Data\**" />
   </ItemGroup>
 
   <!-- Multilingual App Toolkit

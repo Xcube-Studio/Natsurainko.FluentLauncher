@@ -1,9 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Navigation;
+using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.GameManagement.Installer;
 using System;
 using System.Linq;
@@ -16,20 +20,26 @@ namespace Natsurainko.FluentLauncher.ViewModels.Downloads.Instances;
 
 internal partial class DefaultViewModel : ObservableObject, INavigationAware
 {
+    private readonly GameService _gameService;
     private readonly CacheInterfaceService _cacheInterfaceService;
     private readonly SearchProviderService _searchProviderService;
     private readonly INavigationService _navigationService;
+    private readonly NotificationService _notificationService;
 
     private string _versionManifestJson;
 
     public DefaultViewModel(
         CacheInterfaceService cacheInterfaceService, 
         SearchProviderService searchProviderService,
-        INavigationService navigationService)
+        INavigationService navigationService,
+        GameService gameService,
+        NotificationService notificationService)
     {
         _cacheInterfaceService = cacheInterfaceService;
         _searchProviderService = searchProviderService;
         _navigationService = navigationService;
+        _gameService = gameService;
+        _notificationService = notificationService;
     }
 
     public VersionManifestItem[] AllInstances { get; set; }
@@ -50,7 +60,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     public partial bool Searched { get; set; }
 
     [ObservableProperty]
-    public partial string SearchQuery { get; set; }
+    public partial string SearchQuery { get; set; } = string.Empty;
 
     [ObservableProperty]
     public partial int ReleaseTypeFilterIndex { get; set; }
@@ -59,6 +69,9 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
     void INavigationAware.OnNavigatedTo(object parameter)
     {
+        if (parameter is string searchInstanceId)
+            SearchQuery = searchInstanceId;
+
         _cacheInterfaceService.RequestStringAsync(
             _cacheInterfaceService.VersionManifest,
             Services.Network.Data.InterfaceRequestMethod.PreferredLocal,
@@ -71,7 +84,30 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     void Loaded() => _searchProviderService.OccupyQueryReceiver(this, SearchReceiveHandle);
 
     [RelayCommand]
-    void CardClick(VersionManifestItem instance) => _navigationService.NavigateTo("InstancesDownload/Install", instance);
+    void CardClick(VersionManifestItem instance)
+    {
+        if (string.IsNullOrEmpty(_gameService.ActiveMinecraftFolder))
+        {
+            _notificationService.NotifyWithSpecialContent(
+                LocalizedStrings.Notifications__NoMinecraftFolder,
+                "NoMinecraftFolderNotifyTemplate",
+                GoToSettingsCommand, "\uE711");
+
+            return;
+        }
+
+        _navigationService.NavigateTo("InstancesDownload/Install", instance);
+    }
+
+    [RelayCommand]
+    void GoToSettings() => WeakReferenceMessenger.Default.Send(new GlobalNavigationMessage("Settings/Navigation", "Settings/Launch"));
+
+    [RelayCommand]
+    void ClearSearchQuery()
+    {
+        _searchProviderService.ClearSearchBox();
+        SearchReceiveHandle(string.Empty);
+    }
 
     async void ParseVersionManifestTask(Task<string> task)
     {
@@ -105,7 +141,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             {
                 AllInstances = instances;
                 LatestInstances = latestInstances;
-                SearchReceiveHandle(string.Empty);
+                SearchReceiveHandle(SearchQuery);
             });
         }
         catch (Exception e)
@@ -130,10 +166,10 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             _ => throw new InvalidOperationException()
         };
 
-        var filteredInstances = AllInstances
+        var filteredInstances = AllInstances?
             .Where(i => i.Type == releaseType)
             .Where(i => i.Id.Contains(query))
-            .ToArray();
+            .ToArray() ?? [];
 
         await App.DispatcherQueue.EnqueueAsync(() =>
         {

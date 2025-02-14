@@ -1,17 +1,26 @@
 ﻿using CommunityToolkit.Labs.WinUI.MarkdownTextBlock;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.Web.WebView2.Core;
+using Microsoft.Win32;
 using Microsoft.Windows.Globalization;
+using Natsurainko.FluentLauncher.Services.Launch;
+using Natsurainko.FluentLauncher.Services.Network;
+using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Resources;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
@@ -21,13 +30,24 @@ namespace Natsurainko.FluentLauncher.ViewModels.Downloads.Mods;
 
 internal partial class ModViewModel : ObservableObject, INavigationAware
 {
+    private readonly GameService _gameService;
+    private readonly DownloadService _downloadService;
+    private readonly NotificationService _notificationService;
     private readonly CurseForgeClient _curseForgeClient;
     private readonly ModrinthClient _modrinthClient;
 
     private object _modResource = null!;
 
-    public ModViewModel(CurseForgeClient curseForgeClient, ModrinthClient modrinthClient)
+    public ModViewModel(
+        GameService gameService, 
+        DownloadService downloadService, 
+        NotificationService notificationService,
+        CurseForgeClient curseForgeClient, 
+        ModrinthClient modrinthClient)
     {
+        _gameService = gameService;
+        _downloadService = downloadService;
+        _notificationService = notificationService;
         _curseForgeClient = curseForgeClient;
         _modrinthClient = modrinthClient;
     }
@@ -75,6 +95,9 @@ internal partial class ModViewModel : ObservableObject, INavigationAware
 
     [ObservableProperty]
     public partial bool Translated { get; set; } = false;
+
+    [ObservableProperty]
+    public partial bool TeachingTipOpen { get; set; } = false;
 
     #region Files
 
@@ -131,6 +154,12 @@ internal partial class ModViewModel : ObservableObject, INavigationAware
 
     partial void OnSelectedVersionChanged(string value) => UpdateFilteredFiles();
 
+    partial void OnSelectedFileChanged(object value)
+    {
+        if (TeachingTipOpen)
+            TeachingTipOpen = false;
+    }
+
     void INavigationAware.OnNavigatedTo(object parameter)
     {
         if (parameter is CurseForgeResource curseForgeResource)
@@ -164,6 +193,51 @@ internal partial class ModViewModel : ObservableObject, INavigationAware
         TryLoadFiles();
         TryLoadDescription();
         TryGetLocalizedSummary();
+    }
+
+    [RelayCommand]
+    void Download(int option)
+    {
+        if (!IsSelectedFile)
+        {
+            TeachingTipOpen = true;
+            return;
+        }
+
+        string fileName;
+        string savePath;
+
+        if (SelectedFile is ModrinthFile modrinthFile)
+            fileName = modrinthFile.FileName;
+        else if (SelectedFile is CurseForgeFile curseForgeFile)
+            fileName = curseForgeFile.FileName;
+        else return;
+
+        switch (option)
+        {
+            case 0:
+                SaveFileDialog saveFileDialog = new()
+                {
+                    FileName = fileName,
+                    InitialDirectory = _gameService.ActiveMinecraftFolder ?? string.Empty,
+                };
+
+                if (saveFileDialog.ShowDialog().GetValueOrDefault())
+                    savePath = new FileInfo(saveFileDialog.FileName).DirectoryName;
+                else return;
+                break;
+            case 1:
+                savePath = _gameService.ActiveMinecraftFolder;
+                break;
+            case 2:
+                savePath = _gameService.ActiveGame.GetModsDirectory();
+                break;
+            default:
+                return;
+        }
+
+        _downloadService.DownloadModFile(SelectedFile, savePath);
+        _notificationService.NotifyWithoutContent(LocalizedStrings.Notifications__AddDownloadTask, icon: "\ue896");
     }
 
     [RelayCommand]

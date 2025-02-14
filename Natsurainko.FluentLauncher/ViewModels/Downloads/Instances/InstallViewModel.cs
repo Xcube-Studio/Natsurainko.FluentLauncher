@@ -114,14 +114,7 @@ internal partial class InstallViewModel : ObservableObject, INavigationAware
             ManifestItem = CurrentInstance,
             PrimaryLoader = primaryLoader,
             SecondaryLoader = secondaryLoader,
-            AdditionalResources = [.. InstanceModItems!
-                .Where(m => m.SelectedModrinthFile != null)
-                .Select(m => new GameResourceFile(Task.FromResult(m.SelectedModrinthFile!.Url))
-                {
-                    FileName = m.SelectedModrinthFile.FileName,
-                    Loaders = m.SelectedModrinthFile.Loaders,
-                    Version = m.SelectedModrinthFile.McVersion
-                })]
+            AdditionalMods = [.. InstanceModItems!.Where(m => m.SelectedModrinthFile != null)]
         };
 
         _downloadService.InstallInstance(installConfig);

@@ -203,10 +203,7 @@
     <ScrollViewer>
         <Border Name="border" Margin="{ThemeResource PageMarginWithBorder}">
             <StackPanel MaxWidth="1000" HorizontalAlignment="Stretch">
-                <StackPanel.ChildrenTransitions>
-                    <EntranceThemeTransition FromVerticalOffset="50" />
-                    <RepositionThemeTransition IsStaggeringEnabled="False" />
-                </StackPanel.ChildrenTransitions>
+
 
                 <StackPanel Margin="0,16" Spacing="16">
                     <Grid>
@@ -286,24 +283,63 @@
 
                     <StackPanel Spacing="4">
                         <StackPanel Orientation="Horizontal" Spacing="8">
-                            <Button Width="120" Style="{ThemeResource AccentButtonStyle}">
+                            <SplitButton Width="120" Command="{x:Bind VM.DownloadCommand}">
+                                <SplitButton.CommandParameter>
+                                    <x:Int32>0</x:Int32>
+                                </SplitButton.CommandParameter>
                                 <TextBlock x:Uid="Buttons_Download" Text="Download" />
-                                <Button.Flyout>
-                                    <Flyout
-                                        x:Name="Flyout"
-                                        x:Load="{x:Bind VM.IsSelectedFile, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
-                                        Placement="Right">
-                                        <TextBlock
-                                            x:Uid="Downloads_Mods_ModPage_FlyoutText"
-                                            MaxWidth="300"
-                                            Margin="0,-8"
-                                            Style="{ThemeResource BaseTextBlockStyle}"
-                                            Text="You should select an item from the &quot;File&quot; list below and click Download"
-                                            TextWrapping="WrapWholeWords" />
-                                    </Flyout>
-                                </Button.Flyout>
-                            </Button>
-                            <HyperlinkButton x:Uid="Downloads_Mods_ModPage_HyperlinkButton" Content="Web Page" />
+                                <SplitButton.Flyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem
+                                            x:Uid="Downloads_Mods_ModPage_M1"
+                                            Command="{x:Bind VM.DownloadCommand}"
+                                            Text="Download to specified folder">
+                                            <MenuFlyoutItem.CommandParameter>
+                                                <x:Int32>0</x:Int32>
+                                            </MenuFlyoutItem.CommandParameter>
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xe838;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                        <MenuFlyoutSeparator />
+                                        <MenuFlyoutItem
+                                            x:Uid="Downloads_Mods_ModPage_M2"
+                                            Command="{x:Bind VM.DownloadCommand}"
+                                            Text="Download to public mods folder (.minecraft/mods)">
+                                            <MenuFlyoutItem.CommandParameter>
+                                                <x:Int32>1</x:Int32>
+                                            </MenuFlyoutItem.CommandParameter>
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xe838;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                        <MenuFlyoutItem
+                                            x:Uid="Downloads_Mods_ModPage_M3"
+                                            Command="{x:Bind VM.DownloadCommand}"
+                                            Text="Download to the mods folder of the current instance">
+                                            <MenuFlyoutItem.CommandParameter>
+                                                <x:Int32>2</x:Int32>
+                                            </MenuFlyoutItem.CommandParameter>
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xe838;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                    </MenuFlyout>
+                                </SplitButton.Flyout>
+                            </SplitButton>
+                            <HyperlinkButton
+                                x:Uid="Downloads_Mods_ModPage_HyperlinkButton"
+                                Content="Web Page"
+                                NavigateUri="{x:Bind VM.WebLink}" />
+
+                            <TeachingTip
+                                x:Uid="Downloads_Mods_ModPage_TeachingTip"
+                                Title="You should select an item from the &quot;File&quot; list below and click Download"
+                                CloseButtonContent="Got it!"
+                                IsLightDismissEnabled="True"
+                                IsOpen="{x:Bind VM.TeachingTipOpen, Mode=TwoWay}"
+                                PlacementMargin="20"
+                                PreferredPlacement="Auto" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Spacing="4">
                             <FontIcon

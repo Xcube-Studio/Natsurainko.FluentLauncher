@@ -9,7 +9,7 @@
     <converters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" Inverted="True" />
     <converters:TaskStateConverter x:Key="TaskStateConverter" />
 
-    <DataTemplate x:Key="DownloadGameResourceTaskTemplate">
+    <DataTemplate x:Key="DownloadModTaskTemplate">
         <Expander
             MinHeight="0"
             Padding="16,10"

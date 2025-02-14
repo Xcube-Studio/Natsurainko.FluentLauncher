@@ -94,7 +94,6 @@ var dialogs = builder.Dialogs;
 dialogs.WithDialog<Views.Common.AddVmArgumentDialog, ViewModels.Common.AddVmArgumentDialogViewModel>("AddVmArgumentDialog");
 dialogs.WithDialog<Views.Common.AuthenticationWizardDialog, ViewModels.Common.AuthenticationWizardDialogViewModel>("AuthenticationWizardDialog");
 dialogs.WithDialog<Views.Common.DeleteInstanceDialog, ViewModels.Common.DeleteInstanceDialogViewModel>("DeleteInstanceDialog");
-dialogs.WithDialog<Views.Common.DownloadResourceDialog, ViewModels.Common.DownloadResourceDialogViewModel>("DownloadResourceDialog");
 dialogs.WithDialog<Views.Common.SwitchAccountDialog, ViewModels.Common.SwitchAccountDialogViewModel>("SwitchAccountDialog");
 dialogs.WithDialog<Views.Common.UploadSkinDialog, ViewModels.Common.UploadSkinDialogViewModel>("UploadSkinDialog");
 

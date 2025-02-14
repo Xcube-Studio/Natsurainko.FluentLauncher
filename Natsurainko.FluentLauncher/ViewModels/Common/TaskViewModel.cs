@@ -9,7 +9,6 @@ using Microsoft.Windows.AppNotifications.Builder;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
-using Natsurainko.FluentLauncher.Services.Network.Data;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
@@ -18,6 +17,7 @@ using Nrk.FluentCore.GameManagement.Downloader;
 using Nrk.FluentCore.GameManagement.Installer;
 using Nrk.FluentCore.GameManagement.Instances;
 using Nrk.FluentCore.Launch;
+using Nrk.FluentCore.Resources;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;
@@ -137,18 +137,41 @@ internal abstract partial class TaskViewModel : ObservableObject
 
 #region Download Task
 
-internal partial class DownloadGameResourceTaskViewModel : TaskViewModel
+internal partial class DownloadModTaskViewModel : TaskViewModel
 {
-    private readonly string _filePath;
-    private readonly GameResourceFile _resourceFile;
+    private readonly string _folder;
+    private readonly string _fileName;
 
-    public DownloadGameResourceTaskViewModel(GameResourceFile resourceFile, string filePath)
+    private readonly Task<string> @getUrlTask;
+
+    public DownloadModTaskViewModel(object modFile, string folder)
     {
-        _filePath = filePath;
-        _resourceFile = resourceFile;
+        if (modFile is ModrinthFile modrinthFile)
+        {
+            _fileName = modrinthFile.FileName;
+            @getUrlTask = Task.FromResult(modrinthFile.Url);
+        }
+        else if (modFile is CurseForgeFile curseForgeFile)
+        {
+            _fileName = curseForgeFile.FileName;
+            @getUrlTask = App.GetService<CurseForgeClient>().GetFileUrlAsync(curseForgeFile);
+        }
+        else throw new InvalidDataException();
+
+        _folder = folder;
 
         IsExpanded = false;
-        TaskTitle = resourceFile.FileName;
+        TaskTitle = _fileName;
+    }
+
+    public DownloadModTaskViewModel(string fileName, string url, string folder)
+    {
+        IsExpanded = false;
+        TaskTitle = fileName;
+
+        _fileName = fileName;
+        _folder = folder;
+        @getUrlTask = Task.FromResult(url);
     }
 
     public override string TaskIcon => TaskState switch
@@ -166,9 +189,9 @@ internal partial class DownloadGameResourceTaskViewModel : TaskViewModel
 
         try
         {
-            string url = await _resourceFile.GetUrl();
+            string url = await @getUrlTask;
 
-            var downloadTask = HttpUtils.Downloader.CreateDownloadTask(url, _filePath);
+            var downloadTask = HttpUtils.Downloader.CreateDownloadTask(url, Path.Combine(_folder, _fileName));
             downloadTask.FileSizeReceived += (long? obj) =>
             {
                 if (obj != null)
@@ -229,7 +252,7 @@ internal partial class DownloadGameResourceTaskViewModel : TaskViewModel
     [RelayCommand]
     void OpenFolder()
     {
-        using var process = Process.Start(new ProcessStartInfo("explorer.exe", $"/select,{_filePath}"));
+        using var process = Process.Start(new ProcessStartInfo("explorer.exe", $"/select,{Path.Combine(_folder, _fileName)}"));
     }
 
     [RelayCommand]
@@ -238,6 +261,7 @@ internal partial class DownloadGameResourceTaskViewModel : TaskViewModel
 
     }
 }
+
 
 #endregion
 
@@ -426,18 +450,14 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
 
         if(_instanceInstallConfig.SecondaryLoader?.SelectedInstallData is OptiFineInstallData installData)
         {
-            var gameResourceFile = new GameResourceFile(Task.FromResult($"https://bmclapi2.bangbang93.com/optifine/{_instanceInstallConfig.ManifestItem.Id}/{installData.Type}/{installData.Patch}"))
-            {
-                FileName = installData.FileName,
-                Loaders = [ModLoaderType.OptiFine.ToString()],
-                Version = _instanceInstallConfig.ManifestItem.Id
-            };
-
-            downloadService.DownloadResourceFile(gameResourceFile, Path.Combine(modsFolder, gameResourceFile.FileName));
+            downloadService.DownloadModFile(
+                installData.FileName, 
+                $"https://bmclapi2.bangbang93.com/optifine/{_instanceInstallConfig.ManifestItem.Id}/{installData.Type}/{installData.Patch}", 
+                modsFolder);
         }
 
-        foreach (var item in _instanceInstallConfig.AdditionalResources)
-            downloadService.DownloadResourceFile(item, Path.Combine(modsFolder, item.FileName));
+        foreach (var item in _instanceInstallConfig.AdditionalMods)
+            downloadService.DownloadModFile(item, modsFolder);
 
         var config = instanceConfigService.GetConfig(minecraftInstance);
 

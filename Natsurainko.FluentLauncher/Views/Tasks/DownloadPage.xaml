@@ -10,7 +10,7 @@
     <Page.Resources>
         <selectors:TaskTemplateSelector
             x:Key="TemplateSelector"
-            DownloadGameResourceTask="{StaticResource DownloadGameResourceTaskTemplate}"
+            DownloadModTask="{StaticResource DownloadModTaskTemplate}"
             InstallInstanceTask="{StaticResource InstallInstanceTaskTemplate}"
             LaunchTask="{StaticResource LaunchTaskTemplate}" />
     </Page.Resources>

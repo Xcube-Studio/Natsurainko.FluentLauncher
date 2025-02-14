@@ -339,5 +339,5 @@ internal class InstanceInstallConfig
 
     public InstanceLoaderItem? SecondaryLoader { get; set; }
 
-    public List<GameResourceFile> AdditionalResources { get; set; } = [];
+    public List<object> AdditionalMods { get; set; } = [];
 }

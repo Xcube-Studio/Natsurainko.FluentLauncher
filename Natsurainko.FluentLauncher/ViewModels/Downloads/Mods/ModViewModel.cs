@@ -1,19 +1,16 @@
 ﻿using CommunityToolkit.Labs.WinUI.MarkdownTextBlock;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Win32;
 using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI;
-using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Resources;
@@ -145,6 +142,10 @@ internal partial class ModViewModel : ObservableObject, INavigationAware
     public string DescriptionContent { get; set; }
 
     #endregion
+
+    public bool HasMinecraftDataFolder => _gameService.ActiveMinecraftFolder != null;
+
+    public bool HasCurrentInstance => _gameService.ActiveGame != null;
 
     public bool HasScreenshot => ScreenshotUrls != null && ScreenshotUrls.Length != 0;
 

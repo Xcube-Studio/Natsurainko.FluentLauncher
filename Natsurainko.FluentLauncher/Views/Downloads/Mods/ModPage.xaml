@@ -203,7 +203,10 @@
     <ScrollViewer>
         <Border Name="border" Margin="{ThemeResource PageMarginWithBorder}">
             <StackPanel MaxWidth="1000" HorizontalAlignment="Stretch">
-
+                <StackPanel.ChildrenTransitions>
+                    <EntranceThemeTransition FromVerticalOffset="50" />
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                </StackPanel.ChildrenTransitions>
 
                 <StackPanel Margin="0,16" Spacing="16">
                     <Grid>
@@ -305,6 +308,7 @@
                                         <MenuFlyoutItem
                                             x:Uid="Downloads_Mods_ModPage_M2"
                                             Command="{x:Bind VM.DownloadCommand}"
+                                            IsEnabled="{x:Bind VM.HasMinecraftDataFolder}"
                                             Text="Download to public mods folder (.minecraft/mods)">
                                             <MenuFlyoutItem.CommandParameter>
                                                 <x:Int32>1</x:Int32>
@@ -316,6 +320,7 @@
                                         <MenuFlyoutItem
                                             x:Uid="Downloads_Mods_ModPage_M3"
                                             Command="{x:Bind VM.DownloadCommand}"
+                                            IsEnabled="{x:Bind VM.HasCurrentInstance}"
                                             Text="Download to the mods folder of the current instance">
                                             <MenuFlyoutItem.CommandParameter>
                                                 <x:Int32>2</x:Int32>

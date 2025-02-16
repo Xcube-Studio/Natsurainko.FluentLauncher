@@ -94,6 +94,7 @@
                 </controls:SettingsCard>
                 <controls:SettingsCard
                     x:Uid="Settings_SkinPage_Card2"
+                    ActionIcon="{xh:FontIcon Glyph=&#xE8A7;}"
                     Command="{x:Bind VM.NavigateToWebsiteCommand}"
                     Description="Click to go to management"
                     Header="Manage your skins on the official website or skin site"

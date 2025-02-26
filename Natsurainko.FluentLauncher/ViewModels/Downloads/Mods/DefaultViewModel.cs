@@ -82,10 +82,9 @@ internal partial class DefaultViewModel : ObservableRecipient, INavigationAware
             SearchReceiveHandle(query);
         else
             SearchReceiveHandle(SearchQuery);
-    }
 
-    [RelayCommand]
-    void Loaded() => _searchProviderService.OccupyQueryReceiver(this, SearchReceiveHandle);
+        _searchProviderService.OccupyQueryReceiver(this, SearchReceiveHandle);
+    }
 
     [RelayCommand]
     void CardClick(object mod) => _navigationService.NavigateTo("ModsDownload/Mod", mod);

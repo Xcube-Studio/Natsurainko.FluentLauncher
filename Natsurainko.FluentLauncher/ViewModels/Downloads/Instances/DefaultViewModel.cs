@@ -69,6 +69,8 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
     void INavigationAware.OnNavigatedTo(object parameter)
     {
+        _searchProviderService.OccupyQueryReceiver(this, SearchReceiveHandle);
+
         if (parameter is string searchInstanceId)
             SearchQuery = searchInstanceId;
 
@@ -79,9 +81,6 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             "cache-interfaces\\piston-meta.mojang.com\\version_manifest_v2.json")
         .ContinueWith(ParseVersionManifestTask);
     }
-
-    [RelayCommand]
-    void Loaded() => _searchProviderService.OccupyQueryReceiver(this, SearchReceiveHandle);
 
     [RelayCommand]
     void CardClick(VersionManifestItem instance)

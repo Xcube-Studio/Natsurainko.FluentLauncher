@@ -1,9 +1,8 @@
 using CommunityToolkit.Labs.WinUI.MarkdownTextBlock;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls; 
+using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.ViewModels.Downloads.Mods;
-
 
 namespace Natsurainko.FluentLauncher.Views.Downloads.Mods;
 

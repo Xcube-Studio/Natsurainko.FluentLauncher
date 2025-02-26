@@ -72,9 +72,6 @@
     </Page.Resources>
 
     <i:Interaction.Behaviors>
-        <core:EventTriggerBehavior EventName="Loaded">
-            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadedCommand}" />
-        </core:EventTriggerBehavior>
         <core:EventTriggerBehavior EventName="Unloaded">
             <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.UnloadedCommand}" />
         </core:EventTriggerBehavior>

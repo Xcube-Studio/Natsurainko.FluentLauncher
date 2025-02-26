@@ -7,7 +7,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
-using Natsurainko.FluentLauncher.Services.Network.Data;
+using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Views.Downloads.Instances;
 using Nrk.FluentCore.GameManagement.Installer;
@@ -15,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads.Instances;
 
@@ -23,11 +22,21 @@ internal partial class InstallViewModel : ObservableObject, INavigationAware
 {
     private readonly GameService _gameService;
     private readonly DownloadService _downloadService;
+    private readonly SearchProviderService _searchProviderService;
+    private readonly INavigationService _navigationService;
 
-    public InstallViewModel(GameService gameService, DownloadService downloadService)
+    private WeakReferenceMessenger weakReference => WeakReferenceMessenger.Default;
+
+    public InstallViewModel(
+        GameService gameService, 
+        DownloadService downloadService,
+        SearchProviderService searchProviderService,
+        INavigationService navigationService)
     {
         _gameService = gameService;
         _downloadService = downloadService;
+        _searchProviderService = searchProviderService;
+        _navigationService = navigationService;
     }
 
     [ObservableProperty]
@@ -103,6 +112,23 @@ internal partial class InstallViewModel : ObservableObject, INavigationAware
         EnableIndependencyInstance = value.Count > 0;
     }
 
+    async void INavigationAware.OnNavigatedTo(object? parameter)
+    {
+        weakReference.Register<InstanceLoaderQueryMessage>(this, (s, m) =>
+            weakReference.Send(new InstanceLoaderSelectedMessage(InstanceLoaderItems)));
+
+        _searchProviderService.OccupyQueryReceiver(this, query =>
+            _navigationService.Parent!.NavigateTo("InstancesDownload/Navigation", query));
+
+        CurrentInstance = parameter as VersionManifestItem
+            ?? throw new InvalidDataException();
+        InstanceId = CurrentInstance.Id;
+
+        LoaderItems = InstanceLoaderItem.GetInstanceLoaderItems(CurrentInstance);
+        ModItems = await InstanceModItem.GetInstanceModItemsAsync(CurrentInstance);
+        LoadingMods = false;
+    }
+
     [RelayCommand(CanExecute = nameof(CanInstall))]
     void Install()
     {
@@ -118,32 +144,9 @@ internal partial class InstallViewModel : ObservableObject, INavigationAware
         };
 
         _downloadService.InstallInstance(installConfig);
-        WeakReferenceMessenger.Default.Send(new GlobalNavigationMessage("Tasks/Download"));
+        weakReference.Send(new GlobalNavigationMessage("Tasks/Download"));
     }
 
     [RelayCommand]
-    void Loaded()
-    {
-        WeakReferenceMessenger.Default.Register<InstanceLoaderQueryMessage>(this, (s, m) =>
-        {
-            WeakReferenceMessenger.Default.Send(new InstanceLoaderSelectedMessage(InstanceLoaderItems));
-        });
-    }
-
-    [RelayCommand]
-    void Unloaded()
-    {
-        WeakReferenceMessenger.Default.Unregister<InstanceLoaderQueryMessage>(this);
-    }
-
-    async void INavigationAware.OnNavigatedTo(object? parameter)
-    {
-        CurrentInstance = parameter as VersionManifestItem
-            ?? throw new InvalidDataException();
-        InstanceId = CurrentInstance.Id;
-
-        LoaderItems = InstanceLoaderItem.GetInstanceLoaderItems(CurrentInstance);
-        ModItems = await InstanceModItem.GetInstanceModItemsAsync(CurrentInstance);
-        LoadingMods = false;
-    }
+    void Unloaded() => weakReference.Unregister<InstanceLoaderQueryMessage>(this);
 }

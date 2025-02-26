@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Win32;
 using Microsoft.Windows.Globalization;
+using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI;
@@ -30,6 +31,9 @@ internal partial class ModViewModel : ObservableObject, INavigationAware
     private readonly GameService _gameService;
     private readonly DownloadService _downloadService;
     private readonly NotificationService _notificationService;
+    private readonly SearchProviderService _searchProviderService;
+    private readonly INavigationService _navigationService;
+
     private readonly CurseForgeClient _curseForgeClient;
     private readonly ModrinthClient _modrinthClient;
 
@@ -39,12 +43,16 @@ internal partial class ModViewModel : ObservableObject, INavigationAware
         GameService gameService, 
         DownloadService downloadService, 
         NotificationService notificationService,
+        SearchProviderService searchProviderService,
+        INavigationService navigationService,
         CurseForgeClient curseForgeClient, 
         ModrinthClient modrinthClient)
     {
         _gameService = gameService;
         _downloadService = downloadService;
         _notificationService = notificationService;
+        _searchProviderService = searchProviderService;
+        _navigationService = navigationService;
         _curseForgeClient = curseForgeClient;
         _modrinthClient = modrinthClient;
     }
@@ -64,7 +72,7 @@ internal partial class ModViewModel : ObservableObject, INavigationAware
     public partial string WebLink { get; set; }
 
     [ObservableProperty]
-    public partial string Authors { get; set; }
+    public partial ModAuthor[] Authors { get; set; }
 
     [ObservableProperty]
     public partial string[] Categories { get; set; }
@@ -163,13 +171,16 @@ internal partial class ModViewModel : ObservableObject, INavigationAware
 
     void INavigationAware.OnNavigatedTo(object parameter)
     {
+        _searchProviderService.OccupyQueryReceiver(this, query => 
+            _navigationService.Parent!.NavigateTo("ModsDownload/Navigation", query));
+
         if (parameter is CurseForgeResource curseForgeResource)
         {
             IconUrl = curseForgeResource.IconUrl;
             Name = curseForgeResource.Name;
             Summary = curseForgeResource.Summary;
             WebLink = curseForgeResource.WebsiteUrl;
-            Authors = string.Join(",", curseForgeResource.Authors);
+            Authors = [.. curseForgeResource.Authors.Select(author => new ModAuthor(author, $"https://www.curseforge.com/members/{author}"))];
             Categories = [.. curseForgeResource.Categories];
             ScreenshotUrls = [.. curseForgeResource.ScreenshotUrls];
             Source = "CurseForge";
@@ -182,7 +193,7 @@ internal partial class ModViewModel : ObservableObject, INavigationAware
             Name = modrinthResource.Name;
             Summary = modrinthResource.Summary;
             WebLink = modrinthResource.WebLink;
-            Authors = modrinthResource.Author;
+            Authors = [new ModAuthor(modrinthResource.Author, $"https://modrinth.com/user/{modrinthResource.Author}")];
             Categories = [.. modrinthResource.Categories];
             ScreenshotUrls = [.. modrinthResource.ScreenshotUrls];
             Source = "Modrinth";

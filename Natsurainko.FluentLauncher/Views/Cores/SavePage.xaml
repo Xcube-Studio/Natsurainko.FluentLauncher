@@ -5,10 +5,10 @@
     xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:data="using:Natsurainko.FluentLauncher.Experimental.Saves"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
-    xmlns:data="using:Natsurainko.FluentLauncher.Experimental.Saves"
     mc:Ignorable="d">
 
     <ScrollViewer>
@@ -105,21 +105,15 @@
                     Grid.Row="2"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Orientation="Horizontal"
-                    Spacing="5">
-                    <FontIcon
-                        FontSize="72"
-                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                        Glyph="&#xe74c;" />
-                    <StackPanel VerticalAlignment="Center">
+                    Spacing="4">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon FontSize="32" Glyph="&#xe74c;" />
                         <TextBlock
                             x:Uid="Cores_SavePage_Text1"
-                            Margin="10,0"
-                            VerticalAlignment="Center"
-                            FontSize="24"
-                            FontWeight="SemiBold"
-                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                            Text="No Save" />
+                            Margin="0,-4,0,0"
+                            FontSize="28"
+                            Style="{ThemeResource BaseTextBlockStyle}"
+                            Text="No Mods" />
                     </StackPanel>
 
                     <i:Interaction.Behaviors>

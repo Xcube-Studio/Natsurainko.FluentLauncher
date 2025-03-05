@@ -14,7 +14,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Windows.Foundation;
 using Windows.Graphics;
 
 namespace Natsurainko.FluentLauncher.Views;
@@ -25,6 +24,7 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
 
     private readonly SettingsService _settings = App.GetService<SettingsService>();
     private readonly SearchProviderService _searchProviderService = App.GetService<SearchProviderService>();
+    private readonly IPageProvider pageProvider = App.GetService<IPageProvider>();
 
     private bool isUpdatingNavigationItemSelection = false;
 
@@ -136,7 +136,11 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         if (isUpdatingNavigationItemSelection)
             return;
 
-        var pageTag = ((NavigationViewItem)args.InvokedItemContainer).Tag.ToString()
+        NavigationViewItem navigationViewItem = ((NavigationViewItem)args.InvokedItemContainer);
+
+        if (!navigationViewItem.SelectsOnInvoked) return;
+
+        string pageTag = navigationViewItem.Tag.ToString() 
             ?? throw new ArgumentNullException("The invoked item's tag is null.");
 
         VM.NavigationService.NavigateTo(pageTag);
@@ -147,16 +151,27 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
     {
         isUpdatingNavigationItemSelection = true;
 
-        foreach (NavigationViewItem item in NavigationViewControl.MenuItems.Union(NavigationViewControl.FooterMenuItems).Cast<NavigationViewItem>())
+        void EnumerateTreeMenuItems(IEnumerable<object> menuItems)
         {
-            string tag = item.GetTag();
-
-            if (App.GetService<IPageProvider>().RegisteredPages[tag].PageType == e.SourcePageType)
+            foreach (object item in menuItems)
             {
-                NavigationViewControl.SelectedItem = item;
-                break;
+                if (item is not NavigationViewItem navigationViewItem) 
+                    continue;
+
+                string? tag = navigationViewItem.GetTag();
+
+                if (tag is not null && pageProvider.RegisteredPages[tag].PageType == e.SourcePageType)
+                {
+                    NavigationViewControl.SelectedItem = navigationViewItem;
+                    break;
+                }
+
+                if (navigationViewItem.MenuItems != null && navigationViewItem.MenuItems.Count > 0)
+                    EnumerateTreeMenuItems(navigationViewItem.MenuItems);
             }
         }
+
+        EnumerateTreeMenuItems(NavigationViewControl.MenuItems.Union(NavigationViewControl.FooterMenuItems));
 
         isUpdatingNavigationItemSelection = false;
 

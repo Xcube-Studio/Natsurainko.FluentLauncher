@@ -55,6 +55,7 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
 
     private bool isLoading = false;
     private bool isUnloaded = false;
+
     private CancellationTokenSource cancellationTokenSource;
     private readonly CacheInterfaceService _cacheInterfaceService = App.GetService<CacheInterfaceService>();
 

@@ -314,11 +314,11 @@
     </Page.Resources>
 
     <i:Interaction.Behaviors>
-        <core:EventTriggerBehavior EventName="Unloaded">
-            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.UnloadedCommand}" />
-        </core:EventTriggerBehavior>
         <core:EventTriggerBehavior EventName="Loaded">
             <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadedCommand}" />
+        </core:EventTriggerBehavior>
+        <core:EventTriggerBehavior EventName="Unloaded">
+            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.UnloadedCommand}" />
         </core:EventTriggerBehavior>
     </i:Interaction.Behaviors>
 
@@ -536,7 +536,7 @@
                             Grid.Column="2"
                             HorizontalTextAlignment="Right"
                             Style="{ThemeResource TitleLargeTextBlockStyle}"
-                            Text="{x:Bind VM.DropDownButtonDisplayText, Mode=OneWay}"
+                            Text="{x:Bind VM.InstanceSelectorText, Mode=OneWay}"
                             TextTrimming="CharacterEllipsis" />
                         <DropDownButton.Flyout>
                             <Flyout Opened="Flyout_Opened" Placement="TopEdgeAlignedRight">
@@ -609,38 +609,28 @@
                                         </ListView.ItemTemplate>
                                     </ListView>
                                     <StackPanel
-                                        Grid.Row="2"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
-                                        Orientation="Horizontal"
-                                        Spacing="5">
-                                        <FontIcon
-                                            FontSize="56"
-                                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                            Glyph="&#xe74c;" />
-
-                                        <StackPanel VerticalAlignment="Center">
+                                        Spacing="4">
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <FontIcon FontSize="22" Glyph="&#xe74c;" />
                                             <TextBlock
-                                                x:Uid="Cores_CoresPage_Text3"
-                                                Margin="10,0"
-                                                VerticalAlignment="Center"
-                                                FontSize="16"
-                                                FontWeight="SemiBold"
-                                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                                Text="No Core" />
-                                            <HyperlinkButton Margin="0,0,0,-5" Command="{x:Bind VM.GoToSettingsCommand}">
-                                                <TextBlock
-                                                    x:Uid="Cores_CoresPage_Text4"
-                                                    FontWeight="SemiBold"
-                                                    Text="Go To Settings" />
-                                            </HyperlinkButton>
+                                                x:Uid="Home_HomePage_NoInstances"
+                                                FontSize="18"
+                                                Style="{ThemeResource BaseTextBlockStyle}"
+                                                Text="No Instances" />
                                         </StackPanel>
+                                        <HyperlinkButton
+                                            Padding="5,0,5,0.5"
+                                            HorizontalAlignment="Center"
+                                            Command="{x:Bind VM.GoToInstancesManageCommand}">
+                                            <TextBlock x:Uid="Home_HomePage_HyperlinkButton" Text="No Instances" />
+                                        </HyperlinkButton>
 
                                         <i:Interaction.Behaviors>
                                             <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{x:Bind VM.MinecraftInstances, Mode=OneWay}" />
                                         </i:Interaction.Behaviors>
                                     </StackPanel>
-
                                 </Grid>
                             </Flyout>
                         </DropDownButton.Flyout>

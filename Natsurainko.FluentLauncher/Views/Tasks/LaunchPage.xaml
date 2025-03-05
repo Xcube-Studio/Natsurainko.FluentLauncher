@@ -13,7 +13,7 @@
     <Page.Resources>
         <selectors:TaskTemplateSelector
             x:Key="TemplateSelector"
-            DownloadGameResourceTask="{StaticResource DownloadGameResourceTaskTemplate}"
+            DownloadModTask="{StaticResource DownloadModTaskTemplate}"
             InstallInstanceTask="{StaticResource InstallInstanceTaskTemplate}"
             LaunchTask="{StaticResource LaunchTaskTemplate}" />
     </Page.Resources>
@@ -21,7 +21,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" MinHeight="320" />
         </Grid.RowDefinitions>
 
         <StackPanel
@@ -64,7 +64,7 @@
 
         <ScrollViewer
             Name="scrollViewer"
-            Grid.Row="2"
+            Grid.Row="1"
             Padding="{ThemeResource PagePaddingWithScrollViewer}">
             <ItemsRepeater
                 Name="itemsRepeater"
@@ -79,32 +79,29 @@
         </ScrollViewer>
 
         <StackPanel
-            Grid.Row="2"
-            Margin="0,0,0,150"
+            Grid.Row="1"
+            Margin="0,0,0,160"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Orientation="Horizontal"
-            Spacing="5">
-            <FontIcon
-                FontSize="72"
-                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                Glyph="&#xe74c;" />
-            <StackPanel VerticalAlignment="Center">
+            Spacing="4">
+            <StackPanel
+                HorizontalAlignment="Center"
+                Orientation="Horizontal"
+                Spacing="8">
+                <FontIcon FontSize="32" Glyph="&#xe74c;" />
                 <TextBlock
                     x:Uid="Tasks_LaunchPage_Text2"
-                    Margin="10,0"
-                    VerticalAlignment="Center"
-                    FontSize="24"
-                    FontWeight="SemiBold"
-                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                    Text="No Task" />
-                <HyperlinkButton Margin="0,0,0,-5" Command="{x:Bind VM.GoToHomeCommand}">
-                    <TextBlock
-                        x:Uid="Tasks_LaunchPage_Text3"
-                        FontWeight="SemiBold"
-                        Text="Go to HomePage and launch a Game" />
-                </HyperlinkButton>
+                    Margin="0,-4,0,0"
+                    FontSize="28"
+                    Style="{ThemeResource BaseTextBlockStyle}"
+                    Text="No Tasks" />
             </StackPanel>
+            <HyperlinkButton
+                Padding="5,0,5,0.5"
+                HorizontalAlignment="Center"
+                Command="{x:Bind VM.GoToHomeCommand}">
+                <TextBlock x:Uid="Tasks_LaunchPage_Text3" Text="Go to HomePage and launch a Game" />
+            </HyperlinkButton>
 
             <i:Interaction.Behaviors>
                 <behaviors:EmptyListVisibleBehavior IsObservableCollection="True" ItemsSource="{x:Bind VM.Tasks, Mode=OneWay}" />

@@ -48,7 +48,6 @@ pages.WithPage<Views.ShellPage, ViewModels.ShellViewModel>("ShellPage");
 pages.WithPage<Views.Home.HomePage, ViewModels.Home.HomeViewModel>("HomePage");
 
 // Cores page
-pages.WithPage<Views.Cores.Install.WizardPage, ViewModels.Cores.Install.WizardViewModel>("Cores/Install");
 
 pages.WithPage<Views.Cores.NavigationPage, ViewModels.Cores.NavigationViewModel>("Cores/Navigation");
 pages.WithPage<Views.Cores.DefaultPage, ViewModels.Cores.DefaultViewModel>("Cores/Default");
@@ -63,10 +62,14 @@ pages.WithPage<Views.News.DefaultPage, ViewModels.News.DefaultViewModel>("News/D
 pages.WithPage<Views.News.NotePage, ViewModels.News.NoteViewModel>("News/Note");
 
 // Resources download page
-pages.WithPage<Views.Downloads.NavigationPage, ViewModels.Downloads.NavigationViewModel>("Download/Navigation");
-pages.WithPage<Views.Downloads.DefaultPage, ViewModels.Downloads.DefaultViewModel>("Download/Default");
-pages.WithPage<Views.Downloads.SearchPage, ViewModels.Downloads.SearchViewModel>("Download/Search");
-pages.WithPage<Views.Downloads.DetailsPage, ViewModels.Downloads.DetailsViewModel>("Download/Details");
+
+pages.WithPage<Views.Downloads.Instances.NavigationPage, ViewModels.Downloads.Instances.NavigationViewModel>("InstancesDownload/Navigation");
+pages.WithPage<Views.Downloads.Instances.DefaultPage, ViewModels.Downloads.Instances.DefaultViewModel>("InstancesDownload/Default");
+pages.WithPage<Views.Downloads.Instances.InstallPage, ViewModels.Downloads.Instances.InstallViewModel>("InstancesDownload/Install");
+
+pages.WithPage<Views.Downloads.Mods.NavigationPage, ViewModels.Downloads.Mods.NavigationViewModel>("ModsDownload/Navigation");
+pages.WithPage<Views.Downloads.Mods.DefaultPage, ViewModels.Downloads.Mods.DefaultViewModel>("ModsDownload/Default");
+pages.WithPage<Views.Downloads.Mods.ModPage, ViewModels.Downloads.Mods.ModViewModel>("ModsDownload/Mod");
 
 // Tasks page
 pages.WithPage<Views.Tasks.LaunchPage, ViewModels.Tasks.LaunchViewModel>("Tasks/Launch");
@@ -91,7 +94,6 @@ var dialogs = builder.Dialogs;
 dialogs.WithDialog<Views.Common.AddVmArgumentDialog, ViewModels.Common.AddVmArgumentDialogViewModel>("AddVmArgumentDialog");
 dialogs.WithDialog<Views.Common.AuthenticationWizardDialog, ViewModels.Common.AuthenticationWizardDialogViewModel>("AuthenticationWizardDialog");
 dialogs.WithDialog<Views.Common.DeleteInstanceDialog, ViewModels.Common.DeleteInstanceDialogViewModel>("DeleteInstanceDialog");
-dialogs.WithDialog<Views.Common.DownloadResourceDialog, ViewModels.Common.DownloadResourceDialogViewModel>("DownloadResourceDialog");
 dialogs.WithDialog<Views.Common.SwitchAccountDialog, ViewModels.Common.SwitchAccountDialogViewModel>("SwitchAccountDialog");
 dialogs.WithDialog<Views.Common.UploadSkinDialog, ViewModels.Common.UploadSkinDialogViewModel>("UploadSkinDialog");
 

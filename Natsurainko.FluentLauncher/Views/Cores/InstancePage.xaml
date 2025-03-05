@@ -31,6 +31,7 @@
                     Text="Basic Configuration" />
 
                 <controls:SettingsCard
+                    Padding="16,8"
                     ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
                     Command="{x:Bind VM.OpenVersionFolderCommand}"
                     IsClickEnabled="True">
@@ -44,7 +45,6 @@
                             <Border
                                 Width="40"
                                 Height="40"
-                                Margin="2,2,0,0"
                                 VerticalAlignment="Center"
                                 BorderBrush="{ThemeResource IconBorder}"
                                 BorderThickness="2"
@@ -53,8 +53,14 @@
                                     <Image Source="{x:Bind VM.MinecraftInstance, Mode=OneWay, Converter={StaticResource InstanceIconConverter}}" />
                                 </Border>
                             </Border>
-                            <StackPanel Grid.Column="2" Spacing="5">
+                            <StackPanel
+                                Grid.Column="2"
+                                VerticalAlignment="Center"
+                                Spacing="4">
                                 <TextBlock
+                                    Margin="0,-4,0,0"
+                                    HorizontalAlignment="Left"
+                                    FontSize="16"
                                     FontWeight="SemiBold"
                                     Text="{x:Bind VM.MinecraftInstance.InstanceId, Mode=OneWay}"
                                     TextTrimming="CharacterEllipsis"
@@ -65,12 +71,11 @@
                                     </ItemsRepeater.Layout>
                                     <ItemsRepeater.ItemTemplate>
                                         <DataTemplate x:DataType="x:String">
-                                            <Border Padding="5,1" CornerRadius="2.5">
+                                            <Border Padding="5,0,5,0.5" CornerRadius="2.5">
                                                 <Border.Background>
-                                                    <SolidColorBrush Opacity="0.9" Color="{ThemeResource SystemAccentColor}" />
+                                                    <SolidColorBrush Opacity="0.25" Color="{ThemeResource SystemAccentColor}" />
                                                 </Border.Background>
                                                 <TextBlock
-                                                    Foreground="{ThemeResource AccentButtonForeground}"
                                                     Style="{ThemeResource CaptionTextBlockStyle}"
                                                     Text="{x:Bind}"
                                                     ToolTipService.ToolTip="{x:Bind}" />

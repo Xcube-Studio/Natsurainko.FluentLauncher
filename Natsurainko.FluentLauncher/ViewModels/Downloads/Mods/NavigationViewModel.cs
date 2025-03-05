@@ -2,42 +2,36 @@
 using FluentLauncher.Infra.UI.Navigation;
 using System.Collections.ObjectModel;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Settings;
+namespace Natsurainko.FluentLauncher.ViewModels.Downloads.Mods;
 
-public partial class NavigationViewModel : ObservableObject, INavigationAware
+internal class NavigationViewModel : ObservableObject, INavigationAware
 {
     public INavigationService NavigationService { get; init; }
 
-    public ObservableCollection<string> DisplayedPath { get; } = new();
+    public ObservableCollection<string> DisplayedPath { get; } = [];
 
     public NavigationViewModel(INavigationService navigationService)
     {
         NavigationService = navigationService;
     }
 
-    void INavigationAware.OnNavigatedTo(object? parameter)
-    {
-        if (parameter is string pageKey)
-            NavigateTo(pageKey);
-        else
-            NavigateTo("Settings/Default"); // Default page
-    }
+    void INavigationAware.OnNavigatedTo(object? parameter) => NavigateTo("ModsDownload/Default", parameter);
 
     public void HandleNavigationBreadcrumBarItemClicked(string[] routes)
     {
-        if (routes.Length == 1 && routes[0] == "Settings")
-            NavigateTo("Settings/Default");
+        if (routes.Length == 1 && routes[0] == "ModsDownload")
+            NavigateTo("ModsDownload/Default");
         else
             NavigateTo(string.Join('/', routes));
     }
 
-    private void NavigateTo(string pageKey)
+    private void NavigateTo(string pageKey, object? parameter = null)
     {
-        NavigationService.NavigateTo(pageKey); // Default page
-        if (pageKey == "Settings/Default")
+        NavigationService.NavigateTo(pageKey, parameter); // Default page
+        if (pageKey == "ModsDownload/Default")
         {
             DisplayedPath.Clear();
-            DisplayedPath.Add("Settings");
+            DisplayedPath.Add("ModsDownload");
         }
         else
         {

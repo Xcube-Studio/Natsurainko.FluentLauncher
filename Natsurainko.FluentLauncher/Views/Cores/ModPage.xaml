@@ -123,31 +123,24 @@
                 </ItemsRepeater>
 
                 <StackPanel
-                    Grid.Row="2"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Orientation="Horizontal"
-                    Spacing="5">
-                    <FontIcon
-                        FontSize="72"
-                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                        Glyph="&#xe74c;" />
-                    <StackPanel VerticalAlignment="Center">
+                    Spacing="4">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon FontSize="32" Glyph="&#xe74c;" />
                         <TextBlock
                             x:Uid="Cores_ModPage_Text1"
-                            Margin="10,0"
-                            VerticalAlignment="Center"
-                            FontSize="24"
-                            FontWeight="SemiBold"
-                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                            Text="No Mod" />
-                        <HyperlinkButton Margin="0,0,0,-5">
-                            <TextBlock
-                                x:Uid="Cores_ModPage_Text2"
-                                FontWeight="SemiBold"
-                                Text="Go To Downloads" />
-                        </HyperlinkButton>
+                            Margin="0,-4,0,0"
+                            FontSize="28"
+                            Style="{ThemeResource BaseTextBlockStyle}"
+                            Text="No Mods" />
                     </StackPanel>
+                    <HyperlinkButton
+                        Padding="5,0,5,0.5"
+                        HorizontalAlignment="Center"
+                        Command="{x:Bind VM.InstallModsCommand}">
+                        <TextBlock x:Uid="Cores_ModPage_Text2" Text="Download Mods" />
+                    </HyperlinkButton>
 
                     <i:Interaction.Behaviors>
                         <behaviors:EmptyListVisibleBehavior IsObservableCollection="True" ItemsSource="{x:Bind VM.Mods, Mode=OneWay}" />

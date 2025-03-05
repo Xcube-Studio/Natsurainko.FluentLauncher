@@ -70,6 +70,10 @@ public class EmptyListVisibleBehavior : DependencyObject, IBehavior
     public void UpdateVisibility()
     {
         var uIElement = AssociatedObject as FrameworkElement;
-        uIElement.Visibility = (ItemsSource == null || ItemsSource.Count == 0) ? Visibility.Visible : Visibility.Collapsed;
+
+        if (uIElement != null)
+            uIElement.Visibility = (ItemsSource == null || ItemsSource.Count == 0) 
+                ? Visibility.Visible 
+                : Visibility.Collapsed;
     }
 }

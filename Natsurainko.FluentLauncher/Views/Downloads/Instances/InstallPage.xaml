@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Downloads.Instances.InstallPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
+    xmlns:bh="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:data="using:Natsurainko.FluentLauncher.Models.UI"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads.Instances"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resources="using:Nrk.FluentCore.Resources"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Default">
+                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="CardBackgroundFillColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="ControlFillColorSecondaryBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="ControlFillColorDisabledBrush" />
+
+                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="TextFillColorPrimaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+
+                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="ControlElevationBorderBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="Light">
+                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="CardBackgroundFillColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="ControlFillColorSecondaryBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="ControlFillColorDisabledBrush" />
+
+                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="TextFillColorPrimaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+
+                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="ControlElevationBorderBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="HighContrast">
+                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="SystemColorButtonFaceColorBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="SystemColorHighlightTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="SystemControlBackgroundBaseLowBrush" />
+
+                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="SystemColorButtonTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="SystemColorHighlightColorBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="SystemControlDisabledBaseMediumLowBrush" />
+
+                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="SystemColorButtonTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="SystemColorHighlightColorBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
+                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="SystemControlDisabledTransparentBrush" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <i:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="Unloaded">
+            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.UnloadedCommand}" />
+        </core:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+
+    <ScrollViewer>
+        <Border Name="border" Margin="{ThemeResource PageMarginWithBorder}">
+            <StackPanel
+                MaxWidth="1000"
+                HorizontalAlignment="Stretch"
+                Spacing="{StaticResource SettingsCardSpacing}">
+
+                <controls:SettingsExpander
+                    Padding="16,8"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    CornerRadius="8"
+                    IsExpanded="True">
+                    <controls:SettingsExpander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Border
+                                Width="40"
+                                Height="40"
+                                VerticalAlignment="Center"
+                                BorderBrush="{ThemeResource IconBorder}"
+                                BorderThickness="2"
+                                CornerRadius="4">
+                                <Border.Background>
+                                    <ImageBrush ImageSource="{x:Bind VM.InstanceIcon, Mode=OneWay}" />
+                                </Border.Background>
+                            </Border>
+                            <StackPanel
+                                Grid.Column="2"
+                                VerticalAlignment="Center"
+                                Spacing="2">
+                                <TextBlock
+                                    Margin="0,-4,0,0"
+                                    FontSize="16"
+                                    Style="{ThemeResource BaseTextBlockStyle}"
+                                    Text="{x:Bind VM.InstanceId, Mode=OneWay}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <TextBlock
+                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap">
+                                        <Run Text="{x:Bind VM.CurrentInstance, Converter={StaticResource InstanceDescriptionConverter}}" />
+                                    </TextBlock>
+                                    <TextBlock
+                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap">
+                                        <Run Text="{x:Bind local:DefaultPage.FormatDate(VM.CurrentInstance.ReleaseTime)}" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </controls:SettingsExpander.Header>
+
+                    <Button
+                        x:Uid="Downloads_Instances_InstallPage_Button"
+                        Command="{x:Bind VM.InstallCommand}"
+                        Content="Install"
+                        Style="{ThemeResource AccentButtonStyle}" />
+
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard
+                            x:Uid="Downloads_Instances_InstallPage_Card1"
+                            Description="The id of the versions\{version} directory, the id cannot be repeated"
+                            Header="Instance Id">
+                            <StackPanel Spacing="4">
+                                <TextBlock
+                                    x:Name="InvalidIdText"
+                                    x:Uid="Downloads_Instances_InstallPage_Text1"
+                                    VerticalAlignment="Center"
+                                    x:Load="{x:Bind VM.InstanceIdValidity, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
+                                    Foreground="{ThemeResource SystemErrorTextColor}"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                    Text="Id not available" />
+                                <TextBox Text="{x:Bind VM.InstanceId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </controls:SettingsCard>
+
+                        <controls:SettingsCard
+                            x:Uid="Downloads_Instances_InstallPage_Card2"
+                            Description="The game will run at versions\${version} directory"
+                            Header="Instance Independent">
+                            <ToggleSwitch IsOn="{x:Bind VM.EnableIndependencyInstance, Mode=TwoWay}" />
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
+
+                <TextBlock
+                    x:Uid="Downloads_Instances_InstallPage_T1"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Loaders" />
+
+                <ItemsView
+                    ItemsSource="{x:Bind VM.LoaderItems, Mode=OneWay}"
+                    SelectionChanged="ItemsView_SelectionChanged"
+                    SelectionMode="Multiple">
+                    <ItemsView.ItemTemplate>
+                        <DataTemplate x:DataType="data:InstanceLoaderItem">
+                            <ItemContainer
+                                CornerRadius="8"
+                                IsEnabled="{x:Bind IsEnabled, Mode=OneWay}"
+                                IsSelected="{x:Bind IsSelected, Mode=TwoWay}">
+                                <Border
+                                    Padding="16"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Background="{ThemeResource SettingsCardBackground}"
+                                    BorderBrush="{ThemeResource SettingsCardBorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="8">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="16" />
+                                            <RowDefinition Height="1*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="12" />
+                                                <ColumnDefinition Width="1*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Border
+                                                Width="24"
+                                                Height="24"
+                                                VerticalAlignment="Center"
+                                                BorderBrush="{ThemeResource IconBorder}"
+                                                BorderThickness="1"
+                                                CornerRadius="4">
+                                                <Border CornerRadius="4">
+                                                    <Image Source="{x:Bind Type, Converter={StaticResource InstanceIconConverter}}" />
+                                                </Border>
+                                            </Border>
+                                            <StackPanel
+                                                Grid.Column="2"
+                                                Orientation="Horizontal"
+                                                Spacing="8">
+                                                <TextBlock
+                                                    Margin="0,-2,0,0"
+                                                    VerticalAlignment="Center"
+                                                    Style="{ThemeResource BaseTextBlockStyle}"
+                                                    Text="{x:Bind Type}"
+                                                    TextWrapping="WrapWholeWords" />
+                                                <ProgressRing
+                                                    Width="16"
+                                                    Height="16"
+                                                    VerticalAlignment="Center"
+                                                    IsActive="{x:Bind Loading, Mode=OneWay}" />
+                                            </StackPanel>
+                                        </Grid>
+                                        <Grid Grid.Row="2">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock
+                                                x:Name="WarnText"
+                                                x:Load="{x:Bind GetTextLoad(Text), Mode=OneWay}"
+                                                Foreground="{ThemeResource SystemErrorTextColor}"
+                                                Text="{x:Bind Text, Mode=OneWay}" />
+                                            <TextBlock
+                                                x:Name="DescriptionText"
+                                                Grid.Row="1"
+                                                x:Load="{x:Bind IsSelected, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}"
+                                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                                Text="{x:Bind Description}"
+                                                TextTrimming="CharacterEllipsis" />
+                                        </Grid>
+                                        <ComboBox
+                                            x:Name="ComboBox"
+                                            Grid.Row="2"
+                                            MinWidth="0"
+                                            HorizontalAlignment="Left"
+                                            x:Load="{x:Bind IsSelected, Mode=OneWay}"
+                                            ItemsSource="{x:Bind InstallDatas, Mode=OneWay}"
+                                            SelectedItem="{x:Bind SelectedInstallData, Mode=TwoWay}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate x:DataType="x:Object">
+                                                    <TextBlock Text="{x:Bind local:InstallPage.GetLoaderVersionFromInstallData((x:Object))}" />
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </Grid>
+                                </Border>
+                                <i:Interaction.Behaviors>
+                                    <core:EventTriggerBehavior EventName="Loaded">
+                                        <actions:ModifiedInvokeCommandAction Command="{x:Bind LoadedCommand}" />
+                                    </core:EventTriggerBehavior>
+                                    <core:EventTriggerBehavior EventName="Unloaded">
+                                        <actions:ModifiedInvokeCommandAction Command="{x:Bind UnloadedCommand}" />
+                                    </core:EventTriggerBehavior>
+                                </i:Interaction.Behaviors>
+                            </ItemContainer>
+                        </DataTemplate>
+                    </ItemsView.ItemTemplate>
+
+                    <ItemsView.Layout>
+                        <UniformGridLayout
+                            ItemsJustification="Start"
+                            ItemsStretch="Fill"
+                            MinColumnSpacing="4"
+                            MinItemHeight="110"
+                            MinItemWidth="200"
+                            MinRowSpacing="4" />
+                    </ItemsView.Layout>
+                </ItemsView>
+
+                <TextBlock
+                    x:Uid="Downloads_Instances_InstallPage_T2"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Pre-Install Mods" />
+
+                <ProgressRing
+                    x:Name="ProgressRing"
+                    Width="32"
+                    Height="32"
+                    HorizontalAlignment="Center"
+                    x:Load="{x:Bind VM.LoadingMods, Mode=OneWay}"
+                    IsActive="{x:Bind VM.LoadingMods, Mode=OneWay}" />
+
+                <ItemsView
+                    ItemsSource="{x:Bind VM.ModItems, Mode=OneWay}"
+                    SelectionChanged="ItemsView_SelectionChanged_1"
+                    SelectionMode="Multiple">
+                    <ItemsView.ItemTemplate>
+                        <DataTemplate x:DataType="data:InstanceModItem">
+                            <ItemContainer
+                                CornerRadius="8"
+                                IsEnabled="{x:Bind IsEnabled, Mode=OneWay}"
+                                IsSelected="{x:Bind IsSelected, Mode=TwoWay}">
+                                <Border
+                                    Padding="16"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Background="{ThemeResource SettingsCardBackground}"
+                                    BorderBrush="{ThemeResource SettingsCardBorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="8">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="16" />
+                                            <RowDefinition Height="1*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="12" />
+                                                <ColumnDefinition Width="1*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Border
+                                                Width="24"
+                                                Height="24"
+                                                VerticalAlignment="Center"
+                                                BorderBrush="{ThemeResource IconBorder}"
+                                                BorderThickness="1"
+                                                CornerRadius="4">
+                                                <Border CornerRadius="4">
+                                                    <Image>
+                                                        <i:Interaction.Behaviors>
+                                                            <bh:ImageSourceLoadBehavior
+                                                                ImageSourceUrl="{x:Bind ModrinthProject.IconUrl, Mode=OneWay}"
+                                                                LoadFromInternet="True"
+                                                                SourcePropertyName="Source" />
+                                                        </i:Interaction.Behaviors>
+                                                    </Image>
+                                                </Border>
+                                            </Border>
+                                            <Grid Grid.Column="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="16" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock
+                                                    Margin="0,-2,8,0"
+                                                    VerticalAlignment="Center"
+                                                    Style="{ThemeResource BaseTextBlockStyle}"
+                                                    Text="{x:Bind ModrinthProject.Name, Mode=OneWay}"
+                                                    TextTrimming="CharacterEllipsis"
+                                                    TextWrapping="NoWrap" />
+                                                <ProgressRing
+                                                    Grid.Column="1"
+                                                    Width="16"
+                                                    Height="16"
+                                                    VerticalAlignment="Center"
+                                                    IsActive="{x:Bind Loading, Mode=OneWay}" />
+                                            </Grid>
+                                        </Grid>
+                                        <Grid Grid.Row="2">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock
+                                                x:Name="WarnText"
+                                                x:Load="{x:Bind GetTextLoad(Text), Mode=OneWay}"
+                                                Foreground="{ThemeResource SystemErrorTextColor}"
+                                                Text="{x:Bind Text, Mode=OneWay}" />
+                                            <TextBlock
+                                                x:Name="DescriptionText"
+                                                Grid.Row="1"
+                                                x:Load="{x:Bind IsSelected, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}"
+                                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                                Text="{x:Bind ModrinthProject.Summary, Mode=OneWay}"
+                                                TextTrimming="CharacterEllipsis" />
+                                        </Grid>
+                                        <ComboBox
+                                            x:Name="ComboBox"
+                                            Grid.Row="2"
+                                            MinWidth="0"
+                                            HorizontalAlignment="Left"
+                                            x:Load="{x:Bind IsSelected, Mode=OneWay}"
+                                            ItemsSource="{x:Bind FilteredFiles, Mode=OneWay}"
+                                            SelectedItem="{x:Bind SelectedModrinthFile, Mode=TwoWay}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate x:DataType="resources:ModrinthFile">
+                                                    <TextBlock Text="{x:Bind FileName}" />
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </Grid>
+                                </Border>
+                                <i:Interaction.Behaviors>
+                                    <core:EventTriggerBehavior EventName="Loaded">
+                                        <actions:ModifiedInvokeCommandAction Command="{x:Bind LoadedCommand}" />
+                                    </core:EventTriggerBehavior>
+                                    <core:EventTriggerBehavior EventName="Unloaded">
+                                        <actions:ModifiedInvokeCommandAction Command="{x:Bind UnloadedCommand}" />
+                                    </core:EventTriggerBehavior>
+                                </i:Interaction.Behaviors>
+                            </ItemContainer>
+                        </DataTemplate>
+                    </ItemsView.ItemTemplate>
+
+                    <ItemsView.Layout>
+                        <UniformGridLayout
+                            ItemsJustification="Start"
+                            ItemsStretch="Fill"
+                            MinColumnSpacing="4"
+                            MinItemHeight="110"
+                            MinItemWidth="200"
+                            MinRowSpacing="4" />
+                    </ItemsView.Layout>
+                </ItemsView>
+
+            </StackPanel>
+        </Border>
+
+        <!--  Visual states reflect the application's window size  -->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="LayoutVisualStates">
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger>
+                            <AdaptiveTrigger.MinWindowWidth>
+                                <x:Double>641</x:Double>
+                            </AdaptiveTrigger.MinWindowWidth>
+                        </AdaptiveTrigger>
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="border.Margin" Value="20, 0, 20, 20" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </ScrollViewer>
+</Page>

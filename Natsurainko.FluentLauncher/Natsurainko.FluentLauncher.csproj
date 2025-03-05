@@ -122,7 +122,11 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Compile Remove="Services\UI\Data\**" />
+    <EmbeddedResource Remove="Services\UI\Data\**" />
     <None Remove="**\*.xaml" />
+    <None Remove="Services\UI\Data\**" />
+    <Page Remove="Services\UI\Data\**" />
   </ItemGroup>
 
   <!-- Assets -->
@@ -251,12 +255,8 @@
   <ItemGroup>
     <AdditionalFiles Include="Assets\Strings\*.resw" />
   </ItemGroup>
-
   <ItemGroup>
-    <CustomAdditionalCompileInputs Remove="Views\Settings\SkinPage.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Remove="Views\Settings\SkinPage.xaml" />
+    <PRIResource Remove="Services\UI\Data\**" />
   </ItemGroup>
 
   <!-- Multilingual App Toolkit

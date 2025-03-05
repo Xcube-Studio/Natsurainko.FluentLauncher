@@ -54,7 +54,7 @@ internal partial class ShellViewModel : ObservableObject, INavigationAware
         WeakReferenceMessenger.Default.Register(this!, (MessageHandler<object, GlobalNavigationMessage>)((r, m) =>
         {
             ShellViewModel vm = (r as ShellViewModel)!;
-            App.DispatcherQueue.TryEnqueue(() => vm.NavigationService.NavigateTo(m.Value));
+            App.DispatcherQueue.TryEnqueue(() => vm.NavigationService.NavigateTo(m.Value, m.Parameter));
         }));
     }
 

@@ -77,8 +77,6 @@
             <converters:InstanceIconConverter x:Key="InstanceIconConverter" />
             <converters:InstanceDisplayNameConverter x:Key="InstanceDisplayNameConverter" />
             <converters:InstanceDescriptionConverter x:Key="InstanceDescriptionConverter" />
-            <converters:InstallDataLoaderVersionConverter x:Key="InstallDataLoaderVersionConverter" />
-
             <converters:ModInfoConverter x:Key="ModInfoConverter" />
             <converters:SaveInfoConverter x:Key="SaveInfoConverter" />
             <converters:LanguageCodeToLanguageInfoConverter x:Key="LanguageInfoConverter" />
@@ -88,7 +86,6 @@
             <converters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" Inverted="true" />
             <converters:ColorHexCodeConverter x:Key="ColorHexCodeConverter" />
 
-            <converters:ResourceAuthorsConverter x:Key="ResourceAuthorsConverter" />
             <converters:SuggestionIconConverter x:Key="SuggestionIconConverter" />
             <converters:RadioButtonSelectedIndexConverter x:Key="RadioButtonSelectedIndexConverter" />
 
@@ -105,7 +102,11 @@
             <Style
                 x:Key="SettingsTitleSectionHeaderTextBlockStyle"
                 BasedOn="{StaticResource BodyStrongTextBlockStyle}"
-                TargetType="TextBlock" />
+                TargetType="TextBlock">
+                <Style.Setters>
+                    <Setter Property="Margin" Value="1,0,0,6" />
+                </Style.Setters>
+            </Style>
 
             <ControlTemplate x:Key="MicrosoftIcon">
                 <Path

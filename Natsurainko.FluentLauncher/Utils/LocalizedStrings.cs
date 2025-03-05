@@ -2,12 +2,7 @@
 using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Settings;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Utils;
 

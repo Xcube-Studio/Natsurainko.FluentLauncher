@@ -1,5 +1,4 @@
 ﻿using Natsurainko.FluentLauncher.Models.UI;
-using Natsurainko.FluentLauncher.Services.Network.Data;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.GameManagement.Downloader;
@@ -37,9 +36,22 @@ internal partial class DownloadService
         _settingsService.CurrentDownloadSourceChanged += (_, _) => SetDownloader();
     }
 
-    public void DownloadResourceFile(GameResourceFile file, string filePath)
+    public void DownloadModFile(object modFile, string folder)
     {
-        var taskViewModel = new DownloadGameResourceTaskViewModel(file, filePath);
+        var taskViewModel = new DownloadModTaskViewModel(modFile, folder);
+        taskViewModel.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == "TaskState")
+                TaskListStateChanged?.Invoke(this, e);
+        };
+
+        InsertTask(taskViewModel);
+        taskViewModel.Start();
+    }
+
+    public void DownloadModFile(string fileName, string url, string folder)
+    {
+        var taskViewModel = new DownloadModTaskViewModel(fileName, url, folder);
         taskViewModel.PropertyChanged += (_, e) =>
         {
             if (e.PropertyName == "TaskState")

@@ -84,7 +84,7 @@ internal partial class DeleteInstanceDialogViewModel : ObservableObject, IDialog
                 _gameService.RefreshGames();
 
                 _dialog.Hide();
-                _navigationService.Parent!.NavigateTo("CoresPage");
+                _navigationService.Parent!.NavigateTo("Cores/Navigation");
             });
 
             _notificationService.NotifyWithoutContent(

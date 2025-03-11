@@ -39,6 +39,8 @@ public class PointerOverVisibleBehavior : DependencyObject, IBehavior
 
             uIElement.PointerEntered += UIElement_PointerEntered;
             uIElement.PointerExited += UIElement_PointerExited;
+            uIElement.PointerCanceled += UIElement_PointerCanceled;
+            uIElement.PointerCaptureLost += UIElement_PointerCaptureLost;
         }
         else return;
 
@@ -79,6 +81,18 @@ public class PointerOverVisibleBehavior : DependencyObject, IBehavior
     {
         if (TargetElement != null)
             TargetElement.Visibility = Visibility.Visible;
+    }
+
+    private void UIElement_PointerCaptureLost(object sender, PointerRoutedEventArgs e)
+    {
+        if (TargetElement != null)
+            TargetElement.Visibility = Visibility.Collapsed;
+    }
+
+    private void UIElement_PointerCanceled(object sender, PointerRoutedEventArgs e)
+    {
+        if (TargetElement != null)
+            TargetElement.Visibility = Visibility.Collapsed;
     }
 
     private static void OnIsMenuOpenChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)

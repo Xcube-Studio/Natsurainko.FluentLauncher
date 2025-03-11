@@ -40,6 +40,7 @@
                     <ItemsRepeater.ItemTemplate>
                         <DataTemplate x:DataType="data:SaveInfo">
                             <controls:SettingsCard
+                                Padding="16,8"
                                 ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
                                 CommandParameter="{x:Bind}"
                                 IsClickEnabled="True">
@@ -47,13 +48,12 @@
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="15" />
+                                            <ColumnDefinition Width="16" />
                                             <ColumnDefinition Width="1*" />
                                         </Grid.ColumnDefinitions>
                                         <Border
-                                            Width="56"
-                                            Height="56"
-                                            Margin="2,2,0,0"
+                                            Width="48"
+                                            Height="48"
                                             VerticalAlignment="Center"
                                             BorderBrush="{ThemeResource IconBorder}"
                                             BorderThickness="2"
@@ -99,6 +99,9 @@
                             </controls:SettingsCard>
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>
+                    <ItemsRepeater.Layout>
+                        <StackLayout Spacing="4" />
+                    </ItemsRepeater.Layout>
                 </ItemsRepeater>
 
                 <StackPanel

@@ -48,15 +48,14 @@
                     <ItemsRepeater.ItemTemplate>
                         <DataTemplate x:DataType="data:MinecraftMod">
                             <controls:SettingsCard
+                                Padding="16,8"
                                 HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
-                                PointerEntered="SettingsCard_PointerEntered"
-                                PointerExited="SettingsCard_PointerExited">
+                                VerticalAlignment="Stretch">
                                 <controls:SettingsCard.Header>
                                     <Grid Background="Transparent">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="10" />
+                                            <ColumnDefinition Width="16" />
                                             <ColumnDefinition Width="1*" />
                                         </Grid.ColumnDefinitions>
                                         <FontIcon
@@ -68,15 +67,44 @@
                                                 FontWeight="SemiBold"
                                                 Text="{x:Bind DisplayName}"
                                                 TextTrimming="CharacterEllipsis" />
-                                            <TextBlock
-                                                x:Name="InfoText"
-                                                Margin="0,0,85,0"
-                                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                                MaxLines="1"
-                                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                                Text="{x:Bind Converter={StaticResource ModInfoConverter}}"
-                                                TextTrimming="CharacterEllipsis"
-                                                TextWrapping="NoWrap" />
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="8" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock
+                                                    Name="InfoText"
+                                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                    MaxLines="1"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{x:Bind Converter={StaticResource ModInfoConverter}}"
+                                                    TextTrimming="CharacterEllipsis"
+                                                    TextWrapping="NoWrap" />
+
+                                                <Button
+                                                    Grid.Column="2"
+                                                    Padding="5,0,5,0"
+                                                    Background="{ThemeResource HyperlinkButtonBackgroundThemeBrush}"
+                                                    BorderBrush="{ThemeResource HyperlinkButtonBorderThemeBrush}"
+                                                    BorderThickness="1"
+                                                    Content="More.."
+                                                    FontSize="12"
+                                                    Foreground="{ThemeResource SystemAccentColor}"
+                                                    Visibility="{Binding ElementName=InfoText, Path=IsTextTrimmed, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <Button.Flyout>
+                                                        <Flyout Placement="BottomEdgeAlignedRight">
+                                                            <TextBlock
+                                                                MaxWidth="320"
+                                                                Margin="-5"
+                                                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                Text="{x:Bind Converter={StaticResource ModInfoConverter}}"
+                                                                TextWrapping="WrapWholeWords" />
+                                                        </Flyout>
+                                                    </Button.Flyout>
+                                                </Button>
+                                            </Grid>
                                         </StackPanel>
                                     </Grid>
                                 </controls:SettingsCard.Header>
@@ -120,6 +148,9 @@
                             </controls:SettingsCard>
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>
+                    <ItemsRepeater.Layout>
+                        <StackLayout Spacing="4" />
+                    </ItemsRepeater.Layout>
                 </ItemsRepeater>
 
                 <StackPanel

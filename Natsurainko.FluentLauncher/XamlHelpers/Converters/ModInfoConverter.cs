@@ -3,7 +3,6 @@ using Nrk.FluentCore.GameManagement.Mods;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
@@ -19,9 +18,14 @@ internal partial class ModInfoConverter : IValueConverter
 
             var strings = new List<string>();
 
-            if ((mod.SupportedModLoaders?.Any()).GetValueOrDefault()) strings.Add(string.Join(",", mod.SupportedModLoaders));
-            if (!string.IsNullOrEmpty(mod.Version)) strings.Add(mod.Version);
-            if (!string.IsNullOrEmpty(mod.Description)) strings.Add(mod.Description);
+            if (mod.SupportedModLoaders != null && mod.SupportedModLoaders.Length != 0) 
+                strings.Add(string.Join(",", mod.SupportedModLoaders));
+
+            if (!string.IsNullOrEmpty(mod.Version)) 
+                strings.Add(mod.Version);
+
+            if (!string.IsNullOrEmpty(mod.Description)) 
+                strings.Add(mod.Description);
 
             return string.Join(" | ", strings);
         }

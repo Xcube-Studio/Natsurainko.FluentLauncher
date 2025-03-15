@@ -415,15 +415,9 @@
                                 <Button
                                     x:Uid="Settings_AppearancePage_ColorSelectorButton"
                                     Content="Color Selector"
-                                    Style="{ThemeResource AccentButtonStyle}"
-                                    Tag="themeColor">
-                                    <i:Interaction.Behaviors>
-                                        <core:EventTriggerBehavior EventName="Loaded">
-                                            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadedCommand}" />
-                                        </core:EventTriggerBehavior>
-                                    </i:Interaction.Behaviors>
+                                    Style="{ThemeResource AccentButtonStyle}">
                                     <Button.Flyout>
-                                        <Flyout Placement="Full">
+                                        <Flyout x:Name="ThemeColorFlyout" Placement="Full">
                                             <Flyout.FlyoutPresenterStyle>
                                                 <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
                                                     <Setter Property="MaxHeight" Value="Infinity" />
@@ -434,11 +428,9 @@
                                                 <controls:ColorPicker Color="{x:Bind VM.CustomThemeColor.GetValueOrDefault(), Mode=TwoWay, BindBack=VM.SetCustomThemeColor}" />
                                                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                                                     <Button
-                                                        x:Name="selectColorConfirmButton"
-                                                        Command="{x:Bind VM.SelectColorConfirmCommand}"
-                                                        CommandParameter="{x:Bind selectColorConfirmButton}"
-                                                        Style="{ThemeResource AccentButtonStyle}"
-                                                        Tag="themeColor">
+                                                        Command="{x:Bind VM.HideFlyoutCommand}"
+                                                        CommandParameter="{x:Bind ThemeColorFlyout}"
+                                                        Style="{ThemeResource AccentButtonStyle}">
                                                         <TextBlock x:Uid="Buttons_Confirm" Text="Confirm" />
                                                     </Button>
                                                 </StackPanel>
@@ -619,15 +611,9 @@
                                 <Button
                                     x:Uid="Settings_AppearancePage_ColorSelectorButton"
                                     Content="Color Selector"
-                                    Style="{ThemeResource AccentButtonStyle}"
-                                    Tag="backgroundColor">
-                                    <i:Interaction.Behaviors>
-                                        <core:EventTriggerBehavior EventName="Loaded">
-                                            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadedCommand}" />
-                                        </core:EventTriggerBehavior>
-                                    </i:Interaction.Behaviors>
+                                    Style="{ThemeResource AccentButtonStyle}">
                                     <Button.Flyout>
-                                        <Flyout Placement="Full">
+                                        <Flyout x:Name="BackgroundColorFlyout" Placement="Full">
                                             <Flyout.FlyoutPresenterStyle>
                                                 <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
                                                     <Setter Property="MaxHeight" Value="Infinity" />
@@ -638,11 +624,9 @@
                                                 <controls:ColorPicker Color="{x:Bind VM.CustomBackgroundColor.GetValueOrDefault(), Mode=TwoWay, BindBack=VM.SetCustomBackgroundColor}" />
                                                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                                                     <Button
-                                                        x:Name="selectColorConfirmButton2"
-                                                        Command="{x:Bind VM.SelectColorConfirmCommand}"
-                                                        CommandParameter="{x:Bind selectColorConfirmButton2}"
-                                                        Style="{ThemeResource AccentButtonStyle}"
-                                                        Tag="backgroundColor">
+                                                        Command="{x:Bind VM.HideFlyoutCommand}"
+                                                        CommandParameter="{x:Bind BackgroundColorFlyout}"
+                                                        Style="{ThemeResource AccentButtonStyle}">
                                                         <TextBlock x:Uid="Buttons_Confirm" Text="Confirm" />
                                                     </Button>
                                                 </StackPanel>
@@ -691,8 +675,9 @@
                     <controls:SettingsExpander.Items>
                         <controls:SettingsCard x:Uid="Settings_AppearancePage_SubCard5" Header="Image File Path">
                             <AutoSuggestBox
+                                x:Name="ImageFileBox"
                                 Width="200"
-                                QuerySubmitted="AutoSuggestBox_QuerySubmitted"
+                                x:FieldModifier="public"
                                 Text="{x:Bind VM.ImageFilePath, Mode=TwoWay}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />

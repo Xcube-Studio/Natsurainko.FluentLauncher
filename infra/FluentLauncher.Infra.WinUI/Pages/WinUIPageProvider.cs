@@ -26,8 +26,8 @@ public class WinUIPageProvider : PageProvider<Page>
             page.Loaded += (_, _) => viewAssociatedModel.OnLoaded();
             page.Unloaded += (_, _) => viewAssociatedModel.OnUnloaded();
 
-            if (viewModel is IViewAssociated<Page> pageAssociatedModel)
-                pageAssociatedModel.View = page;
+            if (viewAssociatedModel is IViewAssociated<Page> pageAssociatedModel)
+                pageAssociatedModel.SetView(page);
         }
     }
 }

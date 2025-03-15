@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using FluentLauncher.Infra.UI.Navigation;
-using Nrk.FluentCore.GameManagement.Installer;
 using System.Collections.ObjectModel;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads.Instances;
@@ -10,8 +9,6 @@ internal partial class NavigationViewModel : ObservableObject, INavigationAware
     public INavigationService NavigationService { get; init; }
 
     public ObservableCollection<string> DisplayedPath { get; } = [];
-
-    public VersionManifestItem? CurrentInstance { get; set; }
 
     public NavigationViewModel(INavigationService navigationService)
     {

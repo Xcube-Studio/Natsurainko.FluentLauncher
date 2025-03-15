@@ -33,7 +33,6 @@ internal partial class DownloadViewModel : SettingsViewModelBase, ISettingsViewM
 
     public string LauncherCacheFolder => LocalStorageService.LocalFolderPath;
 
-
     public DownloadViewModel(SettingsService settingsService, LocalStorageService localStorageService)
     {
         _settingsService = settingsService;
@@ -43,8 +42,5 @@ internal partial class DownloadViewModel : SettingsViewModelBase, ISettingsViewM
     }
 
     [RelayCommand]
-    public async Task OpenCacheFolder(string folder)
-    {
-        _ = await Launcher.LaunchFolderPathAsync(folder);
-    }
+    async Task OpenCacheFolder(string folder) => await Launcher.LaunchFolderPathAsync(folder);
 }

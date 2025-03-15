@@ -8,7 +8,7 @@ namespace FluentLauncher.Infra.WinUI.Dialogs;
 
 public class WinUIDialogProvider : DialogProvider<ContentDialog>
 {
-    public static WinUIDialogProviderBuilder CreateBuilder() => new WinUIDialogProviderBuilder();
+    public static WinUIDialogProviderBuilder CreateBuilder() => new();
 
     public WinUIDialogProvider(
         IReadOnlyDictionary<string, DialogDescriptor> registeredDialogs,
@@ -26,8 +26,8 @@ public class WinUIDialogProvider : DialogProvider<ContentDialog>
             dialog.Loaded += (_, _) => viewAssociatedModel.OnLoaded();
             dialog.Unloaded += (_, _) => viewAssociatedModel.OnUnloaded();
 
-            if (viewModel is IViewAssociated<ContentDialog> pageAssociatedModel)
-                pageAssociatedModel.View = dialog;
+            if (viewAssociatedModel is IViewAssociated<ContentDialog> dialogAssociatedModel)
+                dialogAssociatedModel.SetView(dialog);
         }
     }
 }

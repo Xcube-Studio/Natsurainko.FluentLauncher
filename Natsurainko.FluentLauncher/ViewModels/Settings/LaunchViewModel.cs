@@ -6,7 +6,6 @@ using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.Views.Settings;
 using Nrk.FluentCore.Environment;
 using System;
 using System.Collections.ObjectModel;
@@ -19,7 +18,7 @@ using Windows.System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-internal partial class LaunchViewModel : SettingsPageVM<LaunchPage>, ISettingsViewModel
+internal partial class LaunchViewModel : SettingsPageVM, ISettingsViewModel
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;

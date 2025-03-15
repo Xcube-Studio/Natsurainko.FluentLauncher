@@ -12,8 +12,10 @@ public interface IViewAssociated
     void OnUnloaded();
 }
 
-public interface IViewAssociated<IView> : IViewAssociated 
-    where IView : Control
+public interface IViewAssociated<out TView> : IViewAssociated
+    where TView : Control
 {
-    IView View { get; set; }
+    TView View { get; }
+
+    void SetView(object view);
 }

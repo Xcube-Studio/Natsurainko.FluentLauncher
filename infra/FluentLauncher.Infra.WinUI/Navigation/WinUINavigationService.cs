@@ -1,6 +1,7 @@
 ﻿using FluentLauncher.Infra.UI;
 using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Pages;
+using FluentLauncher.Infra.WinUI.Mvvm;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -119,6 +120,17 @@ public class WinUINavigationService : INavigationService
             if (page.ReadLocalValue(FrameworkElement.DataContextProperty) != DependencyProperty.UnsetValue && // Requires VM set for the page, rather than inherited
                 page.DataContext is INavigationAware vmAfter)
                 vmAfter.OnNavigatedTo(parameter);
+
+            if (page != null && page.DataContext is IViewAssociated viewAssociatedModel)
+            {
+                viewAssociatedModel.Dispatcher = page.DispatcherQueue;
+
+                page.Loaded += (_, _) => viewAssociatedModel.OnLoaded();
+                page.Unloaded += (_, _) => viewAssociatedModel.OnUnloaded();
+
+                if (viewAssociatedModel is IViewAssociated<Page> pageAssociatedModel)
+                    pageAssociatedModel.SetView(page);
+            }
         }
     }
 }

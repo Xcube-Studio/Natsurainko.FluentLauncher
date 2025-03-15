@@ -11,7 +11,6 @@ using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.Authentication;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -21,7 +20,7 @@ using System.Threading.Tasks;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewModel
+internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;
@@ -69,10 +68,10 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     public bool IsOfflineAccount => ActiveAccount.Type == AccountType.Offline;
 
     [RelayCommand]
-    public async Task Login() => await _dialogs.ShowAsync("AuthenticationWizardDialog");
+    async Task Login() => await _dialogs.ShowAsync("AuthenticationWizardDialog");
 
     [RelayCommand]
-    public async Task Refresh()
+    async Task Refresh()
     {
         await _accountService.RefreshAccountAsync(ActiveAccount).ContinueWith(task => 
         {
@@ -89,10 +88,10 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     }
 
     [RelayCommand]
-    public async Task Switch() => await _dialogs.ShowAsync("SwitchAccountDialog");
+    async Task Switch() => await _dialogs.ShowAsync("SwitchAccountDialog");
 
     [RelayCommand]
-    public void OpenSkinFile()
+    void OpenSkinFile()
     {
         string skinFilePath = GetSkinFilePath(ActiveAccount);
         if (!File.Exists(skinFilePath)) return;
@@ -101,7 +100,7 @@ internal partial class AccountViewModel : SettingsViewModelBase, ISettingsViewMo
     }
 
     [RelayCommand]
-    public void GoToSkinPage() => _navigationService.NavigateTo("Settings/Account/Skin");
+    void GoToSkinPage() => _navigationService.NavigateTo("Settings/Account/Skin");
 
     #region Converters Methods
 

@@ -8,7 +8,7 @@ using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.ViewModels.Common;
+using Natsurainko.FluentLauncher.Views.Settings;
 using Natsurainko.FluentLauncher.XamlHelpers.Converters;
 using System.IO;
 using System.Threading.Tasks;
@@ -17,7 +17,7 @@ using Windows.UI;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsViewModel
+internal partial class AppearanceViewModel : SettingsPageVM<AppearancePage>, ISettingsViewModel
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;
@@ -64,13 +64,9 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
     [NotifyPropertyChangedFor(nameof(CurrentThemeColor))]
     public partial Color? CustomThemeColor { get; set; }
 
-    public void SetCustomThemeColor(Color color) => CustomThemeColor = color;
-
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.CustomBackgroundColor))]
     public partial Color? CustomBackgroundColor { get; set; }
-
-    public void SetCustomBackgroundColor(Color color) => CustomBackgroundColor = color;
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.UseBackgroundMask))]
@@ -98,33 +94,18 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
 
     public bool CanUseImageThemeColor => BackgroundMode == 3 && ImageFileExists;
 
-    private Flyout backgroundColorFlyout;
-    private Flyout themeColorFlyout;
+    public void SetCustomThemeColor(Color color) => CustomThemeColor = color;
+
+    public void SetCustomBackgroundColor(Color color) => CustomBackgroundColor = color;
 
     [RelayCommand]
-    private void Loaded(object args)
-    {
-        var button = args.As<Button, object>().sender;
-
-        if (button.Tag.ToString() == "backgroundColor")
-            backgroundColorFlyout = button.Flyout as Flyout;
-        else themeColorFlyout = button.Flyout as Flyout;
-    }
+    void HideFlyout(Flyout flyout) => flyout.Hide();
 
     [RelayCommand]
-    private void SelectColorConfirm(Button button)
-    {
-        if (button.Tag.ToString() == "backgroundColor")
-            backgroundColorFlyout.Hide();
-        else themeColorFlyout.Hide();
-    }
+    void RadioButtonChecked(int index) => BackgroundMode = index;
 
     [RelayCommand]
-    private void RadioButtonChecked(int index)
-        => BackgroundMode = index;
-
-    [RelayCommand]
-    private async Task UseImageThemeColor()
+    async Task UseImageThemeColor()
     {
         CustomThemeColor = await DominantColorHelper.GetColorFromImageAsync(ImageFilePath);
         var converter = (ColorHexCodeConverter)Application.Current.Resources["ColorHexCodeConverter"];
@@ -134,16 +115,20 @@ internal partial class AppearanceViewModel : SettingsViewModelBase, ISettingsVie
             icon: "\uE73E");
     }
 
-    /// <summary>
-    /// 神金 Command 无法被触发
-    /// </summary>
-    public void BrowserImage()
+    public override void OnLoaded()
     {
-        var openFileDialog = new OpenFileDialog();
-        openFileDialog.Multiselect = false;
-        openFileDialog.Filter = "Png Image File|*.png|JPG Image File|*.jpg|BMP Image File|*.bmp|All Files|*.*";
+        base.OnLoaded();
 
-        if (openFileDialog.ShowDialog().GetValueOrDefault(false))
-            ImageFilePath = openFileDialog.FileName;
+        View.ImageFileBox.QuerySubmitted += (_, _) =>
+        {
+            OpenFileDialog openFileDialog = new()
+            {
+                Multiselect = false,
+                Filter = "Png Image File|*.png|JPG Image File|*.jpg|BMP Image File|*.bmp|All Files|*.*"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+                ImageFilePath = openFileDialog.FileName;
+        };
     }
 }

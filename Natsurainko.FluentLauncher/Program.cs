@@ -3,6 +3,7 @@ using FluentLauncher.Infra.WinUI.AppHost;
 using FluentLauncher.Infra.WinUI.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.UI.Dispatching;
 using Natsurainko.FluentLauncher;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
@@ -106,6 +107,9 @@ dialogs.WithDialog<Views.Common.UpdateDialog, ViewModels.Common.UpdateDialogView
 #region Services
 
 var services = builder.Services;
+
+var dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+
 
 // Settings service
 services.AddSingleton<SettingsService>();

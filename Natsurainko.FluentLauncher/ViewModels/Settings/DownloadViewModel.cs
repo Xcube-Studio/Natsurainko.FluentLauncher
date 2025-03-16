@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
-using Natsurainko.FluentLauncher.ViewModels.Common;
 using System;
 using System.Threading.Tasks;
 using Windows.System;
@@ -11,7 +10,7 @@ using Windows.System;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-internal partial class DownloadViewModel : SettingsViewModelBase, ISettingsViewModel
+internal partial class DownloadViewModel : SettingsPageVM, ISettingsViewModel
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;

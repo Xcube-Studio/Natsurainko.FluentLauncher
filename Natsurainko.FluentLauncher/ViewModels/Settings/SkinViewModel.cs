@@ -63,7 +63,7 @@ internal partial class SkinViewModel : SettingsPageVM, ISettingsViewModel
 
     #region Skin 3D Model Load
 
-    async Task LoadModel()
+    public async Task LoadModel()
     {
         try
         {

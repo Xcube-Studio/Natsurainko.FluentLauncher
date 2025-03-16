@@ -1,12 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Navigation;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI;
-using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.GameManagement.Installer;
 using System;
@@ -18,29 +16,14 @@ using System.Threading.Tasks;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads.Instances;
 
-internal partial class DefaultViewModel : ObservableObject, INavigationAware
+internal partial class DefaultViewModel(
+    CacheInterfaceService cacheInterfaceService,
+    SearchProviderService searchProviderService,
+    INavigationService navigationService,
+    GameService gameService,
+    NotificationService notificationService) : PageVM, INavigationAware
 {
-    private readonly GameService _gameService;
-    private readonly CacheInterfaceService _cacheInterfaceService;
-    private readonly SearchProviderService _searchProviderService;
-    private readonly INavigationService _navigationService;
-    private readonly NotificationService _notificationService;
-
     private string _versionManifestJson;
-
-    public DefaultViewModel(
-        CacheInterfaceService cacheInterfaceService, 
-        SearchProviderService searchProviderService,
-        INavigationService navigationService,
-        GameService gameService,
-        NotificationService notificationService)
-    {
-        _cacheInterfaceService = cacheInterfaceService;
-        _searchProviderService = searchProviderService;
-        _navigationService = navigationService;
-        _gameService = gameService;
-        _notificationService = notificationService;
-    }
 
     public VersionManifestItem[] AllInstances { get; set; }
 
@@ -69,13 +52,13 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
 
     void INavigationAware.OnNavigatedTo(object parameter)
     {
-        _searchProviderService.OccupyQueryReceiver(this, SearchReceiveHandle);
+        searchProviderService.OccupyQueryReceiver(this, SearchReceiveHandle);
 
         if (parameter is string searchInstanceId)
             SearchQuery = searchInstanceId;
 
-        _cacheInterfaceService.RequestStringAsync(
-            _cacheInterfaceService.VersionManifest,
+        cacheInterfaceService.RequestStringAsync(
+            cacheInterfaceService.VersionManifest,
             Services.Network.Data.InterfaceRequestMethod.PreferredLocal,
             ParseVersionManifestTask,
             "cache-interfaces\\piston-meta.mojang.com\\version_manifest_v2.json")
@@ -85,9 +68,9 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     [RelayCommand]
     void CardClick(VersionManifestItem instance)
     {
-        if (string.IsNullOrEmpty(_gameService.ActiveMinecraftFolder))
+        if (string.IsNullOrEmpty(gameService.ActiveMinecraftFolder))
         {
-            _notificationService.NotifyWithSpecialContent(
+            notificationService.NotifyWithSpecialContent(
                 LocalizedStrings.Notifications__NoMinecraftFolder,
                 "NoMinecraftFolderNotifyTemplate",
                 GoToSettingsCommand, "\uE711");
@@ -95,16 +78,16 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             return;
         }
 
-        _navigationService.NavigateTo("InstancesDownload/Install", instance);
+        navigationService.NavigateTo("InstancesDownload/Install", instance);
     }
 
     [RelayCommand]
-    void GoToSettings() => WeakReferenceMessenger.Default.Send(new GlobalNavigationMessage("Settings/Navigation", "Settings/Launch"));
+    void GoToSettings() => GlobalNavigate("Settings/Navigation", "Settings/Launch");
 
     [RelayCommand]
     void ClearSearchQuery()
     {
-        _searchProviderService.ClearSearchBox();
+        searchProviderService.ClearSearchBox();
         SearchReceiveHandle(string.Empty);
     }
 
@@ -136,7 +119,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             if (string.IsNullOrEmpty(_versionManifestJson))
                 _versionManifestJson = versionManifestJson;
 
-            await App.DispatcherQueue.EnqueueAsync(() =>
+            await Dispatcher.EnqueueAsync(() =>
             {
                 AllInstances = instances;
                 LatestInstances = latestInstances;
@@ -146,11 +129,11 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
         catch (Exception e)
         {
             // TODO: Notify Exception
-            await App.DispatcherQueue.EnqueueAsync(() => LoadFailed = true);
+            await Dispatcher.EnqueueAsync(() => LoadFailed = true);
         }
         finally
         {
-            await App.DispatcherQueue.EnqueueAsync(() => Loading = false);
+            await Dispatcher.EnqueueAsync(() => Loading = false);
         }
     }
 
@@ -170,7 +153,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             .Where(i => i.Id.Contains(query))
             .ToArray() ?? [];
 
-        await App.DispatcherQueue.EnqueueAsync(() =>
+        await Dispatcher.EnqueueAsync(() =>
         {
             FilteredInstances = filteredInstances;
             Searched = !string.IsNullOrEmpty(query);

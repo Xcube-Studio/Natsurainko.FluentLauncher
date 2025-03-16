@@ -71,12 +71,6 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <i:Interaction.Behaviors>
-        <core:EventTriggerBehavior EventName="Unloaded">
-            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.UnloadedCommand}" />
-        </core:EventTriggerBehavior>
-    </i:Interaction.Behaviors>
-
     <ScrollViewer>
         <Border Name="border" Margin="{ThemeResource PageMarginWithBorder}">
             <StackPanel

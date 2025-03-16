@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Common;
 
-internal partial class SwitchAccountDialogViewModel : SettingsViewModelBase, ISettingsViewModel
+internal partial class SwitchAccountDialogViewModel : DialogVM, ISettingsViewModel
 {
     #region Settings
 
@@ -37,14 +37,20 @@ internal partial class SwitchAccountDialogViewModel : SettingsViewModelBase, ISe
     }
 
     [RelayCommand]
-    public void Confirm() => _accountService.ActivateAccount(ActiveAccount);
+    void Confirm() => _accountService.ActivateAccount(ActiveAccount);
 
     [RelayCommand(CanExecute = nameof(EnableRemoveAccount))]
-    public void Remove()
+    void Remove()
     {
         _accountService.RemoveAccount(ActiveAccount);
         ActiveAccount = _accountService.ActiveAccount;
     }
 
     private bool EnableRemoveAccount() => Accounts.Count >= 2;
+
+    ~SwitchAccountDialogViewModel()
+    {
+        if (this is ISettingsViewModel settingsViewModel)
+            settingsViewModel.RemoveSettingsChagnedHandlers();
+    }
 }

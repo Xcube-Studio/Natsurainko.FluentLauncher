@@ -6,24 +6,20 @@ using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-using Natsurainko.FluentLauncher.ViewModels.Common;
-using Natsurainko.FluentLauncher.Views.Common;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.GameManagement.Instances;
-using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
-internal partial class ConfigViewModel : ObservableObject, INavigationAware
+internal partial class ConfigViewModel(AccountService accountService, IDialogActivationService<ContentDialogResult> dialogs) 
+    : PageVM, INavigationAware
 {
-    public bool inited = false;
 
-    public ReadOnlyObservableCollection<Account> Accounts { get; private set; }
+    public ReadOnlyObservableCollection<Account> Accounts { get; private set; } = accountService.Accounts;
 
     public ObservableCollection<string> VmArguments { get; private set; }
 
@@ -35,19 +31,21 @@ internal partial class ConfigViewModel : ObservableObject, INavigationAware
     [ObservableProperty]
     public partial Account TargetedAccount { get; set; }
 
-    private readonly IDialogActivationService<ContentDialogResult> _dialogs;
+    private readonly IDialogActivationService<ContentDialogResult> _dialogs = dialogs;
 
-    public ConfigViewModel(AccountService accountService, IDialogActivationService<ContentDialogResult> dialogs)
+    public bool inited = false;
+
+    partial void OnTargetedAccountChanged(Account value)
     {
-        Accounts = accountService.Accounts;
-        _dialogs = dialogs;
+        if (inited)
+            InstanceConfig.Account = TargetedAccount;
     }
 
     void INavigationAware.OnNavigatedTo(object parameter)
     {
         MinecraftInstance = parameter as MinecraftInstance;
         InstanceConfig = MinecraftInstance.GetConfig();
-        VmArguments = new(InstanceConfig.VmParameters ?? []);
+        VmArguments = [.. InstanceConfig.VmParameters ?? []];
 
         LoadTargetedAccount();
 
@@ -75,32 +73,21 @@ internal partial class ConfigViewModel : ObservableObject, INavigationAware
             return true;
         });
 
-#pragma warning disable MVVMTK0034 // Direct field reference to [ObservableProperty] backing field
         if (matchAccount.Any())
             TargetedAccount = matchAccount.First();
-#pragma warning restore MVVMTK0034 // Direct field reference to [ObservableProperty] backing field
     }
 
     [RelayCommand]
-    public async Task AddArgument()
+    async Task AddArgument()
     {
         await _dialogs.ShowAsync("AddVmArgumentDialog", (object)VmArguments.Add);
         InstanceConfig.VmParameters = [.. VmArguments];
     }
 
     [RelayCommand]
-    public void RemoveArgument(string arg)
+    void RemoveArgument(string arg)
     {
         VmArguments.Remove(arg);
         InstanceConfig.VmParameters = [.. VmArguments];
-    }
-
-    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-    {
-        base.OnPropertyChanged(e);
-        if (!inited) return;
-
-        if (e.PropertyName == nameof(TargetedAccount))
-            InstanceConfig.Account = TargetedAccount;
     }
 }

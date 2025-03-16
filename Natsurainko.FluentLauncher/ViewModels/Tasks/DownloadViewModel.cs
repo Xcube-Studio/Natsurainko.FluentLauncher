@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.ViewModels.Common;
@@ -7,19 +6,11 @@ using System.Collections.ObjectModel;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Tasks;
 
-internal partial class DownloadViewModel : ObservableObject, INavigationAware
+internal partial class DownloadViewModel(DownloadService downloadService) 
+    : PageVM, INavigationAware
 {
-    public ReadOnlyObservableCollection<TaskViewModel> Tasks { get; }
-
-    public INavigationService NavigationService { get; init; }
-
-
-    public DownloadViewModel(DownloadService downloadService, INavigationService navigationService)
-    {
-        NavigationService = navigationService;
-        Tasks = new(downloadService.DownloadTasks);
-    }
+    public ReadOnlyObservableCollection<TaskViewModel> Tasks { get; } = new(downloadService.DownloadTasks);
 
     [RelayCommand]
-    void GoToDownload() => NavigationService.NavigateTo("Download/Navigation");
+    void GoToDownload() => GlobalNavigate("Download/Navigation");
 }

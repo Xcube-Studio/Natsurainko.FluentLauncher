@@ -1,20 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using FluentLauncher.Infra.Settings.Mvvm;
 using FluentLauncher.Infra.UI.Navigation;
-using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
-using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement;
 using Nrk.FluentCore.GameManagement.Instances;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,7 +19,7 @@ using Windows.System;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Cores;
     
-internal partial class DefaultViewModel : ObservableObject, ISettingsViewModel
+internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;
@@ -50,9 +46,6 @@ internal partial class DefaultViewModel : ObservableObject, ISettingsViewModel
         MinecraftInstances = _gameService.Games;
 
         (this as ISettingsViewModel).InitializeSettings();
-
-        Task.Run(UpdateDisplayMinecraftInstances);
-        PropertyChanged += OnPropertyChanged;
     }
 
     [ObservableProperty]
@@ -75,11 +68,42 @@ internal partial class DefaultViewModel : ObservableObject, ISettingsViewModel
         ? LocalizedStrings.Cores_DefaultPage__FolderError
         : ActiveMinecraftFolder;
 
-    private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+    partial void OnFilterIndexChanged(int value) => Task.Run(UpdateDisplayMinecraftInstances);
+
+    partial void OnSortByIndexChanged(int value) => Task.Run(UpdateDisplayMinecraftInstances);
+
+    [RelayCommand]
+    void GoToSettings() => GlobalNavigate("Settings/Navigation", "Settings/Launch");
+
+    [RelayCommand]
+    void InstallMinecraft() => GlobalNavigate("InstancesDownload/Navigation");
+
+    [RelayCommand]
+    void GoToCoreSettings(MinecraftInstance MinecraftInstance) => _navigationService.NavigateTo("Cores/Instance", MinecraftInstance);
+
+    [RelayCommand]
+    void NavigateFolder()
     {
-        if (e.PropertyName == nameof(FilterIndex) ||
-            e.PropertyName == nameof(SortByIndex))
-            Task.Run(UpdateDisplayMinecraftInstances);
+        if (Directory.Exists(ActiveMinecraftFolder))
+            _ = Launcher.LaunchFolderPathAsync(ActiveMinecraftFolder);
+        else 
+            _notificationService.NotifyWithSpecialContent(
+                LocalizedStrings.Notifications__NoMinecraftFolder,
+                "NoMinecraftFolderNotifyTemplate",
+                GoToSettingsCommand, "\uE711");
+    }
+
+    IEnumerable<Suggestion> ProviderSuggestions(string searchText)
+    {
+        yield return new Suggestion
+        {
+            Title = LocalizedStrings.SearchSuggest__T1.Replace("{searchText}", searchText),
+            Description = LocalizedStrings.SearchSuggest__D1,
+            InvokeAction = () => GlobalNavigate("InstancesDownload/Navigation", searchText)
+        };
+
+        foreach (var item in MinecraftInstances.Where(i => i.InstanceId.Contains(searchText)))
+            yield return SuggestionHelper.FromMinecraftInstance(item, LocalizedStrings.SearchSuggest__D3, () => GoToCoreSettings(item));
     }
 
     private void UpdateDisplayMinecraftInstances()
@@ -97,54 +121,20 @@ internal partial class DefaultViewModel : ObservableObject, ISettingsViewModel
 
         List<MinecraftInstance> list = SortByIndex.Equals(0)
             ? [.. infos.OrderBy(x => x.InstanceId)]
-            : [..infos.OrderByDescending(x => x.GetConfig().LastLaunchTime)];
+            : [.. infos.OrderByDescending(x => x.GetConfig().LastLaunchTime)];
 
-        App.DispatcherQueue.TryEnqueue(() => DisplayMinecraftInstances = list);
+        Dispatcher.TryEnqueue(() => DisplayMinecraftInstances = list);
     }
 
-    IEnumerable<Suggestion> ProviderSuggestions(string searchText)
-    {
-        yield return new Suggestion
-        {
-            Title = LocalizedStrings.SearchSuggest__T1.Replace("{searchText}", searchText),
-            Description = LocalizedStrings.SearchSuggest__D1,
-            InvokeAction = () => WeakReferenceMessenger.Default.Send(new GlobalNavigationMessage("InstancesDownload/Navigation", searchText))
-        };
-
-        foreach (var item in MinecraftInstances.Where(i => i.InstanceId.Contains(searchText)))
-            yield return SuggestionHelper.FromMinecraftInstance(item, LocalizedStrings.SearchSuggest__D3, () => GoToCoreSettings(item));
-    }
-
-    [RelayCommand]
-    void GoToSettings() => WeakReferenceMessenger.Default.Send(new GlobalNavigationMessage("Settings/Navigation", "Settings/Launch"));
-
-    [RelayCommand]
-    void GoToCoreSettings(MinecraftInstance MinecraftInstance) => _navigationService.NavigateTo("Cores/Instance", MinecraftInstance);
-
-    [RelayCommand]
-    void InstallMinecraft() => WeakReferenceMessenger.Default.Send(new GlobalNavigationMessage("InstancesDownload/Navigation"));
-
-    [RelayCommand]
-    void NavigateFolder()
-    {
-        if (Directory.Exists(ActiveMinecraftFolder))
-            _ = Launcher.LaunchFolderPathAsync(ActiveMinecraftFolder);
-        else 
-            _notificationService.NotifyWithSpecialContent(
-                LocalizedStrings.Notifications__NoMinecraftFolder,
-                "NoMinecraftFolderNotifyTemplate",
-                GoToSettingsCommand, "\uE711");
-    }
-
-    [RelayCommand]
-    void Loaded()
+    public override void OnLoaded()
     {
         if (!_searchProviderService.ContainsSuggestionProvider(this))
             _searchProviderService.RegisterSuggestionProvider(this, ProviderSuggestions);
+
+        Task.Run(UpdateDisplayMinecraftInstances);
     }
 
-    [RelayCommand]
-    void Unloaded()
+    public override void OnUnloaded()
     {
         _searchProviderService.UnregisterSuggestionProvider(this);
     }

@@ -1,12 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Network;
-using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Views.News;
 using System;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
@@ -14,7 +13,7 @@ using System.Threading.Tasks;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.News;
 
-internal partial class NoteViewModel : ObservableObject, INavigationAware
+internal partial class NoteViewModel : PageVM<NotePage>, INavigationAware
 {
     private readonly CacheInterfaceService _cacheInterfaceService;
 
@@ -29,41 +28,34 @@ internal partial class NoteViewModel : ObservableObject, INavigationAware
     [ObservableProperty]
     public partial PatchNoteData PatchNoteData { get; set; }
 
-    void INavigationAware.OnNavigatedTo(object parameter)
-    {
-        PatchNoteData = parameter as PatchNoteData;
-    }
+    void INavigationAware.OnNavigatedTo(object parameter) => PatchNoteData = parameter as PatchNoteData;
 
-    [RelayCommand]
-    public void LoadedEvent(object args)
+    public override void OnLoaded()
     {
-        var sender = args.As<WebView2, object>().sender;
-
-        void ParseBodyTask(Task<string> task)
+        _cacheInterfaceService.RequestStringAsync(
+            $"https://launchercontent.mojang.com/v2/{PatchNoteData.ContentPath}",
+            Services.Network.Data.InterfaceRequestMethod.Static)
+        .ContinueWith(task =>
         {
-            if (task.IsFaulted)
-            {
-                return;
-            }
-
             string patchJson = task.Result;
             string body = JsonNode.Parse(patchJson)!["body"].GetValue<string>();
             body = "<style>img{width:auto;height:auto;max-width:100%;max-height:100%;}</style>" + body;
 
-            App.DispatcherQueue.TryEnqueue(async () =>
+            Dispatcher.TryEnqueue(async () =>
             {
-                await sender.EnsureCoreWebView2Async();
+                var WebView2 = View.WebView2;
 
-                sender.CoreWebView2.Profile.PreferredColorScheme = sender.ActualTheme == ElementTheme.Dark ? CoreWebView2PreferredColorScheme.Dark : CoreWebView2PreferredColorScheme.Light;
-                body = $"<meta name=\"color-scheme\" content=\"{(sender.ActualTheme == ElementTheme.Dark ? "dark light" : "light dark")}\">\r\n" + body;
+                await WebView2.EnsureCoreWebView2Async();
 
-                sender.NavigateToString(body);
+                WebView2.CoreWebView2.Profile.PreferredColorScheme = WebView2.ActualTheme == ElementTheme.Dark
+                    ? CoreWebView2PreferredColorScheme.Dark
+                    : CoreWebView2PreferredColorScheme.Light;
+
+                body = $"<meta name=\"color-scheme\" content=\"{(WebView2.ActualTheme == ElementTheme.Dark ? "dark light" : "light dark")}\">\r\n" + body;
+
+                WebView2.NavigateToString(body);
             });
-        }
 
-        _cacheInterfaceService.RequestStringAsync(
-            $"https://launchercontent.mojang.com/v2/{PatchNoteData.ContentPath}",
-            Services.Network.Data.InterfaceRequestMethod.Static)
-        .ContinueWith(ParseBodyTask);
+        }, TaskContinuationOptions.OnlyOnRanToCompletion);
     }
 }

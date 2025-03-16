@@ -12,16 +12,11 @@ using System.Threading.Tasks;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.News;
 
-internal partial class DefaultViewModel : ObservableObject, INavigationAware
+internal partial class DefaultViewModel(INavigationService navigationService, CacheInterfaceService cacheInterfaceService) 
+    : PageVM, INavigationAware
 {
-    private readonly INavigationService _navigationService;
-    private readonly CacheInterfaceService _cacheInterfaceService;
-
-    public DefaultViewModel(INavigationService navigationService, CacheInterfaceService cacheInterfaceService)
-    {
-        _navigationService = navigationService;
-        _cacheInterfaceService = cacheInterfaceService;
-    }
+    private readonly INavigationService _navigationService = navigationService;
+    private readonly CacheInterfaceService _cacheInterfaceService = cacheInterfaceService;
 
     [ObservableProperty]
     public partial PatchNoteData[] PatchNoteDatas { get; set; }
@@ -52,9 +47,7 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
     void ParsePatchNotesTask(Task<string> task)
     {
         if (task.IsFaulted)
-        {
             return;
-        }
 
         string patchNotesJson = task.Result;
         if (string.IsNullOrEmpty(patchNotesJson) || PatchNotesJson == patchNotesJson)
@@ -98,18 +91,15 @@ internal partial class DefaultViewModel : ObservableObject, INavigationAware
             if (newsData.Tags != null)
                 tags.Add(newsData.Tag);
 
-            newsData.Tags = tags.ToArray();
+            newsData.Tags = [.. tags];
 
             return newsData;
         }).Take(30).ToArray();
 
         NewsJson = newsJson;
-        App.DispatcherQueue.TryEnqueue(() => NewsDatas = newsDatas);
+        Dispatcher.TryEnqueue(() => NewsDatas = newsDatas);
     }
 
     [RelayCommand]
-    public void ClickPatchNote(PatchNoteData patchNote)
-    {
-        _navigationService.NavigateTo("News/Note", patchNote);
-    }
+    void ClickPatchNote(PatchNoteData patchNote) => _navigationService.NavigateTo("News/Note", patchNote);
 }

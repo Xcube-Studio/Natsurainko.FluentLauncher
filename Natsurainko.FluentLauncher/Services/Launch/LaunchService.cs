@@ -296,7 +296,7 @@ internal class LaunchService
 
                 if (!string.IsNullOrEmpty(_settingsService.GameServerAddress))
                 {
-                    specialConfig.ServerAddress.ParseServerAddress(out var host, out var port);
+                    _settingsService.GameServerAddress.ParseServerAddress(out var host, out var port);
 
                     yield return $"--server {host}";
                     yield return $"--port {port}";

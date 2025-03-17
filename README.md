@@ -30,8 +30,8 @@
 
 | 功能                                     | 状态               |
 | ---------------------------------------- | ------------------ |
-| Little Skin 的 OAuth 支持                 | [ ] |
-| 更新资源下载页面                           | 进行中 [ ] |
+| Little Skin 的 OAuth 支持                 | 已暂停 [ ] |
+| 更新资源下载页面                           | 已完成 [x] |
 | 更新新闻页面                              | [ ] |
 | 游戏整合包导入                             | [ ] |
 | NativeAOT 支持                            | 已暂停 https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/issues/224 |

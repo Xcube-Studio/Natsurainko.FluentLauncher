@@ -1,11 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using FluentLauncher.Infra.Settings.Mvvm;
+using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.WinUI.Mvvm;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using System;
 using System.Collections.ObjectModel;
 
 namespace Natsurainko.FluentLauncher.ViewModels;
@@ -135,19 +137,31 @@ internal abstract class NavigationPageVM<TParameter>(INavigationService navigati
     protected abstract string GetRouteOfParameter(TParameter tParameter);
 }
 
-internal partial class DialogVM : ObservableRecipient, IViewAssociated
+internal partial class DialogVM : ObservableRecipient, IViewAssociated<ContentDialog>, IDialogParameterAware
 {
+    public ContentDialog View { get; private set; } = null!;
+
+    public void SetView(object view) => View = (ContentDialog)view;
+
     public DispatcherQueue Dispatcher { get; set; } = null!;
+
+    public virtual void HandleParameter(object param) => throw new NotImplementedException();
 
     public virtual void OnLoaded() { }
 
     public virtual void OnUnloaded() { }
+
+    protected void HideAndGlobalNavigate(string pageKey, object? parameter = null)
+    {
+        this.View.Hide();
+        this.Messenger.Send(new GlobalNavigationMessage(pageKey, parameter));
+    }
 }
 
 internal partial class DialogVM<TDialog> : DialogVM, IViewAssociated<TDialog>
     where TDialog : ContentDialog
 {
-    public TDialog View { get; private set; } = null!;
+    public new TDialog View { get; private set; } = null!;
 
-    public void SetView(object view) => View = (TDialog)view;
+    public new void SetView(object view) => View = (TDialog)view;
 }

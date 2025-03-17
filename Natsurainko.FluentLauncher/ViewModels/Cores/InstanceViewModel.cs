@@ -100,5 +100,5 @@ internal partial class InstanceViewModel(
     async Task OpenVersionFolder() => await Launcher.LaunchFolderPathAsync(MinecraftInstance.GetGameDirectory());
 
     [RelayCommand]
-    async Task DeleteGame() => await _dialogs.ShowAsync("DeleteInstanceDialog", (MinecraftInstance, navigationService));
+    async Task DeleteGame() => await _dialogs.ShowAsync("DeleteInstanceDialog", MinecraftInstance);
 }

@@ -7,7 +7,7 @@ using Nrk.FluentCore.Authentication;
 using System.Collections.ObjectModel;
 
 #nullable disable
-namespace Natsurainko.FluentLauncher.ViewModels.Common;
+namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
 
 internal partial class SwitchAccountDialogViewModel : DialogVM, ISettingsViewModel
 {

@@ -7,44 +7,35 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
+using Natsurainko.FluentLauncher.Views.Dialogs;
 using Nrk.FluentCore.Authentication;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Common;
+namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
 
-internal partial class AuthenticationWizardDialogViewModel : ObservableObject
+internal partial class AuthenticationWizardDialogViewModel(
+    AccountService accountService, 
+    NotificationService notificationService, 
+    AuthenticationService authService) : DialogVM<AuthenticationWizardDialog>
 {
     [ObservableProperty]
     public partial WizardViewModelBase CurrentFrameDataContext { get; set; } = null!;
 
     private readonly Stack<WizardViewModelBase> _viewModelStack = new();
-
-    private readonly AccountService _accountService;
-    private readonly NotificationService _notificationService;
-    private readonly AuthenticationService _authService;
-
     private Frame _contentFrame = null!; // Set in LoadEvent
     private ContentDialog _dialog = null!; // Set in LoadEvent
 
-    public AuthenticationWizardDialogViewModel(AccountService accountService, NotificationService notificationService, AuthenticationService authService)
+    public override void OnLoaded()
     {
-        _accountService = accountService;
-        _notificationService = notificationService;
-        _authService = authService;
-    }
+        base.OnLoaded();
 
-    [RelayCommand]
-    public void LoadEvent(object args)
-    {
-        var grid = args.As<Grid, object>().sender;
-        _contentFrame = (Frame)grid.FindName("contentFrame");
-        _dialog = (ContentDialog)grid.FindName("Dialog");
+        _dialog = View;
+        _contentFrame = View.ContentFrame;
 
-        CurrentFrameDataContext = new ChooseAccountTypeViewModel(_authService);
+        CurrentFrameDataContext = new ChooseAccountTypeViewModel(authService);
 
         _contentFrame.Navigate(
             CurrentFrameDataContext.XamlPageType,
@@ -56,7 +47,7 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
     /// Next Button Command
     /// </summary>
     [RelayCommand]
-    public async Task Next()
+    async Task Next()
     {
         if (CurrentFrameDataContext.GetType().Equals(typeof(ConfirmProfileViewModel)))
         {
@@ -79,7 +70,7 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
     /// Back Button Command
     /// </summary>
     [RelayCommand]
-    public void Previous()
+    void Previous()
     {
         _contentFrame.Content = null;
 
@@ -95,12 +86,7 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
     /// Cancel Button Command
     /// </summary>
     [RelayCommand]
-    public void Cancel() => _dialog.Hide();
-
-    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-    {
-        base.OnPropertyChanged(e);
-    }
+    void Cancel() => _dialog.Hide();
 
     static string GetAccountTypeName(AccountType accountType)
     {
@@ -136,34 +122,34 @@ internal partial class AuthenticationWizardDialogViewModel : ObservableObject
         try // refresh accessToken of the selected profile
         {
             if (account is YggdrasilAccount yggdrasilAccount)
-                account = await _authService.RefreshAsync(yggdrasilAccount);
+                account = await authService.RefreshAsync(yggdrasilAccount);
         } 
         catch (Exception ex)
         {
             _dialog.Hide();
-            _notificationService.NotifyException(LocalizedStrings.Notifications__AccountYggdrasilProfileConfirmationFailed, ex);
+            notificationService.NotifyException(LocalizedStrings.Notifications__AccountYggdrasilProfileConfirmationFailed, ex);
 
             return;
         }
 
-        var existedAccounts = _accountService.Accounts.Where(x => x.ProfileEquals(account)).ToArray();
+        var existedAccounts = accountService.Accounts.Where(x => x.ProfileEquals(account)).ToArray();
 
         if (existedAccounts.Length != 0)
         {
             foreach (var item in existedAccounts)
-                _accountService.RemoveAccount(item, true);
+                accountService.RemoveAccount(item, true);
 
-            _notificationService.NotifyWithoutContent(
+            notificationService.NotifyWithoutContent(
                 LocalizedStrings.Notifications__AccountExisted,
                 icon: "\uecc5");
         }
 
-        _accountService.AddAccount(account);
-        _accountService.ActivateAccount(account);
+        accountService.AddAccount(account);
+        accountService.ActivateAccount(account);
 
         _dialog.Hide();
 
-        _notificationService.NotifyWithSpecialContent(
+        notificationService.NotifyWithSpecialContent(
             LocalizedStrings.Notifications__AccountAddSuccessful,
             "AuthenticationSuccessfulNotifyTemplate",
             new

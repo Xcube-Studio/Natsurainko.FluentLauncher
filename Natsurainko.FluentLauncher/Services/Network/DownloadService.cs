@@ -1,6 +1,6 @@
 ﻿using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.ViewModels.Common;
+using Natsurainko.FluentLauncher.ViewModels.Dialogs;
 using Nrk.FluentCore.GameManagement.Downloader;
 using Nrk.FluentCore.GameManagement.Installer;
 using Nrk.FluentCore.Utils;

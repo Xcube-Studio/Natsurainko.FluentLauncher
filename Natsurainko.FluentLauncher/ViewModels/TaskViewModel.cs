@@ -30,10 +30,10 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using WinUIEx;
 using static Natsurainko.FluentLauncher.Services.Launch.LaunchProgress;
-using static Natsurainko.FluentLauncher.ViewModels.Common.LaunchStageProgress;
+using static Natsurainko.FluentLauncher.ViewModels.Dialogs.LaunchStageProgress;
 
 #nullable disable
-namespace Natsurainko.FluentLauncher.ViewModels.Common;
+namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
 
 public enum TaskState
 {

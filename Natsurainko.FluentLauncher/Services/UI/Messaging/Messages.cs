@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using Natsurainko.FluentLauncher.Models.UI;
-using Natsurainko.FluentLauncher.ViewModels.Common;
+using Natsurainko.FluentLauncher.ViewModels.Dialogs;
 using Nrk.FluentCore.Authentication;
 using System.Collections.Generic;
 

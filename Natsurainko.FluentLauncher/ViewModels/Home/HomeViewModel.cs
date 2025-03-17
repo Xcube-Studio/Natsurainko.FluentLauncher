@@ -12,7 +12,7 @@ using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-using Natsurainko.FluentLauncher.ViewModels.Common;
+using Natsurainko.FluentLauncher.ViewModels.Dialogs;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.GameManagement.Instances;
 using System;

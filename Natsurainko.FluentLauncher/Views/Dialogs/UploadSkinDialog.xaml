@@ -1,24 +1,20 @@
 <ContentDialog
-    x:Class="Natsurainko.FluentLauncher.Views.Common.AddVmArgumentDialog"
+    x:Class="Natsurainko.FluentLauncher.Views.Dialogs.UploadSkinDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
-    xmlns:common="using:Natsurainko.FluentLauncher.ViewModels.Common"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    x:Name="Dialog"
-    d:DataContext="{d:DesignInstance Type=common:AddVmArgumentDialogViewModel}"
     Style="{ThemeResource DefaultContentDialogStyle}"
     mc:Ignorable="d">
-
     <ContentDialog.Resources>
         <Thickness x:Key="ContentDialogPadding">0</Thickness>
     </ContentDialog.Resources>
     <ContentDialog.Title>
         <StackPanel Margin="24,24,24,0">
-            <TextBlock x:Uid="Dialogs_AddVmArgumentDialog_T" Text="Add a single JVM argument" />
+            <TextBlock x:Uid="Dialogs_UploadSkinDialog_T" Text="Upload New Skin File" />
         </StackPanel>
     </ContentDialog.Title>
 
@@ -43,12 +39,22 @@
             Height="Auto"
             Padding="24,0,24,20"
             Background="Transparent">
-            <i:Interaction.Behaviors>
-                <core:EventTriggerBehavior EventName="Loaded">
-                    <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadEventCommand}" />
-                </core:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
-            <AutoSuggestBox Text="{x:Bind VM.Argument, Mode=TwoWay}" />
+            <StackPanel Spacing="10">
+                <AutoSuggestBox
+                    x:Name="AutoSuggestBox"
+                    x:Uid="Dialogs_UploadSkinDialog_Box"
+                    x:FieldModifier="public"
+                    Header="Skin File Path"
+                    Text="{x:Bind VM.FilePath, Mode=TwoWay}">
+                    <AutoSuggestBox.QueryIcon>
+                        <FontIcon FontSize="14" Glyph="&#xED43;" />
+                    </AutoSuggestBox.QueryIcon>
+                </AutoSuggestBox>
+                <CheckBox
+                    x:Uid="Dialogs_UploadSkinDialog_CheckBox"
+                    Content="Use slim Minecraft character shape"
+                    IsChecked="{x:Bind VM.IsSlimModel, Mode=TwoWay}" />
+            </StackPanel>
         </Grid>
         <Rectangle
             Grid.Row="1"
@@ -72,11 +78,11 @@
                 <Button
                     Grid.Column="0"
                     HorizontalAlignment="Stretch"
-                    Command="{x:Bind VM.AddCommand}"
+                    Command="{x:Bind VM.UploadCommand}"
                     ElementSoundMode="FocusOnly"
                     IsTabStop="False"
                     Style="{ThemeResource AccentButtonStyle}">
-                    <TextBlock x:Uid="Buttons_Add" Text="Add" />
+                    <TextBlock x:Uid="Buttons_Confirm" Text="Confirm" />
                 </Button>
                 <Button
                     Grid.Column="2"

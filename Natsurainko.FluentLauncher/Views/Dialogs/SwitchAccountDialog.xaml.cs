@@ -3,10 +3,10 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.ViewModels.Common;
+using Natsurainko.FluentLauncher.ViewModels.Dialogs;
 using Nrk.FluentCore.Authentication;
 
-namespace Natsurainko.FluentLauncher.Views.Common;
+namespace Natsurainko.FluentLauncher.Views.Dialogs;
 
 internal sealed partial class SwitchAccountDialog : ContentDialog
 {

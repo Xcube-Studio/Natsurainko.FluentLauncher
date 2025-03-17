@@ -10,7 +10,7 @@ using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.Views;
-using Natsurainko.FluentLauncher.Views.Common;
+using Natsurainko.FluentLauncher.Views.Dialogs;
 using Nrk.FluentCore.Utils;
 using System;
 using System.Diagnostics;

@@ -92,14 +92,14 @@ pages.WithPage<Views.Settings.SkinPage, ViewModels.Settings.SkinViewModel>("Sett
 
 var dialogs = builder.Dialogs;
 
-dialogs.WithDialog<Views.Common.AddVmArgumentDialog, ViewModels.Common.AddVmArgumentDialogViewModel>("AddVmArgumentDialog");
-dialogs.WithDialog<Views.Common.AuthenticationWizardDialog, ViewModels.Common.AuthenticationWizardDialogViewModel>("AuthenticationWizardDialog");
-dialogs.WithDialog<Views.Common.DeleteInstanceDialog, ViewModels.Common.DeleteInstanceDialogViewModel>("DeleteInstanceDialog");
-dialogs.WithDialog<Views.Common.SwitchAccountDialog, ViewModels.Common.SwitchAccountDialogViewModel>("SwitchAccountDialog");
-dialogs.WithDialog<Views.Common.UploadSkinDialog, ViewModels.Common.UploadSkinDialogViewModel>("UploadSkinDialog");
+dialogs.WithDialog<Views.Dialogs.AddVmArgumentDialog, ViewModels.Dialogs.AddVmArgumentDialogViewModel>("AddVmArgumentDialog");
+dialogs.WithDialog<Views.Dialogs.AuthenticationWizardDialog, ViewModels.Dialogs.AuthenticationWizardDialogViewModel>("AuthenticationWizardDialog");
+dialogs.WithDialog<Views.Dialogs.DeleteInstanceDialog, ViewModels.Dialogs.DeleteInstanceDialogViewModel>("DeleteInstanceDialog");
+dialogs.WithDialog<Views.Dialogs.SwitchAccountDialog, ViewModels.Dialogs.SwitchAccountDialogViewModel>("SwitchAccountDialog");
+dialogs.WithDialog<Views.Dialogs.UploadSkinDialog, ViewModels.Dialogs.UploadSkinDialogViewModel>("UploadSkinDialog");
 
 #if FLUENT_LAUNCHER_PREVIEW_CHANNEL
-dialogs.WithDialog<Views.Common.UpdateDialog, ViewModels.Common.UpdateDialogViewModel>("UpdateDialog");
+dialogs.WithDialog<Views.Dialogs.UpdateDialog, ViewModels.Dialogs.UpdateDialogViewModel>("UpdateDialog");
 #endif
 
 #endregion
@@ -140,9 +140,6 @@ services.AddSingleton<UpdateService>();
 // ModClient
 services.AddSingleton<ModrinthClient>();
 services.AddSingleton<CurseForgeClient>(_ => new CurseForgeClient("$2a$10$lf9.hHl3PMJ4d3BisICcAOX91uT/mM9/VPDfzpg7r3C/Y8cXIRTNm"));
-
-// ViewModels
-services.AddTransient<ViewModels.Common.SwitchAccountDialogViewModel>();
 
 #endregion
 

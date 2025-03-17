@@ -4,7 +4,7 @@ using System;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.System;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Common;
+namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
 
 internal partial class ExceptionDialogViewModel : ObservableObject
 {

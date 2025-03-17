@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Settings;
 
-namespace Natsurainko.FluentLauncher.Views.Common;
+namespace Natsurainko.FluentLauncher.Views.Dialogs;
 
 public sealed partial class UpdateDialog : ContentDialog
 {

@@ -4,7 +4,7 @@ using FluentLauncher.Infra.UI.Navigation;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
-using Natsurainko.FluentLauncher.ViewModels.Common;
+using Natsurainko.FluentLauncher.ViewModels.Dialogs;
 using System.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels;

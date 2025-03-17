@@ -169,11 +169,19 @@ internal class AccountService
 
         bool isActiveAccount = ActiveAccount == oldAccount;
 
-        await App.DispatcherQueue.EnqueueAsync(() =>
+        if (App.DispatcherQueue != null)
+        {
+            await App.DispatcherQueue.EnqueueAsync(() =>
+            {
+                RemoveAccount(oldAccount, true);
+                AddAccount(refreshedAccount);
+            });
+        }
+        else
         {
             RemoveAccount(oldAccount, true);
             AddAccount(refreshedAccount);
-        });
+        }
 
         if (isActiveAccount)
             ActivateAccount(refreshedAccount);

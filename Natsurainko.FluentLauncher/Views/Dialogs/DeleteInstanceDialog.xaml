@@ -1,31 +1,20 @@
 <ContentDialog
-    x:Class="Natsurainko.FluentLauncher.Views.Common.AuthenticationWizardDialog"
+    x:Class="Natsurainko.FluentLauncher.Views.Dialogs.DeleteInstanceDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
-    xmlns:common="using:Natsurainko.FluentLauncher.ViewModels.Common"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    x:Name="Dialog"
-    d:DataContext="{d:DesignInstance Type=common:AuthenticationWizardDialogViewModel}"
     Style="{ThemeResource DefaultContentDialogStyle}"
     mc:Ignorable="d">
-
+    <ContentDialog.Title>
+        <TextBlock Margin="24,24,24,0">
+            <Run x:Uid="Dialogs_DeleteGameDialog_T" Text="Delete Core" />
+            <Run Text="{x:Bind VM.Title, Mode=OneWay}" />
+        </TextBlock>
+    </ContentDialog.Title>
     <ContentDialog.Resources>
         <Thickness x:Key="ContentDialogPadding">0</Thickness>
     </ContentDialog.Resources>
-    <ContentDialog.Title>
-        <StackPanel Margin="24,24,24,0">
-            <TextBlock
-                x:Uid="Dialogs_AuthenticationWizardDialog_T"
-                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                Style="{ThemeResource BaseTextBlockStyle}"
-                Text="Account Add Wizard:" />
-            <TextBlock Text="{x:Bind ((FrameworkElement)contentFrame.Content).Tag, Mode=OneWay}" TextWrapping="WrapWholeWords" />
-        </StackPanel>
-    </ContentDialog.Title>
 
     <Grid>
         <Grid.Resources>
@@ -38,29 +27,31 @@
                         <StaticResource x:Key="ContentDialogBorderBrush" ResourceKey="ContentDialogSeparatorBorderBrush" />
                     </ResourceDictionary>
                 </ResourceDictionary.ThemeDictionaries>
+
+                <CollectionViewSource x:Key="CollectionViewSource" IsSourceGrouped="True" />
             </ResourceDictionary>
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid
+
+        <StackPanel
             Height="Auto"
             Padding="24,0,24,20"
-            Background="Transparent">
-            <i:Interaction.Behaviors>
-                <core:EventTriggerBehavior EventName="Loaded">
-                    <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadEventCommand}" />
-                </core:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
-            <Frame x:Name="contentFrame" DataContext="{x:Bind VM.CurrentFrameDataContext, Mode=OneWay}">
-                <Frame.ContentTransitions>
-                    <TransitionCollection>
-                        <RepositionThemeTransition />
-                    </TransitionCollection>
-                </Frame.ContentTransitions>
-            </Frame>
-        </Grid>
+            Spacing="5">
+            <TextBlock Style="{ThemeResource BaseTextBlockStyle}">
+                <Run x:Uid="Dialogs_DeleteGameDialog_D1" Text="Are you sure you want to delete this core?" />
+                <LineBreak />
+                <Run Text="{x:Bind VM.Title, Mode=OneWay}" />
+                <Run x:Uid="Dialogs_DeleteGameDialog_D2" Text="will be lost forever! (A long time)" />
+            </TextBlock>
+            <CheckBox
+                x:Uid="Dialogs_DeleteGameDialog_CheckBox"
+                Content="Delete together with stored core settings"
+                IsChecked="{x:Bind VM.DeleteCoreSettings, Mode=TwoWay}" />
+        </StackPanel>
+
         <Rectangle
             Grid.Row="1"
             HorizontalAlignment="Stretch"
@@ -79,37 +70,31 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="{ThemeResource ContentDialogButtonSpacing}" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="75" />
-                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
+                <Button
+                    Grid.Column="0"
+                    HorizontalAlignment="Stretch"
+                    Background="{ThemeResource DeleteButtonBackground}"
+                    BorderBrush="{ThemeResource DeleteButtonBorder}"
+                    Command="{x:Bind VM.DeleteCommand}"
+                    ElementSoundMode="FocusOnly"
+                    IsTabStop="False"
+                    Style="{ThemeResource ButtonRevealStyle}">
+                    <TextBlock
+                        x:Uid="Buttons_Delete"
+                        Foreground="White"
+                        Text="Delete" />
+                </Button>
                 <Button
                     Grid.Column="2"
                     HorizontalAlignment="Stretch"
-                    Command="{x:Bind VM.NextCommand}"
-                    ElementSoundMode="FocusOnly"
-                    IsEnabled="{x:Bind VM.CurrentFrameDataContext.CanNext, Mode=OneWay}"
-                    IsTabStop="False"
-                    Style="{ThemeResource AccentButtonStyle}">
-                    <TextBlock x:Uid="Buttons_Next" Text="Next" />
-                </Button>
-                <Button
-                    HorizontalAlignment="Stretch"
-                    Command="{x:Bind VM.PreviousCommand}"
-                    ElementSoundMode="FocusOnly"
-                    IsEnabled="{x:Bind VM.CurrentFrameDataContext.CanPrevious, Mode=OneWay}"
-                    IsTabStop="False">
-                    <TextBlock x:Uid="Buttons_Back" Text="Back" />
-                </Button>
-                <Button
-                    Grid.Column="4"
-                    HorizontalAlignment="Stretch"
                     Command="{x:Bind VM.CancelCommand}"
                     ElementSoundMode="FocusOnly"
-                    IsEnabled="{x:Bind VM.CurrentFrameDataContext.CanCancel, Mode=OneWay}"
                     IsTabStop="False">
                     <TextBlock x:Uid="Buttons_Cancel" Text="Cancel" />
                 </Button>
             </Grid>
         </Border>
+
     </Grid>
 </ContentDialog>

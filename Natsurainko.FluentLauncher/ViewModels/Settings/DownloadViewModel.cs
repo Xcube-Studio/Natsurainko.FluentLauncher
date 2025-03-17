@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
-using Natsurainko.FluentLauncher.ViewModels.Common;
 using System;
 using System.Threading.Tasks;
 using Windows.System;
@@ -11,7 +10,7 @@ using Windows.System;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-internal partial class DownloadViewModel : SettingsViewModelBase, ISettingsViewModel
+internal partial class DownloadViewModel : SettingsPageVM, ISettingsViewModel
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;
@@ -33,7 +32,6 @@ internal partial class DownloadViewModel : SettingsViewModelBase, ISettingsViewM
 
     public string LauncherCacheFolder => LocalStorageService.LocalFolderPath;
 
-
     public DownloadViewModel(SettingsService settingsService, LocalStorageService localStorageService)
     {
         _settingsService = settingsService;
@@ -43,8 +41,5 @@ internal partial class DownloadViewModel : SettingsViewModelBase, ISettingsViewM
     }
 
     [RelayCommand]
-    public async Task OpenCacheFolder(string folder)
-    {
-        _ = await Launcher.LaunchFolderPathAsync(folder);
-    }
+    async Task OpenCacheFolder(string folder) => await Launcher.LaunchFolderPathAsync(folder);
 }

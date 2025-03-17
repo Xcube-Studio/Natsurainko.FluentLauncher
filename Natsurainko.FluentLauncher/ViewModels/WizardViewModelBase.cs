@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 
 #nullable disable
-namespace Natsurainko.FluentLauncher.ViewModels.Common;
+namespace Natsurainko.FluentLauncher.ViewModels;
 
 internal partial class WizardViewModelBase : ObservableObject
 {

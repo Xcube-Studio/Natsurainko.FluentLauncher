@@ -2,12 +2,9 @@
     x:Class="Natsurainko.FluentLauncher.Views.Cores.DefaultPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
-    xmlns:collections="using:System.Collections"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:converters="using:Natsurainko.FluentLauncher.XamlHelpers.Converters"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:inst="using:Nrk.FluentCore.GameManagement.Instances"
@@ -18,15 +15,6 @@
     <Page.Resources>
         <converters:InstanceDescriptionConverter x:Key="InstanceDescriptionConverter" EnableShowModLoaderType="True" />
     </Page.Resources>
-
-    <i:Interaction.Behaviors>
-        <core:EventTriggerBehavior EventName="Loaded">
-            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadedCommand}" />
-        </core:EventTriggerBehavior>
-        <core:EventTriggerBehavior EventName="Unloaded">
-            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.UnloadedCommand}" />
-        </core:EventTriggerBehavior>
-    </i:Interaction.Behaviors>
 
     <Grid>
         <Grid.RowDefinitions>

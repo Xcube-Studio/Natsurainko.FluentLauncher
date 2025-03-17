@@ -1,4 +1,5 @@
 ﻿using FluentLauncher.Infra.UI.Pages;
+using FluentLauncher.Infra.WinUI.Mvvm;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,18 @@ public class WinUIPageProvider : PageProvider<Page>
         : base(registeredPages, serviceProvider) { }
 
     protected override void ConfigureViewModel(Page page, object viewModel)
-        => page.DataContext = viewModel;
+    {
+        page.DataContext = viewModel;
+
+        if (viewModel is IViewAssociated viewAssociatedModel)
+        {
+            viewAssociatedModel.Dispatcher = page.DispatcherQueue;
+
+            page.Loaded += (_, _) => viewAssociatedModel.OnLoaded();
+            page.Unloaded += (_, _) => viewAssociatedModel.OnUnloaded();
+
+            if (viewAssociatedModel is IViewAssociated<Page> pageAssociatedModel)
+                pageAssociatedModel.SetView(page);
+        }
+    }
 }

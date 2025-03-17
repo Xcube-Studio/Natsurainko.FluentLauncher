@@ -31,7 +31,7 @@ public sealed partial class NavigationPage : Page, INavigationProvider
             if (contentFrame.Content.GetType() == typeof(InstancePage))
             {
                 var instance = (MinecraftInstance)e.Parameter;
-                VM.CurrentInstance = instance;
+                VM.Parameter = instance;
                 string instanceId = instance.InstanceId;
 
                 var converter = (BreadcrumbBarLocalizationConverter)breadcrumbBar.Resources["BreadcrumbBarLocalizationConverter"];
@@ -47,10 +47,7 @@ public sealed partial class NavigationPage : Page, INavigationProvider
         }
     }
 
-    private void breadcrumbBar_ItemClicked(object sender, string[] args)
-    {
-        VM.HandleNavigationBreadcrumBarItemClicked(args);
-    }
+    private void breadcrumbBar_ItemClicked(object sender, string[] args) => VM.HandleNavigationBreadcrumBarItemClicked(args);
 
     //private void breadcrumbBar_Loading(Microsoft.UI.Xaml.FrameworkElement sender, object args)
     //{

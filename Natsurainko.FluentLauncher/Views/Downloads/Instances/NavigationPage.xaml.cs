@@ -30,7 +30,6 @@ public sealed partial class NavigationPage : Page, INavigationProvider
             if (contentFrame.Content.GetType() == typeof(InstallPage))
             {
                 var instance = (VersionManifestItem)e.Parameter;
-                VM.CurrentInstance = instance;
                 string instanceId = instance.Id;
 
                 var converter = (BreadcrumbBarLocalizationConverter)breadcrumbBar.Resources["BreadcrumbBarLocalizationConverter"];

@@ -26,36 +26,15 @@ using System.Threading.Tasks;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads.Mods;
 
-internal partial class ModViewModel : ObservableObject, INavigationAware
+internal partial class ModViewModel(
+    GameService gameService,
+    DownloadService downloadService,
+    NotificationService notificationService,
+    SearchProviderService searchProviderService,
+    CurseForgeClient curseForgeClient,
+    ModrinthClient modrinthClient) : PageVM, INavigationAware
 {
-    private readonly GameService _gameService;
-    private readonly DownloadService _downloadService;
-    private readonly NotificationService _notificationService;
-    private readonly SearchProviderService _searchProviderService;
-    private readonly INavigationService _navigationService;
-
-    private readonly CurseForgeClient _curseForgeClient;
-    private readonly ModrinthClient _modrinthClient;
-
     private object _modResource = null!;
-
-    public ModViewModel(
-        GameService gameService, 
-        DownloadService downloadService, 
-        NotificationService notificationService,
-        SearchProviderService searchProviderService,
-        INavigationService navigationService,
-        CurseForgeClient curseForgeClient, 
-        ModrinthClient modrinthClient)
-    {
-        _gameService = gameService;
-        _downloadService = downloadService;
-        _notificationService = notificationService;
-        _searchProviderService = searchProviderService;
-        _navigationService = navigationService;
-        _curseForgeClient = curseForgeClient;
-        _modrinthClient = modrinthClient;
-    }
 
     #region Basic Properties
 
@@ -151,9 +130,9 @@ internal partial class ModViewModel : ObservableObject, INavigationAware
 
     #endregion
 
-    public bool HasMinecraftDataFolder => _gameService.ActiveMinecraftFolder != null;
+    public bool HasMinecraftDataFolder => gameService.ActiveMinecraftFolder != null;
 
-    public bool HasCurrentInstance => _gameService.ActiveGame != null;
+    public bool HasCurrentInstance => gameService.ActiveGame != null;
 
     public bool HasScreenshot => ScreenshotUrls != null && ScreenshotUrls.Length != 0;
 
@@ -171,8 +150,8 @@ internal partial class ModViewModel : ObservableObject, INavigationAware
 
     void INavigationAware.OnNavigatedTo(object parameter)
     {
-        _searchProviderService.OccupyQueryReceiver(this, query => 
-            _navigationService.Parent!.NavigateTo("ModsDownload/Navigation", query));
+        searchProviderService.OccupyQueryReceiver(this, query => 
+            GlobalNavigate("ModsDownload/Navigation", query));
 
         if (parameter is CurseForgeResource curseForgeResource)
         {
@@ -231,7 +210,7 @@ internal partial class ModViewModel : ObservableObject, INavigationAware
                 SaveFileDialog saveFileDialog = new()
                 {
                     FileName = fileName,
-                    InitialDirectory = _gameService.ActiveMinecraftFolder ?? string.Empty,
+                    InitialDirectory = gameService.ActiveMinecraftFolder ?? string.Empty,
                 };
 
                 if (saveFileDialog.ShowDialog().GetValueOrDefault())
@@ -239,17 +218,17 @@ internal partial class ModViewModel : ObservableObject, INavigationAware
                 else return;
                 break;
             case 1:
-                savePath = _gameService.ActiveMinecraftFolder;
+                savePath = gameService.ActiveMinecraftFolder;
                 break;
             case 2:
-                savePath = _gameService.ActiveGame.GetModsDirectory();
+                savePath = gameService.ActiveGame.GetModsDirectory();
                 break;
             default:
                 return;
         }
 
-        _downloadService.DownloadModFile(SelectedFile, savePath);
-        _notificationService.NotifyWithoutContent(LocalizedStrings.Notifications__AddDownloadTask, icon: "\ue896");
+        downloadService.DownloadModFile(SelectedFile, savePath);
+        notificationService.NotifyWithoutContent(LocalizedStrings.Notifications__AddDownloadTask, icon: "\ue896");
     }
 
     [RelayCommand]
@@ -300,7 +279,7 @@ internal partial class ModViewModel : ObservableObject, INavigationAware
             string json = await HttpUtils.HttpClient.GetStringAsync(baseUrl);
             string translatedSummary = JsonNode.Parse(json)!["translated"]!.GetValue<string>();
 
-            await App.DispatcherQueue.EnqueueAsync(() =>
+            await Dispatcher.EnqueueAsync(() =>
             {
                 Summary = translatedSummary;
                 Translated = true;
@@ -311,7 +290,7 @@ internal partial class ModViewModel : ObservableObject, INavigationAware
 
     async void TryLoadFiles()
     {
-        await App.DispatcherQueue.EnqueueAsync(() => LoadingFiles = true);
+        await Dispatcher.EnqueueAsync(() => LoadingFiles = true);
 
         IEnumerable<object> files = [];
         List<string> loaders = [];
@@ -335,7 +314,7 @@ internal partial class ModViewModel : ObservableObject, INavigationAware
         {
             try
             {
-                var modrinthFiles = await _modrinthClient.GetProjectVersionsAsync(modrinthResource.Id);
+                var modrinthFiles = await modrinthClient.GetProjectVersionsAsync(modrinthResource.Id);
                 files = modrinthFiles;
 
                 foreach (var file in modrinthFiles)
@@ -350,11 +329,11 @@ internal partial class ModViewModel : ObservableObject, INavigationAware
             }
             catch
             {
-                await App.DispatcherQueue.EnqueueAsync(() => LoadFilesFailed = true);
+                await Dispatcher.EnqueueAsync(() => LoadFilesFailed = true);
             }
         }
 
-        await App.DispatcherQueue.EnqueueAsync(() =>
+        await Dispatcher.EnqueueAsync(() =>
         {
             LoadingFiles = false;
             Files = files;
@@ -368,27 +347,27 @@ internal partial class ModViewModel : ObservableObject, INavigationAware
 
     async void TryLoadDescription()
     {
-        await App.DispatcherQueue.EnqueueAsync(() => LoadingDescription = true);
+        await Dispatcher.EnqueueAsync(() => LoadingDescription = true);
 
         try
         {
             if (_modResource is CurseForgeResource curseForgeResource)
             {
-                DescriptionContent = await _curseForgeClient.GetResourceDescriptionAsync(curseForgeResource.Id);
-                await App.DispatcherQueue.EnqueueAsync(() => IsHtml = true);
+                DescriptionContent = await curseForgeClient.GetResourceDescriptionAsync(curseForgeResource.Id);
+                await Dispatcher.EnqueueAsync(() => IsHtml = true);
             }
             else if (_modResource is ModrinthResource modrinthResource)
             {
-                DescriptionContent = await _modrinthClient.GetResourceDescriptionAsync(modrinthResource.Id);
-                await App.DispatcherQueue.EnqueueAsync(() => IsMarkdown = true);
+                DescriptionContent = await modrinthClient.GetResourceDescriptionAsync(modrinthResource.Id);
+                await Dispatcher.EnqueueAsync(() => IsMarkdown = true);
             }
         }
         catch
         {
-            await App.DispatcherQueue.EnqueueAsync(() => LoadDescriptionFailed = true);
+            await Dispatcher.EnqueueAsync(() => LoadDescriptionFailed = true);
         }
 
-        await App.DispatcherQueue.EnqueueAsync(() => LoadingDescription = false);
+        await Dispatcher.EnqueueAsync(() => LoadingDescription = false);
     }
 
     void UpdateFilteredFiles()

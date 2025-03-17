@@ -12,7 +12,7 @@ using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-using Natsurainko.FluentLauncher.ViewModels.Common;
+using Natsurainko.FluentLauncher.ViewModels.Dialogs;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.GameManagement.Instances;
 using System;
@@ -25,13 +25,12 @@ using System.Threading.Tasks;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Home;
 
-internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaunchTaskChangedMessage>
+internal partial class HomeViewModel : PageVM, IRecipient<TrackLaunchTaskChangedMessage>
 {
     private readonly GameService _gameService;
     private readonly AccountService _accountService;
     private readonly LaunchService _launchService;
     private readonly SettingsService _settingsService;
-    private readonly INavigationService _navigationService;
     private readonly SearchProviderService _searchProviderService;
     private readonly IDialogActivationService<ContentDialogResult> _dialogService;
 
@@ -47,7 +46,6 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
         AccountService accountService,
         LaunchService launchService,
         SettingsService settingsService,
-        INavigationService navigationService,
         SearchProviderService searchProviderService,
         IDialogActivationService<ContentDialogResult> dialogService)
     {
@@ -55,7 +53,6 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
         _gameService = gameService;
         _launchService = launchService;
         _settingsService = settingsService;
-        _navigationService = navigationService;
         _searchProviderService = searchProviderService;
         _dialogService = dialogService;
 
@@ -64,8 +61,6 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
 
         MinecraftInstances = _gameService.Games;
         ActiveMinecraftInstance = _gameService.ActiveGame;
-
-        IsActive = true;
     }
 
     [ObservableProperty]
@@ -129,15 +124,10 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
     partial void OnActiveMinecraftInstanceChanged(MinecraftInstance value)
     {
         if (value is not null)
-        {
             _gameService.ActivateGame(value);
-        }
     }
 
-    partial void OnActiveAccountChanged(Account value)
-    {
-        _accountService.ActivateAccount(value);
-    }
+    partial void OnActiveAccountChanged(Account value) => _accountService.ActivateAccount(value);
 
     [RelayCommand(CanExecute = nameof(CanExecuteLaunch))]
     private void Launch()
@@ -162,10 +152,10 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
     }
 
     [RelayCommand]
-    void GoToInstancesManage() => _navigationService.NavigateTo("Cores/Navigation");
+    void GoToInstancesManage() => GlobalNavigate("Cores/Navigation");
 
     [RelayCommand]
-    void GoToAccountSettings() => _navigationService.NavigateTo("Settings/Navigation", "Settings/Account");
+    void GoToAccountSettings() => GlobalNavigate("Settings/Navigation", "Settings/Account");
 
     [RelayCommand]
     async Task AddAccount() => await _dialogService.ShowAsync("AuthenticationWizardDialog");
@@ -174,11 +164,38 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
     void Continue() => WeakReferenceMessenger.Default.Send(new TrackLaunchTaskChangedMessage(null));
 
     [RelayCommand]
-    void ShowDetails() => _navigationService.NavigateTo("Tasks/Launch");
+    void ShowDetails() => GlobalNavigate("Tasks/Launch");
 
-    [RelayCommand]
-    void Loaded()
+    void TrackingTask_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
+        if (e.PropertyName == "ProcessLaunched")
+            UpdateLaunchButtonText();
+    }
+
+    IEnumerable<Suggestion> ProviderSuggestions(string searchText)
+    {
+        yield return new Suggestion
+        {
+            Title = LocalizedStrings.SearchSuggest__T1.Replace("{searchText}", searchText),
+            Description = LocalizedStrings.SearchSuggest__D1,
+            InvokeAction = () => GlobalNavigate("InstancesDownload/Navigation", searchText)
+        };
+
+        foreach (var item in MinecraftInstances)
+        {
+            if (item.InstanceId.Contains(searchText))
+            {
+                yield return SuggestionHelper.FromMinecraftInstance(item,
+                    LocalizedStrings.SearchSuggest__D4,
+                    () => _launchService.LaunchFromUI(item));
+            }
+        }
+    }
+
+    public override void OnLoaded()
+    {
+        base.OnLoaded();
+
         if (!_searchProviderService.ContainsSuggestionProvider(this))
             _searchProviderService.RegisterSuggestionProvider(this, ProviderSuggestions);
 
@@ -196,15 +213,10 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
         else _trackingTask = null;
     }
 
-    void TrackingTask_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    public override void OnUnloaded()
     {
-        if (e.PropertyName == "ProcessLaunched")
-            UpdateLaunchButtonText();
-    }
+        base.OnUnloaded();
 
-    [RelayCommand]
-    void Unloaded()
-    {
         _searchProviderService.UnregisterSuggestionProvider(this);
         if (_registeredListener)
         {
@@ -213,27 +225,6 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
         }
 
         App.MainWindow.SizeChanged -= SizeChanged;
-        IsActive = false;
-    }
-
-    IEnumerable<Suggestion> ProviderSuggestions(string searchText)
-    {
-        yield return new Suggestion
-        {
-            Title = LocalizedStrings.SearchSuggest__T1.Replace("{searchText}", searchText),
-            Description = LocalizedStrings.SearchSuggest__D1,
-            InvokeAction = () => _navigationService.NavigateTo("InstancesDownload/Navigation", searchText)
-        };
-
-        foreach (var item in MinecraftInstances)
-        {
-            if (item.InstanceId.Contains(searchText))
-            {
-                yield return SuggestionHelper.FromMinecraftInstance(item,
-                    LocalizedStrings.SearchSuggest__D4,
-                    () => _launchService.LaunchFromUI(item));
-            }
-        }
     }
 
     void IRecipient<TrackLaunchTaskChangedMessage>.Receive(TrackLaunchTaskChangedMessage message)
@@ -245,7 +236,8 @@ internal partial class HomeViewModel : ObservableRecipient, IRecipient<TrackLaun
         }
 
         _trackingTask = message.Value;
-        App.DispatcherQueue.TryEnqueue(() =>
+
+        Dispatcher.TryEnqueue(() =>
         {
             TrackingTask = message.Value;
             IsTrackingTask = message.Value != null;

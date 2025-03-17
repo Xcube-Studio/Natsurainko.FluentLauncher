@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.ViewModels.Common;
+using Natsurainko.FluentLauncher.ViewModels.Dialogs;
 using System;
 
 #nullable disable

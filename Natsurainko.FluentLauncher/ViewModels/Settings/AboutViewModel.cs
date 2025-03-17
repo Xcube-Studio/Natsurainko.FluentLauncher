@@ -1,19 +1,24 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
+using Natsurainko.FluentLauncher.Utils.Extensions;
+using System;
+using System.Threading.Tasks;
+using Windows.System;
+
+#if FLUENT_LAUNCHER_PREVIEW_CHANNEL
+
+using CommunityToolkit.Mvvm.ComponentModel;
 using FluentLauncher.Infra.UI.Dialogs;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.Utils.Extensions;
-using System;
 using System.Text.Json.Nodes;
-using System.Threading.Tasks;
-using Windows.System;
+
+#endif
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-internal partial class AboutViewModel : ObservableObject
+internal partial class AboutViewModel : PageVM
 {
 #if FLUENT_LAUNCHER_PREVIEW_CHANNEL
     private readonly UpdateService _updateService;
@@ -29,6 +34,7 @@ internal partial class AboutViewModel : ObservableObject
 #endif
 
     public string Version => App.Version.GetVersionString();
+
     public string AppChannel => App.AppChannel;
 
 #if FLUENT_LAUNCHER_PREVIEW_CHANNEL
@@ -43,20 +49,15 @@ internal partial class AboutViewModel : ObservableObject
     }
 #else
     [RelayCommand]
-    public async Task CheckUpdate()
-        => await Launcher.LaunchUriAsync(new Uri("ms-windows-store://pdp/?productid=9P4NQQXQ942P"));
+    async Task CheckUpdate() => await Launcher.LaunchUriAsync(new Uri("ms-windows-store://pdp/?productid=9P4NQQXQ942P"));
 #endif
 
     [RelayCommand]
-    public async Task OpenGit()
-        => await Launcher.LaunchUriAsync(new Uri("https://github.com/Xcube-Studio/Fluent-Launcher"));
+    async Task OpenGit() => await Launcher.LaunchUriAsync(new Uri("https://github.com/Xcube-Studio/Fluent-Launcher"));
 
     [RelayCommand]
-    public async Task OpenAuthor()
-        => await Launcher.LaunchUriAsync(new Uri("https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/graphs/contributors"));
+    async Task OpenAuthor() => await Launcher.LaunchUriAsync(new Uri("https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/graphs/contributors"));
 
     [RelayCommand]
-    public async Task OpenLicense()
-        => await Launcher.LaunchUriAsync(new Uri("https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/blob/main/LICENSE"));
-
+    async Task OpenLicense() => await Launcher.LaunchUriAsync(new Uri("https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/blob/main/LICENSE"));
 }

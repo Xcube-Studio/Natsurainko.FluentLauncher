@@ -4,12 +4,12 @@ using FluentLauncher.Infra.UI.Navigation;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
-using Natsurainko.FluentLauncher.ViewModels.Common;
+using Natsurainko.FluentLauncher.ViewModels.Dialogs;
 using System.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels;
 
-internal partial class ShellViewModel : ObservableObject, INavigationAware
+internal partial class ShellViewModel : PageVM, INavigationAware, IRecipient<GlobalNavigationMessage>
 {
     private readonly LaunchService _launchService;
     private readonly DownloadService _downloadService;
@@ -40,22 +40,16 @@ internal partial class ShellViewModel : ObservableObject, INavigationAware
         NavigationService = shellNavigationService;
 
         _launchService.TaskListStateChanged += (_, e) =>
-            App.DispatcherQueue.TryEnqueue(() =>
+            Dispatcher.TryEnqueue(() =>
                 RunningLaunchTasks = _launchService.LaunchTasks
                     .Where(x => x.TaskState == TaskState.Running || x.TaskState == TaskState.Prepared)
                     .Count());
 
         _downloadService.TaskListStateChanged += (_, e) =>
-            App.DispatcherQueue.TryEnqueue(() =>
+            Dispatcher.TryEnqueue(() =>
                 RunningDownloadTasks = _downloadService.DownloadTasks
                     .Where(x => x.TaskState == TaskState.Running || x.TaskState == TaskState.Prepared)
                     .Count());
-
-        WeakReferenceMessenger.Default.Register(this!, (MessageHandler<object, GlobalNavigationMessage>)((r, m) =>
-        {
-            ShellViewModel vm = (r as ShellViewModel)!;
-            App.DispatcherQueue.TryEnqueue(() => vm.NavigationService.NavigateTo(m.Value, m.Parameter));
-        }));
     }
 
     void INavigationAware.OnNavigatedTo(object? parameter)
@@ -67,4 +61,7 @@ internal partial class ShellViewModel : ObservableObject, INavigationAware
         }
         else NavigationService.NavigateTo("HomePage");
     }
+
+    void IRecipient<GlobalNavigationMessage>.Receive(GlobalNavigationMessage message)
+        => Dispatcher.TryEnqueue(() => this.NavigationService.NavigateTo(message.Value, message.Parameter));
 }

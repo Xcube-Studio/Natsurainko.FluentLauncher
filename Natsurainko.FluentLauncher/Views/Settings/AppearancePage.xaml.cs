@@ -14,10 +14,4 @@ public sealed partial class AppearancePage : Page, IBreadcrumbBarAware
     {
         InitializeComponent();
     }
-
-    private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-    {
-        var vm = this.DataContext as AppearanceViewModel;
-        vm!.BrowserImage();
-    }
 }

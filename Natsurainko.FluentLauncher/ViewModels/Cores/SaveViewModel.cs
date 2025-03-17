@@ -1,10 +1,9 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Navigation;
 using Natsurainko.FluentLauncher.Experimental.Saves;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement.Instances;
-using Nrk.FluentCore.Management;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -13,7 +12,7 @@ using Windows.System;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Cores;
 
-internal partial class SaveViewModel : ObservableObject, INavigationAware
+internal partial class SaveViewModel : PageVM, INavigationAware
 {
     public MinecraftInstance MinecraftInstance { get; private set; }
 
@@ -29,12 +28,12 @@ internal partial class SaveViewModel : ObservableObject, INavigationAware
         var manager = new SaveManager(SavesFolder);
 
         await foreach (var saveInfo in manager.EnumerateSavesAsync())
-            App.DispatcherQueue.TryEnqueue(() => Saves.Add(saveInfo));
+            await Dispatcher.EnqueueAsync(() => Saves.Add(saveInfo));
     }
 
     [RelayCommand]
-    public async Task OpenSavesFolder() => await Launcher.LaunchFolderPathAsync(SavesFolder);
+    async Task OpenSavesFolder() => await Launcher.LaunchFolderPathAsync(SavesFolder);
 
     [RelayCommand]
-    public async Task OpenSaveFolder(SaveInfo saveInfo) => await Launcher.LaunchFolderPathAsync(saveInfo.Folder);
+    async Task OpenSaveFolder(SaveInfo saveInfo) => await Launcher.LaunchFolderPathAsync(saveInfo.Folder);
 }

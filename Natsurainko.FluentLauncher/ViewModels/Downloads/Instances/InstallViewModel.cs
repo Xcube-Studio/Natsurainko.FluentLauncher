@@ -18,27 +18,11 @@ using System.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads.Instances;
 
-internal partial class InstallViewModel : ObservableObject, INavigationAware
+internal partial class InstallViewModel(
+    GameService gameService,
+    DownloadService downloadService,
+    SearchProviderService searchProviderService) : PageVM, INavigationAware, IRecipient<InstanceLoaderQueryMessage>
 {
-    private readonly GameService _gameService;
-    private readonly DownloadService _downloadService;
-    private readonly SearchProviderService _searchProviderService;
-    private readonly INavigationService _navigationService;
-
-    private WeakReferenceMessenger weakReference => WeakReferenceMessenger.Default;
-
-    public InstallViewModel(
-        GameService gameService, 
-        DownloadService downloadService,
-        SearchProviderService searchProviderService,
-        INavigationService navigationService)
-    {
-        _gameService = gameService;
-        _downloadService = downloadService;
-        _searchProviderService = searchProviderService;
-        _navigationService = navigationService;
-    }
-
     [ObservableProperty]
     public partial IEnumerable<InstanceLoaderItem> LoaderItems { get; set; } = [];
 
@@ -67,7 +51,7 @@ internal partial class InstallViewModel : ObservableObject, INavigationAware
     [ObservableProperty]
     public partial bool LoadingMods { get; set; } = true;
 
-    public bool InstanceIdValidity => !string.IsNullOrEmpty(InstanceId) && !_gameService.Games.Where(x => x.InstanceId.Equals(InstanceId)).Any();
+    public bool InstanceIdValidity => !string.IsNullOrEmpty(InstanceId) && !gameService.Games.Where(x => x.InstanceId.Equals(InstanceId)).Any();
 
     public bool CanInstall => InstanceIdValidity;
 
@@ -107,18 +91,11 @@ internal partial class InstallViewModel : ObservableObject, INavigationAware
         InstanceId = string.Join('-', tags);
     }
 
-    partial void OnInstanceModItemsChanged(List<InstanceModItem> value)
-    {
-        EnableIndependencyInstance = value.Count > 0;
-    }
+    partial void OnInstanceModItemsChanged(List<InstanceModItem> value) => EnableIndependencyInstance = value.Count > 0;
 
     async void INavigationAware.OnNavigatedTo(object? parameter)
     {
-        weakReference.Register<InstanceLoaderQueryMessage>(this, (s, m) =>
-            weakReference.Send(new InstanceLoaderSelectedMessage(InstanceLoaderItems)));
-
-        _searchProviderService.OccupyQueryReceiver(this, query =>
-            _navigationService.Parent!.NavigateTo("InstancesDownload/Navigation", query));
+        searchProviderService.OccupyQueryReceiver(this, query => GlobalNavigate("InstancesDownload/Navigation", query));
 
         CurrentInstance = parameter as VersionManifestItem
             ?? throw new InvalidDataException();
@@ -143,10 +120,10 @@ internal partial class InstallViewModel : ObservableObject, INavigationAware
             AdditionalMods = [.. InstanceModItems!.Where(m => m.SelectedModrinthFile != null)]
         };
 
-        _downloadService.InstallInstance(installConfig);
-        weakReference.Send(new GlobalNavigationMessage("Tasks/Download"));
+        downloadService.InstallInstance(installConfig);
+        GlobalNavigate("Tasks/Download");
     }
 
-    [RelayCommand]
-    void Unloaded() => weakReference.Unregister<InstanceLoaderQueryMessage>(this);
+    void IRecipient<InstanceLoaderQueryMessage>.Receive(InstanceLoaderQueryMessage message)
+        => Messenger.Send(new InstanceLoaderSelectedMessage(InstanceLoaderItems));
 }

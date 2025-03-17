@@ -1,17 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
-using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.Environment;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -19,16 +16,14 @@ using System.Threading.Tasks;
 using Windows.Storage.Pickers;
 using Windows.System;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewModel
+internal partial class LaunchViewModel : SettingsPageVM, ISettingsViewModel
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;
     private readonly GameService _gameService;
     private readonly NotificationService _notificationService;
-    private readonly INavigationService _navigationService;
 
     #region Settings
 
@@ -37,14 +32,14 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsMinecraftFoldersEmpty))]
     [BindToSetting(Path = nameof(SettingsService.ActiveMinecraftFolder))]
-    public partial string ActiveMinecraftFolder { get; set; }
+    public partial string? ActiveMinecraftFolder { get; set; }
 
     public ObservableCollection<string> Javas => _settingsService.Javas;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsJavasEmpty))]
     [BindToSetting(Path = nameof(SettingsService.ActiveJava))]
-    public partial string ActiveJava { get; set; }
+    public partial string? ActiveJava { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.JavaMemory))]
@@ -60,7 +55,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.GameWindowTitle))]
-    public partial string GameWindowTitle { get; set; }
+    public partial string GameWindowTitle { get; set; } = string.Empty;
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.GameWindowWidth))]
@@ -72,7 +67,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.GameServerAddress))]
-    public partial string GameServerAddress { get; set; }
+    public partial string GameServerAddress { get; set; } = string.Empty;
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.EnableFullScreen))]
@@ -99,33 +94,25 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     public LaunchViewModel(
         SettingsService settingsService,
         GameService gameService,
-        NotificationService notificationService,
-        INavigationService navigationService)
+        NotificationService notificationService)
     {
         _settingsService = settingsService;
         _gameService = gameService;
         _notificationService = notificationService;
-        _navigationService = navigationService;
 
         (this as ISettingsViewModel).InitializeSettings();
-        _navigationService = navigationService;
     }
 
-    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    partial void OnActiveMinecraftFolderChanged(string? value)
     {
-        base.OnPropertyChanged(e);
-
-        if (e.PropertyName == nameof(ActiveMinecraftFolder))
-        {
-            if (!string.IsNullOrEmpty(ActiveMinecraftFolder))
-                _gameService.ActivateMinecraftFolder(ActiveMinecraftFolder);
-        }
+        if (!string.IsNullOrEmpty(value))
+            _gameService.ActivateMinecraftFolder(value);
     }
 
     #region Minecraft Folder
 
     [RelayCommand]
-    public async Task BrowserFolder()
+    async Task BrowserFolder()
     {
         var folderPicker = new FolderPicker();
 
@@ -153,14 +140,14 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     }
 
     [RelayCommand]
-    public void RemoveFolder(string folder)
+    void RemoveFolder(string folder)
     {
         _gameService.RemoveMinecraftFolder(folder);
         OnPropertyChanged(nameof(IsMinecraftFoldersEmpty));
     }
 
     [RelayCommand]
-    public void ActivateFolder(string folder)
+    void ActivateFolder(string folder)
     {
         if (!Directory.Exists(folder))
             return;
@@ -169,7 +156,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     }
 
     [RelayCommand]
-    public void NavigateFolder(string folder)
+    void NavigateFolder(string folder)
     {
         if (!Directory.Exists(folder))
             return;
@@ -182,7 +169,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     #region Java
 
     [RelayCommand]
-    public void BrowseJava()
+    void BrowseJava()
     {
         var openFileDialog = new OpenFileDialog
         {
@@ -210,7 +197,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     }
 
     [RelayCommand]
-    public void SearchJava()
+    void SearchJava()
     {
         try
         {
@@ -233,7 +220,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     }
 
     [RelayCommand]
-    public void RemoveJava(string java)
+    void RemoveJava(string java)
     {
         Javas.Remove(java);
 
@@ -244,7 +231,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     }
 
     [RelayCommand]
-    public void ActivateJava(string java)
+    void ActivateJava(string java)
     {
         if (!File.Exists(java))
             return;
@@ -253,7 +240,7 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     }
 
     [RelayCommand]
-    public void NavigateJava(string java)
+    void NavigateJava(string java)
     {
         if (!File.Exists(java))
             return;
@@ -262,7 +249,4 @@ internal partial class LaunchViewModel : SettingsViewModelBase, ISettingsViewMod
     }
 
     #endregion
-
-    [RelayCommand]
-    public void ActivateCoresPage() => _navigationService.Parent.NavigateTo("CoresPage");
 }

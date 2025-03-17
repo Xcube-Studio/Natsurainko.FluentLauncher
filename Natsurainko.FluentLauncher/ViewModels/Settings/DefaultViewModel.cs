@@ -2,18 +2,13 @@
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
 using FluentLauncher.Infra.UI.Navigation;
-using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-using Natsurainko.FluentLauncher.ViewModels.Common;
-using System.Collections.Generic;
-using System.Linq;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-internal partial class DefaultViewModel : SettingsViewModelBase, ISettingsViewModel
+internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;
@@ -29,9 +24,10 @@ internal partial class DefaultViewModel : SettingsViewModelBase, ISettingsViewMo
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.CurrentLanguage))]
-    public partial string CurrentLanguage { get; set; }
+    public partial string CurrentLanguage { get; set; } = null!;
 
     public string Version => App.Version.GetVersionString();
+
     public string AppChannel => App.AppChannel;
 
     partial void OnCurrentLanguageChanged(string oldValue, string newValue)

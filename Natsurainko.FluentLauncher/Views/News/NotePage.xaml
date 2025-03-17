@@ -2,10 +2,7 @@
     x:Class="Natsurainko.FluentLauncher.Views.News.NotePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
@@ -23,17 +20,12 @@
             Text="{x:Bind VM.PatchNoteData.Title, Mode=OneWay}"
             TextWrapping="WrapWholeWords" />
         <WebView2
-            Name="webView2"
+            x:Name="WebView2"
             Grid.Row="1"
             MaxWidth="1000"
             Margin="30,0"
-            DefaultBackgroundColor="Transparent">
-            <i:Interaction.Behaviors>
-                <core:EventTriggerBehavior EventName="Loaded">
-                    <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.LoadedEventCommand}" />
-                </core:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
-        </WebView2>
+            x:FieldModifier="public"
+            DefaultBackgroundColor="Transparent" />
 
         <!--  Visual states reflect the application's window size  -->
         <VisualStateManager.VisualStateGroups>

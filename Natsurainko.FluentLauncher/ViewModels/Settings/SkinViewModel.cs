@@ -11,7 +11,6 @@ using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.ViewModels.Common;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Utils;
 using System;
@@ -28,11 +27,10 @@ using Windows.System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
+internal partial class SkinViewModel : SettingsPageVM, ISettingsViewModel
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;
-    private readonly AccountService _accountService;
     private readonly CacheSkinService _cacheSkinService;
     private readonly NotificationService _notificationService;
     private readonly IDialogActivationService<ContentDialogResult> _dialogs;
@@ -45,7 +43,6 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
         IDialogActivationService<ContentDialogResult> dialogs)
     {
         _settingsService = settingsService;
-        _accountService = accountService;
         _cacheSkinService = cacheSkinService;
         _notificationService = notificationService;
         _dialogs = dialogs;
@@ -59,6 +56,7 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
 
     [ObservableProperty]
     public partial Account ActiveAccount { get; set; }
+
     public ObservableElement3DCollection ModelGeometry { get; private set; } = [];
 
     public bool IsYggdrasilAccount => ActiveAccount.Type == AccountType.Yggdrasil;
@@ -117,7 +115,7 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
         }
     }
 
-    public async Task<bool> IsSlimSkin()
+    async Task<bool> IsSlimSkin()
     {
         var skinUrl = string.Empty;
 
@@ -162,14 +160,14 @@ internal partial class SkinViewModel : SettingsViewModelBase, ISettingsViewModel
     #endregion
 
     [RelayCommand]
-    public async Task UploadSkin()
+    async Task UploadSkin()
     {
         await _dialogs.ShowAsync("UploadSkinDialog", ActiveAccount);
         await LoadModel();
     }
 
     [RelayCommand]
-    public void NavigateToWebsite()
+    void NavigateToWebsite()
     {
         if (ActiveAccount is YggdrasilAccount yggdrasilAccount)
             _ = Launcher.LaunchUriAsync(new Uri("https://" + new Uri(yggdrasilAccount.YggdrasilServerUrl).Host));

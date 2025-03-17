@@ -12,28 +12,13 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads.Mods;
 
-internal partial class DefaultViewModel : ObservableRecipient, INavigationAware
+internal partial class DefaultViewModel(
+    CurseForgeClient curseForgeClient,
+    ModrinthClient modrinthClient,
+    INavigationService navigationService,
+    SearchProviderService searchProviderService) : PageVM, INavigationAware
 {
-    private readonly CurseForgeClient _curseForgeClient;
-    private readonly ModrinthClient _modrinthClient;
-    private readonly INavigationService _navigationService;
-    private readonly SearchProviderService _searchProviderService;
-
     private CancellationTokenSource? _cancellationTokenSource;
-
-    public DefaultViewModel(
-        CurseForgeClient curseForgeClient, 
-        ModrinthClient modrinthClient,
-        INavigationService navigationService,
-        SearchProviderService searchProviderService)
-    {
-        _curseForgeClient = curseForgeClient;
-        _modrinthClient = modrinthClient;
-        _navigationService = navigationService;
-        _searchProviderService = searchProviderService;
-
-        IsActive = true;
-    }
 
     [ObservableProperty]
     public partial List<object>? SearchResult { get; set; }
@@ -83,16 +68,16 @@ internal partial class DefaultViewModel : ObservableRecipient, INavigationAware
         else
             SearchReceiveHandle(SearchQuery);
 
-        _searchProviderService.OccupyQueryReceiver(this, SearchReceiveHandle);
+        searchProviderService.OccupyQueryReceiver(this, SearchReceiveHandle);
     }
 
     [RelayCommand]
-    void CardClick(object mod) => _navigationService.NavigateTo("ModsDownload/Mod", mod);
+    void CardClick(object mod) => navigationService.NavigateTo("ModsDownload/Mod", mod);
 
     [RelayCommand]
     void ClearSearchQuery()
     {
-        _searchProviderService.ClearSearchBox();
+        searchProviderService.ClearSearchBox();
         SearchReceiveHandle(string.Empty);
     }
 
@@ -106,19 +91,19 @@ internal partial class DefaultViewModel : ObservableRecipient, INavigationAware
 
         Task.Run(async () =>
         {
-            await App.DispatcherQueue.EnqueueAsync(() => Loading = true);
+            await Dispatcher.EnqueueAsync(() => Loading = true);
             IEnumerable<object> result = [];
 
             try
             {
                 result = ResourceSource == 0
-                    ? await _curseForgeClient.SearchResourcesAsync(
+                    ? await curseForgeClient.SearchResourcesAsync(
                         query, 
                         CurseForgeResourceType.McMod, 
                         categoryId: CurseForgeCategories[SelectedCategory],
                         version: FilteredVersion == LocalizedStrings.Downloads_Mods_DefaultPage__All ? null : FilteredVersion,
                         cancellationToken: _cancellationTokenSource.Token)
-                    : await _modrinthClient.SearchResourcesAsync(
+                    : await modrinthClient.SearchResourcesAsync(
                         query, 
                         ModrinthResourceType.McMod,
                         categories: SelectedCategory == "all" ? null : SelectedCategory,
@@ -130,11 +115,11 @@ internal partial class DefaultViewModel : ObservableRecipient, INavigationAware
             }
             catch
             {
-                await App.DispatcherQueue.EnqueueAsync(() => LoadFailed = true);
+                await Dispatcher.EnqueueAsync(() => LoadFailed = true);
             }
             finally
             {
-                await App.DispatcherQueue.EnqueueAsync(() =>
+                await Dispatcher.EnqueueAsync(() =>
                 {
                     Loading = false;
                     SearchResult = [.. result];

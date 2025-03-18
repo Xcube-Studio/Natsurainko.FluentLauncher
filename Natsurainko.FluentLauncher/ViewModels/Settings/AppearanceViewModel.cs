@@ -119,7 +119,7 @@ internal partial class AppearanceViewModel : SettingsPageVM<AppearancePage>, ISe
     {
         base.OnLoaded();
 
-        View.ImageFileBox.QuerySubmitted += (_, _) =>
+        this.Page.ImageFileBox.QuerySubmitted += (_, _) =>
         {
             OpenFileDialog openFileDialog = new()
             {

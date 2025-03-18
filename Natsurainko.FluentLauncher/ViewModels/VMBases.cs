@@ -35,9 +35,11 @@ internal partial class PageVM : ObservableRecipient, IViewAssociated
 internal partial class PageVM<TPage> : PageVM, IViewAssociated<TPage>
     where TPage : Page
 {
-    public TPage View { get; private set; } = null!;
+    TPage IViewAssociated<TPage>.View => Page;
 
-    public void SetView(object view) => View = (TPage)view;
+    public TPage Page { get; private set; } = null!;
+
+    void IViewAssociated<TPage>.SetView(object view) => Page = (TPage)view;
 }
 
 internal partial class SettingsPageVM : PageVM
@@ -139,9 +141,11 @@ internal abstract class NavigationPageVM<TParameter>(INavigationService navigati
 
 internal partial class DialogVM : ObservableRecipient, IViewAssociated<ContentDialog>, IDialogParameterAware
 {
-    public ContentDialog View { get; private set; } = null!;
+    public ContentDialog Dialog { get; private set; } = null!;
 
-    public void SetView(object view) => View = (ContentDialog)view;
+    ContentDialog IViewAssociated<ContentDialog>.View => Dialog;
+
+    void IViewAssociated<ContentDialog>.SetView(object view) => Dialog = (ContentDialog)view;
 
     public DispatcherQueue Dispatcher { get; set; } = null!;
 
@@ -153,7 +157,7 @@ internal partial class DialogVM : ObservableRecipient, IViewAssociated<ContentDi
 
     protected void HideAndGlobalNavigate(string pageKey, object? parameter = null)
     {
-        this.View.Hide();
+        this.Dialog.Hide();
         this.Messenger.Send(new GlobalNavigationMessage(pageKey, parameter));
     }
 }
@@ -161,7 +165,9 @@ internal partial class DialogVM : ObservableRecipient, IViewAssociated<ContentDi
 internal partial class DialogVM<TDialog> : DialogVM, IViewAssociated<TDialog>
     where TDialog : ContentDialog
 {
-    public new TDialog View { get; private set; } = null!;
+    public new TDialog Dialog { get; private set; } = null!;
 
-    public new void SetView(object view) => View = (TDialog)view;
+    TDialog IViewAssociated<TDialog>.View => Dialog;
+
+    void IViewAssociated<TDialog>.SetView(object view) => Dialog = (TDialog)view;
 }

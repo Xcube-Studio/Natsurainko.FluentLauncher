@@ -33,7 +33,7 @@ internal partial class UploadSkinDialogViewModel(
     {
         base.OnLoaded();
 
-        View.AutoSuggestBox.QuerySubmitted += (_, _) =>
+        this.Dialog.AutoSuggestBox.QuerySubmitted += (_, _) =>
         {
             OpenFileDialog openFileDialog = new()
             {
@@ -65,9 +65,9 @@ internal partial class UploadSkinDialogViewModel(
             notificationService.NotifyException(LocalizedStrings.Notifications__SkinUploadException, ex);
         }
 
-        await Dispatcher.EnqueueAsync(View.Hide);
+        await Dispatcher.EnqueueAsync(this.Dialog.Hide);
     }
 
     [RelayCommand]
-    void Cancel() => View.Hide();
+    void Cancel() => this.Dialog.Hide();
 }

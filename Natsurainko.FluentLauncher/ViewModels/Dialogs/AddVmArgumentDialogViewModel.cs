@@ -22,9 +22,9 @@ internal partial class AddVmArgumentDialogViewModel : DialogVM
     public void Add()
     {
         _addAction(Argument!); // Argument is not null when EnableAddArgument is true
-        View.Hide();
+        this.Dialog.Hide();
     }
 
     [RelayCommand]
-    public void Cancel() => View.Hide();
+    public void Cancel() => this.Dialog.Hide();
 }

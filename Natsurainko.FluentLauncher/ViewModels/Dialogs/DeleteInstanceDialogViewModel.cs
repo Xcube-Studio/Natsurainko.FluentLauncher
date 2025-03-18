@@ -66,7 +66,7 @@ internal partial class DeleteInstanceDialogViewModel(
         }
         else
         {
-            Dispatcher.TryEnqueue(() => View.Hide());
+            Dispatcher.TryEnqueue(() => this.Dialog.Hide());
 
             notificationService.NotifyMessage(
                 LocalizedStrings.Notifications__DeleteGameFailedT,
@@ -76,5 +76,5 @@ internal partial class DeleteInstanceDialogViewModel(
     });
 
     [RelayCommand]
-    void Cancel() => View.Hide();
+    void Cancel() => this.Dialog.Hide();
 }

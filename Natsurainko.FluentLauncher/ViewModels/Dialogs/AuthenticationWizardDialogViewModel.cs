@@ -26,14 +26,12 @@ internal partial class AuthenticationWizardDialogViewModel(
 
     private readonly Stack<WizardViewModelBase> _viewModelStack = new();
     private Frame _contentFrame = null!; // Set in LoadEvent
-    private ContentDialog _dialog = null!; // Set in LoadEvent
 
     public override void OnLoaded()
     {
         base.OnLoaded();
 
-        _dialog = View;
-        _contentFrame = View.ContentFrame;
+        _contentFrame = this.Dialog.ContentFrame;
 
         CurrentFrameDataContext = new ChooseAccountTypeViewModel(authService);
 
@@ -86,7 +84,7 @@ internal partial class AuthenticationWizardDialogViewModel(
     /// Cancel Button Command
     /// </summary>
     [RelayCommand]
-    void Cancel() => _dialog.Hide();
+    void Cancel() => this.Dialog.Hide();
 
     static string GetAccountTypeName(AccountType accountType)
     {
@@ -126,7 +124,7 @@ internal partial class AuthenticationWizardDialogViewModel(
         } 
         catch (Exception ex)
         {
-            _dialog.Hide();
+            this.Dialog.Hide();
             notificationService.NotifyException(LocalizedStrings.Notifications__AccountYggdrasilProfileConfirmationFailed, ex);
 
             return;
@@ -147,7 +145,7 @@ internal partial class AuthenticationWizardDialogViewModel(
         accountService.AddAccount(account);
         accountService.ActivateAccount(account);
 
-        _dialog.Hide();
+        this.Dialog.Hide();
 
         notificationService.NotifyWithSpecialContent(
             LocalizedStrings.Notifications__AccountAddSuccessful,

@@ -87,7 +87,6 @@
             <converters:ColorHexCodeConverter x:Key="ColorHexCodeConverter" />
 
             <converters:SuggestionIconConverter x:Key="SuggestionIconConverter" />
-            <converters:RadioButtonSelectedIndexConverter x:Key="RadioButtonSelectedIndexConverter" />
 
             <converters:LoggerItemConverter x:Key="LoggerItemConverter" />
 

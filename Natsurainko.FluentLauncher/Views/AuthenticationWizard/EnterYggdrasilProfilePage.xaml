@@ -13,21 +13,13 @@
 
     <StackPanel
         AllowDrop="True"
-        Background="Transparent"
+        DragEnter="StackPanel_DragEnter"
+        Drop="StackPanel_Drop"
         Spacing="10">
         <StackPanel.ChildrenTransitions>
             <EntranceThemeTransition FromVerticalOffset="50" />
             <RepositionThemeTransition IsStaggeringEnabled="False" />
         </StackPanel.ChildrenTransitions>
-
-        <i:Interaction.Behaviors>
-            <core:EventTriggerBehavior EventName="DragEnter">
-                <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.DragEnterEventCommand}" />
-            </core:EventTriggerBehavior>
-            <core:EventTriggerBehavior EventName="Drop">
-                <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.DropEventCommand}" />
-            </core:EventTriggerBehavior>
-        </i:Interaction.Behaviors>
 
         <TextBox
             x:Uid="AuthenticationWizard_EnterYggdrasilProfilePage_TB1"

@@ -27,10 +27,8 @@ internal partial class AuthenticationWizardDialogViewModel(
     private readonly Stack<WizardViewModelBase> _viewModelStack = new();
     private Frame _contentFrame = null!; // Set in LoadEvent
 
-    public override void OnLoaded()
+    protected override void OnLoaded()
     {
-        base.OnLoaded();
-
         _contentFrame = this.Dialog.ContentFrame;
 
         CurrentFrameDataContext = new ChooseAccountTypeViewModel(authService);

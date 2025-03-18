@@ -115,10 +115,8 @@ internal partial class AppearanceViewModel : SettingsPageVM<AppearancePage>, ISe
             icon: "\uE73E");
     }
 
-    public override void OnLoaded()
+    protected override void OnLoaded()
     {
-        base.OnLoaded();
-
         this.Page.ImageFileBox.QuerySubmitted += (_, _) =>
         {
             OpenFileDialog openFileDialog = new()

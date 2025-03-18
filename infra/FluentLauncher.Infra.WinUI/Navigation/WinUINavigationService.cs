@@ -125,6 +125,7 @@ public class WinUINavigationService : INavigationService
             {
                 viewAssociatedModel.Dispatcher = page.DispatcherQueue;
 
+                page.Loading += (_, _) => viewAssociatedModel.OnLoading();
                 page.Loaded += (_, _) => viewAssociatedModel.OnLoaded();
                 page.Unloaded += (_, _) => viewAssociatedModel.OnUnloaded();
 

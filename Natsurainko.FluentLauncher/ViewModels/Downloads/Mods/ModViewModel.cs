@@ -14,8 +14,8 @@ using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
+using Natsurainko.FluentLauncher.Views.Downloads.Mods;
 using Nrk.FluentCore.Resources;
-using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,7 +34,7 @@ internal partial class ModViewModel(
     SearchProviderService searchProviderService,
     CurseForgeClient curseForgeClient,
     ModrinthClient modrinthClient,
-    HttpClient httpClient) : PageVM, INavigationAware
+    HttpClient httpClient) : PageVM<ModPage>, INavigationAware
 {
     private object _modResource = null!;
 
@@ -188,6 +188,37 @@ internal partial class ModViewModel(
         TryGetLocalizedSummary();
     }
 
+    protected override void OnLoading()
+    {
+        this.Page.DescriptionMarkdown.Loaded += (_, _) =>
+            Page.DescriptionMarkdown.Text = DescriptionContent;
+
+        this.Page.DescriptionWebView2.Loaded += async (_, _) =>
+        {
+            WebView2 webView2 = this.Page.DescriptionWebView2;
+            await webView2.EnsureCoreWebView2Async();
+
+            webView2.CoreWebView2.Profile.PreferredColorScheme = webView2.ActualTheme == ElementTheme.Dark 
+                ? CoreWebView2PreferredColorScheme.Dark 
+                : CoreWebView2PreferredColorScheme.Light;
+            
+            string body = $"<meta name=\"color-scheme\" content=\"{(webView2.ActualTheme == ElementTheme.Dark ? "dark light" : "light dark")}\">\r\n" 
+                + "<style>img{width:auto;height:auto;max-width:100%;max-height:100%;}</style>\r\n" 
+                + $"<div id='container'>{DescriptionContent}</div>";
+
+            webView2.MinHeight = DescriptionContent.Length / (webView2.ActualWidth / 8) * 14;
+            webView2.NavigateToString(body);
+
+            await Task.Delay(2000);
+
+            var script = "eval(document.getElementById('container').getBoundingClientRect().height.toString());";
+            var heightString = await webView2.ExecuteScriptAsync(script);
+
+            if (double.TryParse(heightString, out double height))
+                webView2.MinHeight = height + 30;
+        };
+    }
+
     [RelayCommand]
     void Download(int option)
     {
@@ -231,36 +262,6 @@ internal partial class ModViewModel(
 
         downloadService.DownloadModFile(SelectedFile, savePath);
         notificationService.NotifyWithoutContent(LocalizedStrings.Notifications__AddDownloadTask, icon: "\ue896");
-    }
-
-    [RelayCommand]
-    void MarkdownTextBlockLoadedEvent(object args)
-    {
-        MarkdownTextBlock markdownTextBlock = args.As<MarkdownTextBlock, object>().sender;
-        markdownTextBlock.Text = DescriptionContent;
-    }
-
-    [RelayCommand]
-    async Task WebView2LoadedEvent(object args)
-    {
-        var sender = args.As<WebView2, object>().sender;
-        string body = "<style>img{width:auto;height:auto;max-width:100%;max-height:100%;}</style>" + $"<div id='container'>{DescriptionContent}</div>";
-
-        await sender.EnsureCoreWebView2Async();
-
-        sender.CoreWebView2.Profile.PreferredColorScheme = sender.ActualTheme == ElementTheme.Dark ? CoreWebView2PreferredColorScheme.Dark : CoreWebView2PreferredColorScheme.Light;
-        body = $"<meta name=\"color-scheme\" content=\"{(sender.ActualTheme == ElementTheme.Dark ? "dark light" : "light dark")}\">\r\n" + body;
-
-        sender.MinHeight = DescriptionContent.Length / (sender.ActualWidth / 8) * 14;
-        sender.NavigateToString(body);
-
-        await Task.Delay(2000);
-
-        var script = "eval(document.getElementById('container').getBoundingClientRect().height.toString());";
-        var heightString = await sender.ExecuteScriptAsync(script);
-
-        if (double.TryParse(heightString, out double height))
-            sender.MinHeight = height + 30;
     }
 
     async void TryGetLocalizedSummary()

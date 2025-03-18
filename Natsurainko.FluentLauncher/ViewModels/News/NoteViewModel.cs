@@ -23,7 +23,7 @@ internal partial class NoteViewModel(CacheInterfaceService cacheInterfaceService
 
     void INavigationAware.OnNavigatedTo(object? parameter) => PatchNoteData = (parameter as PatchNoteData)!;
 
-    public override void OnLoaded()
+    protected override void OnLoaded()
     {
         cacheInterfaceService.RequestStringAsync(
             $"https://launchercontent.mojang.com/v2/{PatchNoteData.ContentPath}",

@@ -7,7 +7,6 @@ using FluentLauncher.Infra.WinUI.Mvvm;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
-using System;
 using System.Collections.ObjectModel;
 
 namespace Natsurainko.FluentLauncher.ViewModels;
@@ -18,15 +17,25 @@ internal partial class PageVM : ObservableRecipient, IViewAssociated
 
     //public INavigationService Navigation { get; } = navigationService;
 
-    public virtual void OnLoaded()
+    void IViewAssociated.OnLoading() => this.OnLoading();
+
+    void IViewAssociated.OnLoaded()
     {
         IsActive = true;
+        this.OnLoaded();
     }
 
-    public virtual void OnUnloaded()
+    void IViewAssociated.OnUnloaded()
     {
         IsActive = false;
+        this.OnUnloaded();
     }
+
+    protected virtual void OnLoading() { }
+
+    protected virtual void OnLoaded() { }
+
+    protected virtual void OnUnloaded() { }
 
     protected void GlobalNavigate(string pageKey, object? parameter = null)
         => this.Messenger.Send(new GlobalNavigationMessage(pageKey, parameter));
@@ -149,11 +158,27 @@ internal partial class DialogVM : ObservableRecipient, IViewAssociated<ContentDi
 
     public DispatcherQueue Dispatcher { get; set; } = null!;
 
-    public virtual void HandleParameter(object param) => throw new NotImplementedException();
+    public virtual void HandleParameter(object param) { }
 
-    public virtual void OnLoaded() { }
+    void IViewAssociated.OnLoading() => this.OnLoading();
 
-    public virtual void OnUnloaded() { }
+    void IViewAssociated.OnLoaded()
+    {
+        IsActive = true;
+        this.OnLoaded();
+    }
+
+    void IViewAssociated.OnUnloaded()
+    {
+        IsActive = false;
+        this.OnUnloaded();
+    }
+
+    protected virtual void OnLoading() { }
+
+    protected virtual void OnLoaded() { }
+
+    protected virtual void OnUnloaded() { }
 
     protected void HideAndGlobalNavigate(string pageKey, object? parameter = null)
     {

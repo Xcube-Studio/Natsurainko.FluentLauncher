@@ -7,6 +7,8 @@ public interface IViewAssociated
 {
     DispatcherQueue Dispatcher { get; set; }
 
+    void OnLoading();
+
     void OnLoaded();
 
     void OnUnloaded();

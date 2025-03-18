@@ -126,7 +126,7 @@ internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel
         Dispatcher.TryEnqueue(() => DisplayMinecraftInstances = list);
     }
 
-    public override void OnLoaded()
+    protected override void OnLoaded()
     {
         if (!_searchProviderService.ContainsSuggestionProvider(this))
             _searchProviderService.RegisterSuggestionProvider(this, ProviderSuggestions);
@@ -134,7 +134,7 @@ internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel
         Task.Run(UpdateDisplayMinecraftInstances);
     }
 
-    public override void OnUnloaded()
+    protected override void OnUnloaded()
     {
         _searchProviderService.UnregisterSuggestionProvider(this);
     }

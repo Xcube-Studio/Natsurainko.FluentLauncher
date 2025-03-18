@@ -1,17 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Services.Accounts;
-using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
-using Nrk.FluentCore.Utils;
 using System;
 using System.Net.Http;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
-using Windows.ApplicationModel.DataTransfer;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
@@ -68,28 +62,6 @@ internal partial class EnterYggdrasilProfileViewModel : WizardViewModelBase
     {
         IsValidServer = false;
         DebounceRequestCheckServerUri();
-    }
-
-    [RelayCommand]
-    void DragEnterEvent(object args)
-    {
-        var e = args.As<object, DragEventArgs>().args;
-        e.AcceptedOperation = DataPackageOperation.Copy;
-    }
-
-    [RelayCommand]
-    async Task DropEvent(object args)
-    {
-        var e = args.As<object, DragEventArgs>().args;
-        e.AcceptedOperation = DataPackageOperation.Copy;
-
-        string text = string.Empty;
-        string pattern = "authlib-injector:yggdrasil-server:";
-
-        try { text = await e.DataView.GetTextAsync(); } catch { }
-
-        if (text.StartsWith(pattern))
-            Url = HttpUtility.UrlDecode(text[pattern.Length..]);
     }
 
     private void DebounceRequestCheckServerUri()

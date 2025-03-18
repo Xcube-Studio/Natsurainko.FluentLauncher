@@ -3,11 +3,8 @@
     x:Class="Natsurainko.FluentLauncher.Views.Downloads.Mods.ModPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI.MarkdownTextBlock"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads.Mods"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -516,24 +513,16 @@
 
                                 <labs:MarkdownTextBlock
                                     x:Name="DescriptionMarkdown"
+                                    x:FieldModifier="public"
                                     x:Load="{x:Bind VM.IsMarkdown, Mode=OneWay}"
                                     Background="Transparent"
-                                    Config="{x:Bind MarkdownConfig}">
-                                    <i:Interaction.Behaviors>
-                                        <core:EventTriggerBehavior EventName="Loaded">
-                                            <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.MarkdownTextBlockLoadedEventCommand}" />
-                                        </core:EventTriggerBehavior>
-                                    </i:Interaction.Behaviors>
-                                </labs:MarkdownTextBlock>
+                                    Config="{x:Bind MarkdownConfig}" />
 
                                 <Border CornerRadius="4">
-                                    <WebView2 x:Name="DescriptionWebView2" x:Load="{x:Bind VM.IsHtml, Mode=OneWay}">
-                                        <i:Interaction.Behaviors>
-                                            <core:EventTriggerBehavior EventName="Loaded">
-                                                <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.WebView2LoadedEventCommand}" />
-                                            </core:EventTriggerBehavior>
-                                        </i:Interaction.Behaviors>
-                                    </WebView2>
+                                    <WebView2
+                                        x:Name="DescriptionWebView2"
+                                        x:FieldModifier="public"
+                                        x:Load="{x:Bind VM.IsHtml, Mode=OneWay}" />
                                 </Border>
                             </StackPanel>
 

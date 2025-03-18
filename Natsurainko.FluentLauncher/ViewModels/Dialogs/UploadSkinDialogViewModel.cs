@@ -29,10 +29,8 @@ internal partial class UploadSkinDialogViewModel(
 
     private bool CanUpload => File.Exists(FilePath);
 
-    public override void OnLoaded()
+    protected override void OnLoaded()
     {
-        base.OnLoaded();
-
         this.Dialog.AutoSuggestBox.QuerySubmitted += (_, _) =>
         {
             OpenFileDialog openFileDialog = new()

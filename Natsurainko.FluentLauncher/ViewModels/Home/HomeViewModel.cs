@@ -192,10 +192,8 @@ internal partial class HomeViewModel : PageVM, IRecipient<TrackLaunchTaskChanged
         }
     }
 
-    public override void OnLoaded()
+    protected override void OnLoaded()
     {
-        base.OnLoaded();
-
         if (!_searchProviderService.ContainsSuggestionProvider(this))
             _searchProviderService.RegisterSuggestionProvider(this, ProviderSuggestions);
 
@@ -213,11 +211,10 @@ internal partial class HomeViewModel : PageVM, IRecipient<TrackLaunchTaskChanged
         else _trackingTask = null;
     }
 
-    public override void OnUnloaded()
+    protected override void OnUnloaded()
     {
-        base.OnUnloaded();
-
         _searchProviderService.UnregisterSuggestionProvider(this);
+
         if (_registeredListener)
         {
             TrackingTask.PropertyChanged -= TrackingTask_PropertyChanged;

@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
@@ -32,7 +33,8 @@ internal partial class ModViewModel(
     NotificationService notificationService,
     SearchProviderService searchProviderService,
     CurseForgeClient curseForgeClient,
-    ModrinthClient modrinthClient) : PageVM, INavigationAware
+    ModrinthClient modrinthClient,
+    HttpClient httpClient) : PageVM, INavigationAware
 {
     private object _modResource = null!;
 
@@ -276,7 +278,7 @@ internal partial class ModViewModel(
                 baseUrl += $"modrinth?project_id={modrinthResource.Id}";
             else return;
 
-            string json = await HttpUtils.HttpClient.GetStringAsync(baseUrl);
+            string json = await httpClient.GetStringAsync(baseUrl);
             string translatedSummary = JsonNode.Parse(json)!["translated"]!.GetValue<string>();
 
             await Dispatcher.EnqueueAsync(() =>

@@ -6,6 +6,7 @@ using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
 using Nrk.FluentCore.Utils;
 using System;
+using System.Net.Http;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 internal partial class EnterYggdrasilProfileViewModel : WizardViewModelBase
 {
     private readonly AuthenticationService _authenticationService;
+    private readonly HttpClient _httpClient;
 
     public override bool CanNext => !(!IsValidServer || string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password));
 
@@ -29,6 +31,7 @@ internal partial class EnterYggdrasilProfileViewModel : WizardViewModelBase
         XamlPageType = typeof(EnterYggdrasilProfilePage);
 
         _authenticationService = App.GetService<AuthenticationService>();
+        _httpClient = App.GetService<HttpClient>();
     }
 
     [ObservableProperty]
@@ -111,7 +114,7 @@ internal partial class EnterYggdrasilProfileViewModel : WizardViewModelBase
     {
         try
         {
-            var metaDataJson = JsonNode.Parse(await HttpUtils.HttpClient.GetStringAsync(Url, cancellationToken));
+            var metaDataJson = JsonNode.Parse(await _httpClient.GetStringAsync(Url, cancellationToken));
             var name = metaDataJson["meta"]?["serverName"]?.GetValue<string>();
 
             if (cancellationToken.IsCancellationRequested)

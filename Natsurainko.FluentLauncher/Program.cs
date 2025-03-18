@@ -3,7 +3,6 @@ using FluentLauncher.Infra.WinUI.AppHost;
 using FluentLauncher.Infra.WinUI.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.UI.Dispatching;
 using Natsurainko.FluentLauncher;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
@@ -12,7 +11,7 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
-using Nrk.FluentCore.Resources;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using System;
 using System.CommandLine;
 using ViewModels = Natsurainko.FluentLauncher.ViewModels;
@@ -108,8 +107,7 @@ dialogs.WithDialog<Views.Dialogs.UpdateDialog, ViewModels.Dialogs.UpdateDialogVi
 
 var services = builder.Services;
 
-var dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-
+services.UseHttpClient();
 
 // Settings service
 services.AddSingleton<SettingsService>();
@@ -137,9 +135,7 @@ services.AddSingleton<InstanceConfigService>();
 services.AddSingleton<UpdateService>();
 #endif
 
-// ModClient
-services.AddSingleton<ModrinthClient>();
-services.AddSingleton<CurseForgeClient>(_ => new CurseForgeClient("$2a$10$lf9.hHl3PMJ4d3BisICcAOX91uT/mM9/VPDfzpg7r3C/Y8cXIRTNm"));
+services.UseResourceClients();
 
 #endregion
 

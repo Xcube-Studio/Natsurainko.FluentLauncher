@@ -11,39 +11,33 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Services.Network;
 
-internal class CacheInterfaceService
+internal class CacheInterfaceService(
+    SettingsService settingsService, 
+    LocalStorageService localStorageService,
+    HttpClient httpClient)
 {
     public const string LauncherMetaVersionManifest = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json";
     public const string LauncherContentPatchNotes = "https://launchercontent.mojang.com/v2/javaPatchNotes.json";
     public const string LauncherContentNews = "https://launchercontent.mojang.com/v2/news.json";
 
-    public string VersionManifest => _settingsService.CurrentDownloadSource switch
+    public string VersionManifest => settingsService.CurrentDownloadSource switch
     {
         "Bmclapi" => "https://bmclapi2.bangbang93.com/mc/game/version_manifest_v2.json",
         _ => LauncherMetaVersionManifest
     };
 
-    public string VersionManifestFileName => _settingsService.CurrentDownloadSource switch
+    public string VersionManifestFileName => settingsService.CurrentDownloadSource switch
     {
         "Bmclapi" => "cache-interfaces\\bmclapi2.bangbang93.com\\version_manifest_v2.json",
         _ => "cache-interfaces\\piston-meta.mojang.com\\version_manifest_v2.json"
     };
-
-    private readonly LocalStorageService _localStorageService;
-    private readonly SettingsService _settingsService;
-
-    public CacheInterfaceService(SettingsService settingsService, LocalStorageService localStorageService)
-    {
-        _settingsService = settingsService;
-        _localStorageService = localStorageService;
-    }
 
     public Task<string?> RequestStringAsync(string url, InterfaceRequestMethod method, string? targetFileName = default)
         => RequestStringAsync(url, method, task => { }, targetFileName);
 
     public async Task<string?> RequestStringAsync(string url, InterfaceRequestMethod method, Action<Task<string>> func, string? targetFileName = default)
     {
-        var fileInfo = _localStorageService.GetFile(targetFileName ?? GetDefaultFileName(url));
+        var fileInfo = localStorageService.GetFile(targetFileName ?? GetDefaultFileName(url));
 
         if (!fileInfo.Directory!.Exists)
             fileInfo.Directory.Create();
@@ -51,7 +45,7 @@ internal class CacheInterfaceService
         async Task<string> GetStringFromInterface(bool writeToLocal = false)
         {
             using var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
-            using var responseMessage = await HttpUtils.HttpClient.SendAsync(requestMessage);
+            using var responseMessage = await httpClient.SendAsync(requestMessage);
 
             responseMessage.EnsureSuccessStatusCode();
             var content = await responseMessage.Content.ReadAsStringAsync();
@@ -85,7 +79,7 @@ internal class CacheInterfaceService
 
     public async Task<Stream?> RequestStreamAsync(string url, InterfaceRequestMethod method, Action<Task<Stream>> func, string? targetFileName = default)
     {
-        var fileInfo = _localStorageService.GetFile(targetFileName ?? GetDefaultFileName(url));
+        var fileInfo = localStorageService.GetFile(targetFileName ?? GetDefaultFileName(url));
 
         if (!fileInfo.Directory!.Exists)
             fileInfo.Directory.Create();
@@ -93,7 +87,7 @@ internal class CacheInterfaceService
         async Task<Stream> GetStreamFromInterface(bool writeToLocal = false)
         {
             using var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
-            using var responseMessage = await HttpUtils.HttpClient.SendAsync(requestMessage);
+            using var responseMessage = await httpClient.SendAsync(requestMessage);
 
             responseMessage.EnsureSuccessStatusCode();
             using var contentStream = await responseMessage.Content.ReadAsStreamAsync();

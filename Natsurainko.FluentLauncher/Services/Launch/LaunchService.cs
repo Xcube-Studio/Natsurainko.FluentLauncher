@@ -24,6 +24,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,25 +44,15 @@ using PreCheckData = (
     string[] ExtraGameParameters,
     string? GameWindowTitle);
 
-internal class LaunchService
+internal class LaunchService(
+    SettingsService settingsService,
+    AccountService accountService,
+    DownloadService downloadService,
+    HttpClient httpClient)
 {
-    private readonly DownloadService _downloadService;
-    private readonly AccountService _accountService;
-    private readonly SettingsService _settingsService;
-
     public event EventHandler? TaskListStateChanged;
 
     public ObservableCollection<LaunchTaskViewModel> LaunchTasks { get; } = [];
-
-    public LaunchService(
-        SettingsService settingsService,
-        AccountService accountService,
-        DownloadService downloadService)
-    {
-        _settingsService = settingsService;
-        _accountService = accountService;
-        _downloadService = downloadService;
-    }
 
     public void LaunchFromUI(MinecraftInstance instance)
     {
@@ -179,7 +170,7 @@ internal class LaunchService
         }
         else
         {
-            preCheckData.GameDirectory = _settingsService.EnableIndependencyCore
+            preCheckData.GameDirectory = settingsService.EnableIndependencyCore
                 ? Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId)
                 : instance.MinecraftFolderPath;
         }
@@ -193,15 +184,15 @@ internal class LaunchService
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (_settingsService.Javas.Count == 0)
+        if (settingsService.Javas.Count == 0)
             throw new Exception("No Java added to the launch settings");
-        if (!_settingsService.EnableAutoJava && string.IsNullOrEmpty(_settingsService.ActiveJava))
+        if (!settingsService.EnableAutoJava && string.IsNullOrEmpty(settingsService.ActiveJava))
             throw new Exception("Automatic Java selection is not enabled, but no Java is manually enabled.");
 
-        if (_settingsService.EnableAutoJava)
+        if (settingsService.EnableAutoJava)
         {
             var targetJavaVersion = instance.GetSuitableJavaVersion();
-            var javaInfos = _settingsService.Javas.Select(JavaUtils.GetJavaInfo).ToArray();
+            var javaInfos = settingsService.Javas.Select(JavaUtils.GetJavaInfo).ToArray();
 
             JavaInfo[] possiblyAvailableJavas;
             bool isForgeOrNeoForge = false;
@@ -223,7 +214,7 @@ internal class LaunchService
 
             preCheckData.Java = possiblyAvailableJavas.MaxBy(x => x.Version)!.FilePath;
         }
-        else preCheckData.Java = _settingsService.ActiveJava;
+        else preCheckData.Java = settingsService.ActiveJava;
 
         if (!PathUtils.IsValidPath(preCheckData.Java, isFile: true) || !File.Exists(preCheckData.Java))
             throw new Exception($"This is not a valid path, or the path does not exist: ({nameof(preCheckData.Java)}): {preCheckData.Java}");
@@ -236,9 +227,9 @@ internal class LaunchService
 
         var javaInfo = JavaUtils.GetJavaInfo(preCheckData.Java);
 
-        var (maxMemory, minMemory) = _settingsService.EnableAutoMemory
+        var (maxMemory, minMemory) = settingsService.EnableAutoMemory
             ? MemoryUtils.CalculateJavaMemory()
-            : (_settingsService.JavaMemory, _settingsService.JavaMemory);
+            : (settingsService.JavaMemory, settingsService.JavaMemory);
 
         // QUESTION: >= 512 or > 1024?
         // 经过实际测试经过实际测试，在使用 x86 的 Java 时候，
@@ -260,10 +251,10 @@ internal class LaunchService
 
         if (specialConfig.EnableSpecialSetting && specialConfig.EnableTargetedAccount && specialConfig.Account != null)
         {
-            preCheckData.Account = _accountService.Accounts.FirstOrDefault(x => x.ProfileEquals(specialConfig.Account))
+            preCheckData.Account = accountService.Accounts.FirstOrDefault(x => x.ProfileEquals(specialConfig.Account))
                 ?? throw new Exception("The game specifies an account to launch, but that account cannot be found in the current account list");
         }
-        else preCheckData.Account = _accountService.ActiveAccount
+        else preCheckData.Account = accountService.ActiveAccount
                 ?? throw new Exception("No account selected");
 
         #endregion
@@ -290,13 +281,13 @@ internal class LaunchService
             }
             else
             {
-                if (_settingsService.EnableFullScreen) yield return "--fullscreen";
-                if (_settingsService.GameWindowWidth > 0) yield return $"--width {_settingsService.GameWindowWidth}";
-                if (_settingsService.GameWindowHeight > 0) yield return $"--height {_settingsService.GameWindowHeight}";
+                if (settingsService.EnableFullScreen) yield return "--fullscreen";
+                if (settingsService.GameWindowWidth > 0) yield return $"--width {settingsService.GameWindowWidth}";
+                if (settingsService.GameWindowHeight > 0) yield return $"--height {settingsService.GameWindowHeight}";
 
-                if (!string.IsNullOrEmpty(_settingsService.GameServerAddress))
+                if (!string.IsNullOrEmpty(settingsService.GameServerAddress))
                 {
-                    _settingsService.GameServerAddress.ParseServerAddress(out var host, out var port);
+                    settingsService.GameServerAddress.ParseServerAddress(out var host, out var port);
 
                     yield return $"--server {host}";
                     yield return $"--port {port}";
@@ -315,7 +306,7 @@ internal class LaunchService
         {
             if (preCheckData.Account is YggdrasilAccount yggdrasil)
             {
-                var content = await HttpUtils.HttpClient.GetStringAsync(yggdrasil.YggdrasilServerUrl, cancellationToken);
+                var content = await httpClient.GetStringAsync(yggdrasil.YggdrasilServerUrl, cancellationToken);
 
                 yield return $"-javaagent:{Path.Combine(Package.Current.InstalledLocation.Path, "Assets", "Libs", "authlib-injector-1.2.5.jar").ToPathParameter()}={yggdrasil.YggdrasilServerUrl}";
                 yield return "-Dauthlibinjector.side=client";
@@ -349,8 +340,8 @@ internal class LaunchService
         }
         else
         {
-            preCheckData.GameWindowTitle = !string.IsNullOrEmpty(_settingsService.GameWindowTitle)
-                ? _settingsService.GameWindowTitle
+            preCheckData.GameWindowTitle = !string.IsNullOrEmpty(settingsService.GameWindowTitle)
+                ? settingsService.GameWindowTitle
                 : null;
         }
 
@@ -375,7 +366,7 @@ internal class LaunchService
             LaunchStageProgress.Starting()
         ));
 
-        preCheckData.Account = await _accountService.RefreshAccountAsync(preCheckData.Account, cancellationToken);
+        preCheckData.Account = await accountService.RefreshAccountAsync(preCheckData.Account, cancellationToken);
 
         progress?.Report(new(
             LaunchStage.Authenticate,
@@ -398,7 +389,7 @@ internal class LaunchService
 
         var dependencyResolver = new DependencyResolver(instance)
         {
-            DefalutPreferredVerificationMethod = (DependencyResolver.PreferredVerificationMethod)_settingsService.GameFilePreferredVerificationMethod
+            DefalutPreferredVerificationMethod = (DependencyResolver.PreferredVerificationMethod)settingsService.GameFilePreferredVerificationMethod
         };
 
         dependencyResolver.InvalidDependenciesDetermined += (_, e)
@@ -412,7 +403,7 @@ internal class LaunchService
                 LaunchStageProgress.IncrementFinishedTasks()
             ));
 
-        var groupDownloadResult = await dependencyResolver.VerifyAndDownloadDependenciesAsync(_downloadService.Downloader, 10, cancellationToken);
+        var groupDownloadResult = await dependencyResolver.VerifyAndDownloadDependenciesAsync(downloadService.Downloader, 10, cancellationToken);
 
         if (groupDownloadResult.Failed.Count > 0)
             throw new IncompleteDependenciesException(groupDownloadResult.Failed, "Some dependent files encountered errors during download");
@@ -451,7 +442,7 @@ internal class LaunchService
         MinecraftProcess mcProcess = new MinecraftProcessBuilder(instance)
             .SetGameDirectory(preCheckData.GameDirectory)
             .SetJavaSettings(preCheckData.Java, preCheckData.MaxMemory, preCheckData.MinMemory)
-            .SetAccountSettings(preCheckData.Account, _settingsService.EnableDemoUser)
+            .SetAccountSettings(preCheckData.Account, settingsService.EnableDemoUser)
             .AddVmArguments(preCheckData.ExtraVmParameters)
             .AddGameArguments(preCheckData.ExtraGameParameters)
             .Build();

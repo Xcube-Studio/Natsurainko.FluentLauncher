@@ -35,12 +35,15 @@ internal partial class SkinViewModel : SettingsPageVM, ISettingsViewModel
     private readonly NotificationService _notificationService;
     private readonly IDialogActivationService<ContentDialogResult> _dialogs;
 
+    private readonly HttpClient _httpClient;
+
     public SkinViewModel(
         SettingsService settingsService,
         AccountService accountService,
         CacheSkinService cacheSkinService,
         NotificationService notificationService,
-        IDialogActivationService<ContentDialogResult> dialogs)
+        IDialogActivationService<ContentDialogResult> dialogs,
+        HttpClient httpClient)
     {
         _settingsService = settingsService;
         _cacheSkinService = cacheSkinService;
@@ -52,6 +55,7 @@ internal partial class SkinViewModel : SettingsPageVM, ISettingsViewModel
         (this as ISettingsViewModel).InitializeSettings();
 
         Task.Run(LoadModel);
+        _httpClient = httpClient;
     }
 
     [ObservableProperty]
@@ -117,40 +121,42 @@ internal partial class SkinViewModel : SettingsPageVM, ISettingsViewModel
 
     async Task<bool> IsSlimSkin()
     {
-        var skinUrl = string.Empty;
-
-        if (ActiveAccount is YggdrasilAccount yggdrasil)
-        {
-            var request = new HttpRequestMessage(
-                HttpMethod.Get,
-                yggdrasil.YggdrasilServerUrl
-                + "/sessionserver/session/minecraft/profile/"
-                + yggdrasil.Uuid.ToString("N").ToLower());
-
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", yggdrasil.AccessToken);
-            var responseMessage = await HttpUtils.HttpClient.SendAsync(request);
-
-            var jsonBase64 = JsonNode.Parse(responseMessage.Content.ReadAsString())!["properties"]![0]!["value"];
-            var json = JsonNode.Parse(jsonBase64!.GetValue<string>().ConvertFromBase64());
-
-            if (json!["textures"]?["SKIN"]?["metadata"]?["model"]!.GetValue<string>() == "slim")
-                return true;
-        }
+        string requestUrl = string.Empty;
+        string accessToken = string.Empty;
 
         if (ActiveAccount is MicrosoftAccount microsoft)
         {
-            var request = new HttpRequestMessage(
-                HttpMethod.Get,
-                "https://api.minecraftservices.com/minecraft/profile");
+            accessToken = microsoft.AccessToken;
+            requestUrl = "https://api.minecraftservices.com/minecraft/profile";
+        }
+        else if (ActiveAccount is YggdrasilAccount yggdrasil)
+        {
+            accessToken = yggdrasil.AccessToken;
+            requestUrl = yggdrasil.YggdrasilServerUrl
+                + "/sessionserver/session/minecraft/profile/"
+                + yggdrasil.Uuid.ToString("N");
+        }
 
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", microsoft.AccessToken);
-            var responseMessage = await HttpUtils.HttpClient.SendAsync(request);
-            responseMessage.EnsureSuccessStatusCode();
+        using var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
+        using var responseMessage = await _httpClient.SendAsync(request);
+        responseMessage.EnsureSuccessStatusCode();
+
+        if (ActiveAccount is MicrosoftAccount)
+        {
             var json = JsonNode.Parse(responseMessage.Content.ReadAsString())!["skins"]!
                 .AsArray().Where(item => (item!["state"]?.GetValue<string>().Equals("ACTIVE")).GetValueOrDefault()).FirstOrDefault();
 
             if (json!["variant"]?.GetValue<string>() == "SLIM")
+                return true;
+        }
+        else if (ActiveAccount is YggdrasilAccount)
+        {
+            var jsonBase64 = JsonNode.Parse(responseMessage.Content.ReadAsString())!["properties"]![0]!["value"];
+            var json = JsonNode.Parse(jsonBase64!.GetValue<string>().ConvertFromBase64());
+
+            if (json!["textures"]?["SKIN"]?["metadata"]?["model"]!.GetValue<string>() == "slim")
                 return true;
         }
 

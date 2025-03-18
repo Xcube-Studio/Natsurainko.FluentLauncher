@@ -3,11 +3,11 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.ViewModels.Dialogs;
 using Nrk.FluentCore.GameManagement.Downloader;
 using Nrk.FluentCore.GameManagement.Installer;
-using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Net.Http;
 using static Nrk.FluentCore.GameManagement.Installer.FabricInstanceInstaller;
 using static Nrk.FluentCore.GameManagement.Installer.ForgeInstanceInstaller;
 using static Nrk.FluentCore.GameManagement.Installer.OptiFineInstanceInstaller;
@@ -20,6 +20,7 @@ internal partial class DownloadService
 {
     private MultipartDownloader _downloader;
     private readonly SettingsService _settingsService;
+    private readonly HttpClient _httpClient;
 
     public event EventHandler? TaskListStateChanged;
 
@@ -27,9 +28,11 @@ internal partial class DownloadService
 
     public IDownloader Downloader { get => _downloader; }
 
-    public DownloadService(SettingsService settingsService)
+    public DownloadService(SettingsService settingsService, HttpClient httpClient)
     {
         _settingsService = settingsService;
+        _httpClient = httpClient;
+
         SetDownloader();
 
         _settingsService.MaxDownloadThreadsChanged += (_,_) => SetDownloader();
@@ -91,7 +94,7 @@ internal partial class DownloadService
     private void SetDownloader()
     {
         _downloader = new(
-            httpClient: HttpUtils.HttpClient,
+            httpClient: _httpClient,
             workersPerDownloadTask: 8,
             concurrentDownloadTasks: _settingsService.MaxDownloadThreads,
             enableMultiPartDownload: _settingsService.EnableFragmentDownload,

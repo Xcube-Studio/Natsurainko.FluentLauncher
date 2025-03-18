@@ -8,14 +8,11 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Dialogs;
-using Nrk.FluentCore.Utils;
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Text;
 using Windows.System.UserProfile;
 
@@ -47,10 +44,6 @@ public partial class App : Application
 
     void ConfigureApplication()
     {
-        //Fix https://github.com/MCLF-CN/docs/issues/2 
-        HttpUtils.HttpClient.DefaultRequestHeaders.UserAgent.Clear();
-        HttpUtils.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("Natsurainko.FluentLauncher", Version.GetVersionString()));
-
         DispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
         App.GetService<MessengerService>().SubscribeEvents();
@@ -67,7 +60,7 @@ public partial class App : Application
         };
     }
 
-    private void ConfigureLanguage()
+    void ConfigureLanguage()
     {
         var settings = App.GetService<SettingsService>();
         var selectedLangCode = settings.CurrentLanguage;

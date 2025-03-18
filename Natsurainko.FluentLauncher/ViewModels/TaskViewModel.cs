@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
@@ -106,7 +107,7 @@ internal abstract partial class TaskViewModel : ObservableObject
     public virtual void Start()
     {
         System.Timers.Timer timer = new(_timerTimeSpan);
-        timer.Elapsed += (object sender, System.Timers.ElapsedEventArgs e) =>
+        timer.Elapsed += (sender, e) =>
         {
             App.DispatcherQueue.TryEnqueue(() => TimeUsage = Stopwatch.Elapsed.ToString(_stopwatchElapsedFormat));
 
@@ -184,7 +185,7 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
 
     protected override async void Run()
     {
-        App.DispatcherQueue.TryEnqueue(() => TaskState = TaskState.Running);
+        await App.DispatcherQueue.EnqueueAsync(() => TaskState = TaskState.Running);
         Timer timer = null;
 
         try
@@ -192,19 +193,18 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
             string url = await @getUrlTask;
 
             var downloadTask = HttpUtils.Downloader.CreateDownloadTask(url, Path.Combine(_folder, _fileName));
-            downloadTask.FileSizeReceived += (long? obj) =>
-            {
-                if (obj != null)
-                    App.DispatcherQueue.TryEnqueue(() => ProgressBarIsIndeterminate = false);
-            };
+
+            downloadTask.FileSizeReceived += length => 
+                App.DispatcherQueue.TryEnqueue(() => ProgressBarIsIndeterminate = length == null);
+
 
             void TimerInvoker(object _)
             {
-                if (downloadTask.TotalBytes is null)
-                    return;
+                double progress = downloadTask.TotalBytes is not null
+                    ? (double)downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes
+                    : 0;
 
-                App.DispatcherQueue.SynchronousTryEnqueue(() => Progress =
-                    (double)downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes);
+                App.DispatcherQueue.TryEnqueue(() => Progress = progress);
             }
 
             timer = new(TimerInvoker, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
@@ -212,7 +212,7 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
             var downloadResult = await downloadTask.StartAsync(_tokenSource.Token);
             TimerInvoker(null);
 
-            App.DispatcherQueue.TryEnqueue(() =>
+            await App.DispatcherQueue.EnqueueAsync(() =>
             {
                 TaskState = downloadResult.Type switch
                 {
@@ -232,7 +232,7 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
         }
         catch (Exception ex)
         {
-            App.DispatcherQueue.TryEnqueue(() =>
+            await App.DispatcherQueue.EnqueueAsync(() =>
             {
                 TaskState = TaskState.Failed;
                 Exception = ex;

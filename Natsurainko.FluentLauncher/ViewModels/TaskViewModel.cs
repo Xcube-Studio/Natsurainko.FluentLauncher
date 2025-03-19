@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
+using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
@@ -31,20 +32,10 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using WinUIEx;
 using static Natsurainko.FluentLauncher.Services.Launch.LaunchProgress;
-using static Natsurainko.FluentLauncher.ViewModels.Dialogs.LaunchStageProgress;
+using static Natsurainko.FluentLauncher.ViewModels.LaunchStageProgress;
 
 #nullable disable
-namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
-
-public enum TaskState
-{
-    Prepared,
-    Running,
-    Finished,
-    Failed,
-    Cancelled,
-    Canceling
-}
+namespace Natsurainko.FluentLauncher.ViewModels;
 
 internal abstract partial class TaskViewModel : ObservableObject
 {
@@ -261,7 +252,6 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
 
     }
 }
-
 
 #endregion
 

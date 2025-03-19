@@ -3,7 +3,7 @@ using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
-using Natsurainko.FluentLauncher.Models.UI;
+using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Views.News;
 using System;

@@ -1,5 +1,5 @@
-﻿using Natsurainko.FluentLauncher.Models.Launch;
-using Natsurainko.FluentLauncher.Models.UI;
+﻿using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Models.Launch;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.GameManagement.Installer;
 using System.Text.Json.Serialization;

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Network;
@@ -6,7 +7,7 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-using Natsurainko.FluentLauncher.ViewModels.Dialogs;
+using Natsurainko.FluentLauncher.ViewModels;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Environment;
 using Nrk.FluentCore.Exceptions;

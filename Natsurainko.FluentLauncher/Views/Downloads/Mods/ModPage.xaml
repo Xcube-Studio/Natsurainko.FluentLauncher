@@ -8,7 +8,7 @@
     xmlns:labs="using:CommunityToolkit.Labs.WinUI.MarkdownTextBlock"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads.Mods"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="using:Natsurainko.FluentLauncher.Models.UI"
+    xmlns:models="using:Natsurainko.FluentLauncher.Models"
     xmlns:resources="using:Nrk.FluentCore.Resources"
     xmlns:selector="using:Natsurainko.FluentLauncher.XamlHelpers.Selectors"
     mc:Ignorable="d">

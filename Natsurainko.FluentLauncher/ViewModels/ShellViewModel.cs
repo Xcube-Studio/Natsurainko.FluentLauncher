@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using FluentLauncher.Infra.UI.Navigation;
+using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
-using Natsurainko.FluentLauncher.ViewModels.Dialogs;
 using System.Linq;
 
 namespace Natsurainko.FluentLauncher.ViewModels;

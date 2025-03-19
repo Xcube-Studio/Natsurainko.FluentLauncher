@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
-using Natsurainko.FluentLauncher.Models.UI;
+using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Network;
 using System.Collections.Generic;
 using System.Linq;

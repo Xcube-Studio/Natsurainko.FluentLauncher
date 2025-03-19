@@ -116,12 +116,7 @@ public class WinUINavigationService : INavigationService
                     page.DataContext = CurrentScope.ServiceProvider.GetRequiredService(pageInfo.ViewModelType);
             }
 
-            // After navigation
-            if (page.ReadLocalValue(FrameworkElement.DataContextProperty) != DependencyProperty.UnsetValue && // Requires VM set for the page, rather than inherited
-                page.DataContext is INavigationAware vmAfter)
-                vmAfter.OnNavigatedTo(parameter);
-
-            if (page != null && page.DataContext is IViewAssociated viewAssociatedModel)
+            if (page.DataContext is IViewAssociated viewAssociatedModel)
             {
                 viewAssociatedModel.Dispatcher = page.DispatcherQueue;
 
@@ -132,6 +127,11 @@ public class WinUINavigationService : INavigationService
                 if (viewAssociatedModel is IViewAssociated<Page> pageAssociatedModel)
                     pageAssociatedModel.SetView(page);
             }
+
+            // After navigation
+            if (page.ReadLocalValue(FrameworkElement.DataContextProperty) != DependencyProperty.UnsetValue && // Requires VM set for the page, rather than inherited
+                page.DataContext is INavigationAware vmAfter)
+                vmAfter.OnNavigatedTo(parameter);
         }
     }
 }

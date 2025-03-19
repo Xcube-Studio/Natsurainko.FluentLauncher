@@ -8,7 +8,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:data="using:Natsurainko.FluentLauncher.Models.UI"
+    xmlns:data="using:Natsurainko.FluentLauncher.Models"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.Media"

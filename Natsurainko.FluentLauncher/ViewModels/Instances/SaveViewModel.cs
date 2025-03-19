@@ -4,15 +4,13 @@ using FluentLauncher.Infra.UI.Navigation;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement.Instances;
 using Nrk.FluentCore.GameManagement.Saves;
-using ReverseMarkdown;
 using System;
 using System.Collections.ObjectModel;
-using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using Windows.System;
 
 #nullable disable
-namespace Natsurainko.FluentLauncher.ViewModels.Cores;
+namespace Natsurainko.FluentLauncher.ViewModels.Instances;
 
 internal partial class SaveViewModel : PageVM, INavigationAware
 {

@@ -5,11 +5,11 @@ using Natsurainko.FluentLauncher.ViewModels.Dialogs;
 
 namespace Natsurainko.FluentLauncher.Views.Dialogs;
 
-internal sealed partial class AddVmArgumentDialog : ContentDialog
+public sealed partial class AuthenticateDialog : ContentDialog
 {
-    AddVmArgumentDialogViewModel VM => (AddVmArgumentDialogViewModel)DataContext;
+    AuthenticateDialogViewModel VM => (AuthenticateDialogViewModel)DataContext;
 
-    public AddVmArgumentDialog(SettingsService settingsService)
+    public AuthenticateDialog(SettingsService settingsService)
     {
         InitializeComponent();
         RequestedTheme = (ElementTheme)settingsService.DisplayTheme;

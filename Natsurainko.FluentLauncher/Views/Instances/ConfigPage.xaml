@@ -1,5 +1,5 @@
 <Page
-    x:Class="Natsurainko.FluentLauncher.Views.Cores.ConfigPage"
+    x:Class="Natsurainko.FluentLauncher.Views.Instances.ConfigPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:acc="using:Nrk.FluentCore.Authentication"
@@ -8,7 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:data="using:Nrk.FluentCore.Authentication"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Cores"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Instances"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     Unloaded="Page_Unloaded"
@@ -26,7 +26,7 @@
                 </StackPanel.ChildrenTransitions>
 
                 <controls:SettingsCard
-                    x:Uid="Cores_ConfigPage_Card1"
+                    x:Uid="Instances_ConfigPage_Card1"
                     Description="Only if you enable this item, the following settings will take effect"
                     Header="Enable specific core settings"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
@@ -39,12 +39,12 @@
                     IsEnabled="{x:Bind VM.InstanceConfig.EnableSpecialSetting, Mode=OneWay}">
                     <StackPanel Spacing="4">
                         <TextBlock
-                            x:Uid="Cores_ConfigPage_T1"
+                            x:Uid="Instances_ConfigPage_T1"
                             Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
                             Text="Launch Settings" />
 
                         <controls:SettingsCard
-                            x:Uid="Cores_ConfigPage_Card2"
+                            x:Uid="Instances_ConfigPage_Card2"
                             Description="The game will run at versions\${version} directory"
                             Header="Core independent"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
@@ -52,7 +52,7 @@
                         </controls:SettingsCard>
 
                         <controls:SettingsCard
-                            x:Uid="Cores_ConfigPage_Card3"
+                            x:Uid="Instances_ConfigPage_Card3"
                             Description="Automatic full screen mode after entering the game"
                             Header="Full Screen Mode"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE740;}">
@@ -60,7 +60,7 @@
                         </controls:SettingsCard>
 
                         <controls:SettingsCard
-                            x:Uid="Cores_ConfigPage_Card4"
+                            x:Uid="Instances_ConfigPage_Card4"
                             Description="The size of the game window being rendered"
                             Header="Game Window Resolution"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE744;}">
@@ -78,7 +78,7 @@
                         </controls:SettingsCard>
 
                         <controls:SettingsCard
-                            x:Uid="Cores_ConfigPage_Card5"
+                            x:Uid="Instances_ConfigPage_Card5"
                             Description="The server address to connect after entering the game"
                             Header="Server Address"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE967;}">
@@ -90,7 +90,7 @@
                         </controls:SettingsCard>
 
                         <controls:SettingsCard
-                            x:Uid="Cores_ConfigPage_Card6"
+                            x:Uid="Instances_ConfigPage_Card6"
                             Header="Game Window Title"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE76F;}">
                             <TextBox Width="400" Text="{x:Bind VM.InstanceConfig.GameWindowTitle, Mode=TwoWay}">
@@ -101,12 +101,12 @@
                         </controls:SettingsCard>
 
                         <TextBlock
-                            x:Uid="Cores_ConfigPage_T2"
+                            x:Uid="Instances_ConfigPage_T2"
                             Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
                             Text="Account Settings" />
 
                         <controls:SettingsCard
-                            x:Uid="Cores_ConfigPage_Card7"
+                            x:Uid="Instances_ConfigPage_Card7"
                             Description="If the selected account cannot be found in the account list after enabling it, an error will be reported"
                             Header="Account used to launch this game"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE716;}">
@@ -158,12 +158,12 @@
                         </controls:SettingsCard>
 
                         <TextBlock
-                            x:Uid="Cores_ConfigPage_T3"
+                            x:Uid="Instances_ConfigPage_T3"
                             Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
                             Text="JVM Settings" />
 
                         <controls:SettingsExpander
-                            x:Uid="Cores_ConfigPage_Card8"
+                            x:Uid="Instances_ConfigPage_Card8"
                             Description="These will be added to the generated launch parameters"
                             Header="Additional JVM parameter settings"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE713;}"

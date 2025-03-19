@@ -2,15 +2,15 @@ using Windows.Foundation;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.ViewModels.Cores;
+using Natsurainko.FluentLauncher.ViewModels.Instances;
 
-namespace Natsurainko.FluentLauncher.Views.Cores;
+namespace Natsurainko.FluentLauncher.Views.Instances;
 
 public sealed partial class DefaultPage : Page, IBreadcrumbBarAware
 {
     DefaultViewModel VM => (DefaultViewModel)DataContext;
 
-    string IBreadcrumbBarAware.Route => "Cores";
+    string IBreadcrumbBarAware.Route => "Instances";
 
     public DefaultPage()
     {

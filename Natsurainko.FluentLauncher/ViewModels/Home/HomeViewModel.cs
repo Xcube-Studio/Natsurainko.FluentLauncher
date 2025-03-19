@@ -153,7 +153,7 @@ internal partial class HomeViewModel : PageVM, IRecipient<TrackLaunchTaskChanged
     }
 
     [RelayCommand]
-    void GoToInstancesManage() => GlobalNavigate("Cores/Navigation");
+    void GoToInstancesManage() => GlobalNavigate("Instances/Navigation");
 
     [RelayCommand]
     void GoToAccountSettings() => GlobalNavigate("Settings/Navigation", "Settings/Account");

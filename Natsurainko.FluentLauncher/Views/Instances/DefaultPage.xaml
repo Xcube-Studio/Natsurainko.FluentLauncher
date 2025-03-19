@@ -1,5 +1,5 @@
 <Page
-    x:Class="Natsurainko.FluentLauncher.Views.Cores.DefaultPage"
+    x:Class="Natsurainko.FluentLauncher.Views.Instances.DefaultPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
@@ -33,13 +33,13 @@
             <Button Command="{x:Bind VM.InstallMinecraftCommand}" Style="{ThemeResource AccentButtonStyle}">
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <FontIcon FontSize="14" Glyph="&#xE896;" />
-                    <TextBlock x:Uid="Cores_DefaultPage_InstallText" Text="Install Instances" />
+                    <TextBlock x:Uid="Instances_DefaultPage_InstallText" Text="Install Instances" />
                 </StackPanel>
             </Button>
             <Button IsEnabled="False" Style="{ThemeResource AccentButtonStyle}">
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <FontIcon FontSize="14" Glyph="&#xe8b5;" />
-                    <TextBlock x:Uid="Cores_DefaultPage_ImportButton" Text="Import Modpack" />
+                    <TextBlock x:Uid="Instances_DefaultPage_ImportButton" Text="Import Modpack" />
                 </StackPanel>
             </Button>
 
@@ -49,7 +49,7 @@
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                     Glyph="&#xE71C;" />
                 <TextBlock
-                    x:Uid="Cores_DefaultPage_Text1"
+                    x:Uid="Instances_DefaultPage_Text1"
                     VerticalAlignment="Center"
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                     Text="Filter" />
@@ -61,7 +61,7 @@
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                     Glyph="&#xE8CB;" />
                 <TextBlock
-                    x:Uid="Cores_DefaultPage_Text2"
+                    x:Uid="Instances_DefaultPage_Text2"
                     VerticalAlignment="Center"
                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                     Text="Sort by" />
@@ -162,7 +162,7 @@
             <StackPanel Orientation="Horizontal" Spacing="8">
                 <FontIcon FontSize="32" Glyph="&#xe74c;" />
                 <TextBlock
-                    x:Uid="Cores_DefaultPage_Text3"
+                    x:Uid="Instances_DefaultPage_Text3"
                     Margin="0,-4,0,0"
                     FontSize="28"
                     Style="{ThemeResource BaseTextBlockStyle}"
@@ -172,7 +172,7 @@
                 Padding="5,0,5,0.5"
                 HorizontalAlignment="Center"
                 Command="{x:Bind VM.InstallMinecraftCommand}">
-                <TextBlock x:Uid="Cores_DefaultPage_InstallText" Text="Install Instances" />
+                <TextBlock x:Uid="Instances_DefaultPage_InstallText" Text="Install Instances" />
             </HyperlinkButton>
 
             <i:Interaction.Behaviors>

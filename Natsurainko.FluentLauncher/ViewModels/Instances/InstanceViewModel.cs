@@ -14,7 +14,7 @@ using Windows.System;
 using Windows.UI.StartScreen;
 
 #nullable disable
-namespace Natsurainko.FluentLauncher.ViewModels.Cores;
+namespace Natsurainko.FluentLauncher.ViewModels.Instances;
 
 internal partial class InstanceViewModel(
     INavigationService navigationService,

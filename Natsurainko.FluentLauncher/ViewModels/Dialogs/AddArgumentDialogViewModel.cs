@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
 
-internal partial class AddVmArgumentDialogViewModel : DialogVM
+internal partial class AddArgumentDialogViewModel : DialogVM
 {
     private Action<string> _addAction = null!;
 

@@ -2,10 +2,10 @@ using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.ViewModels.Cores;
+using Natsurainko.FluentLauncher.ViewModels.Instances;
 using Nrk.FluentCore.GameManagement.Mods;
 
-namespace Natsurainko.FluentLauncher.Views.Cores;
+namespace Natsurainko.FluentLauncher.Views.Instances;
 
 public sealed partial class ModPage : Page, IBreadcrumbBarAware
 {

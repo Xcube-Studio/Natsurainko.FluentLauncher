@@ -57,7 +57,7 @@ internal partial class DeleteInstanceDialogViewModel(
             {
                 gameService.RefreshGames();
 
-                HideAndGlobalNavigate("Cores/Navigation");
+                HideAndGlobalNavigate("Instances/Navigation");
             });
 
             notificationService.NotifyWithoutContent(

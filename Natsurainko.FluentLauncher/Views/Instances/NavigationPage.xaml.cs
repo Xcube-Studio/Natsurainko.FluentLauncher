@@ -1,11 +1,11 @@
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
-using Natsurainko.FluentLauncher.ViewModels.Cores;
+using Natsurainko.FluentLauncher.ViewModels.Instances;
 using Natsurainko.FluentLauncher.XamlHelpers.Converters;
 using Nrk.FluentCore.GameManagement.Instances;
 
-namespace Natsurainko.FluentLauncher.Views.Cores;
+namespace Natsurainko.FluentLauncher.Views.Instances;
 
 public sealed partial class NavigationPage : Page, INavigationProvider
 {
@@ -38,7 +38,7 @@ public sealed partial class NavigationPage : Page, INavigationProvider
                 if (!converter.IgnoredText.Contains(instanceId))
                     converter.IgnoredText.Add(instanceId);
 
-                breadcrumbBar.SetPath($"Cores/{instance.InstanceId}");
+                breadcrumbBar.SetPath($"Instances/{instance.InstanceId}");
             }
             else
             {
@@ -48,11 +48,6 @@ public sealed partial class NavigationPage : Page, INavigationProvider
     }
 
     private void breadcrumbBar_ItemClicked(object sender, string[] args) => VM.HandleNavigationBreadcrumBarItemClicked(args);
-
-    //private void breadcrumbBar_Loading(Microsoft.UI.Xaml.FrameworkElement sender, object args)
-    //{
-    //    VM.HandleBreadcrumbBarLoading(breadcrumbBar.Resources["BreadcrumbBarLocalizationConverter"]);
-    //}
 
     private void Page_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {

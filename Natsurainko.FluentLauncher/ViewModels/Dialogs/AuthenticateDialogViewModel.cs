@@ -16,10 +16,10 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
 
-internal partial class AuthenticationWizardDialogViewModel(
+internal partial class AuthenticateDialogViewModel(
     AccountService accountService, 
     NotificationService notificationService, 
-    AuthenticationService authService) : DialogVM<AuthenticationWizardDialog>
+    AuthenticationService authService) : DialogVM<AuthenticateDialog>
 {
     [ObservableProperty]
     public partial WizardViewModelBase CurrentFrameDataContext { get; set; } = null!;

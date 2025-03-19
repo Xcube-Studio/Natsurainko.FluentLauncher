@@ -1,12 +1,12 @@
 ﻿using FluentLauncher.Infra.UI.Navigation;
 using Nrk.FluentCore.GameManagement.Instances;
 
-namespace Natsurainko.FluentLauncher.ViewModels.Cores;
+namespace Natsurainko.FluentLauncher.ViewModels.Instances;
 
 internal partial class NavigationViewModel(INavigationService navigationService) 
     : NavigationPageVM<MinecraftInstance>(navigationService), INavigationAware
 {
-    protected override string RootPageKey => "Cores";
+    protected override string RootPageKey => "Instances";
 
     protected override string ParameterRouteKey => "Instance";
 
@@ -17,7 +17,7 @@ internal partial class NavigationViewModel(INavigationService navigationService)
         if (parameter is MinecraftInstance instance)
         {
             Parameter = instance;
-            NavigateTo("Cores/Instance", instance);
+            NavigateTo("Instances/Instance", instance);
         }
         else if (parameter is string pageKey)
         {
@@ -25,7 +25,7 @@ internal partial class NavigationViewModel(INavigationService navigationService)
         }
         else
         {
-            NavigateTo("Cores/Default");
+            NavigateTo("Instances/Default");
         }
     }
 }

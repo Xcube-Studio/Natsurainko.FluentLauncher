@@ -299,7 +299,7 @@
                     x:Uid="ShellPage_NV_Item_2"
                     Content="Instances"
                     Icon="{xh:FontIcon Glyph=&#xf158;}"
-                    Tag="Cores/Navigation" />
+                    Tag="Instances/Navigation" />
                 <NavigationViewItem
                     x:Uid="ShellPage_NV_Item_3"
                     Content="Download Resources"

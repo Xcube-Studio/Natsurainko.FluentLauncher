@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 using Windows.System;
 
 #nullable disable
-namespace Natsurainko.FluentLauncher.ViewModels.Cores;
+namespace Natsurainko.FluentLauncher.ViewModels.Instances;
     
 internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel
 {
@@ -65,7 +65,7 @@ internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel
     public partial List<MinecraftInstance> DisplayMinecraftInstances { get; set; }
 
     public string DisplayFolderPath => (string.IsNullOrEmpty(ActiveMinecraftFolder) || !Directory.Exists(ActiveMinecraftFolder))
-        ? LocalizedStrings.Cores_DefaultPage__FolderError
+        ? LocalizedStrings.Instances_DefaultPage__FolderError
         : ActiveMinecraftFolder;
 
     partial void OnFilterIndexChanged(int value) => Task.Run(UpdateDisplayMinecraftInstances);
@@ -79,7 +79,7 @@ internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel
     void InstallMinecraft() => GlobalNavigate("InstancesDownload/Navigation");
 
     [RelayCommand]
-    void GoToCoreSettings(MinecraftInstance MinecraftInstance) => _navigationService.NavigateTo("Cores/Instance", MinecraftInstance);
+    void GoToCoreSettings(MinecraftInstance MinecraftInstance) => _navigationService.NavigateTo("Instances/Instance", MinecraftInstance);
 
     [RelayCommand]
     void NavigateFolder()

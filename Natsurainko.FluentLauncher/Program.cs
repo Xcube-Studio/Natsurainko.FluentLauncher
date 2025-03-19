@@ -47,14 +47,14 @@ pages.WithPage<Views.ShellPage, ViewModels.ShellViewModel>("ShellPage");
 // Home page
 pages.WithPage<Views.Home.HomePage, ViewModels.Home.HomeViewModel>("HomePage");
 
-// Cores page
+// Instances page
 
-pages.WithPage<Views.Cores.NavigationPage, ViewModels.Cores.NavigationViewModel>("Cores/Navigation");
-pages.WithPage<Views.Cores.DefaultPage, ViewModels.Cores.DefaultViewModel>("Cores/Default");
-pages.WithPage<Views.Cores.InstancePage, ViewModels.Cores.InstanceViewModel>("Cores/Instance");
-pages.WithPage<Views.Cores.ConfigPage, ViewModels.Cores.ConfigViewModel>("Cores/Config");
-pages.WithPage<Views.Cores.ModPage, ViewModels.Cores.ModViewModel>("Cores/Mod");
-pages.WithPage<Views.Cores.SavePage, ViewModels.Cores.SaveViewModel>("Cores/Save");
+pages.WithPage<Views.Instances.NavigationPage, ViewModels.Instances.NavigationViewModel>("Instances/Navigation");
+pages.WithPage<Views.Instances.DefaultPage, ViewModels.Instances.DefaultViewModel>("Instances/Default");
+pages.WithPage<Views.Instances.InstancePage, ViewModels.Instances.InstanceViewModel>("Instances/Instance");
+pages.WithPage<Views.Instances.ConfigPage, ViewModels.Instances.ConfigViewModel>("Instances/Config");
+pages.WithPage<Views.Instances.ModPage, ViewModels.Instances.ModViewModel>("Instances/Mod");
+pages.WithPage<Views.Instances.SavePage, ViewModels.Instances.SaveViewModel>("Instances/Save");
 
 // News page
 pages.WithPage<Views.News.NavigationPage, ViewModels.News.NavigationViewModel>("News/Navigation");
@@ -91,8 +91,8 @@ pages.WithPage<Views.Settings.SkinPage, ViewModels.Settings.SkinViewModel>("Sett
 
 var dialogs = builder.Dialogs;
 
-dialogs.WithDialog<Views.Dialogs.AddVmArgumentDialog, ViewModels.Dialogs.AddVmArgumentDialogViewModel>("AddVmArgumentDialog");
-dialogs.WithDialog<Views.Dialogs.AuthenticationWizardDialog, ViewModels.Dialogs.AuthenticationWizardDialogViewModel>("AuthenticationWizardDialog");
+dialogs.WithDialog<Views.Dialogs.AddArgumentDialog, ViewModels.Dialogs.AddArgumentDialogViewModel>("AddVmArgumentDialog");
+dialogs.WithDialog<Views.Dialogs.AuthenticateDialog, ViewModels.Dialogs.AuthenticateDialogViewModel>("AuthenticationWizardDialog");
 dialogs.WithDialog<Views.Dialogs.DeleteInstanceDialog, ViewModels.Dialogs.DeleteInstanceDialogViewModel>("DeleteInstanceDialog");
 dialogs.WithDialog<Views.Dialogs.SwitchAccountDialog, ViewModels.Dialogs.SwitchAccountDialogViewModel>("SwitchAccountDialog");
 dialogs.WithDialog<Views.Dialogs.UploadSkinDialog, ViewModels.Dialogs.UploadSkinDialogViewModel>("UploadSkinDialog");
@@ -108,6 +108,7 @@ dialogs.WithDialog<Views.Dialogs.UpdateDialog, ViewModels.Dialogs.UpdateDialogVi
 var services = builder.Services;
 
 services.UseHttpClient();
+services.UseResourceClients();
 
 // Settings service
 services.AddSingleton<SettingsService>();
@@ -135,8 +136,6 @@ services.AddSingleton<InstanceConfigService>();
 services.AddSingleton<UpdateService>();
 #endif
 
-services.UseResourceClients();
-
 #endregion
 
 // Build and run the app
@@ -144,7 +143,6 @@ var app = builder.Build();
 AppHost = app.Host;
 
 await BuildRootCommand(app).InvokeAsync(args);
-//await app.RunAsync();
 
 public partial class Program
 {

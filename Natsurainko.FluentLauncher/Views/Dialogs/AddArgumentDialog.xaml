@@ -1,11 +1,11 @@
 <ContentDialog
-    x:Class="Natsurainko.FluentLauncher.Views.Dialogs.AuthenticationWizardDialog"
+    x:Class="Natsurainko.FluentLauncher.Views.Dialogs.AddArgumentDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:common="using:Natsurainko.FluentLauncher.ViewModels.Dialogs"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialogs="using:Natsurainko.FluentLauncher.ViewModels.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DataContext="{d:DesignInstance Type=common:AuthenticationWizardDialogViewModel}"
+    d:DataContext="{d:DesignInstance Type=dialogs:AddArgumentDialogViewModel}"
     Style="{ThemeResource DefaultContentDialogStyle}"
     mc:Ignorable="d">
 
@@ -14,12 +14,7 @@
     </ContentDialog.Resources>
     <ContentDialog.Title>
         <StackPanel Margin="24,24,24,0">
-            <TextBlock
-                x:Uid="Dialogs_AuthenticationWizardDialog_T"
-                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                Style="{ThemeResource BaseTextBlockStyle}"
-                Text="Account Add Wizard:" />
-            <TextBlock Text="{x:Bind ((FrameworkElement)ContentFrame.Content).Tag, Mode=OneWay}" TextWrapping="WrapWholeWords" />
+            <TextBlock x:Uid="Dialogs_AddVmArgumentDialog_T" Text="Add a single JVM argument" />
         </StackPanel>
     </ContentDialog.Title>
 
@@ -44,16 +39,7 @@
             Height="Auto"
             Padding="24,0,24,20"
             Background="Transparent">
-            <Frame
-                x:Name="ContentFrame"
-                x:FieldModifier="public"
-                DataContext="{x:Bind VM.CurrentFrameDataContext, Mode=OneWay}">
-                <Frame.ContentTransitions>
-                    <TransitionCollection>
-                        <RepositionThemeTransition />
-                    </TransitionCollection>
-                </Frame.ContentTransitions>
-            </Frame>
+            <AutoSuggestBox Text="{x:Bind VM.Argument, Mode=TwoWay}" />
         </Grid>
         <Rectangle
             Grid.Row="1"
@@ -73,33 +59,21 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="{ThemeResource ContentDialogButtonSpacing}" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="75" />
-                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
+                <Button
+                    Grid.Column="0"
+                    HorizontalAlignment="Stretch"
+                    Command="{x:Bind VM.AddCommand}"
+                    ElementSoundMode="FocusOnly"
+                    IsTabStop="False"
+                    Style="{ThemeResource AccentButtonStyle}">
+                    <TextBlock x:Uid="Buttons_Add" Text="Add" />
+                </Button>
                 <Button
                     Grid.Column="2"
                     HorizontalAlignment="Stretch"
-                    Command="{x:Bind VM.NextCommand}"
-                    ElementSoundMode="FocusOnly"
-                    IsEnabled="{x:Bind VM.CurrentFrameDataContext.CanNext, Mode=OneWay}"
-                    IsTabStop="False"
-                    Style="{ThemeResource AccentButtonStyle}">
-                    <TextBlock x:Uid="Buttons_Next" Text="Next" />
-                </Button>
-                <Button
-                    HorizontalAlignment="Stretch"
-                    Command="{x:Bind VM.PreviousCommand}"
-                    ElementSoundMode="FocusOnly"
-                    IsEnabled="{x:Bind VM.CurrentFrameDataContext.CanPrevious, Mode=OneWay}"
-                    IsTabStop="False">
-                    <TextBlock x:Uid="Buttons_Back" Text="Back" />
-                </Button>
-                <Button
-                    Grid.Column="4"
-                    HorizontalAlignment="Stretch"
                     Command="{x:Bind VM.CancelCommand}"
                     ElementSoundMode="FocusOnly"
-                    IsEnabled="{x:Bind VM.CurrentFrameDataContext.CanCancel, Mode=OneWay}"
                     IsTabStop="False">
                     <TextBlock x:Uid="Buttons_Cancel" Text="Cancel" />
                 </Button>

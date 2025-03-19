@@ -90,8 +90,6 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250228001" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
-    <PackageReference Include="NbtToolkit" Version="0.1.2-beta" />
-    <PackageReference Include="ReverseMarkdown" Version="4.6.0" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
     <PackageReference Include="System.Management" Version="9.0.3" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
@@ -123,11 +121,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Remove="Services\UI\Data\**" />
-    <EmbeddedResource Remove="Services\UI\Data\**" />
     <None Remove="**\*.xaml" />
-    <None Remove="Services\UI\Data\**" />
-    <Page Remove="Services\UI\Data\**" />
   </ItemGroup>
 
   <!-- Assets -->
@@ -255,9 +249,6 @@
   <!-- Add .resw files as additional files for source generation -->
   <ItemGroup>
     <AdditionalFiles Include="Assets\Strings\*.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Remove="Services\UI\Data\**" />
   </ItemGroup>
 
   <!-- Multilingual App Toolkit

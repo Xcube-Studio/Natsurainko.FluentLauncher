@@ -64,11 +64,7 @@ internal partial class DefaultViewModel(
         UpdateFiltersSource();
 
         if (parameter is string query)
-            SearchReceiveHandle(query);
-        else
-            SearchReceiveHandle(SearchQuery);
-
-        searchProviderService.OccupyQueryReceiver(this, SearchReceiveHandle);
+            SearchQuery = query;
     }
 
     [RelayCommand]
@@ -138,6 +134,18 @@ internal partial class DefaultViewModel(
 
         if (!Categories.Contains(SelectedCategory))
             SelectedCategory = Categories[0];
+    }
+
+    protected override void OnLoaded()
+    {
+        searchProviderService.OccupyQueryReceiver(this, SearchReceiveHandle);
+        SearchReceiveHandle(SearchQuery);
+    }
+
+    protected override void OnUnloaded()
+    {
+        _cancellationTokenSource?.Cancel();
+        _cancellationTokenSource?.Dispose();
     }
 
     static readonly string[] ModrinthCategories = [

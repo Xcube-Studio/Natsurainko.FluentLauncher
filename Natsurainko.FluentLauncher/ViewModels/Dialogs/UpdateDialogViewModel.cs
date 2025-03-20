@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Services.Network;
-using Natsurainko.FluentLauncher.Utils;
 using System.Diagnostics;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
@@ -149,7 +148,7 @@ internal partial class UpdateDialogViewModel(UpdateService updateService) : Dial
     }
 
     [RelayCommand]
-    void Cancel() => View.Hide();
+    void Cancel() => Dialog.Hide();
 
     [RelayCommand]
     void ShowErrorLog()

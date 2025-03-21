@@ -513,16 +513,17 @@
 
                                 <labs:MarkdownTextBlock
                                     x:Name="DescriptionMarkdown"
-                                    x:FieldModifier="public"
                                     x:Load="{x:Bind VM.IsMarkdown, Mode=OneWay}"
                                     Background="Transparent"
-                                    Config="{x:Bind MarkdownConfig}" />
+                                    Config="{x:Bind MarkdownConfig}"
+                                    Loaded="DescriptionMarkdown_Loaded" />
 
                                 <Border CornerRadius="4">
                                     <WebView2
                                         x:Name="DescriptionWebView2"
                                         x:FieldModifier="public"
-                                        x:Load="{x:Bind VM.IsHtml, Mode=OneWay}" />
+                                        x:Load="{x:Bind VM.IsHtml, Mode=OneWay}"
+                                        Loaded="DescriptionWebView2_Loaded" />
                                 </Border>
                             </StackPanel>
 

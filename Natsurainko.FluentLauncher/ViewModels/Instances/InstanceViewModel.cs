@@ -77,6 +77,9 @@ internal partial class InstanceViewModel(
         MinecraftInstance = parameter as MinecraftInstance;
         InstanceConfig = MinecraftInstance.GetConfig();
 
+        //Task.Run(MinecraftInstance.GetStatistics).ContinueWith(t =>
+        //    Dispatcher.TryEnqueue(() => GameStorageInfo = t.Result), TaskContinuationOptions.OnlyOnRanToCompletion);
+
         _ = Task.Run(() =>
         {
             var gameStorageInfo = MinecraftInstance.GetStatistics();

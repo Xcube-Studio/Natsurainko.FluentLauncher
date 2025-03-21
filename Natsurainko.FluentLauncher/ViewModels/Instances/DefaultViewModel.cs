@@ -19,7 +19,7 @@ using Windows.System;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Instances;
     
-internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel
+internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel, INavigationAware
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;
@@ -72,6 +72,8 @@ internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel
 
     partial void OnSortByIndexChanged(int value) => Task.Run(UpdateDisplayMinecraftInstances);
 
+    void INavigationAware.OnNavigatedTo(object parameter) => Task.Run(UpdateDisplayMinecraftInstances);
+
     [RelayCommand]
     void GoToSettings() => GlobalNavigate("Settings/Navigation", "Settings/Launch");
 
@@ -108,7 +110,7 @@ internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel
 
     private void UpdateDisplayMinecraftInstances()
     {
-        var infos = MinecraftInstances.Where(x =>
+        IEnumerable<MinecraftInstance> instances = MinecraftInstances.Where(x =>
         {
             return FilterIndex switch
             {
@@ -120,8 +122,8 @@ internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel
         });
 
         List<MinecraftInstance> list = SortByIndex.Equals(0)
-            ? [.. infos.OrderBy(x => x.InstanceId)]
-            : [.. infos.OrderByDescending(x => x.GetConfig().LastLaunchTime)];
+            ? [.. instances.OrderBy(x => x.InstanceId)]
+            : [.. instances.OrderByDescending(x => x.GetConfig().LastLaunchTime)];
 
         Dispatcher.TryEnqueue(() => DisplayMinecraftInstances = list);
     }
@@ -130,8 +132,6 @@ internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel
     {
         if (!_searchProviderService.ContainsSuggestionProvider(this))
             _searchProviderService.RegisterSuggestionProvider(this, ProviderSuggestions);
-
-        Task.Run(UpdateDisplayMinecraftInstances);
     }
 
     protected override void OnUnloaded()

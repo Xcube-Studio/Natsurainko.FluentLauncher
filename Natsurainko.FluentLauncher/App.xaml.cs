@@ -95,6 +95,16 @@ public partial class App : Application
 
     protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
+#if FLUENT_LAUNCHER_PREVIEW_CHANNEL
+        global::FluentLauncher.Infra.WinUI.ExtensionHost.ApplicationExtensionHost.Current.Initialize(this);
+
+        foreach (var assembly in App.GetService<global::System.Collections.Generic.List<global::FluentLauncher.Infra.WinUI.ExtensionHost.Assemblies.IExtensionAssembly>>())
+            await assembly.LoadAsync();
+
+        foreach (var extension in App.GetService<global::System.Collections.Generic.List<global::FluentLauncher.Infra.WinUI.ExtensionHost.Extensions.IExtension>>())
+            extension.SetServiceProvider(Services);
+#endif
+
         // 确保单例应用程序启动
         var mainInstance = AppInstance.FindOrRegisterForKey("Main");
         mainInstance.Activated += (object? sender, AppActivationArguments e) =>

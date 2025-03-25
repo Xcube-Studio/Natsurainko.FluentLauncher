@@ -26,6 +26,10 @@ var builder = WinUIApplication.CreateBuilder(() => new App());
 
 builder.UseExtendedWinUIServices();
 
+#if FLUENT_LAUNCHER_PREVIEW_CHANNEL
+builder.UseApplicationExtensionHost();
+#endif
+
 // Configure WinUI windows
 builder.Windows.AddSingleInstanceWindow<Views.MainWindow>("MainWindow");
 

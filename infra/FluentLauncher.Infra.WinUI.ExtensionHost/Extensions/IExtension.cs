@@ -11,6 +11,8 @@ public interface IExtension
 
     Dictionary<string, (Type, Type)> RegisteredPages { get; }
 
+    Dictionary<string, (Type, Type)> RegisteredDialogs { get; }
+
     void ConfigureServices(IServiceCollection services);
 
     void SetServiceProvider(IServiceProvider serviceProvider);

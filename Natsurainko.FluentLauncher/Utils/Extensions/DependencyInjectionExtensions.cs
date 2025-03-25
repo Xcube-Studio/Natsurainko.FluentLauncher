@@ -7,17 +7,12 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Windows.ApplicationModel;
-using System.Threading.Tasks;
 using FluentLauncher.Infra.WinUI.ExtensionHost.Assemblies;
 
-
 #if FLUENT_LAUNCHER_PREVIEW_CHANNEL
-
 using FluentLauncher.Infra.WinUI.ExtensionHost;
 using FluentLauncher.Infra.WinUI.ExtensionHost.Extensions;
-using Windows.Storage;
 using System.Linq;
-
 #endif
 
 namespace Natsurainko.FluentLauncher.Utils.Extensions;
@@ -75,13 +70,10 @@ internal static class DependencyInjectionExtensions
             {
                 Instances.Add(instance);
 
-                foreach (var kvp in instance.RegisteredPages)
-                {
-                    Type pageType = kvp.Value.Item1;
-                    Type vmType = kvp.Value.Item2;
-
-                    builder.Pages.WithPage(kvp.Key, pageType, vmType);
-                }
+                instance.RegisteredPages.ToList()
+                    .ForEach(d => builder.Pages.WithPage(d.Key, d.Value.Item1, d.Value.Item2));
+                instance.RegisteredDialogs.ToList()
+                    .ForEach(d => builder.Dialogs.WithDialog(d.Key, d.Value.Item1, d.Value.Item2));
 
                 instance.SetExtensionFolder(new FileInfo(file).DirectoryName!);
                 builder.ConfigureServices(instance.ConfigureServices);

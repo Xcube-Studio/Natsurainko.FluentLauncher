@@ -8,6 +8,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Windows.ApplicationModel;
 using FluentLauncher.Infra.WinUI.ExtensionHost.Assemblies;
+using Windows.Storage;
+
 
 #if FLUENT_LAUNCHER_PREVIEW_CHANNEL
 using FluentLauncher.Infra.WinUI.ExtensionHost;
@@ -54,10 +56,8 @@ internal static class DependencyInjectionExtensions
         List<IExtension> Instances = [];
         List<IExtensionAssembly> Assemblies = [];
 
-        //string extensionsFolder = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Extensions");
-        //Directory.CreateDirectory(extensionsFolder);
-
-        string extensionsFolder = "D:\\Code\\FluentLauncher.Extension.ConnectX\\FluentLauncher.Extension.ConnectX\\bin\\Debug\\net9.0-windows10.0.22621.0";
+        string extensionsFolder = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Extensions");
+        Directory.CreateDirectory(extensionsFolder);
 
         foreach (string file in Directory.EnumerateFiles(extensionsFolder, "FluentLauncher.Extension.*.dll", new EnumerationOptions() { RecurseSubdirectories = true}))
         {

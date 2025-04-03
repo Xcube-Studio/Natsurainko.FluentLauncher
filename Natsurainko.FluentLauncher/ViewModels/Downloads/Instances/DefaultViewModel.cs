@@ -118,8 +118,8 @@ internal partial class DefaultViewModel(
 
             VersionManifestItem[] instances = versionManifest.Versions;
             VersionManifestItem[] latestInstances = [.. versionManifest.Latest.Select(kv => instances.First(i => i.Id == kv.Value))];
-            LatestRelease = latestInstances.FirstOrDefault(i => i.Type == "release");
-            LatestSnapshot = latestInstances.FirstOrDefault(i => i.Type == "snapshot");
+            var latestRelease = latestInstances.FirstOrDefault(i => i.Type == "release");
+            var latestSnapshot = latestInstances.FirstOrDefault(i => i.Type == "snapshot");
 
             if (string.IsNullOrEmpty(_versionManifestJson))
                 _versionManifestJson = versionManifestJson;
@@ -127,8 +127,8 @@ internal partial class DefaultViewModel(
             await Dispatcher.EnqueueAsync(() =>
             {
                 AllInstances = instances;
-                LatestRelease = LatestRelease;
-                LatestSnapshot = LatestSnapshot;
+                LatestRelease = latestRelease;
+                LatestSnapshot = latestSnapshot;
                 SearchReceiveHandle(SearchQuery);
             });
         }

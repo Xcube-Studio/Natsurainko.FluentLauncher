@@ -127,21 +127,42 @@
                     IsActive="{x:Bind VM.Loading, Mode=OneWay}" />
 
                 <StackPanel x:Name="ContentStackPanel" x:Load="{x:Bind VM.Loading, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}">
-                    <TextBlock
-                        x:Name="T1"
-                        x:Uid="Downloads_Instances_DefaultPage_T1"
-                        x:Load="{x:Bind VM.Searched, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
-                        Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
-                        Text="Latest" />
-                    <ItemsRepeater
-                        x:Name="LatestInstancesItemsRepeater"
-                        x:Load="{x:Bind VM.Searched, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
-                        ItemTemplate="{StaticResource InstanceItemTemplate}"
-                        ItemsSource="{x:Bind VM.LatestInstances, Mode=OneWay}">
-                        <ItemsRepeater.Layout>
-                            <StackLayout Spacing="4" />
-                        </ItemsRepeater.Layout>
-                    </ItemsRepeater>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="4" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock
+                            x:Name="T1"
+                            x:Uid="Downloads_Instances_DefaultPage_T1"
+                            Grid.Column="0"
+                            x:Load="{x:Bind VM.Searched, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
+                            Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
+                            Text="Latest Release" />
+                        <TextBlock
+                            x:Name="T1_1"
+                            x:Uid="Downloads_Instances_DefaultPage_T1_1"
+                            Grid.Column="2"
+                            x:Load="{x:Bind VM.Searched, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
+                            Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
+                            Text="Latest Snapshot" />
+                        <ContentPresenter
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Content="{x:Bind VM.LatestRelease, Mode=TwoWay}"
+                            ContentTemplate="{StaticResource InstanceItemTemplate}" />
+                        <ContentPresenter
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Content="{x:Bind VM.LatestSnapshot, Mode=TwoWay}"
+                            ContentTemplate="{StaticResource InstanceItemTemplate}" />
+                    </Grid>
 
                     <TextBlock
                         x:Name="T2"

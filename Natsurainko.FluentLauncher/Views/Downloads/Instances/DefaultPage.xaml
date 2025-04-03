@@ -127,7 +127,7 @@
                     IsActive="{x:Bind VM.Loading, Mode=OneWay}" />
 
                 <StackPanel x:Name="ContentStackPanel" x:Load="{x:Bind VM.Loading, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}">
-                    <Grid>
+                    <Grid x:Name="latestVersionsSection" x:Load="{x:Bind VM.Searched, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="4" />
@@ -142,14 +142,12 @@
                             x:Name="T1"
                             x:Uid="Downloads_Instances_DefaultPage_T1"
                             Grid.Column="0"
-                            x:Load="{x:Bind VM.Searched, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
                             Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
                             Text="Latest Release" />
                         <TextBlock
                             x:Name="T1_1"
                             x:Uid="Downloads_Instances_DefaultPage_T1_1"
                             Grid.Column="2"
-                            x:Load="{x:Bind VM.Searched, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
                             Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
                             Text="Latest Snapshot" />
                         <ContentPresenter

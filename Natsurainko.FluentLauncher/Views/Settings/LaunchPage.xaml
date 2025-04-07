@@ -8,6 +8,7 @@
     xmlns:converters="using:Natsurainko.FluentLauncher.XamlHelpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Settings"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Settings"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
@@ -152,6 +153,7 @@
                                 ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
                                 CommandParameter="{x:Bind}"
                                 Description="{x:Bind}"
+                                HeaderIcon="{x:Bind Converter={StaticResource JavaIconConverter}}"
                                 IsClickEnabled="True"
                                 Loaded="Card_Loaded"
                                 Tag="ActiveJava">
@@ -173,14 +175,14 @@
                                         </Border>
                                     </StackPanel>
                                 </controls:SettingsCard.Header>
-                                <controls:SettingsCard.HeaderIcon>
-                                    <ImageIcon Source="{x:Bind Converter={StaticResource JavaIconConverter}}" />
-                                </controls:SettingsCard.HeaderIcon>
                                 <StackPanel
                                     Name="Operations"
                                     Orientation="Horizontal"
                                     Spacing="10">
-                                    <Button CommandParameter="{x:Bind}" Style="{ThemeResource AccentButtonStyle}">
+                                    <Button
+                                        CommandParameter="{x:Bind}"
+                                        IsEnabled="{x:Bind local:LaunchPage.CanJavaActivate((x:String))}"
+                                        Style="{ThemeResource AccentButtonStyle}">
                                         <TextBlock x:Uid="Buttons_Activate" Text="Activate" />
                                         <i:Interaction.Behaviors>
                                             <behaviors:AncestorBindingBehavior

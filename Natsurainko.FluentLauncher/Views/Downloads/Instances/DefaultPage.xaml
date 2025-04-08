@@ -11,7 +11,9 @@
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads.Instances"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
+
     <Page.Resources>
         <DataTemplate x:Key="InstanceItemTemplate" x:DataType="installer:VersionManifestItem">
             <controls:SettingsCard
@@ -50,22 +52,14 @@
                                 Text="{x:Bind Id}"
                                 TextTrimming="CharacterEllipsis"
                                 TextWrapping="NoWrap" />
-                            <StackPanel Orientation="Horizontal" Spacing="8">
-                                <TextBlock
-                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                    Style="{ThemeResource CaptionTextBlockStyle}"
-                                    TextTrimming="CharacterEllipsis"
-                                    TextWrapping="NoWrap">
-                                    <Run Text="{x:Bind Converter={StaticResource InstanceDescriptionConverter}}" />
-                                </TextBlock>
-                                <TextBlock
-                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                    Style="{ThemeResource CaptionTextBlockStyle}"
-                                    TextTrimming="CharacterEllipsis"
-                                    TextWrapping="NoWrap">
-                                    <Run Text="{x:Bind local:DefaultPage.FormatDate(ReleaseTime)}" />
-                                </TextBlock>
-                            </StackPanel>
+                            <TextBlock
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap">
+                                <Run Text="{x:Bind Converter={StaticResource InstanceDescriptionConverter}}" />
+                                <Run Text="{x:Bind local:DefaultPage.FormatDate(ReleaseTime)}" />
+                            </TextBlock>
                         </StackPanel>
                     </Grid>
                 </controls:SettingsCard.Header>
@@ -127,21 +121,45 @@
                     IsActive="{x:Bind VM.Loading, Mode=OneWay}" />
 
                 <StackPanel x:Name="ContentStackPanel" x:Load="{x:Bind VM.Loading, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}">
-                    <TextBlock
-                        x:Name="T1"
-                        x:Uid="Downloads_Instances_DefaultPage_T1"
-                        x:Load="{x:Bind VM.Searched, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
-                        Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
-                        Text="Latest" />
-                    <ItemsRepeater
-                        x:Name="LatestInstancesItemsRepeater"
-                        x:Load="{x:Bind VM.Searched, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
-                        ItemTemplate="{StaticResource InstanceItemTemplate}"
-                        ItemsSource="{x:Bind VM.LatestInstances, Mode=OneWay}">
-                        <ItemsRepeater.Layout>
-                            <StackLayout Spacing="4" />
-                        </ItemsRepeater.Layout>
-                    </ItemsRepeater>
+                    <Grid x:Name="latestVersionsSection" x:Load="{x:Bind VM.Searched, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition x:Name="CD1" Width="0" />
+                            <ColumnDefinition x:Name="CD2" Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition x:Name="RD1" Height="4" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel x:Name="LatestReleasePanel">
+                            <TextBlock
+                                x:Uid="Downloads_Instances_DefaultPage_T1"
+                                Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
+                                Text="Latest Release" />
+                            <ContentPresenter
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch"
+                                Content="{x:Bind VM.LatestRelease, Mode=OneWay}"
+                                ContentTemplate="{StaticResource InstanceItemTemplate}" />
+                        </StackPanel>
+
+                        <StackPanel
+                            x:Name="LatestSnapshotPanel"
+                            Grid.Row="2"
+                            Grid.Column="0">
+                            <TextBlock
+                                x:Uid="Downloads_Instances_DefaultPage_T1_1"
+                                Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
+                                Text="Latest Snapshot" />
+                            <ContentPresenter
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch"
+                                Content="{x:Bind VM.LatestSnapshot, Mode=OneWay}"
+                                ContentTemplate="{StaticResource InstanceItemTemplate}" />
+                        </StackPanel>
+                    </Grid>
 
                     <TextBlock
                         x:Name="T2"

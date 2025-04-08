@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.ViewModels.Settings;
+using System.IO;
 
 namespace Natsurainko.FluentLauncher.Views.Settings;
 
@@ -46,5 +47,16 @@ public sealed partial class LaunchPage : Page, IBreadcrumbBarAware
         enableText!.Visibility = path == current ? Visibility.Visible : Visibility.Collapsed;
 
         card.Unloaded += (s, e) => WeakReferenceMessenger.Default.Unregister<SettingsStringValueChangedMessage>(sender);
+    }
+
+    internal static bool CanJavaActivate(string java)
+    {
+        try
+        {
+            return File.Exists(java);
+        }
+        catch { }
+
+        return false;
     }
 }

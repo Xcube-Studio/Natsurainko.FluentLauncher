@@ -10,3 +10,6 @@
 [submodule "FluentLauncher.Infra.Settings"]
 	path = FluentLauncher.Infra.Settings
 	url = https://github.com/Xcube-Studio/FluentLauncher.Infra.Settings.git
+[submodule "FluentLauncher.Infra.UI"]
+	path = FluentLauncher.Infra.UI
+	url = https://github.com/Xcube-Studio/FluentLauncher.Infra.UI.git

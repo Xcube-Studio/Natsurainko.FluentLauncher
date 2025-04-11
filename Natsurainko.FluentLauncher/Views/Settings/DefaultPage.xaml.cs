@@ -10,6 +10,12 @@ public sealed partial class DefaultPage : Page, IBreadcrumbBarAware
 
     DefaultViewModel VM => (DefaultViewModel)DataContext;
 
+#if ENABLE_LOAD_EXTENSIONS
+    public bool ENABLE_LOAD_EXTENSIONS => true;
+#else
+    public bool ENABLE_LOAD_EXTENSIONS => false;
+#endif
+
     public DefaultPage()
     {
         InitializeComponent();

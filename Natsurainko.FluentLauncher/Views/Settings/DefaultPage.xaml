@@ -60,6 +60,16 @@
                     HeaderIcon="{xh:FontIcon Glyph=&#xE790;}"
                     IsClickEnabled="True" />
 
+                <controls:SettingsCard
+                    x:Name="ExtensionsCard"
+                    x:Load="{x:Bind ENABLE_LOAD_EXTENSIONS}"
+                    Command="{x:Bind VM.CardClickCommand}"
+                    CommandParameter="Settings/Extensions"
+                    Description="View and manage loaded plugins"
+                    Header="Extensions settings"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xea86;}"
+                    IsClickEnabled="True" />
+
                 <TextBlock
                     x:Uid="Settings_DefaultPage_T1"
                     Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"

@@ -81,6 +81,8 @@ internal static class DependencyInjectionExtensions
 
         builder.Services.AddSingleton(Instances);
         builder.Services.AddSingleton(Assemblies);
+
+        builder.Pages.WithPage<Views.Settings.ExtensionsPage, ViewModels.Settings.ExtensionsViewModel>("Settings/Extensions");
     }
 #endif
 }

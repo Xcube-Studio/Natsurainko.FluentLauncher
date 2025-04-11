@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Settings.ExtensionsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:extensions="using:FluentLauncher.Infra.ExtensionHost.Extensions"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Settings"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    mc:Ignorable="d">
+
+    <ScrollViewer>
+        <Border x:Name="border" Margin="{ThemeResource PageMarginWithBorder}">
+            <StackPanel
+                MaxWidth="1000"
+                HorizontalAlignment="Stretch"
+                Spacing="{StaticResource SettingsCardSpacing}">
+                <StackPanel.ChildrenTransitions>
+                    <EntranceThemeTransition FromVerticalOffset="50" />
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                </StackPanel.ChildrenTransitions>
+
+                <TextBlock Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}" Text="Extenisons Folder" />
+
+                <controls:SettingsCard
+                    ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
+                    Command="{x:Bind VM.OpenExtensionsFolderCommand}"
+                    Header="Extensions storage directory"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
+                    IsClickEnabled="True">
+                    <controls:SettingsCard.Description>
+                        <TextBlock
+                            Text="{x:Bind VM.ExtensionsFolder, Mode=OneWay}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
+                    </controls:SettingsCard.Description>
+                </controls:SettingsCard>
+
+                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Loader Extenisons" />
+
+                <ItemsRepeater ItemsSource="{x:Bind VM.Extensions, Mode=OneWay}">
+                    <ItemsRepeater.ItemTemplate>
+                        <DataTemplate x:DataType="extensions:IExtension">
+                            <controls:SettingsCard
+                                Padding="16,8"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Description="{x:Bind Description}"
+                                Header="{x:Bind Name}"
+                                HeaderIcon="{xh:FontIcon Glyph=&#xea86;}" />
+                        </DataTemplate>
+                    </ItemsRepeater.ItemTemplate>
+                    <ItemsRepeater.Layout>
+                        <StackLayout Spacing="4" />
+                    </ItemsRepeater.Layout>
+                </ItemsRepeater>
+
+            </StackPanel>
+        </Border>
+
+        <!--  Visual states reflect the application's window size  -->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="LayoutVisualStates">
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger>
+                            <AdaptiveTrigger.MinWindowWidth>
+                                <x:Double>641</x:Double>
+                            </AdaptiveTrigger.MinWindowWidth>
+                        </AdaptiveTrigger>
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="border.Margin" Value="20, 0, 20, 20" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </ScrollViewer>
+</Page>

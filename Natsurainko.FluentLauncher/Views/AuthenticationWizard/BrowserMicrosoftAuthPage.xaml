@@ -14,7 +14,7 @@
     <StackPanel Spacing="10">
         <Border CornerRadius="4">
             <WebView2
-                Height="300"
+                Height="350"
                 MinWidth="475"
                 HorizontalAlignment="Stretch"
                 Source="{x:Bind VM.Source, Mode=TwoWay}"

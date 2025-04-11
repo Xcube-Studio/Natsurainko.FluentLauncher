@@ -2,7 +2,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <LangVersion>preview</LangVersion>
-    <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
+    <TargetFramework>net9.0-windows10.0.22621.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
     <RootNamespace>Natsurainko.FluentLauncher</RootNamespace>
     <Platforms>x64;ARM64</Platforms>
@@ -10,7 +10,7 @@
     <UseWinUI>true</UseWinUI>
     <Configurations>Debug;Release;Debug-AOT;Release-AOT</Configurations>
     <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
-    <FluentLauncherReleaseChannel>Dev</FluentLauncherReleaseChannel>
+    <FluentLauncherReleaseChannel>Preview</FluentLauncherReleaseChannel>
 
     <!-- Packaging -->
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -97,6 +97,7 @@
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="WindowsAPICodePack.Shell.CommonFileDialogs" Version="1.1.5" />
     <PackageReference Include="WinUIEx" Version="2.5.1" />
+    <ProjectReference Include="..\FluentLauncher.Infra.ExtensionHost\FluentLauncher.Infra.ExtensionHost\FluentLauncher.Infra.ExtensionHost.csproj" />
 
     <!-- Projects -->
     <ProjectReference Include="..\infra\FluentLauncher.Infra.Settings.SourceGenerators\FluentLauncher.Infra.Settings.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />

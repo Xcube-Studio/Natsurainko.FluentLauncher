@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentLauncher.Infra.Locali
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentLauncher.Infra.LocalizedStrings", "FluentLauncher.Localization\FluentLauncher.Infra.LocalizedStrings\FluentLauncher.Infra.LocalizedStrings.csproj", "{F5DEEEBD-0A46-E4A2-9CE4-CC26F7C344AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentLauncher.Infra.ExtensionHost", "FluentLauncher.Infra.ExtensionHost\FluentLauncher.Infra.ExtensionHost\FluentLauncher.Infra.ExtensionHost.csproj", "{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -264,6 +266,30 @@ Global
 		{F5DEEEBD-0A46-E4A2-9CE4-CC26F7C344AE}.Release-AOT|ARM64.Build.0 = Release|Any CPU
 		{F5DEEEBD-0A46-E4A2-9CE4-CC26F7C344AE}.Release-AOT|x64.ActiveCfg = Release|Any CPU
 		{F5DEEEBD-0A46-E4A2-9CE4-CC26F7C344AE}.Release-AOT|x64.Build.0 = Release|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Debug|x64.Build.0 = Debug|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Debug-AOT|Any CPU.ActiveCfg = Debug|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Debug-AOT|Any CPU.Build.0 = Debug|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Debug-AOT|ARM64.ActiveCfg = Debug|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Debug-AOT|ARM64.Build.0 = Debug|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Debug-AOT|x64.ActiveCfg = Debug|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Debug-AOT|x64.Build.0 = Debug|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Release|ARM64.Build.0 = Release|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Release|x64.ActiveCfg = Release|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Release|x64.Build.0 = Release|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Release-AOT|Any CPU.ActiveCfg = Release|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Release-AOT|Any CPU.Build.0 = Release|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Release-AOT|ARM64.ActiveCfg = Release|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Release-AOT|ARM64.Build.0 = Release|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Release-AOT|x64.ActiveCfg = Release|Any CPU
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}.Release-AOT|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -276,6 +302,7 @@ Global
 		{93801D2A-80E9-CFF0-8A0C-1D08549D3AA4} = {0537A9FF-BF86-4F92-A731-B6141B27ADDB}
 		{10F1876F-3D1C-7DCB-9D66-FEB7A10718EA} = {0537A9FF-BF86-4F92-A731-B6141B27ADDB}
 		{F5DEEEBD-0A46-E4A2-9CE4-CC26F7C344AE} = {0537A9FF-BF86-4F92-A731-B6141B27ADDB}
+		{73DE6C48-87AD-5B9D-AA46-32AD8B15978E} = {0537A9FF-BF86-4F92-A731-B6141B27ADDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7BD789E2-AC9A-40C1-BD71-A7DA5DFBF325}

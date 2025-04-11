@@ -5,7 +5,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:extensions="using:FluentLauncher.Infra.ExtensionHost.Extensions"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Settings"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
@@ -26,13 +25,13 @@
 
                 <controls:SettingsCard
                     ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
-                    Command="{x:Bind VM.OpenExtensionsFolderCommand}"
+                    Command="{Binding OpenExtensionsFolderCommand}"
                     Header="Extensions storage directory"
                     HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
                     IsClickEnabled="True">
                     <controls:SettingsCard.Description>
                         <TextBlock
-                            Text="{x:Bind VM.ExtensionsFolder, Mode=OneWay}"
+                            Text="{Binding ExtensionsFolder, Mode=OneWay}"
                             TextTrimming="CharacterEllipsis"
                             TextWrapping="NoWrap" />
                     </controls:SettingsCard.Description>
@@ -40,16 +39,15 @@
 
                 <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Loader Extenisons" />
 
-                <ItemsRepeater ItemsSource="{x:Bind VM.Extensions, Mode=OneWay}">
+                <ItemsRepeater ItemsSource="{Binding Extensions, Mode=OneWay}">
                     <ItemsRepeater.ItemTemplate>
-                        <DataTemplate x:DataType="extensions:IExtension">
+                        <DataTemplate>
                             <controls:SettingsCard
                                 Padding="16,8"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
-                                Description="{x:Bind Description}"
-                                Header="{x:Bind Name}"
-                                HeaderIcon="{xh:FontIcon Glyph=&#xea86;}" />
+                                HeaderIcon="{xh:FontIcon Glyph=&#xea86;}"
+                                Loaded="SettingsCard_Loaded" />
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>
                     <ItemsRepeater.Layout>

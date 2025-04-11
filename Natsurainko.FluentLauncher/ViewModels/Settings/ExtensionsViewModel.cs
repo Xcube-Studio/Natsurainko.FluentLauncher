@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿#if ENABLE_LOAD_EXTENSIONS
+using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.ExtensionHost.Extensions;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,6 @@ using Windows.System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-#if ENABLE_LOAD_EXTENSIONS
 
 internal partial class ExtensionsViewModel(List<IExtension> extensions) : PageVM
 {

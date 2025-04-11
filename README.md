@@ -5,7 +5,7 @@
 ![](https://img.shields.io/github/contributors/Xcube-Studio/Natsurainko.FluentLauncher)
 ![](https://img.shields.io/github/commit-activity/y/Xcube-Studio/Natsurainko.FluentLauncher)
 
-基于 .NET 8 以及 WinUI3 技术开发的 Minecraft Java 版启动器  
+基于 .NET 9 以及 WinUI3 技术开发的 Minecraft Java 版启动器  
 专为 Windows 11 设计的 Minecraft 启动器  
 提供简洁、流畅的视觉体验
 
@@ -64,7 +64,7 @@
 
 ## 应用分发 ✈️
 
-#### *一定需要安装才能运行应用 [.NET 8 运行时](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0) (不论是从哪种通道安装)*
+#### *一定需要安装才能运行应用 [.NET 9 运行时](https://dotnet.microsoft.com/zh-cn/download/dotnet/9.0) (不论是从哪种通道安装)*
 
 ### *稳定版通道 (Stable)*
 

@@ -1,4 +1,4 @@
-$localizerProject = ".\FluentLauncher.Localization\FluentLauncher.Infra.Localizer"
+$localizerProject = ".\FluentLauncher.Infra.Localization\FluentLauncher.Infra.Localizer"
 
 # Check if localizer exists
 if (-not (Test-Path $localizerProject)) {
@@ -7,7 +7,7 @@ if (-not (Test-Path $localizerProject)) {
 }
 
 # Check modification dates
-$csvFolder = ".\FluentLauncher.Localization\Views"
+$csvFolder = ".\FluentLauncher.Infra.Localization\Views"
 $reswFolder = ".\Natsurainko.FluentLauncher\Assets\Strings"
 
 # Function to get the most recent modification date in a directory

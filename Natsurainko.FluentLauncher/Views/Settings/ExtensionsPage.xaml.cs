@@ -1,12 +1,11 @@
-﻿using CommunityToolkit.WinUI.Controls;
+﻿#if ENABLE_LOAD_EXTENSIONS
+using CommunityToolkit.WinUI.Controls;
 using FluentLauncher.Infra.ExtensionHost.Extensions;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.ViewModels.Settings;
 
 namespace Natsurainko.FluentLauncher.Views.Settings;
-
-#if ENABLE_LOAD_EXTENSIONS
 
 public sealed partial class ExtensionsPage : Page, IBreadcrumbBarAware
 {

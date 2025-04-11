@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentLauncher.Infra.UI", "infra\FluentLauncher.Infra.UI\FluentLauncher.Infra.UI.csproj", "{EC4A7DE1-589A-4FFF-9E2A-48ED6114182F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentLauncher.Infra.WinUI", "infra\FluentLauncher.Infra.WinUI\FluentLauncher.Infra.WinUI.csproj", "{0AD85018-AAA2-49D9-A29F-910E6A82A6BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentLauncher.Infra.WinUI", "FluentLauncher.Infra.WinUI\FluentLauncher.Infra.WinUI.csproj", "{0AD85018-AAA2-49D9-A29F-910E6A82A6BF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentLauncher.Infra.Settings", "FluentLauncher.Infra.Settings\FluentLauncher.Infra.Settings\FluentLauncher.Infra.Settings.csproj", "{FBF301A2-326F-4B53-94A2-399102202D7E}"
 EndProject

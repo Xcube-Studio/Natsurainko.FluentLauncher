@@ -7,3 +7,6 @@
 [submodule "FluentLauncher.Infra.Localization"]
 	path = FluentLauncher.Infra.Localization
 	url = https://github.com/Xcube-Studio/FluentLauncher.Infra.Localization.git
+[submodule "FluentLauncher.Infra.Settings"]
+	path = FluentLauncher.Infra.Settings
+	url = https://github.com/Xcube-Studio/FluentLauncher.Infra.Settings.git

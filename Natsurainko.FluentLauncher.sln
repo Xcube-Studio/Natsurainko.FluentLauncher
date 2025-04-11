@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentLauncher.Infra.UI", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentLauncher.Infra.WinUI", "infra\FluentLauncher.Infra.WinUI\FluentLauncher.Infra.WinUI.csproj", "{0AD85018-AAA2-49D9-A29F-910E6A82A6BF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentLauncher.Infra.Settings", "infra\FluentLauncher.Infra.Settings\FluentLauncher.Infra.Settings.csproj", "{FBF301A2-326F-4B53-94A2-399102202D7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentLauncher.Infra.Settings", "FluentLauncher.Infra.Settings\FluentLauncher.Infra.Settings\FluentLauncher.Infra.Settings.csproj", "{FBF301A2-326F-4B53-94A2-399102202D7E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentLauncher.Infra.Settings.SourceGenerators", "infra\FluentLauncher.Infra.Settings.SourceGenerators\FluentLauncher.Infra.Settings.SourceGenerators.csproj", "{0BE5C833-0FA6-446B-89FA-FD4D3B1B7CD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentLauncher.Infra.Settings.SourceGenerators", "FluentLauncher.Infra.Settings\FluentLauncher.Infra.Settings.SourceGenerators\FluentLauncher.Infra.Settings.SourceGenerators.csproj", "{0BE5C833-0FA6-446B-89FA-FD4D3B1B7CD5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentLauncher.Infra.ExtensionHost", "FluentLauncher.Infra.ExtensionHost\FluentLauncher.Infra.ExtensionHost\FluentLauncher.Infra.ExtensionHost.csproj", "{73DE6C48-87AD-5B9D-AA46-32AD8B15978E}"
 EndProject

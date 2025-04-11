@@ -78,7 +78,7 @@
 
         <Grid
             Grid.Column="2"
-            Width="300"
+            Width="325"
             MaxHeight="275"
             HorizontalAlignment="Center"
             VerticalAlignment="Center">
@@ -86,7 +86,7 @@
                 <ListView.Header>
                     <TextBlock
                         x:Uid="OOBE_JavaPage_H"
-                        Margin="0,0,0,5"
+                        Margin="8,0,0,5"
                         Style="{ThemeResource BaseTextBlockStyle}"
                         Text="Existing:" />
                 </ListView.Header>
@@ -104,12 +104,12 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <Image
+                            <ContentControl
                                 Grid.Column="0"
                                 Width="32"
                                 Height="32"
                                 VerticalAlignment="Center"
-                                Source="{x:Bind Converter={StaticResource JavaIconConverter}}" />
+                                Content="{x:Bind Converter={StaticResource JavaIconConverter}}" />
                             <StackPanel Grid.Column="2">
                                 <TextBlock Text="{x:Bind Converter={StaticResource JavaInfoConverter}}" TextTrimming="CharacterEllipsis" />
                                 <TextBlock

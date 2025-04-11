@@ -15,11 +15,10 @@
         <Border CornerRadius="4">
             <WebView2
                 Height="300"
-                MinWidth="400"
+                MinWidth="475"
                 HorizontalAlignment="Stretch"
                 Source="{x:Bind VM.Source, Mode=TwoWay}"
-                Visibility="{x:Bind VM.NeedRefresh, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
-            </WebView2>
+                Visibility="{x:Bind VM.NeedRefresh, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
         </Border>
         <Grid Visibility="{x:Bind VM.NeedRefresh, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.ColumnDefinitions>

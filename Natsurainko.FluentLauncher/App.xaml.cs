@@ -96,12 +96,12 @@ public partial class App : Application
     protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
 #if FLUENT_LAUNCHER_PREVIEW_CHANNEL
-        global::FluentLauncher.Infra.WinUI.ExtensionHost.ApplicationExtensionHost.Current.Initialize(this);
+        global::FluentLauncher.Infra.ExtensionHost.ApplicationExtensionHost.Current.Initialize(this);
 
-        foreach (var assembly in App.GetService<global::System.Collections.Generic.List<global::FluentLauncher.Infra.WinUI.ExtensionHost.Assemblies.IExtensionAssembly>>())
+        foreach (var assembly in App.GetService<global::System.Collections.Generic.List<global::FluentLauncher.Infra.ExtensionHost.Assemblies.IExtensionAssembly>>())
             await assembly.LoadAsync();
 
-        foreach (var extension in App.GetService<global::System.Collections.Generic.List<global::FluentLauncher.Infra.WinUI.ExtensionHost.Extensions.IExtension>>())
+        foreach (var extension in App.GetService<global::System.Collections.Generic.List<global::FluentLauncher.Infra.ExtensionHost.Extensions.IExtension>>())
             extension.SetServiceProvider(Services);
 #endif
 

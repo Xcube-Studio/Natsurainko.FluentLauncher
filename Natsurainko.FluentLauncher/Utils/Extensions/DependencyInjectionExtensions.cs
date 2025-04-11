@@ -7,13 +7,12 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Windows.ApplicationModel;
-using FluentLauncher.Infra.WinUI.ExtensionHost.Assemblies;
-using Windows.Storage;
-
 
 #if FLUENT_LAUNCHER_PREVIEW_CHANNEL
-using FluentLauncher.Infra.WinUI.ExtensionHost;
-using FluentLauncher.Infra.WinUI.ExtensionHost.Extensions;
+using Windows.Storage;
+using FluentLauncher.Infra.ExtensionHost;
+using FluentLauncher.Infra.ExtensionHost.Assemblies;
+using FluentLauncher.Infra.ExtensionHost.Extensions;
 using System.Linq;
 #endif
 

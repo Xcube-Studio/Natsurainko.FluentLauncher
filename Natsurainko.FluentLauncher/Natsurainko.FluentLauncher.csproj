@@ -97,13 +97,13 @@
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="WindowsAPICodePack.Shell.CommonFileDialogs" Version="1.1.5" />
     <PackageReference Include="WinUIEx" Version="2.5.1" />
+    <ProjectReference Include="..\FluentLauncher.Infra.ExtensionHost\FluentLauncher.Infra.ExtensionHost\FluentLauncher.Infra.ExtensionHost.csproj" />
 
     <!-- Projects -->
     <ProjectReference Include="..\infra\FluentLauncher.Infra.Settings.SourceGenerators\FluentLauncher.Infra.Settings.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\FluentLauncher.Localization\FluentLauncher.Infra.LocalizedStrings.SourceGenerators\FluentLauncher.Infra.LocalizedStrings.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\FluentLauncher.Localization\FluentLauncher.Infra.LocalizedStrings\FluentLauncher.Infra.LocalizedStrings.csproj" />
     <ProjectReference Include="..\infra\FluentLauncher.Infra.Settings\FluentLauncher.Infra.Settings.csproj" />
-    <ProjectReference Condition="$(FluentLauncherReleaseChannel) == 'Preview'" Include="..\infra\FluentLauncher.Infra.WinUI.ExtensionHost\FluentLauncher.Infra.WinUI.ExtensionHost.csproj" />
     <ProjectReference Include="..\infra\FluentLauncher.Infra.WinUI\FluentLauncher.Infra.WinUI.csproj" />
     <ProjectReference Include="..\Natsurainko.FluentCore\Natsurainko.FluentCore\Natsurainko.FluentCore.csproj" />
     <Manifest Include="$(ApplicationManifest)" />

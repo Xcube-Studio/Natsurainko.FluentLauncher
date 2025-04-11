@@ -267,9 +267,9 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         //};
 
 #if FLUENT_LAUNCHER_PREVIEW_CHANNEL
-        foreach (var extension in App.GetService<List<global::FluentLauncher.Infra.WinUI.ExtensionHost.Extensions.IExtension>>())
+        foreach (var extension in App.GetService<List<global::FluentLauncher.Infra.ExtensionHost.Extensions.IExtension>>())
         {
-            if (extension is global::FluentLauncher.Infra.WinUI.ExtensionHost.Extensions.INavigationProviderExtension provider)
+            if (extension is global::FluentLauncher.Infra.ExtensionHost.Extensions.INavigationProviderExtension provider)
             {
                 foreach (var item in provider.ProvideNavigationItems())
                 {

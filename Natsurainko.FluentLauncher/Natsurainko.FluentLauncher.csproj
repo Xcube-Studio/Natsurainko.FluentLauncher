@@ -11,7 +11,8 @@
     <Configurations>Debug;Release;Debug-AOT;Release-AOT</Configurations>
     <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
     <FluentLauncherReleaseChannel>Dev</FluentLauncherReleaseChannel>
-
+	<EnableLoadExtensions>Disable</EnableLoadExtensions>
+	
     <!-- Packaging -->
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
@@ -39,6 +40,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="$(FluentLauncherReleaseChannel) == 'Dev'">
     <DefineConstants>$(DefineConstants);FLUENT_LAUNCHER_DEV_CHANNEL</DefineConstants>
+  </PropertyGroup>
+	
+  <PropertyGroup Condition="$(EnableLoadExtensions) == 'Enable'">
+    <DefineConstants>$(DefineConstants);ENABLE_LOAD_EXTENSIONS</DefineConstants>
   </PropertyGroup>
 
     <!-- NativeAOT -->
@@ -101,7 +106,7 @@
     <!-- Projects -->
     <ProjectReference Include="..\FluentLauncher.Infra.Localization\FluentLauncher.Infra.LocalizedStrings.SourceGenerators\FluentLauncher.Infra.LocalizedStrings.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
     <ProjectReference Include="..\FluentLauncher.Infra.Localization\FluentLauncher.Infra.LocalizedStrings\FluentLauncher.Infra.LocalizedStrings.csproj" />
-    <ProjectReference Include="..\FluentLauncher.Infra.ExtensionHost\FluentLauncher.Infra.ExtensionHost\FluentLauncher.Infra.ExtensionHost.csproj" />
+    <ProjectReference Condition="$(EnableLoadExtensions) == 'Enable'" Include="..\FluentLauncher.Infra.ExtensionHost\FluentLauncher.Infra.ExtensionHost\FluentLauncher.Infra.ExtensionHost.csproj" />
     <ProjectReference Include="..\FluentLauncher.Infra.Settings\FluentLauncher.Infra.Settings.SourceGenerators\FluentLauncher.Infra.Settings.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\FluentLauncher.Infra.Settings\FluentLauncher.Infra.Settings\FluentLauncher.Infra.Settings.csproj" />
     <ProjectReference Include="..\FluentLauncher.Infra.WinUI\FluentLauncher.Infra.WinUI.csproj" />
@@ -251,19 +256,5 @@
   <ItemGroup>
     <AdditionalFiles Include="Assets\Strings\*.resw" />
   </ItemGroup>
-
-  <!-- Multilingual App Toolkit
-  <PropertyGroup Label="MultilingualAppToolkit">
-    <MultilingualAppToolkitVersion>4.0</MultilingualAppToolkitVersion>
-    <MultilingualFallbackLanguage>en-US</MultilingualFallbackLanguage>
-    <TranslationReport Condition="'$(Configuration)' == 'Release'">true</TranslationReport>
-    <SuppressPseudoWarning Condition="'$(Configuration)' == 'Debug'">true</SuppressPseudoWarning>
-  </PropertyGroup>  
-  
-    <Import Project="$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.PriResources.targets" Label="MultilingualAppToolkit" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\v$(MultilingualAppToolkitVersion)\Microsoft.Multilingual.PriResources.targets')" />
-  <Target Name="MATPrerequisite" BeforeTargets="PrepareForBuild" Condition="!Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.PriResources.targets')" Label="MultilingualAppToolkit">
-    <Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
-  </Target>
-  -->
-
+	
 </Project>

@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Windows.ApplicationModel;
 
-#if FLUENT_LAUNCHER_PREVIEW_CHANNEL
+#if ENABLE_LOAD_EXTENSIONS
 using Windows.Storage;
 using FluentLauncher.Infra.ExtensionHost;
 using FluentLauncher.Infra.ExtensionHost.Assemblies;
@@ -48,7 +48,7 @@ internal static class DependencyInjectionExtensions
         return services;
     }
 
-#if FLUENT_LAUNCHER_PREVIEW_CHANNEL
+#if ENABLE_LOAD_EXTENSIONS
     public static void UseApplicationExtensionHost(this WinUIApplicationBuilder builder)
     {
         ApplicationExtensionHost.Initialize<App>();

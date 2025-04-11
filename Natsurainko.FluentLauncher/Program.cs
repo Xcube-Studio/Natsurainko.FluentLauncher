@@ -26,7 +26,7 @@ var builder = WinUIApplication.CreateBuilder(() => new App());
 
 builder.UseExtendedWinUIServices();
 
-#if FLUENT_LAUNCHER_PREVIEW_CHANNEL
+#if ENABLE_LOAD_EXTENSIONS
 builder.UseApplicationExtensionHost();
 #endif
 

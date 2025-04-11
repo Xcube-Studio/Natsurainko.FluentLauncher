@@ -95,7 +95,7 @@ public partial class App : Application
 
     protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
-#if FLUENT_LAUNCHER_PREVIEW_CHANNEL
+#if ENABLE_LOAD_EXTENSIONS
         global::FluentLauncher.Infra.ExtensionHost.ApplicationExtensionHost.Current.Initialize(this);
 
         foreach (var assembly in App.GetService<global::System.Collections.Generic.List<global::FluentLauncher.Infra.ExtensionHost.Assemblies.IExtensionAssembly>>())

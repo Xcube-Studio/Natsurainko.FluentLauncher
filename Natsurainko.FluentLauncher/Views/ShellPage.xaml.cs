@@ -266,7 +266,7 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         //    Duration = TimeSpan.FromMilliseconds(500)
         //};
 
-#if FLUENT_LAUNCHER_PREVIEW_CHANNEL
+#if ENABLE_LOAD_EXTENSIONS
         foreach (var extension in App.GetService<List<global::FluentLauncher.Infra.ExtensionHost.Extensions.IExtension>>())
         {
             if (extension is global::FluentLauncher.Infra.ExtensionHost.Extensions.INavigationProviderExtension provider)

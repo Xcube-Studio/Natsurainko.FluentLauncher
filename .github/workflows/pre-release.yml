@@ -2,6 +2,15 @@ name: Pre-Release
 
 on:
   workflow_dispatch:
+    inputs:
+      EnableLoadExtensions:
+        description: "<EnableLoadExtensions/>"
+        required: true
+        default: "Disable"
+        type: choice
+        options:
+          - Enable
+          - Disable
 
 jobs:
   # Reuse the build job from build.yml
@@ -13,6 +22,7 @@ jobs:
       create_package: true
       use_preview_version: true
       channel: "Preview"
+      enable_load_extensions: ${{ inputs.EnableLoadExtensions }}
     secrets:
       pfx_base64_encoded: ${{ secrets.PFX_BASE64_ENCODED }}
 

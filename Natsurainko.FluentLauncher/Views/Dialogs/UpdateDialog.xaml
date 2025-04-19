@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI.MarkdownTextBlock"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    IsEnabled="{Binding Enable}"
+    IsEnabled="{x:Bind VM.Enable, Mode=OneWay}"
     Style="{ThemeResource DefaultContentDialogStyle}"
     mc:Ignorable="d">
 
@@ -57,11 +57,11 @@
                                     <TextBlock
                                         FontSize="16"
                                         Style="{ThemeResource BaseTextBlockStyle}"
-                                        Text="{Binding TagName}" />
+                                        Text="{x:Bind VM.TagName, Mode=OneWay}" />
                                     <TextBlock
                                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                         Style="{ThemeResource CaptionTextBlockStyle}"
-                                        Text="{Binding PublishedAt}" />
+                                        Text="{x:Bind VM.PublishedAt, Mode=OneWay}" />
                                 </StackPanel>
                                 <HyperlinkButton Grid.Column="2" VerticalAlignment="Center">
                                     <StackPanel Orientation="Horizontal" Spacing="5">
@@ -75,7 +75,7 @@
                             <labs:MarkdownTextBlock
                                 Background="Transparent"
                                 Config="{x:Bind MarkdownConfig}"
-                                Text="{Binding Body}" />
+                                Text="{x:Bind VM.Body, Mode=OneWay}" />
                         </ScrollViewer>
                     </Expander>
                     <Grid>
@@ -89,11 +89,11 @@
                         <TextBox
                             Grid.Column="2"
                             PlaceholderText="example: https://gh-proxy.com/"
-                            Text="{Binding ProxyUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Visibility="{Binding ProxyBoxVisibility}" />
+                            Text="{x:Bind VM.ProxyUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Visibility="{x:Bind VM.ProxyBoxVisibility, Mode=OneWay}" />
                     </Grid>
                 </StackPanel>
-                <StackPanel Spacing="5" Visibility="{Binding ProrgessVisibility}">
+                <StackPanel Spacing="5" Visibility="{x:Bind VM.ProrgessVisibility, Mode=OneWay}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -104,18 +104,18 @@
                             Grid.Column="0"
                             HorizontalAlignment="Left"
                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                            Text="{Binding ActionName}" />
+                            Text="{x:Bind VM.ActionName, Mode=OneWay}" />
                         <TextBlock
                             Grid.Column="2"
                             HorizontalAlignment="Right"
                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                            Text="{Binding ProgressText}" />
+                            Text="{x:Bind VM.ProgressText, Mode=OneWay}" />
                     </Grid>
                     <ProgressBar
                         Grid.Row="1"
-                        IsIndeterminate="{Binding IsIndeterminate}"
+                        IsIndeterminate="{x:Bind VM.IsIndeterminate, Mode=OneWay}"
                         Maximum="1"
-                        Value="{Binding Progress}" />
+                        Value="{x:Bind VM.Progress, Mode=OneWay}" />
                     <TextBlock
                         Grid.Column="0"
                         HorizontalAlignment="Left"
@@ -125,13 +125,13 @@
                 <StackPanel
                     Orientation="Vertical"
                     Spacing="5"
-                    Visibility="{Binding ErrorTipVisibility}">
+                    Visibility="{x:Bind VM.ErrorTipVisibility, Mode=OneWay}">
                     <TextBlock
                         Foreground="{ThemeResource SystemErrorTextColor}"
                         Text="Update failed. A problem occurred during the installation process. The following is the installation log. Click to open it."
                         TextWrapping="WrapWholeWords" />
-                    <HyperlinkButton Command="{Binding ShowErrorLogCommand}">
-                        <TextBlock Text="{Binding ErrorLogPath}" TextTrimming="CharacterEllipsis" />
+                    <HyperlinkButton Command="{x:Bind VM.ShowErrorLogCommand}">
+                        <TextBlock Text="{x:Bind VM.ErrorLogPath, Mode=OneWay}" TextTrimming="CharacterEllipsis" />
                     </HyperlinkButton>
                 </StackPanel>
             </StackPanel>
@@ -158,7 +158,7 @@
                 <Button
                     Grid.Column="0"
                     HorizontalAlignment="Stretch"
-                    Command="{Binding UpdateCommand}"
+                    Command="{x:Bind VM.UpdateCommand}"
                     ElementSoundMode="FocusOnly"
                     IsTabStop="False"
                     Style="{ThemeResource AccentButtonStyle}">
@@ -167,7 +167,7 @@
                 <Button
                     Grid.Column="2"
                     HorizontalAlignment="Stretch"
-                    Command="{Binding CancelCommand}"
+                    Command="{x:Bind VM.CancelCommand}"
                     ElementSoundMode="FocusOnly"
                     IsTabStop="False">
                     <TextBlock x:Uid="Buttons_Cancel" Text="Cancel" />

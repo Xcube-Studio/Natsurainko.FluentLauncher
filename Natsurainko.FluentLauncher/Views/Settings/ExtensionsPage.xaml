@@ -25,13 +25,13 @@
 
                 <controls:SettingsCard
                     ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
-                    Command="{Binding OpenExtensionsFolderCommand}"
+                    Command="{x:Bind VM.OpenExtensionsFolderCommand}"
                     Header="Extensions storage directory"
                     HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
                     IsClickEnabled="True">
                     <controls:SettingsCard.Description>
                         <TextBlock
-                            Text="{Binding ExtensionsFolder, Mode=OneWay}"
+                            Text="{x:Bind VM.ExtensionsFolder, Mode=OneWay}"
                             TextTrimming="CharacterEllipsis"
                             TextWrapping="NoWrap" />
                     </controls:SettingsCard.Description>
@@ -39,7 +39,7 @@
 
                 <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Loader Extenisons" />
 
-                <ItemsRepeater ItemsSource="{Binding Extensions, Mode=OneWay}">
+                <ItemsRepeater ItemsSource="{x:Bind VM.Extensions, Mode=OneWay}">
                     <ItemsRepeater.ItemTemplate>
                         <DataTemplate>
                             <controls:SettingsCard

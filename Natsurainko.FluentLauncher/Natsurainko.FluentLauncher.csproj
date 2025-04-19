@@ -257,4 +257,23 @@
     <AdditionalFiles Include="Assets\Strings\*.resw" />
   </ItemGroup>
 	
+  <ItemGroup Condition="$(EnableLoadExtensions) != 'Enable'">
+    <Compile Remove="Views\Settings\ExtensionsPage.xaml.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="$(EnableLoadExtensions) != 'Enable'">
+    <Page Remove="Views\Settings\ExtensionsPage.xaml" />
+  </ItemGroup>
+  <ItemGroup Condition="$(EnableLoadExtensions) != 'Enable'">
+    <Compile Remove="ViewModels\Settings\ExtensionsViewModel.cs" />
+  </ItemGroup>
+	
+  <ItemGroup Condition="$(FluentLauncherReleaseChannel) != 'Preview'">
+    <Compile Remove="ViewModels\Dialogs\UpdateDialogViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="$(FluentLauncherReleaseChannel) != 'Preview'">
+    <Compile Remove="Views\Dialogs\UpdateDialog.xaml.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="$(FluentLauncherReleaseChannel) != 'Preview'">
+    <Page Remove="Views\Dialogs\UpdateDialog.xaml" />
+  </ItemGroup>
 </Project>

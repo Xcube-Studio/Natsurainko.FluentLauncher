@@ -1,5 +1,4 @@
-﻿#if FLUENT_LAUNCHER_PREVIEW_CHANNEL
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Services.Network;
@@ -156,5 +155,3 @@ internal partial class UpdateDialogViewModel(UpdateService updateService) : Dial
         using var _ = Process.Start("notepad.exe", ErrorLogPath);
     }
 }
-
-#endif

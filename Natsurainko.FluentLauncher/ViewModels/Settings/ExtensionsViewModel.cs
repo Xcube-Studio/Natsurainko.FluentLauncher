@@ -1,5 +1,4 @@
-﻿#if ENABLE_LOAD_EXTENSIONS
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.ExtensionHost.Extensions;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,6 @@ using Windows.System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-
 internal partial class ExtensionsViewModel(List<IExtension> extensions) : PageVM
 {
     public string ExtensionsFolder { get; } = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Extensions");
@@ -20,5 +18,3 @@ internal partial class ExtensionsViewModel(List<IExtension> extensions) : PageVM
     [RelayCommand]
     async Task OpenExtensionsFolder() => await Launcher.LaunchFolderPathAsync(ExtensionsFolder);
 }
-
-#endif

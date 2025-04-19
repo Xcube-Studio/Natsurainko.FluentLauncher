@@ -7,7 +7,6 @@
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:auth="using:Nrk.FluentCore.Authentication"
     xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:data="using:Nrk.FluentCore.GameManagement.Instances"
     xmlns:i="using:Microsoft.Xaml.Interactivity"

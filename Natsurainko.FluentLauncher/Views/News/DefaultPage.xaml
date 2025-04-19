@@ -6,7 +6,6 @@
     xmlns:behaviors="using:CommunityToolkit.WinUI.Behaviors"
     xmlns:bh="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:data="using:Natsurainko.FluentLauncher.Models"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
@@ -130,15 +129,15 @@
                                     </animations:AnimationSet>
                                 </animations:Explicit.Animations>
                                 <i:Interaction.Behaviors>
-                                    <core:EventTriggerBehavior EventName="Loaded">
+                                    <i:EventTriggerBehavior EventName="Loaded">
                                         <behaviors:StartAnimationAction Animation="{Binding ElementName=PointOutBlurAnimation}" />
-                                    </core:EventTriggerBehavior>
-                                    <core:EventTriggerBehavior EventName="PointerExited">
+                                    </i:EventTriggerBehavior>
+                                    <i:EventTriggerBehavior EventName="PointerExited">
                                         <behaviors:StartAnimationAction Animation="{Binding ElementName=PointOutBlurAnimation}" />
-                                    </core:EventTriggerBehavior>
-                                    <core:EventTriggerBehavior EventName="PointerEntered">
+                                    </i:EventTriggerBehavior>
+                                    <i:EventTriggerBehavior EventName="PointerEntered">
                                         <behaviors:StartAnimationAction Animation="{Binding ElementName=PointInBlurAnimation}" />
-                                    </core:EventTriggerBehavior>
+                                    </i:EventTriggerBehavior>
                                 </i:Interaction.Behaviors>
                             </Grid>
                         </DataTemplate>
@@ -248,15 +247,15 @@
                                     </animations:AnimationSet>
                                 </animations:Explicit.Animations>
                                 <i:Interaction.Behaviors>
-                                    <core:EventTriggerBehavior EventName="Loaded">
+                                    <i:EventTriggerBehavior EventName="Loaded">
                                         <behaviors:StartAnimationAction Animation="{Binding ElementName=PointOutBlurAnimation}" />
-                                    </core:EventTriggerBehavior>
-                                    <core:EventTriggerBehavior EventName="PointerExited">
+                                    </i:EventTriggerBehavior>
+                                    <i:EventTriggerBehavior EventName="PointerExited">
                                         <behaviors:StartAnimationAction Animation="{Binding ElementName=PointOutBlurAnimation}" />
-                                    </core:EventTriggerBehavior>
-                                    <core:EventTriggerBehavior EventName="PointerEntered">
+                                    </i:EventTriggerBehavior>
+                                    <i:EventTriggerBehavior EventName="PointerEntered">
                                         <behaviors:StartAnimationAction Animation="{Binding ElementName=PointInBlurAnimation}" />
-                                    </core:EventTriggerBehavior>
+                                    </i:EventTriggerBehavior>
                                 </i:Interaction.Behaviors>
                             </Grid>
 

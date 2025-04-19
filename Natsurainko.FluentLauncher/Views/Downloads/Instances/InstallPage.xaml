@@ -6,7 +6,6 @@
     xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
     xmlns:bh="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:data="using:Natsurainko.FluentLauncher.Models.UI"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
@@ -265,12 +264,12 @@
                                     </Grid>
                                 </Border>
                                 <i:Interaction.Behaviors>
-                                    <core:EventTriggerBehavior EventName="Loaded">
+                                    <i:EventTriggerBehavior EventName="Loaded">
                                         <actions:ModifiedInvokeCommandAction Command="{x:Bind LoadedCommand}" />
-                                    </core:EventTriggerBehavior>
-                                    <core:EventTriggerBehavior EventName="Unloaded">
+                                    </i:EventTriggerBehavior>
+                                    <i:EventTriggerBehavior EventName="Unloaded">
                                         <actions:ModifiedInvokeCommandAction Command="{x:Bind UnloadedCommand}" />
-                                    </core:EventTriggerBehavior>
+                                    </i:EventTriggerBehavior>
                                 </i:Interaction.Behaviors>
                             </ItemContainer>
                         </DataTemplate>
@@ -405,12 +404,12 @@
                                     </Grid>
                                 </Border>
                                 <i:Interaction.Behaviors>
-                                    <core:EventTriggerBehavior EventName="Loaded">
+                                    <i:EventTriggerBehavior EventName="Loaded">
                                         <actions:ModifiedInvokeCommandAction Command="{x:Bind LoadedCommand}" />
-                                    </core:EventTriggerBehavior>
-                                    <core:EventTriggerBehavior EventName="Unloaded">
+                                    </i:EventTriggerBehavior>
+                                    <i:EventTriggerBehavior EventName="Unloaded">
                                         <actions:ModifiedInvokeCommandAction Command="{x:Bind UnloadedCommand}" />
-                                    </core:EventTriggerBehavior>
+                                    </i:EventTriggerBehavior>
                                 </i:Interaction.Behaviors>
                             </ItemContainer>
                         </DataTemplate>

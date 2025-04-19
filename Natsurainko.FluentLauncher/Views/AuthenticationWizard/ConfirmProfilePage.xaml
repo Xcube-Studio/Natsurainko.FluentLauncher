@@ -6,7 +6,6 @@
     xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
     xmlns:authenticationwizard="using:Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard"
     xmlns:converters="using:Natsurainko.FluentLauncher.XamlHelpers.Converters"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.AuthenticationWizard"
@@ -19,9 +18,9 @@
     Tag="Confirm Minecraft Profile (3/3)"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
-        <core:EventTriggerBehavior EventName="Unloaded">
+        <i:EventTriggerBehavior EventName="Unloaded">
             <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.UnloadEventCommand}" />
-        </core:EventTriggerBehavior>
+        </i:EventTriggerBehavior>
     </i:Interaction.Behaviors>
 
     <Grid>

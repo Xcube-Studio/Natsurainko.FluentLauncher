@@ -6,7 +6,6 @@
     xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:converters="using:Natsurainko.FluentLauncher.XamlHelpers.Converters"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -495,13 +494,13 @@
                             </StackPanel>
 
                             <i:Interaction.Behaviors>
-                                <core:EventTriggerBehavior EventName="Checked">
+                                <i:EventTriggerBehavior EventName="Checked">
                                     <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.RadioButtonCheckedCommand}">
                                         <actions:ModifiedInvokeCommandAction.CommandParameter>
                                             <x:Int32>0</x:Int32>
                                         </actions:ModifiedInvokeCommandAction.CommandParameter>
                                     </actions:ModifiedInvokeCommandAction>
-                                </core:EventTriggerBehavior>
+                                </i:EventTriggerBehavior>
                             </i:Interaction.Behaviors>
                         </RadioButton>
                     </controls:SettingsExpander.Header>
@@ -542,13 +541,13 @@
                             </StackPanel>
 
                             <i:Interaction.Behaviors>
-                                <core:EventTriggerBehavior EventName="Checked">
+                                <i:EventTriggerBehavior EventName="Checked">
                                     <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.RadioButtonCheckedCommand}">
                                         <actions:ModifiedInvokeCommandAction.CommandParameter>
                                             <x:Int32>1</x:Int32>
                                         </actions:ModifiedInvokeCommandAction.CommandParameter>
                                     </actions:ModifiedInvokeCommandAction>
-                                </core:EventTriggerBehavior>
+                                </i:EventTriggerBehavior>
                             </i:Interaction.Behaviors>
                         </RadioButton>
                     </controls:SettingsCard.Header>
@@ -571,13 +570,13 @@
                             </StackPanel>
 
                             <i:Interaction.Behaviors>
-                                <core:EventTriggerBehavior EventName="Checked">
+                                <i:EventTriggerBehavior EventName="Checked">
                                     <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.RadioButtonCheckedCommand}">
                                         <actions:ModifiedInvokeCommandAction.CommandParameter>
                                             <x:Int32>2</x:Int32>
                                         </actions:ModifiedInvokeCommandAction.CommandParameter>
                                     </actions:ModifiedInvokeCommandAction>
-                                </core:EventTriggerBehavior>
+                                </i:EventTriggerBehavior>
                             </i:Interaction.Behaviors>
                         </RadioButton>
                     </controls:SettingsExpander.Header>
@@ -662,13 +661,13 @@
                             </StackPanel>
 
                             <i:Interaction.Behaviors>
-                                <core:EventTriggerBehavior EventName="Checked">
+                                <i:EventTriggerBehavior EventName="Checked">
                                     <actions:ModifiedInvokeCommandAction Command="{x:Bind VM.RadioButtonCheckedCommand}">
                                         <actions:ModifiedInvokeCommandAction.CommandParameter>
                                             <x:Int32>3</x:Int32>
                                         </actions:ModifiedInvokeCommandAction.CommandParameter>
                                     </actions:ModifiedInvokeCommandAction>
-                                </core:EventTriggerBehavior>
+                                </i:EventTriggerBehavior>
                             </i:Interaction.Behaviors>
                         </RadioButton>
                     </controls:SettingsExpander.Header>

@@ -62,7 +62,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 9.0.x
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
@@ -90,10 +90,10 @@ jobs:
       - name: Prepare FluentLauncher.Localization
         run: .\update-localization.ps1
 
-      # Modify Preview Channel Package.appxmanifest
-      - name: Modify Preview Channel Package.appxmanifest
+      # Update Package-Preview.appxmanifest
+      - name: Update Package-Preview.appxmanifest
         if: ${{ inputs.use_preview_version }}
-        run: .\modify-previewManifest.ps1
+        run: .\update-appxmanifest.ps1
 
       # Create the app package by building and packaging the Windows Application Packaging project
       - name: Create app package

@@ -191,22 +191,22 @@ jobs:
           }
 
           foreach ($packageFile in $packageFiles) {
-              $md5 = [MD5]::Create()
-              $stream = [IO.File]::OpenRead($packageFile)
+              $md5 = [System.Security.Cryptography.MD5]::Create()
+              $stream = [System.IO.File]::OpenRead($packageFile)
               $hashBytes = $md5.ComputeHash($stream)
               $stream.Close()
-              $hash = [BitConverter]::ToString($hashBytes) -replace '-', ''
+              $hash = [System.BitConverter]::ToString($hashBytes) -replace '-', ''
 
-              $json.hashes[([IO.Path]::GetFileName($packageFile))] = $hash.ToLower()
+              $json.hashes[([System.IO.Path]::GetFileName($packageFile))] = $hash.ToLower()
           }
 
-          $SerializerOptions = [JsonSerializerOptions]::new()
+          $SerializerOptions = [System.Text.Json.JsonSerializerOptions]::new()
           $SerializerOptions.WriteIndented = $true
 
-          $result = [JsonSerializer]::Serialize($json, $SerializerOptions)
+          $result = [System.Text.Json.JsonSerializer]::Serialize($json, $SerializerOptions)
           $markdown = "`````` json`n$result`n``````"
 
-          $directory = [IO.Path]::GetDirectoryName($path)
+          $directory = [System.IO.Path]::GetDirectoryName($path)
           if (-not (Test-Path -Path $directory)) {
               New-Item -ItemType Directory -Path $directory | Out-Null
           }

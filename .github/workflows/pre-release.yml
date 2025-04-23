@@ -166,28 +166,53 @@ jobs:
 
       - name: Create Release Information
         run: |
-          [xml]$xmlContent = Get-Content -Path "Natsurainko.FluentLauncher\Package-Preview.appxmanifest"
-          $version = $xmlContent.Package.Identity.Version
+          .\update-appxmanifest.ps1
+
+          $stableManifestPath = Resolve-Path -Path "Natsurainko.FluentLauncher\Package-Stable.appxmanifest"
+          [xml]$stableXmlContent = Get-Content -Path $stableManifestPath
+
+          $previewManifestPath = Resolve-Path -Path "Natsurainko.FluentLauncher\Package-Preview.appxmanifest"
+          [xml]$previewXmlContent = Get-Content -Path $previewManifestPath
+
+          $packageFiles = @("${{ github.workspace }}\updatePackage-x64.zip", "${{ github.workspace }}\updatePackage-arm64.zip")
+
           $commit = $env:GITHUB_SHA.Substring(0, 7)
+          $build = [int]$previewXmlContent.Package.Identity.Version.Split('.')[-1]
+          $previousStableVersion = [string]$stableXmlContent.Package.Identity.Version
+          $currentPreviewVersion = [string]$previewXmlContent.Package.Identity.Version
 
-          $url = "https://github.com/Xcube-Studio/FluentLauncher.PreviewChannel.PackageInstaller/releases/download/v0.0.2/PackageInstaller-x64.exe"
-          $installerPath = "PackageInstaller-x64.exe"
-
-          $ErrorActionPreference = "Stop"
-          $ErrorVariable = "DownloadError"
-
-          try {
-              Invoke-WebRequest -Uri $url -OutFile $installerPath -ErrorAction Stop -ErrorVariable DownloadError
-              Write-Output "File downloaded successfully to $installerPath"
-          } catch {
-              Write-Error "Download failed: $($DownloadError[0])"
-              exit 1
+          $json = @{
+              commit = $commit
+              build = $build
+              releaseTime = (Get-Date -Format "yyyy-MM-ddTHH:mm:ss")
+              currentPreviewVersion = $currentPreviewVersion
+              previousStableVersion = $previousStableVersion
+              hashes = @{}
           }
-          
-          $json = & .\$installerPath generateReleaseMarkdown --markdownPath "${{ github.workspace }}\body.md" --updatePackageFiles "${{ github.workspace }}\updatePackage-x64.zip" "${{ github.workspace }}\updatePackage-arm64.zip" --stableVersion $version --commit $commit
-          $jsonObject = $json | ConvertFrom-Json
 
-          $currentPreviewVersion = $jsonObject.currentPreviewVersion
+          foreach ($packageFile in $packageFiles) {
+              $md5 = [MD5]::Create()
+              $stream = [IO.File]::OpenRead($packageFile)
+              $hashBytes = $md5.ComputeHash($stream)
+              $stream.Close()
+              $hash = [BitConverter]::ToString($hashBytes) -replace '-', ''
+
+              $json.hashes[([IO.Path]::GetFileName($packageFile))] = $hash.ToLower()
+          }
+
+          $SerializerOptions = [JsonSerializerOptions]::new()
+          $SerializerOptions.WriteIndented = $true
+
+          $result = [JsonSerializer]::Serialize($json, $SerializerOptions)
+          $markdown = "`````` json`n$result`n``````"
+
+          $directory = [IO.Path]::GetDirectoryName($path)
+          if (-not (Test-Path -Path $directory)) {
+              New-Item -ItemType Directory -Path $directory | Out-Null
+          }
+
+          Set-Content -Path "${{ github.workspace }}\body.md" -Value $markdown
+
           echo "currentPreviewVersion=$currentPreviewVersion" >> $env:GITHUB_ENV
           echo "commit=$commit" >> $env:GITHUB_ENV
 

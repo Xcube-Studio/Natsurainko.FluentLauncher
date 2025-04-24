@@ -181,14 +181,15 @@ jobs:
           $previousStableVersion = [string]$stableXmlContent.Package.Identity.Version
           $currentPreviewVersion = [string]$previewXmlContent.Package.Identity.Version
 
-          $json = @{
-              commit = $commit
-              build = $build
-              releaseTime = (Get-Date -Format "yyyy-MM-ddTHH:mm:ss")
-              currentPreviewVersion = $currentPreviewVersion
-              previousStableVersion = $previousStableVersion
-              hashes = @{}
-          }
+          $jsonNode = [System.Text.Json.Nodes.JsonObject]::new()
+
+          $jsonNode["commit"] = $commit
+          $jsonNode["build"] = $build
+          $jsonNode["releaseTime"] = (Get-Date -Format "yyyy-MM-ddTHH:mm:ss")
+          $jsonNode["currentPreviewVersion"] = $currentPreviewVersion
+          $jsonNode["previousStableVersion"] = $previousStableVersion
+
+          $hashesNode = [System.Text.Json.Nodes.JsonObject]::new()
 
           foreach ($packageFile in $packageFiles) {
               $md5 = [System.Security.Cryptography.MD5]::Create()
@@ -197,13 +198,13 @@ jobs:
               $stream.Close()
               $hash = [System.BitConverter]::ToString($hashBytes) -replace '-', ''
 
-              $json.hashes[([System.IO.Path]::GetFileName($packageFile))] = $hash.ToLower()
+              $hashesNode[([System.IO.Path]::GetFileName($packageFile))] = $hash.ToLower()
           }
 
           $SerializerOptions = [System.Text.Json.JsonSerializerOptions]::new()
           $SerializerOptions.WriteIndented = $true
 
-          $result = [System.Text.Json.JsonSerializer]::Serialize($json, $SerializerOptions)
+          $result = $jsonNode.ToJsonString($SerializerOptions)
           $markdown = "`````` json`n$result`n``````"
 
           $directory = [System.IO.Path]::GetDirectoryName($path)

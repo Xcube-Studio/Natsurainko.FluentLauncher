@@ -201,6 +201,8 @@ jobs:
               $hashesNode[([System.IO.Path]::GetFileName($packageFile))] = $hash.ToLower()
           }
 
+          $jsonNode["hashes"] = $hashesNode
+
           $SerializerOptions = [System.Text.Json.JsonSerializerOptions]::new()
           $SerializerOptions.WriteIndented = $true
 

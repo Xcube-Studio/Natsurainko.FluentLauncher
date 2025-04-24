@@ -209,11 +209,6 @@ jobs:
           $result = $jsonNode.ToJsonString($SerializerOptions)
           $markdown = "`````` json`n$result`n``````"
 
-          $directory = [System.IO.Path]::GetDirectoryName($path)
-          if (-not (Test-Path -Path $directory)) {
-              New-Item -ItemType Directory -Path $directory | Out-Null
-          }
-
           Set-Content -Path "${{ github.workspace }}\body.md" -Value $markdown
 
           echo "currentPreviewVersion=$currentPreviewVersion" >> $env:GITHUB_ENV

@@ -189,9 +189,10 @@ jobs:
           $jsonNode["currentPreviewVersion"] = $currentPreviewVersion
           $jsonNode["previousStableVersion"] = $previousStableVersion
 
-          if ("${{ inputs.EnableLoadExtensions }}" -eq "Enable")
+          if ("${{ inputs.EnableLoadExtensions }}" -eq "Enable") {
               $jsonNode["enableLoadExtensions"] = $true
-
+          }
+          
           $hashesNode = [System.Text.Json.Nodes.JsonObject]::new()
 
           foreach ($packageFile in $packageFiles) {

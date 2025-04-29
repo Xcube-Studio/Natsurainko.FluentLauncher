@@ -5,6 +5,8 @@
 ![](https://img.shields.io/github/contributors/Xcube-Studio/Natsurainko.FluentLauncher)
 ![](https://img.shields.io/github/commit-activity/y/Xcube-Studio/Natsurainko.FluentLauncher)
 
+![Hero image for Fluent Launcher](docs/images/Hero_Image.png)
+
 基于 .NET 9 以及 WinUI3 技术开发的 Minecraft Java 版启动器  
 专为 Windows 11 设计的 Minecraft 启动器  
 提供简洁、流畅的视觉体验

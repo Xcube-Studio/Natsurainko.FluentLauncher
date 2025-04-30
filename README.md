@@ -1,157 +1,116 @@
-# <img src="docs/images/AppIcon.png" alt="Logo" width="24" height="24"> Fluent Launcher
-![](https://img.shields.io/badge/license-MIT-green)
-![](https://img.shields.io/github/repo-size/Xcube-Studio/Natsurainko.FluentLauncher)
-![](https://img.shields.io/github/stars/Xcube-Studio/Natsurainko.FluentLauncher)
-![](https://img.shields.io/github/contributors/Xcube-Studio/Natsurainko.FluentLauncher)
-![](https://img.shields.io/github/commit-activity/y/Xcube-Studio/Natsurainko.FluentLauncher)
+<div align="center">
 
 ![Hero image for Fluent Launcher](docs/images/Hero_Image.png)
 
-基于 .NET 9 以及 WinUI3 技术开发的 Minecraft Java 版启动器  
-专为 Windows 11 设计的 Minecraft 启动器  
-提供简洁、流畅的视觉体验
+![Stars](https://img.shields.io/github/stars/Xcube-Studio/Natsurainko.FluentLauncher)
+![Activity](https://img.shields.io/github/commit-activity/y/Xcube-Studio/Natsurainko.FluentLauncher)
+![Repo-Size](https://img.shields.io/github/repo-size/Xcube-Studio/Natsurainko.FluentLauncher)
+[![Downloads](https://img.shields.io/github/downloads/Xcube-Studio/Natsurainko.FluentLauncher/total?style=social&logo=github)](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/releases/latest)
+![Contributors](https://img.shields.io/github/contributors/Xcube-Studio/Natsurainko.FluentLauncher)
+![License](https://img.shields.io/badge/license-MIT-yellow)
 
-<details>
+#### 专为 Windows 11 设计的 Minecraft 启动器，提供简洁、流畅的视觉体验
+#### 🏪 [Microsoft Store 安装](ms-windows-store://pdp/?ProductId=9P4NQQXQ942P&mode=mini) | ⬇️ [预览通道 安装](https://github.com/Xcube-Studio/FluentLauncher.Preview.Installer) | 🔧 [开发文档](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%23-%E5%BC%80%E5%8F%91) | 🚧 [路线图](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%BC%80%E5%8F%91%EF%BC%9A%E8%B7%AF%E7%BA%BF%E5%9B%BE) | 🌐 [README IN OTHER LANGUAGES](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%85%B3%E4%BA%8E%EF%BC%9A%E5%85%B6%E4%BB%96%E8%AF%AD%E8%A8%80%E7%9A%84-README-%7C-About:-README-IN-OTHER-LANGUAGES)
 
-<summary> README IN OTHER LANGUAGES </summary>
+</div>
 
-### README IN OTHER LANGUAGES
+## ✨ 功能列表
 
-[**English README**](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/blob/main/docs/README_EN.md)  
-[**Russia README**](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/blob/main/docs/README_ru.md)  
-[**Ukraine README**](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/blob/main/docs/README_ua.md)  
+### 基本功能
++ [x] 管理、安装 Minecraft 实例
++ [x] 独立 Minecraft 实例设置
++ [x] 管理 Minecraft 实例模组、存档
++ [x] 全版本 Minecraft 实例启动支持 
++ [x] 多线程并行补全游戏依赖资源
++ [x] 自动查找已安装的 Java 运行时
++ [x] 通过 Windows 任务栏快速启动游戏
++ [x] 自定义启动器外观（包括多种背景、主题色）
++ [x] 获取 Minecraft 官方新闻资讯
 
-> README_ru & README_ua contributed by @BANSAFAn
+### 验证方案
++ [x] 微软验证
++ [x] Yggdrasil 验证 (外置验证)
++ [x] 离线验证
 
-</details>
+### 加载器支持
++ [x] 支持安装 Neoforge \ Forge 加载器
++ [x] 支持安装 Fabric 加载器
++ [x] 支持安装 OptiFine 加载器
++ [x] 支持安装 Quilt 加载器
+> ⚠️ 不支持 LiteLoder 加载器
 
-## 窗口截图 🪟
-<img src="docs/images/home.png">
+### 第三方资源
++ [x] 支持从 CurseForge 下载资源
++ [x] 支持从 Modrinth 下载资源
++ [x] 支持 [Bmcl Api](https://bmclapidoc.bangbang93.com/) 第三方镜像源下载
++ [x] 支持从 [MCIM](https://github.com/mcmod-info-mirror/mcim-api) 获取模组描述翻译
 
-## 未来路线计划 📝
+### 预览通道功能
++ [x] 支持启动器应用自更新
++ [x] 部分版本支持加载插件 [^1]
 
-| 功能                                     | 状态               |
-| ---------------------------------------- | ------------------ |
-| Little Skin 的 OAuth 支持                 | 已暂停 [ ] |
-| 更新资源下载页面                           | 已完成 [x] |
-| 更新新闻页面                              | [ ] |
-| 游戏整合包导入                             | [ ] |
-| NativeAOT 支持                            | 已暂停 https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/issues/224 |
+## ✈️ 安装
 
-## 功能列表 ✨
+> [!IMPORTANT] 
+> _**请在启动程序前，先确保您的设备满足以下推荐需求:**_  
+> 
+> 1. Windows 10.0.19041 版本及以上的系统  
+> 2. 安装 [.NET 9 运行时](https://dotnet.microsoft.com/zh-cn/download/dotnet/9.0)
 
-+ 基本功能
-  + [x] 管理 .minecraft 中的游戏核心、安装游戏核心
-  + [x] 特定游戏核心设置、版本隔离设置
-  + [x] 管理特定游戏核心的模组
-  + [x] 创建、启动、管理 Minecraft 进程 
-  + [x] 多线程高速补全游戏资源
-  + [x] 查找已安装的 Java 运行时
-  + [x] 任务栏快速启动游戏
-  + [x] 支持第三方下载镜像源 [Bmclapi、Mcbbs](https://bmclapidoc.bangbang93.com/)
-+ 多种验证方案的支持
-  + [x] 微软验证
-  + [x] Yggdrasil 验证 (外置验证)
-  + [x] 离线验证
-  + [ ] 统一通行证验证 (`需要讨论?`)
-+ 多种加载器安装器的支持
-  + [x] Forge 安装器 (NeoForge 暂用)
-  + [x] Fabric 安装器
-  + [x] OptiFine 安装器
-  + [x] Quilt 安装器
-  + [ ] LiteLoder (`已过时而未支持`)
-+ 第三方资源下载的支持
-  + [x] 下载 CurseForge 上的资源
-  + [x] 下载 Modrinth 上的资源
+### 从 Microsoft Store 安装
+<a href="https://apps.microsoft.com/detail/Natsurianko.FluentLauncher/9p4nqqxq942p"><img src="https://get.microsoft.com/images/en-us%20dark.svg" height="48"/> </a>
 
-## 应用分发 ✈️
+### 从 预览通道 安装
+前往仓库 `FluentLauncher.Preview.Installer`  Release 中 [下载](https://github.com/Xcube-Studio/FluentLauncher.Preview.Installer) FluentLauncher.UniversalInstaller 安装向导
 
-#### *一定需要安装才能运行应用 [.NET 9 运行时](https://dotnet.microsoft.com/zh-cn/download/dotnet/9.0) (不论是从哪种通道安装)*
+> 我们已不再推荐通过手动安装 msixbundle 包，或是使用已弃用的 FluentLauncher.PreviewChannel.PackageInstaller 手动安装更新包，但你仍能从 [此处](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%85%B3%E4%BA%8E%EF%BC%9A%E6%89%8B%E5%8A%A8%E5%AE%89%E8%A3%85%E9%A2%84%E8%A7%88%E7%89%88%E5%90%AF%E5%8A%A8%E5%99%A8%E5%8C%85) 找到说明
 
-### *稳定版通道 (Stable)*
+## 💬 获取帮助
 
-+ 从 Microsoft Store 安装  
-<a href="https://apps.microsoft.com/detail/Natsurianko.FluentLauncher/9p4nqqxq942p">
-	<img src="https://get.microsoft.com/images/en-us%20dark.svg" width="200"/>
-</a>
+您可以加入这些社区**寻求帮助**：
 
-+ 手动安装 Releases 中的 msixbundle 包 
-  + [如何安装 Msixbundle 包?](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85-Msixbundle-%E5%8C%85)
+[![GitHub Issues](https://img.shields.io/github/issues-search/Xcube-Studio/Natsurainko.FluentLauncher?query=is%3Aopen&logo=github&label=Issues&color=%233fb950)](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/issues)
+[![GitHub Discussions](https://img.shields.io/github/discussions/Xcube-Studio/Natsurainko.FluentLauncher?&logo=Github&label=Discussions)](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/discussions)
+[![加入 QQ 群](https://img.shields.io/badge/QQ_%E7%BE%A4-Xcube_Studio-%230066cc?logo=TencentQQ)](https://qm.qq.com/q/wAo0DKH4xa)
 
-### *预览版通道 (Preview)*
+如果您确定您遇到的问题是一个 **Bug**，或者您要提出一项 **新的功能**，请 [提交 Issue](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/issues/new/choose)。
 
-+ 下载 [FluentLauncher.PreviewChannel.PackageInstaller](https://github.com/Xcube-Studio/FluentLauncher.PreviewChannel.PackageInstaller/releases/tag/v0.0.2) 以及 Releases 中的 Preview 更新包 (如 `updatePackage-x64.zip` 文件) **(请下载适合自己系统架构的文件)**
-+ 将两者放在同一目录下
-+ 运行 FluentLauncher.PreviewChannel.PackageInstaller 即可
+## 🔧 开发与贡献
 
-*预览版通道支持应用自更新，可以在 `设置-关于` 页面检查更新*
+<div align="center">
 
-### *开发版通道 (Dev)*
+![Repobeats analytics image](https://repobeats.axiom.co/api/embed/0dcf1b6a60fa8c1c6cefe6042c482f59d2d60538.svg)
 
-克隆本仓库，从源码手动编译程序  
-编译详见 [如何编译源代码](#如何编译源代码)
+</div>
 
-## 开发事宜 🔧
+| 分支 | 开发状态 | 信息 |
+| --- | --- | --- |
+| [`main`](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher) | 正处于长期维护和更新。 | [![CI](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/actions/workflows/ci.yml/badge.svg)](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/actions/workflows/ci.yml) |
+| [`legacy/old-uwp-edition`](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/tree/legacy/old-uwp-edition) | 此版本已停止维护，仅留档。| ![](https://img.shields.io/badge/Legacy-Stopped-red) |
 
-### 如何编译源代码
+### 主要贡献者
 
-编译前提：
-> + 安装 .NET 桌面开发的 Visual Studio 2022
-> + 安装 [.NET SDK](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks) 的开发工具
-> + 安装 [WindowsAppSDK](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/set-up-your-development-environment?tabs=cs-vs-community%2Ccpp-vs-community%2Cvs-2022-17-1-a%2Cvs-2022-17-1-b) 的开发环境和 [Visual Studio 扩展](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/single-project-msix?tabs=csharp)
+**[@ natsurainko](https://github.com/natsurainko)** —— 启动核心、启动器功能实现; 启动器 UI 设计  
+**[@ gaviny82](https://github.com/gaviny82)** —— 启动核心、启动器架构设计  
+**[@ xingxing2008](https://github.com/xingxing2008)** —— 启动器发布、后端服务运维  
 
-准备好上述环境后
+等其他贡献者与参与测试人员  
 
-1. 克隆 GitHub 仓库及其子模块
-2. 确保代码完整后，在本地用 Visual Studio 打开
-3. 在 Nuget 包管理器中添加 CommunityToolkit-Labs 的 Nuget 包源  
-https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json (升级到 CommunityToolkit 8.0 后将不需要)  
-4. F5 编译运行
+*您也可以在 [贡献者](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/contributors) 中参看所有参与该项目的开发者。*
 
-### 本地化调试开发
+**如果你想对本项目做出贡献的话，请参阅 [开发文档](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%23-%E5%BC%80%E5%8F%91)**
 
-`本地化脚本目前有所改动，暂时先不列出`
+### 开源协议
 
-#### 贡献本地化资源
-详细见仓库 **[Xcube-Studio/FluentLauncher.Localization](https://github.com/Xcube-Studio/FluentLauncher.Localization)**
+该项目签署了 MIT 授权许可，详情请参阅 [LICENSE](LICENSE)  
 
-### 如何贡献该项目
+### 鸣谢
 
-1. 点击右上角 `Fork` ，再点击下方 `Create fork` 创建一份本仓库的分支
-2. 创建你的内容分支：`git checkout -b feature/[your-feature]`
-3. 提交你的更改：`git commit -m '[描述你的更改]'`
-4. 将更改推送至远程分支：`git push origin feature/[your-feature]`
-5. 创建拉取请求
+_**首先感谢各位贡献者的共同努力**_  
 
-## 主要贡献者 🧑‍💻
+- 感谢 [bangbang93](https://github.com/bangbang93) 提供的 Minecraft 下载镜像站服务，如果想支持他们可以 [赞助 Bmcl Api](https://afdian.com/@bangbang93)  
+- 感谢 [mcim](https://github.com/mcmod-info-mirror/mcim-api) 提供的 Modrinth 和 Curseforge 上的模组翻译信息  
+- 感谢 [Cloudflare CDN](https://www.cloudflare.com) 提供的云服务
 
-* **natsurainko** - *启动核心 启动器*
-* **gavinY** - *启动器后端架构、启动核心*
-* **xingxing520** - *启动器发布 微软商店服务*
-等其他贡献者与参与测试人员
 
-![Alt](https://repobeats.axiom.co/api/embed/0dcf1b6a60fa8c1c6cefe6042c482f59d2d60538.svg "Repobeats analytics image")
-
-*您也可以在贡献者名单中参看所有参与该项目的开发者。*
-
-## 与我们联系 ☕️
-
-Xcube Studio 开发群(qq): 1138713376  
-Natsurainko 的邮箱: a-275@qq.com  
-
-如果有任何项目代码的问题还是建议留 issues，各位贡献者都比较忙碌，不太有时间回复私信之类的
-
-## 引用及鸣谢 🎉
-
-#### 引用
-+ 本篇 readme 模板引用自 [readme-template](https://github.com/iuricode/readme-template)  
-
-#### 鸣谢
-+ 首先感谢各位贡献者的共同努力  
-+ 感谢 bangbang93 以及 mcbbs 提供镜像站服务 如果支持他们的服务话 可以[赞助Bmclapi](https://afdian.net/@bangbang93)  
-+ 感谢 [Cloudflare CDN](https://www.cloudflare.com) 提供的云服务
-
-## 版权
-
-该项目签署了MIT 授权许可，详情请参阅 [LICENSE](LICENSE)  
-Copyright (c) 2022-2024 Xcube Studio
+[^1]: 并非所有预览版本均支持插件加载器，判断一个预览版本是否支持加载器，请在其发布中查看是否有 `"enableLoadExtensions": true` 的属性

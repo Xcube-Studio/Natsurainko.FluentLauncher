@@ -54,7 +54,7 @@
 > [!IMPORTANT] 
 > _**请在启动程序前，先确保您的设备满足以下推荐需求:**_  
 > 
-> 1. Windows 10.0.19041 版本及以上的系统  
+> 1. Windows 10.0.19041.0 [^2] 版本及以上的系统  
 > 2. 安装 [.NET 9 运行时](https://dotnet.microsoft.com/zh-cn/download/dotnet/9.0)
 
 ### 从 Microsoft Store 安装
@@ -114,3 +114,4 @@ _**首先感谢各位贡献者的共同努力**_
 
 
 [^1]: 并非所有预览版本均支持插件加载器，判断一个预览版本是否支持加载器，请在其发布中查看是否有 `"enableLoadExtensions": true` 的属性
+[^2]: 请参阅 [Windows 10 版本信息](https://learn.microsoft.com/zh-cn/windows/release-health/release-information)

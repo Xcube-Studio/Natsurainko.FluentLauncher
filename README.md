@@ -10,7 +10,7 @@
 ![License](https://img.shields.io/badge/license-MIT-yellow)
 
 #### 专为 Windows 11 设计的 Minecraft 启动器，提供简洁、流畅的视觉体验
-#### 🏪 [Microsoft Store 安装](ms-windows-store://pdp/?ProductId=9P4NQQXQ942P&mode=mini) | ⬇️ [预览通道 安装](https://github.com/Xcube-Studio/FluentLauncher.Preview.Installer) | 🔧 [开发文档](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%23-%E5%BC%80%E5%8F%91) | 🚧 [路线图](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%BC%80%E5%8F%91%EF%BC%9A%E8%B7%AF%E7%BA%BF%E5%9B%BE) | 🌐 [README IN OTHER LANGUAGES](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%85%B3%E4%BA%8E%EF%BC%9A%E5%85%B6%E4%BB%96%E8%AF%AD%E8%A8%80%E7%9A%84-README-%7C-About:-README-IN-OTHER-LANGUAGES)
+#### 🏪 [Microsoft Store 安装](https://apps.microsoft.com/detail/Natsurianko.FluentLauncher/9p4nqqxq942p) | ⬇️ [预览通道 安装](https://github.com/Xcube-Studio/FluentLauncher.Preview.Installer) | 🔧 [开发文档](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%23-%E5%BC%80%E5%8F%91) | 🚧 [路线图](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%BC%80%E5%8F%91%EF%BC%9A%E8%B7%AF%E7%BA%BF%E5%9B%BE) | 🌐 [README IN OTHER LANGUAGES](https://github.com/Xcube-Studio/Natsurainko.FluentLauncher/wiki/%E5%85%B3%E4%BA%8E%EF%BC%9A%E5%85%B6%E4%BB%96%E8%AF%AD%E8%A8%80%E7%9A%84-README-%7C-About:-README-IN-OTHER-LANGUAGES)
 
 </div>
 

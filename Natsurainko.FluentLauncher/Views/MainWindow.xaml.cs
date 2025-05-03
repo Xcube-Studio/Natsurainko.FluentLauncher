@@ -4,10 +4,9 @@ using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
-using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Services.UI.Notification;
 using System.IO;
 using Windows.ApplicationModel;
 using WinUIEx;
@@ -22,14 +21,14 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
 
     private readonly INavigationService _navigationService;
     private readonly SettingsService _settingsService;
-    private readonly NotificationService _notificationService;
+    private readonly Natsurainko.FluentLauncher.Services.UI.NotificationService _notificationService;
 
     object INavigationProvider.NavigationControl => Frame;
     INavigationService INavigationProvider.NavigationService => _navigationService;
 
     public MainWindow(
         SettingsService settingsService,
-        NotificationService notificationService,
+        Natsurainko.FluentLauncher.Services.UI.NotificationService notificationService,
         INavigationService navigationService)
     {
         _settingsService = settingsService;
@@ -88,6 +87,7 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
         var hoverColor = BackgroundGrid.ActualTheme == ElementTheme.Light ? Colors.Black : Colors.White;
         hoverColor.A = 35;
 
+        App.GetService<InfoBarPresenter>().InitializeContainer(StackPanel);
         _notificationService.InitContainer(NotifyStackPanel, BackgroundGrid);
 
         AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets/AppIcon.ico"));

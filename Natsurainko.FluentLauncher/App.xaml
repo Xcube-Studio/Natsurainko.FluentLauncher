@@ -51,6 +51,8 @@
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
+            <StaticResource x:Key="InfoBarInformationalSeverityBackgroundBrush" ResourceKey="ApplicationPageBackgroundThemeBrush" />
+
             <FontFamily x:Key="MinecraftTen">/Assets/MinecraftTen.ttf#Minecraft Ten</FontFamily>
 
             <x:Double x:Key="SettingsCardSpacing">4</x:Double>

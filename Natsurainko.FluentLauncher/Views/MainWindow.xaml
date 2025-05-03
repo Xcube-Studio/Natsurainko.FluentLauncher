@@ -19,11 +19,29 @@
             Padding="-25,-50,-25,-25"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top"
-            VerticalScrollBarVisibility="Hidden">
+            VerticalScrollBarVisibility="Hidden"
+            Visibility="Collapsed">
             <StackPanel
                 x:Name="NotifyStackPanel"
                 Margin="25,50,25,25"
                 Spacing="4" />
+        </ScrollViewer>
+
+        <ScrollViewer
+            MaxWidth="1020"
+            Margin="0,48,0,0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top"
+            VerticalScrollBarVisibility="Hidden">
+            <StackPanel
+                x:Name="StackPanel"
+                Padding="16"
+                Spacing="4">
+                <StackPanel.ChildrenTransitions>
+                    <EntranceThemeTransition FromVerticalOffset="-75" />
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                </StackPanel.ChildrenTransitions>
+            </StackPanel>
         </ScrollViewer>
     </Grid>
 </winuiex:WindowEx>

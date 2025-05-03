@@ -1,11 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
+using FluentLauncher.Infra.UI.Notification;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.Services.UI;
-using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Services.UI.Notification;
 using Nrk.FluentCore.Environment;
 using System;
 using System.Collections.ObjectModel;
@@ -23,7 +24,7 @@ internal partial class LaunchViewModel : SettingsPageVM, ISettingsViewModel
     [SettingsProvider]
     private readonly SettingsService _settingsService;
     private readonly GameService _gameService;
-    private readonly NotificationService _notificationService;
+    private readonly INotificationService _notificationService;
 
     #region Settings
 
@@ -94,7 +95,7 @@ internal partial class LaunchViewModel : SettingsPageVM, ISettingsViewModel
     public LaunchViewModel(
         SettingsService settingsService,
         GameService gameService,
-        NotificationService notificationService)
+        INotificationService notificationService)
     {
         _settingsService = settingsService;
         _gameService = gameService;
@@ -126,16 +127,14 @@ internal partial class LaunchViewModel : SettingsPageVM, ISettingsViewModel
         {
             if (MinecraftFolders.Contains(folder.Path))
             {
-                _notificationService.NotifyMessage(
-                    LocalizedStrings.Notifications__AddFolderExistedT,
-                    LocalizedStrings.Notifications__AddFolderExistedD,
-                    icon: "\uF89A");
+                _notificationService.FolderExisted(folder.Path);
 
                 return;
             }
 
             _gameService.AddMinecraftFolder(folder.Path);
             OnPropertyChanged(nameof(IsMinecraftFoldersEmpty));
+            _notificationService.FolderAdded(folder.Path);
         }
     }
 
@@ -181,11 +180,7 @@ internal partial class LaunchViewModel : SettingsPageVM, ISettingsViewModel
         {
             if (Javas.Contains(openFileDialog.FileName))
             {
-                _notificationService.NotifyMessage(
-                    LocalizedStrings.Notifications__AddJavaExistedT,
-                     LocalizedStrings.Notifications__AddJavaExistedD,
-                    icon: "\uF89A");
-
+                _notificationService.JavaExisted(openFileDialog.FileName);
                 return;
             }
 
@@ -193,6 +188,7 @@ internal partial class LaunchViewModel : SettingsPageVM, ISettingsViewModel
             ActiveJava = openFileDialog.FileName;
 
             OnPropertyChanged(nameof(IsJavasEmpty));
+            _notificationService.JavaAdded(openFileDialog.FileName);
         }
     }
 
@@ -208,14 +204,11 @@ internal partial class LaunchViewModel : SettingsPageVM, ISettingsViewModel
             ActiveJava = Javas.Any() ? Javas[0] : null;
 
             OnPropertyChanged(nameof(Javas));
-
-            _notificationService.NotifyWithoutContent(
-                LocalizedStrings.Notifications__AddSearchedJavaT,
-                icon: "\uE73E");
+            _notificationService.JavaSearched();
         }
         catch (Exception ex) 
         {
-            _notificationService.NotifyException(LocalizedStrings.Notifications__AddSearchedJavaFailedT, ex);
+            _notificationService.JavaSearchFailed(ex);
         }
     }
 
@@ -249,4 +242,25 @@ internal partial class LaunchViewModel : SettingsPageVM, ISettingsViewModel
     }
 
     #endregion
+}
+
+public static partial class LaunchViewModelNotifications
+{
+    [Notification<InfoBar>(Title = "Notifications__FolderExisted", Message = "{path}")]
+    public static partial void FolderExisted(this INotificationService notificationService, string path);
+
+    [Notification<InfoBar>(Title = "Notifications__FolderAdded", Message = "{path}", Type = NotificationType.Success)]
+    public static partial void FolderAdded(this INotificationService notificationService, string path);
+
+    [Notification<InfoBar>(Title = "Notifications__JavaExisted", Message = "{path}")]
+    public static partial void JavaExisted(this INotificationService notificationService, string path);
+
+    [Notification<InfoBar>(Title = "Notifications__JavaAdded", Message = "{path}", Type = NotificationType.Success)]
+    public static partial void JavaAdded(this INotificationService notificationService, string path);
+
+    [Notification<InfoBar>(Title = "Notifications__JavaSearched", Type = NotificationType.Success)]
+    public static partial void JavaSearched(this INotificationService notificationService);
+
+    [ExceptionNotification(Title = "Notifications__JavaSearchFailed")]
+    public static partial void JavaSearchFailed(this INotificationService notificationService, Exception exception);
 }

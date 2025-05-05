@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Navigation;
+using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
@@ -11,7 +12,7 @@ using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
-using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Services.UI.Notification;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Exceptions;
@@ -28,7 +29,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using WinUIEx;
 using static Natsurainko.FluentLauncher.Services.Launch.LaunchProgress;
@@ -461,25 +461,15 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
     [RelayCommand]
     void NotifyException()
     {
-        string errorDescriptionKey = string.Empty;
+        INotificationService notificationService = App.GetService<NotificationService>();
 
-        //if (Exception is InvalidOperationException)
-        //{
+        string reason = Exception switch
+        {
+            IncompleteDependenciesException => LocalizedStrings.Notifications__LaunchFailed_IncompleteDependenciesException,
+            _ => string.Empty
+        };
 
-        //}
-        //else if (Exception is YggdrasilAuthenticationException)
-        //{
-        //    errorDescriptionKey = "_LaunchGameThrowYggdrasilAuthenticationException";
-        //}
-        //else if (Exception is MicrosoftAuthenticationException)
-        //{
-        //    errorDescriptionKey = "_LaunchGameThrowMicrosoftAuthenticationException";
-        //}
-
-        App.GetService<NotificationService>().NotifyException(
-            LocalizedStrings.Notifications__InstallInstanceThrowException,
-            Exception,
-            errorDescriptionKey);
+        notificationService.InstallFailed(Exception, reason);
     }
 
     [RelayCommand(CanExecute = nameof(CanLaunch))]
@@ -780,7 +770,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
 
     protected override async void Run()
     {
-        App.DispatcherQueue.TryEnqueue(() => TaskState = TaskState.Running);
+        await App.DispatcherQueue.EnqueueAsync(() => TaskState = TaskState.Running);
         TaskState resultState = TaskState.Running;
 
         try
@@ -927,26 +917,27 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     [RelayCommand]
     void NotifyException()
     {
-        string errorDescription = string.Empty;
+        INotificationService notificationService = App.GetService<NotificationService>();
 
-        if (Exception is InvalidOperationException)
+        string reason = Exception switch
         {
+            YggdrasilAuthenticationException => LocalizedStrings.Notifications__LaunchFailed_MicrosoftAuthenticationException,
+            MicrosoftAuthenticationException => LocalizedStrings.Notifications__LaunchFailed_MicrosoftAuthenticationException,
+            IncompleteDependenciesException => LocalizedStrings.Notifications__LaunchFailed_IncompleteDependenciesException,
+            _ => string.Empty
+        };
 
-        }
-        else if (Exception is YggdrasilAuthenticationException)
-        {
-            errorDescription = LocalizedStrings.Notifications__LaunchGameThrowYggdrasilAuthenticationException;
-        }
-        else if (Exception is MicrosoftAuthenticationException)
-        {
-            errorDescription = LocalizedStrings.Notifications__LaunchGameThrowMicrosoftAuthenticationException;
-        }
-
-        App.GetService<NotificationService>().NotifyException(
-            LocalizedStrings.Notifications__LaunchGameThrowException,
-            Exception,
-            errorDescription);
+        notificationService.LaunchFailed(Exception, reason);
     }
 }
 
 #endregion
+
+internal static partial class TaskViewModelNotifications
+{
+    [ExceptionNotification(Title = "Notifications__TaskFailed_Launch", Message = "{reason}")]
+    public static partial void LaunchFailed(this INotificationService notificationService, Exception exception, string reason);
+
+    [ExceptionNotification(Title = "Notifications__TaskFailed_Install", Message = "{reason}")]
+    public static partial void InstallFailed(this INotificationService notificationService, Exception exception, string reason);
+}

@@ -8,24 +8,10 @@
     mc:Ignorable="d">
 
     <Grid Name="Grid">
-        <Grid x:Name="BackgroundGrid" Background="Transparent" />
         <Frame
             x:Name="Frame"
             Background="Transparent"
             Loaded="Frame_Loaded" />
-
-        <ScrollViewer
-            Margin="50,50,50,20"
-            Padding="-25,-50,-25,-25"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Top"
-            VerticalScrollBarVisibility="Hidden"
-            Visibility="Collapsed">
-            <StackPanel
-                x:Name="NotifyStackPanel"
-                Margin="25,50,25,25"
-                Spacing="4" />
-        </ScrollViewer>
 
         <ScrollViewer
             Name="NotificationsScrollViewer"

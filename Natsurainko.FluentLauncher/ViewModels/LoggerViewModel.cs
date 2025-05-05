@@ -1,14 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.UI.Text;
+using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
-using Natsurainko.FluentLauncher.Services.UI;
-using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.ViewModels.Dialogs;
 using Nrk.FluentCore.Launch;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -67,14 +65,11 @@ internal partial class LoggerViewModel : ObservableObject
         if (saveFileDialog.ShowDialog().GetValueOrDefault())
         {
             File.WriteAllLines(saveFileDialog.FileName, _gameLoggerOutputs.Select(x => x.FullData));
-
-            App.GetService<NotificationService>().NotifyWithoutContent(
-                LocalizedStrings.Notifications__ExportLog,
-                icon: "\ue74e");
+            App.GetService<INotificationService>().LogExported(saveFileDialog.FileName);
         }
     }
 
-    private void EnabledLevel_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    private void EnabledLevel_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
         FilterLoggerItems.Clear();
 
@@ -83,7 +78,7 @@ internal partial class LoggerViewModel : ObservableObject
                 FilterLoggerItems.Add(new LoggerItem(item));
     }
 
-    private void LoggerItems_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    private void LoggerItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
         foreach (var item in e.NewItems)
         {
@@ -159,4 +154,10 @@ internal partial class LoggerItem : ObservableObject
 
     [ObservableProperty]
     public partial Visibility ErrorVisibility { get; set; }
+}
+
+internal static partial class LoggerViewModelNotifications
+{
+    [Notification<InfoBar>(Title = "Notifications__LogExported", Message = "{filePath}")]
+    public static partial void LogExported(this INotificationService notificationService, string filePath);
 }

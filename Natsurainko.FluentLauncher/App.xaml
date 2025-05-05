@@ -8,7 +8,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-                <ResourceDictionary Source="Dictionaries/NotifyStyleDictionary" />
                 <ResourceDictionary Source="Dictionaries/TaskViewStyleDictionary" />
                 <ResourceDictionary Source="/UserControls/NoScrollingComboBox.xaml" />
             </ResourceDictionary.MergedDictionaries>

@@ -23,9 +23,7 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
     object INavigationProvider.NavigationControl => Frame;
     INavigationService INavigationProvider.NavigationService => _navigationService;
 
-    public MainWindow(
-        SettingsService settingsService,
-        INavigationService navigationService)
+    public MainWindow(SettingsService settingsService, INavigationService navigationService)
     {
         _settingsService = settingsService;
         _navigationService = navigationService;
@@ -70,7 +68,6 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
     {
         this.ConfigureTitleBarTheme();
         App.GetService<InfoBarPresenter>().InitializeContainer(StackPanel);
-        App.GetService<Services.UI.NotificationService>().InitContainer(NotifyStackPanel, BackgroundGrid);
 
         AppWindow.Title = "Fluent Launcher";
         AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;

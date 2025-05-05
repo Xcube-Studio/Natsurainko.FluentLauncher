@@ -1,19 +1,21 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
+using FluentLauncher.Infra.UI.Notification;
+using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Launch;
-using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement;
 using Nrk.FluentCore.GameManagement.Instances;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
 
 internal partial class DeleteInstanceDialogViewModel(
-    NotificationService notificationService,
+    INotificationService notificationService,
     GameService gameService) : DialogVM
 {
     private MinecraftInstance _minecraftInstance = null!;
@@ -56,25 +58,27 @@ internal partial class DeleteInstanceDialogViewModel(
             await Dispatcher.EnqueueAsync(() =>
             {
                 gameService.RefreshGames();
-
                 HideAndGlobalNavigate("Instances/Navigation");
             });
 
-            notificationService.NotifyWithoutContent(
-                LocalizedStrings.Notifications__DeleteGameTitle,
-                icon: "\uE73E");
+            notificationService.InstanceDeleted();
         }
         else
         {
-            Dispatcher.TryEnqueue(() => this.Dialog.Hide());
-
-            notificationService.NotifyMessage(
-                LocalizedStrings.Notifications__DeleteGameFailedT,
-                LocalizedStrings.Notifications__DeleteGameFailedD,
-                icon: "\uE711");
+            await Dispatcher.EnqueueAsync(() => this.Dialog.Hide());
+            notificationService.InstanceDeleteFailed();
         }
     });
 
     [RelayCommand]
     void Cancel() => this.Dialog.Hide();
+}
+
+internal static partial class DeleteInstanceDialogViewModelNotifications
+{
+    [Notification<InfoBar>(Title = "Notifications__InstanceDeleted", Type = NotificationType.Success)]
+    public static partial void InstanceDeleted(this INotificationService notificationService);
+
+    [Notification<InfoBar>(Title = "Notifications__InstanceDeleteFailed", Message = "Notifications__InstanceDeleteFailedDescription", Type = NotificationType.Warning)]
+    public static partial void InstanceDeleteFailed(this INotificationService notificationService);
 }

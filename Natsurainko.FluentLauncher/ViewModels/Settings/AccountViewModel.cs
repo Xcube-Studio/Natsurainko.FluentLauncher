@@ -3,15 +3,16 @@ using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
 using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Navigation;
+using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Authentication;
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -25,7 +26,7 @@ internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel
     [SettingsProvider]
     private readonly SettingsService _settingsService;
     private readonly AccountService _accountService;
-    private readonly NotificationService _notificationService;
+    private readonly INotificationService _notificationService;
     private readonly INavigationService _navigationService;
     private readonly CacheSkinService _cacheSkinService;
     private readonly IDialogActivationService<ContentDialogResult> _dialogs;
@@ -33,7 +34,7 @@ internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel
     public AccountViewModel(
         SettingsService settingsService,
         AccountService accountService,
-        NotificationService notificationService,
+        INotificationService notificationService,
         INavigationService navigationService,
         CacheSkinService cacheSkinService,
         IDialogActivationService<ContentDialogResult> dialogs)
@@ -76,14 +77,8 @@ internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel
         await _accountService.RefreshAccountAsync(ActiveAccount).ContinueWith(task => 
         {
             if (task.IsFaulted)
-                _notificationService.NotifyException(
-                    LocalizedStrings.Notifications__AccountRefreshFailedTitle,
-                    task.Exception,
-                    LocalizedStrings.Notifications__AccountRefreshFailedDescription);
-            else
-                _notificationService.NotifyMessage(
-                    LocalizedStrings.Notifications__AccountRefreshedTitle,
-                    LocalizedStrings.Notifications__AccountRefreshedDescription.Replace("${name}", _accountService.ActiveAccount.Name));
+                _notificationService.AccountRefreshFailed(task.Exception);
+            else _notificationService.AccountRefreshed();
         });
     }
 
@@ -146,4 +141,13 @@ internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel
     internal string GetSkinFilePath(Account account) => _cacheSkinService.GetSkinFilePath(account);
 
     #endregion
+}
+
+public static partial class AccountViewModelNotifications
+{
+    [Notification<InfoBar>(Title = "Notifications__AccountRefreshed", Type = NotificationType.Success)]
+    public static partial void AccountRefreshed(this INotificationService notificationService);
+
+    [ExceptionNotification(Title = "Notifications__AccountRefreshFailed", Message = "Notifications__AccountRefreshFailedDescription + \"\\r\\n\" + exception.Message")]
+    public static partial void AccountRefreshFailed(this INotificationService notificationService, Exception exception);
 }

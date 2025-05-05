@@ -1,6 +1,7 @@
 ﻿using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
 using Natsurainko.FluentLauncher.Utils;
@@ -59,7 +60,7 @@ internal class DefaultNotification : INotification,
     }
 }
 
-internal class ExceptionNotification : INotification,
+internal class ActionNotification : INotification,
     INotification<InfoBar>
 {
     public NotificationType Type { get; init; } = NotificationType.Error;
@@ -70,39 +71,45 @@ internal class ExceptionNotification : INotification,
 
     public bool IsClosable { get; init; } = true;
 
-    public double Delay { get; init; } = 30;
+    public double Delay { get; init; } = 5;
 
-    public required Exception Exception { get; init; }
+    public Func<ButtonBase>? GetActionButton { get; set; }
 
-    InfoBar INotification<InfoBar>.ConstructUI()
+    InfoBar INotification<InfoBar>.ConstructUI() => new InfoBar()
     {
-        Button copyButton = new();
-        copyButton.Click += Copy;
-        copyButton.Content = LocalizedStrings.Notifications_ExceptionCopyButton_Content;
-
-        return new InfoBar()
+        Title = Title,
+        Message = Message,
+        IsOpen = true,
+        IsClosable = IsClosable,
+        Translation = new System.Numerics.Vector3(0, 0, 16),
+        ActionButton = GetActionButton?.Invoke(),
+        Severity = Type switch
         {
-            Title = Title,
-            Message = Message,
-            IsOpen = true,
-            IsClosable = IsClosable,
-            Translation = new System.Numerics.Vector3(0, 0, 16),
-            ActionButton = copyButton,
-            Severity = Type switch
-            {
-                NotificationType.Info => InfoBarSeverity.Informational,
-                NotificationType.Warning => InfoBarSeverity.Warning,
-                NotificationType.Error => InfoBarSeverity.Error,
-                NotificationType.Success => InfoBarSeverity.Success,
-                _ => InfoBarSeverity.Informational
-            }
+            NotificationType.Info => InfoBarSeverity.Informational,
+            NotificationType.Warning => InfoBarSeverity.Warning,
+            NotificationType.Error => InfoBarSeverity.Error,
+            NotificationType.Success => InfoBarSeverity.Success,
+            _ => InfoBarSeverity.Informational
+        }
+    };
+}
+
+internal class ExceptionNotification : ActionNotification
+{
+    public ExceptionNotification()
+    {
+        this.Delay = 30;
+        this.Type = NotificationType.Error;
+
+        this.GetActionButton = () =>
+        {
+            Button copyButton = new();
+            copyButton.Click += (_,_) => ClipboardHepler.SetText(string.Join("\r\n", [Title, Message, Exception?.ToString()]));
+            copyButton.Content = LocalizedStrings.Buttons_CopyException_Text;
+
+            return copyButton;
         };
     }
 
-    private void Copy(object sender, RoutedEventArgs routedEventArgs)
-    {
-        DataPackage dataPackage = new();
-        dataPackage.SetText(string.Join("\r\n", [Title, Message, Exception?.ToString()]));
-        Clipboard.SetContent(dataPackage);
-    }
+    public required Exception Exception { get; init; }
 }

@@ -130,7 +130,6 @@ services.AddSingleton<DownloadService>();
 services.AddSingleton<LocalStorageService>();
 services.AddSingleton<MessengerService>();
 services.AddSingleton<AuthenticationService>();
-services.AddSingleton<Natsurainko.FluentLauncher.Services.UI.NotificationService>();
 services.AddSingleton<AppearanceService>();
 services.AddSingleton<CacheSkinService>();
 services.AddSingleton<CacheInterfaceService>();
@@ -138,13 +137,12 @@ services.AddSingleton<QuickLaunchService>();
 services.AddSingleton<SearchProviderService>();
 services.AddSingleton<InstanceConfigService>();
 
-// UI Services
+// Notification Services
+services.AddSingleton<INotificationService, NotificationService>();
+
 services.AddSingleton<InfoBarPresenter>();
 services.AddSingleton<SystemNotificationPresenter>();
 services.AddSingleton<TeachingTipPresenter>();
-
-services.AddSingleton<INotificationService, Natsurainko.FluentLauncher.Services.UI.Notification.NotificationService>();
-
 
 #if FLUENT_LAUNCHER_PREVIEW_CHANNEL
 services.AddSingleton<UpdateService>();

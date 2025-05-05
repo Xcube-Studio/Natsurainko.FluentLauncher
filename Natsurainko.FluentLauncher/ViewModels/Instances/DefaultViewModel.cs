@@ -2,9 +2,12 @@
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
 using FluentLauncher.Infra.UI.Navigation;
+using FluentLauncher.Infra.UI.Notification;
+using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Services.UI.Notification;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement;
@@ -26,7 +29,7 @@ internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel, IN
     private readonly INavigationService _navigationService;
     private readonly GameService _gameService;
     private readonly SearchProviderService _searchProviderService;
-    private readonly NotificationService _notificationService;
+    private readonly INotificationService _notificationService;
 
     public ReadOnlyObservableCollection<MinecraftInstance> MinecraftInstances { get; init; }
 
@@ -35,7 +38,7 @@ internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel, IN
         SettingsService settingsService,
         INavigationService navigationService,
         SearchProviderService searchProviderService,
-        NotificationService notificationService)
+        INotificationService notificationService)
     {
         _gameService = gameService;
         _settingsService = settingsService;
@@ -88,11 +91,20 @@ internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel, IN
     {
         if (Directory.Exists(ActiveMinecraftFolder))
             _ = Launcher.LaunchFolderPathAsync(ActiveMinecraftFolder);
-        else 
-            _notificationService.NotifyWithSpecialContent(
-                LocalizedStrings.Notifications__NoMinecraftFolder,
-                "NoMinecraftFolderNotifyTemplate",
-                GoToSettingsCommand, "\uE711");
+        else
+        {
+            _notificationService.Show(new ActionNotification
+            {
+                Title = LocalizedStrings.Notifications__NoMinecraftDataFolder,
+                Message = LocalizedStrings.Notifications__NoMinecraftDataFolderDescription,
+                Type = NotificationType.Warning,
+                GetActionButton = () => new HyperlinkButton()
+                {
+                    Command = this.GoToSettingsCommand,
+                    Content = LocalizedStrings.Instances_DefaultPage__GoToSettings
+                }
+            });
+        }
     }
 
     IEnumerable<Suggestion> ProviderSuggestions(string searchText)

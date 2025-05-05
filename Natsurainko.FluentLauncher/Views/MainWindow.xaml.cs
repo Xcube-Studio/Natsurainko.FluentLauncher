@@ -1,4 +1,3 @@
-using FluentLauncher.Infra.Settings;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
@@ -21,23 +20,20 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
 
     private readonly INavigationService _navigationService;
     private readonly SettingsService _settingsService;
-    private readonly Natsurainko.FluentLauncher.Services.UI.NotificationService _notificationService;
 
     object INavigationProvider.NavigationControl => Frame;
     INavigationService INavigationProvider.NavigationService => _navigationService;
 
     public MainWindow(
         SettingsService settingsService,
-        Natsurainko.FluentLauncher.Services.UI.NotificationService notificationService,
         INavigationService navigationService)
     {
         _settingsService = settingsService;
-        _notificationService = notificationService;
         _navigationService = navigationService;
 
         App.MainWindow = this;
-
         App.GetService<AppearanceService>().RegisterWindow(this);
+        
         InitializeComponent();
         ConfigureWindow();
     }
@@ -88,7 +84,7 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
         hoverColor.A = 35;
 
         App.GetService<InfoBarPresenter>().InitializeContainer(StackPanel);
-        _notificationService.InitContainer(NotifyStackPanel, BackgroundGrid);
+        App.GetService<Services.UI.NotificationService>().InitContainer(NotifyStackPanel, BackgroundGrid);
 
         AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets/AppIcon.ico"));
         AppWindow.Title = "Fluent Launcher";
@@ -113,7 +109,7 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
         XamlRoot = Frame.XamlRoot;
         _navigationService.NavigateTo(_settingsService.FinishGuide ? "ShellPage" : "OOBENavigationPage");
 
-        _settingsService.CurrentLanguageChanged += (SettingsContainer sender, SettingChangedEventArgs e) =>
+        _settingsService.CurrentLanguageChanged += (_, _) =>
             _navigationService.NavigateTo(_settingsService.FinishGuide ? "ShellPage" : "OOBENavigationPage");
     }
 }

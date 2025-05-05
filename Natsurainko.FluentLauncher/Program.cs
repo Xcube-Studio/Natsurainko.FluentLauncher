@@ -4,8 +4,6 @@ using FluentLauncher.Infra.WinUI.AppHost;
 using FluentLauncher.Infra.WinUI.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.Windows.AppNotifications;
 using Natsurainko.FluentLauncher;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;

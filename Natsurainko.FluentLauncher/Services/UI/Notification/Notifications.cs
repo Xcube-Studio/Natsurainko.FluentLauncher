@@ -9,7 +9,7 @@ using Windows.ApplicationModel.DataTransfer;
 
 namespace Natsurainko.FluentLauncher.Services.UI.Notification;
 
-internal class Notification : INotification, 
+internal class DefaultNotification : INotification, 
     INotification<InfoBar>,
     INotification<TeachingTip>,
     INotification<AppNotification>
@@ -22,7 +22,7 @@ internal class Notification : INotification,
 
     public bool IsClosable { get; init; } = true;
 
-    public TimeSpan Delay { get; init; } = TimeSpan.FromSeconds(5);
+    public double Delay { get; init; } = 5;
 
     InfoBar INotification<InfoBar>.ConstructUI()
     {
@@ -70,7 +70,7 @@ internal class ExceptionNotification : INotification,
 
     public bool IsClosable { get; init; } = true;
 
-    public TimeSpan Delay { get; init; } = TimeSpan.MaxValue;
+    public double Delay { get; init; } = 30;
 
     public required Exception Exception { get; init; }
 

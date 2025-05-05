@@ -52,8 +52,8 @@ internal class InfoBarPresenter : INotificationPresenter<InfoBar>
 
         _itemsContainer.Children.Add(infoBar);
 
-        if (notification.Delay != TimeSpan.MaxValue)
-            Task.Delay(notification.Delay).ContinueWith(t => CloseAsync(notification));
+        if (!double.IsNaN(notification.Delay))
+            Task.Delay(TimeSpan.FromSeconds(notification.Delay)).ContinueWith(t => CloseAsync(notification));
     });
 
     public Task ClearAsync() => App.DispatcherQueue.EnqueueAsync(() =>

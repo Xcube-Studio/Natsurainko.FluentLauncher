@@ -28,6 +28,7 @@
         </ScrollViewer>
 
         <ScrollViewer
+            Name="NotificationsScrollViewer"
             MaxWidth="1020"
             Margin="0,48,0,0"
             HorizontalAlignment="Stretch"

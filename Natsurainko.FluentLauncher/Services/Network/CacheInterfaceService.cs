@@ -75,7 +75,7 @@ internal class CacheInterfaceService(
     }
 
     public Task<Stream?> RequestStreamAsync(string url, InterfaceRequestMethod method, string? targetFileName = default)
-        => RequestStreamAsync(url, method, task => { }, targetFileName);
+        => RequestStreamAsync(url, method, task => task.Result.Close(), targetFileName);
 
     public async Task<Stream?> RequestStreamAsync(string url, InterfaceRequestMethod method, Action<Task<Stream>> func, string? targetFileName = default)
     {
@@ -90,19 +90,24 @@ internal class CacheInterfaceService(
             using var responseMessage = await httpClient.SendAsync(requestMessage);
 
             responseMessage.EnsureSuccessStatusCode();
-            using var contentStream = await responseMessage.Content.ReadAsStreamAsync();
 
             if (writeToLocal)
             {
-                using var fileStream = File.Create(fileInfo.FullName);
+                await using var contentStream = await responseMessage.Content.ReadAsStreamAsync();
+                await using var fileStream = File.Create(fileInfo.FullName);
+
                 using var rentMemory = HttpUtils.MemoryPool.Rent(1024);
                 int readMemory = 0;
 
                 while ((readMemory = await contentStream.ReadAsync(rentMemory.Memory)) > 0)
                     await fileStream.WriteAsync(rentMemory.Memory[..readMemory]);
+
+                await fileStream.FlushAsync();
+
+                return File.OpenRead(fileInfo.FullName);
             }
 
-            return File.OpenRead(fileInfo.FullName);
+            return await responseMessage.Content.ReadAsStreamAsync();
         }
 
         if (method == InterfaceRequestMethod.AlwaysLatest)

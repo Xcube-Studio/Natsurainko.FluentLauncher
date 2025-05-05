@@ -12,7 +12,6 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI.Notification;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-using Natsurainko.FluentLauncher.ViewModels.Settings;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Environment;
 using System;

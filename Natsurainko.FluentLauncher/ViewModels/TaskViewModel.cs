@@ -803,7 +803,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
             resultState = TaskState.Cancelled;
             Exception = ex;
 
-            App.DispatcherQueue.TryEnqueue(() =>
+            await App.DispatcherQueue.EnqueueAsync(() =>
             {
                 ShowException = true;
                 ExceptionReason = ex.Message;
@@ -814,7 +814,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
             resultState = TaskState.Failed;
             Exception = ex;
 
-            App.DispatcherQueue.TryEnqueue(() =>
+            await App.DispatcherQueue.EnqueueAsync(() =>
             {
                 ShowException = true;
                 ExceptionReason = ex.Message;
@@ -830,7 +830,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
         if (resultState == TaskState.Running)
             AfterLaunchedProcess();
 
-        App.DispatcherQueue.TryEnqueue(() =>
+        await App.DispatcherQueue.EnqueueAsync(() =>
         {
             ProgressBarIsIndeterminate = false;
             Progress = 1;
@@ -883,38 +883,30 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     [RelayCommand]
     void ShowLogger()
     {
-        App.DispatcherQueue.TryEnqueue(() =>
+        var hoverColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
+        hoverColor.A = 35;
+
+        var window = new WindowEx
         {
-            var hoverColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
-            hoverColor.A = 35;
-
-            var window = new WindowEx();
-
-            window.Title = $"Logger - {_instance.InstanceId}";
-
-            window.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets/AppIcon.ico"));
-
-            window.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
-            window.AppWindow.TitleBar.ButtonBackgroundColor = window.AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-            window.AppWindow.TitleBar.ButtonForegroundColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
-            window.AppWindow.TitleBar.ButtonHoverForegroundColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
-            window.AppWindow.TitleBar.ButtonHoverBackgroundColor = hoverColor;
-            window.SystemBackdrop = Environment.OSVersion.Version.Build >= 22000
+            Title = $"Logger - {_instance.InstanceId}",
+            MinWidth = 525,
+            MinHeight = 328,
+            Width = 525,
+            Height = 612,
+            SystemBackdrop = Environment.OSVersion.Version.Build >= 22000
                ? new MicaBackdrop() { Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt }
-               : new DesktopAcrylicBackdrop();
+               : new DesktopAcrylicBackdrop(),
+        };
+        window.ConfigureTitleBarTheme();
 
-            (window.MinWidth, window.MinHeight) = (525, 328);
-            (window.Width, window.Height) = (525, 612);
+        var view = new Views.LoggerPage();
+        var viewModel = new Pages.LoggerViewModel(this, view);
 
-            var view = new Views.LoggerPage();
-            var viewModel = new Pages.LoggerViewModel(this, view);
+        viewModel.Title = window.Title;
+        view.DataContext = viewModel;
 
-            viewModel.Title = window.Title;
-            view.DataContext = viewModel;
-
-            window.Content = view;
-            window.Show();
-        });
+        window.Content = view;
+        window.Show();
     }
 
     [RelayCommand(CanExecute = nameof(IsGameRunning))]

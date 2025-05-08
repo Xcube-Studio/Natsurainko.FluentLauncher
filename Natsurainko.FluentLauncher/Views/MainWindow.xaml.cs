@@ -70,7 +70,6 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
         App.GetService<InfoBarPresenter>().InitializeContainer(StackPanel);
 
         AppWindow.Title = "Fluent Launcher";
-        AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
         AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
 
         (MinWidth, MinHeight) = _settingsService.FinishGuide ? (516, 328) : (_settingsService.AppWindowWidth, _settingsService.AppWindowHeight);

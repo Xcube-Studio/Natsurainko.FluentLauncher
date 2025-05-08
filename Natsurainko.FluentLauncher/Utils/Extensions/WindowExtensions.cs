@@ -23,6 +23,7 @@ internal static class WindowExtensions
         appWindow.TitleBar.ButtonForegroundColor = actualTheme == ElementTheme.Light ? Colors.Black : Colors.White;
         appWindow.TitleBar.ButtonHoverForegroundColor = actualTheme == ElementTheme.Light ? Colors.Black : Colors.White;
         appWindow.TitleBar.ButtonHoverBackgroundColor = hoverColor;
+        appWindow.TitleBar.ExtendsContentIntoTitleBar = true;
 
         frameworkElement.ActualThemeChanged += (frameworkElement, _) =>
         {

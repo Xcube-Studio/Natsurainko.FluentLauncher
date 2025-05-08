@@ -26,7 +26,7 @@ internal class DefaultNotification : INotification,
 
     InfoBar INotification<InfoBar>.ConstructUI()
     {
-        return new InfoBar()
+        InfoBar infoBar = new()
         {
             Title = Title,
             Message = Message,
@@ -42,6 +42,10 @@ internal class DefaultNotification : INotification,
                 _ => InfoBarSeverity.Informational
             }
         };
+
+        infoBar.Closing += (_, _) => infoBar.IsOpen = true;
+
+        return infoBar;
     }
 
     TeachingTip INotification<TeachingTip>.ConstructUI()

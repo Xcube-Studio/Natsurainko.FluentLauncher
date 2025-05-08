@@ -27,13 +27,11 @@ internal class InfoBarPresenter : INotificationPresenter<InfoBar>
 
         if (_infoBars.TryGetValue(notification, out var infoBar))
         {
-            infoBar.IsOpen = false;
             _itemsContainer.Children.Remove(infoBar);
 
             lock (_infoBars)
             {
                 _infoBars.Remove(notification);
-                UpdateMargin();
             }
         }
     });
@@ -49,7 +47,6 @@ internal class InfoBarPresenter : INotificationPresenter<InfoBar>
         lock (_infoBars)
         {
             _infoBars.Add(notification, infoBar);
-            UpdateMargin();
         }
 
         _itemsContainer.Children.Add(infoBar);
@@ -65,13 +62,9 @@ internal class InfoBarPresenter : INotificationPresenter<InfoBar>
         lock (_infoBars)
         {
             foreach (var infoBar in _infoBars.Values)
-            {
-                infoBar.IsOpen = false;
                 _itemsContainer.Children.Remove(infoBar);
-            }
 
             _infoBars.Clear();
-            UpdateMargin();
         }
     });
 
@@ -86,12 +79,5 @@ internal class InfoBarPresenter : INotificationPresenter<InfoBar>
     {
         if (_itemsContainer == null)
             throw new InvalidOperationException("ItemsContainer is not initialized.");
-    }
-
-    private void UpdateMargin()
-    {
-        _itemsContainer!.Margin = _infoBars.Count == 0 
-            ? new Microsoft.UI.Xaml.Thickness(0)
-            : new Microsoft.UI.Xaml.Thickness(16);
     }
 }

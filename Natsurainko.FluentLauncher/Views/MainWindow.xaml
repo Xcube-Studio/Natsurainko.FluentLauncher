@@ -17,13 +17,15 @@
             Name="NotificationsScrollViewer"
             MaxWidth="1020"
             Margin="0,48,0,0"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Top"
+            Background="{x:Null}"
             VerticalScrollBarVisibility="Hidden">
-            <StackPanel x:Name="StackPanel" Spacing="4">
+            <StackPanel
+                x:Name="StackPanel"
+                Margin="16"
+                Background="{x:Null}"
+                Spacing="4">
                 <StackPanel.ChildrenTransitions>
-                    <EntranceThemeTransition FromVerticalOffset="-75" />
-                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                    <AddDeleteThemeTransition />
                 </StackPanel.ChildrenTransitions>
             </StackPanel>
         </ScrollViewer>

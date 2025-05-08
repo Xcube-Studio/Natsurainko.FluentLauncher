@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
+using Natsurainko.FluentLauncher.Exceptions;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
@@ -29,7 +30,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.DataTransfer;
 using WinUIEx;
 using static Natsurainko.FluentLauncher.Services.Launch.LaunchProgress;
 using static Natsurainko.FluentLauncher.ViewModels.LaunchStageProgress;
@@ -392,7 +392,7 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
                 resultState = TaskState.Cancelled;
                 Exception = canceledException;
 
-                App.DispatcherQueue.TryEnqueue(() =>
+                await App.DispatcherQueue.EnqueueAsync(() =>
                 {
                     ShowException = true;
                     ExceptionReason = canceledException.Message;
@@ -403,7 +403,7 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
                 resultState = TaskState.Failed;
                 Exception = ex;
 
-                App.DispatcherQueue.TryEnqueue(() =>
+                await App.DispatcherQueue.EnqueueAsync(() =>
                 {
                     ShowException = true;
                     ExceptionReason = ex.Message;
@@ -411,7 +411,7 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
             }
         }
 
-        App.DispatcherQueue.TryEnqueue(() =>
+        await App.DispatcherQueue.EnqueueAsync(() =>
         {
             ProgressBarIsIndeterminate = false;
             Progress = 1;
@@ -461,11 +461,12 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
     [RelayCommand]
     void NotifyException()
     {
-        INotificationService notificationService = App.GetService<NotificationService>();
+        INotificationService notificationService = App.GetService<INotificationService>();
 
         string reason = Exception switch
         {
-            IncompleteDependenciesException => LocalizedStrings.Notifications__LaunchFailed_IncompleteDependenciesException,
+            IncompleteDependenciesException => LocalizedStrings.Exceptions__IncompleteDependenciesException,
+            TaskCanceledException => LocalizedStrings.Exceptions__TaskCanceledException,
             _ => string.Empty
         };
 
@@ -907,23 +908,29 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     }
 
     [RelayCommand]
-    void CopyLaunchArguments()
-    {
-        var dataPackage = new DataPackage();
-        dataPackage.SetText(string.Join("\r\n", McProcess!.ArgumentList));
-        Clipboard.SetContent(dataPackage);
-    }
+    void CopyLaunchArguments() => ClipboardHepler.SetText(string.Join("\r\n", McProcess!.ArgumentList));
 
     [RelayCommand]
     void NotifyException()
     {
-        INotificationService notificationService = App.GetService<NotificationService>();
+        INotificationService notificationService = App.GetService<INotificationService>();
 
         string reason = Exception switch
         {
-            YggdrasilAuthenticationException => LocalizedStrings.Notifications__LaunchFailed_MicrosoftAuthenticationException,
-            MicrosoftAuthenticationException => LocalizedStrings.Notifications__LaunchFailed_MicrosoftAuthenticationException,
-            IncompleteDependenciesException => LocalizedStrings.Notifications__LaunchFailed_IncompleteDependenciesException,
+            InstanceDirectoryNotFoundException instanceDirectoryNotFoundException => LocalizedStrings.Exceptions__InstanceDirectoryNotFoundException
+                .Replace("${instance}", instanceDirectoryNotFoundException.MinecraftInstance.InstanceId)
+                .Replace("${directory}", instanceDirectoryNotFoundException.Directory),
+            JavaRuntimeFileNotFoundException javaRuntimeFileNotFoundException => LocalizedStrings.Exceptions__JavaRuntimeFileNotFoundException
+                .Replace("${file}", javaRuntimeFileNotFoundException.FileName),
+            JavaRuntimeIncompatibleException javaRuntimeIncompatibleException => LocalizedStrings.Exceptions__JavaRuntimeIncompatibleException
+                .Replace("${version}", javaRuntimeIncompatibleException.TargetJavaVersion.ToString()),
+            NoActiveAccountException => LocalizedStrings.Exceptions__NoActiveAccountException,
+            AccountNotFoundException accountNotFoundException => LocalizedStrings.Exceptions__AccountNotFoundException
+                .Replace("${account}", accountNotFoundException.Account.Name),
+            YggdrasilAuthenticationException => LocalizedStrings.Exceptions__MicrosoftAuthenticationException,
+            MicrosoftAuthenticationException => LocalizedStrings.Exceptions__MicrosoftAuthenticationException,
+            IncompleteDependenciesException => LocalizedStrings.Exceptions__IncompleteDependenciesException,
+            TaskCanceledException => LocalizedStrings.Exceptions__TaskCanceledException,
             _ => string.Empty
         };
 

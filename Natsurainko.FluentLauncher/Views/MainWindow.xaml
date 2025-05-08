@@ -20,10 +20,7 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top"
             VerticalScrollBarVisibility="Hidden">
-            <StackPanel
-                x:Name="StackPanel"
-                Padding="16"
-                Spacing="4">
+            <StackPanel x:Name="StackPanel" Spacing="4">
                 <StackPanel.ChildrenTransitions>
                     <EntranceThemeTransition FromVerticalOffset="-75" />
                     <RepositionThemeTransition IsStaggeringEnabled="False" />

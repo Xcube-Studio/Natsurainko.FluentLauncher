@@ -8,7 +8,6 @@
     xmlns:labs="using:CommunityToolkit.Labs.WinUI.MarkdownTextBlock"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads.Mods"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="using:Natsurainko.FluentLauncher.Models"
     xmlns:resources="using:Nrk.FluentCore.Resources"
     xmlns:selector="using:Natsurainko.FluentLauncher.XamlHelpers.Selectors"
     mc:Ignorable="d">
@@ -237,7 +236,7 @@
                                 Text="{x:Bind VM.Name, Mode=OneWay}" />
                             <ItemsRepeater Margin="-6,0,0,2" ItemsSource="{x:Bind VM.Authors}">
                                 <ItemsRepeater.ItemTemplate>
-                                    <DataTemplate x:DataType="models:ModAuthor">
+                                    <DataTemplate x:DataType="local:ModAuthor">
                                         <HyperlinkButton Padding="5,0,5,0.5" NavigateUri="{x:Bind WebLink}">
                                             <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind Name}" />
                                         </HyperlinkButton>

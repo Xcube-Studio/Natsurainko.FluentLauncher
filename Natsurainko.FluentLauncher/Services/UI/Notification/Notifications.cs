@@ -6,7 +6,6 @@ using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
 using Natsurainko.FluentLauncher.Utils;
 using System;
-using Windows.ApplicationModel.DataTransfer;
 
 namespace Natsurainko.FluentLauncher.Services.UI.Notification;
 

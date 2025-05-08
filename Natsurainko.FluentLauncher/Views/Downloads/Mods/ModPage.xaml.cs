@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Views.Downloads.Mods;
 
+internal record ModAuthor(string Name, string WebLink);
+
 public sealed partial class ModPage : Page, IBreadcrumbBarAware
 {
     string IBreadcrumbBarAware.Route => "Mod";

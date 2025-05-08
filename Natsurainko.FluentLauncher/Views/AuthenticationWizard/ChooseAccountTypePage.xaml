@@ -23,12 +23,12 @@
         </Grid.RowDefinitions>
         <ItemsView
             Name="ItemsView"
-            MaxWidth="300"
+            MaxWidth="375"
             ItemsSource="{x:Bind VM.AccountTypes}"
             SelectionMode="Single">
             <ItemsView.ItemTemplate>
                 <DataTemplate x:DataType="acc:AccountType">
-                    <ItemContainer Margin="0,5">
+                    <ItemContainer Margin="0,2">
                         <Grid Padding="15,10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />

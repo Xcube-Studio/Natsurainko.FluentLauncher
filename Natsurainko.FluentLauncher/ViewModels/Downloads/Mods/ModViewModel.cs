@@ -11,6 +11,7 @@ using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils.Extensions;
+using Natsurainko.FluentLauncher.Views.Downloads.Mods;
 using Nrk.FluentCore.Resources;
 using System;
 using System.Collections.Generic;

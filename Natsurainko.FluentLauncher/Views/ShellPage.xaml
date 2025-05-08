@@ -257,7 +257,6 @@
             Grid.Row="0"
             Grid.RowSpan="3"
             BackRequested="NavigationViewControl_BackRequested"
-            Canvas.ZIndex="0"
             DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
             IsBackButtonVisible="Visible"
             IsBackEnabled="{x:Bind CanGoBack, Mode=OneWay}"

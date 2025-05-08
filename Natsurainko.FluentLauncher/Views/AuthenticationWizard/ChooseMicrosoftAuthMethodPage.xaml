@@ -6,7 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.AuthenticationWizard"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="using:Natsurainko.FluentLauncher.Models"
     x:Uid="AuthenticationWizard_ChooseMicrosoftAuthMethodPage_Page"
     d:DataContext="{d:DesignInstance Type=authenticationwizard:ChooseMicrosoftAuthMethodViewModel}"
     Background="Transparent"
@@ -20,7 +19,7 @@
         ItemsSource="{x:Bind VM.MicrosoftAuthMethods}"
         SelectionMode="Single">
         <ItemsView.ItemTemplate>
-            <DataTemplate x:DataType="models:MicrosoftAuthMethod">
+            <DataTemplate x:DataType="local:MicrosoftAuthMethod">
                 <ItemContainer Margin="0,5">
                     <Grid Padding="15,10">
                         <Grid.ColumnDefinitions>
@@ -33,13 +32,13 @@
                             Width="28"
                             Height="28"
                             VerticalAlignment="Center"
-                            Template="{x:Bind local:ChooseMicrosoftAuthMethodPage.GetMicrosoftAuthMethodIcon((models:MicrosoftAuthMethod))}" />
+                            Template="{x:Bind local:ChooseMicrosoftAuthMethodPage.GetMicrosoftAuthMethodIcon((local:MicrosoftAuthMethod))}" />
                         <StackPanel Grid.Column="2">
-                            <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind local:ChooseMicrosoftAuthMethodPage.GetMicrosoftAuthMethodTitle((models:MicrosoftAuthMethod))}" />
+                            <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind local:ChooseMicrosoftAuthMethodPage.GetMicrosoftAuthMethodTitle((local:MicrosoftAuthMethod))}" />
                             <TextBlock
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
-                                Text="{x:Bind local:ChooseMicrosoftAuthMethodPage.GetMicrosoftAuthMethodDescription((models:MicrosoftAuthMethod))}" />
+                                Text="{x:Bind local:ChooseMicrosoftAuthMethodPage.GetMicrosoftAuthMethodDescription((local:MicrosoftAuthMethod))}" />
                         </StackPanel>
                     </Grid>
                 </ItemContainer>

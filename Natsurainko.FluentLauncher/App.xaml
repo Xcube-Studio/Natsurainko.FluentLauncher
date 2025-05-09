@@ -50,7 +50,7 @@
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
-            <StaticResource x:Key="InfoBarInformationalSeverityBackgroundBrush" ResourceKey="ApplicationPageBackgroundThemeBrush" />
+            <ThemeResource x:Key="InfoBarInformationalSeverityBackgroundBrush" ResourceKey="ApplicationPageBackgroundThemeBrush" />
 
             <FontFamily x:Key="MinecraftTen">/Assets/MinecraftTen.ttf#Minecraft Ten</FontFamily>
 

@@ -22,7 +22,7 @@
 
                 <controls:SettingsExpander
                     x:Uid="Settings_AboutPage_Card1"
-                    Description="Xcube Studio ©2022-2024. All rights reserved."
+                    Description="Xcube Studio ©2022-2025. All rights reserved."
                     Header="Fluent Launcher">
                     <controls:SettingsExpander.HeaderIcon>
                         <ImageIcon Source="ms-appx:///Assets/AppIcon.png" />

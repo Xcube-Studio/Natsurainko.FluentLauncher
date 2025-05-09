@@ -259,13 +259,6 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         var PaneContentGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneContentGrid")!;
         PaneContentGrid.Padding = new Thickness(1,0,0,0);
 
-        //var PaneToggleButtonGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneToggleButtonGrid")!;
-        //PaneToggleButtonGrid.Translation += new System.Numerics.Vector3(20, 0, 0);
-        //PaneToggleButtonGrid.TranslationTransition = new Vector3Transition()
-        //{
-        //    Duration = TimeSpan.FromMilliseconds(500)
-        //};
-
 #if ENABLE_LOAD_EXTENSIONS
         foreach (var extension in App.GetService<List<global::FluentLauncher.Infra.ExtensionHost.Extensions.IExtension>>())
         {

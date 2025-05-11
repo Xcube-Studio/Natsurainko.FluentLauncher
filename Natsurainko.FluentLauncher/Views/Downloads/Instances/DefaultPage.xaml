@@ -75,7 +75,7 @@
 
     </Page.Resources>
 
-    <ScrollViewer>
+    <ScrollView>
         <Border Name="border" Margin="{ThemeResource PageMarginWithBorder}">
             <StackPanel
                 MaxWidth="1000"
@@ -229,5 +229,5 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-    </ScrollViewer>
+    </ScrollView>
 </Page>

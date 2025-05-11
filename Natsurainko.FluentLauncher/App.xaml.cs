@@ -55,6 +55,9 @@ public partial class App : Application
         // Global exception handler
         UnhandledException += (_, e) =>
         {
+            if (e.Message == "Layout cycle detected. Layout could not complete.")
+                return;
+
             e.Handled = true;
             ProcessException(e.Exception);
         };

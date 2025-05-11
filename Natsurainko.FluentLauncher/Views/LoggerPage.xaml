@@ -108,35 +108,39 @@
                         IsChecked="{x:Bind VM.EnableAutoScroll, Mode=TwoWay}" />
                 </StackPanel>
             </Grid>
-            <ScrollViewer
-                x:Name="ScrollViewer"
+            <ListBox
+                x:Name="ListBox"
                 Grid.Row="1"
-                Margin="-15,0"
-                Padding="15,10"
-                x:FieldModifier="public">
-                <StackPanel>
-                    <ItemsRepeater ItemsSource="{x:Bind VM.FilterLoggerItems, Mode=OneWay}">
-                        <ItemsRepeater.ItemTemplate>
-                            <DataTemplate x:DataType="pages:LoggerItem">
-                                <Grid>
-                                    <Rectangle
-                                        Width="4"
-                                        Margin="-8"
-                                        HorizontalAlignment="Right"
-                                        Fill="Red"
-                                        Opacity="0.5"
-                                        Visibility="{x:Bind ErrorVisibility, Mode=OneWay}" />
-                                    <Border
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        Child="{x:Bind Output, Converter={StaticResource LoggerItemConverter}}" />
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsRepeater.ItemTemplate>
-                    </ItemsRepeater>
-                    <Border Height="150" />
-                </StackPanel>
-            </ScrollViewer>
+                Margin="-15,5"
+                Padding="0,0"
+                x:FieldModifier="public"
+                Background="Transparent"
+                ItemsSource="{x:Bind VM.FilterLoggerItems, Mode=OneWay}">
+                <ListBox.ItemContainerStyle>
+                    <Style BasedOn="{StaticResource DefaultListBoxItemStyle}" TargetType="ListBoxItem">
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="CornerRadius" Value="4" />
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="pages:LoggerItem">
+                        <Grid Margin="15,0">
+                            <Rectangle
+                                Width="4"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Fill="Red"
+                                Opacity="0.5"
+                                Visibility="{x:Bind ErrorVisibility, Mode=OneWay}" />
+                            <Border
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Child="{x:Bind Output, Converter={StaticResource LoggerItemConverter}}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
     </Grid>
 </Page>

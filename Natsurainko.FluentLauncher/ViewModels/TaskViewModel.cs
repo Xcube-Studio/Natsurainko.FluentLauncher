@@ -930,6 +930,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
             YggdrasilAuthenticationException => LocalizedStrings.Exceptions__MicrosoftAuthenticationException,
             MicrosoftAuthenticationException => LocalizedStrings.Exceptions__MicrosoftAuthenticationException,
             IncompleteDependenciesException => LocalizedStrings.Exceptions__IncompleteDependenciesException,
+            //UnauthorizedAccessException unauthorizedAccessException => ,
             TaskCanceledException => LocalizedStrings.Exceptions__TaskCanceledException,
             _ => string.Empty
         };

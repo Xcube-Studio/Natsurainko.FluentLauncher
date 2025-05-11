@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -136,7 +137,24 @@ internal partial class LoggerViewModel : ObservableObject
             ScrollToEnd();
     }
 
-    private void ScrollToEnd() => View.ScrollViewer.ScrollToVerticalOffset(View.ScrollViewer.ScrollableHeight);
+    private void ScrollToEnd()
+    {
+        // Memory issue and scroll behavior issue
+        // View.ListView.SmoothScrollIntoViewWithIndexAsync(View.ListView.Items.Count - 1);
+
+        // Crash with layout recycle detected
+        // ScrollView scrollView = View.ItemsView.ScrollView;
+        // scrollView?.ScrollTo(0, scrollView.ScrollableHeight);
+
+        // ScrollViewer behavior issue when ItemsRepeater has many item
+        // View.ScrollViewer.ScrollTo(0, View.ScrollViewer.ScrollableHeight);
+
+        try
+        {
+            View.ListBox.ScrollIntoView(View.ListBox.Items[^1]);
+        }
+        catch { }
+    }
 }
 
 internal partial class LoggerItem : ObservableObject

@@ -57,7 +57,7 @@ public partial class App : Application
         // Global exception handler
         UnhandledException += (_, e) =>
         {
-            if (e is Microsoft.UI.Xaml.UnhandledExceptionEventArgs)
+            if (e.Message == "Layout cycle detected.  Layout could not complete.")
             {
                 AppNotificationManager.Default.Show(new AppNotificationBuilder()
                     .AddText("Application Crashed: " + e.ToString())

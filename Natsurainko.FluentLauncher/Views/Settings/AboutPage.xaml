@@ -131,7 +131,6 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="border.Margin" Value="20, 0, 20, 20" />
-                        <Setter Target="ReleaseInfoStackPanel.Orientation" Value="Horizontal" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

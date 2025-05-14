@@ -197,7 +197,6 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="stackPanel.Margin" Value="20, 10, 20, 20" />
                         <Setter Target="scrollViewer.Padding" Value="20, 0" />
                         <Setter Target="wrapPanel.Margin" Value="20, 0, 20, 16" />
                         <Setter Target="itemsRepeater.Margin" Value="0, 0, 0, 20" />

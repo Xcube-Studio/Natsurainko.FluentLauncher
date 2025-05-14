@@ -5,6 +5,7 @@ using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
@@ -908,7 +909,11 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     }
 
     [RelayCommand]
-    void CopyLaunchArguments() => ClipboardHepler.SetText(string.Join("\r\n", McProcess!.ArgumentList));
+    void CopyLaunchArguments()
+    {
+        ClipboardHepler.SetText(string.Join("\r\n", McProcess!.ArgumentList));
+        App.GetService<INotificationService>().ArgumentsCopied();
+    }
 
     [RelayCommand]
     void NotifyException()
@@ -948,4 +953,7 @@ internal static partial class TaskViewModelNotifications
 
     [ExceptionNotification(Title = "Notifications__TaskFailed_Install", Message = "{reason}")]
     public static partial void InstallFailed(this INotificationService notificationService, Exception exception, string reason);
+
+    [Notification<TeachingTip>(Title = "Notifications__ArgumentsCopied")]
+    public static partial void ArgumentsCopied(this INotificationService notificationService);
 }

@@ -6,6 +6,7 @@ using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
 using Natsurainko.FluentLauncher.Utils;
 using System;
+using System.Windows.Input;
 
 namespace Natsurainko.FluentLauncher.Services.UI.Notification;
 
@@ -50,7 +51,15 @@ internal class DefaultNotification : INotification,
 
     TeachingTip INotification<TeachingTip>.ConstructUI()
     {
-        return new TeachingTip();
+        return new TeachingTip()
+        {
+            Title = Title,
+            Subtitle = Message,
+            CloseButtonContent = LocalizedStrings.Buttons_Confirm_Text,
+            PreferredPlacement = TeachingTipPlacementMode.Auto,
+            IsLightDismissEnabled = true,
+            PlacementMargin = new Thickness(48),
+        };
     }
 
     AppNotification INotification<AppNotification>.ConstructUI()
@@ -94,6 +103,45 @@ internal class ActionNotification : INotification,
             NotificationType.Success => InfoBarSeverity.Success,
             _ => InfoBarSeverity.Informational
         }
+    };
+}
+
+internal class ConfirmNotification : INotification,
+    INotification<TeachingTip>
+{
+    public NotificationType Type { get; init; } = NotificationType.Error;
+
+    public required string Title { get; init; }
+
+    public string? Message { get; init; }
+
+    public bool IsClosable { get; init; } = true;
+
+    public double Delay { get; init; } = double.NaN;
+
+    public object? ActionButtonContent { get; init; } = LocalizedStrings.Buttons_Confirm_Text;
+
+    public Style ActionButtonStyle { get; init; } = (App.Current.Resources["AccentButtonStyle"] as Style)!;
+
+    public ICommand? ActionButtonCommand { get; init; }
+
+    public object? ActionButtonCommandParameter { get; init; }
+
+    public FrameworkElement? Target { get; init; }
+
+    TeachingTip INotification<TeachingTip>.ConstructUI() => new()
+    {
+        Title = Title,
+        Subtitle = Message,
+        ActionButtonStyle = ActionButtonStyle,
+        ActionButtonContent = ActionButtonContent,
+        ActionButtonCommand = ActionButtonCommand,
+        ActionButtonCommandParameter = ActionButtonCommandParameter,
+        CloseButtonContent = LocalizedStrings.Buttons_Cancel_Text,
+        PreferredPlacement = TeachingTipPlacementMode.Auto,
+        IsLightDismissEnabled = true,
+        PlacementMargin = new Thickness(48),
+        Target = Target
     };
 }
 

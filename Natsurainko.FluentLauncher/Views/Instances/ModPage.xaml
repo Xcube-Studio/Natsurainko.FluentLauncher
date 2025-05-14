@@ -10,6 +10,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     x:Name="Page"
+    AllowDrop="True"
+    DragEnter="Page_DragEnter"
+    Drop="Page_Drop"
     mc:Ignorable="d">
 
     <ScrollViewer>
@@ -112,10 +115,8 @@
                                 <StackPanel Orientation="Horizontal" Spacing="15">
                                     <Button
                                         Name="DeleteButton"
-                                        Background="{ThemeResource DeleteButtonBackground}"
-                                        BorderBrush="{ThemeResource DeleteButtonBorder}"
                                         CommandParameter="{x:Bind}"
-                                        Style="{ThemeResource ButtonRevealStyle}">
+                                        Style="{ThemeResource DeleteButtonStyle}">
                                         <StackPanel Orientation="Horizontal" Spacing="5">
                                             <FontIcon
                                                 FontSize="14"
@@ -130,7 +131,7 @@
                                         <i:Interaction.Behaviors>
                                             <behaviors:AncestorBindingBehavior
                                                 AncestorType="ItemsRepeater"
-                                                Binding="{Binding DataContext.DeleteModCommand}"
+                                                Binding="{Binding DataContext.ConfirmDeleteCommand}"
                                                 TargetPropertyName="Command" />
                                         </i:Interaction.Behaviors>
                                     </Button>

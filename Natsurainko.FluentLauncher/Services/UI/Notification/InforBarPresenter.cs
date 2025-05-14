@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Notification;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Natsurainko.FluentLauncher.Services.Settings;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -42,6 +44,7 @@ internal class InfoBarPresenter : INotificationPresenter<InfoBar>
 
         InfoBar infoBar = notification.ConstructUI();
         infoBar.Shadow = _themeShadow;
+        infoBar.RequestedTheme = ((FrameworkElement)App.MainWindow.Content).RequestedTheme;
         infoBar.CloseButtonClick += (_, _) => CloseAsync(notification);
 
         lock (_infoBars)

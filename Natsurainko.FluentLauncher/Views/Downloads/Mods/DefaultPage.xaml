@@ -109,7 +109,7 @@
 
                 <i:Interaction.Behaviors>
                     <behaviors:AncestorBindingBehavior
-                        AncestorType="ScrollViewer"
+                        AncestorType="ScrollView"
                         Binding="{Binding DataContext.CardClickCommand}"
                         TargetPropertyName="Command" />
                 </i:Interaction.Behaviors>

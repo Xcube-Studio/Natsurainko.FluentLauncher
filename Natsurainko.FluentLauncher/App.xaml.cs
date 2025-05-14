@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
+using Microsoft.Windows.AppNotifications;
+using Microsoft.Windows.AppNotifications.Builder;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
@@ -55,8 +57,15 @@ public partial class App : Application
         // Global exception handler
         UnhandledException += (_, e) =>
         {
-            if (e.Message == "Layout cycle detected. Layout could not complete.")
+            if (e is Microsoft.UI.Xaml.UnhandledExceptionEventArgs)
+            {
+                AppNotificationManager.Default.Show(new AppNotificationBuilder()
+                    .AddText("Application Crashed: " + e.ToString())
+                    .AddText("A fatal application UI thread exception was encountered and the program was unable to recover" + "\r\n" + e.Message)
+                    .BuildNotification());
+
                 return;
+            }
 
             e.Handled = true;
             ProcessException(e.Exception);
@@ -110,7 +119,7 @@ public partial class App : Application
 
         // 确保单例应用程序启动
         var mainInstance = AppInstance.FindOrRegisterForKey("Main");
-        mainInstance.Activated += (object? sender, AppActivationArguments e) =>
+        mainInstance.Activated += (sender, e) =>
         {
             DispatcherQueue.TryEnqueue(() =>
             {

@@ -50,7 +50,7 @@
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
-            <ThemeResource x:Key="InfoBarInformationalSeverityBackgroundBrush" ResourceKey="ApplicationPageBackgroundThemeBrush" />
+            <StaticResource x:Key="InfoBarInformationalSeverityBackgroundBrush" ResourceKey="ApplicationPageBackgroundThemeBrush" />
 
             <FontFamily x:Key="MinecraftTen">/Assets/MinecraftTen.ttf#Minecraft Ten</FontFamily>
 
@@ -90,6 +90,14 @@
             <converters:SuggestionIconConverter x:Key="SuggestionIconConverter" />
 
             <converters:LoggerItemConverter x:Key="LoggerItemConverter" />
+
+            <Style
+                x:Name="DeleteButtonStyle"
+                BasedOn="{StaticResource ButtonRevealStyle}"
+                TargetType="Button">
+                <Setter Property="Background" Value="{ThemeResource DeleteButtonBackground}" />
+                <Setter Property="Background" Value="{ThemeResource DeleteButtonBorder}" />
+            </Style>
 
             <Style
                 x:Key="SettingsSectionHeaderTextBlockStyle"

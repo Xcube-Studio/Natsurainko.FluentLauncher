@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using Windows.UI;
 
 namespace Natsurainko.FluentLauncher.Services.UI.Notification;
 
@@ -44,8 +45,10 @@ internal class InfoBarPresenter : INotificationPresenter<InfoBar>
 
         InfoBar infoBar = notification.ConstructUI();
         infoBar.Shadow = _themeShadow;
-        infoBar.RequestedTheme = ((FrameworkElement)App.MainWindow.Content).RequestedTheme;
         infoBar.CloseButtonClick += (_, _) => CloseAsync(notification);
+
+        if (infoBar.Severity == InfoBarSeverity.Informational)
+            infoBar.Background = GetInfoBarDefaultBackground();
 
         lock (_infoBars)
         {
@@ -82,5 +85,11 @@ internal class InfoBarPresenter : INotificationPresenter<InfoBar>
     {
         if (_itemsContainer == null)
             throw new InvalidOperationException("ItemsContainer is not initialized.");
+    }
+
+    private Brush GetInfoBarDefaultBackground()
+    {
+        return (App.Current.Resources.ThemeDictionaries[App.MainWindow.ContentFrame.ActualTheme == ElementTheme.Light
+            ? "Light" : "Dark"] as ResourceDictionary)["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
     }
 }

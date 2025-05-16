@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using Natsurainko.FluentLauncher.Exceptions;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Accounts;
@@ -147,7 +148,7 @@ internal class LaunchService(
 
     async Task<PreCheckData> PreCheckLaunchNeeds(
         MinecraftInstance instance,
-        InstanceConfig specialConfig,
+        InstanceConfig instanceConfig,
         CancellationToken cancellationToken,
         IProgress<LaunchProgress>? progress)
     {
@@ -157,27 +158,15 @@ internal class LaunchService(
             LaunchStageProgress.Starting()
         ));
 
-        var preCheckData = new PreCheckData();
+        PreCheckData preCheckData = new();
 
         #region GameDirectory
 
         cancellationToken.ThrowIfCancellationRequested();
+        preCheckData.GameDirectory = instance.GetGameDirectory();
 
-        if (specialConfig.EnableSpecialSetting)
-        {
-            preCheckData.GameDirectory = specialConfig.EnableIndependencyCore
-                ? Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId)
-                : instance.MinecraftFolderPath;
-        }
-        else
-        {
-            preCheckData.GameDirectory = settingsService.EnableIndependencyCore
-                ? Path.Combine(instance.MinecraftFolderPath, "versions", instance.InstanceId)
-                : instance.MinecraftFolderPath;
-        }
-
-        if (!PathUtils.IsValidPath(preCheckData.GameDirectory) || !Directory.Exists(preCheckData.GameDirectory))
-            throw new Exception($"This is not a valid path, or the path does not exist: ({nameof(preCheckData.GameDirectory)}): {preCheckData.GameDirectory}");
+        if (!Directory.Exists(preCheckData.GameDirectory))
+            throw new InstanceDirectoryNotFoundException(instance, preCheckData.GameDirectory);
 
         #endregion
 
@@ -185,40 +174,48 @@ internal class LaunchService(
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (settingsService.Javas.Count == 0)
-            throw new Exception("No Java added to the launch settings");
-        if (!settingsService.EnableAutoJava && string.IsNullOrEmpty(settingsService.ActiveJava))
-            throw new Exception("Automatic Java selection is not enabled, but no Java is manually enabled.");
+        if (settingsService.Javas.Count == 0 || 
+            (!settingsService.EnableAutoJava && string.IsNullOrEmpty(settingsService.ActiveJava)))
+            throw new NoActiveJavaRuntimeException();
 
         if (settingsService.EnableAutoJava)
         {
             var targetJavaVersion = instance.GetSuitableJavaVersion();
-            var javaInfos = settingsService.Javas.Select(JavaUtils.GetJavaInfo).ToArray();
+            var javaInfos = settingsService.Javas
+                .Where(File.Exists)
+                .Select(JavaUtils.GetJavaInfo).ToArray();
 
             JavaInfo[] possiblyAvailableJavas;
             bool isForgeOrNeoForge = false;
 
             if (instance is ModifiedMinecraftInstance modifiedMinecraftInstance)
             {
-                var loaders = modifiedMinecraftInstance.ModLoaders.Select(x => x.Type);
-                isForgeOrNeoForge = loaders.Contains(ModLoaderType.Forge) || loaders.Contains(ModLoaderType.NeoForge);
+                foreach (var loader in modifiedMinecraftInstance.ModLoaders)
+                {
+                    if (loader.Type == ModLoaderType.NeoForge || loader.Type == ModLoaderType.Forge)
+                    {
+                        isForgeOrNeoForge = true;
+                        break;
+                    }
+                }
             }
 
-            possiblyAvailableJavas = targetJavaVersion == null
-                ? javaInfos
-                : isForgeOrNeoForge
-                    ? javaInfos.Where(x => x.Version.Major.ToString().Equals(targetJavaVersion)).ToArray()
-                    : javaInfos.Where(x => x.Version.Major >= int.Parse(targetJavaVersion)).ToArray();
+            possiblyAvailableJavas = isForgeOrNeoForge
+                ? [.. javaInfos.Where(x => x.Version.Major == targetJavaVersion)]
+                : [.. javaInfos.Where(x => x.Version.Major >= targetJavaVersion)];
 
             if (possiblyAvailableJavas.Length == 0)
-                throw new Exception($"No suitable version of Java found to start this game, version {targetJavaVersion} is required");
+                throw new JavaRuntimeIncompatibleException(targetJavaVersion);
 
             preCheckData.Java = possiblyAvailableJavas.MaxBy(x => x.Version)!.FilePath;
         }
-        else preCheckData.Java = settingsService.ActiveJava;
+        else
+        {
+            preCheckData.Java = settingsService.ActiveJava;
 
-        if (!PathUtils.IsValidPath(preCheckData.Java, isFile: true) || !File.Exists(preCheckData.Java))
-            throw new Exception($"This is not a valid path, or the path does not exist: ({nameof(preCheckData.Java)}): {preCheckData.Java}");
+            if (!File.Exists(preCheckData.Java))
+                throw new JavaRuntimeFileNotFoundException(preCheckData.Java);
+        }
 
         #endregion
 
@@ -238,8 +235,7 @@ internal class LaunchService(
         // 具体阈值在大约多少内存我还未进行测量，所以我在内存设置大于 512 MB 时就阻止启动
         // （一些其他的启动器现在已经禁止了使用 x86 Java 启动游戏）
         if (javaInfo.Architecture != "x64" && maxMemory >= 512)
-            throw new Exception("Using a 32-bit Java, but have allocated more than 1(or 0.5) GB of memory. " +
-                "Please use a 64-bit Java, or turn off automatic memory allocation and manually allocate less than 1(or 0.5) GB of memory.");
+            throw new X86JavaRuntimeMemoryException();
 
         preCheckData.MaxMemory = maxMemory;
         preCheckData.MinMemory = minMemory;
@@ -250,13 +246,12 @@ internal class LaunchService(
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (specialConfig.EnableSpecialSetting && specialConfig.EnableTargetedAccount && specialConfig.Account != null)
+        if (instanceConfig.EnableSpecialSetting && instanceConfig.EnableTargetedAccount && instanceConfig.Account != null)
         {
-            preCheckData.Account = accountService.Accounts.FirstOrDefault(x => x.ProfileEquals(specialConfig.Account))
-                ?? throw new Exception("The game specifies an account to launch, but that account cannot be found in the current account list");
+            preCheckData.Account = accountService.Accounts.FirstOrDefault(x => x.ProfileEquals(instanceConfig.Account))
+                ?? throw new AccountNotFoundException(instanceConfig.Account);
         }
-        else preCheckData.Account = accountService.ActiveAccount
-                ?? throw new Exception("No account selected");
+        else preCheckData.Account = accountService.ActiveAccount ?? throw new NoActiveAccountException();
 
         #endregion
 
@@ -266,15 +261,15 @@ internal class LaunchService(
 
         IEnumerable<string> GetExtraGameParameters()
         {
-            if (specialConfig.EnableSpecialSetting)
+            if (instanceConfig.EnableSpecialSetting)
             {
-                if (specialConfig.EnableFullScreen) yield return "--fullscreen";
-                if (specialConfig.GameWindowWidth > 0) yield return $"--width {specialConfig.GameWindowWidth}";
-                if (specialConfig.GameWindowHeight > 0) yield return $"--height {specialConfig.GameWindowHeight}";
+                if (instanceConfig.EnableFullScreen) yield return "--fullscreen";
+                if (instanceConfig.GameWindowWidth > 0) yield return $"--width {instanceConfig.GameWindowWidth}";
+                if (instanceConfig.GameWindowHeight > 0) yield return $"--height {instanceConfig.GameWindowHeight}";
 
-                if (!string.IsNullOrEmpty(specialConfig.ServerAddress))
+                if (!string.IsNullOrEmpty(instanceConfig.ServerAddress))
                 {
-                    specialConfig.ServerAddress.ParseServerAddress(out var host, out var port);
+                    instanceConfig.ServerAddress.ParseServerAddress(out var host, out var port);
 
                     yield return $"--server {host}";
                     yield return $"--port {port}";
@@ -314,9 +309,9 @@ internal class LaunchService(
                 yield return $"-Dauthlibinjector.yggdrasil.prefetched={content.ConvertToBase64()}";
             }
 
-            if (specialConfig.EnableSpecialSetting && specialConfig.VmParameters != null)
+            if (instanceConfig.EnableSpecialSetting && instanceConfig.VmParameters != null)
             {
-                foreach (var item in specialConfig.VmParameters)
+                foreach (var item in instanceConfig.VmParameters)
                     yield return item;
             }
         }
@@ -333,10 +328,10 @@ internal class LaunchService(
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (specialConfig.EnableSpecialSetting)
+        if (instanceConfig.EnableSpecialSetting)
         {
-            preCheckData.GameWindowTitle = !string.IsNullOrEmpty(specialConfig.GameWindowTitle)
-                ? specialConfig.GameWindowTitle
+            preCheckData.GameWindowTitle = !string.IsNullOrEmpty(instanceConfig.GameWindowTitle)
+                ? instanceConfig.GameWindowTitle
                 : null;
         }
         else

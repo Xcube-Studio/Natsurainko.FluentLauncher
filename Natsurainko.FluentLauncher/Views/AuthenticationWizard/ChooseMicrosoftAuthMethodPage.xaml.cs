@@ -1,5 +1,4 @@
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 
@@ -55,4 +54,10 @@ public sealed partial class ChooseMicrosoftAuthMethodPage : Page
     }
 
     #endregion
+}
+
+enum MicrosoftAuthMethod
+{
+    BuiltInBrowser,
+    DeviceFlowCode
 }

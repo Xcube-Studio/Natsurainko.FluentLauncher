@@ -66,7 +66,7 @@
 
                 <i:Interaction.Behaviors>
                     <behaviors:AncestorBindingBehavior
-                        AncestorType="ScrollViewer"
+                        AncestorType="ScrollView"
                         Binding="{Binding DataContext.CardClickCommand}"
                         TargetPropertyName="Command" />
                 </i:Interaction.Behaviors>
@@ -75,7 +75,7 @@
 
     </Page.Resources>
 
-    <ScrollViewer>
+    <ScrollView>
         <Border Name="border" Margin="{ThemeResource PageMarginWithBorder}">
             <StackPanel
                 MaxWidth="1000"
@@ -229,5 +229,5 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-    </ScrollViewer>
+    </ScrollView>
 </Page>

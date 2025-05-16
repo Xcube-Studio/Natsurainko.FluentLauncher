@@ -81,7 +81,6 @@
                     Padding="16,8"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
-                    CornerRadius="8"
                     IsExpanded="True">
                     <controls:SettingsExpander.Header>
                         <Grid>

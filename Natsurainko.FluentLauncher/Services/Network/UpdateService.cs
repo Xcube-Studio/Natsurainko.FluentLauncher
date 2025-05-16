@@ -1,5 +1,11 @@
 ﻿#if FLUENT_LAUNCHER_PREVIEW_CHANNEL
+using CommunityToolkit.Mvvm.Input;
+using FluentLauncher.Infra.UI.Dialogs;
+using FluentLauncher.Infra.UI.Notification;
+using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Storage;
+using Natsurainko.FluentLauncher.Services.UI.Notification;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement.Downloader;
 using System;
@@ -7,134 +13,196 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
-using System.Text.Json.Nodes;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Services.Network;
 
-internal partial class UpdateService
+internal partial class UpdateService(
+    DownloadService downloadService, 
+    LocalStorageService localStorageService, 
+    INotificationService notificationService,
+    HttpClient httpClient)
 {
-    public const string GithubReleasesApi = "https://api.github.com/repos/Xcube-Studio/Natsurainko.FluentLauncher/releases";
-    public const string GitHubInstallerReleasesApi = "https://api.github.com/repos/Xcube-Studio/FluentLauncher.PreviewChannel.PackageInstaller/releases/latest";
+#if ENABLE_LOAD_EXTENSIONS
+    public bool ENABLE_LOAD_EXTENSIONS = true;
+#else
+    public bool ENABLE_LOAD_EXTENSIONS = false;
+#endif
 
-    private readonly HttpClient _httpClient = new();
-    private readonly DownloadService _downloadService;
-    private readonly LocalStorageService _localStorageService;
-
-    public UpdateService(DownloadService downloadService, LocalStorageService localStorageService)
+    public async Task<(bool, ReleaseModel?)> CheckLauncherUpdateInformation()
     {
-        _httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0");
-        _httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("Natsurainko.FluentLauncher", App.Version.GetVersionString()));
-        _downloadService = downloadService;
-        _localStorageService = localStorageService;
-    }
+        const string githubApi = "https://api.github.com/repos/Xcube-Studio/Natsurainko.FluentLauncher/releases";
 
-    public async Task<(bool, JsonNode?)> CheckUpdateRelease()
-    {
-        string releasesContent = await _httpClient.GetStringAsync(GithubReleasesApi);
+        string releasesContent = await httpClient.GetStringAsync(githubApi);
         string pattern = @"(?<=``` json)([\s\S]+?)(?=```)";
+        ReleaseModel[] releases = [.. JsonSerializer.Deserialize(releasesContent, SerializerContext.Default.ReleaseModelArray)!
+            .Where(releaseModel => releaseModel.TagName.Contains("pre-release") && releaseModel.IsPreRelease)
+            .OrderByDescending(releaseModel => DateTime.Parse(releaseModel.PublishedAt))];
 
-        foreach (var node in JsonArray.Parse(releasesContent)!.AsArray())
+        foreach (var releaseModel in releases)
         {
-            if (node!.AsObject().ContainsKey("prerelease") && node["prerelease"]!.GetValue<bool>())
+            Match match = Regex.Match(releaseModel.Body, pattern);
+
+            if (!match.Success)
+                continue;
+
+            try
             {
-                string body = node["body"]!.GetValue<string>();
-                Match match = Regex.Match(body, pattern);
+                PublishModel publishModel = JsonSerializer.Deserialize(match.Groups[1].Value, SerializerContext.Default.PublishModel)
+                    ?? throw new InvalidDataException();
 
-                if (!match.Success)
-                    continue;
-
-                JsonNode jsonBody = JsonNode.Parse(match.Groups[1].Value)!;
-
-                if (Version.Parse(jsonBody["currentPreviewVersion"]!.GetValue<string>()) > Version.Parse(App.Version.GetVersionString()))
-                    return (true, node);
+                if (Version.Parse(publishModel.CurrentPreviewVersion) > Version.Parse(App.Version.GetVersionString()) && 
+                    ENABLE_LOAD_EXTENSIONS == publishModel.EnableLoadExtensions)
+                    return (true, releaseModel);
             }
+            catch { }
         }
 
         return (false, null);
     }
 
-    public async Task<(bool, string?)> CheckInstallerUpdateRelease()
+    public async Task<(bool, AssetModel?)> CheckInstallerUpdateInfomation()
     {
-        string releasesContent = await _httpClient.GetStringAsync(GitHubInstallerReleasesApi);
-        string architecture = GetArchitecture();
+        const string githubApi = "https://api.github.com/repos/Xcube-Studio/FluentLauncher.Preview.Installer/releases/latest";
 
-        var node = JsonNode.Parse(releasesContent);
-        if (node!["assets"]!.AsArray().FirstOrDefault(x => x!["name"]!.GetValue<string>() == $"PackageInstaller-{architecture}.exe") is JsonNode asset)
-        {
-            string downloadUrl = asset["browser_download_url"]!.GetValue<string>();
-            FileInfo file = _localStorageService.GetFile($"launcher-update\\PackageInstaller-{architecture}.exe");
+        string releasesContent = await httpClient.GetStringAsync(githubApi);
+        ReleaseModel releases = JsonSerializer.Deserialize(releasesContent, SerializerContext.Default.ReleaseModel)
+            ?? throw new InvalidDataException();
 
-            if (file.Exists && file.Length == asset["size"]!.GetValue<long>())
-                return (false, null);
+        AssetModel? asset = releases.Assets.FirstOrDefault(a => a.Name == $"FluentLauncher.CommandLineInstaller-win-{Arch}.exe");
+        FileInfo file = localStorageService.GetFile($"launcher-update\\FluentLauncher.CommandLineInstaller-win-{Arch}.exe");
 
-            return (true, downloadUrl);
-        }
+        if (!file.Exists || file.Length != asset?.Size) return (true, asset);
 
         return (false, null);
     }
 
-    public DownloadTask CreatePackageInstallerDownloadTask(string installerDownloadUrl, string? proxy = null)
+    public DownloadTask DownloadAsset(AssetModel assetModel, string? proxy = null)
     {
-        if (!string.IsNullOrEmpty(proxy))
-            installerDownloadUrl = proxy + installerDownloadUrl;
-
-        return _downloadService.Downloader.CreateDownloadTask(
-            installerDownloadUrl, _localStorageService.GetFile($"launcher-update\\PackageInstaller-{GetArchitecture()}.exe").FullName);
-    }
-
-    public DownloadTask CreateUpdatePackageDownloadTask(JsonNode releaseJson, string? proxy = null)
-    {
-        string architecture = GetArchitecture();
-        string downloadUrl = releaseJson["assets"]!.AsArray()
-            .FirstOrDefault(x => x!["name"]!.GetValue<string>() == $"updatePackage-{architecture}.zip")!
-            ["browser_download_url"]!.GetValue<string>();
+        string url = assetModel.DownloadUrl;
+        string file = $"launcher-update\\{assetModel.Name}";
 
         if (!string.IsNullOrEmpty(proxy))
-            downloadUrl = proxy + downloadUrl;
+            url = proxy + url;
 
-        return _downloadService.Downloader.CreateDownloadTask(
-            downloadUrl, _localStorageService.GetFile($"launcher-update\\updatePackage-{architecture}.zip").FullName);
+        return downloadService.Downloader.CreateDownloadTask(url, localStorageService.GetFile(file).FullName);
     }
 
-    public async Task<(bool, string?)> RunInstaller()
+    public async Task<(bool, string?)> RunInstaller(FileInfo installerFile)
     {
-        string architecture = GetArchitecture();
         string logFileName = $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.log";
 
-        FileInfo file = _localStorageService.GetFile($"launcher-update\\PackageInstaller-{architecture}.exe");
+        if (!installerFile.Exists) 
+            throw new FileNotFoundException("Installer not found");
 
-        if (!file.Exists) throw new FileNotFoundException("PackageInstaller not found");
-
-        using var process = new Process
+        using var process = Process.Start(new ProcessStartInfo()
         {
-            StartInfo = new ProcessStartInfo
-            {
-                FileName = file.FullName,
-                UseShellExecute = true,
-                Verb = "runas",
-                //RedirectStandardOutput = true,
-                //RedirectStandardError = true,
-                WorkingDirectory = file.DirectoryName,
-                Arguments = $"--logFilePath {logFileName}"
-            }
-        };
-
-        process.Start();
+            FileName = installerFile.FullName,
+            UseShellExecute = true,
+            Verb = "runas",
+            WorkingDirectory = installerFile.DirectoryName,
+            Arguments = $"--logFilePath {logFileName}",
+            CreateNoWindow = true
+        }) ?? throw new InvalidOperationException();
 
         await process.WaitForExitAsync();
-        return (false, _localStorageService.GetFile($"launcher-update\\{logFileName}").FullName); // If the installer exited without error, the launcher should be closed during the installation.
+
+        // If the installer exited without error, the launcher should be closed during the installation.
+        return (false, localStorageService.GetFile($"launcher-update\\{logFileName}").FullName);
     }
 
-    private static string GetArchitecture() => RuntimeInformation.ProcessArchitecture switch
+    private static string Arch { get; } = RuntimeInformation.ProcessArchitecture switch
     {
         Architecture.X64 => "x64",
         Architecture.Arm64 => "arm64",
         _ => throw new NotSupportedException("not supported architecture")
     };
+
+    public void CheckLaunchUpdateAfterApplicationStarted(IDialogActivationService<ContentDialogResult> dialogs) => Task.Run(async () =>
+    {
+        var (hasUpdate, release) = await CheckLauncherUpdateInformation();
+
+        if (hasUpdate)
+        {
+            notificationService.Show(new ActionNotification
+            {
+                Title = LocalizedStrings.Notifications__LauncherHasUpdate,
+                Message = release!.TagName,
+                Type = NotificationType.Warning,
+                Delay = 20,
+                GetActionButton = () => new HyperlinkButton()
+                {
+                    Command = new AsyncRelayCommand(async () => await dialogs.ShowAsync("UpdateDialog", release!)),
+                    Content = LocalizedStrings.Dialogs_UpdateDialog_Button_Text
+                }
+            });
+        }
+    });
 }
 
+
+internal class AssetModel
+{
+    [JsonPropertyName("name")]
+    public required string Name { set; get; }
+
+    [JsonPropertyName("browser_download_url")]
+    public required string DownloadUrl { set; get; }
+
+    [JsonPropertyName("size")]
+    public required long Size { set; get; }
+}
+
+internal class ReleaseModel
+{
+    [JsonPropertyName("tag_name")]
+    public required string TagName { get; set; }
+
+    [JsonPropertyName("published_at")]
+    public required string PublishedAt { set; get; }
+
+    [JsonPropertyName("prerelease")]
+    public required bool IsPreRelease { get; set; }
+
+    [JsonPropertyName("body")]
+    public required string Body { set; get; }
+
+    [JsonPropertyName("assets")]
+    public required AssetModel[] Assets { get; set; }
+
+    [JsonPropertyName("html_url")]
+    public required string Url { set; get; }
+}
+
+internal class PublishModel
+{
+    [JsonPropertyName("commit")]
+    public required string Commit { get; set; }
+
+    [JsonPropertyName("build")]
+    public int Build { get; set; }
+
+    [JsonPropertyName("releaseTime")]
+    public DateTime ReleaseTime { get; set; }
+
+    [JsonPropertyName("currentPreviewVersion")]
+    public required string CurrentPreviewVersion { get; set; }
+
+    [JsonPropertyName("previousStableVersion")]
+    public required string PreviousPreviewVersion { get; set; }
+
+    [JsonPropertyName("enableLoadExtensions")]
+    public bool EnableLoadExtensions { get; set; }
+}
+
+[JsonSerializable(typeof(AssetModel))]
+[JsonSerializable(typeof(AssetModel[]))]
+[JsonSerializable(typeof(ReleaseModel))]
+[JsonSerializable(typeof(ReleaseModel[]))]
+[JsonSerializable(typeof(PublishModel))]
+internal partial class SerializerContext : JsonSerializerContext { }
 #endif

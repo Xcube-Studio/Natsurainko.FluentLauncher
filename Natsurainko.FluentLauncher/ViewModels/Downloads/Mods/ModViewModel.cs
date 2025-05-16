@@ -2,14 +2,16 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Navigation;
+using FluentLauncher.Infra.UI.Notification;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
 using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI;
-using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
+using Natsurainko.FluentLauncher.Views.Downloads.Mods;
 using Nrk.FluentCore.Resources;
 using System;
 using System.Collections.Generic;
@@ -24,7 +26,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.Downloads.Mods;
 internal partial class ModViewModel(
     GameService gameService,
     DownloadService downloadService,
-    NotificationService notificationService,
+    INotificationService notificationService,
     SearchProviderService searchProviderService,
     CurseForgeClient curseForgeClient,
     ModrinthClient modrinthClient,
@@ -224,7 +226,7 @@ internal partial class ModViewModel(
         }
 
         downloadService.DownloadModFile(SelectedFile, savePath);
-        notificationService.NotifyWithoutContent(LocalizedStrings.Notifications__AddDownloadTask, icon: "\ue896");
+        notificationService.ModDownloadTaskCreated(fileName);
     }
 
     async void TryGetLocalizedSummary()
@@ -351,4 +353,10 @@ internal partial class ModViewModel(
                 .Where(f => f.Loaders.Contains(SelectedLoader))];
         };
     }
+}
+
+internal static partial class ModViewModelNotifications
+{
+    [Notification<InfoBar>(Title = "Notifications__TaskCreated_ModDownload", Message = "{fileName}")]
+    public static partial void ModDownloadTaskCreated(this INotificationService notificationService, string fileName);
 }

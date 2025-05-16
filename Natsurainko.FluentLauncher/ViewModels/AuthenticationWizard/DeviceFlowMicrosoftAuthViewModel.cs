@@ -1,13 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.WinUI;
 using Natsurainko.FluentLauncher.Services.Accounts;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views.AuthenticationWizard;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Exceptions;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.DataTransfer;
 using Windows.System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
@@ -63,7 +64,7 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
     }
 
     [RelayCommand]
-    public void CopyCode() => Copy();
+    public void CopyCode() => ClipboardHepler.SetText(DeviceCode!);
 
     [RelayCommand]
     public void UnloadEvent(object args)
@@ -83,12 +84,12 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
         // Display user code when received and launch browser
         var receiveUserCodeAction = (OAuth2DeviceCodeResponse response) =>
         {
-            App.DispatcherQueue.TryEnqueue(async () =>
+            App.DispatcherQueue.EnqueueAsync(async () =>
             {
                 DeviceCode = response.UserCode;
                 Loading = false;
 
-                Copy();
+                CopyCode();
                 await Launcher.LaunchUriAsync(new("https://login.live.com/oauth20_remoteconnect.srf"));
             });
         };
@@ -112,12 +113,5 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
             _canNext = true;
             OnPropertyChanged(nameof(CanNext)); // Enable the next button to allow proceeding to the next page
         }
-    }
-
-    private void Copy()
-    {
-        var dataPackage = new DataPackage();
-        dataPackage.SetText(DeviceCode);
-        Clipboard.SetContent(dataPackage);
     }
 }

@@ -27,7 +27,7 @@ public sealed partial class DefaultPage : Page, IBreadcrumbBarAware
 
     internal static IEnumerable<string> FilterCategories(IEnumerable<string> categories)
     {
-        string[] filteredTags = [.. Enum.GetNames(typeof(ModLoaderType)).Select(x => x.ToLower())];
+        string[] filteredTags = [.. Enum.GetNames<ModLoaderType>().Select(x => x.ToLower())];
 
         foreach (var category in categories)
         {

@@ -1,4 +1,5 @@
 ﻿using FluentLauncher.Infra.Settings;
+using FluentLauncher.Infra.UI.Notification;
 using FluentLauncher.Infra.WinUI.AppHost;
 using FluentLauncher.Infra.WinUI.Settings;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,7 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Natsurainko.FluentLauncher.Services.UI.Notification;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using System;
 using System.CommandLine;
@@ -128,13 +130,19 @@ services.AddSingleton<DownloadService>();
 services.AddSingleton<LocalStorageService>();
 services.AddSingleton<MessengerService>();
 services.AddSingleton<AuthenticationService>();
-services.AddSingleton<NotificationService>();
 services.AddSingleton<AppearanceService>();
 services.AddSingleton<CacheSkinService>();
 services.AddSingleton<CacheInterfaceService>();
 services.AddSingleton<QuickLaunchService>();
 services.AddSingleton<SearchProviderService>();
 services.AddSingleton<InstanceConfigService>();
+
+// Notification Services
+services.AddSingleton<INotificationService, NotificationService>();
+
+services.AddSingleton<InfoBarPresenter>();
+services.AddSingleton<SystemNotificationPresenter>();
+services.AddSingleton<TeachingTipPresenter>();
 
 #if FLUENT_LAUNCHER_PREVIEW_CHANNEL
 services.AddSingleton<UpdateService>();

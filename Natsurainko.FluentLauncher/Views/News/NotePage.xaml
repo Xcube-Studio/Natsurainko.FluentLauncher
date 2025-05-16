@@ -45,7 +45,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="TextBlock_Title.Margin" Value="20,15,20,20" />
-                        <Setter Target="webView2.Margin" Value="10,0" />
+                        <Setter Target="WebView2.Margin" Value="10,0" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

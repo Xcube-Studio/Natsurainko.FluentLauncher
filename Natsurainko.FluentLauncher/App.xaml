@@ -8,7 +8,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-                <ResourceDictionary Source="Dictionaries/NotifyStyleDictionary" />
                 <ResourceDictionary Source="Dictionaries/TaskViewStyleDictionary" />
                 <ResourceDictionary Source="/UserControls/NoScrollingComboBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
@@ -89,6 +88,14 @@
             <converters:SuggestionIconConverter x:Key="SuggestionIconConverter" />
 
             <converters:LoggerItemConverter x:Key="LoggerItemConverter" />
+
+            <Style
+                x:Name="DeleteButtonStyle"
+                BasedOn="{StaticResource ButtonRevealStyle}"
+                TargetType="Button">
+                <Setter Property="Background" Value="{ThemeResource DeleteButtonBackground}" />
+                <Setter Property="Background" Value="{ThemeResource DeleteButtonBorder}" />
+            </Style>
 
             <Style
                 x:Key="SettingsSectionHeaderTextBlockStyle"

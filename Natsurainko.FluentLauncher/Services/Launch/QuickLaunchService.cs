@@ -1,8 +1,8 @@
-﻿using Microsoft.Windows.AppLifecycle;
+﻿using FluentLauncher.Infra.UI.Notification;
+using Microsoft.Windows.AppLifecycle;
 using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels;
 using Nrk.FluentCore.GameManagement;
@@ -22,12 +22,12 @@ internal class QuickLaunchService
 {
     private readonly LaunchService _launchService;
     private readonly SettingsService _settingsService;
-    private readonly NotificationService _notificationService;
+    private readonly INotificationService _notificationService;
 
     public const string PinnedUri = "ms-resource:///Resources/JumpList__Pinned";
     public const string LatestUri = "ms-resource:///Resources/JumpList__Latest";
 
-    public QuickLaunchService(LaunchService launchService, SettingsService settingsService, NotificationService notificationService)
+    public QuickLaunchService(LaunchService launchService, SettingsService settingsService, INotificationService notificationService)
     {
         _launchService = launchService;
         _settingsService = settingsService;
@@ -55,7 +55,7 @@ internal class QuickLaunchService
         }
         catch (Exception ex)
         {
-            _notificationService.NotifyWithoutContent(ex.Message);
+            //_notificationService.NotifyWithoutContent(ex.Message);
         }
     }
 

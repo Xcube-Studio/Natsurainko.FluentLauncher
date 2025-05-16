@@ -7,23 +7,27 @@
     xmlns:winuiex="using:WinUIEx"
     mc:Ignorable="d">
 
-    <Grid>
-        <Grid x:Name="BackgroundGrid" Background="Transparent" />
+    <Grid Name="Grid">
         <Frame
             x:Name="Frame"
             Background="Transparent"
             Loaded="Frame_Loaded" />
 
         <ScrollViewer
-            Margin="50,50,50,20"
-            Padding="-25,-50,-25,-25"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Top"
+            Name="NotificationsScrollViewer"
+            MaxWidth="1020"
+            Margin="0,48,0,0"
+            Background="{x:Null}"
             VerticalScrollBarVisibility="Hidden">
             <StackPanel
-                x:Name="NotifyStackPanel"
-                Margin="25,50,25,25"
-                Spacing="4" />
+                x:Name="StackPanel"
+                Margin="16"
+                Background="{x:Null}"
+                Spacing="4">
+                <StackPanel.ChildrenTransitions>
+                    <AddDeleteThemeTransition />
+                </StackPanel.ChildrenTransitions>
+            </StackPanel>
         </ScrollViewer>
     </Grid>
 </winuiex:WindowEx>

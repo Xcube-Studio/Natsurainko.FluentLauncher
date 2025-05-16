@@ -7,97 +7,48 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.Models.Launch;
 
-internal partial class InstanceConfig : ObservableObject
+internal partial class InstanceConfig(string filePath) : ObservableObject
 {
     [JsonIgnore]
-    public string FilePath { get; set; }
+    public string FilePath { get; set; } = filePath;
 
-    private string nickName;
-    public string NickName
-    {
-        get => nickName;
-        set => SetProperty(ref nickName, value);
-    }
+    [ObservableProperty]
+    public partial string NickName { get; set; }
 
-    private bool enableSpecialSetting;
-    public bool EnableSpecialSetting
-    {
-        get => enableSpecialSetting;
-        set => SetProperty(ref enableSpecialSetting, value);
-    }
+    [ObservableProperty]
+    public partial bool EnableSpecialSetting { get; set; }
 
-    private bool enableIndependencyCore;
-    public bool EnableIndependencyCore
-    {
-        get => enableIndependencyCore;
-        set => SetProperty(ref enableIndependencyCore, value);
-    }
+    [ObservableProperty]
+    public partial bool EnableIndependencyCore { get; set; }
 
-    private bool enableFullScreen;
-    public bool EnableFullScreen
-    {
-        get => enableFullScreen;
-        set => SetProperty(ref enableFullScreen, value);
-    }
+    [ObservableProperty]
+    public partial bool EnableFullScreen { get; set; }
 
-    private int gameWindowWidth = 854;
-    public int GameWindowWidth
-    {
-        get => gameWindowWidth;
-        set => SetProperty(ref gameWindowWidth, value);
-    }
+    [ObservableProperty]
+    public partial int GameWindowWidth { get; set; } = 854;
 
-    private int gameWindowHeight = 480;
-    public int GameWindowHeight
-    {
-        get => gameWindowHeight;
-        set => SetProperty(ref gameWindowHeight, value);
-    }
+    [ObservableProperty]
+    public partial int GameWindowHeight { get; set; } = 480;
 
-    private string serverAddress;
-    public string ServerAddress
-    {
-        get => serverAddress;
-        set => SetProperty(ref serverAddress, value);
-    }
+    [ObservableProperty]
+    public partial string ServerAddress { get; set; }
 
-    private string gameWindowTitle;
-    public string GameWindowTitle
-    {
-        get => gameWindowTitle;
-        set => SetProperty(ref gameWindowTitle, value);
-    }
+    [ObservableProperty]
+    public partial string GameWindowTitle { get; set; }
 
-    private Account account;
-    public Account Account
-    {
-        get => account;
-        set => SetProperty(ref account, value);
-    }
+    [ObservableProperty]
+    public partial Account? Account { get; set; }
 
-    private bool enableTargetedAccount;
-    public bool EnableTargetedAccount
-    {
-        get => enableTargetedAccount;
-        set => SetProperty(ref enableTargetedAccount, value);
-    }
+    [ObservableProperty]
+    public partial bool EnableTargetedAccount { get; set; }
 
-    private IEnumerable<string> vmParameters;
-    public IEnumerable<string> VmParameters
-    {
-        get => vmParameters;
-        set => SetProperty(ref vmParameters, value);
-    }
+    [ObservableProperty]
+    public partial IEnumerable<string>? VmParameters { get; set; }
 
-    private DateTime? lastLaunchTime;
-    public DateTime? LastLaunchTime
-    {
-        get => lastLaunchTime;
-        set => SetProperty(ref lastLaunchTime, value);
-    }
+    [ObservableProperty]
+    public partial DateTime? LastLaunchTime { get; set; }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
@@ -105,8 +56,9 @@ internal partial class InstanceConfig : ObservableObject
 
         if (!string.IsNullOrEmpty(FilePath))
         {
-            var content = JsonSerializer.Serialize(this, InstanceConfigSerializerContext.Default.InstanceConfig);
-            File.WriteAllText(FilePath, content);
+            File.WriteAllText(
+                FilePath, 
+                JsonSerializer.Serialize(this, InstanceConfigSerializerContext.Default.InstanceConfig));
         }
     }
 }

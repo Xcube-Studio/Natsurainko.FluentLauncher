@@ -92,8 +92,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250401001" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250402001" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.3916" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
     <PackageReference Include="System.Management" Version="9.0.4" />
@@ -110,6 +110,7 @@
     <ProjectReference Include="..\FluentLauncher.Infra.Settings\FluentLauncher.Infra.Settings.SourceGenerators\FluentLauncher.Infra.Settings.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\FluentLauncher.Infra.Settings\FluentLauncher.Infra.Settings\FluentLauncher.Infra.Settings.csproj" />
     <ProjectReference Include="..\FluentLauncher.Infra.WinUI\FluentLauncher.Infra.WinUI.csproj" />
+	<ProjectReference Include="..\FluentLauncher.Infra.WinUI.SourceGenerators\FluentLauncher.Infra.WinUI.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\Natsurainko.FluentCore\Natsurainko.FluentCore\Natsurainko.FluentCore.csproj" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>

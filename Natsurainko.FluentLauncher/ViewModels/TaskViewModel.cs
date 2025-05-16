@@ -2,16 +2,19 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Navigation;
+using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
+using Natsurainko.FluentLauncher.Exceptions;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
-using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Services.UI.Notification;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Exceptions;
@@ -28,8 +31,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.DataTransfer;
 using WinUIEx;
 using static Natsurainko.FluentLauncher.Services.Launch.LaunchProgress;
 using static Natsurainko.FluentLauncher.ViewModels.LaunchStageProgress;
@@ -392,7 +393,7 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
                 resultState = TaskState.Cancelled;
                 Exception = canceledException;
 
-                App.DispatcherQueue.TryEnqueue(() =>
+                await App.DispatcherQueue.EnqueueAsync(() =>
                 {
                     ShowException = true;
                     ExceptionReason = canceledException.Message;
@@ -403,7 +404,7 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
                 resultState = TaskState.Failed;
                 Exception = ex;
 
-                App.DispatcherQueue.TryEnqueue(() =>
+                await App.DispatcherQueue.EnqueueAsync(() =>
                 {
                     ShowException = true;
                     ExceptionReason = ex.Message;
@@ -411,7 +412,7 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
             }
         }
 
-        App.DispatcherQueue.TryEnqueue(() =>
+        await App.DispatcherQueue.EnqueueAsync(() =>
         {
             ProgressBarIsIndeterminate = false;
             Progress = 1;
@@ -461,25 +462,16 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
     [RelayCommand]
     void NotifyException()
     {
-        string errorDescriptionKey = string.Empty;
+        INotificationService notificationService = App.GetService<INotificationService>();
 
-        //if (Exception is InvalidOperationException)
-        //{
+        string reason = Exception switch
+        {
+            IncompleteDependenciesException => LocalizedStrings.Exceptions__IncompleteDependenciesException,
+            TaskCanceledException => LocalizedStrings.Exceptions__TaskCanceledException,
+            _ => string.Empty
+        };
 
-        //}
-        //else if (Exception is YggdrasilAuthenticationException)
-        //{
-        //    errorDescriptionKey = "_LaunchGameThrowYggdrasilAuthenticationException";
-        //}
-        //else if (Exception is MicrosoftAuthenticationException)
-        //{
-        //    errorDescriptionKey = "_LaunchGameThrowMicrosoftAuthenticationException";
-        //}
-
-        App.GetService<NotificationService>().NotifyException(
-            LocalizedStrings.Notifications__InstallInstanceThrowException,
-            Exception,
-            errorDescriptionKey);
+        notificationService.InstallFailed(Exception, reason);
     }
 
     [RelayCommand(CanExecute = nameof(CanLaunch))]
@@ -780,7 +772,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
 
     protected override async void Run()
     {
-        App.DispatcherQueue.TryEnqueue(() => TaskState = TaskState.Running);
+        await App.DispatcherQueue.EnqueueAsync(() => TaskState = TaskState.Running);
         TaskState resultState = TaskState.Running;
 
         try
@@ -803,7 +795,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
             resultState = TaskState.Cancelled;
             Exception = ex;
 
-            App.DispatcherQueue.TryEnqueue(() =>
+            await App.DispatcherQueue.EnqueueAsync(() =>
             {
                 ShowException = true;
                 ExceptionReason = ex.Message;
@@ -814,7 +806,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
             resultState = TaskState.Failed;
             Exception = ex;
 
-            App.DispatcherQueue.TryEnqueue(() =>
+            await App.DispatcherQueue.EnqueueAsync(() =>
             {
                 ShowException = true;
                 ExceptionReason = ex.Message;
@@ -830,7 +822,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
         if (resultState == TaskState.Running)
             AfterLaunchedProcess();
 
-        App.DispatcherQueue.TryEnqueue(() =>
+        await App.DispatcherQueue.EnqueueAsync(() =>
         {
             ProgressBarIsIndeterminate = false;
             Progress = 1;
@@ -883,38 +875,30 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     [RelayCommand]
     void ShowLogger()
     {
-        App.DispatcherQueue.TryEnqueue(() =>
+        var hoverColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
+        hoverColor.A = 35;
+
+        var window = new WindowEx
         {
-            var hoverColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
-            hoverColor.A = 35;
-
-            var window = new WindowEx();
-
-            window.Title = $"Logger - {_instance.InstanceId}";
-
-            window.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets/AppIcon.ico"));
-
-            window.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
-            window.AppWindow.TitleBar.ButtonBackgroundColor = window.AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-            window.AppWindow.TitleBar.ButtonForegroundColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
-            window.AppWindow.TitleBar.ButtonHoverForegroundColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
-            window.AppWindow.TitleBar.ButtonHoverBackgroundColor = hoverColor;
-            window.SystemBackdrop = Environment.OSVersion.Version.Build >= 22000
+            Title = $"Logger - {_instance.InstanceId}",
+            MinWidth = 525,
+            MinHeight = 328,
+            Width = 525,
+            Height = 612,
+            SystemBackdrop = Environment.OSVersion.Version.Build >= 22000
                ? new MicaBackdrop() { Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt }
-               : new DesktopAcrylicBackdrop();
+               : new DesktopAcrylicBackdrop(),
+        };
+        window.ConfigureTitleBarTheme();
 
-            (window.MinWidth, window.MinHeight) = (525, 328);
-            (window.Width, window.Height) = (525, 612);
+        var view = new Views.LoggerPage();
+        var viewModel = new Pages.LoggerViewModel(this, view);
 
-            var view = new Views.LoggerPage();
-            var viewModel = new Pages.LoggerViewModel(this, view);
+        viewModel.Title = window.Title;
+        view.DataContext = viewModel;
 
-            viewModel.Title = window.Title;
-            view.DataContext = viewModel;
-
-            window.Content = view;
-            window.Show();
-        });
+        window.Content = view;
+        window.Show();
     }
 
     [RelayCommand(CanExecute = nameof(IsGameRunning))]
@@ -927,34 +911,49 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     [RelayCommand]
     void CopyLaunchArguments()
     {
-        var dataPackage = new DataPackage();
-        dataPackage.SetText(string.Join("\r\n", McProcess!.ArgumentList));
-        Clipboard.SetContent(dataPackage);
+        ClipboardHepler.SetText(string.Join("\r\n", McProcess!.ArgumentList));
+        App.GetService<INotificationService>().ArgumentsCopied();
     }
 
     [RelayCommand]
     void NotifyException()
     {
-        string errorDescription = string.Empty;
+        INotificationService notificationService = App.GetService<INotificationService>();
 
-        if (Exception is InvalidOperationException)
+        string reason = Exception switch
         {
+            InstanceDirectoryNotFoundException instanceDirectoryNotFoundException => LocalizedStrings.Exceptions__InstanceDirectoryNotFoundException
+                .Replace("${instance}", instanceDirectoryNotFoundException.MinecraftInstance.InstanceId)
+                .Replace("${directory}", instanceDirectoryNotFoundException.Directory),
+            JavaRuntimeFileNotFoundException javaRuntimeFileNotFoundException => LocalizedStrings.Exceptions__JavaRuntimeFileNotFoundException
+                .Replace("${file}", javaRuntimeFileNotFoundException.FileName),
+            JavaRuntimeIncompatibleException javaRuntimeIncompatibleException => LocalizedStrings.Exceptions__JavaRuntimeIncompatibleException
+                .Replace("${version}", javaRuntimeIncompatibleException.TargetJavaVersion.ToString()),
+            NoActiveAccountException => LocalizedStrings.Exceptions__NoActiveAccountException,
+            AccountNotFoundException accountNotFoundException => LocalizedStrings.Exceptions__AccountNotFoundException
+                .Replace("${account}", accountNotFoundException.Account.Name),
+            YggdrasilAuthenticationException => LocalizedStrings.Exceptions__MicrosoftAuthenticationException,
+            MicrosoftAuthenticationException => LocalizedStrings.Exceptions__MicrosoftAuthenticationException,
+            IncompleteDependenciesException => LocalizedStrings.Exceptions__IncompleteDependenciesException,
+            //UnauthorizedAccessException unauthorizedAccessException => ,
+            TaskCanceledException => LocalizedStrings.Exceptions__TaskCanceledException,
+            _ => string.Empty
+        };
 
-        }
-        else if (Exception is YggdrasilAuthenticationException)
-        {
-            errorDescription = LocalizedStrings.Notifications__LaunchGameThrowYggdrasilAuthenticationException;
-        }
-        else if (Exception is MicrosoftAuthenticationException)
-        {
-            errorDescription = LocalizedStrings.Notifications__LaunchGameThrowMicrosoftAuthenticationException;
-        }
-
-        App.GetService<NotificationService>().NotifyException(
-            LocalizedStrings.Notifications__LaunchGameThrowException,
-            Exception,
-            errorDescription);
+        notificationService.LaunchFailed(Exception, reason);
     }
 }
 
 #endregion
+
+internal static partial class TaskViewModelNotifications
+{
+    [ExceptionNotification(Title = "Notifications__TaskFailed_Launch", Message = "{reason}")]
+    public static partial void LaunchFailed(this INotificationService notificationService, Exception exception, string reason);
+
+    [ExceptionNotification(Title = "Notifications__TaskFailed_Install", Message = "{reason}")]
+    public static partial void InstallFailed(this INotificationService notificationService, Exception exception, string reason);
+
+    [Notification<TeachingTip>(Title = "Notifications__ArgumentsCopied")]
+    public static partial void ArgumentsCopied(this INotificationService notificationService);
+}

@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Navigation;
 using Natsurainko.FluentLauncher.Services.Launch;
-using Natsurainko.FluentLauncher.ViewModels.Dialogs;
 using System.Collections.ObjectModel;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Tasks;

@@ -1,12 +1,15 @@
-﻿using FluentLauncher.Infra.UI.Windows;
+﻿using FluentLauncher.Infra.UI.Notification;
+using FluentLauncher.Infra.UI.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
+using Microsoft.Windows.AppNotifications;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Natsurainko.FluentLauncher.Services.UI.Notification;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views;
 using Natsurainko.FluentLauncher.Views.Dialogs;
@@ -55,6 +58,17 @@ public partial class App : Application
         // Global exception handler
         UnhandledException += (_, e) =>
         {
+            if (e.Message == "Layout cycle detected.  Layout could not complete.")
+            {
+                App.GetService<INotificationService>().Show<AppNotification>(new DefaultNotification
+                {
+                    Title = "Application Crashed: " + e.ToString(),
+                    Message = "A fatal application UI thread exception was encountered and the program was unable to recover" + "\r\n" + e.Message
+                });
+
+                return;
+            }
+
             e.Handled = true;
             ProcessException(e.Exception);
         };
@@ -107,7 +121,7 @@ public partial class App : Application
 
         // 确保单例应用程序启动
         var mainInstance = AppInstance.FindOrRegisterForKey("Main");
-        mainInstance.Activated += (object? sender, AppActivationArguments e) =>
+        mainInstance.Activated += (sender, e) =>
         {
             DispatcherQueue.TryEnqueue(() =>
             {
@@ -164,9 +178,9 @@ public partial class App : Application
     /// <param name="errorMessage"></param>
     public static void ShowErrorMessage(string errorMessage)
     {
-        if (App.MainWindow is not null)
+        if (MainWindow is not null)
         {
-            App.DispatcherQueue?.TryEnqueue(async () =>
+            DispatcherQueue?.TryEnqueue(async () =>
             {
                 try
                 {

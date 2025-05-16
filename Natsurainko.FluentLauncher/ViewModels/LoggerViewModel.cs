@@ -1,14 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.UI.Text;
+using CommunityToolkit.WinUI;
+using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
-using Natsurainko.FluentLauncher.Services.UI;
-using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.ViewModels.Dialogs;
 using Nrk.FluentCore.Launch;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -67,14 +66,11 @@ internal partial class LoggerViewModel : ObservableObject
         if (saveFileDialog.ShowDialog().GetValueOrDefault())
         {
             File.WriteAllLines(saveFileDialog.FileName, _gameLoggerOutputs.Select(x => x.FullData));
-
-            App.GetService<NotificationService>().NotifyWithoutContent(
-                LocalizedStrings.Notifications__ExportLog,
-                icon: "\ue74e");
+            App.GetService<INotificationService>().LogExported(saveFileDialog.FileName);
         }
     }
 
-    private void EnabledLevel_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    private void EnabledLevel_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
         FilterLoggerItems.Clear();
 
@@ -83,7 +79,7 @@ internal partial class LoggerViewModel : ObservableObject
                 FilterLoggerItems.Add(new LoggerItem(item));
     }
 
-    private void LoggerItems_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    private void LoggerItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
         foreach (var item in e.NewItems)
         {
@@ -141,7 +137,24 @@ internal partial class LoggerViewModel : ObservableObject
             ScrollToEnd();
     }
 
-    private void ScrollToEnd() => View.ScrollViewer.ScrollToVerticalOffset(View.ScrollViewer.ScrollableHeight);
+    private void ScrollToEnd()
+    {
+        // Memory issue and scroll behavior issue
+        // View.ListView.SmoothScrollIntoViewWithIndexAsync(View.ListView.Items.Count - 1);
+
+        // Crash with layout recycle detected
+        // ScrollView scrollView = View.ItemsView.ScrollView;
+        // scrollView?.ScrollTo(0, scrollView.ScrollableHeight);
+
+        // ScrollViewer behavior issue when ItemsRepeater has many item
+        // View.ScrollViewer.ScrollTo(0, View.ScrollViewer.ScrollableHeight);
+
+        try
+        {
+            View.ListBox.ScrollIntoView(View.ListBox.Items[^1]);
+        }
+        catch { }
+    }
 }
 
 internal partial class LoggerItem : ObservableObject
@@ -159,4 +172,10 @@ internal partial class LoggerItem : ObservableObject
 
     [ObservableProperty]
     public partial Visibility ErrorVisibility { get; set; }
+}
+
+internal static partial class LoggerViewModelNotifications
+{
+    [Notification<InfoBar>(Title = "Notifications__LogExported", Message = "{filePath}")]
+    public static partial void LogExported(this INotificationService notificationService, string filePath);
 }

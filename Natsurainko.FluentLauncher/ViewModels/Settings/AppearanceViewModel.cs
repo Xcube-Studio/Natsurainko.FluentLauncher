@@ -1,12 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
+using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views.Settings;
 using Natsurainko.FluentLauncher.XamlHelpers.Converters;
@@ -21,9 +21,9 @@ internal partial class AppearanceViewModel : SettingsPageVM<AppearancePage>, ISe
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;
-    private readonly NotificationService _notificationService;
+    private readonly INotificationService _notificationService;
 
-    public AppearanceViewModel(SettingsService settingsService, NotificationService notificationService)
+    public AppearanceViewModel(SettingsService settingsService, INotificationService notificationService)
     {
         _settingsService = settingsService;
         _notificationService = notificationService;
@@ -110,9 +110,7 @@ internal partial class AppearanceViewModel : SettingsPageVM<AppearancePage>, ISe
         CustomThemeColor = await DominantColorHelper.GetColorFromImageAsync(ImageFilePath);
         var converter = (ColorHexCodeConverter)Application.Current.Resources["ColorHexCodeConverter"];
 
-        _notificationService.NotifyWithoutContent(
-            $"Image theme color successfully set, {converter.Convert(CustomThemeColor, null, null, null)}",
-            icon: "\uE73E");
+        _notificationService.ThemeColorApplied(converter.Convert(CustomThemeColor, null, null, null).ToString());
     }
 
     protected override void OnLoaded()
@@ -129,4 +127,10 @@ internal partial class AppearanceViewModel : SettingsPageVM<AppearancePage>, ISe
                 ImageFilePath = openFileDialog.FileName;
         };
     }
+}
+
+internal static partial class AppearanceViewModelNotifications
+{
+    [Notification<InfoBar>(Title = "Image theme color successfully set", Message = "{colorHex}")]
+    public static partial void ThemeColorApplied(this INotificationService notificationService, string colorHex);
 }

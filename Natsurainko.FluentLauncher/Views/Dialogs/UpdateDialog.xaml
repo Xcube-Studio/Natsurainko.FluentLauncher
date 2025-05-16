@@ -15,7 +15,7 @@
     </ContentDialog.Resources>
     <ContentDialog.Title>
         <StackPanel Margin="24,24,24,0" Spacing="15">
-            <TextBlock Text="Preview Channel Update" />
+            <TextBlock x:Uid="Dialogs_UpdateDialog_T" Text="Preview Channel Update" />
         </StackPanel>
     </ContentDialog.Title>
 
@@ -57,16 +57,19 @@
                                     <TextBlock
                                         FontSize="16"
                                         Style="{ThemeResource BaseTextBlockStyle}"
-                                        Text="{x:Bind VM.TagName, Mode=OneWay}" />
+                                        Text="{x:Bind VM.ReleaseModel.TagName, Mode=OneWay}" />
                                     <TextBlock
                                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                         Style="{ThemeResource CaptionTextBlockStyle}"
-                                        Text="{x:Bind VM.PublishedAt, Mode=OneWay}" />
+                                        Text="{x:Bind VM.ReleaseModel.PublishedAt, Mode=OneWay}" />
                                 </StackPanel>
-                                <HyperlinkButton Grid.Column="2" VerticalAlignment="Center">
+                                <HyperlinkButton
+                                    Grid.Column="2"
+                                    VerticalAlignment="Center"
+                                    NavigateUri="{x:Bind VM.ReleaseModel.Url, Mode=OneWay}">
                                     <StackPanel Orientation="Horizontal" Spacing="5">
                                         <FontIcon FontSize="14" Glyph="&#xE8A7;" />
-                                        <TextBlock Text="GitHub Pages" />
+                                        <TextBlock x:Uid="Dialogs_UpdateDialog_Text1" Text="GitHub Page" />
                                     </StackPanel>
                                 </HyperlinkButton>
                             </Grid>
@@ -75,22 +78,21 @@
                             <labs:MarkdownTextBlock
                                 Background="Transparent"
                                 Config="{x:Bind MarkdownConfig}"
-                                Text="{x:Bind VM.Body, Mode=OneWay}" />
+                                Text="{x:Bind VM.ReleaseModel.Body, Mode=OneWay}" />
                         </ScrollViewer>
                     </Expander>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <CheckBox Content="Use GitHub Proxy" IsChecked="{Binding UseProxy, Mode=TwoWay}" />
-                        <TextBox
-                            Grid.Column="2"
-                            PlaceholderText="example: https://gh-proxy.com/"
-                            Text="{x:Bind VM.ProxyUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Visibility="{x:Bind VM.ProxyBoxVisibility, Mode=OneWay}" />
+                        <ToggleSwitch
+                            x:Uid="Dialogs_UpdateDialog_ToggleSwitch"
+                            IsOn="{x:Bind VM.UseProxy, Mode=TwoWay}"
+                            OffContent="Download from GitHub Releases"
+                            OnContent="Download from our source server" />
                     </Grid>
                 </StackPanel>
                 <StackPanel Spacing="5" Visibility="{x:Bind VM.ProrgessVisibility, Mode=OneWay}">
@@ -117,16 +119,18 @@
                         Maximum="1"
                         Value="{x:Bind VM.Progress, Mode=OneWay}" />
                     <TextBlock
+                        x:Uid="Dialogs_UpdateDialog_Text2"
                         Grid.Column="0"
                         HorizontalAlignment="Left"
                         Foreground="{ThemeResource SystemFillColorCaution}"
-                        Text="This may take some time, please do not force close the app" />
+                        Text="This may take some time, please do not force close the application" />
                 </StackPanel>
                 <StackPanel
                     Orientation="Vertical"
                     Spacing="5"
                     Visibility="{x:Bind VM.ErrorTipVisibility, Mode=OneWay}">
                     <TextBlock
+                        x:Uid="Dialogs_UpdateDialog_Text3"
                         Foreground="{ThemeResource SystemErrorTextColor}"
                         Text="Update failed. A problem occurred during the installation process. The following is the installation log. Click to open it."
                         TextWrapping="WrapWholeWords" />
@@ -162,7 +166,7 @@
                     ElementSoundMode="FocusOnly"
                     IsTabStop="False"
                     Style="{ThemeResource AccentButtonStyle}">
-                    <TextBlock Text="Update" />
+                    <TextBlock x:Uid="Dialogs_UpdateDialog_Button" Text="Update" />
                 </Button>
                 <Button
                     Grid.Column="2"

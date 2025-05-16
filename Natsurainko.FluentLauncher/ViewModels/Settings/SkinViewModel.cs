@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.Settings.Mvvm;
 using FluentLauncher.Infra.UI.Dialogs;
+using FluentLauncher.Infra.UI.Notification;
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.WinUI;
 using Microsoft.UI.Xaml.Controls;
@@ -32,7 +34,7 @@ internal partial class SkinViewModel : SettingsPageVM, ISettingsViewModel
     [SettingsProvider]
     private readonly SettingsService _settingsService;
     private readonly CacheSkinService _cacheSkinService;
-    private readonly NotificationService _notificationService;
+    private readonly INotificationService _notificationService;
     private readonly IDialogActivationService<ContentDialogResult> _dialogs;
 
     private readonly HttpClient _httpClient;
@@ -41,7 +43,7 @@ internal partial class SkinViewModel : SettingsPageVM, ISettingsViewModel
         SettingsService settingsService,
         AccountService accountService,
         CacheSkinService cacheSkinService,
-        NotificationService notificationService,
+        INotificationService notificationService,
         IDialogActivationService<ContentDialogResult> dialogs,
         HttpClient httpClient)
     {
@@ -97,7 +99,7 @@ internal partial class SkinViewModel : SettingsPageVM, ISettingsViewModel
 
             #endregion
 
-            App.DispatcherQueue.TryEnqueue(() =>
+            await App.DispatcherQueue.EnqueueAsync(() =>
             {
                 var material = new DiffuseMaterial();
                 material.DiffuseMap = TextureModel.Create(stream.AsStreamForRead());
@@ -112,10 +114,7 @@ internal partial class SkinViewModel : SettingsPageVM, ISettingsViewModel
         }
         catch (Exception ex)
         {
-            _notificationService.NotifyException(
-                LocalizedStrings.Notifications__SkinDisplayExceptionT,
-                ex,
-                LocalizedStrings.Notifications__SkinDisplayExceptionD);
+            _notificationService.SkinDisplayFailed(ex);
         }
     }
 
@@ -209,4 +208,10 @@ internal partial class SkinViewModel : SettingsPageVM, ISettingsViewModel
     }
 
     #endregion
+}
+
+internal static partial class SkinViewModelNotifications
+{
+    [ExceptionNotification(Title = "Notifications__SkinDisplayExceptionT", Message = "Notifications__SkinDisplayExceptionD")]
+    public static partial void SkinDisplayFailed(this INotificationService notificationService, Exception exception);
 }

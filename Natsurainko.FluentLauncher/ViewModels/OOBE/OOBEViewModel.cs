@@ -3,12 +3,13 @@ using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
 using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Navigation;
+using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Services.UI.Notification;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Authentication;
@@ -18,6 +19,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.Storage;
 using Windows.Storage.Pickers;
 
 #nullable disable
@@ -28,9 +30,10 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     [SettingsProvider]
     private readonly SettingsService _settings;
     private readonly GameService _gameService;
-    private readonly NotificationService _notificationService;
     private readonly AccountService _accountService;
     private readonly IDialogActivationService<ContentDialogResult> _dialogs;
+    private readonly INotificationService _notificationService;
+    private readonly string OfficialLauncherPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\.minecraft";
 
     public INavigationService NavigationService { get; init; }
 
@@ -38,7 +41,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
         INavigationService navigationService,
         SettingsService settings,
         GameService gameService,
-        NotificationService notificationService,
+        INotificationService notificationService,
         AccountService accountService,
         IDialogActivationService<ContentDialogResult> dialogs)
     {
@@ -169,31 +172,25 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
     [RelayCommand]
     public async Task BrowseFolder()
     {
-        var folderPicker = new FolderPicker();
+        FolderPicker folderPicker = new();
 
-        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
-        WinRT.Interop.InitializeWithWindow.Initialize(folderPicker, hwnd);
+        WinRT.Interop.InitializeWithWindow.Initialize(folderPicker,
+            WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow));
 
         folderPicker.FileTypeFilter.Add("*");
-        var folder = await folderPicker.PickSingleFolderAsync();
 
-        if (folder != null)
+        if (await folderPicker.PickSingleFolderAsync() is StorageFolder folder)
         {
             if (MinecraftFolders.Contains(folder.Path))
             {
-                _notificationService.NotifyMessage(
-                    LocalizedStrings.Notifications__AddFolderExistedT,
-                    LocalizedStrings.Notifications__AddFolderExistedD,
-                    icon: "\uF89A");
-
+                _notificationService.FolderExisted(folder.Path);
                 return;
             }
 
             _gameService.AddMinecraftFolder(folder.Path);
+            _notificationService.FolderAdded(folder.Path);
         }
     }
-
-    private readonly string OfficialLauncherPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\.minecraft";
 
     [RelayCommand]
     public void DetectOfficialMinecraftFolder()
@@ -201,33 +198,21 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
         // Official launcher .minecraft folder not exist
         if (!Directory.Exists(OfficialLauncherPath))
         {
-            _notificationService.NotifyMessage(
-                LocalizedStrings.Notifications__AddOfficialFolderNotExistT,
-                LocalizedStrings.Notifications__AddOfficialFolderNotExistD.Replace("${path}", OfficialLauncherPath),
-                icon: "\uF89A");
-
+            _notificationService.OfficialFolderNotFound(OfficialLauncherPath);
             return;
         }
 
         // Already added
         if (MinecraftFolders.Contains(OfficialLauncherPath))
         {
-            _notificationService.NotifyMessage(
-                LocalizedStrings.Notifications__AddOfficiaFolderExistedT,
-                LocalizedStrings.Notifications__AddOfficiaFolderExistedD.Replace("${path}", OfficialLauncherPath),
-                icon: "\uF89A");
-
+            _notificationService.OfficialFolderExisted(OfficialLauncherPath);
             return;
         }
 
         // Add to list
 
         _gameService.AddMinecraftFolder(OfficialLauncherPath);
-
-        _notificationService.NotifyMessage(
-            LocalizedStrings.Notifications__AddOfficiaFolderAddedT,
-            LocalizedStrings.Notifications__AddOfficiaFolderAddedD.Replace("${path}", OfficialLauncherPath),
-            icon: "\uE73E");
+        _notificationService.OfficialFolderAdded(OfficialLauncherPath);
     }
 
     [RelayCommand]
@@ -258,11 +243,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
         {
             if (JavaRuntimes.Contains(openFileDialog.FileName))
             {
-                _notificationService.NotifyMessage(
-                    LocalizedStrings.Notifications__AddJavaExistedT,
-                    LocalizedStrings.Notifications__AddJavaExistedD,
-                    icon: "\uF89A");
-
+                _notificationService.JavaExisted(openFileDialog.FileName);
                 return;
             }
 
@@ -270,6 +251,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
             OnPropertyChanged(nameof(JavaRuntimes));
 
             ActiveJavaRuntime = openFileDialog.FileName;
+            _notificationService.JavaAdded(openFileDialog.FileName);
         }
     }
 
@@ -285,14 +267,11 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
             ActiveJavaRuntime = JavaRuntimes.Any() ? JavaRuntimes[0] : null;
 
             OnPropertyChanged(nameof(JavaRuntimes));
-
-            _notificationService.NotifyWithoutContent(
-                LocalizedStrings.Notifications__AddSearchedJavaT,
-                icon: "\uE73E");
+            _notificationService.JavaSearched();
         }
         catch (Exception ex)
         {
-            _notificationService.NotifyException(LocalizedStrings.Notifications__AddSearchedJavaFailedT, ex);
+            _notificationService.JavaSearchFailed(ex);
         }
     }
 
@@ -353,4 +332,34 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
 
         _settings.FinishGuide = true;
     }
+}
+
+static partial class OOBEViewModelNotifications
+{
+    [Notification<InfoBar>(Title = "Notifications__FolderExisted", Message = "{path}")]
+    public static partial void FolderExisted(this INotificationService notificationService, string path);
+
+    [Notification<InfoBar>(Title = "Notifications__FolderAdded", Message = "$path", Type = NotificationType.Success)]
+    public static partial void FolderAdded(this INotificationService notificationService, string path);
+
+    [Notification<InfoBar>(Title = "Notifications__OfficialFolderNotFound", Message = "{path}", Type = NotificationType.Error)]
+    public static partial void OfficialFolderNotFound(this INotificationService notificationService, string path);
+
+    [Notification<InfoBar>(Title = "Notifications__OfficialFolderExisted", Message = "{path}")]
+    public static partial void OfficialFolderExisted(this INotificationService notificationService, string path);
+
+    [Notification<InfoBar>(Title = "Notifications__OfficialFolderAdded", Message = "{path}", Type = NotificationType.Success)]
+    public static partial void OfficialFolderAdded(this INotificationService notificationService, string path);
+
+    [Notification<InfoBar>(Title = "Notifications__JavaExisted", Message = "{path}")]
+    public static partial void JavaExisted(this INotificationService notificationService, string path);
+
+    [Notification<InfoBar>(Title = "Notifications__JavaAdded", Message = "{path}", Type = NotificationType.Success)]
+    public static partial void JavaAdded(this INotificationService notificationService, string path);
+
+    [Notification<InfoBar>(Title = "Notifications__JavaSearched", Type = NotificationType.Success)]
+    public static partial void JavaSearched(this INotificationService notificationService);
+
+    [ExceptionNotification(Title = "Notifications__JavaSearchFailed")]
+    public static partial void JavaSearchFailed(this INotificationService notificationService, Exception exception);
 }

@@ -1,10 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
+using FluentLauncher.Infra.UI.Notification;
 using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Network;
-using Natsurainko.FluentLauncher.Services.UI;
-using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views.Dialogs;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Utils;
@@ -15,7 +14,7 @@ using System.Threading.Tasks;
 namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
 
 internal partial class UploadSkinDialogViewModel(
-    NotificationService notificationService, 
+    INotificationService notificationService, 
     CacheSkinService cacheSkinService) : DialogVM<UploadSkinDialog>
 {
     private Account _account = null!;
@@ -60,7 +59,7 @@ internal partial class UploadSkinDialogViewModel(
         }
         catch (Exception ex)
         {
-            notificationService.NotifyException(LocalizedStrings.Notifications__SkinUploadException, ex);
+            notificationService.SkinUploadFailed(ex);
         }
 
         await Dispatcher.EnqueueAsync(this.Dialog.Hide);
@@ -68,4 +67,10 @@ internal partial class UploadSkinDialogViewModel(
 
     [RelayCommand]
     void Cancel() => this.Dialog.Hide();
+}
+
+internal static partial class UploadSkinDialogViewModelNotifications
+{
+    [ExceptionNotification(Title = "Notifications__SkinUploadFailed")]
+    public static partial void SkinUploadFailed(this INotificationService notificationService, Exception exception);
 }

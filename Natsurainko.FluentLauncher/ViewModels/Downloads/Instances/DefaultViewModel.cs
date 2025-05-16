@@ -2,9 +2,12 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Navigation;
+using FluentLauncher.Infra.UI.Notification;
+using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Services.UI.Notification;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.GameManagement.Installer;
 using System;
@@ -21,7 +24,7 @@ internal partial class DefaultViewModel(
     SearchProviderService searchProviderService,
     INavigationService navigationService,
     GameService gameService,
-    NotificationService notificationService) : PageVM, INavigationAware
+    INotificationService notificationService) : PageVM, INavigationAware
 {
     private string _versionManifestJson;
 
@@ -73,10 +76,17 @@ internal partial class DefaultViewModel(
     {
         if (string.IsNullOrEmpty(gameService.ActiveMinecraftFolder))
         {
-            notificationService.NotifyWithSpecialContent(
-                LocalizedStrings.Notifications__NoMinecraftFolder,
-                "NoMinecraftFolderNotifyTemplate",
-                GoToSettingsCommand, "\uE711");
+            notificationService.Show(new ActionNotification
+            {
+                Title = LocalizedStrings.Notifications__NoMinecraftDataFolder,
+                Message = LocalizedStrings.Notifications__NoMinecraftDataFolderDescription,
+                Type = NotificationType.Warning,
+                GetActionButton = () => new HyperlinkButton()
+                {
+                    Command = this.GoToSettingsCommand,
+                    Content = LocalizedStrings.Instances_DefaultPage__GoToSettings
+                }
+            });
 
             return;
         }

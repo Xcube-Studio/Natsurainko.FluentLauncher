@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Services.Accounts;
-using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.AuthenticationWizard;
 using Natsurainko.FluentLauncher.Views.Dialogs;
@@ -18,7 +18,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
 
 internal partial class AuthenticateDialogViewModel(
     AccountService accountService, 
-    NotificationService notificationService, 
+    INotificationService notificationService, 
     AuthenticationService authService) : DialogVM<AuthenticateDialog>
 {
     [ObservableProperty]
@@ -123,7 +123,7 @@ internal partial class AuthenticateDialogViewModel(
         catch (Exception ex)
         {
             this.Dialog.Hide();
-            notificationService.NotifyException(LocalizedStrings.Notifications__AccountYggdrasilProfileConfirmationFailed, ex);
+            notificationService.ProfileConfirmationFailed(ex);
 
             return;
         }
@@ -135,9 +135,7 @@ internal partial class AuthenticateDialogViewModel(
             foreach (var item in existedAccounts)
                 accountService.RemoveAccount(item, true);
 
-            notificationService.NotifyWithoutContent(
-                LocalizedStrings.Notifications__AccountExisted,
-                icon: "\uecc5");
+            notificationService.AccountExisited();
         }
 
         accountService.AddAccount(account);
@@ -145,14 +143,18 @@ internal partial class AuthenticateDialogViewModel(
 
         this.Dialog.Hide();
 
-        notificationService.NotifyWithSpecialContent(
-            LocalizedStrings.Notifications__AccountAddSuccessful,
-            "AuthenticationSuccessfulNotifyTemplate",
-            new
-            {
-                Account = account,
-                AccountTypeName = GetAccountTypeName(account.Type),
-                YggdrasilServerName = TryGetYggdrasilServerName(account)
-            }, "\uE73E");
+        notificationService.AccountAdded(account.Name);
     }
+}
+
+internal static partial class AuthenticateDialogViewModelNotifications
+{
+    [Notification<InfoBar>(Title = "Notifications__AccountExisted")]
+    public static partial void AccountExisited(this INotificationService notificationService);
+
+    [Notification<InfoBar>(Title = "Notifications__AccountAdded", Message = "Notifications__AccountAddedDescription.Replace(\"${name}\", name)", Type = NotificationType.Success)]
+    public static partial void AccountAdded(this INotificationService notificationService, string name);
+
+    [ExceptionNotification(Title = "Notifications__AccountYggdrasilProfileConfirmationFailed")]
+    public static partial void ProfileConfirmationFailed(this INotificationService notificationService, Exception exception);
 }

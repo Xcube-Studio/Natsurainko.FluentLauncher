@@ -12,7 +12,7 @@ using System.Text.Json.Nodes;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
 
-class InstanceConfigService
+internal class InstanceConfigService
 {
     private readonly Dictionary<(string mcFolderPath, string instanceId), InstanceConfig> _instanceConfig = new();
 
@@ -42,7 +42,7 @@ class InstanceConfigService
         var configFile = Path.Combine(configsFolder, $"{configGuid}.json");
 
         if (!File.Exists(configFile))
-            return new InstanceConfig { FilePath = configFile };
+            return new InstanceConfig(configFile);
 
         InstanceConfig instanceConfig;
 
@@ -54,10 +54,9 @@ class InstanceConfigService
         }
         catch
         {
-            instanceConfig = new InstanceConfig();
+            instanceConfig = new InstanceConfig(configFile);
         }
 
-        instanceConfig.FilePath = configFile;
         _instanceConfig[key] = instanceConfig;
 
         return instanceConfig;

@@ -210,6 +210,10 @@ internal partial class HomeViewModel : PageVM, IRecipient<TrackLaunchTaskChanged
             _registeredListener = true;
         }
         else _trackingTask = null;
+
+#if FLUENT_LAUNCHER_PREVIEW_CHANNEL
+        App.GetService<Services.Network.UpdateService>().CheckLaunchUpdateAfterApplicationStarted(_dialogService);
+#endif
     }
 
     protected override void OnUnloaded()

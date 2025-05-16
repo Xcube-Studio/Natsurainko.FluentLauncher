@@ -16,7 +16,6 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads.Instances;
 
 internal partial class DefaultViewModel(
@@ -26,9 +25,9 @@ internal partial class DefaultViewModel(
     GameService gameService,
     INotificationService notificationService) : PageVM, INavigationAware
 {
-    private string _versionManifestJson;
+    private string _versionManifestJson = null!;
 
-    public VersionManifestItem[] AllInstances { get; set; }
+    public VersionManifestItem[] AllInstances { get; private set; } = null!;
 
     [ObservableProperty]
     public partial VersionManifestItem[] FilteredInstances { get; set; }
@@ -40,23 +39,20 @@ internal partial class DefaultViewModel(
     public partial VersionManifestItem LatestSnapshot { get; set; }
 
     [ObservableProperty]
-    public partial bool Loading { get; set; } = true;
-
-    [ObservableProperty]
-    public partial bool LoadFailed { get; set; }
-
-    [ObservableProperty]
-    public partial bool Searched { get; set; }
-
-    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasQuery))]
     public partial string SearchQuery { get; set; } = string.Empty;
 
     [ObservableProperty]
     public partial int ReleaseTypeFilterIndex { get; set; }
 
+    [ObservableProperty]
+    public partial bool Loading { get; set; } = true;
+
+    public bool HasQuery => !string.IsNullOrEmpty(SearchQuery);
+
     partial void OnReleaseTypeFilterIndexChanged(int value) => SearchReceiveHandle(SearchQuery);
 
-    void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object? parameter)
     {
         searchProviderService.OccupyQueryReceiver(this, SearchReceiveHandle);
 
@@ -68,7 +64,7 @@ internal partial class DefaultViewModel(
             Services.Network.Data.InterfaceRequestMethod.PreferredLocal,
             ParseVersionManifestTask,
             "cache-interfaces\\piston-meta.mojang.com\\version_manifest_v2.json")
-        .ContinueWith(ParseVersionManifestTask);
+        .ContinueWith(ParseVersionManifestTask!);
     }
 
     [RelayCommand]
@@ -108,11 +104,8 @@ internal partial class DefaultViewModel(
     {
         if (task.IsFaulted || string.IsNullOrEmpty(task.Result))
         {
-            await App.DispatcherQueue.EnqueueAsync(() =>
-            {
-                LoadFailed = true;
-                Loading = false;
-            });
+            await App.DispatcherQueue.EnqueueAsync(() => Loading = false);
+            notificationService.LoadInstancesFailed(task.Exception!);
             return;
         }
 
@@ -124,12 +117,12 @@ internal partial class DefaultViewModel(
                 return;
 
             VersionManifestJsonObject versionManifest = JsonNode.Parse(versionManifestJson)
-                .Deserialize(FLSerializerContext.Default.VersionManifestJsonObject);
+                .Deserialize(FLSerializerContext.Default.VersionManifestJsonObject)!;
 
             VersionManifestItem[] instances = versionManifest.Versions;
             VersionManifestItem[] latestInstances = [.. versionManifest.Latest.Select(kv => instances.First(i => i.Id == kv.Value))];
-            var latestRelease = latestInstances.FirstOrDefault(i => i.Type == "release");
-            var latestSnapshot = latestInstances.FirstOrDefault(i => i.Type == "snapshot");
+            var latestRelease = latestInstances.FirstOrDefault(i => i.Type == "release")!;
+            var latestSnapshot = latestInstances.FirstOrDefault(i => i.Type == "snapshot")!;
 
             if (string.IsNullOrEmpty(_versionManifestJson))
                 _versionManifestJson = versionManifestJson;
@@ -142,10 +135,9 @@ internal partial class DefaultViewModel(
                 SearchReceiveHandle(SearchQuery);
             });
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            // TODO: Notify Exception
-            await Dispatcher.EnqueueAsync(() => LoadFailed = true);
+            notificationService.LoadInstancesFailed(ex);
         }
         finally
         {
@@ -172,8 +164,13 @@ internal partial class DefaultViewModel(
         await Dispatcher.EnqueueAsync(() =>
         {
             FilteredInstances = filteredInstances;
-            Searched = !string.IsNullOrEmpty(query);
             SearchQuery = query;
         });
     }
+}
+
+internal static partial class DefaultViewModelNotifications
+{
+    [ExceptionNotification(Title = "Notifications__InsatnceListLoadFailed")]
+    public static partial void LoadInstancesFailed(this INotificationService notificationService, Exception exception);
 }

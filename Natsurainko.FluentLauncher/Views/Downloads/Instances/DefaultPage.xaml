@@ -11,7 +11,6 @@
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads.Instances"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
-    Loaded="Page_Loaded"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -20,11 +19,13 @@
                 Padding="16,8"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
                 BorderThickness="1"
                 CommandParameter="{x:Bind}"
                 IsClickEnabled="True">
                 <controls:SettingsCard.Header>
-                    <Grid Background="Transparent">
+                    <Grid MinWidth="250" Background="Transparent">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="16" />
@@ -66,146 +67,159 @@
 
                 <i:Interaction.Behaviors>
                     <behaviors:AncestorBindingBehavior
-                        AncestorType="ScrollView"
+                        AncestorType="ScrollViewer"
                         Binding="{Binding DataContext.CardClickCommand}"
                         TargetPropertyName="Command" />
                 </i:Interaction.Behaviors>
             </controls:SettingsCard>
         </DataTemplate>
-
     </Page.Resources>
 
-    <ScrollView>
-        <Border Name="border" Margin="{ThemeResource PageMarginWithBorder}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel
+            Name="stackPanel"
+            MaxWidth="1000"
+            Margin="40,0,40,16">
+            <StackPanel.ChildrenTransitions>
+                <EntranceThemeTransition FromVerticalOffset="50" />
+                <RepositionThemeTransition IsStaggeringEnabled="False" />
+            </StackPanel.ChildrenTransitions>
+
+            <TextBlock
+                x:Name="SearchTextBlock"
+                Margin="0,0,0,16"
+                x:Load="{x:Bind VM.HasQuery, Mode=OneWay}"
+                Style="{ThemeResource TitleTextBlockStyle}">
+                <Run Text="&quot;" /><Run Text="{x:Bind VM.SearchQuery, Mode=OneWay}" /><Run Text="&quot;" />
+            </TextBlock>
+
+            <controls:WrapPanel HorizontalSpacing="16" VerticalSpacing="16">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon
+                        FontSize="14"
+                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                        Glyph="&#xe71c;" />
+                    <TextBlock
+                        x:Uid="Downloads_Instances_DefaultPage_T3"
+                        VerticalAlignment="Center"
+                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                        Text="Release Type" />
+                    <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items}" SelectedIndex="{x:Bind VM.ReleaseTypeFilterIndex, Mode=TwoWay}" />
+                </StackPanel>
+            </controls:WrapPanel>
+
+            <ProgressRing
+                x:Name="ProgressRing"
+                Width="32"
+                Height="32"
+                Margin="0,32,0,0"
+                x:Load="{x:Bind VM.Loading, Mode=OneWay}"
+                IsActive="{x:Bind VM.Loading, Mode=OneWay}" />
+        </StackPanel>
+
+        <ScrollViewer
+            Name="scrollViewer"
+            Grid.Row="2"
+            Padding="40,0">
             <StackPanel
+                Name="scrollViewerStackPanel"
                 MaxWidth="1000"
-                HorizontalAlignment="Stretch"
-                Spacing="{StaticResource SettingsCardSpacing}">
+                Margin="0,0,0,25">
                 <StackPanel.ChildrenTransitions>
                     <EntranceThemeTransition FromVerticalOffset="50" />
                     <RepositionThemeTransition IsStaggeringEnabled="False" />
                 </StackPanel.ChildrenTransitions>
 
-                <TextBlock
-                    x:Name="SearchTextBlock"
-                    Margin="0,0,0,16"
-                    x:Load="{x:Bind VM.Searched, Mode=OneWay}"
-                    Style="{ThemeResource TitleTextBlockStyle}">
-                    <Run Text="&quot;" /><Run Text="{x:Bind VM.SearchQuery, Mode=OneWay}" /><Run Text="&quot;" />
-                </TextBlock>
-
-                <controls:WrapPanel
-                    Margin="0,0,0,16"
-                    HorizontalSpacing="15"
-                    VerticalSpacing="15">
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-                        <FontIcon
-                            FontSize="14"
-                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                            Glyph="&#xe71c;" />
+                <controls:UniformGrid
+                    x:Name="uniformGrid"
+                    x:Load="{x:Bind VM.HasQuery, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
+                    ColumnSpacing="4"
+                    Columns="2"
+                    RowSpacing="4"
+                    Rows="1">
+                    <StackPanel
+                        x:Name="LatestReleasePanel"
+                        Grid.Row="0"
+                        Grid.Column="0">
                         <TextBlock
-                            x:Uid="Downloads_Instances_DefaultPage_T3"
-                            VerticalAlignment="Center"
-                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                            Text="Release Type" />
-                        <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items}" SelectedIndex="{x:Bind VM.ReleaseTypeFilterIndex, Mode=TwoWay}" />
+                            x:Uid="Downloads_Instances_DefaultPage_T1"
+                            Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
+                            Text="Latest Release" />
+                        <ContentPresenter
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            Content="{x:Bind VM.LatestRelease, Mode=OneWay}"
+                            ContentTemplate="{StaticResource InstanceItemTemplate}" />
                     </StackPanel>
-                </controls:WrapPanel>
-
-                <ProgressRing
-                    x:Name="ProgressRing"
-                    Width="32"
-                    Height="32"
-                    Margin="0,32,0,0"
-                    x:Load="{x:Bind VM.Loading, Mode=OneWay}"
-                    IsActive="{x:Bind VM.Loading, Mode=OneWay}" />
-
-                <StackPanel x:Name="ContentStackPanel" x:Load="{x:Bind VM.Loading, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}">
-                    <Grid x:Name="latestVersionsSection" x:Load="{x:Bind VM.Searched, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition x:Name="CD1" Width="0" />
-                            <ColumnDefinition x:Name="CD2" Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition x:Name="RD1" Height="4" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-
-                        <StackPanel x:Name="LatestReleasePanel">
-                            <TextBlock
-                                x:Uid="Downloads_Instances_DefaultPage_T1"
-                                Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
-                                Text="Latest Release" />
-                            <ContentPresenter
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Stretch"
-                                Content="{x:Bind VM.LatestRelease, Mode=OneWay}"
-                                ContentTemplate="{StaticResource InstanceItemTemplate}" />
-                        </StackPanel>
-
-                        <StackPanel
-                            x:Name="LatestSnapshotPanel"
-                            Grid.Row="2"
-                            Grid.Column="0">
-                            <TextBlock
-                                x:Uid="Downloads_Instances_DefaultPage_T1_1"
-                                Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
-                                Text="Latest Snapshot" />
-                            <ContentPresenter
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Stretch"
-                                Content="{x:Bind VM.LatestSnapshot, Mode=OneWay}"
-                                ContentTemplate="{StaticResource InstanceItemTemplate}" />
-                        </StackPanel>
-                    </Grid>
-
-                    <TextBlock
-                        x:Name="T2"
-                        x:Uid="Downloads_Instances_DefaultPage_T2"
-                        x:Load="{x:Bind VM.Searched, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
-                        Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
-                        Text="All" />
-                    <ItemsRepeater ItemTemplate="{StaticResource InstanceItemTemplate}" ItemsSource="{x:Bind VM.FilteredInstances, Mode=OneWay}">
-                        <ItemsRepeater.Layout>
-                            <StackLayout Spacing="4" />
-                        </ItemsRepeater.Layout>
-                    </ItemsRepeater>
 
                     <StackPanel
-                        x:Name="EmptyStackPanel"
-                        Margin="0,32,0,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        x:Load="{x:Bind VM.Searched, Mode=OneWay}"
-                        Spacing="4">
-                        <StackPanel
-                            HorizontalAlignment="Center"
-                            Orientation="Horizontal"
-                            Spacing="8">
-                            <FontIcon FontSize="32" Glyph="&#xe74c;" />
-                            <TextBlock
-                                x:Uid="Downloads_Instances_DefaultPage_T4"
-                                Margin="0,-4,0,0"
-                                FontSize="28"
-                                Style="{ThemeResource BaseTextBlockStyle}"
-                                Text="No results found" />
-                        </StackPanel>
-                        <HyperlinkButton
-                            Padding="5,0,5,0.5"
-                            HorizontalAlignment="Center"
-                            Command="{x:Bind VM.ClearSearchQueryCommand}">
-                            <TextBlock x:Uid="Downloads_Instances_DefaultPage_Text" Text="Try other" />
-                        </HyperlinkButton>
-
-                        <i:Interaction.Behaviors>
-                            <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{x:Bind VM.FilteredInstances, Mode=OneWay}" />
-                        </i:Interaction.Behaviors>
+                        x:Name="LatestSnapshotPanel"
+                        Grid.Row="0"
+                        Grid.Column="1">
+                        <TextBlock
+                            x:Uid="Downloads_Instances_DefaultPage_T1_1"
+                            Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
+                            Text="Latest Snapshot" />
+                        <ContentPresenter
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            Content="{x:Bind VM.LatestSnapshot, Mode=OneWay}"
+                            ContentTemplate="{StaticResource InstanceItemTemplate}" />
                     </StackPanel>
-                </StackPanel>
+                </controls:UniformGrid>
+
+                <TextBlock
+                    x:Name="T2"
+                    x:Uid="Downloads_Instances_DefaultPage_T2"
+                    x:Load="{x:Bind VM.HasQuery, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="All" />
+
+                <ItemsRepeater ItemTemplate="{StaticResource InstanceItemTemplate}" ItemsSource="{x:Bind VM.FilteredInstances, Mode=OneWay}">
+                    <ItemsRepeater.Layout>
+                        <StackLayout Spacing="4" />
+                    </ItemsRepeater.Layout>
+                </ItemsRepeater>
             </StackPanel>
-        </Border>
+        </ScrollViewer>
+
+        <StackPanel
+            x:Name="EmptyStackPanel"
+            Grid.Row="1"
+            Margin="0,32,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            x:Load="{x:Bind VM.Loading, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
+            Spacing="4">
+            <StackPanel
+                HorizontalAlignment="Center"
+                Orientation="Horizontal"
+                Spacing="8">
+                <FontIcon FontSize="32" Glyph="&#xe74c;" />
+                <TextBlock
+                    x:Uid="Downloads_Instances_DefaultPage_T4"
+                    Margin="0,-4,0,0"
+                    FontSize="28"
+                    Style="{ThemeResource BaseTextBlockStyle}"
+                    Text="No results found" />
+            </StackPanel>
+            <HyperlinkButton
+                Padding="5,0,5,0.5"
+                HorizontalAlignment="Center"
+                Command="{x:Bind VM.ClearSearchQueryCommand}">
+                <TextBlock x:Uid="Downloads_Instances_DefaultPage_Text" Text="Try other" />
+            </HyperlinkButton>
+
+            <i:Interaction.Behaviors>
+                <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{x:Bind VM.FilteredInstances, Mode=OneWay}" />
+            </i:Interaction.Behaviors>
+        </StackPanel>
 
         <!--  Visual states reflect the application's window size  -->
         <VisualStateManager.VisualStateGroups>
@@ -224,10 +238,25 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="border.Margin" Value="20, 0, 20, 20" />
+                        <Setter Target="uniformGrid.Rows" Value="2" />
+                        <Setter Target="uniformGrid.Columns" Value="1" />
+
+                        <Setter Target="stackPanel.Margin" Value="20, 0, 20, 16" />
+                        <Setter Target="scrollViewer.Padding" Value="20, 0" />
+
+                        <Setter Target="scrollViewerStackPanel.Margin" Value="0, 0, 0, 20" />
                     </VisualState.Setters>
+
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LatestSnapshotPanel" Storyboard.TargetProperty="(Grid.Column)">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="0" />
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LatestSnapshotPanel" Storyboard.TargetProperty="(Grid.Row)">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="1" />
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-    </ScrollView>
+    </Grid>
 </Page>

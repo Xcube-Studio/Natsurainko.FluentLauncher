@@ -124,7 +124,7 @@ jobs:
 
           # Get package directory
           $directory = $msixFile.DirectoryName
-          echo "packageDirectory=$directory" >> $GITHUB_OUTPUT
+          echo "directory=$directory" >> $GITHUB_OUTPUT
 
           # Rename .msixsym to .appxsym to pass Partner Center validation
           # Move .appx to root directory for making .msixupload

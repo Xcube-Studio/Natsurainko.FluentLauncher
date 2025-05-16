@@ -300,6 +300,10 @@ internal class LaunchService(
 
         async IAsyncEnumerable<string> GetExtraVmParameters([EnumeratorCancellation] CancellationToken cancellationToken)
         {
+            yield return $"-Dfile.encoding=UTF-8";
+            yield return $"-Dstdout.encoding=UTF-8";
+            yield return $"-Dstderr.encoding=UTF-8";
+
             if (preCheckData.Account is YggdrasilAccount yggdrasil)
             {
                 var content = await httpClient.GetStringAsync(yggdrasil.YggdrasilServerUrl, cancellationToken);

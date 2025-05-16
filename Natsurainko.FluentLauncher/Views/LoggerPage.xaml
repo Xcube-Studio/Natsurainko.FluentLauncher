@@ -116,6 +116,10 @@
                 x:FieldModifier="public"
                 Background="Transparent"
                 ItemsSource="{x:Bind VM.FilterLoggerItems, Mode=OneWay}">
+                <ListBox.Resources>
+                    <StaticResource x:Key="ListBoxItemBackgroundSelected" ResourceKey="ListBoxItemBackgroundPointerOver" />
+                    <StaticResource x:Key="ListBoxItemBackgroundSelectedPointerOver" ResourceKey="ListBoxItemBackgroundPointerOver" />
+                </ListBox.Resources>
                 <ListBox.ItemContainerStyle>
                     <Style BasedOn="{StaticResource DefaultListBoxItemStyle}" TargetType="ListBoxItem">
                         <Setter Property="Padding" Value="0" />

@@ -38,8 +38,8 @@ public sealed partial class OOBENavigationPage : Page, INavigationProvider
         int sourcePageIndex = VM.CurrentPageIndex;
 
         var navigationViewItems = sender.MenuItems.Union(sender.FooterMenuItems).Cast<NavigationViewItem>().Select(item => item.Tag).Cast<string>().ToList();
-        string pageTag = ((NavigationViewItem)args.InvokedItemContainer).GetTag();
-        int targetPageIndex = navigationViewItems.IndexOf(pageTag);
+        string pageTag = ((NavigationViewItem)args.InvokedItemContainer).GetTag()!;
+        int targetPageIndex = navigationViewItems.IndexOf(pageTag!);
 
         // Set transition direction
         if (targetPageIndex > sourcePageIndex)
@@ -67,7 +67,7 @@ public sealed partial class OOBENavigationPage : Page, INavigationProvider
     {
         foreach (NavigationViewItem item in NavigationView.MenuItems.Union(NavigationView.FooterMenuItems).Cast<NavigationViewItem>())
         {
-            if (App.GetService<IPageProvider>().RegisteredPages[item.GetTag()].PageType == e.SourcePageType)
+            if (App.GetService<IPageProvider>().RegisteredPages[item.GetTag()!].PageType == e.SourcePageType)
             {
                 bypassTransitionUpdate = true;
                 NavigationView.SelectedItem = item;

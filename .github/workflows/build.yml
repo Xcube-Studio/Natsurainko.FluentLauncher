@@ -116,15 +116,15 @@ jobs:
           # Get package name
           $msixFile = Get-Item -Path "${{ env.Packages_Directory }}\*\*.msix"
           $packageName = [System.IO.Path]::GetFileNameWithoutExtension($msixFile.FullName)
-          echo "::set-output name=packageName::$packageName"
+          echo "packageName=$packageName" >> $GITHUB_OUTPUT
 
           # Get version number
           $version = $packageName -replace '^(.*?Natsurainko\.FluentLauncher)_(\d+\.\d+\.\d+\.\d+)(_x64|_arm64)$', '$2'
-          echo "::set-output name=version::$version"
+          echo "version=$version" >> $GITHUB_OUTPUT
 
           # Get package directory
           $directory = $msixFile.DirectoryName
-          echo "::set-output name=packageDirectory::$directory"
+          echo "packageDirectory=$directory" >> $GITHUB_OUTPUT
 
           # Rename .msixsym to .appxsym to pass Partner Center validation
           # Move .appx to root directory for making .msixupload

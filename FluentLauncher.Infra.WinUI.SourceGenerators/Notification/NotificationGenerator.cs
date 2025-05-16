@@ -48,7 +48,7 @@ public class NotificationGenerator : IIncrementalGenerator
         context.RegisterSourceOutput(groupedItems, static (ctx, item) =>
         {
             string @namespace = item.Key.@namespace;
-            string @class= item.Key.@class;;
+            string @class= item.Key.@class;
 
             StringBuilder membersBuilder = new();
 

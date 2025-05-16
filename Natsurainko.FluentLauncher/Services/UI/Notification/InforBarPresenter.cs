@@ -3,12 +3,10 @@ using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
-using Natsurainko.FluentLauncher.Services.Settings;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using Windows.UI;
 
 namespace Natsurainko.FluentLauncher.Services.UI.Notification;
 
@@ -24,18 +22,16 @@ internal class InfoBarPresenter : INotificationPresenter<InfoBar>
 
     void INotificationPresenter<InfoBar>.Close(INotification<InfoBar> notification) => CloseAsync(notification);
 
-    public Task CloseAsync(INotification<InfoBar> notification) => App.DispatcherQueue.EnqueueAsync(() =>
+    public Task ClearAsync() => App.DispatcherQueue.EnqueueAsync(() =>
     {
         EnsureInitialized();
 
-        if (_infoBars.TryGetValue(notification, out var infoBar))
+        lock (_infoBars)
         {
-            _itemsContainer.Children.Remove(infoBar);
+            foreach (var infoBar in _infoBars.Values)
+                _itemsContainer.Children.Remove(infoBar);
 
-            lock (_infoBars)
-            {
-                _infoBars.Remove(notification);
-            }
+            _infoBars.Clear();
         }
     });
 
@@ -61,16 +57,18 @@ internal class InfoBarPresenter : INotificationPresenter<InfoBar>
             Task.Delay(TimeSpan.FromSeconds(notification.Delay)).ContinueWith(t => CloseAsync(notification));
     });
 
-    public Task ClearAsync() => App.DispatcherQueue.EnqueueAsync(() =>
+    public Task CloseAsync(INotification<InfoBar> notification) => App.DispatcherQueue.EnqueueAsync(() =>
     {
         EnsureInitialized();
 
-        lock (_infoBars)
+        if (_infoBars.TryGetValue(notification, out var infoBar))
         {
-            foreach (var infoBar in _infoBars.Values)
-                _itemsContainer.Children.Remove(infoBar);
+            _itemsContainer.Children.Remove(infoBar);
 
-            _infoBars.Clear();
+            lock (_infoBars)
+            {
+                _infoBars.Remove(notification);
+            }
         }
     });
 
@@ -87,9 +85,14 @@ internal class InfoBarPresenter : INotificationPresenter<InfoBar>
             throw new InvalidOperationException("ItemsContainer is not initialized.");
     }
 
-    private Brush GetInfoBarDefaultBackground()
+    private static Brush? GetInfoBarDefaultBackground()
     {
-        return (App.Current.Resources.ThemeDictionaries[App.MainWindow.ContentFrame.ActualTheme == ElementTheme.Light
-            ? "Light" : "Dark"] as ResourceDictionary)["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
+        ResourceDictionary? resourceDictionary = App.Current.Resources.ThemeDictionaries
+                [App.MainWindow.ContentFrame.ActualTheme == ElementTheme.Light ? "Light" : "Dark"] as ResourceDictionary;
+
+        if (resourceDictionary != null)
+            return resourceDictionary["NavigationViewUnfoldedPaneBackground"] as AcrylicBrush;
+
+        return null;
     }
 }

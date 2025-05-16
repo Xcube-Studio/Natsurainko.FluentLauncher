@@ -12,7 +12,7 @@ internal class InstanceDirectoryNotFoundException(MinecraftInstance instance, st
     public MinecraftInstance MinecraftInstance { get; } = instance;
 
     public string Directory { get; } = directory;
-};
+}
 
 internal class NoActiveJavaRuntimeException() : Exception(
     "There is no Java runtime in the settings, or no Java runtime is enabled. Please check your settings.");

@@ -65,10 +65,9 @@ internal class DefaultNotification : INotification,
     AppNotification INotification<AppNotification>.ConstructUI()
     {
         return new AppNotificationBuilder()
-            .AddText("Send a message.")
-            .AddTextBox("textBox")
-            .AddButton(new AppNotificationButton("Send")
-                .AddArgument("action", "sendMessage")).BuildNotification(); ;
+            .AddText(Title)
+            .AddText(Message)
+            .BuildNotification();
     }
 }
 

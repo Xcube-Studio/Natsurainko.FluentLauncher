@@ -66,6 +66,9 @@ jobs:
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: x64
+          vs-version: '[17.14,17.15)'
 
       # - name: Cache NuGet packages
       #   id: cache-nuget

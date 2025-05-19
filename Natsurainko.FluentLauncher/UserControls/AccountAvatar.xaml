@@ -7,27 +7,25 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Natsurainko.FluentLauncher.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Loaded="UserControl_Loaded"
+    Unloaded="UserControl_Unloaded"
     mc:Ignorable="d">
 
     <Border
+        x:Name="Border"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"
         Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
         CornerRadius="4">
         <Grid>
-            <Image Name="Back" />
-            <Image Name="Fore" />
+            <Image x:Name="Back" />
+            <Image x:Name="Fore" />
             <ProgressRing
-                Name="Ring"
+                x:Name="ProgressRing"
+                Width="16"
+                Height="16"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center" />
         </Grid>
-        <i:Interaction.Behaviors>
-            <behaviors:AccountAvatarLoadBehavior
-                Account="{x:Bind Account, Mode=OneWay}"
-                BackgroundImageName="Back"
-                ForegroundImageName="Fore"
-                ProgressName="Ring" />
-        </i:Interaction.Behaviors>
     </Border>
 </UserControl>

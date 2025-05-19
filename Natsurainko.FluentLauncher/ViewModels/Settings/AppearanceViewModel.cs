@@ -102,7 +102,7 @@ internal partial class AppearanceViewModel : SettingsPageVM<AppearancePage>, ISe
     void HideFlyout(Flyout flyout) => flyout.Hide();
 
     [RelayCommand]
-    void RadioButtonChecked(int index) => BackgroundMode = index;
+    void RadioButtonChecked(int index) => Dispatcher.TryEnqueue(() => BackgroundMode = index);
 
     [RelayCommand]
     async Task UseImageThemeColor()

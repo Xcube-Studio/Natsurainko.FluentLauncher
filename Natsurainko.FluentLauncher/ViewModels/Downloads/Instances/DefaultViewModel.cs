@@ -103,7 +103,10 @@ internal partial class DefaultViewModel(
 
     async void ParseVersionManifestTask(Task<string> task)
     {
-        if (task.IsFaulted || string.IsNullOrEmpty(task.Result))
+        if (string.IsNullOrEmpty(task.Result))
+            return;
+
+        if (task.IsFaulted)
         {
             await App.DispatcherQueue.EnqueueAsync(() => Loading = false);
             notificationService.LoadInstancesFailed(task.Exception!);

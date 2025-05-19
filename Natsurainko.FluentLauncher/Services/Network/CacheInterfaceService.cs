@@ -94,15 +94,16 @@ internal class CacheInterfaceService(
             if (writeToLocal)
             {
                 await using var contentStream = await responseMessage.Content.ReadAsStreamAsync();
-                await using var fileStream = File.Create(fileInfo.FullName);
+                await using (var fileStream = File.Create(fileInfo.FullName))
+                {
+                    using var rentMemory = HttpUtils.MemoryPool.Rent(1024);
+                    int readMemory = 0;
 
-                using var rentMemory = HttpUtils.MemoryPool.Rent(1024);
-                int readMemory = 0;
+                    while ((readMemory = await contentStream.ReadAsync(rentMemory.Memory)) > 0)
+                        await fileStream.WriteAsync(rentMemory.Memory[..readMemory]);
 
-                while ((readMemory = await contentStream.ReadAsync(rentMemory.Memory)) > 0)
-                    await fileStream.WriteAsync(rentMemory.Memory[..readMemory]);
-
-                await fileStream.FlushAsync();
+                    await fileStream.FlushAsync();
+                }
 
                 return File.OpenRead(fileInfo.FullName);
             }

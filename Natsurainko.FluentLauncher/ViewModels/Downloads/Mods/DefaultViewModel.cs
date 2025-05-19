@@ -5,7 +5,9 @@ using FluentLauncher.Infra.UI.Navigation;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Resources;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,9 +21,10 @@ internal partial class DefaultViewModel(
     SearchProviderService searchProviderService) : PageVM, INavigationAware
 {
     private CancellationTokenSource? _cancellationTokenSource;
+    private bool depressCategoryChangedInvokeSearch = true;
 
     [ObservableProperty]
-    public partial List<object>? SearchResult { get; set; }
+    public partial ObservableCollection<object>? SearchResult { get; set; }
 
     [ObservableProperty]
     public partial int ResourceSource { get; set; } = 0;
@@ -51,11 +54,19 @@ internal partial class DefaultViewModel(
 
     partial void OnResourceSourceChanged(int value)
     {
+        depressCategoryChangedInvokeSearch = true;
+
         UpdateFiltersSource();
         SearchReceiveHandle(SearchQuery);
+
+        depressCategoryChangedInvokeSearch = false;
     }
 
-    partial void OnSelectedCategoryChanged(string value) => SearchReceiveHandle(SearchQuery);
+    partial void OnSelectedCategoryChanged(string value)
+    {
+        if (!depressCategoryChangedInvokeSearch)
+            SearchReceiveHandle(SearchQuery);
+    }
 
     partial void OnFilteredVersionChanged(string value) => SearchReceiveHandle(SearchQuery);
 
@@ -83,31 +94,32 @@ internal partial class DefaultViewModel(
 
         _cancellationTokenSource?.Cancel();
         _cancellationTokenSource?.Dispose();
-        _cancellationTokenSource = new CancellationTokenSource();
+        _cancellationTokenSource = new();
 
         Task.Run(async () =>
         {
-            await Dispatcher.EnqueueAsync(() => Loading = true);
-            IEnumerable<object> result = [];
+            await Dispatcher.EnqueueAsync(() =>
+            {
+                SearchResult = [];
+                Loading = true;
+            });
+
+            object[]? result = null;
 
             try
             {
-                result = ResourceSource == 0
-                    ? await curseForgeClient.SearchResourcesAsync(
-                        query, 
-                        CurseForgeResourceType.McMod, 
-                        categoryId: CurseForgeCategories[SelectedCategory],
-                        version: FilteredVersion == LocalizedStrings.Downloads_Mods_DefaultPage__All ? null : FilteredVersion,
-                        cancellationToken: _cancellationTokenSource.Token)
-                    : await modrinthClient.SearchResourcesAsync(
-                        query, 
-                        ModrinthResourceType.McMod,
-                        categories: SelectedCategory == "all" ? null : SelectedCategory,
-                        version: FilteredVersion == LocalizedStrings.Downloads_Mods_DefaultPage__All ? null : FilteredVersion,
-                        cancellationToken: _cancellationTokenSource.Token);
-
-                if (_cancellationTokenSource.IsCancellationRequested)
-                    result = [];
+                result = ResourceSource switch
+                {
+                    0 => (await curseForgeClient.SearchResourcesAsync(query, CurseForgeResourceType.McMod,
+                            categoryId: CurseForgeCategories[SelectedCategory],
+                            version: FilteredVersion == LocalizedStrings.Downloads_Mods_DefaultPage__All ? null : FilteredVersion,
+                            cancellationToken: _cancellationTokenSource.Token)).ToArray(),
+                    1 => (await modrinthClient.SearchResourcesAsync(query, ModrinthResourceType.McMod,
+                            categories: SelectedCategory == "all" ? null : SelectedCategory,
+                            version: FilteredVersion == LocalizedStrings.Downloads_Mods_DefaultPage__All ? null : FilteredVersion,
+                            cancellationToken: _cancellationTokenSource.Token)).ToArray(),
+                    _ => null
+                };
             }
             catch
             {
@@ -118,7 +130,7 @@ internal partial class DefaultViewModel(
                 await Dispatcher.EnqueueAsync(() =>
                 {
                     Loading = false;
-                    SearchResult = [.. result];
+                    SearchResult = result == null ? null : new(result);
                     Searched = !string.IsNullOrEmpty(query);
                     SearchQuery = query;
                 });
@@ -140,12 +152,16 @@ internal partial class DefaultViewModel(
     {
         searchProviderService.OccupyQueryReceiver(this, SearchReceiveHandle);
         SearchReceiveHandle(SearchQuery);
+
+        depressCategoryChangedInvokeSearch = false;
     }
 
     protected override void OnUnloaded()
     {
         _cancellationTokenSource?.Cancel();
         _cancellationTokenSource?.Dispose();
+
+        GC.Collect();
     }
 
     static readonly string[] ModrinthCategories = [

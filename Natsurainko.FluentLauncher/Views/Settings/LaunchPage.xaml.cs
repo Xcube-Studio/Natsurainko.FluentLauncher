@@ -39,11 +39,11 @@ public sealed partial class LaunchPage : Page, IBreadcrumbBarAware
             if (m.PropertyName != tag)
                 return;
 
-            var enableText = card.FindName("EnableText") as Border;
+            var enableText = card.FindName("EnableText") as HyperlinkButton;
             enableText!.Visibility = path == m.Value ? Visibility.Visible : Visibility.Collapsed;
         });
 
-        var enableText = card.FindName("EnableText") as Border;
+        var enableText = card.FindName("EnableText") as HyperlinkButton;
         enableText!.Visibility = path == current ? Visibility.Visible : Visibility.Collapsed;
 
         card.Unloaded += (s, e) => WeakReferenceMessenger.Default.Unregister<SettingsStringValueChangedMessage>(sender);

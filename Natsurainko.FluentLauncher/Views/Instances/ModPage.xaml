@@ -8,6 +8,7 @@
     xmlns:data="using:Nrk.FluentCore.GameManagement.Mods"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit_behaviors="using:CommunityToolkit.WinUI.Behaviors"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     x:Name="Page"
     AllowDrop="True"
@@ -15,16 +16,20 @@
     Drop="Page_Drop"
     mc:Ignorable="d">
 
-    <ScrollViewer>
-        <Border Name="border" Margin="{ThemeResource PageMarginWithBorder}">
-            <StackPanel
-                MaxWidth="1000"
-                HorizontalAlignment="Stretch"
-                Spacing="{StaticResource SettingsCardSpacing}">
+    <ListView
+        x:Name="ListView"
+        Padding="40,0,40,25"
+        ItemsSource="{x:Bind VM.Mods, Mode=OneWay}"
+        SelectionMode="None">
+        <ListView.Header>
+            <StackPanel MaxWidth="1000" Spacing="{StaticResource SettingsCardSpacing}">
                 <StackPanel.ChildrenTransitions>
                     <EntranceThemeTransition FromVerticalOffset="50" />
                     <RepositionThemeTransition IsStaggeringEnabled="False" />
                 </StackPanel.ChildrenTransitions>
+                <i:Interaction.Behaviors>
+                    <toolkit_behaviors:FadeHeaderBehavior />
+                </i:Interaction.Behaviors>
 
                 <controls:SettingsCard
                     x:Uid="Instances_ModPage_Card1"
@@ -34,6 +39,7 @@
                     Header="Mods Folder"
                     HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
                     IsClickEnabled="True" />
+
                 <controls:SettingsCard
                     x:Uid="Instances_ModPage_Card2"
                     Description="Even if the mods listed below exist, they will not be loaded"
@@ -46,113 +52,6 @@
                     x:Uid="Instances_ModPage_T1"
                     Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
                     Text="Mods" />
-
-                <ItemsRepeater ItemsSource="{x:Bind VM.Mods, Mode=OneWay}">
-                    <ItemsRepeater.ItemTemplate>
-                        <DataTemplate x:DataType="data:MinecraftMod">
-                            <controls:SettingsCard
-                                Padding="16,8"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch">
-                                <controls:SettingsCard.Header>
-                                    <Grid Background="Transparent">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="16" />
-                                            <ColumnDefinition Width="1*" />
-                                        </Grid.ColumnDefinitions>
-                                        <FontIcon
-                                            Width="32"
-                                            Height="32"
-                                            Glyph="&#xF158;" />
-                                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                                            <TextBlock
-                                                FontWeight="SemiBold"
-                                                Text="{x:Bind DisplayName}"
-                                                TextTrimming="CharacterEllipsis" />
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="1*" />
-                                                    <ColumnDefinition Width="8" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                </Grid.ColumnDefinitions>
-
-                                                <TextBlock
-                                                    Name="InfoText"
-                                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                                    MaxLines="1"
-                                                    Style="{ThemeResource CaptionTextBlockStyle}"
-                                                    Text="{x:Bind Converter={StaticResource ModInfoConverter}}"
-                                                    TextTrimming="CharacterEllipsis"
-                                                    TextWrapping="NoWrap" />
-
-                                                <Button
-                                                    Grid.Column="2"
-                                                    Padding="5,0,5,0"
-                                                    Background="{ThemeResource HyperlinkButtonBackgroundThemeBrush}"
-                                                    BorderBrush="{ThemeResource HyperlinkButtonBorderThemeBrush}"
-                                                    BorderThickness="1"
-                                                    Content="More.."
-                                                    FontSize="12"
-                                                    Foreground="{ThemeResource SystemAccentColor}"
-                                                    Visibility="{Binding ElementName=InfoText, Path=IsTextTrimmed, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                    <Button.Flyout>
-                                                        <Flyout Placement="BottomEdgeAlignedRight">
-                                                            <TextBlock
-                                                                MaxWidth="320"
-                                                                Margin="-5"
-                                                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                                                Text="{x:Bind Converter={StaticResource ModInfoConverter}}"
-                                                                TextWrapping="WrapWholeWords" />
-                                                        </Flyout>
-                                                    </Button.Flyout>
-                                                </Button>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-                                </controls:SettingsCard.Header>
-
-                                <StackPanel Orientation="Horizontal" Spacing="15">
-                                    <Button
-                                        Name="DeleteButton"
-                                        CommandParameter="{x:Bind}"
-                                        Style="{ThemeResource DeleteButtonStyle}">
-                                        <StackPanel Orientation="Horizontal" Spacing="5">
-                                            <FontIcon
-                                                FontSize="14"
-                                                Foreground="White"
-                                                Glyph="&#xe74d;" />
-                                            <TextBlock
-                                                x:Uid="Buttons_Delete"
-                                                Foreground="White"
-                                                Text="Delete" />
-                                        </StackPanel>
-
-                                        <i:Interaction.Behaviors>
-                                            <behaviors:AncestorBindingBehavior
-                                                AncestorType="ItemsRepeater"
-                                                Binding="{Binding DataContext.ConfirmDeleteCommand}"
-                                                TargetPropertyName="Command" />
-                                        </i:Interaction.Behaviors>
-                                    </Button>
-
-                                    <ToggleSwitch
-                                        Name="ToggleSwitch"
-                                        DataContext="{x:Bind}"
-                                        IsOn="{x:Bind IsEnabled}"
-                                        Loaded="ToggleSwitch_Loaded" />
-                                </StackPanel>
-
-                                <i:Interaction.Behaviors>
-                                    <behaviors:PointerOverVisibleBehavior TargetElementName="DeleteButton" />
-                                </i:Interaction.Behaviors>
-                            </controls:SettingsCard>
-                        </DataTemplate>
-                    </ItemsRepeater.ItemTemplate>
-                    <ItemsRepeater.Layout>
-                        <StackLayout Spacing="4" />
-                    </ItemsRepeater.Layout>
-                </ItemsRepeater>
 
                 <StackPanel
                     HorizontalAlignment="Center"
@@ -179,9 +78,117 @@
                     </i:Interaction.Behaviors>
                 </StackPanel>
             </StackPanel>
-        </Border>
+        </ListView.Header>
+        <ListView.ItemTemplate>
+            <DataTemplate x:DataType="data:MinecraftMod">
+                <controls:SettingsCard
+                    Padding="16,8"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                    <controls:SettingsCard.Header>
+                        <Grid Background="Transparent">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <FontIcon
+                                Width="32"
+                                Height="32"
+                                Glyph="&#xF158;" />
+                            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                <TextBlock
+                                    FontWeight="SemiBold"
+                                    Text="{x:Bind DisplayName}"
+                                    TextTrimming="CharacterEllipsis" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
 
-        <!--  Visual states reflect the application's window size  -->
+                                    <TextBlock
+                                        Name="InfoText"
+                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                        MaxLines="1"
+                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                        Text="{x:Bind Converter={StaticResource ModInfoConverter}}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+
+                                    <Button
+                                        Grid.Column="2"
+                                        Padding="5,0,5,0"
+                                        Background="{ThemeResource HyperlinkButtonBackgroundThemeBrush}"
+                                        BorderBrush="{ThemeResource HyperlinkButtonBorderThemeBrush}"
+                                        BorderThickness="1"
+                                        Content="More.."
+                                        FontSize="12"
+                                        Foreground="{ThemeResource SystemAccentColor}"
+                                        Visibility="{Binding ElementName=InfoText, Path=IsTextTrimmed, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <Button.Flyout>
+                                            <Flyout Placement="BottomEdgeAlignedRight">
+                                                <TextBlock
+                                                    MaxWidth="320"
+                                                    Margin="-5"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{x:Bind Converter={StaticResource ModInfoConverter}}"
+                                                    TextWrapping="WrapWholeWords" />
+                                            </Flyout>
+                                        </Button.Flyout>
+                                    </Button>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </controls:SettingsCard.Header>
+
+                    <StackPanel Orientation="Horizontal" Spacing="15">
+                        <Button
+                            Name="DeleteButton"
+                            CommandParameter="{x:Bind}"
+                            Style="{ThemeResource DeleteButtonStyle}">
+                            <StackPanel Orientation="Horizontal" Spacing="5">
+                                <FontIcon
+                                    FontSize="14"
+                                    Foreground="White"
+                                    Glyph="&#xe74d;" />
+                                <TextBlock
+                                    x:Uid="Buttons_Delete"
+                                    Foreground="White"
+                                    Text="Delete" />
+                            </StackPanel>
+
+                            <i:Interaction.Behaviors>
+                                <behaviors:AncestorBindingBehavior
+                                    AncestorType="ListView"
+                                    Binding="{Binding DataContext.ConfirmDeleteCommand}"
+                                    TargetPropertyName="Command" />
+                            </i:Interaction.Behaviors>
+                        </Button>
+
+                        <ToggleSwitch
+                            Name="ToggleSwitch"
+                            DataContext="{x:Bind}"
+                            IsOn="{x:Bind IsEnabled}"
+                            Loaded="ToggleSwitch_Loaded" />
+                    </StackPanel>
+
+                    <i:Interaction.Behaviors>
+                        <behaviors:PointerOverVisibleBehavior TargetElementName="DeleteButton" />
+                    </i:Interaction.Behaviors>
+                </controls:SettingsCard>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+        <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+                <Setter Property="Margin" Value="0,2" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="MaxWidth" Value="1000" />
+            </Style>
+        </ListView.ItemContainerStyle>
+
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="LayoutVisualStates">
                 <VisualState x:Name="WideLayout">
@@ -198,10 +205,10 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="border.Margin" Value="20, 0, 20, 20" />
+                        <Setter Target="ListView.Padding" Value="20,0,20,20" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-    </ScrollViewer>
+    </ListView>
 </Page>

@@ -12,8 +12,5 @@ public sealed partial class DownloadPage : Page
         InitializeComponent();
     }
 
-    private void Page_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-        itemsRepeater.ItemsSource = null;
-    }
+    private void Page_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e) => ListView.ItemsSource = null;
 }

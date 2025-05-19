@@ -64,19 +64,16 @@
                                 <controls:SettingsCard.Header>
                                     <StackPanel Orientation="Horizontal" Spacing="10">
                                         <TextBlock x:Uid="Settings_LaunchPage_Text1" Text="Minecraft Folder" />
-                                        <Border
+                                        <HyperlinkButton
                                             Name="EnableText"
-                                            Padding="5,0,5,2"
-                                            CornerRadius="4">
-                                            <Border.Background>
-                                                <SolidColorBrush Opacity="0.15" Color="{ThemeResource SystemAccentColor}" />
-                                            </Border.Background>
+                                            Padding="5,0,5,0.5"
+                                            Background="{ThemeResource HyperlinkButtonBackgroundPointerOver}">
                                             <TextBlock
                                                 x:Uid="Settings_LaunchPage_Text4"
                                                 Foreground="{ThemeResource SystemAccentColor}"
-                                                Style="{ThemeResource BaseTextBlockStyle}"
+                                                Style="{ThemeResource CaptionTextBlockStyle}"
                                                 Text="Enabled" />
-                                        </Border>
+                                        </HyperlinkButton>
                                     </StackPanel>
                                 </controls:SettingsCard.Header>
                                 <StackPanel
@@ -113,6 +110,9 @@
                             </controls:SettingsCard>
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>
+                    <ItemsRepeater.Layout>
+                        <StackLayout Spacing="4" />
+                    </ItemsRepeater.Layout>
                 </ItemsRepeater>
                 <controls:SettingsCard
                     x:Uid="Settings_LaunchPage_Card1"
@@ -160,19 +160,16 @@
                                 <controls:SettingsCard.Header>
                                     <StackPanel Orientation="Horizontal" Spacing="10">
                                         <TextBlock Text="{x:Bind Converter={StaticResource JavaInfoConverter}}" />
-                                        <Border
+                                        <HyperlinkButton
                                             Name="EnableText"
-                                            Padding="5,0,5,2"
-                                            CornerRadius="4">
-                                            <Border.Background>
-                                                <SolidColorBrush Opacity="0.15" Color="{ThemeResource SystemAccentColor}" />
-                                            </Border.Background>
+                                            Padding="5,0,5,0.5"
+                                            Background="{ThemeResource HyperlinkButtonBackgroundPointerOver}">
                                             <TextBlock
                                                 x:Uid="Settings_LaunchPage_Text4"
                                                 Foreground="{ThemeResource SystemAccentColor}"
-                                                Style="{ThemeResource BaseTextBlockStyle}"
+                                                Style="{ThemeResource CaptionTextBlockStyle}"
                                                 Text="Enabled" />
-                                        </Border>
+                                        </HyperlinkButton>
                                     </StackPanel>
                                 </controls:SettingsCard.Header>
                                 <StackPanel
@@ -212,6 +209,9 @@
                             </controls:SettingsCard>
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>
+                    <ItemsRepeater.Layout>
+                        <StackLayout Spacing="4" />
+                    </ItemsRepeater.Layout>
                 </ItemsRepeater>
                 <controls:SettingsCard
                     x:Uid="Settings_LaunchPage_Card2"

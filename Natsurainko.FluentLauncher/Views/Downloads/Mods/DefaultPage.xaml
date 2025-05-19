@@ -11,7 +11,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resources="using:Nrk.FluentCore.Resources"
     xmlns:selector="using:Natsurainko.FluentLauncher.XamlHelpers.Selectors"
-    Unloaded="Page_Unloaded"
+    xmlns:toolkit_behaviors="using:CommunityToolkit.WinUI.Behaviors"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:Key="CurseForgeResourceTemplate" x:DataType="resources:CurseForgeResource">
@@ -224,16 +224,21 @@
             ModrinthTemplate="{StaticResource ModrinthResourceTemplate}" />
     </Page.Resources>
 
-    <ScrollView>
-        <Border Name="border" Margin="{ThemeResource PageMarginWithBorder}">
-            <StackPanel
-                MaxWidth="1000"
-                HorizontalAlignment="Stretch"
-                Spacing="{StaticResource SettingsCardSpacing}">
+    <ListView
+        x:Name="ListView"
+        Padding="40,0,40,25"
+        ItemTemplateSelector="{StaticResource ModResourceTemplateSelector}"
+        ItemsSource="{x:Bind VM.SearchResult, Mode=OneWay}"
+        SelectionMode="None">
+        <ListView.Header>
+            <StackPanel MaxWidth="1000">
                 <StackPanel.ChildrenTransitions>
                     <EntranceThemeTransition FromVerticalOffset="50" />
                     <RepositionThemeTransition IsStaggeringEnabled="False" />
                 </StackPanel.ChildrenTransitions>
+                <i:Interaction.Behaviors>
+                    <toolkit_behaviors:FadeHeaderBehavior />
+                </i:Interaction.Behaviors>
 
                 <TextBlock
                     x:Name="SearchTextBlock"
@@ -305,48 +310,48 @@
                     x:Load="{x:Bind VM.Loading, Mode=OneWay}"
                     IsActive="{x:Bind VM.Loading, Mode=OneWay}" />
 
-                <StackPanel x:Name="ContentStackPanel" x:Load="{x:Bind VM.Loading, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}">
-                    <ItemsRepeater ItemTemplate="{StaticResource ModResourceTemplateSelector}" ItemsSource="{x:Bind VM.SearchResult, Mode=OneWay}">
-                        <ItemsRepeater.Layout>
-                            <StackLayout Spacing="4" />
-                        </ItemsRepeater.Layout>
-                    </ItemsRepeater>
-
+                <StackPanel
+                    x:Name="EmptyStackPanel"
+                    Margin="0,32,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    x:Load="{x:Bind VM.Searched, Mode=OneWay}"
+                    Spacing="4">
                     <StackPanel
-                        x:Name="EmptyStackPanel"
-                        Margin="0,32,0,0"
                         HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        x:Load="{x:Bind VM.Searched, Mode=OneWay}"
-                        Spacing="4">
-                        <StackPanel
-                            HorizontalAlignment="Center"
-                            Orientation="Horizontal"
-                            Spacing="8">
-                            <FontIcon FontSize="32" Glyph="&#xe74c;" />
-                            <TextBlock
-                                x:Uid="Downloads_Mods_DefaultPage_Text3"
-                                Margin="0,-4,0,0"
-                                FontSize="28"
-                                Style="{ThemeResource BaseTextBlockStyle}"
-                                Text="No results found" />
-                        </StackPanel>
-                        <HyperlinkButton
-                            Padding="5,0,5,0.5"
-                            HorizontalAlignment="Center"
-                            Command="{x:Bind VM.ClearSearchQueryCommand}">
-                            <TextBlock x:Uid="Downloads_Mods_DefaultPage_Text4" Text="Try other" />
-                        </HyperlinkButton>
-
-                        <i:Interaction.Behaviors>
-                            <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{x:Bind VM.SearchResult, Mode=OneWay}" />
-                        </i:Interaction.Behaviors>
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <FontIcon FontSize="32" Glyph="&#xe74c;" />
+                        <TextBlock
+                            x:Uid="Downloads_Mods_DefaultPage_Text3"
+                            Margin="0,-4,0,0"
+                            FontSize="28"
+                            Style="{ThemeResource BaseTextBlockStyle}"
+                            Text="No results found" />
                     </StackPanel>
+                    <HyperlinkButton
+                        Padding="5,0,5,0.5"
+                        HorizontalAlignment="Center"
+                        Command="{x:Bind VM.ClearSearchQueryCommand}">
+                        <TextBlock x:Uid="Downloads_Mods_DefaultPage_Text4" Text="Try other" />
+                    </HyperlinkButton>
+
+                    <i:Interaction.Behaviors>
+                        <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{x:Bind VM.SearchResult, Mode=OneWay}" />
+                    </i:Interaction.Behaviors>
                 </StackPanel>
             </StackPanel>
-        </Border>
+        </ListView.Header>
 
-        <!--  Visual states reflect the application's window size  -->
+        <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+                <Setter Property="Margin" Value="0,2" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="MaxWidth" Value="1000" />
+            </Style>
+        </ListView.ItemContainerStyle>
+
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="LayoutVisualStates">
                 <VisualState x:Name="WideLayout">
@@ -363,10 +368,10 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="border.Margin" Value="20, 0, 20, 20" />
+                        <Setter Target="ListView.Padding" Value="20,0,20,20" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-    </ScrollView>
+    </ListView>
 </Page>

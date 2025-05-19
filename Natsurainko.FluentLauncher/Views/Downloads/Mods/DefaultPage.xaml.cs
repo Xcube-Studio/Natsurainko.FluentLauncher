@@ -1,5 +1,4 @@
 using FluentLauncher.Infra.UI.Navigation;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Utils;
@@ -22,8 +21,6 @@ public sealed partial class DefaultPage : Page, IBreadcrumbBarAware
     {
         this.InitializeComponent();
     }
-
-    private void Page_Unloaded(object _, RoutedEventArgs __) => VM.IsActive = false;
 
     internal static IEnumerable<string> FilterCategories(IEnumerable<string> categories)
     {

@@ -11,6 +11,7 @@ using Natsurainko.FluentLauncher.Services.UI.Notification;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.GameManagement.Installer;
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -30,7 +31,7 @@ internal partial class DefaultViewModel(
     public VersionManifestItem[] AllInstances { get; private set; } = null!;
 
     [ObservableProperty]
-    public partial VersionManifestItem[] FilteredInstances { get; set; }
+    public partial ObservableCollection<VersionManifestItem> FilteredInstances { get; set; }
 
     [ObservableProperty]
     public partial VersionManifestItem LatestRelease { get; set; }
@@ -163,10 +164,12 @@ internal partial class DefaultViewModel(
 
         await Dispatcher.EnqueueAsync(() =>
         {
-            FilteredInstances = filteredInstances;
+            FilteredInstances = new(filteredInstances);
             SearchQuery = query;
         });
     }
+
+    protected override void OnUnloaded() => GC.Collect();
 }
 
 internal static partial class DefaultViewModelNotifications

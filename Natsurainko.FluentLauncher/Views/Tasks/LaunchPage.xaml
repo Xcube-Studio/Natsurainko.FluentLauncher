@@ -7,6 +7,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:selectors="using:Natsurainko.FluentLauncher.XamlHelpers.Selectors"
+    xmlns:toolkit_behaviors="using:CommunityToolkit.WinUI.Behaviors"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     Unloaded="Page_Unloaded">
     <Page.Resources>
@@ -18,68 +19,68 @@
     </Page.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="1*" MinHeight="320" />
-        </Grid.RowDefinitions>
+        <ListView
+            x:Name="ListView"
+            Padding="40,25"
+            ItemTemplateSelector="{StaticResource TemplateSelector}"
+            ItemsSource="{x:Bind VM.Tasks, Mode=OneWay}"
+            SelectionMode="None">
+            <ListView.Header>
+                <StackPanel MaxWidth="1000">
+                    <StackPanel.ChildrenTransitions>
+                        <EntranceThemeTransition FromVerticalOffset="50" />
+                        <RepositionThemeTransition IsStaggeringEnabled="False" />
+                    </StackPanel.ChildrenTransitions>
+                    <i:Interaction.Behaviors>
+                        <toolkit_behaviors:FadeHeaderBehavior />
+                    </i:Interaction.Behaviors>
 
-        <StackPanel
-            Name="stackPanel"
-            MaxWidth="1000"
-            Margin="{ThemeResource PageMarginWithStackPanel}"
-            Spacing="15">
-            <TextBlock
-                x:Uid="Tasks_LaunchPage_Title"
-                Style="{ThemeResource TitleTextBlockStyle}"
-                Text="Launch Tasks" />
-
-            <controls:WrapPanel
-                HorizontalSpacing="15"
-                VerticalSpacing="15"
-                Visibility="Collapsed">
-                <CheckBox
-                    x:Uid="Tasks_LaunchPage_CheckBox"
-                    Content="Show historical launch records"
-                    IsEnabled="False" />
-
-                <StackPanel Orientation="Horizontal" Spacing="5">
-                    <FontIcon
-                        FontSize="13"
-                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                        Glyph="&#xec92;" />
                     <TextBlock
-                        x:Uid="Tasks_LaunchPage_Text1"
-                        VerticalAlignment="Center"
-                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                        Text="Time Range:" />
-                    <ComboBox
-                        IsEnabled="False"
-                        ItemsSource="{xh:ComboBox ResourceKey=_Items}"
-                        SelectedIndex="0" />
+                        x:Uid="Tasks_LaunchPage_Title"
+                        Margin="0,0,0,20"
+                        Style="{ThemeResource TitleTextBlockStyle}"
+                        Text="Launch Tasks" />
+
+                    <controls:WrapPanel
+                        HorizontalSpacing="16"
+                        VerticalSpacing="16"
+                        Visibility="Collapsed">
+                        <CheckBox
+                            x:Uid="Tasks_LaunchPage_CheckBox"
+                            Content="Show historical launch records"
+                            IsEnabled="False" />
+
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <FontIcon
+                                FontSize="13"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Glyph="&#xec92;" />
+                            <TextBlock
+                                x:Uid="Tasks_LaunchPage_Text1"
+                                VerticalAlignment="Center"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Text="Time Range:" />
+                            <ComboBox
+                                IsEnabled="False"
+                                ItemsSource="{xh:ComboBox ResourceKey=_Items}"
+                                SelectedIndex="0" />
+                        </StackPanel>
+                    </controls:WrapPanel>
                 </StackPanel>
+            </ListView.Header>
 
-            </controls:WrapPanel>
-        </StackPanel>
-
-        <ScrollViewer
-            Name="scrollViewer"
-            Grid.Row="1"
-            Padding="{ThemeResource PagePaddingWithScrollViewer}">
-            <ItemsRepeater
-                Name="itemsRepeater"
-                MaxWidth="1000"
-                Margin="{ThemeResource PageEndMarginWithScrollViewer}"
-                ItemTemplate="{ThemeResource TemplateSelector}"
-                ItemsSource="{x:Bind VM.Tasks, Mode=OneWay}">
-                <ItemsRepeater.Layout>
-                    <StackLayout Spacing="4" />
-                </ItemsRepeater.Layout>
-            </ItemsRepeater>
-        </ScrollViewer>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Margin" Value="0,2" />
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="MaxWidth" Value="1000" />
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
 
         <StackPanel
-            Grid.Row="1"
-            Margin="0,0,0,160"
+            Margin="0,80,0,120"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Spacing="4">
@@ -107,7 +108,6 @@
             </i:Interaction.Behaviors>
         </StackPanel>
 
-        <!--  Visual states reflect the application's window size  -->
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="LayoutVisualStates">
                 <VisualState x:Name="WideLayout">
@@ -124,9 +124,7 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="stackPanel.Margin" Value="20, 10, 20, 20" />
-                        <Setter Target="scrollViewer.Padding" Value="20, 0" />
-                        <Setter Target="itemsRepeater.Margin" Value="0, 0, 0, 20" />
+                        <Setter Target="ListView.Padding" Value="20" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

@@ -9,153 +9,151 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:inst="using:Nrk.FluentCore.GameManagement.Instances"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit_behaviors="using:CommunityToolkit.WinUI.Behaviors"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
-    Background="Transparent"
     mc:Ignorable="d">
     <Page.Resources>
         <converters:InstanceDescriptionConverter x:Key="InstanceDescriptionConverter" EnableShowModLoaderType="True" />
     </Page.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" MinHeight="160" />
-            <RowDefinition x:Name="ThirdRowDefinition" />
-        </Grid.RowDefinitions>
+        <ListView
+            x:Name="ListView"
+            Padding="40,0,40,25"
+            ItemsSource="{x:Bind VM.DisplayMinecraftInstances, Mode=OneWay}"
+            SelectionMode="None">
+            <ListView.Header>
+                <StackPanel MaxWidth="1000" Margin="0,0,0,20">
+                    <StackPanel.ChildrenTransitions>
+                        <EntranceThemeTransition FromVerticalOffset="50" />
+                        <RepositionThemeTransition IsStaggeringEnabled="False" />
+                    </StackPanel.ChildrenTransitions>
+                    <i:Interaction.Behaviors>
+                        <toolkit_behaviors:FadeHeaderBehavior />
+                    </i:Interaction.Behaviors>
 
-        <controls:WrapPanel
-            x:Name="wrapPanel"
-            MaxWidth="1000"
-            Margin="{ThemeResource PageMarginCoresPage}"
-            HorizontalSpacing="16"
-            SizeChanged="WrapPanel_SizeChanged"
-            VerticalSpacing="16">
-            <Button Command="{x:Bind VM.InstallMinecraftCommand}" Style="{ThemeResource AccentButtonStyle}">
-                <StackPanel Orientation="Horizontal" Spacing="8">
-                    <FontIcon FontSize="14" Glyph="&#xE896;" />
-                    <TextBlock x:Uid="Instances_DefaultPage_InstallText" Text="Install Instances" />
+                    <controls:WrapPanel HorizontalSpacing="16" VerticalSpacing="16">
+                        <Button Command="{x:Bind VM.InstallMinecraftCommand}" Style="{ThemeResource AccentButtonStyle}">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon FontSize="14" Glyph="&#xE896;" />
+                                <TextBlock x:Uid="Instances_DefaultPage_InstallText" Text="Install Instances" />
+                            </StackPanel>
+                        </Button>
+                        <Button IsEnabled="False" Style="{ThemeResource AccentButtonStyle}">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon FontSize="14" Glyph="&#xe8b5;" />
+                                <TextBlock x:Uid="Instances_DefaultPage_ImportButton" Text="Import Modpack" />
+                            </StackPanel>
+                        </Button>
+
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon
+                                FontSize="14"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Glyph="&#xE71C;" />
+                            <TextBlock
+                                x:Uid="Instances_DefaultPage_Text1"
+                                VerticalAlignment="Center"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Text="Filter" />
+                            <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items1}" SelectedIndex="{x:Bind VM.FilterIndex, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon
+                                FontSize="14"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Glyph="&#xE8CB;" />
+                            <TextBlock
+                                x:Uid="Instances_DefaultPage_Text2"
+                                VerticalAlignment="Center"
+                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                Text="Sort by" />
+                            <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items2}" SelectedIndex="{x:Bind VM.SortByIndex, Mode=TwoWay}" />
+                        </StackPanel>
+
+                        <HyperlinkButton Command="{x:Bind VM.NavigateFolderCommand}" Content="{x:Bind VM.DisplayFolderPath, Mode=OneWay}" />
+                    </controls:WrapPanel>
                 </StackPanel>
-            </Button>
-            <Button IsEnabled="False" Style="{ThemeResource AccentButtonStyle}">
-                <StackPanel Orientation="Horizontal" Spacing="8">
-                    <FontIcon FontSize="14" Glyph="&#xe8b5;" />
-                    <TextBlock x:Uid="Instances_DefaultPage_ImportButton" Text="Import Modpack" />
-                </StackPanel>
-            </Button>
-
-            <StackPanel Orientation="Horizontal" Spacing="8">
-                <FontIcon
-                    FontSize="14"
-                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                    Glyph="&#xE71C;" />
-                <TextBlock
-                    x:Uid="Instances_DefaultPage_Text1"
-                    VerticalAlignment="Center"
-                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                    Text="Filter" />
-                <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items1}" SelectedIndex="{x:Bind VM.FilterIndex, Mode=TwoWay}" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Spacing="8">
-                <FontIcon
-                    FontSize="14"
-                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                    Glyph="&#xE8CB;" />
-                <TextBlock
-                    x:Uid="Instances_DefaultPage_Text2"
-                    VerticalAlignment="Center"
-                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                    Text="Sort by" />
-                <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items2}" SelectedIndex="{x:Bind VM.SortByIndex, Mode=TwoWay}" />
-            </StackPanel>
-
-            <HyperlinkButton Command="{x:Bind VM.NavigateFolderCommand}" Content="{x:Bind VM.DisplayFolderPath, Mode=OneWay}" />
-        </controls:WrapPanel>
-
-        <ScrollViewer
-            Name="scrollViewer"
-            Grid.Row="1"
-            Grid.RowSpan="2"
-            Padding="{ThemeResource PagePaddingWithScrollViewer}">
-            <ItemsRepeater
-                Name="itemsRepeater"
-                MaxWidth="1000"
-                Margin="{ThemeResource PageEndMarginWithScrollViewer}"
-                ItemsSource="{x:Bind VM.DisplayMinecraftInstances, Mode=OneWay}">
-                <ItemsRepeater.Layout>
-                    <StackLayout Spacing="4" />
-                </ItemsRepeater.Layout>
-                <ItemsRepeater.ItemTemplate>
-                    <DataTemplate x:DataType="inst:MinecraftInstance">
-                        <controls:SettingsCard
-                            Padding="16,8"
-                            CommandParameter="{x:Bind}"
-                            IsClickEnabled="True">
-                            <controls:SettingsCard.Header>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="16" />
-                                        <ColumnDefinition Width="1*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Border
-                                        Width="40"
-                                        Height="40"
-                                        VerticalAlignment="Center"
-                                        BorderBrush="{ThemeResource IconBorder}"
-                                        BorderThickness="2"
-                                        CornerRadius="4">
-                                        <Border CornerRadius="4">
-                                            <Image Source="{x:Bind Converter={StaticResource InstanceIconConverter}}" />
-                                        </Border>
+            </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="inst:MinecraftInstance">
+                    <controls:SettingsCard
+                        Padding="16,8"
+                        CommandParameter="{x:Bind}"
+                        IsClickEnabled="True">
+                        <controls:SettingsCard.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="16" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <Border
+                                    Width="40"
+                                    Height="40"
+                                    VerticalAlignment="Center"
+                                    BorderBrush="{ThemeResource IconBorder}"
+                                    BorderThickness="2"
+                                    CornerRadius="4">
+                                    <Border CornerRadius="4">
+                                        <Image Source="{x:Bind Converter={StaticResource InstanceIconConverter}}" />
                                     </Border>
-                                    <StackPanel
-                                        Grid.Column="2"
-                                        VerticalAlignment="Center"
-                                        Spacing="4">
-                                        <TextBlock
-                                            Margin="0,-4,0,0"
-                                            HorizontalAlignment="Left"
-                                            FontSize="16"
-                                            FontWeight="SemiBold"
-                                            Text="{x:Bind Converter={StaticResource InstanceDisplayNameConverter}}"
-                                            TextTrimming="CharacterEllipsis"
-                                            ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
-                                        <ItemsRepeater ItemsSource="{x:Bind Converter={StaticResource InstanceDescriptionConverter}}">
-                                            <ItemsRepeater.Layout>
-                                                <controls:WrapLayout HorizontalSpacing="4" VerticalSpacing="4" />
-                                            </ItemsRepeater.Layout>
-                                            <ItemsRepeater.ItemTemplate>
-                                                <DataTemplate x:DataType="x:String">
-                                                    <Border Padding="5,0,5,0.5" CornerRadius="2.5">
-                                                        <Border.Background>
-                                                            <SolidColorBrush Opacity="0.25" Color="{ThemeResource SystemAccentColor}" />
-                                                        </Border.Background>
-                                                        <TextBlock
-                                                            Margin="0,-1,0,0"
-                                                            Style="{ThemeResource CaptionTextBlockStyle}"
-                                                            Text="{x:Bind}"
-                                                            ToolTipService.ToolTip="{x:Bind}" />
-                                                    </Border>
-                                                </DataTemplate>
-                                            </ItemsRepeater.ItemTemplate>
-                                        </ItemsRepeater>
-                                    </StackPanel>
-                                </Grid>
-                            </controls:SettingsCard.Header>
-                            <i:Interaction.Behaviors>
-                                <behaviors:AncestorBindingBehavior
-                                    AncestorType="ScrollViewer"
-                                    Binding="{Binding DataContext.GoToCoreSettingsCommand}"
-                                    TargetPropertyName="Command" />
-                            </i:Interaction.Behaviors>
-                        </controls:SettingsCard>
-                    </DataTemplate>
-                </ItemsRepeater.ItemTemplate>
-            </ItemsRepeater>
-        </ScrollViewer>
+                                </Border>
+                                <StackPanel
+                                    Grid.Column="2"
+                                    VerticalAlignment="Center"
+                                    Spacing="4">
+                                    <TextBlock
+                                        Margin="0,-4,0,0"
+                                        HorizontalAlignment="Left"
+                                        FontSize="16"
+                                        FontWeight="SemiBold"
+                                        Text="{x:Bind Converter={StaticResource InstanceDisplayNameConverter}}"
+                                        TextTrimming="CharacterEllipsis"
+                                        ToolTipService.ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+                                    <ItemsRepeater ItemsSource="{x:Bind Converter={StaticResource InstanceDescriptionConverter}}">
+                                        <ItemsRepeater.Layout>
+                                            <controls:WrapLayout HorizontalSpacing="4" VerticalSpacing="4" />
+                                        </ItemsRepeater.Layout>
+                                        <ItemsRepeater.ItemTemplate>
+                                            <DataTemplate x:DataType="x:String">
+                                                <Border Padding="5,0,5,0.5" CornerRadius="2.5">
+                                                    <Border.Background>
+                                                        <SolidColorBrush Opacity="0.25" Color="{ThemeResource SystemAccentColor}" />
+                                                    </Border.Background>
+                                                    <TextBlock
+                                                        Margin="0,-1,0,0"
+                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                        Text="{x:Bind}"
+                                                        ToolTipService.ToolTip="{x:Bind}" />
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsRepeater.ItemTemplate>
+                                    </ItemsRepeater>
+                                </StackPanel>
+                            </Grid>
+                        </controls:SettingsCard.Header>
+                        <i:Interaction.Behaviors>
+                            <behaviors:AncestorBindingBehavior
+                                AncestorType="ListView"
+                                Binding="{Binding DataContext.GoToCoreSettingsCommand}"
+                                TargetPropertyName="Command" />
+                        </i:Interaction.Behaviors>
+                    </controls:SettingsCard>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Margin" Value="0,2" />
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="MaxWidth" Value="1000" />
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
 
         <StackPanel
-            Grid.Row="1"
+            Margin="0,60,0,20"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Spacing="4">
@@ -180,7 +178,6 @@
             </i:Interaction.Behaviors>
         </StackPanel>
 
-        <!--  Visual states reflect the application's window size  -->
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="LayoutVisualStates">
                 <VisualState x:Name="WideLayout">
@@ -197,9 +194,7 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="scrollViewer.Padding" Value="20, 0" />
-                        <Setter Target="wrapPanel.Margin" Value="20, 0, 20, 16" />
-                        <Setter Target="itemsRepeater.Margin" Value="0, 0, 0, 20" />
+                        <Setter Target="ListView.Padding" Value="20,0,20,20" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

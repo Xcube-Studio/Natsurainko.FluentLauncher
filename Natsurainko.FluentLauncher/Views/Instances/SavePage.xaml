@@ -8,19 +8,24 @@
     xmlns:data="using:Nrk.FluentCore.GameManagement.Saves"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit_behaviors="using:CommunityToolkit.WinUI.Behaviors"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     mc:Ignorable="d">
 
-    <ScrollViewer>
-        <Border Name="border" Margin="{ThemeResource PageMarginWithBorder}">
-            <StackPanel
-                MaxWidth="1000"
-                HorizontalAlignment="Stretch"
-                Spacing="{StaticResource SettingsCardSpacing}">
+    <ListView
+        x:Name="ListView"
+        Padding="40,0,40,25"
+        ItemsSource="{x:Bind VM.Saves, Mode=OneWay}"
+        SelectionMode="None">
+        <ListView.Header>
+            <StackPanel MaxWidth="1000" Spacing="{StaticResource SettingsCardSpacing}">
                 <StackPanel.ChildrenTransitions>
                     <EntranceThemeTransition FromVerticalOffset="50" />
                     <RepositionThemeTransition IsStaggeringEnabled="False" />
                 </StackPanel.ChildrenTransitions>
+                <i:Interaction.Behaviors>
+                    <toolkit_behaviors:FadeHeaderBehavior />
+                </i:Interaction.Behaviors>
 
                 <controls:SettingsCard
                     x:Uid="Instances_SavePage_Card1"
@@ -36,76 +41,7 @@
                     Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
                     Text="Saves" />
 
-                <ItemsRepeater ItemsSource="{x:Bind VM.Saves, Mode=OneWay}">
-                    <ItemsRepeater.ItemTemplate>
-                        <DataTemplate x:DataType="data:SaveInfo">
-                            <controls:SettingsCard
-                                Padding="16,8"
-                                ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
-                                CommandParameter="{x:Bind}"
-                                IsClickEnabled="True">
-                                <controls:SettingsCard.Header>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="16" />
-                                            <ColumnDefinition Width="1*" />
-                                        </Grid.ColumnDefinitions>
-                                        <Border
-                                            Width="48"
-                                            Height="48"
-                                            VerticalAlignment="Center"
-                                            BorderBrush="{ThemeResource IconBorder}"
-                                            BorderThickness="2"
-                                            CornerRadius="4">
-                                            <Border CornerRadius="4">
-                                                <Image>
-                                                    <i:Interaction.Behaviors>
-                                                        <behaviors:ImageSourceLoadBehavior ImageSourceFilePath="{x:Bind IconFilePath}" SourcePropertyName="Source" />
-                                                    </i:Interaction.Behaviors>
-                                                </Image>
-                                            </Border>
-                                        </Border>
-                                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                                            <TextBlock
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind LevelName}"
-                                                TextTrimming="CharacterEllipsis"
-                                                ToolTipService.ToolTip="{x:Bind LevelName}" />
-                                            <StackPanel Orientation="Horizontal" Spacing="5">
-                                                <TextBlock
-                                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                                    IsTextSelectionEnabled="True"
-                                                    Style="{ThemeResource CaptionTextBlockStyle}">
-                                                    <Run Text="{x:Bind FolderName}" />
-                                                    <Run>(</Run><Run Text="{x:Bind LastPlayed}" /><Run>)</Run>
-                                                </TextBlock>
-                                            </StackPanel>
-                                            <TextBlock
-                                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                                IsTextSelectionEnabled="True"
-                                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                                Text="{x:Bind Converter={StaticResource SaveInfoConverter}}" />
-                                        </StackPanel>
-                                    </Grid>
-                                </controls:SettingsCard.Header>
-
-                                <i:Interaction.Behaviors>
-                                    <behaviors:AncestorBindingBehavior
-                                        AncestorType="ScrollViewer"
-                                        Binding="{Binding DataContext.OpenSaveFolderCommand}"
-                                        TargetPropertyName="Command" />
-                                </i:Interaction.Behaviors>
-                            </controls:SettingsCard>
-                        </DataTemplate>
-                    </ItemsRepeater.ItemTemplate>
-                    <ItemsRepeater.Layout>
-                        <StackLayout Spacing="4" />
-                    </ItemsRepeater.Layout>
-                </ItemsRepeater>
-
                 <StackPanel
-                    Grid.Row="2"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Spacing="4">
@@ -120,14 +56,82 @@
                     </StackPanel>
 
                     <i:Interaction.Behaviors>
-                        <behaviors:EmptyListVisibleBehavior IsObservableCollection="True" ItemsSource="{x:Bind VM.Saves}" />
+                        <behaviors:EmptyListVisibleBehavior IsObservableCollection="True" ItemsSource="{x:Bind VM.Saves, Mode=OneWay}" />
                     </i:Interaction.Behaviors>
                 </StackPanel>
-
             </StackPanel>
-        </Border>
+        </ListView.Header>
+        <ListView.ItemTemplate>
+            <DataTemplate x:DataType="data:SaveInfo">
+                <controls:SettingsCard
+                    Padding="16,8"
+                    ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
+                    CommandParameter="{x:Bind}"
+                    IsClickEnabled="True">
+                    <controls:SettingsCard.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Border
+                                Width="48"
+                                Height="48"
+                                VerticalAlignment="Center"
+                                BorderBrush="{ThemeResource IconBorder}"
+                                BorderThickness="2"
+                                CornerRadius="4">
+                                <Border CornerRadius="4">
+                                    <Image>
+                                        <i:Interaction.Behaviors>
+                                            <behaviors:ImageSourceLoadBehavior ImageSourceFilePath="{x:Bind IconFilePath}" SourcePropertyName="Source" />
+                                        </i:Interaction.Behaviors>
+                                    </Image>
+                                </Border>
+                            </Border>
+                            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                <TextBlock
+                                    IsTextSelectionEnabled="True"
+                                    Text="{x:Bind LevelName}"
+                                    TextTrimming="CharacterEllipsis"
+                                    ToolTipService.ToolTip="{x:Bind LevelName}" />
+                                <StackPanel Orientation="Horizontal" Spacing="5">
+                                    <TextBlock
+                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                        IsTextSelectionEnabled="True"
+                                        Style="{ThemeResource CaptionTextBlockStyle}">
+                                        <Run Text="{x:Bind FolderName}" />
+                                        <Run>(</Run><Run Text="{x:Bind LastPlayed}" /><Run>)</Run>
+                                    </TextBlock>
+                                </StackPanel>
+                                <TextBlock
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    IsTextSelectionEnabled="True"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                    Text="{x:Bind Converter={StaticResource SaveInfoConverter}}" />
+                            </StackPanel>
+                        </Grid>
+                    </controls:SettingsCard.Header>
 
-        <!--  Visual states reflect the application's window size  -->
+                    <i:Interaction.Behaviors>
+                        <behaviors:AncestorBindingBehavior
+                            AncestorType="ListView"
+                            Binding="{Binding DataContext.OpenSaveFolderCommand}"
+                            TargetPropertyName="Command" />
+                    </i:Interaction.Behaviors>
+                </controls:SettingsCard>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+        <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+                <Setter Property="Margin" Value="0,2" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="MaxWidth" Value="1000" />
+            </Style>
+        </ListView.ItemContainerStyle>
+
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="LayoutVisualStates">
                 <VisualState x:Name="WideLayout">
@@ -144,10 +148,10 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="border.Margin" Value="20, 0, 20, 20" />
+                        <Setter Target="ListView.Padding" Value="20,0,20,20" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-    </ScrollViewer>
+    </ListView>
 </Page>

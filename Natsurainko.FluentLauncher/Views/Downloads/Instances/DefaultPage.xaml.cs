@@ -1,5 +1,4 @@
 using FluentLauncher.Infra.UI.Navigation;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.ViewModels.Downloads.Instances;
 using System;

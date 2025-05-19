@@ -6,6 +6,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:selectors="using:Natsurainko.FluentLauncher.XamlHelpers.Selectors"
+    xmlns:toolkit_behaviors="using:CommunityToolkit.WinUI.Behaviors"
     Unloaded="Page_Unloaded">
     <Page.Resources>
         <selectors:TaskTemplateSelector
@@ -16,46 +17,47 @@
     </Page.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="1*" MinHeight="320" />
-        </Grid.RowDefinitions>
+        <ListView
+            x:Name="ListView"
+            Padding="40,25"
+            ItemTemplateSelector="{StaticResource TemplateSelector}"
+            ItemsSource="{x:Bind VM.Tasks, Mode=OneWay}"
+            SelectionMode="None">
+            <ListView.Header>
+                <StackPanel MaxWidth="1000">
+                    <StackPanel.ChildrenTransitions>
+                        <EntranceThemeTransition FromVerticalOffset="50" />
+                        <RepositionThemeTransition IsStaggeringEnabled="False" />
+                    </StackPanel.ChildrenTransitions>
+                    <i:Interaction.Behaviors>
+                        <toolkit_behaviors:FadeHeaderBehavior />
+                    </i:Interaction.Behaviors>
+
+                    <TextBlock
+                        x:Uid="Tasks_DownloadPage_Title"
+                        Margin="0,0,0,20"
+                        Style="{ThemeResource TitleTextBlockStyle}"
+                        Text="Download Tasks" />
+
+                    <controls:WrapPanel
+                        HorizontalSpacing="16"
+                        VerticalSpacing="16"
+                        Visibility="Collapsed" />
+                </StackPanel>
+            </ListView.Header>
+
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Margin" Value="0,2" />
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="MaxWidth" Value="1000" />
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
 
         <StackPanel
-            Name="stackPanel"
-            MaxWidth="1000"
-            Margin="{ThemeResource PageMarginWithStackPanel}"
-            Spacing="15">
-            <TextBlock
-                x:Uid="Tasks_DownloadPage_Title"
-                Style="{ThemeResource TitleTextBlockStyle}"
-                Text="Download Tasks" />
-
-            <controls:WrapPanel
-                HorizontalSpacing="15"
-                VerticalSpacing="15"
-                Visibility="Collapsed" />
-        </StackPanel>
-
-        <ScrollViewer
-            Name="scrollViewer"
-            Grid.Row="1"
-            Padding="{ThemeResource PagePaddingWithScrollViewer}">
-            <ItemsRepeater
-                Name="itemsRepeater"
-                MaxWidth="1000"
-                Margin="{ThemeResource PageEndMarginWithScrollViewer}"
-                ItemTemplate="{ThemeResource TemplateSelector}"
-                ItemsSource="{x:Bind VM.Tasks, Mode=OneWay}">
-                <ItemsRepeater.Layout>
-                    <StackLayout Spacing="4" />
-                </ItemsRepeater.Layout>
-            </ItemsRepeater>
-        </ScrollViewer>
-
-        <StackPanel
-            Grid.Row="1"
-            Margin="0,0,0,160"
+            Margin="0,80,0,120"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Spacing="4">
@@ -80,7 +82,6 @@
             </i:Interaction.Behaviors>
         </StackPanel>
 
-        <!--  Visual states reflect the application's window size  -->
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="LayoutVisualStates">
                 <VisualState x:Name="WideLayout">
@@ -97,9 +98,7 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="stackPanel.Margin" Value="20, 10, 20, 20" />
-                        <Setter Target="scrollViewer.Padding" Value="20, 0" />
-                        <Setter Target="itemsRepeater.Margin" Value="0, 0, 0, 20" />
+                        <Setter Target="ListView.Padding" Value="20" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

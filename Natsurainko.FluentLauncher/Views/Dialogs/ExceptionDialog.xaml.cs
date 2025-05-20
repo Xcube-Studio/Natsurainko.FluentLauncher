@@ -11,6 +11,7 @@ public sealed partial class ExceptionDialog : ContentDialog
     public ExceptionDialog(string errorMessage = "")
     {
         InitializeComponent();
+        RequestedTheme = App.MainWindow.ContentFrame.RequestedTheme;
         DataContext = new ExceptionDialogViewModel(errorMessage);
     }
 }

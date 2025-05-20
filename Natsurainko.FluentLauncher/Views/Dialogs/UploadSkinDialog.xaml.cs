@@ -1,4 +1,3 @@
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.ViewModels.Dialogs;
@@ -12,6 +11,5 @@ public sealed partial class UploadSkinDialog : ContentDialog
     public UploadSkinDialog(SettingsService settingsService)
     {
         InitializeComponent();
-        RequestedTheme = (ElementTheme)settingsService.DisplayTheme;
     }
 }

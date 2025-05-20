@@ -1,4 +1,3 @@
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Services.Settings;
@@ -15,7 +14,6 @@ internal sealed partial class SwitchAccountDialog : ContentDialog
     public SwitchAccountDialog(SettingsService settingsService)
     {
         InitializeComponent();
-        RequestedTheme = (ElementTheme)settingsService.DisplayTheme;
     }
 
     #region Converter Methods

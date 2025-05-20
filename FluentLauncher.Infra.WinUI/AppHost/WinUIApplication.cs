@@ -3,10 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using WinRT;
@@ -32,10 +29,7 @@ public class WinUIApplication : IHost
         Host = host;
     }
 
-    public void Dispose()
-    {
-        return;
-    }
+    public void Dispose() => Host.Dispose();
 
     public Task StartAsync(CancellationToken cancellationToken = default)
     {
@@ -81,6 +75,8 @@ public class WinUIApplication : IHost
         Thread winuiThread = new(RunWinUIApp);
         winuiThread.SetApartmentState(ApartmentState.STA);
         winuiThread.Start();
+
+        Host.RunAsync(cancellationToken); // Run the host application lifetime
 
         return winUIStartedTcs.Task;
     }

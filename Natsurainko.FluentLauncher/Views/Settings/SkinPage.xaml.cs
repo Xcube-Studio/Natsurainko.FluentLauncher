@@ -2,6 +2,8 @@ using CommunityToolkit.Mvvm.Messaging;
 using FluentLauncher.Infra.UI.Navigation;
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.WinUI;
+using Microsoft.UI;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
@@ -24,7 +26,7 @@ public sealed partial class SkinPage : Page, IBreadcrumbBarAware
         Unloaded += Page_Unloaded;
     }
 
-    private void Page_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void Page_Loaded(object sender, RoutedEventArgs e)
     {
         Viewport3DX.EffectsManager = new DefaultEffectsManager();
         Viewport3DX.Camera = new PerspectiveCamera()
@@ -34,9 +36,13 @@ public sealed partial class SkinPage : Page, IBreadcrumbBarAware
             NearPlaneDistance = 0.1
         };
 
-        var brush = (SolidColorBrush)Resources["ContentDialogBackground"];
-        Viewport3DX.Background = brush;
-        Viewport3DX.BackgroundColor = brush.Color;
+        Viewport3DX.BackgroundColor = ActualTheme switch 
+        {
+            ElementTheme.Dark => Colors.Black,
+            ElementTheme.Light => Colors.White,
+            _ => Colors.Transparent
+        };
+        Viewport3DX.Background = new SolidColorBrush(Viewport3DX.BackgroundColor);
 
         WeakReferenceMessenger.Default.Register<AccountSkinCacheUpdatedMessage>(this, (r, m) =>
         {
@@ -47,7 +53,7 @@ public sealed partial class SkinPage : Page, IBreadcrumbBarAware
         });
     }
 
-    private void Page_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void Page_Unloaded(object sender, RoutedEventArgs e)
     {
         Viewport3DX.Dispose();
 

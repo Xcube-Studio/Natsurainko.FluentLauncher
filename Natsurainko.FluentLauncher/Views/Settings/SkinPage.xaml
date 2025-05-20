@@ -49,10 +49,7 @@
                         </Grid>
                     </controls:SettingsCard.Header>
                 </controls:SettingsCard>
-                <Grid
-                    Height="350"
-                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-                    CornerRadius="8">
+                <Grid Height="350" CornerRadius="8">
                     <ProgressRing
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"

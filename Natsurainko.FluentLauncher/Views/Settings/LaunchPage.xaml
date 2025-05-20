@@ -50,8 +50,8 @@
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Text="No Folder" />
                 </StackPanel>
-                <ItemsRepeater ItemsSource="{x:Bind VM.MinecraftFolders, Mode=OneWay}">
-                    <ItemsRepeater.ItemTemplate>
+                <ItemsControl ItemsSource="{x:Bind VM.MinecraftFolders, Mode=OneWay}">
+                    <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="x:String">
                             <controls:SettingsCard
                                 ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
@@ -109,11 +109,8 @@
                                 </i:Interaction.Behaviors>
                             </controls:SettingsCard>
                         </DataTemplate>
-                    </ItemsRepeater.ItemTemplate>
-                    <ItemsRepeater.Layout>
-                        <StackLayout Spacing="4" />
-                    </ItemsRepeater.Layout>
-                </ItemsRepeater>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
                 <controls:SettingsCard
                     x:Uid="Settings_LaunchPage_Card1"
                     ActionIcon="{xh:FontIcon Glyph=&#xe838;}"
@@ -146,8 +143,8 @@
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Text="No Java Runtime" />
                 </StackPanel>
-                <ItemsRepeater ItemsSource="{x:Bind VM.Javas, Mode=OneWay}">
-                    <ItemsRepeater.ItemTemplate>
+                <ItemsControl ItemsSource="{x:Bind VM.Javas, Mode=OneWay}">
+                    <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="x:String">
                             <controls:SettingsCard
                                 ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
@@ -208,11 +205,8 @@
                                 </i:Interaction.Behaviors>
                             </controls:SettingsCard>
                         </DataTemplate>
-                    </ItemsRepeater.ItemTemplate>
-                    <ItemsRepeater.Layout>
-                        <StackLayout Spacing="4" />
-                    </ItemsRepeater.Layout>
-                </ItemsRepeater>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
                 <controls:SettingsCard
                     x:Uid="Settings_LaunchPage_Card2"
                     ActionIcon="{xh:FontIcon Glyph=&#xe838;}"

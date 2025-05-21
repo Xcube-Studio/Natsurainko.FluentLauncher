@@ -1,19 +1,20 @@
-<Page
-    x:Class="Natsurainko.FluentLauncher.Views.LoggerPage"
+<?xml version="1.0" encoding="utf-8" ?>
+<winuiex:WindowEx
+    x:Class="Natsurainko.FluentLauncher.Views.LoggerWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:launch="using:Nrk.FluentCore.Launch"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:pages="using:Natsurainko.FluentLauncher.ViewModels.Pages"
-    d:DataContext="{d:DesignInstance Type=pages:LoggerViewModel}"
+    xmlns:winuiex="using:WinUIEx"
+    Width="525"
+    Height="612"
+    MinWidth="525"
+    MinHeight="328"
     mc:Ignorable="d">
-    <Page.Resources>
-        <x:Double x:Key="ListViewItemMinHeight">0</x:Double>
-    </Page.Resources>
 
-    <Grid>
+    <Grid Unloaded="Grid_Unloaded">
         <Grid.RowDefinitions>
             <RowDefinition Height="32" />
             <RowDefinition Height="1*" />
@@ -24,7 +25,7 @@
             Opacity="0.75" />
         <Grid Grid.Row="0">
             <StackPanel
-                Margin="15,0,0,0"
+                Margin="16,0,0,0"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
                 <Border VerticalAlignment="Center" CornerRadius="2.5">
@@ -42,7 +43,7 @@
                 </TextBlock>
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="1" Padding="15,10">
+        <Grid Grid.Row="1" Padding="16,12">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="1*" />
@@ -95,7 +96,7 @@
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="2">
-                <Button Command="{x:Bind VM.ExportLogCommand}">
+                <Button Command="{x:Bind VM.ExportLogCommand, Mode=OneWay}">
                     <StackPanel Orientation="Horizontal" Spacing="5">
                         <FontIcon FontSize="14" Glyph="&#xe74e;" />
                         <TextBlock x:Uid="LoggerPage_Text2" Text="Export Log File" />
@@ -111,7 +112,7 @@
             <ListBox
                 x:Name="ListBox"
                 Grid.Row="1"
-                Margin="-15,5"
+                Margin="-16,4"
                 Padding="0,0"
                 x:FieldModifier="public"
                 Background="Transparent"
@@ -128,23 +129,16 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
-                    <DataTemplate x:DataType="pages:LoggerItem">
-                        <Grid Margin="15,0">
-                            <Rectangle
-                                Width="4"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Fill="Red"
-                                Opacity="0.5"
-                                Visibility="{x:Bind ErrorVisibility, Mode=OneWay}" />
+                    <DataTemplate x:DataType="launch:GameLoggerOutput">
+                        <Grid Margin="16,0">
                             <Border
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
-                                Child="{x:Bind Output, Converter={StaticResource LoggerItemConverter}}" />
+                                Child="{x:Bind local:LoggerWindow.ConvertLoggerOutput((launch:GameLoggerOutput))}" />
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
     </Grid>
-</Page>
+</winuiex:WindowEx>

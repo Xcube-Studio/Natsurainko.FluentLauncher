@@ -1,62 +1,48 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Notification;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
 using Nrk.FluentCore.Launch;
+using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Pages;
 
-internal partial class LoggerViewModel : ObservableObject
+internal partial class LoggerViewModel : ObservableRecipient
 {
-    private readonly ObservableCollection<GameLoggerOutput> _gameLoggerOutputs;
-
-    public LoggerViewModel(LaunchTaskViewModel launchTaskViewModel, Views.LoggerPage view)
-    {
-        _gameLoggerOutputs = launchTaskViewModel.Logger;
-        _gameLoggerOutputs.CollectionChanged += LoggerItems_CollectionChanged;
-        EnabledLevel.CollectionChanged += EnabledLevel_CollectionChanged;
-
-        View = view;
-        
-        if (launchTaskViewModel.McProcess.State != MinecraftProcessState.Exited)
-            View.Unloaded += (_, e) => _gameLoggerOutputs.CollectionChanged -= LoggerItems_CollectionChanged;
-        
-        OnPropertyChanged();
-    }
+    private readonly ObservableCollection<GameLoggerOutputLevel> enabledLevel = [];
 
     [ObservableProperty]
-    public partial bool Info { get; set; } = true;
+    public partial bool Info { get; set; }
 
     [ObservableProperty]
-    public partial bool Warn { get; set; } = true;
+    public partial bool Warn { get; set; }
 
     [ObservableProperty]
-    public partial bool Error { get; set; } = true;
+    public partial bool Error { get; set; }
 
     [ObservableProperty]
-    public partial bool Fatal { get; set; } = true;
+    public partial bool Fatal { get; set; }
 
     [ObservableProperty]
-    public partial bool Debug { get; set; } = true;
+    public partial bool Debug { get; set; }
 
     [ObservableProperty]
     public partial bool EnableAutoScroll { get; set; } = true;
-    public ObservableCollection<LoggerItem> FilterLoggerItems { get; } = [];
 
-    private ObservableCollection<GameLoggerOutputLevel> EnabledLevel { get; } = [];
+    [ObservableProperty]
+    public partial string Title { get; set; }
 
-    public Views.LoggerPage View { get; set; }
+    public ObservableCollection<GameLoggerOutput> FilterLoggerItems { get; } = [];
 
-    public string Title { get; set; }
+    public required ObservableCollection<GameLoggerOutput> Outputs { get; init; }
+
+    public required Action ScrollToEnd { get; init; }
 
     [RelayCommand]
     void ExportLog()
@@ -65,113 +51,95 @@ internal partial class LoggerViewModel : ObservableObject
 
         if (saveFileDialog.ShowDialog().GetValueOrDefault())
         {
-            File.WriteAllLines(saveFileDialog.FileName, _gameLoggerOutputs.Select(x => x.FullData));
+            File.WriteAllLines(saveFileDialog.FileName, Outputs.Select(x => x.FullData));
             App.GetService<INotificationService>().LogExported(saveFileDialog.FileName);
         }
     }
 
-    private void EnabledLevel_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private void EnabledLevel_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         FilterLoggerItems.Clear();
 
-        foreach (var item in _gameLoggerOutputs)
-            if (EnabledLevel.Contains(item.Level))
-                FilterLoggerItems.Add(new LoggerItem(item));
+        foreach (var item in Outputs)
+            if (enabledLevel.Contains(item.Level))
+                FilterLoggerItems.Add(item);
     }
 
-    private void LoggerItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private void LoggerItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
+        if (e.NewItems is null)
+            return;
+
         foreach (var item in e.NewItems)
         {
-            if (item is GameLoggerOutput GameLoggerOutput && EnabledLevel.Contains(GameLoggerOutput.Level))
+            if (item is GameLoggerOutput loggerOutput && enabledLevel.Contains(loggerOutput.Level))
             {
-                var loggerItem = new LoggerItem(GameLoggerOutput);
-                App.DispatcherQueue.TryEnqueue(() => FilterLoggerItems.Add(loggerItem));
+                App.DispatcherQueue.TryEnqueue(() => FilterLoggerItems.Add(loggerOutput));
             }
         }
 
         if (EnableAutoScroll)
-            App.DispatcherQueue.TryEnqueue(ScrollToEnd);
+            App.DispatcherQueue.TryEnqueue(() => ScrollToEnd());
+    }
+
+    partial void OnInfoChanged(bool value)
+    {
+        if (value)
+            enabledLevel.Add(GameLoggerOutputLevel.Info);
+        else enabledLevel.Remove(GameLoggerOutputLevel.Info);
+    }
+
+    partial void OnWarnChanged(bool value)
+    {
+        if (value)
+            enabledLevel.Add(GameLoggerOutputLevel.Warn);
+        else enabledLevel.Remove(GameLoggerOutputLevel.Warn);
+    }
+
+    partial void OnErrorChanged(bool value)
+    {
+        if (value)
+            enabledLevel.Add(GameLoggerOutputLevel.Error);
+        else enabledLevel.Remove(GameLoggerOutputLevel.Error);
+    }
+
+    partial void OnFatalChanged(bool value)
+    {
+        if (value)
+            enabledLevel.Add(GameLoggerOutputLevel.Fatal);
+        else enabledLevel.Remove(GameLoggerOutputLevel.Fatal);
+    }
+
+    partial void OnDebugChanged(bool value)
+    {
+        if (value)
+            enabledLevel.Add(GameLoggerOutputLevel.Debug);
+        else enabledLevel.Remove(GameLoggerOutputLevel.Debug);
+    }
+
+    protected override void OnActivated()
+    {
+        base.OnActivated();
+
+        Outputs.CollectionChanged += LoggerItems_CollectionChanged;
+        enabledLevel.CollectionChanged += EnabledLevel_CollectionChanged;
+    }
+
+    protected override void OnDeactivated()
+    {
+        base.OnDeactivated();
+
+        Outputs.CollectionChanged -= LoggerItems_CollectionChanged;
+        enabledLevel.CollectionChanged -= EnabledLevel_CollectionChanged;
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
 
-        if (Info)
-        {
-            if (!EnabledLevel.Contains(GameLoggerOutputLevel.Info))
-                EnabledLevel.Add(GameLoggerOutputLevel.Info);
-        }
-        else EnabledLevel.Remove(GameLoggerOutputLevel.Info);
-
-        if (Warn)
-        {
-            if (!EnabledLevel.Contains(GameLoggerOutputLevel.Warn))
-                EnabledLevel.Add(GameLoggerOutputLevel.Warn);
-        }
-        else EnabledLevel.Remove(GameLoggerOutputLevel.Warn);
-
-        if (Error)
-        {
-            if (!EnabledLevel.Contains(GameLoggerOutputLevel.Error))
-                EnabledLevel.Add(GameLoggerOutputLevel.Error);
-        }
-        else EnabledLevel.Remove(GameLoggerOutputLevel.Error);
-
-        if (Fatal)
-        {
-            if (!EnabledLevel.Contains(GameLoggerOutputLevel.Fatal))
-                EnabledLevel.Add(GameLoggerOutputLevel.Fatal);
-        }
-        else EnabledLevel.Remove(GameLoggerOutputLevel.Fatal);
-
-        if (Debug)
-        {
-            if (!EnabledLevel.Contains(GameLoggerOutputLevel.Debug))
-                EnabledLevel.Add(GameLoggerOutputLevel.Debug);
-        }
-        else EnabledLevel.Remove(GameLoggerOutputLevel.Debug);
-
         if (EnableAutoScroll)
-            ScrollToEnd();
+            App.DispatcherQueue.TryEnqueue(() => ScrollToEnd());
     }
-
-    private void ScrollToEnd()
-    {
-        // Memory issue and scroll behavior issue
-        // View.ListView.SmoothScrollIntoViewWithIndexAsync(View.ListView.Items.Count - 1);
-
-        // Crash with layout recycle detected
-        // ScrollView scrollView = View.ItemsView.ScrollView;
-        // scrollView?.ScrollTo(0, scrollView.ScrollableHeight);
-
-        // ScrollViewer behavior issue when ItemsRepeater has many item
-        // View.ScrollViewer.ScrollTo(0, View.ScrollViewer.ScrollableHeight);
-
-        try
-        {
-            View.ListBox.ScrollIntoView(View.ListBox.Items[^1]);
-        }
-        catch { }
-    }
-}
-
-internal partial class LoggerItem : ObservableObject
-{
-    public LoggerItem(GameLoggerOutput output)
-    {
-        Output = output;
-
-        ErrorVisibility = (output.Level == GameLoggerOutputLevel.Error || output.Level == GameLoggerOutputLevel.Fatal)
-            ? Visibility.Visible
-            : Visibility.Collapsed;
-    }
-
-    public GameLoggerOutput Output { get; set; }
-
-    [ObservableProperty]
-    public partial Visibility ErrorVisibility { get; set; }
 }
 
 internal static partial class LoggerViewModelNotifications

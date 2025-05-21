@@ -22,7 +22,6 @@ internal class AppearanceService
     {
         _settingsService = settingsService;
 
-        _settingsService.DisplayThemeChanged += DisplayThemeChanged;
         _settingsService.UseSystemAccentColorChanged += UseSystemAccentColorChanged;
         _settingsService.BackgroundModeChanged += BackgroundModeChanged;
 
@@ -128,14 +127,6 @@ internal class AppearanceService
     }
 
     #region Settings Changed Events
-    private void DisplayThemeChanged(global::FluentLauncher.Infra.Settings.SettingsContainer sender, global::FluentLauncher.Infra.Settings.SettingChangedEventArgs e)
-    {
-        if (IsWindowRegistered)
-        {
-            var element = ((FrameworkElement)RegisteredWindow!.Content);
-            element.RequestedTheme = (ElementTheme)e.NewValue!;
-        }
-    }
 
     private void UseSystemAccentColorChanged(global::FluentLauncher.Infra.Settings.SettingsContainer sender, global::FluentLauncher.Infra.Settings.SettingChangedEventArgs e)
     {

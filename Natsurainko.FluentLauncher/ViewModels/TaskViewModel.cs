@@ -3,10 +3,10 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Notification;
-using Microsoft.UI;
+using FluentLauncher.Infra.UI.Windows;
+using FluentLauncher.Infra.WinUI.Windows;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
 using Natsurainko.FluentLauncher.Exceptions;
@@ -17,6 +17,7 @@ using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI.Notification;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
+using Natsurainko.FluentLauncher.Views;
 using Nrk.FluentCore.Exceptions;
 using Nrk.FluentCore.GameManagement.Downloader;
 using Nrk.FluentCore.GameManagement.Installer;
@@ -31,7 +32,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using WinUIEx;
 using static Natsurainko.FluentLauncher.Services.Launch.LaunchProgress;
 using static Natsurainko.FluentLauncher.ViewModels.LaunchStageProgress;
 
@@ -875,30 +875,10 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     [RelayCommand]
     void ShowLogger()
     {
-        var hoverColor = App.Current.RequestedTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
-        hoverColor.A = 35;
+        WinUIWindowService windowService = App.GetService<IActivationService>().ActivateWindow("LoggerWindow") as WinUIWindowService;
+        (windowService.Window as LoggerWindow).Initialize(this);
 
-        var window = new WindowEx
-        {
-            Title = $"Logger - {_instance.InstanceId}",
-            MinWidth = 525,
-            MinHeight = 328,
-            Width = 525,
-            Height = 612,
-            SystemBackdrop = Environment.OSVersion.Version.Build >= 22000
-               ? new MicaBackdrop() { Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt }
-               : new DesktopAcrylicBackdrop(),
-        };
-        window.ConfigureTitleBarTheme();
-
-        var view = new Views.LoggerPage();
-        var viewModel = new Pages.LoggerViewModel(this, view);
-
-        viewModel.Title = window.Title;
-        view.DataContext = viewModel;
-
-        window.Content = view;
-        window.Show();
+        windowService.Activate();
     }
 
     [RelayCommand(CanExecute = nameof(IsGameRunning))]

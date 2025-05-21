@@ -1,3 +1,4 @@
+using CommunityToolkit.Mvvm.ComponentModel;
 using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
@@ -67,6 +68,8 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
     void ConfigureWindow()
     {
         this.ConfigureTitleBarTheme();
+        this.ConfigureElementTheme();
+
         App.GetService<InfoBarPresenter>().InitializeContainer(StackPanel);
 
         AppWindow.Title = "Fluent Launcher";

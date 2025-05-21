@@ -87,8 +87,6 @@
 
             <converters:SuggestionIconConverter x:Key="SuggestionIconConverter" />
 
-            <converters:LoggerItemConverter x:Key="LoggerItemConverter" />
-
             <Style
                 x:Name="DeleteButtonStyle"
                 BasedOn="{StaticResource ButtonRevealStyle}"

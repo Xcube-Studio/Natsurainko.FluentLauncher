@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.ViewModels;
 using Nrk.FluentCore.Authentication;
@@ -14,6 +15,8 @@ class SettingsStringValueChangedMessage(string value, string propertyName) : Val
 {
     public string PropertyName { get; set; } = propertyName;
 }
+
+class SettingsRequestThemeChangedMessage(ElementTheme theme) : ValueChangedMessage<ElementTheme>(theme);
 
 class AccountSkinCacheUpdatedMessage(Account value) : ValueChangedMessage<Account>(value);
 

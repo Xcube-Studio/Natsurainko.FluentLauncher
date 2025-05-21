@@ -34,6 +34,7 @@ builder.UseApplicationExtensionHost();
 
 // Configure WinUI windows
 builder.Windows.AddSingleInstanceWindow<Views.MainWindow>("MainWindow");
+builder.Windows.AddMultiInstanceWindow<Views.LoggerWindow>("LoggerWindow");
 
 #region Configure WinUI pages
 

@@ -1,6 +1,9 @@
-﻿using Microsoft.UI;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using System.IO;
 using Windows.ApplicationModel;
 using WinUIEx;
@@ -38,5 +41,16 @@ internal static class WindowExtensions
 
             appWindow.TitleBar.ButtonHoverBackgroundColor = hoverColor;
         };
+    }
+
+    public static void ConfigureElementTheme(this Window window)
+    {
+        if (window.Content is not FrameworkElement frameworkElement)
+            return;
+
+        ElementTheme theme = (ElementTheme)App.GetService<SettingsService>().DisplayTheme;
+        frameworkElement.RequestedTheme = theme;
+
+        WeakReferenceMessenger.Default.Register<SettingsRequestThemeChangedMessage>(window, (sender, m) => frameworkElement.RequestedTheme = m.Value);
     }
 }

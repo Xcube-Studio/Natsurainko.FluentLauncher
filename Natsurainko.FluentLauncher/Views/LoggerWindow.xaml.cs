@@ -59,7 +59,13 @@ internal sealed partial class LoggerWindow : WindowEx, INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new(nameof(VM)));
     }
 
-    private void Grid_Unloaded(object sender, RoutedEventArgs e) => VM?.IsActive = false;
+    private void Grid_Unloaded(object sender, RoutedEventArgs e)
+    {
+        if (VM is not null)
+        {
+            VM.IsActive = false;
+        }
+    }
 
     internal static UIElement ConvertLoggerOutput(GameLoggerOutput output)
     {

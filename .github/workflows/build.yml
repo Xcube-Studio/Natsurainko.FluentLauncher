@@ -61,14 +61,9 @@ jobs:
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 10.0.x
-          dotnet-quality: 'preview'
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
-        with:
-          vs-prerelease: true
 
       # - name: Cache NuGet packages
       #   id: cache-nuget
@@ -87,7 +82,7 @@ jobs:
 
       # Restore the application to populate the obj folder with RuntimeIdentifiers
       - name: Restore NuGet packages
-        run: dotnet restore
+        run: dotnet restore /p:BuildWithNetFrameworkHostedCompiler=true
 
       # Prepare FluentLauncher.Localization
       - name: Prepare FluentLauncher.Localization

@@ -139,11 +139,63 @@
                             x:Uid="Downloads_Instances_DefaultPage_T1"
                             Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
                             Text="Latest Release" />
-                        <ContentPresenter
+                        <controls:SettingsCard
+                            Padding="16,8"
                             HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
                             HorizontalContentAlignment="Stretch"
-                            Content="{x:Bind VM.LatestRelease, Mode=OneWay}"
-                            ContentTemplate="{StaticResource InstanceItemTemplate}" />
+                            VerticalContentAlignment="Stretch"
+                            BorderThickness="1"
+                            CommandParameter="{x:Bind VM.LatestRelease, Mode=OneWay}"
+                            IsClickEnabled="True">
+                            <controls:SettingsCard.Header>
+                                <Grid MinWidth="250" Background="Transparent">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="16" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Border
+                                        Width="40"
+                                        Height="40"
+                                        VerticalAlignment="Center"
+                                        BorderBrush="{ThemeResource IconBorder}"
+                                        BorderThickness="2"
+                                        CornerRadius="4">
+                                        <Border.Background>
+                                            <ImageBrush ImageSource="{x:Bind VM.LatestRelease, Mode=OneWay, Converter={StaticResource InstanceIconConverter}}" />
+                                        </Border.Background>
+                                    </Border>
+                                    <StackPanel
+                                        Grid.Column="2"
+                                        VerticalAlignment="Center"
+                                        Spacing="2">
+                                        <TextBlock
+                                            Margin="0,-4,0,0"
+                                            FontSize="16"
+                                            Style="{ThemeResource BaseTextBlockStyle}"
+                                            Text="{x:Bind VM.LatestRelease.Id, Mode=OneWay}"
+                                            TextTrimming="CharacterEllipsis"
+                                            TextWrapping="NoWrap" />
+                                        <TextBlock
+                                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                            Style="{ThemeResource CaptionTextBlockStyle}"
+                                            TextTrimming="CharacterEllipsis"
+                                            TextWrapping="NoWrap">
+                                            <Run Text="{x:Bind VM.LatestRelease, Mode=OneWay, Converter={StaticResource InstanceDescriptionConverter}}" />
+                                            <Run Text="{x:Bind local:DefaultPage.FormatDate(VM.LatestRelease.ReleaseTime), Mode=OneWay}" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid>
+                            </controls:SettingsCard.Header>
+
+                            <i:Interaction.Behaviors>
+                                <behaviors:AncestorBindingBehavior
+                                    AncestorType="ScrollViewer"
+                                    Binding="{Binding DataContext.CardClickCommand}"
+                                    TargetPropertyName="Command" />
+                            </i:Interaction.Behaviors>
+                        </controls:SettingsCard>
                     </StackPanel>
 
                     <StackPanel
@@ -154,11 +206,64 @@
                             x:Uid="Downloads_Instances_DefaultPage_T1_1"
                             Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
                             Text="Latest Snapshot" />
-                        <ContentPresenter
+                        <controls:SettingsCard
+                            Padding="16,8"
                             HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
                             HorizontalContentAlignment="Stretch"
-                            Content="{x:Bind VM.LatestSnapshot, Mode=OneWay}"
-                            ContentTemplate="{StaticResource InstanceItemTemplate}" />
+                            VerticalContentAlignment="Stretch"
+                            BorderThickness="1"
+                            CommandParameter="{x:Bind VM.LatestRelease, Mode=OneWay}"
+                            IsClickEnabled="True">
+                            <controls:SettingsCard.Header>
+                                <Grid MinWidth="250" Background="Transparent">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="16" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Border
+                                        Width="40"
+                                        Height="40"
+                                        VerticalAlignment="Center"
+                                        BorderBrush="{ThemeResource IconBorder}"
+                                        BorderThickness="2"
+                                        CornerRadius="4">
+                                        <Border.Background>
+                                            <ImageBrush ImageSource="{x:Bind VM.LatestSnapshot, Mode=OneWay, Converter={StaticResource InstanceIconConverter}}" />
+                                        </Border.Background>
+                                    </Border>
+                                    <StackPanel
+                                        Grid.Column="2"
+                                        VerticalAlignment="Center"
+                                        Spacing="2">
+                                        <TextBlock
+                                            Margin="0,-4,0,0"
+                                            FontSize="16"
+                                            Style="{ThemeResource BaseTextBlockStyle}"
+                                            Text="{x:Bind VM.LatestSnapshot.Id, Mode=OneWay}"
+                                            TextTrimming="CharacterEllipsis"
+                                            TextWrapping="NoWrap" />
+                                        <TextBlock
+                                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                            Style="{ThemeResource CaptionTextBlockStyle}"
+                                            TextTrimming="CharacterEllipsis"
+                                            TextWrapping="NoWrap">
+                                            <Run Text="{x:Bind VM.LatestSnapshot, Mode=OneWay, Converter={StaticResource InstanceDescriptionConverter}}" />
+                                            <Run Text="{x:Bind local:DefaultPage.FormatDate(VM.LatestSnapshot.ReleaseTime), Mode=OneWay}" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid>
+                            </controls:SettingsCard.Header>
+
+                            <i:Interaction.Behaviors>
+                                <behaviors:AncestorBindingBehavior
+                                    AncestorType="ScrollViewer"
+                                    Binding="{Binding DataContext.CardClickCommand}"
+                                    TargetPropertyName="Command" />
+                            </i:Interaction.Behaviors>
+                        </controls:SettingsCard>
+
                     </StackPanel>
                 </controls:UniformGrid>
 

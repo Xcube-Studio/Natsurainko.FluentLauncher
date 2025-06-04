@@ -68,7 +68,7 @@
 
                 <i:Interaction.Behaviors>
                     <behaviors:AncestorBindingBehavior
-                        AncestorType="ScrollViewer"
+                        AncestorType="ListView"
                         Binding="{Binding DataContext.CardClickCommand}"
                         TargetPropertyName="Command" />
                 </i:Interaction.Behaviors>
@@ -191,7 +191,7 @@
 
                             <i:Interaction.Behaviors>
                                 <behaviors:AncestorBindingBehavior
-                                    AncestorType="ScrollViewer"
+                                    AncestorType="ListView"
                                     Binding="{Binding DataContext.CardClickCommand}"
                                     TargetPropertyName="Command" />
                             </i:Interaction.Behaviors>
@@ -258,7 +258,7 @@
 
                             <i:Interaction.Behaviors>
                                 <behaviors:AncestorBindingBehavior
-                                    AncestorType="ScrollViewer"
+                                    AncestorType="ListView"
                                     Binding="{Binding DataContext.CardClickCommand}"
                                     TargetPropertyName="Command" />
                             </i:Interaction.Behaviors>

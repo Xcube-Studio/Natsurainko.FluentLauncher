@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:data="using:Nrk.FluentCore.GameManagement.Mods"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Instances"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit_behaviors="using:CommunityToolkit.WinUI.Behaviors"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
@@ -84,7 +85,10 @@
                 <controls:SettingsCard
                     Padding="16,8"
                     HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch">
+                    VerticalAlignment="Stretch"
+                    Click="SettingsCard_Click"
+                    IsActionIconVisible="False"
+                    IsClickEnabled="True">
                     <controls:SettingsCard.Header>
                         <Grid Background="Transparent">
                             <Grid.ColumnDefinitions>
@@ -123,10 +127,10 @@
                                         Background="{ThemeResource HyperlinkButtonBackgroundThemeBrush}"
                                         BorderBrush="{ThemeResource HyperlinkButtonBorderThemeBrush}"
                                         BorderThickness="1"
-                                        Content="More.."
                                         FontSize="12"
                                         Foreground="{ThemeResource SystemAccentColor}"
                                         Visibility="{Binding ElementName=InfoText, Path=IsTextTrimmed, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock x:Uid="Instances_ModPage_Text3" Text="More.." />
                                         <Button.Flyout>
                                             <Flyout Placement="BottomEdgeAlignedRight">
                                                 <TextBlock
@@ -142,41 +146,39 @@
                             </StackPanel>
                         </Grid>
                     </controls:SettingsCard.Header>
-
-                    <StackPanel Orientation="Horizontal" Spacing="15">
-                        <Button
-                            Name="DeleteButton"
-                            CommandParameter="{x:Bind}"
-                            Style="{ThemeResource DeleteButtonStyle}">
-                            <StackPanel Orientation="Horizontal" Spacing="5">
-                                <FontIcon
-                                    FontSize="14"
-                                    Foreground="White"
-                                    Glyph="&#xe74d;" />
-                                <TextBlock
-                                    x:Uid="Buttons_Delete"
-                                    Foreground="White"
-                                    Text="Delete" />
-                            </StackPanel>
-
-                            <i:Interaction.Behaviors>
-                                <behaviors:AncestorBindingBehavior
-                                    AncestorType="ListView"
-                                    Binding="{Binding DataContext.ConfirmDeleteCommand}"
-                                    TargetPropertyName="Command" />
-                            </i:Interaction.Behaviors>
-                        </Button>
-
-                        <ToggleSwitch
-                            Name="ToggleSwitch"
-                            DataContext="{x:Bind}"
-                            IsOn="{x:Bind IsEnabled}"
-                            Loaded="ToggleSwitch_Loaded" />
-                    </StackPanel>
-
-                    <i:Interaction.Behaviors>
-                        <behaviors:PointerOverVisibleBehavior TargetElementName="DeleteButton" />
-                    </i:Interaction.Behaviors>
+                    <controls:SettingsCard.ContextFlyout>
+                        <MenuFlyout Opened="MenuFlyout_Opened" Placement="Bottom">
+                            <MenuFlyoutItem
+                                x:Uid="Instances_ModPage_MenuItem1"
+                                CommandParameter="{x:Bind}"
+                                Text="Show in Explorer">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xEC51;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem
+                                x:Uid="Instances_ModPage_MenuItem2"
+                                CommandParameter="{x:Bind}"
+                                Icon="Delete"
+                                Text="Delete" />
+                            <MenuFlyoutSeparator x:Name="MenuFlyoutSeparator" x:Load="{x:Bind local:ModPage.ShowMcModSearchOption()}" />
+                            <MenuFlyoutItem
+                                x:Name="MenuFlyoutItem"
+                                x:Uid="Instances_ModPage_MenuItem3"
+                                x:Load="{x:Bind local:ModPage.ShowMcModSearchOption()}"
+                                CommandParameter="{x:Bind}"
+                                Text="Search on mcmod.cn">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE71E;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </controls:SettingsCard.ContextFlyout>
+                    <ToggleSwitch
+                        Name="ToggleSwitch"
+                        DataContext="{x:Bind}"
+                        IsOn="{x:Bind IsEnabled}"
+                        Loaded="ToggleSwitch_Loaded" />
                 </controls:SettingsCard>
             </DataTemplate>
         </ListView.ItemTemplate>

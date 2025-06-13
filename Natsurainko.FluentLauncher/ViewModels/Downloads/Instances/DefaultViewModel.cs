@@ -51,7 +51,13 @@ internal partial class DefaultViewModel(
 
     public bool HasQuery => !string.IsNullOrEmpty(SearchQuery);
 
-    partial void OnReleaseTypeFilterIndexChanged(int value) => SearchReceiveHandle(SearchQuery);
+    partial void OnReleaseTypeFilterIndexChanged(int value)
+    {
+        if (this.IsActive)
+        {
+            SearchReceiveHandle(SearchQuery);
+        }
+    }
 
     void INavigationAware.OnNavigatedTo(object? parameter)
     {
@@ -172,7 +178,14 @@ internal partial class DefaultViewModel(
         });
     }
 
-    protected override void OnUnloaded() => GC.Collect();
+    protected override void OnUnloaded()
+    {
+        FilteredInstances = null!;
+        AllInstances = null!;
+        LatestRelease = LatestSnapshot = null!;
+
+        GC.Collect();
+    }
 }
 
 internal static partial class DefaultViewModelNotifications

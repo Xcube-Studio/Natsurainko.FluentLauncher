@@ -273,40 +273,42 @@
                     x:Load="{x:Bind VM.HasQuery, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
                     Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
                     Text="All" />
-
-                <StackPanel
-                    x:Name="EmptyStackPanel"
-                    Grid.Row="1"
-                    Margin="0,32,0,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    x:Load="{x:Bind VM.Loading, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
-                    Spacing="4">
-                    <StackPanel
-                        HorizontalAlignment="Center"
-                        Orientation="Horizontal"
-                        Spacing="8">
-                        <FontIcon FontSize="32" Glyph="&#xe74c;" />
-                        <TextBlock
-                            x:Uid="Downloads_Instances_DefaultPage_T4"
-                            Margin="0,-4,0,0"
-                            FontSize="28"
-                            Style="{ThemeResource BaseTextBlockStyle}"
-                            Text="No results found" />
-                    </StackPanel>
-                    <HyperlinkButton
-                        Padding="5,0,5,0.5"
-                        HorizontalAlignment="Center"
-                        Command="{x:Bind VM.ClearSearchQueryCommand}">
-                        <TextBlock x:Uid="Downloads_Instances_DefaultPage_Text" Text="Try other" />
-                    </HyperlinkButton>
-
-                    <i:Interaction.Behaviors>
-                        <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{x:Bind VM.FilteredInstances, Mode=OneWay}" />
-                    </i:Interaction.Behaviors>
-                </StackPanel>
             </StackPanel>
         </ListView.Header>
+
+        <ListView.Footer>
+            <StackPanel
+                x:Name="EmptyStackPanel"
+                Grid.Row="1"
+                Margin="0,32,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                x:Load="{x:Bind VM.Loading, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
+                Spacing="4">
+                <StackPanel
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="8">
+                    <FontIcon FontSize="32" Glyph="&#xe74c;" />
+                    <TextBlock
+                        x:Uid="Downloads_Instances_DefaultPage_T4"
+                        Margin="0,-4,0,0"
+                        FontSize="28"
+                        Style="{ThemeResource BaseTextBlockStyle}"
+                        Text="No results found" />
+                </StackPanel>
+                <HyperlinkButton
+                    Padding="5,0,5,0.5"
+                    HorizontalAlignment="Center"
+                    Command="{x:Bind VM.ClearSearchQueryCommand}">
+                    <TextBlock x:Uid="Downloads_Instances_DefaultPage_Text" Text="Try other" />
+                </HyperlinkButton>
+
+                <i:Interaction.Behaviors>
+                    <behaviors:EmptyListVisibleBehavior IsObservableCollection="False" ItemsSource="{x:Bind VM.FilteredInstances, Mode=OneWay}" />
+                </i:Interaction.Behaviors>
+            </StackPanel>
+        </ListView.Footer>
 
         <ListView.ItemContainerStyle>
             <Style TargetType="ListViewItem">

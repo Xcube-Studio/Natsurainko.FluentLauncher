@@ -1,11 +1,15 @@
+using CommunityToolkit.WinUI.Controls;
 using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.Windows.Globalization;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Instances;
 using Nrk.FluentCore.GameManagement.Mods;
 using System;
 using System.IO;
+using System.Windows.Input;
 using Windows.ApplicationModel.DataTransfer;
 
 namespace Natsurainko.FluentLauncher.Views.Instances;
@@ -23,20 +27,33 @@ public sealed partial class ModPage : Page, IBreadcrumbBarAware
 
     private void ToggleSwitch_Loaded(object sender, RoutedEventArgs e)
     {
+        var toggleSwitch = (ToggleSwitch)sender;
+        bool suppressOnceInvoke = false;
+
         void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {
-            var toggleSwitch = (ToggleSwitch)sender;
-            var modInfo = (MinecraftMod)toggleSwitch.DataContext;
-            var modsManager = ((ModViewModel)DataContext).ModsManager;
+            if (suppressOnceInvoke)
+            {
+                suppressOnceInvoke = false;
+                return;
+            }
 
-            if (modInfo != null)
-                modsManager.Switch(modInfo, toggleSwitch.IsOn);
+            if (toggleSwitch.DataContext is MinecraftMod minecraftMod)
+            {
+                if (!VM.TrySwitchMod(minecraftMod, toggleSwitch.IsOn))
+                {
+                    suppressOnceInvoke = true;
+                    toggleSwitch.IsOn = !toggleSwitch.IsOn;
+                }
+            }
         }
 
-        var toggleSwitch = (ToggleSwitch)sender;
-
         toggleSwitch.Toggled += ToggleSwitch_Toggled;
-        toggleSwitch.Unloaded += (_, _) => toggleSwitch.Toggled -= ToggleSwitch_Toggled;
+        toggleSwitch.Unloaded += (_, _) =>
+        {
+            toggleSwitch.Loaded -= ToggleSwitch_Loaded;
+            toggleSwitch.Toggled -= ToggleSwitch_Toggled;
+        };
     }
 
     private void Page_DragEnter(object sender, DragEventArgs e)
@@ -67,7 +84,30 @@ public sealed partial class ModPage : Page, IBreadcrumbBarAware
         if (modCount > 0)
         {
             App.GetService<INotificationService>().ModAdded(modCount);
-            VM.LoadModList();
+            VM.LoadModsAsync().Forget();
         }
     }
+
+    private void SettingsCard_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is SettingsCard settingsCard)
+            settingsCard.ContextFlyout.ShowAt(settingsCard);
+    }
+
+    private void MenuFlyout_Opened(object sender, object e)
+    {
+        MenuFlyout menuFlyout = (sender as MenuFlyout)!;
+        ICommand?[] commands = [VM.OpenModCommand, VM.ConfirmDeleteCommand, VM.SearchMcModCommand];
+        int index = 0;
+
+        foreach (var item in menuFlyout.Items)
+        {
+            if (item is MenuFlyoutItem menuItem)
+            {
+                menuItem.Command = commands[index++];
+            }
+        }
+    }
+
+    internal static bool ShowMcModSearchOption() => ApplicationLanguages.PrimaryLanguageOverride == "zh-Hans" || ApplicationLanguages.PrimaryLanguageOverride == "zh-Hant";
 }

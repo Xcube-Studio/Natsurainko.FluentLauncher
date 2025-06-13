@@ -13,6 +13,7 @@ using Nrk.FluentCore.GameManagement.Instances;
 using Nrk.FluentCore.GameManagement.Mods;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.System;
@@ -22,8 +23,6 @@ namespace Natsurainko.FluentLauncher.ViewModels.Instances;
 
 internal partial class ModViewModel(INotificationService notificationService) : PageVM, INavigationAware
 {
-    public ModManager ModsManager { get; private set; }
-
     public string ModsFolder { get; private set; }
 
     public MinecraftInstance MinecraftInstance { get; private set; }
@@ -38,9 +37,8 @@ internal partial class ModViewModel(INotificationService notificationService) : 
         ModsFolder = MinecraftInstance.GetModsDirectory();
 
         Directory.CreateDirectory(ModsFolder);
-        ModsManager = new ModManager(ModsFolder);
 
-        LoadModList();
+        LoadModsAsync().Forget();
     }
 
     [RelayCommand]
@@ -65,10 +63,19 @@ internal partial class ModViewModel(INotificationService notificationService) : 
     }
 
     [RelayCommand]
+    void OpenMod(MinecraftMod modInfo)
+    {
+        using var process = Process.Start(new ProcessStartInfo("explorer.exe", $"/select,{modInfo.AbsolutePath}"));
+    }
+
+    [RelayCommand]
+    async Task SearchMcMod(MinecraftMod modInfo) => await Launcher.LaunchUriAsync(new Uri($"https://search.mcmod.cn/s?key={modInfo.DisplayName}"));
+
+    [RelayCommand]
     void DeleteMod(MinecraftMod modInfo)
     {
         File.Delete(modInfo.AbsolutePath);
-        LoadModList();
+        LoadModsAsync().Forget();
 
         notificationService.ModDeleted();
     }
@@ -76,16 +83,31 @@ internal partial class ModViewModel(INotificationService notificationService) : 
     [RelayCommand]
     void InstallMods() => GlobalNavigate("ModsDownload/Navigation");
 
-    internal async void LoadModList()
+    public async Task LoadModsAsync()
     {
         Mods.Clear();
 
+        await foreach (var saveInfo in ModManager.EnumerateModsAsync(ModsFolder))
+            await Dispatcher.EnqueueAsync(() => Mods.Add(saveInfo));
+    }
+
+    public bool TrySwitchMod(MinecraftMod modInfo, bool isEnable)
+    {
         try
         {
-            await foreach (var saveInfo in ModsManager.EnumerateModsAsync())
-                await Dispatcher.EnqueueAsync(() => Mods.Add(saveInfo));
+            modInfo.Switch(isEnable);
+            return true;
         }
-        catch { }
+        catch (IOException ex) when (ex.HResult == -2147024864)
+        {
+            notificationService.ModOccupied();
+        }
+        catch (Exception ex)
+        {
+            notificationService.ModSwitchFailed(ex);
+        }
+
+        return false;
     }
 }
 
@@ -99,4 +121,10 @@ internal static partial class ModViewModelNotifications
 
     [Notification<InfoBar>(Title = "Notifications__ModDrag", Delay = double.NaN)]
     public static partial void ModDrag(this INotificationService notificationService);
+
+    [Notification<TeachingTip>(Title = "Notifications__ModOccupied", Message = "Notifications__ModOccupiedDescription", Type = NotificationType.Error, Delay = double.NaN)]
+    public static partial void ModOccupied(this INotificationService notificationService);
+
+    [ExceptionNotification(Title = "Notifications__ModSwitchFailed")]
+    public static partial void ModSwitchFailed(this INotificationService notificationService, Exception exception);
 }

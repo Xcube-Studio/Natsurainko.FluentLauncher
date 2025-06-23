@@ -9,6 +9,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:userControls="using:Natsurainko.FluentLauncher.UserControls"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    Loaded="Page_Loaded"
+    Unloaded="Page_Unloaded"
     mc:Ignorable="d">
 
     <ScrollViewer>
@@ -49,19 +51,22 @@
                         </Grid>
                     </controls:SettingsCard.Header>
                 </controls:SettingsCard>
-                <Grid Height="350" CornerRadius="8">
+                <Grid Height="550" CornerRadius="8">
                     <ProgressRing
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         IsActive="True" />
                     <hx:Viewport3DX
-                        x:Name="Viewport3DX"
-                        CameraMode="Inspect"
-                        EnableAutoOctreeUpdate="True"
-                        EnableDeferredRendering="True"
+                        x:Name="Viewport"
+                        BackgroundColor="#4C4A4A"
+                        Camera="{x:Bind VM.Camera, Mode=OneWay}"
+                        EffectsManager="{x:Bind VM.EffectsManager, Mode=OneWay}"
                         FXAALevel="Ultra"
+                        FixedRotationPointEnabled="True"
                         ShowViewCube="False">
-                        <hx:GroupModel3D ItemsSource="{x:Bind VM.ModelGeometry, Mode=OneWay}" />
+                        <hx:DirectionalLight3D Direction="{x:Bind VM.Camera.LookDirection, Mode=OneWay}" Color="White" />
+                        <hx:Element3DPresenter Content="{x:Bind VM.Root, Mode=OneWay}" />
+                        <hx:PostEffectMeshBorderHighlight EffectName="highlight" />
                     </hx:Viewport3DX>
                 </Grid>
 

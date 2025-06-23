@@ -3,6 +3,7 @@ using Natsurainko.FluentLauncher.Models.Launch;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.GameManagement.Installer;
 using System.Text.Json.Serialization;
+using static Nrk.FluentCore.Utils.PlayerTextureHelper;
 
 namespace Natsurainko.FluentLauncher;
 
@@ -22,6 +23,9 @@ namespace Natsurainko.FluentLauncher;
 [JsonSerializable(typeof(OfflineAccount))]
 [JsonSerializable(typeof(MicrosoftAccount))]
 [JsonSerializable(typeof(YggdrasilAccount))]
+
+// Textures
+[JsonSerializable(typeof(PlayerTextureProfile))]
 
 // Settings
 [JsonSerializable(typeof(int))]

@@ -2,6 +2,7 @@
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Authentication;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ internal class AccountService
     private readonly LocalStorageService _storageService;
     private readonly SettingsService _settingsService;
     private readonly AuthenticationService _authService;
+    private readonly CacheInterfaceService _cacheInterfaceService;
 
     public readonly string AccountsJsonPath = Path.Combine("settings", "accounts.json");
 
@@ -62,11 +64,13 @@ internal class AccountService
     public AccountService(
         SettingsService settingsService,
         LocalStorageService storageService,
-        AuthenticationService authService)
+        AuthenticationService authService,
+        CacheInterfaceService cacheInterfaceService)
     {
         _settingsService = settingsService;
         _storageService = storageService;
         _authService = authService;
+        _cacheInterfaceService = cacheInterfaceService;
 
         _accounts = new ObservableCollection<Account>(InitializeAccountCollection());
         Accounts = new ReadOnlyObservableCollection<Account>(_accounts);
@@ -186,7 +190,7 @@ internal class AccountService
         if (isActiveAccount)
             ActivateAccount(refreshedAccount);
 
-        _ = App.GetService<CacheSkinService>().CacheSkinOfAccount(refreshedAccount);
+        _cacheInterfaceService.CacheTexturesAsync(refreshedAccount).Forget();
 
         return refreshedAccount;
     }

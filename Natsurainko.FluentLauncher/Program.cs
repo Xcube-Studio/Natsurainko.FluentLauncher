@@ -132,7 +132,6 @@ services.AddSingleton<LocalStorageService>();
 services.AddSingleton<MessengerService>();
 services.AddSingleton<AuthenticationService>();
 services.AddSingleton<AppearanceService>();
-services.AddSingleton<CacheSkinService>();
 services.AddSingleton<CacheInterfaceService>();
 services.AddSingleton<QuickLaunchService>();
 services.AddSingleton<SearchProviderService>();

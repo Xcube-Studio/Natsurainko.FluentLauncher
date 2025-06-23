@@ -1,16 +1,15 @@
 using CommunityToolkit.Mvvm.Messaging;
-using CommunityToolkit.WinUI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Authentication;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
-using Windows.Storage;
 using Bitmap = System.Drawing.Bitmap;
 using Graphics = System.Drawing.Graphics;
 using GraphicsUnit = System.Drawing.GraphicsUnit;
@@ -18,13 +17,14 @@ using Rectangle = System.Drawing.Rectangle;
 
 namespace Natsurainko.FluentLauncher.UserControls;
 
-public sealed partial class AccountAvatar : UserControl
+public sealed partial class AccountAvatar : UserControl, IRecipient<SkinTextureUpdatedMessage>
 {
-    private readonly CacheSkinService _cacheSkinService = App.GetService<CacheSkinService>();
+    private readonly CacheInterfaceService _cacheInterfaceService = App.GetService<CacheInterfaceService>();
 
     public AccountAvatar()
     {
         this.InitializeComponent();
+        WeakReferenceMessenger.Default.Register(this);
     }
 
     public Account? Account
@@ -50,36 +50,19 @@ public sealed partial class AccountAvatar : UserControl
             if (ProgressRing == null || Back == null || Fore == null) return;
 
             ProgressRing.IsActive = true;
+            Back.Source = null;
+            Fore.Source = null;
 
-            var filePath = _cacheSkinService.GetSkinFilePath(Account);
+            var textureProfile = await _cacheInterfaceService.RequestTextureProfileAsync(Account);
+            string skinTexturePath = textureProfile.GetSkinTexturePath(out bool isDefaultSkin);
 
-            if (Account.Type == AccountType.Offline)
+            if (!File.Exists(skinTexturePath))
             {
-                var backgroundSource1 = await StretchImageSizeAsync(new Bitmap
-                (
-                    System.Drawing.Image.FromFile((await StorageFile.GetFileFromApplicationUriAsync(new Uri(filePath))).Path)),
-                    (int)ActualWidth,
-                    (int)ActualHeight
-                );
-
-                Back.Source = backgroundSource1;
-                Fore.Source = null;
-
-                ProgressRing.IsActive = false;
+                _cacheInterfaceService.CacheTexturesAsync(Account).Forget();
                 return;
             }
 
-            if (!File.Exists(filePath))
-            {
-                _ = _cacheSkinService.CacheSkinOfAccount(Account).ContinueWith(async task 
-                    => await DispatcherQueue.EnqueueAsync(() => ProgressRing.IsActive = false));
-
-                Back.Source = null;
-                Fore.Source = null;
-                return;
-            }
-
-            var stream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            var stream = File.Open(skinTexturePath, FileMode.Open, FileAccess.Read, FileShare.Read);
             using var originImage = System.Drawing.Image.FromStream(stream);
             stream.Close();
             stream.Dispose();
@@ -95,7 +78,7 @@ public sealed partial class AccountAvatar : UserControl
 
             ProgressRing.IsActive = false;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             //App.GetService<NotificationService>().NotifyException(null, ex);
 
@@ -109,22 +92,15 @@ public sealed partial class AccountAvatar : UserControl
         Back.Source = null;
         ProgressRing.IsActive = false;
 
-        WeakReferenceMessenger.Default.Register<AccountSkinCacheUpdatedMessage>(this, SkinCacheUpdatedMessageReceived);
-
-        App.DispatcherQueue.TryEnqueue(() => _ = RenderAvatar());
+        DispatcherQueue.TryEnqueue(() => RenderAvatar().Forget());
     }
 
-    private void UserControl_Unloaded(object sender, RoutedEventArgs e)
-    {
-        WeakReferenceMessenger.Default.Unregister<AccountSkinCacheUpdatedMessage>(this);
-    }
+    private void UserControl_Unloaded(object sender, RoutedEventArgs e) => WeakReferenceMessenger.Default.UnregisterAll(this);
 
-    private void SkinCacheUpdatedMessageReceived(object sender, AccountSkinCacheUpdatedMessage m)
+    void IRecipient<SkinTextureUpdatedMessage>.Receive(SkinTextureUpdatedMessage message)
     {
-        if (!m.Value.ProfileEquals(Account))
-            return;
-
-        DispatcherQueue.TryEnqueue(() => _ = RenderAvatar());
+        if (message.Value.ProfileEquals(Account))
+            DispatcherQueue.TryEnqueue(() => RenderAvatar().Forget());
     }
 
     #region Bitmap Operations

@@ -11,11 +11,13 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Authentication;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Security.Principal;
 using System.Threading.Tasks;
 
 #nullable disable
@@ -28,7 +30,7 @@ internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel
     private readonly AccountService _accountService;
     private readonly INotificationService _notificationService;
     private readonly INavigationService _navigationService;
-    private readonly CacheSkinService _cacheSkinService;
+    private readonly CacheInterfaceService _cacheInterfaceService;
     private readonly IDialogActivationService<ContentDialogResult> _dialogs;
 
     public AccountViewModel(
@@ -36,14 +38,14 @@ internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel
         AccountService accountService,
         INotificationService notificationService,
         INavigationService navigationService,
-        CacheSkinService cacheSkinService,
+        CacheInterfaceService cacheInterfaceService,
         IDialogActivationService<ContentDialogResult> dialogs)
     {
         _settingsService = settingsService;
         _accountService = accountService;
         _notificationService = notificationService;
         _navigationService = navigationService;
-        _cacheSkinService = cacheSkinService;
+        _cacheInterfaceService = cacheInterfaceService;
         _dialogs = dialogs;
 
         Accounts = accountService.Accounts;
@@ -86,11 +88,12 @@ internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel
     async Task Switch() => await _dialogs.ShowAsync("SwitchAccountDialog");
 
     [RelayCommand]
-    void OpenSkinFile()
+    async Task OpenSkinFile()
     {
-        string skinFilePath = GetSkinFilePath(ActiveAccount);
-        if (!File.Exists(skinFilePath)) return;
+        var textureProfile = await _cacheInterfaceService.RequestTextureProfileAsync(ActiveAccount);
+        string skinFilePath = textureProfile.GetSkinTexturePath(out _);
 
+        if (!File.Exists(skinFilePath)) return;
         using var process = Process.Start(new ProcessStartInfo("explorer.exe", $"/select,{skinFilePath}"));
     }
 
@@ -137,8 +140,6 @@ internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel
 
         return string.Empty;
     }
-
-    internal string GetSkinFilePath(Account account) => _cacheSkinService.GetSkinFilePath(account);
 
     #endregion
 }

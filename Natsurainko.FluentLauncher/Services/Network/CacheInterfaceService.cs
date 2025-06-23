@@ -1,13 +1,19 @@
+using CommunityToolkit.Mvvm.Messaging;
 using Natsurainko.FluentLauncher.Services.Network.Data;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Natsurainko.FluentLauncher.Utils.Extensions;
+using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Utils;
 using System;
 using System.IO;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using static Nrk.FluentCore.Utils.PlayerTextureHelper;
 
 namespace Natsurainko.FluentLauncher.Services.Network;
 
@@ -129,7 +135,56 @@ internal class CacheInterfaceService(
         return await GetStreamFromInterface(writeToLocal: true);
     }
 
-    private string GetDefaultFileName(string url)
+    public async Task<PlayerTextureProfile> RequestTextureProfileAsync(Account account, InterfaceRequestMethod method = InterfaceRequestMethod.Static)
+    {
+        if (method != InterfaceRequestMethod.Static && method != InterfaceRequestMethod.RefreshStatic)
+            throw new InvalidOperationException();
+
+        if (account is OfflineAccount)
+        {
+            return new PlayerTextureProfile()
+            {
+                Type = AccountType.Offline,
+                Uuid = account.Uuid,
+            };
+        }
+
+        var profileFile = localStorageService.GetFile($"cache-textures-profiles\\{account.GetProfileServiceIdentifier()}\\{account.Uuid}.json");
+
+        if (profileFile.Exists && method == InterfaceRequestMethod.Static)
+            return JsonSerializer.Deserialize(await File.ReadAllTextAsync(profileFile.FullName), FLSerializerContext.Default.PlayerTextureProfile)
+                ?? throw new InvalidDataException();
+
+        var textureProfile = await account.GetTextureProfileAsync();
+        var profileFileContent = JsonSerializer.Serialize(textureProfile, FLSerializerContext.Default.PlayerTextureProfile);
+
+        profileFile.Directory!.Create();
+        await File.WriteAllTextAsync(profileFile.FullName, profileFileContent);
+
+        return textureProfile;
+    }
+
+    public async Task CacheTexturesAsync(Account account)
+    {
+        if (account is OfflineAccount) return;
+
+        var textureProfile = await RequestTextureProfileAsync(account, InterfaceRequestMethod.RefreshStatic);
+        string skinTexturePath = textureProfile.GetSkinTexturePath(out bool isDefalutSkin);
+
+        // If the skin is default, we don't need to download it
+        if (isDefalutSkin || textureProfile.ActiveSkin?.Url is null) return;
+
+        await HttpUtils.Downloader.DownloadFileAsync(new(textureProfile.ActiveSkin.Url, skinTexturePath))
+            .ContinueWith(t => WeakReferenceMessenger.Default.Send(new SkinTextureUpdatedMessage(account)), TaskContinuationOptions.OnlyOnRanToCompletion);
+
+        if (textureProfile.TryGetCapeTexturePath(out string? capeTexturePath) && textureProfile.ActiveCape?.Url is not null)
+        {
+            await HttpUtils.Downloader.DownloadFileAsync(new(textureProfile.ActiveCape.Url, capeTexturePath))
+                .ContinueWith(t => WeakReferenceMessenger.Default.Send(new CapeTextureUpdatedMessage(account)), TaskContinuationOptions.OnlyOnRanToCompletion);
+        }
+    }
+
+    private static string GetDefaultFileName(string url)
     {
         if (string.IsNullOrEmpty(url))
             throw new ArgumentNullException(nameof(url));

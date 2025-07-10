@@ -13,6 +13,4 @@ jobs:
     if: github.event_name != 'pull_request' || (github.event_name == 'pull_request' && github.event.pull_request.draft == false)
     name: Build
     uses: ./.github/workflows/build.yml
-    secrets:
-      pfx_base64_encoded: ${{ secrets.PFX_BASE64_ENCODED }}
 

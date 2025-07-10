@@ -31,12 +31,7 @@ on:
       enable_load_extensions:
         required: false
         default: "Disable"
-        type: string    
-    secrets:
-      pfx_base64_encoded:
-        required: true
-      pfx_password:
-        required: true
+        type: string
 
 jobs:
   build:
@@ -157,9 +152,9 @@ jobs:
           }
 
           # Sign .msix
-          $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.pfx_base64_encoded }}")
+          $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.PFX_BASE64_ENCODED }}")
           [IO.File]::WriteAllBytes("${{ env.SigningKey_Path }}", $pfx_cert_byte)
-          & $signtool sign /f "${{ env.SigningKey_Path }}" /p "${{ secrets.pfx_password }}" /fd SHA256 /td SHA256 "${{ steps.preparation.outputs.packageName }}.msix"
+          & $signtool sign /f "${{ env.SigningKey_Path }}" /p "${{ secrets.PFX_PASSWORD }}" /fd SHA256 /td SHA256 "${{ steps.preparation.outputs.packageName }}.msix"
           rm "${{ env.SigningKey_Path }}"
 
       - name: Upload .msix to artifacts

@@ -131,7 +131,7 @@ internal partial class UpdateDialogViewModel(
 
     private async Task<FileInfo> Download(AssetModel asset)
     {
-        string proxy = UseProxy ? "https://source.cubestructor.cc/" : string.Empty;
+        string proxy = UseProxy ? "https://source.xcubestudio.net/" : string.Empty;
         DownloadTask downloadTask = updateService.DownloadAsset(asset, proxy);
 
         using System.Timers.Timer timer = new(500);

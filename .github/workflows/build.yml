@@ -35,6 +35,8 @@ on:
     secrets:
       pfx_base64_encoded:
         required: true
+      pfx_password:
+        required: true
 
 jobs:
   build:

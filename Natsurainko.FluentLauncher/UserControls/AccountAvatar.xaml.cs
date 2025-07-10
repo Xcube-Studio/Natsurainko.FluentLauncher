@@ -29,7 +29,7 @@ public sealed partial class AccountAvatar : UserControl, IRecipient<SkinTextureU
 
     public Account? Account
     {
-        get { try { return (Account)GetValue(AccountProperty); } catch { return null; } }
+        get { return (Account)GetValue(AccountProperty); }
         set { SetValue(AccountProperty, value); }
     }
 
@@ -78,10 +78,9 @@ public sealed partial class AccountAvatar : UserControl, IRecipient<SkinTextureU
 
             ProgressRing.IsActive = false;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            //App.GetService<NotificationService>().NotifyException(null, ex);
-
+            // TODO: Log the exception
             ProgressRing.IsActive = false;
         }
     }
@@ -99,8 +98,11 @@ public sealed partial class AccountAvatar : UserControl, IRecipient<SkinTextureU
 
     void IRecipient<SkinTextureUpdatedMessage>.Receive(SkinTextureUpdatedMessage message)
     {
-        if (message.Value.ProfileEquals(Account))
-            DispatcherQueue.TryEnqueue(() => RenderAvatar().Forget());
+        DispatcherQueue.TryEnqueue(() => 
+        {
+            if (message.Value.ProfileEquals(Account))
+                RenderAvatar().Forget();
+        });
     }
 
     #region Bitmap Operations

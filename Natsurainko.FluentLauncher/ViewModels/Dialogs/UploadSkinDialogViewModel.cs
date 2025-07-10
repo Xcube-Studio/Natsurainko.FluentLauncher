@@ -4,13 +4,14 @@ using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Notification;
 using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Network;
-using Natsurainko.FluentLauncher.Services.Network.Data;
-using Natsurainko.FluentLauncher.Utils.Extensions;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views.Dialogs;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Utils;
 using System;
 using System.IO;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
@@ -60,7 +61,13 @@ internal partial class UploadSkinDialogViewModel(
         }
         catch (Exception ex)
         {
-            notificationService.SkinUploadFailed(ex);
+            string reason = ex switch
+            {
+                HttpRequestException { StatusCode: HttpStatusCode.Unauthorized } => LocalizedStrings.Exceptions__HttpRequestException_Unauthorized,
+                _ => string.Empty
+            };
+
+            notificationService.SkinUploadFailed(ex, reason);
         }
 
         await Dispatcher.EnqueueAsync(this.Dialog.Hide);
@@ -72,6 +79,6 @@ internal partial class UploadSkinDialogViewModel(
 
 internal static partial class UploadSkinDialogViewModelNotifications
 {
-    [ExceptionNotification(Title = "Notifications__SkinUploadFailed")]
-    public static partial void SkinUploadFailed(this INotificationService notificationService, Exception exception);
+    [ExceptionNotification(Title = "Notifications__SkinUploadFailed", Message = "{reason}")]
+    public static partial void SkinUploadFailed(this INotificationService notificationService, Exception exception, string reason);
 }

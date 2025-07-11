@@ -107,7 +107,7 @@ internal static class PlayerTextureProfileExtensions
         return true;
     }
 
-    private static string CalculateModel(Guid uuid)
+    public static string CalculateModel(Guid uuid)
     {
         byte[] bytes = uuid.ToByteArray();
         return (bytes[6] & 0x01) == 1 ? "slim" : "classic";

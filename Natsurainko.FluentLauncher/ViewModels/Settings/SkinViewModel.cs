@@ -151,19 +151,24 @@ internal partial class SkinViewModel : SettingsPageVM,
     [RelayCommand]
     async Task UploadSkin()
     {
-        await _dialogs.ShowAsync("UploadSkinDialog", ActiveAccount);
-
-        _cacheInterfaceService.RequestTextureProfileAsync(ActiveAccount)
-            .ContinueWith(t => TextureProfile = t.Result, TaskContinuationOptions.OnlyOnRanToCompletion)
-            .Forget();
+        if (await _dialogs.ShowAsync("UploadSkinDialog", ActiveAccount) == ContentDialogResult.Primary)
+        {
+            _cacheInterfaceService.RequestTextureProfileAsync(ActiveAccount)
+                .ContinueWith(t => TextureProfile = t.Result, TaskContinuationOptions.OnlyOnRanToCompletion)
+                .Forget();
+        }
     }
 
     [RelayCommand]
-    void NavigateToWebsite()
+    async Task NavigateToWebsite()
     {
-        if (ActiveAccount is YggdrasilAccount yggdrasilAccount)
-            _ = Launcher.LaunchUriAsync(new Uri("https://" + new Uri(yggdrasilAccount.YggdrasilServerUrl).Host));
-        else _ = Launcher.LaunchUriAsync(new Uri("https://www.minecraft.net/msaprofile/mygames/editskin"));
+        string url = ActiveAccount switch
+        {
+            YggdrasilAccount yggdrasilAccount => "https://" + new Uri(yggdrasilAccount.YggdrasilServerUrl).Host,
+            _ => "https://www.minecraft.net/msaprofile/mygames/editskin",
+        };
+
+        await Launcher.LaunchUriAsync(new Uri(url));
     }
 
     [RelayCommand]
@@ -235,21 +240,29 @@ internal partial class SkinViewModel : SettingsPageVM,
     internal string GetActiveCapeDisplayText(PlayerTextureProfile textureProfile)
     {
         if (textureProfile?.ActiveCape is null)
-            return "No active cape";
+            return LocalizedStrings.Settings_SkinPage__NoCape;
 
-        return $"{textureProfile.ActiveCape.Alias} Cape";
+        return $"{textureProfile.ActiveCape.Alias} {LocalizedStrings.Settings_SkinPage__Cape}";
     }
 
     internal string GetSkinModelDisplayText(PlayerTextureProfile textureProfile)
     {
-        if (textureProfile?.ActiveSkin?.Variant is null)
-            return "Classic Model";
+        if (textureProfile is null) return string.Empty;
 
-        return textureProfile?.ActiveSkin?.Variant switch
+        string variant = textureProfile.ActiveSkin?.Variant ?? PlayerTextureProfileExtensions.CalculateModel(textureProfile.Uuid);
+        return variant switch
         {
-            "slim" => "Slim Model",
-            _ => "Classic Model"
+            "slim" => LocalizedStrings.Settings_SkinPage__Slim,
+            _ => LocalizedStrings.Settings_SkinPage__Classic
         };
+    }
+
+    internal bool CanOpenSkinFile(PlayerTextureProfile? textureProfile)
+    {
+        if (textureProfile is null) return false;
+
+        textureProfile.GetSkinTexturePath(out var value);
+        return !value;
     }
 
     #endregion

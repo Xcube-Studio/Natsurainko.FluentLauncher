@@ -68,8 +68,10 @@
                                 </AppBarButton.Icon>
                             </AppBarButton>
                             <AppBarButton
+                                x:Uid="Settings_SkinPage_B1"
                                 Command="{x:Bind VM.OpenSkinFileCommand}"
                                 Icon="OpenFile"
+                                IsEnabled="{x:Bind VM.CanOpenSkinFile(VM.TextureProfile), Mode=OneWay}"
                                 Label="Skin Texture" />
                             <AppBarButton
                                 x:Name="CapeNameButton"
@@ -79,6 +81,7 @@
                             <CommandBar.SecondaryCommands>
                                 <AppBarButton
                                     x:Name="SwitchCapeButton"
+                                    x:Uid="Settings_SkinPage_B2"
                                     x:Load="{x:Bind VM.IsYggdrasilAccount, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}"
                                     Icon="Switch"
                                     Label="Switch Cape" />
@@ -108,10 +111,13 @@
                         VerticalAlignment="Center"
                         IsOpen="False">
                         <AppBarButton
+                            x:Uid="Settings_SkinPage_B3"
                             Command="{x:Bind VM.UploadSkinCommand}"
                             Icon="Upload"
-                            Label="Upload skin file" />
+                            IsEnabled="{x:Bind VM.IsYggdrasilAccount, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}"
+                            Label="Upload Skin" />
                         <AppBarButton
+                            x:Uid="Settings_SkinPage_B4"
                             Command="{x:Bind VM.NavigateToWebsiteCommand}"
                             Icon="Link"
                             Label="Setting on the official website" />

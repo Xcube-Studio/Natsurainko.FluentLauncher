@@ -11,7 +11,7 @@
     <Configurations>Debug;Release;Debug-AOT;Release-AOT</Configurations>
     <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
     <FluentLauncherReleaseChannel>Dev</FluentLauncherReleaseChannel>
-	<EnableLoadExtensions>Enable</EnableLoadExtensions>
+	<EnableLoadExtensions>Disable</EnableLoadExtensions>
 	
     <!-- Packaging -->
     <ApplicationManifest>app.manifest</ApplicationManifest>

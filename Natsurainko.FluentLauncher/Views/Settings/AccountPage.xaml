@@ -133,15 +133,6 @@
                             Text="Preview the current skin, or change the skin" />
                     </controls:SettingsCard.Description>
                 </controls:SettingsCard>
-                <controls:SettingsCard
-                    x:Name="OpenSkinFileCard"
-                    x:Uid="Settings_AccountPage_Card5"
-                    x:Load="{x:Bind VM.IsOfflineAccount, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}"
-                    ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
-                    Command="{x:Bind VM.OpenSkinFileCommand}"
-                    Header="Open the current skin file in Explorer"
-                    HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
-                    IsClickEnabled="True" />
                 <TextBlock
                     x:Uid="Settings_AccountPage_Text2"
                     Foreground="{ThemeResource SystemErrorTextColor}"

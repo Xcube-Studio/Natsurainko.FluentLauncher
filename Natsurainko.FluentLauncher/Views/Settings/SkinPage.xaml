@@ -13,33 +13,39 @@
     Unloaded="Page_Unloaded"
     mc:Ignorable="d">
 
-    <ScrollViewer>
-        <Border x:Name="border" Margin="{ThemeResource PageMarginWithBorder}">
-            <StackPanel
-                MaxWidth="1000"
-                HorizontalAlignment="Stretch"
-                Spacing="{StaticResource SettingsCardSpacing}">
-                <StackPanel.ChildrenTransitions>
-                    <EntranceThemeTransition FromVerticalOffset="50" />
-                    <RepositionThemeTransition IsStaggeringEnabled="False" />
-                </StackPanel.ChildrenTransitions>
+    <Grid>
+        <Border
+            x:Name="border"
+            MaxWidth="1000"
+            Margin="{ThemeResource PageMarginWithBorder}">
+            <Border
+                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                BorderBrush="{ThemeResource CommandBarFlyoutBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="8">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                <TextBlock
-                    x:Uid="Settings_SkinPage_T1"
-                    Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
-                    Text="3D Model Preview" />
+                    <Grid Padding="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                <controls:SettingsCard>
-                    <controls:SettingsCard.Header>
-                        <Grid Margin="10,0">
+                        <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="15" />
-                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <userControls:AccountAvatar
-                                Width="36"
-                                Height="36"
+                                Width="32"
+                                Height="32"
+                                Margin="8,0"
                                 Account="{x:Bind VM.ActiveAccount, Mode=OneWay}" />
                             <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                 <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind VM.ActiveAccount.Name, Mode=OneWay}" />
@@ -49,16 +55,42 @@
                                 </TextBlock>
                             </StackPanel>
                         </Grid>
-                    </controls:SettingsCard.Header>
-                </controls:SettingsCard>
-                <Grid Height="550" CornerRadius="8">
-                    <ProgressRing
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        IsActive="True" />
+
+                        <CommandBar
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            DefaultLabelPosition="Right"
+                            IsOpen="False">
+                            <AppBarButton Label="{x:Bind VM.GetSkinModelDisplayText(VM.TextureProfile), Mode=OneWay}">
+                                <AppBarButton.Icon>
+                                    <FontIcon Glyph="&#xF158;" />
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                            <AppBarButton
+                                Command="{x:Bind VM.OpenSkinFileCommand}"
+                                Icon="OpenFile"
+                                Label="Skin Texture" />
+                            <AppBarButton
+                                x:Name="CapeNameButton"
+                                x:Load="{x:Bind VM.IsYggdrasilAccount, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}"
+                                Icon="OutlineStar"
+                                Label="{x:Bind VM.GetActiveCapeDisplayText(VM.TextureProfile), Mode=OneWay}" />
+                            <CommandBar.SecondaryCommands>
+                                <AppBarButton
+                                    x:Name="SwitchCapeButton"
+                                    x:Load="{x:Bind VM.IsYggdrasilAccount, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}"
+                                    Icon="Switch"
+                                    Label="Switch Cape" />
+                            </CommandBar.SecondaryCommands>
+                        </CommandBar>
+                    </Grid>
+
                     <hx:Viewport3DX
                         x:Name="Viewport"
-                        BackgroundColor="#4C4A4A"
+                        Grid.Row="1"
+                        Background="#00000000"
+                        BackgroundColor="#00000000"
                         Camera="{x:Bind VM.Camera, Mode=OneWay}"
                         EffectsManager="{x:Bind VM.EffectsManager, Mode=OneWay}"
                         FXAALevel="Ultra"
@@ -68,41 +100,24 @@
                         <hx:Element3DPresenter Content="{x:Bind VM.Root, Mode=OneWay}" />
                         <hx:PostEffectMeshBorderHighlight EffectName="highlight" />
                     </hx:Viewport3DX>
+
+                    <CommandBar
+                        Grid.Row="2"
+                        Margin="8"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        IsOpen="False">
+                        <AppBarButton
+                            Command="{x:Bind VM.UploadSkinCommand}"
+                            Icon="Upload"
+                            Label="Upload skin file" />
+                        <AppBarButton
+                            Command="{x:Bind VM.NavigateToWebsiteCommand}"
+                            Icon="Link"
+                            Label="Setting on the official website" />
+                    </CommandBar>
                 </Grid>
-
-                <TextBlock
-                    x:Uid="Settings_SkinPage_T2"
-                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
-                    Text="Operations" />
-
-                <controls:SettingsCard
-                    x:Uid="Settings_SkinPage_Card1"
-                    Command="{x:Bind VM.UploadSkinCommand}"
-                    Header="Upload new skin"
-                    HeaderIcon="{xh:FontIcon Glyph=&#xe898;}"
-                    IsClickEnabled="True"
-                    IsEnabled="{x:Bind VM.IsYggdrasilAccount, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}">
-                    <controls:SettingsCard.Description>
-                        <StackPanel>
-                            <TextBlock x:Uid="Settings_SkinPage_Text1" Text="Upload a new skin and replace the current skin" />
-                            <TextBlock
-                                x:Uid="Settings_SkinPage_Text2"
-                                Foreground="{ThemeResource SystemErrorTextColor}"
-                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                Text="This feature is currently not supported for Yggdrasil accounts"
-                                Visibility="{Binding IsYggdrasilAccount, Converter={StaticResource BoolToVisibilityConverter}}" />
-                        </StackPanel>
-                    </controls:SettingsCard.Description>
-                </controls:SettingsCard>
-                <controls:SettingsCard
-                    x:Uid="Settings_SkinPage_Card2"
-                    ActionIcon="{xh:FontIcon Glyph=&#xE8A7;}"
-                    Command="{x:Bind VM.NavigateToWebsiteCommand}"
-                    Description="Click to go to management"
-                    Header="Manage your skins on the official website or skin site"
-                    HeaderIcon="{xh:FontIcon Glyph=&#xe71b;}"
-                    IsClickEnabled="True" />
-            </StackPanel>
+            </Border>
         </Border>
 
         <!--  Visual states reflect the application's window size  -->
@@ -127,5 +142,5 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-    </ScrollViewer>
+    </Grid>
 </Page>

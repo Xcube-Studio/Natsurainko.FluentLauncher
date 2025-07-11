@@ -20,6 +20,7 @@ using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using Windows.System;
 using static Nrk.FluentCore.Utils.PlayerTextureHelper;
@@ -137,8 +138,8 @@ internal partial class SkinViewModel : SettingsPageVM,
 
             Root = new SceneNodeGroupModel3D();
             EffectsManager = new DefaultEffectsManager();
-            compositeHelper = new CompositionTargetEx();
 
+            compositeHelper = new CompositionTargetEx();
             compositeHelper.Rendering += CompositeHelper_Rendering;
 
             RenderModel();
@@ -163,6 +164,16 @@ internal partial class SkinViewModel : SettingsPageVM,
         if (ActiveAccount is YggdrasilAccount yggdrasilAccount)
             _ = Launcher.LaunchUriAsync(new Uri("https://" + new Uri(yggdrasilAccount.YggdrasilServerUrl).Host));
         else _ = Launcher.LaunchUriAsync(new Uri("https://www.minecraft.net/msaprofile/mygames/editskin"));
+    }
+
+    [RelayCommand]
+    async Task OpenSkinFile()
+    {
+        var textureProfile = await _cacheInterfaceService.RequestTextureProfileAsync(ActiveAccount);
+        string skinFilePath = textureProfile.GetSkinTexturePath(out _);
+
+        if (!File.Exists(skinFilePath)) return;
+        using var process = Process.Start(new ProcessStartInfo("explorer.exe", $"/select,{skinFilePath}"));
     }
 
     private void CompositeHelper_Rendering(object? sender, Microsoft.UI.Xaml.Media.RenderingEventArgs e)
@@ -219,6 +230,26 @@ internal partial class SkinViewModel : SettingsPageVM,
         }
 
         return string.Empty;
+    }
+
+    internal string GetActiveCapeDisplayText(PlayerTextureProfile textureProfile)
+    {
+        if (textureProfile?.ActiveCape is null)
+            return "No active cape";
+
+        return $"{textureProfile.ActiveCape.Alias} Cape";
+    }
+
+    internal string GetSkinModelDisplayText(PlayerTextureProfile textureProfile)
+    {
+        if (textureProfile?.ActiveSkin?.Variant is null)
+            return "Classic Model";
+
+        return textureProfile?.ActiveSkin?.Variant switch
+        {
+            "slim" => "Slim Model",
+            _ => "Classic Model"
+        };
     }
 
     #endregion

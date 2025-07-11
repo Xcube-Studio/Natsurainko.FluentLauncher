@@ -17,7 +17,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Security.Principal;
 using System.Threading.Tasks;
 
 #nullable disable
@@ -86,16 +85,6 @@ internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel
 
     [RelayCommand]
     async Task Switch() => await _dialogs.ShowAsync("SwitchAccountDialog");
-
-    [RelayCommand]
-    async Task OpenSkinFile()
-    {
-        var textureProfile = await _cacheInterfaceService.RequestTextureProfileAsync(ActiveAccount);
-        string skinFilePath = textureProfile.GetSkinTexturePath(out _);
-
-        if (!File.Exists(skinFilePath)) return;
-        using var process = Process.Start(new ProcessStartInfo("explorer.exe", $"/select,{skinFilePath}"));
-    }
 
     [RelayCommand]
     void GoToSkinPage() => _navigationService.NavigateTo("Settings/Account/Skin");

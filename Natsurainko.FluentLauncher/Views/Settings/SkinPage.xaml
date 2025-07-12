@@ -84,6 +84,7 @@
                                     x:Uid="Settings_SkinPage_B2"
                                     x:Load="{x:Bind VM.IsYggdrasilAccount, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}"
                                     Icon="Switch"
+                                    IsEnabled="False"
                                     Label="Switch Cape" />
                             </CommandBar.SecondaryCommands>
                         </CommandBar>

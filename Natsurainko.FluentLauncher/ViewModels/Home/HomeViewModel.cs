@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Home;
 
-internal partial class HomeViewModel : PageVM, IRecipient<TrackLaunchTaskChangedMessage>
+internal partial class HomeViewModel : PageVM, IRecipient<TrackLaunchTaskChangedMessage>, IRecipient<ActiveAccountChangedMessage>
 {
     private readonly GameService _gameService;
     private readonly AccountService _accountService;
@@ -250,6 +250,9 @@ internal partial class HomeViewModel : PageVM, IRecipient<TrackLaunchTaskChanged
             }
         });
     }
+
+    void IRecipient<ActiveAccountChangedMessage>.Receive(ActiveAccountChangedMessage message)
+        => Dispatcher.TryEnqueue(() => ActiveAccount = message.Value);
 
     void SizeChanged(object s, WindowSizeChangedEventArgs e)
     {

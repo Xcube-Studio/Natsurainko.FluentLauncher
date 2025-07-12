@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using FluentLauncher.Infra.Settings.Mvvm;
 using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Navigation;
@@ -8,28 +9,24 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Services.Accounts;
-using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Authentication;
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel
+internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel, IRecipient<ActiveAccountChangedMessage>
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;
     private readonly AccountService _accountService;
     private readonly INotificationService _notificationService;
     private readonly INavigationService _navigationService;
-    private readonly CacheInterfaceService _cacheInterfaceService;
     private readonly IDialogActivationService<ContentDialogResult> _dialogs;
 
     public AccountViewModel(
@@ -37,14 +34,12 @@ internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel
         AccountService accountService,
         INotificationService notificationService,
         INavigationService navigationService,
-        CacheInterfaceService cacheInterfaceService,
         IDialogActivationService<ContentDialogResult> dialogs)
     {
         _settingsService = settingsService;
         _accountService = accountService;
         _notificationService = notificationService;
         _navigationService = navigationService;
-        _cacheInterfaceService = cacheInterfaceService;
         _dialogs = dialogs;
 
         Accounts = accountService.Accounts;
@@ -88,6 +83,9 @@ internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel
 
     [RelayCommand]
     void GoToSkinPage() => _navigationService.NavigateTo("Settings/Account/Skin");
+
+    void IRecipient<ActiveAccountChangedMessage>.Receive(ActiveAccountChangedMessage message)
+        => Dispatcher.TryEnqueue(() => ActiveAccount = message.Value);
 
     #region Converters Methods
 

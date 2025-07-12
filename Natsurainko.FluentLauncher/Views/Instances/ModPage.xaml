@@ -55,6 +55,7 @@
                     Text="Mods" />
 
                 <StackPanel
+                    Margin="0,60"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Spacing="4">

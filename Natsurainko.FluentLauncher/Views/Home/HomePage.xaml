@@ -310,6 +310,104 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="MenuItemButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{ThemeResource MenuFlyoutItemBackground}" />
+            <Setter Property="BorderBrush" Value="{ThemeResource MenuFlyoutItemBackgroundBrush}" />
+            <Setter Property="BorderThickness" Value="{ThemeResource MenuFlyoutItemBorderThickness}" />
+            <Setter Property="Foreground" Value="{ThemeResource MenuFlyoutItemForeground}" />
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}" />
+            <Setter Property="KeyboardAcceleratorPlacementMode" Value="Hidden" />
+            <Setter Property="CornerRadius" Value="{ThemeResource ControlCornerRadius}" />
+            <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+            <Setter Property="FontWeight" Value="Normal" />
+            <Setter Property="FocusVisualMargin" Value="-3" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter
+                            xmlns:local="using:Microsoft.UI.Xaml.Controls"
+                            x:Name="ContentPresenter"
+                            Padding="{TemplateBinding Padding}"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                            AutomationProperties.AccessibilityView="Raw"
+                            Background="{TemplateBinding Background}"
+                            BackgroundSizing="{TemplateBinding BackgroundSizing}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            ContentTransitions="{TemplateBinding ContentTransitions}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            Foreground="{TemplateBinding Foreground}">
+                            <ContentPresenter.BackgroundTransition>
+                                <BrushTransition Duration="0:0:0.083" />
+                            </ContentPresenter.BackgroundTransition>
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+
+                                    <VisualState x:Name="PointerOver">
+
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource MenuFlyoutItemBackgroundPointerOver}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBorderBrushPointerOver}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource MenuFlyoutItemForegroundPointerOver}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+
+                                    <VisualState x:Name="Pressed">
+
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource MenuFlyoutItemBackgroundPressed}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBorderBrushPressed}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource MenuFlyoutItemForegroundPressed}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+
+                                    <VisualState x:Name="Disabled">
+
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource MenuFlyoutItemBackgroundDisabled}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBorderBrushDisabled}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource MenuFlyoutItemForegroundDisabled}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+
+                            </VisualStateManager.VisualStateGroups>
+                        </ContentPresenter>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 
     <Grid x:Name="Grid">
@@ -398,17 +496,9 @@
                                         BorderThickness="1" />
                                     <Button
                                         Margin="-2,0"
-                                        HorizontalAlignment="Stretch"
-                                        HorizontalContentAlignment="Stretch"
-                                        Background="Transparent"
-                                        BorderThickness="0"
                                         Click="HideAccountFlyoutHandler"
-                                        Command="{x:Bind VM.AddAccountCommand}">
-                                        <Button.Resources>
-                                            <StaticResource x:Key="ButtonBackgroundPressed" ResourceKey="MenuFlyoutItemBackgroundPressed" />
-                                            <StaticResource x:Key="ButtonBackgroundPointerOver" ResourceKey="MenuFlyoutItemBackgroundPointerOver" />
-                                            <StaticResource x:Key="ButtonForegroundPressed" ResourceKey="ButtonForeground" />
-                                        </Button.Resources>
+                                        Command="{x:Bind VM.AddAccountCommand}"
+                                        Style="{ThemeResource MenuItemButtonStyle}">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
@@ -429,17 +519,9 @@
                                     </Button>
                                     <Button
                                         Margin="-2,0"
-                                        HorizontalAlignment="Stretch"
-                                        HorizontalContentAlignment="Stretch"
-                                        Background="Transparent"
-                                        BorderThickness="0"
                                         Click="HideAccountFlyoutHandler"
-                                        Command="{x:Bind VM.GoToAccountSettingsCommand}">
-                                        <Button.Resources>
-                                            <StaticResource x:Key="ButtonBackgroundPressed" ResourceKey="MenuFlyoutItemBackgroundPressed" />
-                                            <StaticResource x:Key="ButtonBackgroundPointerOver" ResourceKey="MenuFlyoutItemBackgroundPointerOver" />
-                                            <StaticResource x:Key="ButtonForegroundPressed" ResourceKey="ButtonForeground" />
-                                        </Button.Resources>
+                                        Command="{x:Bind VM.GoToAccountSettingsCommand}"
+                                        Style="{ThemeResource MenuItemButtonStyle}">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />

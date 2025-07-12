@@ -65,11 +65,8 @@
                                     Text="{x:Bind VM.MinecraftInstance.InstanceId, Mode=OneWay}"
                                     TextTrimming="CharacterEllipsis"
                                     ToolTipService.ToolTip="{x:Bind VM.MinecraftInstance.InstanceId, Mode=OneWay}" />
-                                <ItemsRepeater ItemsSource="{x:Bind VM.MinecraftInstance, Mode=OneWay, Converter={StaticResource InstanceDescriptionConverter}}">
-                                    <ItemsRepeater.Layout>
-                                        <controls:WrapLayout HorizontalSpacing="5" VerticalSpacing="5" />
-                                    </ItemsRepeater.Layout>
-                                    <ItemsRepeater.ItemTemplate>
+                                <ItemsControl ItemsSource="{x:Bind VM.MinecraftInstance, Mode=OneWay, Converter={StaticResource InstanceDescriptionConverter}}">
+                                    <ItemsControl.ItemTemplate>
                                         <DataTemplate x:DataType="x:String">
                                             <Border Padding="5,0,5,0.5" CornerRadius="2.5">
                                                 <Border.Background>
@@ -81,8 +78,13 @@
                                                     ToolTipService.ToolTip="{x:Bind}" />
                                             </Border>
                                         </DataTemplate>
-                                    </ItemsRepeater.ItemTemplate>
-                                </ItemsRepeater>
+                                    </ItemsControl.ItemTemplate>
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <controls:WrapPanel HorizontalSpacing="4" VerticalSpacing="4" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
                             </StackPanel>
                         </Grid>
                     </controls:SettingsCard.Header>

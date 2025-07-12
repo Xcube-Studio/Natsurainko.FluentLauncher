@@ -165,8 +165,8 @@
                                         Text="{x:Bind McVersion}"
                                         TextTrimming="CharacterEllipsis"
                                         TextWrapping="NoWrap" />
-                                    <ItemsRepeater Grid.Column="2" ItemsSource="{x:Bind Loaders}">
-                                        <ItemsRepeater.ItemTemplate>
+                                    <ItemsControl Grid.Column="2" ItemsSource="{x:Bind Loaders}">
+                                        <ItemsControl.ItemTemplate>
                                             <DataTemplate x:DataType="x:String">
                                                 <Border Padding="5,0,5,0.5" CornerRadius="2.5">
                                                     <Border.Background>
@@ -178,11 +178,13 @@
                                                         Text="{x:Bind}" />
                                                 </Border>
                                             </DataTemplate>
-                                        </ItemsRepeater.ItemTemplate>
-                                        <ItemsRepeater.Layout>
-                                            <StackLayout Orientation="Horizontal" Spacing="4" />
-                                        </ItemsRepeater.Layout>
-                                    </ItemsRepeater>
+                                        </ItemsControl.ItemTemplate>
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal" Spacing="4" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
                                 </Grid>
                             </StackPanel>
                         </Grid>
@@ -234,23 +236,25 @@
                                 Margin="1,-8,0,-4"
                                 Style="{ThemeResource TitleTextBlockStyle}"
                                 Text="{x:Bind VM.Name, Mode=OneWay}" />
-                            <ItemsRepeater Margin="-6,0,0,2" ItemsSource="{x:Bind VM.Authors}">
-                                <ItemsRepeater.ItemTemplate>
+                            <ItemsControl Margin="-6,0,0,2" ItemsSource="{x:Bind VM.Authors}">
+                                <ItemsControl.ItemTemplate>
                                     <DataTemplate x:DataType="local:ModAuthor">
                                         <HyperlinkButton Padding="5,0,5,0.5" NavigateUri="{x:Bind WebLink}">
                                             <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind Name}" />
                                         </HyperlinkButton>
                                     </DataTemplate>
-                                </ItemsRepeater.ItemTemplate>
-                                <ItemsRepeater.Layout>
-                                    <controls:WrapLayout
-                                        HorizontalSpacing="4"
-                                        Orientation="Horizontal"
-                                        VerticalSpacing="4" />
-                                </ItemsRepeater.Layout>
-                            </ItemsRepeater>
-                            <ItemsRepeater ItemsSource="{x:Bind local:DefaultPage.FilterCategories(VM.Categories), Mode=OneWay}">
-                                <ItemsRepeater.ItemTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <controls:WrapPanel
+                                            HorizontalSpacing="4"
+                                            Orientation="Horizontal"
+                                            VerticalSpacing="4" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                            <ItemsControl ItemsSource="{x:Bind local:DefaultPage.FilterCategories(VM.Categories), Mode=OneWay}">
+                                <ItemsControl.ItemTemplate>
                                     <DataTemplate x:DataType="x:String">
                                         <Border Padding="5,0,5,0.5" CornerRadius="2.5">
                                             <Border.Background>
@@ -259,11 +263,13 @@
                                             <TextBlock Margin="0,-1,0,0" Text="{x:Bind local:DefaultPage.GetLocalizedCategories((x:String))}" />
                                         </Border>
                                     </DataTemplate>
-                                </ItemsRepeater.ItemTemplate>
-                                <ItemsRepeater.Layout>
-                                    <StackLayout Orientation="Horizontal" Spacing="4" />
-                                </ItemsRepeater.Layout>
-                            </ItemsRepeater>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" Spacing="4" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
                         </StackPanel>
                     </Grid>
 

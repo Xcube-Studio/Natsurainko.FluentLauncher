@@ -11,6 +11,7 @@ using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Authentication;
 using System;
 using System.Collections.ObjectModel;
@@ -28,7 +29,7 @@ internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel
     private readonly AccountService _accountService;
     private readonly INotificationService _notificationService;
     private readonly INavigationService _navigationService;
-    private readonly CacheSkinService _cacheSkinService;
+    private readonly CacheInterfaceService _cacheInterfaceService;
     private readonly IDialogActivationService<ContentDialogResult> _dialogs;
 
     public AccountViewModel(
@@ -36,14 +37,14 @@ internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel
         AccountService accountService,
         INotificationService notificationService,
         INavigationService navigationService,
-        CacheSkinService cacheSkinService,
+        CacheInterfaceService cacheInterfaceService,
         IDialogActivationService<ContentDialogResult> dialogs)
     {
         _settingsService = settingsService;
         _accountService = accountService;
         _notificationService = notificationService;
         _navigationService = navigationService;
-        _cacheSkinService = cacheSkinService;
+        _cacheInterfaceService = cacheInterfaceService;
         _dialogs = dialogs;
 
         Accounts = accountService.Accounts;
@@ -84,15 +85,6 @@ internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel
 
     [RelayCommand]
     async Task Switch() => await _dialogs.ShowAsync("SwitchAccountDialog");
-
-    [RelayCommand]
-    void OpenSkinFile()
-    {
-        string skinFilePath = GetSkinFilePath(ActiveAccount);
-        if (!File.Exists(skinFilePath)) return;
-
-        using var process = Process.Start(new ProcessStartInfo("explorer.exe", $"/select,{skinFilePath}"));
-    }
 
     [RelayCommand]
     void GoToSkinPage() => _navigationService.NavigateTo("Settings/Account/Skin");
@@ -137,8 +129,6 @@ internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel
 
         return string.Empty;
     }
-
-    internal string GetSkinFilePath(Account account) => _cacheSkinService.GetSkinFilePath(account);
 
     #endregion
 }

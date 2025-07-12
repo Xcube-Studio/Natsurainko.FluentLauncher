@@ -101,7 +101,7 @@
     <PackageReference Include="System.Text.Json" Version="9.0.6" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="WindowsAPICodePack.Shell.CommonFileDialogs" Version="1.1.5" />
-    <PackageReference Include="WinUIEx" Version="2.5.1" />
+    <PackageReference Include="WinUIEx" Version="2.6.0" />
 
     <!-- Projects -->
     <ProjectReference Include="..\FluentLauncher.Infra.Localization\FluentLauncher.Infra.LocalizedStrings.SourceGenerators\FluentLauncher.Infra.LocalizedStrings.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
@@ -238,8 +238,8 @@
     <None Remove="Assets\PackageIcons\Pre\Wide310x150Logo.scale-150.png" />
     <None Remove="Assets\PackageIcons\Pre\Wide310x150Logo.scale-200.png" />
     <None Remove="Assets\PackageIcons\Pre\Wide310x150Logo.scale-400.png" />
-    <None Remove="Assets\Rig_alex.obj" />
-    <None Remove="Assets\Rig_steve.obj" />
+    <None Remove="Assets\Textures\alex.png" />
+    <None Remove="Assets\Textures\steve.png" />
     <Content Remove="Assets\Libs\authlib-injector-1.2.5.jar" />
     <Content Remove="Assets\PackageIcons\SplashScreen.scale-100.scale-100.png" />
     <Content Remove="Assets\PackageIcons\SplashScreen.scale-100.scale-125.png" />

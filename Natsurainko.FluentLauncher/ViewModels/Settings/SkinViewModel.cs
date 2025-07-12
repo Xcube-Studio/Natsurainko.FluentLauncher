@@ -1,182 +1,212 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.Settings.Mvvm;
 using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Notification;
 using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Animations;
+using HelixToolkit.SharpDX.Core.Model.Scene;
 using HelixToolkit.WinUI;
+using HelixToolkit.WinUI.CommonDX;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Authentication;
-using Nrk.FluentCore.Utils;
+using SharpDX;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text.Json.Nodes;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
-using Windows.Graphics.Imaging;
-using Windows.Storage.Streams;
 using Windows.System;
+using static Nrk.FluentCore.Utils.PlayerTextureHelper;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-internal partial class SkinViewModel : SettingsPageVM, ISettingsViewModel
+internal partial class SkinViewModel : SettingsPageVM, 
+    ISettingsViewModel, IDisposable
 {
     [SettingsProvider]
     private readonly SettingsService _settingsService;
-    private readonly CacheSkinService _cacheSkinService;
+    private readonly CacheInterfaceService _cacheInterfaceService;
     private readonly INotificationService _notificationService;
     private readonly IDialogActivationService<ContentDialogResult> _dialogs;
 
-    private readonly HttpClient _httpClient;
+    private readonly long startAniTime = Stopwatch.GetTimestamp();
+
+    private List<IAnimationUpdater> animationUpdaters = [];
+    private CompositionTargetEx? compositeHelper;
 
     public SkinViewModel(
         SettingsService settingsService,
         AccountService accountService,
-        CacheSkinService cacheSkinService,
+        CacheInterfaceService cacheInterfaceService,
         INotificationService notificationService,
-        IDialogActivationService<ContentDialogResult> dialogs,
-        HttpClient httpClient)
+        IDialogActivationService<ContentDialogResult> dialogs)
     {
         _settingsService = settingsService;
-        _cacheSkinService = cacheSkinService;
+        _cacheInterfaceService = cacheInterfaceService;
         _notificationService = notificationService;
         _dialogs = dialogs;
 
         ActiveAccount = accountService.ActiveAccount!;
 
         (this as ISettingsViewModel).InitializeSettings();
-
-        Task.Run(LoadModel);
-        _httpClient = httpClient;
     }
 
     [ObservableProperty]
     public partial Account ActiveAccount { get; set; }
 
-    public ObservableElement3DCollection ModelGeometry { get; private set; } = [];
+    [ObservableProperty]
+    public partial SceneNodeGroupModel3D? Root { get; set; }
+
+    [ObservableProperty]
+    public partial OrthographicCamera Camera { get; set; } = new() { NearPlaneDistance = 1e-2, FarPlaneDistance = 1e4 };
+
+    [ObservableProperty]
+    public partial IEffectsManager? EffectsManager { get; set; }
+
+    [ObservableProperty]
+    public partial PlayerTextureProfile? TextureProfile { get; set; }
+
+    public double LoadingWidth { get; set; }
 
     public bool IsYggdrasilAccount => ActiveAccount.Type == AccountType.Yggdrasil;
 
-    #region Skin 3D Model Load
-
-    public async Task LoadModel()
+    public async Task LoadTextureProfile()
     {
-        try
+        TextureProfile = await _cacheInterfaceService.RequestTextureProfileAsync(ActiveAccount);
+    }
+
+    public void RenderModel()
+    {
+        if (TextureProfile is null) return;
+
+        var model = TextureProfile.GetRenderModel();
+
+        model.Root.Attach(EffectsManager);
+        model.Root.UpdateAllTransformMatrix();
+
+        if (model.Root.TryGetBound(out var bound))
+            FocusCameraToScene(bound);
+
+        Root!.AddNode(model.Root);
+
+        if (model.HasAnimation)
         {
-            var loader = new ObjReader();
-            var object3Ds = loader.Read(Path.Combine(Package.Current.InstalledLocation.Path, $"Assets/{(await IsSlimSkin() ? "Rig_alex.obj" : "Rig_steve.obj")}"));
+            animationUpdaters = [.. model.Animations.CreateAnimationUpdaters().Values];
 
-            #region Create Skin Texture Stream
-
-            using var fileStream = File.Open(_cacheSkinService.GetSkinFilePath(ActiveAccount), FileMode.Open, FileAccess.Read, FileShare.Read);
-            using var randomAccessStream = fileStream.AsRandomAccessStream();
-
-            var decoder = await BitmapDecoder.CreateAsync(randomAccessStream);
-
-            var transform = new BitmapTransform
+            foreach (var animationUpdater in animationUpdaters)
             {
-                InterpolationMode = BitmapInterpolationMode.NearestNeighbor,
-                ScaledWidth = (uint)1024,
-                ScaledHeight = (uint)1024
-            };
-            InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream();
+                animationUpdater.RepeatMode = AnimationRepeatMode.Loop;
+                animationUpdater.Reset();
+            }
 
-            using var bmp = await decoder.GetSoftwareBitmapAsync(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied, transform, ExifOrientationMode.RespectExifOrientation, ColorManagementMode.ColorManageToSRgb);
-            BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, stream);
-
-            encoder.SetSoftwareBitmap(bmp);
-            await encoder.FlushAsync();
-
-            #endregion
-
-            await App.DispatcherQueue.EnqueueAsync(() =>
-            {
-                var material = new DiffuseMaterial();
-                material.DiffuseMap = TextureModel.Create(stream.AsStreamForRead());
-
-                ModelGeometry.Clear();
-
-                foreach (var object3D in object3Ds)
-                    ModelGeometry.Add(new MeshGeometryModel3D() { Material = material, Geometry = object3D.Geometry });
-
-                stream.Dispose();
-            });
-        }
-        catch (Exception ex)
-        {
-            _notificationService.SkinDisplayFailed(ex);
+            compositeHelper!.Rendering += CompositeHelper_Rendering;
         }
     }
 
-    async Task<bool> IsSlimSkin()
+    public void RenderSkinTexture()
     {
-        string requestUrl = string.Empty;
-        string accessToken = string.Empty;
+        if (TextureProfile is null) return;
+        var material = TextureProfile.CreateSkinTexture();
 
-        if (ActiveAccount is MicrosoftAccount microsoft)
-        {
-            accessToken = microsoft.AccessToken;
-            requestUrl = "https://api.minecraftservices.com/minecraft/profile";
-        }
-        else if (ActiveAccount is YggdrasilAccount yggdrasil)
-        {
-            accessToken = yggdrasil.AccessToken;
-            requestUrl = yggdrasil.YggdrasilServerUrl
-                + "/sessionserver/session/minecraft/profile/"
-                + yggdrasil.Uuid.ToString("N");
-        }
-
-        using var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
-        using var responseMessage = await _httpClient.SendAsync(request);
-        responseMessage.EnsureSuccessStatusCode();
-
-        if (ActiveAccount is MicrosoftAccount)
-        {
-            var json = JsonNode.Parse(responseMessage.Content.ReadAsString())!["skins"]!
-                .AsArray().Where(item => (item!["state"]?.GetValue<string>().Equals("ACTIVE")).GetValueOrDefault()).FirstOrDefault();
-
-            if (json!["variant"]?.GetValue<string>() == "SLIM")
-                return true;
-        }
-        else if (ActiveAccount is YggdrasilAccount)
-        {
-            var jsonBase64 = JsonNode.Parse(responseMessage.Content.ReadAsString())!["properties"]![0]!["value"];
-            var json = JsonNode.Parse(jsonBase64!.GetValue<string>().ConvertFromBase64());
-
-            if (json!["textures"]?["SKIN"]?["metadata"]?["model"]!.GetValue<string>() == "slim")
-                return true;
-        }
-
-        return false;
+        foreach (var node in Root!.SceneNode.Traverse())
+            if (!node.Name.Contains("cape", StringComparison.OrdinalIgnoreCase) && node is MeshNode meshNode)
+                meshNode.Material = material;
     }
 
-    #endregion
+    public void RenderCapeTexture()
+    {
+        if (TextureProfile is null) return;
+        var material = TextureProfile.CreateCapeTexture();
+
+        foreach (var node in Root!.SceneNode.Traverse())
+            if (node.Name.Contains("cape", StringComparison.OrdinalIgnoreCase) && node is MeshNode meshNode)
+                meshNode.Material = material;
+    }
+
+    partial void OnTextureProfileChanged(PlayerTextureProfile? value)
+    {
+        Dispatcher.TryEnqueue(() =>
+        {
+            this.Dispose();
+
+            Root = new SceneNodeGroupModel3D();
+            EffectsManager = new DefaultEffectsManager();
+
+            compositeHelper = new CompositionTargetEx();
+            compositeHelper.Rendering += CompositeHelper_Rendering;
+
+            RenderModel();
+            RenderSkinTexture();
+            RenderCapeTexture();
+        });
+    }
 
     [RelayCommand]
     async Task UploadSkin()
     {
-        await _dialogs.ShowAsync("UploadSkinDialog", ActiveAccount);
-        await LoadModel();
+        if (await _dialogs.ShowAsync("UploadSkinDialog", ActiveAccount) == ContentDialogResult.Primary)
+        {
+            _cacheInterfaceService.RequestTextureProfileAsync(ActiveAccount)
+                .ContinueWith(t => TextureProfile = t.Result, TaskContinuationOptions.OnlyOnRanToCompletion)
+                .Forget();
+        }
     }
 
     [RelayCommand]
-    void NavigateToWebsite()
+    async Task NavigateToWebsite()
     {
-        if (ActiveAccount is YggdrasilAccount yggdrasilAccount)
-            _ = Launcher.LaunchUriAsync(new Uri("https://" + new Uri(yggdrasilAccount.YggdrasilServerUrl).Host));
-        else _ = Launcher.LaunchUriAsync(new Uri("https://www.minecraft.net/msaprofile/mygames/editskin"));
+        string url = ActiveAccount switch
+        {
+            YggdrasilAccount yggdrasilAccount => "https://" + new Uri(yggdrasilAccount.YggdrasilServerUrl).Host,
+            _ => "https://www.minecraft.net/msaprofile/mygames/editskin",
+        };
+
+        await Launcher.LaunchUriAsync(new Uri(url));
+    }
+
+    [RelayCommand]
+    async Task OpenSkinFile()
+    {
+        var textureProfile = await _cacheInterfaceService.RequestTextureProfileAsync(ActiveAccount);
+        string skinFilePath = textureProfile.GetSkinTexturePath(out _);
+
+        if (!File.Exists(skinFilePath)) return;
+        using var process = Process.Start(new ProcessStartInfo("explorer.exe", $"/select,{skinFilePath}"));
+    }
+
+    private void CompositeHelper_Rendering(object? sender, Microsoft.UI.Xaml.Media.RenderingEventArgs e)
+    {
+        foreach (var animationUpdater in animationUpdaters)
+            animationUpdater.Update(Stopwatch.GetTimestamp() - startAniTime, Stopwatch.Frequency);
+    }
+
+    private void FocusCameraToScene(BoundingBox boundingBox)
+    {
+        var maxSize = Math.Max(Math.Max(boundingBox.Width, boundingBox.Height), boundingBox.Depth);
+        double aspect = LoadingWidth / 550;
+
+        Camera.Position = new Vector3(90, 130, 120);
+        Camera.LookDirection = new Vector3(-110, -35, -165);
+        Camera.UpDirection = Vector3.UnitY;
+        Camera.Width = maxSize * aspect * 1.25;
+    }
+
+    public void Dispose()
+    {
+        Root?.Dispose();
+        EffectsManager?.Dispose();
+
+        compositeHelper?.Rendering -= CompositeHelper_Rendering;
+        compositeHelper?.Dispose();
+
+        animationUpdaters.Clear();
     }
 
     #region Converters Methods
@@ -205,6 +235,34 @@ internal partial class SkinViewModel : SettingsPageVM, ISettingsViewModel
         }
 
         return string.Empty;
+    }
+
+    internal string GetActiveCapeDisplayText(PlayerTextureProfile textureProfile)
+    {
+        if (textureProfile?.ActiveCape is null)
+            return LocalizedStrings.Settings_SkinPage__NoCape;
+
+        return $"{textureProfile.ActiveCape.Alias} {LocalizedStrings.Settings_SkinPage__Cape}";
+    }
+
+    internal string GetSkinModelDisplayText(PlayerTextureProfile textureProfile)
+    {
+        if (textureProfile is null) return string.Empty;
+
+        string variant = textureProfile.ActiveSkin?.Variant ?? PlayerTextureProfileExtensions.CalculateModel(textureProfile.Uuid);
+        return variant switch
+        {
+            "slim" => LocalizedStrings.Settings_SkinPage__Slim,
+            _ => LocalizedStrings.Settings_SkinPage__Classic
+        };
+    }
+
+    internal bool CanOpenSkinFile(PlayerTextureProfile? textureProfile)
+    {
+        if (textureProfile is null) return false;
+
+        textureProfile.GetSkinTexturePath(out var value);
+        return !value;
     }
 
     #endregion

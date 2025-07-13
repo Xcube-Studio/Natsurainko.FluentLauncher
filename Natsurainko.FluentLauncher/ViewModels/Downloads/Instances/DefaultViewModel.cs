@@ -130,9 +130,8 @@ internal partial class DefaultViewModel(
                 .Deserialize(FLSerializerContext.Default.VersionManifestJsonObject)!;
 
             VersionManifestItem[] instances = versionManifest.Versions;
-            VersionManifestItem[] latestInstances = [.. versionManifest.Latest.Select(kv => instances.First(i => i.Id == kv.Value))];
-            var latestRelease = latestInstances.FirstOrDefault(i => i.Type == "release")!;
-            var latestSnapshot = latestInstances.FirstOrDefault(i => i.Type == "snapshot")!;
+            var latestRelease = instances.FirstOrDefault(i => i.Type == "release")!;
+            var latestSnapshot = instances.FirstOrDefault(i => i.Type == "snapshot")!;
 
             if (string.IsNullOrEmpty(_versionManifestJson))
                 _versionManifestJson = versionManifestJson;

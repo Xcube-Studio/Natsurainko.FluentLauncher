@@ -89,7 +89,7 @@ jobs:
           # Sign .msixbundle
           $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.PFX_BASE64_ENCODED }}")
           [IO.File]::WriteAllBytes("${{ env.SigningKey_Path }}", $pfx_cert_byte)
-          & $signtool sign /f "${{ env.SigningKey_Path }}" /fd SHA256 /td SHA256 "${{ steps.get_package_info.outputs.bundleFileName }}"
+          & $signtool sign /f "${{ env.SigningKey_Path }}" /p "${{ secrets.PFX_PASSWORD }}" /fd SHA256 /td SHA256 "${{ steps.get_package_info.outputs.bundleFileName }}"
           rm "${{ env.SigningKey_Path }}"
 
       - name: Upload .msixbundle to artifacts

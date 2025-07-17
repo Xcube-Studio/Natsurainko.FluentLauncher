@@ -182,7 +182,8 @@ internal class LaunchService(
         {
             var targetJavaVersion = instance.GetSuitableJavaVersion();
             var javaInfos = settingsService.Javas
-                .Where(File.Exists)
+                .Where(f => FileInfoExtensions.TryParse(f, out var fileInfo) && fileInfo.Exists && 
+                    (fileInfo.LinkTarget is null || File.Exists(fileInfo.LinkTarget)))
                 .Select(JavaUtils.GetJavaInfo).ToArray();
 
             JavaInfo[] possiblyAvailableJavas;
@@ -213,7 +214,8 @@ internal class LaunchService(
         {
             preCheckData.Java = settingsService.ActiveJava;
 
-            if (!File.Exists(preCheckData.Java))
+            if (!FileInfoExtensions.TryParse(preCheckData.Java, out var fileInfo) || !fileInfo.Exists ||
+                (fileInfo.LinkTarget is not null && !File.Exists(fileInfo.LinkTarget)))
                 throw new JavaRuntimeFileNotFoundException(preCheckData.Java);
         }
 

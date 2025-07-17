@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -26,5 +27,19 @@ internal static class FileInfoExtensions
         CloseHandle(vHandle);
 
         return result;
+    }
+
+    public static bool TryParse(string filePath, [NotNullWhen(true)] out FileInfo? fileInfo)
+    {
+        try
+        {
+            fileInfo = new FileInfo(filePath);
+            return true;
+        }
+        catch (Exception)
+        {
+            fileInfo = null;
+            return false;
+        }
     }
 }

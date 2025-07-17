@@ -909,6 +909,8 @@ internal partial class LaunchTaskViewModel : TaskViewModel
                 .Replace("${file}", javaRuntimeFileNotFoundException.FileName),
             JavaRuntimeIncompatibleException javaRuntimeIncompatibleException => LocalizedStrings.Exceptions__JavaRuntimeIncompatibleException
                 .Replace("${version}", javaRuntimeIncompatibleException.TargetJavaVersion.ToString()),
+            X86JavaRuntimeMemoryException => LocalizedStrings.Exceptions__X86JavaRuntimeMemoryException,
+            NoActiveJavaRuntimeException => LocalizedStrings.Exceptions__NoActiveJavaRuntimeException,
             NoActiveAccountException => LocalizedStrings.Exceptions__NoActiveAccountException,
             AccountNotFoundException accountNotFoundException => LocalizedStrings.Exceptions__AccountNotFoundException
                 .Replace("${account}", accountNotFoundException.Account.Name),

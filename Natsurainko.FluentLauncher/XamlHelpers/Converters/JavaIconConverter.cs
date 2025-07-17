@@ -1,26 +1,38 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Imaging;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using System;
 using System.IO;
 using Windows.Storage;
+using Windows.Storage.FileProperties;
 
 namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
+
+using FontIcon = Microsoft.UI.Xaml.Controls.FontIcon;
 
 public partial class JavaIconConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (!File.Exists(value.ToString()))
-            return new Microsoft.UI.Xaml.Controls.FontIcon() { Glyph = "\ue711" };
+        if (value is not string path || 
+            !FileInfoExtensions.TryParse(path, out var fileInfo) || !fileInfo.Exists)
+            return new FontIcon() { Glyph = "\ue711" };
 
-        var storageFile = StorageFile.GetFileFromPathAsync(value.ToString()).GetAwaiter().GetResult();
-        using var thumbnail = storageFile.GetScaledImageAsThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.SingleItem, 64, Windows.Storage.FileProperties.ThumbnailOptions.ResizeThumbnail).GetAwaiter().GetResult();
+        if (fileInfo.LinkTarget is not null)
+        {
+            if (!File.Exists(fileInfo.LinkTarget))
+                return new FontIcon() { Glyph = "\ue711" };
 
-        var bitmapImage = new BitmapImage();
+            path = fileInfo.LinkTarget;
+        }
 
-        _ = bitmapImage.SetSourceAsync(thumbnail);
+        var storageFile = StorageFile.GetFileFromPathAsync(path).GetAwaiter().GetResult();
+        using var thumbnail = storageFile.GetScaledImageAsThumbnailAsync(
+            ThumbnailMode.SingleItem, 64, ThumbnailOptions.ResizeThumbnail).GetAwaiter().GetResult();
 
+        BitmapImage bitmapImage = new();
+        bitmapImage.SetSourceAsync(thumbnail).AsTask().Forget();
 
         return new ImageIcon() { Source = bitmapImage };
     }

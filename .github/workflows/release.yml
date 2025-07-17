@@ -30,6 +30,9 @@ jobs:
       create_package: true
       create_msixupload: true
       channel: "Stable"
+    secrets:
+      PFX_BASE64_ENCODED: ${{ secrets.PFX_BASE64_ENCODED }}
+      PFX_PASSWORD: ${{ secrets.PFX_PASSWORD }}
 
   release:
     name: Create .msixbundle

@@ -32,6 +32,11 @@ on:
         required: false
         default: "Disable"
         type: string
+    secrets:
+      PFX_BASE64_ENCODED:
+        required: true
+      PFX_PASSWORD:
+        required: true
 
 jobs:
   build:

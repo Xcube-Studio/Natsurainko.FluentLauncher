@@ -23,6 +23,9 @@ jobs:
       use_preview_version: true
       channel: "Preview"
       enable_load_extensions: ${{ inputs.EnableLoadExtensions }}
+    secrets:
+      PFX_BASE64_ENCODED: ${{ secrets.PFX_BASE64_ENCODED }}
+      PFX_PASSWORD: ${{ secrets.PFX_PASSWORD }}
 
   Pack:
     name: Pack .msixbundle

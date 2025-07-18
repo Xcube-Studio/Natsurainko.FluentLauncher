@@ -37,6 +37,7 @@ namespace Natsurainko.FluentLauncher;
 [JsonSerializable(typeof(string[]))]
 [JsonSerializable(typeof(Windows.UI.Color))]
 [JsonSerializable(typeof(WinUIEx.WindowState))]
+[JsonSerializable(typeof(Windows.Win32.UI.WindowsAndMessaging.WINDOWPLACEMENT))]
 internal partial class FLSerializerContext : JsonSerializerContext { }
 
 [JsonSerializable(typeof(InstanceConfig))]

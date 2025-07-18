@@ -1,1 +1,6 @@
 SetWindowText
+GetWindowPlacement
+SetWindowPlacement
+MonitorFromWindow
+GetMonitorInfoW
+GetDpiForMonitor

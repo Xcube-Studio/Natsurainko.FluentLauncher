@@ -8,6 +8,7 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Windows.Storage;
+using Windows.Win32.UI.WindowsAndMessaging;
 
 namespace Natsurainko.FluentLauncher.Services.Settings;
 
@@ -163,6 +164,9 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(Default = WinUIEx.WindowState.Normal, Converter = typeof(JsonStringConverter<WinUIEx.WindowState>))]
     public partial WinUIEx.WindowState AppWindowState { get; set; }
 
+    [SettingItem(Converter = typeof(JsonStringConverter<WINDOWPLACEMENT>))]
+    public partial WINDOWPLACEMENT WINDOWPLACEMENT { get; set; }
+
     #endregion
 
     #region User Interface
@@ -187,7 +191,10 @@ public partial class SettingsService : SettingsContainer
     public SettingsService(ISettingsStorage storage) : base(storage)
     {
         // Configure JsonSerializerContext for NativeAOT-compatible JsonStringConverter
-        JsonStringConverterConfig.SerializerContext = FLSerializerContext.Default;
+        JsonStringConverterConfig.SerializerContext = new FLSerializerContext(new JsonSerializerOptions 
+        {
+            IncludeFields = true,
+        });
 
         var appsettings = ApplicationData.Current.LocalSettings;
 

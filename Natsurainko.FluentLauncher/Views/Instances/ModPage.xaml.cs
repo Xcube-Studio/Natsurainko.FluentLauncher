@@ -25,37 +25,6 @@ public sealed partial class ModPage : Page, IBreadcrumbBarAware
         InitializeComponent();
     }
 
-    private void ToggleSwitch_Loaded(object sender, RoutedEventArgs e)
-    {
-        var toggleSwitch = (ToggleSwitch)sender;
-        bool suppressOnceInvoke = false;
-
-        void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
-        {
-            if (suppressOnceInvoke)
-            {
-                suppressOnceInvoke = false;
-                return;
-            }
-
-            if (toggleSwitch.DataContext is MinecraftMod minecraftMod)
-            {
-                if (!VM.TrySwitchMod(minecraftMod, toggleSwitch.IsOn))
-                {
-                    suppressOnceInvoke = true;
-                    toggleSwitch.IsOn = !toggleSwitch.IsOn;
-                }
-            }
-        }
-
-        toggleSwitch.Toggled += ToggleSwitch_Toggled;
-        toggleSwitch.Unloaded += (_, _) =>
-        {
-            toggleSwitch.Loaded -= ToggleSwitch_Loaded;
-            toggleSwitch.Toggled -= ToggleSwitch_Toggled;
-        };
-    }
-
     private void Page_DragEnter(object sender, DragEventArgs e)
     {
         e.AcceptedOperation = DataPackageOperation.Copy;

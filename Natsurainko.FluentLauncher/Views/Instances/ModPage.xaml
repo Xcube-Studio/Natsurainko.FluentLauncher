@@ -5,11 +5,11 @@
     xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:data="using:Nrk.FluentCore.GameManagement.Mods"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Instances"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit_behaviors="using:CommunityToolkit.WinUI.Behaviors"
+    xmlns:vm="using:Natsurainko.FluentLauncher.ViewModels.Instances"
     xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
     x:Name="Page"
     AllowDrop="True"
@@ -82,7 +82,7 @@
             </StackPanel>
         </ListView.Header>
         <ListView.ItemTemplate>
-            <DataTemplate x:DataType="data:MinecraftMod">
+            <DataTemplate x:DataType="vm:ModItemVM">
                 <controls:SettingsCard
                     Padding="16,8"
                     HorizontalAlignment="Stretch"
@@ -104,7 +104,7 @@
                             <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                 <TextBlock
                                     FontWeight="SemiBold"
-                                    Text="{x:Bind DisplayName}"
+                                    Text="{x:Bind Mod.DisplayName}"
                                     TextTrimming="CharacterEllipsis" />
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -118,7 +118,7 @@
                                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                         MaxLines="1"
                                         Style="{ThemeResource CaptionTextBlockStyle}"
-                                        Text="{x:Bind Converter={StaticResource ModInfoConverter}}"
+                                        Text="{x:Bind Mod, Converter={StaticResource ModInfoConverter}}"
                                         TextTrimming="CharacterEllipsis"
                                         TextWrapping="NoWrap" />
 
@@ -138,7 +138,7 @@
                                                     MaxWidth="320"
                                                     Margin="-5"
                                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                                    Text="{x:Bind Converter={StaticResource ModInfoConverter}}"
+                                                    Text="{x:Bind Mod, Converter={StaticResource ModInfoConverter}}"
                                                     TextWrapping="WrapWholeWords" />
                                             </Flyout>
                                         </Button.Flyout>
@@ -151,7 +151,7 @@
                         <MenuFlyout Opened="MenuFlyout_Opened" Placement="Bottom">
                             <MenuFlyoutItem
                                 x:Uid="Instances_ModPage_MenuItem1"
-                                CommandParameter="{x:Bind}"
+                                CommandParameter="{x:Bind Mod}"
                                 Text="Show in Explorer">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph="&#xEC51;" />
@@ -159,7 +159,7 @@
                             </MenuFlyoutItem>
                             <MenuFlyoutItem
                                 x:Uid="Instances_ModPage_MenuItem2"
-                                CommandParameter="{x:Bind}"
+                                CommandParameter="{x:Bind Mod}"
                                 Icon="Delete"
                                 Text="Delete" />
                             <MenuFlyoutSeparator x:Name="MenuFlyoutSeparator" x:Load="{x:Bind local:ModPage.ShowMcModSearchOption()}" />
@@ -167,7 +167,7 @@
                                 x:Name="MenuFlyoutItem"
                                 x:Uid="Instances_ModPage_MenuItem3"
                                 x:Load="{x:Bind local:ModPage.ShowMcModSearchOption()}"
-                                CommandParameter="{x:Bind}"
+                                CommandParameter="{x:Bind Mod}"
                                 Text="Search on mcmod.cn">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph="&#xE71E;" />
@@ -175,11 +175,7 @@
                             </MenuFlyoutItem>
                         </MenuFlyout>
                     </controls:SettingsCard.ContextFlyout>
-                    <ToggleSwitch
-                        Name="ToggleSwitch"
-                        DataContext="{x:Bind}"
-                        IsOn="{x:Bind IsEnabled}"
-                        Loaded="ToggleSwitch_Loaded" />
+                    <ToggleSwitch IsOn="{x:Bind IsOn, Mode=TwoWay}" />
                 </controls:SettingsCard>
             </DataTemplate>
         </ListView.ItemTemplate>

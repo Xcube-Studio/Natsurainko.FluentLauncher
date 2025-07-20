@@ -413,30 +413,8 @@
                                 </Button>
                                 <Button
                                     x:Uid="Settings_AppearancePage_ColorSelectorButton"
-                                    Content="Color Selector"
-                                    Style="{ThemeResource AccentButtonStyle}">
-                                    <Button.Flyout>
-                                        <Flyout x:Name="ThemeColorFlyout" Placement="Full">
-                                            <Flyout.FlyoutPresenterStyle>
-                                                <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
-                                                    <Setter Property="MaxHeight" Value="Infinity" />
-                                                    <Setter Property="MaxWidth" Value="Infinity" />
-                                                </Style>
-                                            </Flyout.FlyoutPresenterStyle>
-                                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <controls:ColorPicker Color="{x:Bind VM.CustomThemeColor.GetValueOrDefault(), Mode=TwoWay, BindBack=VM.SetCustomThemeColor}" />
-                                                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                                                    <Button
-                                                        Command="{x:Bind VM.HideFlyoutCommand}"
-                                                        CommandParameter="{x:Bind ThemeColorFlyout}"
-                                                        Style="{ThemeResource AccentButtonStyle}">
-                                                        <TextBlock x:Uid="Buttons_Confirm" Text="Confirm" />
-                                                    </Button>
-                                                </StackPanel>
-                                            </StackPanel>
-                                        </Flyout>
-                                    </Button.Flyout>
-                                </Button>
+                                    Command="{x:Bind VM.SelectThemeColorCommand}"
+                                    Content="Color Selector" />
                             </StackPanel>
                         </controls:SettingsCard>
                         <controls:SettingsCard
@@ -609,30 +587,9 @@
                                 </GridView>
                                 <Button
                                     x:Uid="Settings_AppearancePage_ColorSelectorButton"
+                                    Command="{x:Bind VM.SelectBackgroundColorCommand}"
                                     Content="Color Selector"
-                                    Style="{ThemeResource AccentButtonStyle}">
-                                    <Button.Flyout>
-                                        <Flyout x:Name="BackgroundColorFlyout" Placement="Full">
-                                            <Flyout.FlyoutPresenterStyle>
-                                                <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
-                                                    <Setter Property="MaxHeight" Value="Infinity" />
-                                                    <Setter Property="MaxWidth" Value="Infinity" />
-                                                </Style>
-                                            </Flyout.FlyoutPresenterStyle>
-                                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <controls:ColorPicker Color="{x:Bind VM.CustomBackgroundColor.GetValueOrDefault(), Mode=TwoWay, BindBack=VM.SetCustomBackgroundColor}" />
-                                                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                                                    <Button
-                                                        Command="{x:Bind VM.HideFlyoutCommand}"
-                                                        CommandParameter="{x:Bind BackgroundColorFlyout}"
-                                                        Style="{ThemeResource AccentButtonStyle}">
-                                                        <TextBlock x:Uid="Buttons_Confirm" Text="Confirm" />
-                                                    </Button>
-                                                </StackPanel>
-                                            </StackPanel>
-                                        </Flyout>
-                                    </Button.Flyout>
-                                </Button>
+                                    Style="{ThemeResource AccentButtonStyle}" />
                             </StackPanel>
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>

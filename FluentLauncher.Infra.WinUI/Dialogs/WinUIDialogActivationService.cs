@@ -8,43 +8,63 @@ using System.Threading.Tasks;
 
 namespace FluentLauncher.Infra.WinUI.Dialogs;
 
-class WinUIDialogActivationService : IDialogActivationService<ContentDialogResult>
+class WinUIDialogActivationService(IDialogProvider dialogProvider, IWindowService windowService) : IDialogActivationService<ContentDialogResult>
 {
-    private readonly IDialogProvider _dialogProvider;
-    private readonly IWindowService _windowService;
-
-    private readonly XamlRoot _xamlRoot;
-
-    public WinUIDialogActivationService(IDialogProvider dialogProvider, IWindowService windowService)
-    {
-        _dialogProvider = dialogProvider;
-        _windowService = windowService;
-
-        _xamlRoot = ((WinUIWindowService)windowService).Window.Content.XamlRoot;
-    }
+    private readonly XamlRoot _xamlRoot = ((WinUIWindowService)windowService).Window.Content.XamlRoot;
 
     public Task<ContentDialogResult> ShowAsync(string key)
     {
-        var dialog = (ContentDialog)_dialogProvider.GetDialog(key);
+        var dialog = (ContentDialog)dialogProvider.GetDialog(key);
         dialog.XamlRoot = _xamlRoot;
 
-        if (((WinUIWindowService)_windowService).Window.Content is FrameworkElement frameworkElement)
+        if (((WinUIWindowService)windowService).Window.Content is FrameworkElement frameworkElement)
             dialog.RequestedTheme = frameworkElement.RequestedTheme;
 
         return dialog.ShowAsync().AsTask();
     }
 
-    public Task<ContentDialogResult> ShowAsync(string key, object param)
+    public async Task<(ContentDialogResult, TDialogResult?)> ShowAsync<TDialogResult>(string key)
     {
-        var dialog = (ContentDialog)_dialogProvider.GetDialog(key);
+        var dialog = (ContentDialog)dialogProvider.GetDialog(key);
         dialog.XamlRoot = _xamlRoot;
 
-        if (((WinUIWindowService)_windowService).Window.Content is FrameworkElement frameworkElement)
+        if (((WinUIWindowService)windowService).Window.Content is FrameworkElement frameworkElement)
+            dialog.RequestedTheme = frameworkElement.RequestedTheme;
+
+        if (dialog is not IDialogResultAware<TDialogResult> dialogResultAware)
+            throw new InvalidOperationException($"Dialog with key '{key}' does not implement {nameof(IDialogResultAware<TDialogResult>)} interface.");
+
+        return (await dialog.ShowAsync(), dialogResultAware.Result);
+    }
+
+    public Task<ContentDialogResult> ShowAsync(string key, object param)
+    {
+        var dialog = (ContentDialog)dialogProvider.GetDialog(key);
+        dialog.XamlRoot = _xamlRoot;
+
+        if (((WinUIWindowService)windowService).Window.Content is FrameworkElement frameworkElement)
             dialog.RequestedTheme = frameworkElement.RequestedTheme;
 
         if (dialog.DataContext is IDialogParameterAware vm)
             vm.HandleParameter(param);
 
         return dialog.ShowAsync().AsTask();
+    }
+
+    public async Task<(ContentDialogResult, TDialogResult?)> ShowAsync<TDialogResult>(string key, object param)
+    {
+        var dialog = (ContentDialog)dialogProvider.GetDialog(key);
+        dialog.XamlRoot = _xamlRoot;
+
+        if (((WinUIWindowService)windowService).Window.Content is FrameworkElement frameworkElement)
+            dialog.RequestedTheme = frameworkElement.RequestedTheme;
+
+        if (dialog.DataContext is IDialogParameterAware vm)
+            vm.HandleParameter(param);
+
+        if (dialog is not IDialogResultAware<TDialogResult> dialogResultAware)
+            throw new InvalidOperationException($"Dialog with key '{key}' does not implement {nameof(IDialogResultAware<TDialogResult>)} interface.");
+
+        return (await dialog.ShowAsync(), dialogResultAware.Result);
     }
 }

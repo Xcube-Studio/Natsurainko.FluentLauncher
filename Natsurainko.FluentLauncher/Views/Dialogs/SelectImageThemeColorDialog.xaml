@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentDialog
+    x:Class="Natsurainko.FluentLauncher.Views.Dialogs.SelectImageThemeColorDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Dialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Select Color From Background"
+    DefaultButton="Primary"
+    PrimaryButtonText="Confirm"
+    SecondaryButtonText="Cancel"
+    Style="{ThemeResource DefaultContentDialogStyle}"
+    mc:Ignorable="d">
+
+    <GridView ItemsSource="{x:Bind VM.Colors, Mode=TwoWay}" SelectedItem="{x:Bind VM.Color, Mode=OneWay}">
+        <GridView.Header>
+            <TextBlock
+                Margin="0,0,0,16"
+                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                Text="Colors that might be suitable for use as accent colors" />
+        </GridView.Header>
+        <GridView.ItemTemplate>
+            <DataTemplate x:DataType="Color">
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="56" />
+                        <ColumnDefinition Width="72" />
+                    </Grid.ColumnDefinitions>
+                    <Border Height="36" CornerRadius="4">
+                        <Border.Background>
+                            <SolidColorBrush Color="{Binding}" />
+                        </Border.Background>
+                    </Border>
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="8,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Style="{ThemeResource CaptionTextBlockStyle}"
+                        Text="{Binding Converter={StaticResource ColorHexCodeConverter}}" />
+                </Grid>
+            </DataTemplate>
+        </GridView.ItemTemplate>
+    </GridView>
+</ContentDialog>

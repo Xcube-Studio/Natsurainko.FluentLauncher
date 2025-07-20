@@ -12,7 +12,6 @@ using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement.Instances;
 using Nrk.FluentCore.GameManagement.Mods;
-using SharpDX.Direct3D9;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;

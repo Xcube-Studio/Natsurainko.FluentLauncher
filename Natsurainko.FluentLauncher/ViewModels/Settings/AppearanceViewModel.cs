@@ -1,20 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
+using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI.Composition.SystemBackdrops;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views.Settings;
-using Natsurainko.FluentLauncher.XamlHelpers.Converters;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.UI;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
 internal partial class AppearanceViewModel : SettingsPageVM<AppearancePage>, ISettingsViewModel
@@ -22,11 +19,16 @@ internal partial class AppearanceViewModel : SettingsPageVM<AppearancePage>, ISe
     [SettingsProvider]
     private readonly SettingsService _settingsService;
     private readonly INotificationService _notificationService;
+    private readonly IDialogActivationService<ContentDialogResult> _dialogActivationService;
 
-    public AppearanceViewModel(SettingsService settingsService, INotificationService notificationService)
+    public AppearanceViewModel(
+        SettingsService settingsService, 
+        INotificationService notificationService,
+        IDialogActivationService<ContentDialogResult> dialogActivationService)
     {
         _settingsService = settingsService;
         _notificationService = notificationService;
+        _dialogActivationService = dialogActivationService;
 
         (this as ISettingsViewModel).InitializeSettings();
     }
@@ -53,7 +55,7 @@ internal partial class AppearanceViewModel : SettingsPageVM<AppearancePage>, ISe
     [BindToSetting(Path = nameof(SettingsService.ImageFilePath))]
     [NotifyPropertyChangedFor(nameof(ImageFileExists))]
     [NotifyPropertyChangedFor(nameof(CanUseImageThemeColor))]
-    public partial string ImageFilePath { get; set; }
+    public partial string ImageFilePath { get; set; } = string.Empty;
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.SolidSelectedIndex))]
@@ -94,10 +96,6 @@ internal partial class AppearanceViewModel : SettingsPageVM<AppearancePage>, ISe
 
     public bool CanUseImageThemeColor => BackgroundMode == 3 && ImageFileExists;
 
-    public void SetCustomThemeColor(Color color) => CustomThemeColor = color;
-
-    public void SetCustomBackgroundColor(Color color) => CustomBackgroundColor = color;
-
     [RelayCommand]
     void HideFlyout(Flyout flyout) => flyout.Hide();
 
@@ -105,12 +103,36 @@ internal partial class AppearanceViewModel : SettingsPageVM<AppearancePage>, ISe
     void RadioButtonChecked(int index) => Dispatcher.TryEnqueue(() => BackgroundMode = index);
 
     [RelayCommand]
+    async Task SelectThemeColor()
+    {
+        (ContentDialogResult result, Color? color) = await _dialogActivationService.ShowAsync<Color>(
+            "SelectColorDialog", CustomThemeColor!);
+
+        if (result == ContentDialogResult.Primary)
+            CustomThemeColor = color;
+    }
+
+    [RelayCommand]
+    async Task SelectBackgroundColor()
+    {
+        (ContentDialogResult result, Color? color) = await _dialogActivationService.ShowAsync<Color>(
+            "SelectColorDialog", CustomBackgroundColor!);
+
+        if (result == ContentDialogResult.Primary)
+            CustomBackgroundColor = color;
+    }
+
+    [RelayCommand]
     async Task UseImageThemeColor()
     {
-        CustomThemeColor = await DominantColorHelper.GetColorFromImageAsync(ImageFilePath);
-        var converter = (ColorHexCodeConverter)Application.Current.Resources["ColorHexCodeConverter"];
+        //CustomThemeColor = await DominantColorHelper.GetColorFromImageAsync(ImageFilePath);
+        //var converter = (ColorHexCodeConverter)Application.Current.Resources["ColorHexCodeConverter"];
 
-        _notificationService.ThemeColorApplied(converter.Convert(CustomThemeColor, null, null, null).ToString());
+        //_notificationService.ThemeColorApplied(converter.Convert(CustomThemeColor, null, null, null).ToString()!);
+
+        (ContentDialogResult result, Color? color) = await _dialogActivationService.ShowAsync<Color>(
+            "SelectImageThemeColorDialog", ImageFilePath);
+
     }
 
     protected override void OnLoaded()

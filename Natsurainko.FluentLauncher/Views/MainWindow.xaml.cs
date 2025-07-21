@@ -64,16 +64,16 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
         AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
         (MinWidth, MinHeight) = _settingsService.FinishGuide ? (516, 328) : (1235, 675);
 
-        if (_settingsService.FinishGuide)
-        { 
-            PInvoke.SetWindowPlacement(
-                new Windows.Win32.Foundation.HWND(WindowNative.GetWindowHandle(this)),
-                _settingsService.WINDOWPLACEMENT);
-        }
-        else
+        if (_settingsService.WINDOWPLACEMENT.length == 0)
         {
             (Width, Height) = (1235, 675);
             this.CenterOnScreen();
+        }
+        else
+        {
+            PInvoke.SetWindowPlacement(
+                new Windows.Win32.Foundation.HWND(WindowNative.GetWindowHandle(this)),
+                _settingsService.WINDOWPLACEMENT);
         }
 
         this.BringToFront();

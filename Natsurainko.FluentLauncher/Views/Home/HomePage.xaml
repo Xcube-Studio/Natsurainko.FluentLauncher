@@ -14,6 +14,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:userControls="using:Natsurainko.FluentLauncher.UserControls"
     Loaded="Page_Loaded"
+    Unloaded="Page_Unloaded"
     mc:Ignorable="d">
     <Page.Resources>
         <ThemeShadow x:Name="SharedShadow" />
@@ -461,6 +462,7 @@
                             <Flyout x:Name="accountSelectorFlyout" Placement="TopEdgeAlignedLeft">
                                 <StackPanel Margin="-8,-10,-8,-10" Spacing="3">
                                     <ListView
+                                        x:Name="AccountsListView"
                                         Margin="-6,0"
                                         ItemsSource="{x:Bind VM.Accounts}"
                                         SelectedItem="{x:Bind VM.ActiveAccount, Mode=TwoWay}"
@@ -625,7 +627,7 @@
                                 </Flyout.FlyoutPresenterStyle>
                                 <Grid>
                                     <ListView
-                                        x:Name="listView"
+                                        x:Name="InstancesListView"
                                         MinWidth="250"
                                         MaxWidth="425"
                                         MaxHeight="250"

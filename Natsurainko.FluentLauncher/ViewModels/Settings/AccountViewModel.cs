@@ -14,7 +14,6 @@ using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Authentication;
 using System;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 #nullable disable
@@ -42,7 +41,6 @@ internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel, IR
         _navigationService = navigationService;
         _dialogs = dialogs;
 
-        Accounts = accountService.Accounts;
         ActiveAccount = accountService.ActiveAccount;
 
         (this as ISettingsViewModel).InitializeSettings();
@@ -60,9 +58,7 @@ internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel, IR
     [NotifyPropertyChangedFor(nameof(IsOfflineAccount))]
     public partial Account ActiveAccount { get; set; }
 
-    public ReadOnlyObservableCollection<Account> Accounts { get; init; }
-
-    public bool IsOfflineAccount => ActiveAccount.Type == AccountType.Offline;
+    public bool IsOfflineAccount => ActiveAccount?.Type == AccountType.Offline;
 
     [RelayCommand]
     async Task Login() => await _dialogs.ShowAsync("AuthenticationWizardDialog");

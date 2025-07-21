@@ -8,7 +8,6 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Views.Settings;
-using Natsurainko.FluentLauncher.XamlHelpers.Converters;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.UI;

@@ -17,6 +17,7 @@
     PrimaryButtonText="Confirm"
     SecondaryButtonText="Cancel"
     Style="{ThemeResource DefaultContentDialogStyle}"
+    Unloaded="ContentDialog_Unloaded"
     mc:Ignorable="d">
 
     <Grid>

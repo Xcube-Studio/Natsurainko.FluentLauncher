@@ -45,4 +45,10 @@ internal sealed partial class SwitchAccountDialog : ContentDialog
     }
 
     #endregion
+
+    private void ContentDialog_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        this.DataContext = null;
+        ListView.ItemsSource = null;
+    }
 }

@@ -89,33 +89,34 @@ public sealed partial class HomePage : Page
         LaunchButton.Focus(FocusState.Programmatic);
     }
 
-    private void Flyout_Opened(object sender, object e)
+    private void Page_Unloaded(object sender, RoutedEventArgs e)
     {
-        var vm = (HomeViewModel)DataContext;
-        listView.ScrollIntoView(vm.ActiveMinecraftInstance);
+        this.DataContext = null;
+
+        InstancesListView.ItemsSource = null;
+        AccountsListView.ItemsSource = null;
     }
 
-    private void HideAccountFlyoutHandler(object sender, RoutedEventArgs e)
-    {
-        accountSelectorFlyout.Hide();
-    }
+    private void Flyout_Opened(object sender, object e) => InstancesListView.ScrollIntoView(VM.ActiveMinecraftInstance);
+
+    private void HideAccountFlyoutHandler(object sender, RoutedEventArgs e) => accountSelectorFlyout.Hide();
 
     private void DropDownButton_Click(object sender, RoutedEventArgs e)
     {
         var transform = DropDownButton.TransformToVisual(Grid);
         var absolutePosition = transform.TransformPoint(new Point(0, 0));
 
-        listView.MaxHeight = absolutePosition.Y - 50;
+        InstancesListView.MaxHeight = absolutePosition.Y - 50;
 
         if (this.ActualWidth > 550)
         {
-            listView.MaxWidth = 400;
-            listView.Width = double.NaN;
+            InstancesListView.MaxWidth = 400;
+            InstancesListView.Width = double.NaN;
         }
         else
         {
-            listView.MaxWidth = 430;
-            listView.Width = 430;
+            InstancesListView.MaxWidth = 430;
+            InstancesListView.Width = 430;
         }
     }
 

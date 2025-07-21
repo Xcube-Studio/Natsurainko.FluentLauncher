@@ -33,11 +33,9 @@ internal partial class ConfigViewModel(AccountService accountService, IDialogAct
 
     private readonly IDialogActivationService<ContentDialogResult> _dialogs = dialogs;
 
-    public bool inited = false;
-
     partial void OnTargetedAccountChanged(Account value)
     {
-        if (inited)
+        if (IsActive)
             InstanceConfig.Account = TargetedAccount;
     }
 
@@ -48,8 +46,6 @@ internal partial class ConfigViewModel(AccountService accountService, IDialogAct
         VmArguments = [.. InstanceConfig.VmParameters ?? []];
 
         LoadTargetedAccount();
-
-        inited = true;
     }
 
     private void LoadTargetedAccount()

@@ -213,7 +213,7 @@
                             HorizontalContentAlignment="Stretch"
                             VerticalContentAlignment="Stretch"
                             BorderThickness="1"
-                            CommandParameter="{x:Bind VM.LatestRelease, Mode=OneWay}"
+                            CommandParameter="{x:Bind VM.LatestSnapshot, Mode=OneWay}"
                             IsClickEnabled="True">
                             <controls:SettingsCard.Header>
                                 <Grid MinWidth="250" Background="Transparent">

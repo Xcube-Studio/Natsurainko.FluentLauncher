@@ -20,9 +20,10 @@ public sealed partial class ConfigPage : Page, IBreadcrumbBarAware
 
     private void Page_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        var vm = (this.DataContext as ConfigViewModel)!;
-        vm.inited = false;
-        vm.InstanceConfig = null!;
+        VM.InstanceConfig = null;
+
+        this.DataContext = null;
+        ComboBox.ItemsSource = null;
     }
 
     #region Converters Methods

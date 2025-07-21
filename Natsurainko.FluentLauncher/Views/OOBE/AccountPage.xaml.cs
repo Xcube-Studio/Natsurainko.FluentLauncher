@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.WinUI;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
@@ -8,7 +9,7 @@ using Nrk.FluentCore.Authentication;
 
 namespace Natsurainko.FluentLauncher.Views.OOBE;
 
-public sealed partial class AccountPage : Page
+public sealed partial class AccountPage : Page, IRecipient<ActiveAccountChangedMessage>
 {
     OOBEViewModel VM => (OOBEViewModel)DataContext;
 
@@ -19,24 +20,25 @@ public sealed partial class AccountPage : Page
 
     private void Page_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        var vm = this.DataContext as OOBEViewModel;
-
-        WeakReferenceMessenger.Default.Register<ActiveAccountChangedMessage>(vm!, (r, m) =>
-        {
-            OOBEViewModel vm = (r as OOBEViewModel)!;
-
-            vm.processingActiveAccountChangedMessage = true;
-            vm.ActiveAccount = m.Value;
-            vm.processingActiveAccountChangedMessage = false;
-        });
-
-        void Page_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-        {
-            WeakReferenceMessenger.Default.Unregister<ActiveAccountChangedMessage>(vm!);
-        }
+        WeakReferenceMessenger.Default.Register(this);
 
         this.Unloaded += Page_Unloaded;
     }
+
+    private void Page_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(this);
+
+        this.DataContext = null;
+        ListView.ItemsSource = null;
+    }
+
+    async void IRecipient<ActiveAccountChangedMessage>.Receive(ActiveAccountChangedMessage message) => await DispatcherQueue.EnqueueAsync(() =>
+    {
+        VM.processingActiveAccountChangedMessage = true;
+        VM.ActiveAccount = message.Value;
+        VM.processingActiveAccountChangedMessage = false;
+    });
 
     #region Converters Methods
 

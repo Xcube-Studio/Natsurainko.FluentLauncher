@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Views.Settings;
+using Natsurainko.FluentLauncher.XamlHelpers.Converters;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.UI;
@@ -105,34 +106,40 @@ internal partial class AppearanceViewModel : SettingsPageVM<AppearancePage>, ISe
     [RelayCommand]
     async Task SelectThemeColor()
     {
-        (ContentDialogResult result, Color? color) = await _dialogActivationService.ShowAsync<Color>(
+        (ContentDialogResult result, Color color) = await _dialogActivationService.ShowAsync<Color>(
             "SelectColorDialog", CustomThemeColor!);
 
         if (result == ContentDialogResult.Primary)
+        {
             CustomThemeColor = color;
+            _notificationService.ThemeColorChanged(color);
+        }
     }
 
     [RelayCommand]
     async Task SelectBackgroundColor()
     {
-        (ContentDialogResult result, Color? color) = await _dialogActivationService.ShowAsync<Color>(
+        (ContentDialogResult result, Color color) = await _dialogActivationService.ShowAsync<Color>(
             "SelectColorDialog", CustomBackgroundColor!);
 
         if (result == ContentDialogResult.Primary)
+        {
             CustomBackgroundColor = color;
+            _notificationService.ColorChanged(color);
+        }
     }
 
     [RelayCommand]
     async Task UseImageThemeColor()
     {
-        //CustomThemeColor = await DominantColorHelper.GetColorFromImageAsync(ImageFilePath);
-        //var converter = (ColorHexCodeConverter)Application.Current.Resources["ColorHexCodeConverter"];
-
-        //_notificationService.ThemeColorApplied(converter.Convert(CustomThemeColor, null, null, null).ToString()!);
-
-        (ContentDialogResult result, Color? color) = await _dialogActivationService.ShowAsync<Color>(
+        (ContentDialogResult result, Color color) = await _dialogActivationService.ShowAsync<Color>(
             "SelectImageThemeColorDialog", ImageFilePath);
 
+        if (result == ContentDialogResult.Primary)
+        {
+            CustomThemeColor = color;
+            _notificationService.ThemeColorChanged(color);
+        }
     }
 
     protected override void OnLoaded()
@@ -153,6 +160,17 @@ internal partial class AppearanceViewModel : SettingsPageVM<AppearancePage>, ISe
 
 internal static partial class AppearanceViewModelNotifications
 {
-    [Notification<InfoBar>(Title = "Image theme color successfully set", Message = "{colorHex}")]
-    public static partial void ThemeColorApplied(this INotificationService notificationService, string colorHex);
+    [Notification<InfoBar>(Title = "Notifications__ColorChanged", Message = "{colorHex}")]
+    public static partial void ColorChanged(this INotificationService notificationService, string colorHex);
+
+    public static void ColorChanged(this INotificationService notificationService, Color color)
+        => ColorChanged(notificationService, System.Drawing.ColorTranslator.ToHtml(
+                System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B)));
+
+    [Notification<InfoBar>(Title = "Notifications__ThemeColorChanged", Message = "{colorHex}")]
+    public static partial void ThemeColorChanged(this INotificationService notificationService, string colorHex);
+
+    public static void ThemeColorChanged(this INotificationService notificationService, Color color)
+        => ThemeColorChanged(notificationService, System.Drawing.ColorTranslator.ToHtml(
+                System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B)));
 }

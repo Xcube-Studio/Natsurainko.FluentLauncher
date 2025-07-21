@@ -6,41 +6,49 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="Select Color From Background"
+    x:Uid="Dialogs_SelectImageThemeColorDialog_Dialog"
+    Title="Select a theme color from the background image"
     DefaultButton="Primary"
     PrimaryButtonText="Confirm"
     SecondaryButtonText="Cancel"
     Style="{ThemeResource DefaultContentDialogStyle}"
     mc:Ignorable="d">
 
-    <GridView ItemsSource="{x:Bind VM.Colors, Mode=TwoWay}" SelectedItem="{x:Bind VM.Color, Mode=OneWay}">
-        <GridView.Header>
-            <TextBlock
-                Margin="0,0,0,16"
-                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                Text="Colors that might be suitable for use as accent colors" />
-        </GridView.Header>
-        <GridView.ItemTemplate>
-            <DataTemplate x:DataType="Color">
-                <Grid Margin="4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="56" />
-                        <ColumnDefinition Width="72" />
-                    </Grid.ColumnDefinitions>
-                    <Border Height="36" CornerRadius="4">
-                        <Border.Background>
-                            <SolidColorBrush Color="{Binding}" />
-                        </Border.Background>
-                    </Border>
-                    <TextBlock
-                        Grid.Column="1"
-                        Margin="8,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Style="{ThemeResource CaptionTextBlockStyle}"
-                        Text="{Binding Converter={StaticResource ColorHexCodeConverter}}" />
-                </Grid>
-            </DataTemplate>
-        </GridView.ItemTemplate>
-    </GridView>
+    <StackPanel>
+        <TextBlock
+            x:Uid="Dialogs_SelectImageThemeColorDialog_TextBlock"
+            Margin="0,0,0,16"
+            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+            Text="Colors that might be suitable for use as accent colors" />
+        <ProgressRing
+            x:Name="ProgressRing"
+            Width="32"
+            Height="32"
+            HorizontalAlignment="Center"
+            x:Load="{x:Bind VM.Loading, Mode=OneWay}" />
+        <GridView ItemsSource="{x:Bind VM.Colors, Mode=TwoWay}" SelectedItem="{x:Bind VM.Color, Mode=TwoWay}">
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="Color">
+                    <Grid Margin="6,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="56" />
+                            <ColumnDefinition Width="72" />
+                        </Grid.ColumnDefinitions>
+                        <Border Height="32" CornerRadius="4">
+                            <Border.Background>
+                                <SolidColorBrush Color="{Binding}" />
+                            </Border.Background>
+                        </Border>
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="8,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Style="{ThemeResource CaptionTextBlockStyle}"
+                            Text="{Binding Converter={StaticResource ColorHexCodeConverter}}" />
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+    </StackPanel>
 </ContentDialog>

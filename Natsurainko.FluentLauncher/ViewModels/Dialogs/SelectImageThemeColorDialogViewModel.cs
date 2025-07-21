@@ -15,6 +15,9 @@ internal partial class SelectImageThemeColorDialogViewModel : DialogVM
     [ObservableProperty]
     public partial Color Color { get; set; }
 
+    [ObservableProperty]
+    public partial bool Loading { get; set; } = true;
+
     public override void HandleParameter(object param)
     {
         if (param is not string imageFile)
@@ -23,15 +26,8 @@ internal partial class SelectImageThemeColorDialogViewModel : DialogVM
         if (!File.Exists(imageFile))
             throw new FileNotFoundException("The specified image file does not exist.", imageFile);
 
-        Task.Run(() => ThemeColorExtractor.GetThemeColors(imageFile)).ContinueWith(t =>
-        {
-            if (t.IsFaulted)
-            {
-
-                return;
-            }
-
-            Dispatcher.TryEnqueue(() => Colors = t.Result);
-        });
+        Task.Run(() => ThemeColorExtractor.GetThemeColors(imageFile))
+            .ContinueWith(t => Dispatcher.TryEnqueue(() => Colors = t.Result), TaskContinuationOptions.OnlyOnRanToCompletion)
+            .ContinueWith(t => Dispatcher.TryEnqueue(() => Loading = false));
     }
 }

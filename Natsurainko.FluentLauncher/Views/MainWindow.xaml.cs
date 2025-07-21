@@ -70,7 +70,11 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
                 new Windows.Win32.Foundation.HWND(WindowNative.GetWindowHandle(this)),
                 _settingsService.WINDOWPLACEMENT);
         }
-        else this.CenterOnScreen();
+        else
+        {
+            (Width, Height) = (1235, 675);
+            this.CenterOnScreen();
+        }
 
         this.BringToFront();
 

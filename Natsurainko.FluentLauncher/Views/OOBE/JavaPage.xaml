@@ -66,13 +66,6 @@
                         </StackPanel>
                     </Button>
                 </StackPanel>
-                <!--
-                <HyperlinkButton
-                    x:Uid="OOBE_JavaPage_Hyplink"
-                    Command="{Binding OpenJavaMirrorsDialogCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
-                    Content="Third-party Java Download Sources" />
-                -->
             </StackPanel>
         </Grid>
 
@@ -92,11 +85,7 @@
                 </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="x:String">
-                        <Grid
-                            Padding="0,10"
-                            Background="Transparent"
-                            PointerEntered="Grid_PointerEntered"
-                            PointerExited="Grid_PointerExited">
+                        <Grid Padding="0,10" Background="Transparent">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="10" />
@@ -138,6 +127,10 @@
                                         TargetPropertyName="Command" />
                                 </i:Interaction.Behaviors>
                             </Button>
+
+                            <i:Interaction.Behaviors>
+                                <behaviors:PointerOverVisibleBehavior TargetElementName="DeleteButton" />
+                            </i:Interaction.Behaviors>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

@@ -86,11 +86,7 @@
                 </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="x:String">
-                        <Grid
-                            Background="Transparent"
-                            ColumnSpacing="8"
-                            PointerEntered="Grid_PointerEntered"
-                            PointerExited="Grid_PointerExited">
+                        <Grid Background="Transparent" ColumnSpacing="8">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
@@ -125,6 +121,10 @@
                                         TargetPropertyName="Command" />
                                 </i:Interaction.Behaviors>
                             </Button>
+
+                            <i:Interaction.Behaviors>
+                                <behaviors:PointerOverVisibleBehavior TargetElementName="DeleteButton" />
+                            </i:Interaction.Behaviors>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

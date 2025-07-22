@@ -53,7 +53,7 @@ public class WinUIApplication : IHost
                 {
                     try
                     {
-                        DispatcherQueueSynchronizationContext synchronizationContext = new DispatcherQueueSynchronizationContext(DispatcherQueue.GetForCurrentThread());
+                        Dispatching.DispatcherQueueSynchronizationContext synchronizationContext = new(DispatcherQueue.GetForCurrentThread());
                         SynchronizationContext.SetSynchronizationContext(synchronizationContext);
                         _createApplicationFunc();
                         winUIStartedTcs.SetResult(); // Signal that WinUI has started successfully

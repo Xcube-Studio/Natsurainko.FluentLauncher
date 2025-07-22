@@ -109,4 +109,6 @@ internal static class WindowExtensions
     }
 
     public static MONITORINFO GetCurrentMonitorInfo(this Window window) => GetCurrentMonitorInfoForWindow(new HWND(WindowNative.GetWindowHandle(window)));
+
+    public static void SwitchToThisWindow(this Window window) => PInvoke.SwitchToThisWindow(new HWND(WindowNative.GetWindowHandle(window)), true);
 }

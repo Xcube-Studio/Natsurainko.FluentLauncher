@@ -16,13 +16,14 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FluentLauncher.Infra.WinUI.AppHost;
 
-public class WinUIApplicationBuilder : IHostApplicationBuilder
+public class WinUIApplicationBuilder<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TApplication> 
+    : IHostApplicationBuilder where TApplication : Application
 {
     private readonly HostApplicationBuilder _hostApplicationBuilder;
-    private readonly Func<Application> _createApplicationFunc;
 
     private bool _useExtendedWinUIServices = false;
 
@@ -32,23 +33,23 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
 
     public WinUIDialogProviderBuilder Dialogs { get; } = new();
 
-    public WinUIApplicationBuilder(Func<Application> createApplicationFunc)
+    public WinUIApplicationBuilder()
     {
-        _createApplicationFunc = createApplicationFunc;
-
         _hostApplicationBuilder = new HostApplicationBuilder(new HostApplicationBuilderSettings
         {
             // TODO: pass parameters from ctor
         });
+
+        Services.AddSingleton<TApplication>();
     }
 
-    public WinUIApplication Build()
+    public WinUIApplication<TApplication> Build()
     {
         if (_useExtendedWinUIServices)
             ConfigureExtendedWinUIServices();
 
         IHost host = _hostApplicationBuilder.Build();
-        return new WinUIApplication(_createApplicationFunc, host);
+        return new WinUIApplication<TApplication>(host);
     }
 
     private void ConfigureExtendedWinUIServices()
@@ -121,31 +122,31 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
 
     #region IHostApplicationBuilder member configuration methods
 
-    public WinUIApplicationBuilder ConfigureAppConfiguration(Action<IConfigurationManager> action)
+    public WinUIApplicationBuilder<TApplication> ConfigureAppConfiguration(Action<IConfigurationManager> action)
     {
         action(Configuration);
         return this;
     }
 
-    public WinUIApplicationBuilder ConfigureEnvironment(Action<IHostEnvironment> action)
+    public WinUIApplicationBuilder<TApplication> ConfigureEnvironment(Action<IHostEnvironment> action)
     {
         action(Environment);
         return this;
     }
 
-    public WinUIApplicationBuilder ConfigureLogging(Action<ILoggingBuilder> action)
+    public WinUIApplicationBuilder<TApplication> ConfigureLogging(Action<ILoggingBuilder> action)
     {
         action(Logging);
         return this;
     }
 
-    public WinUIApplicationBuilder ConfigureMetrics(Action<IMetricsBuilder> action)
+    public WinUIApplicationBuilder<TApplication> ConfigureMetrics(Action<IMetricsBuilder> action)
     {
         action(Metrics);
         return this;
     }
 
-    public WinUIApplicationBuilder ConfigureServices(Action<IServiceCollection> action)
+    public WinUIApplicationBuilder<TApplication> ConfigureServices(Action<IServiceCollection> action)
     {
         action(Services);
         return this;
@@ -155,19 +156,19 @@ public class WinUIApplicationBuilder : IHostApplicationBuilder
 
     #region Extended WinUI services configuration methods
 
-    public WinUIApplicationBuilder UseExtendedWinUIServices()
+    public WinUIApplicationBuilder<TApplication> UseExtendedWinUIServices()
     {
         _useExtendedWinUIServices = true;
         return this;
     }
 
-    public WinUIApplicationBuilder ConfigurePages()
+    public WinUIApplicationBuilder<TApplication> ConfigurePages()
     {
         // Add pages and view models to DI
         return this;
     }
 
-    public WinUIApplicationBuilder ConfigureWindows(Action<WinUIActivationServiceBuilder> action)
+    public WinUIApplicationBuilder<TApplication> ConfigureWindows(Action<WinUIActivationServiceBuilder> action)
     {
         action(Windows);
         return this;

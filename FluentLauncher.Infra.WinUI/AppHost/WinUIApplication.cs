@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,22 +11,17 @@ using WinRT;
 
 namespace FluentLauncher.Infra.WinUI.AppHost;
 
-public class WinUIApplication : IHost
+public partial class WinUIApplication<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TApplication> : IHost 
+    where TApplication : Application
 {
     public IServiceProvider Services => Host.Services;
 
-    private readonly Func<Application> _createApplicationFunc;
-
     public IHost Host { get; init; }
 
-    public static WinUIApplicationBuilder CreateBuilder(Func<Application> createApplicationFunc)
-    {
-        return new WinUIApplicationBuilder(createApplicationFunc);
-    }
+    public static WinUIApplicationBuilder<TApplication> CreateBuilder() => new();
 
-    internal WinUIApplication(Func<Application> createApplicationFunc, IHost host)
+    internal WinUIApplication(IHost host)
     {
-        _createApplicationFunc = createApplicationFunc;
         Host = host;
     }
 
@@ -33,10 +29,6 @@ public class WinUIApplication : IHost
 
     public Task StartAsync(CancellationToken cancellationToken = default)
     {
-        [DllImport("Microsoft.ui.xaml.dll")]
-        [DefaultDllImportSearchPaths(DllImportSearchPath.SafeDirectories)]
-        static extern void XamlCheckProcessRequirements();
-
         var hostAppLifetime = Services.GetRequiredService<IHostApplicationLifetime>();
 
         // Task that models the execution of the Microsoft.UI.Xaml.Application.Start method
@@ -47,7 +39,7 @@ public class WinUIApplication : IHost
         {
             try
             {
-                XamlCheckProcessRequirements();
+                StaticMethods.XamlCheckProcessRequirements();
                 ComWrappersSupport.InitializeComWrappers();
                 Application.Start(delegate
                 {
@@ -55,7 +47,7 @@ public class WinUIApplication : IHost
                     {
                         Dispatching.DispatcherQueueSynchronizationContext synchronizationContext = new(DispatcherQueue.GetForCurrentThread());
                         SynchronizationContext.SetSynchronizationContext(synchronizationContext);
-                        _createApplicationFunc();
+                        Services.GetRequiredService<TApplication>();
                         winUIStartedTcs.SetResult(); // Signal that WinUI has started successfully
                     }
                     catch (Exception ex)
@@ -85,4 +77,11 @@ public class WinUIApplication : IHost
     {
         return Task.CompletedTask;
     }
+}
+
+file static class StaticMethods
+{
+    [DllImport("Microsoft.ui.xaml.dll")]
+    [DefaultDllImportSearchPaths(DllImportSearchPath.SafeDirectories)]
+    public static extern void XamlCheckProcessRequirements();
 }

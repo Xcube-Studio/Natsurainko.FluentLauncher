@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.Extensions.Logging;
 using Natsurainko.FluentLauncher.Exceptions;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Models.Launch;
@@ -50,11 +51,14 @@ internal class LaunchService(
     SettingsService settingsService,
     AccountService accountService,
     DownloadService downloadService,
-    HttpClient httpClient)
+    HttpClient httpClient,
+    ILogger<LaunchService> logger)
 {
     public event EventHandler? TaskListStateChanged;
 
     public ObservableCollection<LaunchTaskViewModel> LaunchTasks { get; } = [];
+
+    public int RunningTasks => LaunchTasks.Count(x => x.TaskState == TaskState.Running || x.TaskState == TaskState.Prepared);
 
     public void LaunchFromUI(MinecraftInstance instance)
     {
@@ -114,6 +118,7 @@ internal class LaunchService(
     {
         MinecraftProcess? minecraftProcess = null;
         LaunchStage stage = LaunchStage.CheckNeeds;
+        logger.LaunchingMinecraftInstance(instance.InstanceId, instance.GetDisplayName());
 
         try
         {
@@ -135,14 +140,17 @@ internal class LaunchService(
             stage = LaunchStage.CompleteResources;
             LaunchProcess(minecraftProcess, cancellationToken, progress, outputDataReceivedHandler, errorDataReceivedHandler);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             minecraftProcess?.Dispose();
 
             progress?.Report(new(stage, LaunchStageProgress.Failed()));
+            logger.FailedToLaunchMinecraftInstance(ex, instance.InstanceId, instance.GetDisplayName());
+
             throw;
         }
 
+        logger.MinecraftProcessCreated(instance.InstanceId, minecraftProcess.JavaPath);
         return minecraftProcess;
     }
 
@@ -540,6 +548,18 @@ internal class LaunchService(
 
         return false;
     }
+}
+
+internal static partial class LaunchServiceLoggers
+{
+    [LoggerMessage(LogLevel.Information, "Launching Minecraft instance {InstanceId} ({InstanceName})")]
+    public static partial void LaunchingMinecraftInstance(this ILogger logger, string instanceId, string instanceName);
+
+    [LoggerMessage(LogLevel.Information, "Minecraft {instanceId} Process ({executableFile}) created")]
+    public static partial void MinecraftProcessCreated(this ILogger logger, string instanceId, string executableFile);
+
+    [LoggerMessage(LogLevel.Error, "Failed to launch Minecraft instance {InstanceId} ({InstanceName})")]
+    public static partial void FailedToLaunchMinecraftInstance(this ILogger logger, Exception exception, string instanceId, string instanceName);
 }
 
 record struct LaunchProgress(

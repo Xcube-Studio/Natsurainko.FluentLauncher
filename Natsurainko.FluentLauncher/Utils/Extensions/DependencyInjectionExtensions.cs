@@ -53,6 +53,9 @@ internal static class DependencyInjectionExtensions
     {
         builder.Services.AddSerilog(c =>
         {
+            //c.MinimumLevel.Override("System.Net.Http.HttpClient.Default.ClientHandler", Serilog.Events.LogEventLevel.Warning); 
+            //c.MinimumLevel.Override("System.Net.Http.HttpClient.Default.LogicalHandler", Serilog.Events.LogEventLevel.Warning);
+
             c.WriteTo.File
             (
                 Path.Combine(ApplicationData.Current.LocalFolder.Path, "launcher-logs/log-.txt"),

@@ -20,8 +20,12 @@ class MessengerService(AccountService accountService, SettingsService settingsSe
         settingsService.ActiveMinecraftFolderChanged += SettingsService_SettingsStringValueChanged;
         settingsService.ActiveJavaChanged += SettingsService_SettingsStringValueChanged;
 
+        settingsService.CurrentLanguageChanged += SettingsService_CurrentLanguageChanged;
+
         settingsService.DisplayThemeChanged += SettingsService_DisplayThemeChanged;
     }
+
+
 
     private void AccountService_ActiveAccountChanged(object? sender, Nrk.FluentCore.Authentication.Account? e)
     {
@@ -36,4 +40,7 @@ class MessengerService(AccountService accountService, SettingsService settingsSe
 
     private void SettingsService_DisplayThemeChanged(SettingsContainer sender, SettingChangedEventArgs e) 
         => Messenger.Send(new SettingsRequestThemeChangedMessage((ElementTheme)e.NewValue!));
+
+    private void SettingsService_CurrentLanguageChanged(SettingsContainer sender, SettingChangedEventArgs e)
+        => Messenger.Send(new LanguageChangedMessage(e.NewValue?.ToString() ?? "en-US"));
 }

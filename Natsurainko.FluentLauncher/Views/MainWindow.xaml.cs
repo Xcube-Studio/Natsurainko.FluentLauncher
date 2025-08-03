@@ -1,11 +1,15 @@
+using CommunityToolkit.Mvvm.Messaging;
 using FluentLauncher.Infra.UI.Navigation;
+using Microsoft.Extensions.Logging;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Services.UI.Notification;
 using Natsurainko.FluentLauncher.Utils.Extensions;
+using System.Net.Http;
 using Windows.Graphics;
 using Windows.UI.WindowManagement;
 using Windows.Win32;
@@ -14,31 +18,39 @@ using WinUIEx;
 
 namespace Natsurainko.FluentLauncher.Views;
 
-public sealed partial class MainWindow : WindowEx, INavigationProvider
+public sealed partial class MainWindow : WindowEx, INavigationProvider, IRecipient<LanguageChangedMessage>
 {
     public Frame ContentFrame => Frame;
 
     public static XamlRoot XamlRoot { get; set; } = null!;
 
     private readonly INavigationService _navigationService;
+    private readonly ILogger<MainWindow> _logger;
     private readonly SettingsService _settingsService;
 
     object INavigationProvider.NavigationControl => Frame;
     INavigationService INavigationProvider.NavigationService => _navigationService;
 
-    public MainWindow(SettingsService settingsService, INavigationService navigationService)
+    public MainWindow(
+        SettingsService settingsService, 
+        HttpClient httpClient,
+        INavigationService navigationService, 
+        ILogger<MainWindow> logger)
     {
         _settingsService = settingsService;
         _navigationService = navigationService;
+        _logger = logger;
 
         App.MainWindow = this;
         App.GetService<AppearanceService>().RegisterWindow(this);
-        
+
+        WeakReferenceMessenger.Default.Register(this);
+
         InitializeComponent();
         ConfigureWindow();
     }
 
-    #region Window Event
+    #region Window Events
 
     private void MainWindow_SizeChanged(object sender, WindowSizeChangedEventArgs args)
     {
@@ -80,6 +92,8 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
 
         this.SizeChanged += MainWindow_SizeChanged;
         this.PositionChanged += MainWindow_PositionChanged;
+
+        _logger.MainWindowInitialized();
     }
 
     private void Frame_Loaded(object sender, RoutedEventArgs e)
@@ -87,9 +101,25 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider
         XamlRoot = Frame.XamlRoot;
         _navigationService.NavigateTo(_settingsService.FinishGuide ? "ShellPage" : "OOBENavigationPage");
 
-        _settingsService.CurrentLanguageChanged += (_, _) =>
-            _navigationService.NavigateTo(_settingsService.FinishGuide ? "ShellPage" : "OOBENavigationPage");
-
         NotificationsScrollViewer.Margin = new Thickness(Grid.ActualWidth >= 641 ? 48 : 0, 48, 0, 0);
     }
+
+    void IRecipient<LanguageChangedMessage>.Receive(LanguageChangedMessage message)
+    {
+        if (!_settingsService.FinishGuide)
+        {
+            _navigationService.NavigateTo("OOBENavigationPage");
+            _logger.NavigateToOOBEPage();
+        }
+        else _navigationService.NavigateTo("ShellPage", "Settings/Navigation");
+    }
+}
+
+internal static partial class MainWindowLoggers
+{
+    [LoggerMessage(Level = LogLevel.Information, Message = "MainWindow initialized.")]
+    public static partial void MainWindowInitialized(this ILogger logger);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Launcher OOBE is not finished, navigate to OOBE Page")]
+    public static partial void NavigateToOOBEPage(this ILogger logger);
 }

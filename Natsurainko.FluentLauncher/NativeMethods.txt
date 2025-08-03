@@ -1,6 +1,7 @@
 SetWindowText
 GetWindowPlacement
 SetWindowPlacement
+SwitchToThisWindow
 MonitorFromWindow
 GetMonitorInfoW
 GetDpiForMonitor

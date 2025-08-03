@@ -4,6 +4,7 @@ using FluentLauncher.Infra.WinUI.AppHost;
 using FluentLauncher.Infra.WinUI.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Natsurainko.FluentLauncher;
 using Natsurainko.FluentLauncher.Services.Accounts;
 using Natsurainko.FluentLauncher.Services.Launch;
@@ -19,13 +20,9 @@ using System.CommandLine;
 using ViewModels = Natsurainko.FluentLauncher.ViewModels;
 using Views = Natsurainko.FluentLauncher.Views;
 
-var builder = WinUIApplication.CreateBuilder(() => new App());
+var builder = WinUIApplication<App>.CreateBuilder();
 
-//builder.Configuration.AddJsonFile("appsettings.json", optional: true);
-//builder.Configuration.AddCommandLine(args);
-
-//builder.Logging...
-
+builder.UseSerilog();
 builder.UseExtendedWinUIServices();
 
 #if ENABLE_LOAD_EXTENSIONS
@@ -158,19 +155,25 @@ AppHost = app.Host;
 
 await BuildRootCommand(app).InvokeAsync(args);
 
-public partial class Program
+internal partial class Program
 {
+    private static ILogger<Program> Logger => AppHost.Services.GetRequiredService<ILogger<Program>>();
+
     public static IHost AppHost { get; private set; } = null!;
 
     public static Option<string> MinecraftFolderOption { get; } = new (name: "--minecraftFolder") { IsRequired = true };
 
     public static Option<string> InstanceIdOption { get; } = new(name: "--instanceId") { IsRequired = true };
 
-    public static RootCommand BuildRootCommand(WinUIApplication application)
+    public static RootCommand BuildRootCommand(WinUIApplication<App> application)
     {
-        var rootCommand = new RootCommand();
-        rootCommand.SetHandler(async () => await application.RunAsync());
-        rootCommand.Add(BuildSubCommand());
+        RootCommand rootCommand = [BuildSubCommand()];
+
+        rootCommand.SetHandler(async () =>
+        {
+            Logger.Starting();
+            await application.RunAsync();
+        });
 
         return rootCommand;
     }
@@ -187,4 +190,10 @@ public partial class Program
 
         return quickLaunchCommand;
     }
+}
+
+internal static partial class ProgramLoggers
+{
+    [LoggerMessage(LogLevel.Information, "Starting WinUIApplication.RunAsync ...")]
+    public static partial void Starting(this ILogger logger);
 }

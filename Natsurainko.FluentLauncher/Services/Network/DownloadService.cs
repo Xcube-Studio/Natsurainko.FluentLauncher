@@ -1,4 +1,5 @@
-﻿using Natsurainko.FluentLauncher.Models.UI;
+﻿using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.ViewModels;
 using Nrk.FluentCore.GameManagement.Downloader;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Net.Http;
 using static Nrk.FluentCore.GameManagement.Installer.FabricInstanceInstaller;
 using static Nrk.FluentCore.GameManagement.Installer.ForgeInstanceInstaller;
@@ -27,6 +29,8 @@ internal partial class DownloadService
     public ObservableCollection<TaskViewModel> DownloadTasks { get; } = [];
 
     public IDownloader Downloader { get => _downloader; }
+
+    public int RunningTasks => DownloadTasks.Count(x => x.TaskState == TaskState.Running || x.TaskState == TaskState.Prepared);
 
     public DownloadService(SettingsService settingsService, HttpClient httpClient)
     {

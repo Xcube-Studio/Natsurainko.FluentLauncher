@@ -3,7 +3,6 @@ using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Pages;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
@@ -85,7 +84,6 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         TopNavViewPaneToggleButtonsBorder.Width = e.NewSize.Width <= 640 ? 84 : 48;
 
         UpdateSearchBoxArea();
-
         UpdateTitleBarDragArea();
     }
 
@@ -145,6 +143,13 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
 
         VM.NavigationService.NavigateTo(pageTag);
         OnPropertyChanged(nameof(CanGoBack));
+    }
+
+    private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
+    {
+        appTitleGrid.Margin = args.DisplayMode == NavigationViewDisplayMode.Minimal
+            ? new Thickness(16, 0, 0, 0)
+            : new Thickness(8, -80, 0, 0);
     }
 
     private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
@@ -252,11 +257,11 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
             Duration = TimeSpan.FromMilliseconds(150)
         };
 
-        var RootSplitView = FindControl<SplitView>(NavigationViewControl, typeof(SplitView), "RootSplitView")!;
+        var RootSplitView = NavigationViewControl.FindChild<SplitView>("RootSplitView")!;
         RootSplitView.Margin = new Thickness(-1);
         RootSplitView.Padding = new Thickness(1);
 
-        var PaneContentGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneContentGrid")!;
+        var PaneContentGrid = NavigationViewControl.FindChild<Grid>("PaneContentGrid")!;
         PaneContentGrid.Padding = new Thickness(1,0,0,0);
 
 #if ENABLE_LOAD_EXTENSIONS
@@ -351,44 +356,8 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         SearchBoxAreaGrid.Margin = new Thickness(leftMargin, 0, rightMargin, 0);
     }
 
-    private static T? FindControl<T>(UIElement parent, Type targetType, string ControlName) where T : FrameworkElement
-    {
-        if (parent == null) return null;
-
-        if (parent.GetType() == targetType && ((T)parent).Name == ControlName)
-        {
-            return (T)parent;
-        }
-        T? result = null;
-
-        int count = VisualTreeHelper.GetChildrenCount(parent);
-        for (int i = 0; i < count; i++)
-        {
-            UIElement child = (UIElement)VisualTreeHelper.GetChild(parent, i);
-
-            if (FindControl<T>(child, targetType, ControlName) != null)
-            {
-                result = FindControl<T>(child, targetType, ControlName);
-                break;
-            }
-        }
-        return result;
-    }
-
     private void OnPropertyChanged(string propertyName)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
-    {
-        if (args.DisplayMode == NavigationViewDisplayMode.Minimal)
-        {
-            appTitleGrid.Margin = new Thickness(16, 0, 0, 0);
-        }
-        else
-        {
-            appTitleGrid.Margin = new Thickness(8, -80, 0, 0);
-        }
     }
 }

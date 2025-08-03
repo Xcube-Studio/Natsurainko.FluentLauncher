@@ -3,7 +3,6 @@ using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.ViewModels;
 using Nrk.FluentCore.Authentication;
-using System;
 using System.Collections.Generic;
 
 namespace Natsurainko.FluentLauncher.Services.UI.Messaging;
@@ -17,10 +16,9 @@ class SettingsStringValueChangedMessage(string value, string propertyName) : Val
     public string PropertyName { get; set; } = propertyName;
 }
 
-class SettingsRequestThemeChangedMessage(ElementTheme theme) : ValueChangedMessage<ElementTheme>(theme);
+class LanguageChangedMessage(string value) : ValueChangedMessage<string>(value);
 
-[Obsolete]
-class AccountSkinCacheUpdatedMessage(Account value) : ValueChangedMessage<Account>(value);
+class SettingsRequestThemeChangedMessage(ElementTheme theme) : ValueChangedMessage<ElementTheme>(theme);
 
 class InstanceLoaderSelectedMessage(List<InstanceLoaderItem> list) : ValueChangedMessage<List<InstanceLoaderItem>>(list);
 

@@ -1,12 +1,13 @@
-﻿using FluentLauncher.Infra.WinUI.AppHost;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Nrk.FluentCore.Resources;
+using Serilog;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Windows.ApplicationModel;
+using Windows.Storage;
 
 #if ENABLE_LOAD_EXTENSIONS
 using Windows.Storage;
@@ -46,6 +47,24 @@ internal static class DependencyInjectionExtensions
         });
 
         return services;
+    }
+
+    public static void UseSerilog(this IHostApplicationBuilder builder)
+    {
+        builder.Services.AddSerilog(c =>
+        {
+            //c.MinimumLevel.Override("System.Net.Http.HttpClient.Default.ClientHandler", Serilog.Events.LogEventLevel.Warning); 
+            //c.MinimumLevel.Override("System.Net.Http.HttpClient.Default.LogicalHandler", Serilog.Events.LogEventLevel.Warning);
+
+            c.WriteTo.File
+            (
+                Path.Combine(ApplicationData.Current.LocalFolder.Path, "launcher-logs/log-.txt"),
+                rollOnFileSizeLimit: true,
+                rollingInterval: RollingInterval.Day,
+                fileSizeLimitBytes: 1000000,
+                outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz}][{Level:u3}] <{SourceContext}>: {Message:lj}{NewLine}{Exception}"
+            );
+        });
     }
 
 #if ENABLE_LOAD_EXTENSIONS

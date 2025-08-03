@@ -39,7 +39,7 @@ internal partial class ModViewModel(INotificationService notificationService) : 
 
         Directory.CreateDirectory(ModsFolder);
 
-        LoadModsAsync().Forget();
+        Task.Run(LoadModsAsync).Forget();
     }
 
     [RelayCommand]
@@ -50,7 +50,7 @@ internal partial class ModViewModel(INotificationService notificationService) : 
 
     public async Task LoadModsAsync()
     {
-        Mods.Clear();
+        await Dispatcher.EnqueueAsync(Mods.Clear);
 
         await foreach (var minecraftMod in ModManager.EnumerateModsAsync(ModsFolder))
             await Dispatcher.EnqueueAsync(() => Mods.Add(new ModItemVM(minecraftMod, notificationService)));
@@ -87,7 +87,7 @@ internal partial class ModViewModel(INotificationService notificationService) : 
     void DeleteMod(MinecraftMod modInfo)
     {
         File.Delete(modInfo.AbsolutePath);
-        LoadModsAsync().Forget();
+        Task.Run(LoadModsAsync).Forget();
 
         notificationService.ModDeleted();
     }

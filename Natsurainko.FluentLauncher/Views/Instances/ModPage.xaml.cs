@@ -6,9 +6,9 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels.Instances;
-using Nrk.FluentCore.GameManagement.Mods;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel.DataTransfer;
 
@@ -53,7 +53,7 @@ public sealed partial class ModPage : Page, IBreadcrumbBarAware
         if (modCount > 0)
         {
             App.GetService<INotificationService>().ModAdded(modCount);
-            VM.LoadModsAsync().Forget();
+            Task.Run(VM.LoadModsAsync).Forget();
         }
     }
 

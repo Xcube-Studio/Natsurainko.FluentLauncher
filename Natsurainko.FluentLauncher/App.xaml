@@ -92,7 +92,7 @@
                 BasedOn="{StaticResource ButtonRevealStyle}"
                 TargetType="Button">
                 <Setter Property="Background" Value="{ThemeResource DeleteButtonBackground}" />
-                <Setter Property="Background" Value="{ThemeResource DeleteButtonBorder}" />
+                <Setter Property="BorderBrush" Value="{ThemeResource DeleteButtonBorder}" />
             </Style>
 
             <Style

@@ -268,8 +268,8 @@ internal partial class HomeViewModel : PageVM, IRecipient<TrackLaunchTaskChanged
         if (IsTrackingTask)
         {
             if (TrackingTask.ProcessLaunched)
-                LaunchButtonText = LocalizedStrings.Home_HomePage__KillProcess.Replace("Minecraft", TrackingTask.TaskTitle);
-            else LaunchButtonText = LocalizedStrings.Home_HomePage__CancelLaunch.Replace("Minecraft", TrackingTask.TaskTitle);
+                LaunchButtonText = LocalizedStrings.Home_HomePage__KillProcess.Replace("Minecraft", TrackingTask.Title);
+            else LaunchButtonText = LocalizedStrings.Home_HomePage__CancelLaunch.Replace("Minecraft", TrackingTask.Title);
 
             return;
         }

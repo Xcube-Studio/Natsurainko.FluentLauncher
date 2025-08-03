@@ -224,7 +224,7 @@
 
         <Border
             x:Name="NavViewPaneBackground"
-            Grid.RowSpan="3"
+            Grid.RowSpan="2"
             Width="48"
             Margin="0"
             HorizontalAlignment="Left"
@@ -241,7 +241,7 @@
             x:Name="TopNavViewPaneBackground"
             Width="89"
             Height="44"
-            Margin="0,2,0,2"
+            Margin="2,2,0,2"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Background="{ThemeResource NavigationViewUnfoldedPaneBackground}"

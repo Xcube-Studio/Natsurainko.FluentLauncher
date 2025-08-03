@@ -26,6 +26,7 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
     private readonly IPageProvider pageProvider = App.GetService<IPageProvider>();
 
     private bool isUpdatingNavigationItemSelection = false;
+    private Grid PaneToggleButtonGrid = null!;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -62,26 +63,29 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
 
     private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        if (e.PreviousSize.Width <= 640 && e.NewSize.Width > 640)
+        if (PaneToggleButtonGrid == null)
+            PaneToggleButtonGrid = NavigationViewControl.FindChild<Grid>("PaneToggleButtonGrid")!;
+
+        if (e.NewSize.Width <= 640)
         {
-            NavViewPaneBackground.Translation += new System.Numerics.Vector3(48, 0, 0);
-            TopNavViewPaneBackground.Translation -= new System.Numerics.Vector3(110, 0, 0);
+            PaneToggleButtonGrid?.Translation = new System.Numerics.Vector3(2, 0, 0);
 
-            //var PaneToggleButtonGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneToggleButtonGrid")!;
-            //PaneToggleButtonGrid.Translation -= new System.Numerics.Vector3(20, 0, 0);
+            NavViewPaneBackground.Translation = new System.Numerics.Vector3(-48, 0, 32);
+            TopNavViewPaneBackground.Translation = new System.Numerics.Vector3(0, 0, 16);
+
+            NavigationViewControl.PaneDisplayMode = NavigationViewPaneDisplayMode.LeftMinimal;
+            TopNavViewPaneToggleButtonsBorder.Width = 84;
         }
-
-        if (e.PreviousSize.Width > 640 && e.NewSize.Width <= 640)
+        else
         {
-            NavViewPaneBackground.Translation -= new System.Numerics.Vector3(48, 0, 0);
-            TopNavViewPaneBackground.Translation += new System.Numerics.Vector3(110, 0, 0);
+            PaneToggleButtonGrid?.Translation = new System.Numerics.Vector3(0, 0, 0);
 
-            //var PaneToggleButtonGrid = FindControl<Grid>(NavigationViewControl, typeof(Grid), "PaneToggleButtonGrid")!;
-            //PaneToggleButtonGrid.Translation += new System.Numerics.Vector3(20, 0, 0);
+            NavViewPaneBackground.Translation = new System.Numerics.Vector3(0, 0, 32);
+            TopNavViewPaneBackground.Translation = new System.Numerics.Vector3(-110, 0, 16);
+
+            NavigationViewControl.PaneDisplayMode = NavigationViewPaneDisplayMode.LeftCompact;
+            TopNavViewPaneToggleButtonsBorder.Width = 48;
         }
-
-        NavigationViewControl.PaneDisplayMode = e.NewSize.Width <= 640 ? NavigationViewPaneDisplayMode.LeftMinimal : NavigationViewPaneDisplayMode.LeftCompact;
-        TopNavViewPaneToggleButtonsBorder.Width = e.NewSize.Width <= 640 ? 84 : 48;
 
         UpdateSearchBoxArea();
         UpdateTitleBarDragArea();

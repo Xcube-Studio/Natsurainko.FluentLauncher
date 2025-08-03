@@ -1,6 +1,7 @@
 ﻿using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels;
 using Nrk.FluentCore.GameManagement.Downloader;
 using Nrk.FluentCore.GameManagement.Installer;
@@ -24,8 +25,6 @@ internal partial class DownloadService
     private readonly SettingsService _settingsService;
     private readonly HttpClient _httpClient;
 
-    public event EventHandler? TaskListStateChanged;
-
     public ObservableCollection<TaskViewModel> DownloadTasks { get; } = [];
 
     public IDownloader Downloader { get => _downloader; }
@@ -45,53 +44,27 @@ internal partial class DownloadService
 
     public void DownloadModFile(object modFile, string folder)
     {
-        var taskViewModel = new DownloadModTaskViewModel(modFile, folder);
-        taskViewModel.PropertyChanged += (_, e) =>
-        {
-            if (e.PropertyName == "TaskState")
-                TaskListStateChanged?.Invoke(this, e);
-        };
-
-        InsertTask(taskViewModel);
-        taskViewModel.Start();
+        DownloadModTaskViewModel downloadModTask = new (modFile, folder);
+        DownloadTasks.Insert(0, downloadModTask);
+        downloadModTask.EnqueueAsync().Forget();
     }
 
     public void DownloadModFile(string fileName, string url, string folder)
     {
-        var taskViewModel = new DownloadModTaskViewModel(fileName, url, folder);
-        taskViewModel.PropertyChanged += (_, e) =>
-        {
-            if (e.PropertyName == "TaskState")
-                TaskListStateChanged?.Invoke(this, e);
-        };
-
-        InsertTask(taskViewModel);
-        taskViewModel.Start();
+        DownloadModTaskViewModel downloadModTask = new (fileName, url, folder);
+        DownloadTasks.Insert(0, downloadModTask);
+        downloadModTask.EnqueueAsync().Forget();
     }
 
     public void InstallInstance(InstanceInstallConfig config)
     {
-        var taskViewModel = new InstallInstanceTaskViewModel(
+        InstallInstanceTaskViewModel installInstanceTask = new(
             GetInstanceInstaller(config, out var installationStageViews),
             config,
             installationStageViews);
-        taskViewModel.PropertyChanged += (_, e) =>
-        {
-            if (e.PropertyName == "TaskState")
-                TaskListStateChanged?.Invoke(this, e);
-        };
 
-        InsertTask(taskViewModel);
-        taskViewModel.Start();
-    }
-
-    private void InsertTask(TaskViewModel taskViewModel)
-    {
-        App.DispatcherQueue.TryEnqueue(() =>
-        {
-            DownloadTasks.Insert(0, taskViewModel);
-            TaskListStateChanged?.Invoke(this, EventArgs.Empty);
-        });
+        DownloadTasks.Insert(0, installInstanceTask);
+        installInstanceTask.EnqueueAsync().Forget();
     }
 
     [MemberNotNull(nameof(_downloader))]

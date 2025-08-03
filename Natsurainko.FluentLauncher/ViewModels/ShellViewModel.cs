@@ -8,7 +8,9 @@ using Natsurainko.FluentLauncher.Services.UI.Messaging;
 
 namespace Natsurainko.FluentLauncher.ViewModels;
 
-internal partial class ShellViewModel : PageVM, INavigationAware, IRecipient<GlobalNavigationMessage>
+internal partial class ShellViewModel : PageVM, INavigationAware, 
+    IRecipient<GlobalNavigationMessage>,
+    IRecipient<BackgroundTaskCountChangedMessage>
 {
     private readonly LaunchService _launchService;
     private readonly DownloadService _downloadService;
@@ -38,9 +40,6 @@ internal partial class ShellViewModel : PageVM, INavigationAware, IRecipient<Glo
 
         RunningLaunchTasks = _launchService.RunningTasks;
         RunningDownloadTasks = _downloadService.RunningTasks;
-
-        _launchService.TaskListStateChanged += (_, e) => Dispatcher.TryEnqueue(() => RunningLaunchTasks = _launchService.RunningTasks);
-        _downloadService.TaskListStateChanged += (_, e) => Dispatcher.TryEnqueue(() => RunningDownloadTasks = _downloadService.RunningTasks);
     }
 
     void INavigationAware.OnNavigatedTo(object? parameter)
@@ -52,4 +51,7 @@ internal partial class ShellViewModel : PageVM, INavigationAware, IRecipient<Glo
 
     async void IRecipient<GlobalNavigationMessage>.Receive(GlobalNavigationMessage message)
         => await Dispatcher.EnqueueAsync(() => this.NavigationService.NavigateTo(message.Value, message.Parameter));
+
+    async void IRecipient<BackgroundTaskCountChangedMessage>.Receive(BackgroundTaskCountChangedMessage _)
+        => await Dispatcher.EnqueueAsync(() => (RunningLaunchTasks, RunningDownloadTasks) = (_launchService.RunningTasks, _downloadService.RunningTasks));
 }

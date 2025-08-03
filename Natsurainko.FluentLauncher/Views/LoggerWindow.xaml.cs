@@ -42,12 +42,12 @@ internal sealed partial class LoggerWindow : WindowEx, INotifyPropertyChanged
 
     public void Initialize(LaunchTaskViewModel launchTaskViewModel)
     {
-        Title = launchTaskViewModel.TaskTitle;
+        Title = launchTaskViewModel.Title;
 
         VM = new()
         {
-            Outputs = launchTaskViewModel.Logger,
-            Title = launchTaskViewModel.TaskTitle,
+            Outputs = launchTaskViewModel.ProcessLogger,
+            Title = Title,
             ScrollToEnd = ScrollToEnd,
             IsActive = true,
             Info = true,

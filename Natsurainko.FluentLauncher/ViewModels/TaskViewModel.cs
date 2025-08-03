@@ -504,8 +504,8 @@ class LaunchProgressViewModel : IProgress<LaunchProgress>
 
     public LaunchProgressViewModel()
     {
-        foreach (var name in Enum.GetNames(typeof(LaunchStage)))
-            Stages.Add((LaunchStage)Enum.Parse(typeof(LaunchStage), name), new LaunchStageViewModel 
+        foreach (var name in Enum.GetNames<LaunchStage>())
+            Stages.Add(Enum.Parse<LaunchStage>(name), new LaunchStageViewModel 
                 { TaskName = LocalizedStrings.GetString($"Tasks_LaunchPage__TaskName_{name}") });
     }
 

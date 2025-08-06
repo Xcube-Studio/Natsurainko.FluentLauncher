@@ -37,7 +37,7 @@
 + [x] 支持安装 Fabric 加载器
 + [x] 支持安装 OptiFine 加载器
 + [x] 支持安装 Quilt 加载器
-> ⚠️ 不支持 LiteLoder 加载器
+> ⚠️ 不支持 LiteLoader 加载器
 
 ### 第三方资源
 + [x] 支持从 CurseForge 下载资源

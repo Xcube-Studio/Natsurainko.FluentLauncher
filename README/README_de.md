@@ -37,7 +37,7 @@
 + [x] Unterstützung für die Installation des Fabric-Loaders
 + [x] Unterstützung für die Installation des OptiFine-Loaders
 + [x] Unterstützung für die Installation des Quilt-Loaders
-> ⚠️ Der LiteLoder-Loader wird nicht unterstützt
+> ⚠️ Der LiteLoader-Loader wird nicht unterstützt
 
 ### Ressourcen von Drittanbietern
 + [x] Unterstützung für das Herunterladen von Ressourcen von CurseForge

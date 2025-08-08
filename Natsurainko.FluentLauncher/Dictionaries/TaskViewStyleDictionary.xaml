@@ -931,8 +931,17 @@
                         <AppBarButton
                             x:Uid="Tasks_LaunchPage_AB2"
                             Command="{Binding CopyArgumentsCommand}"
-                            Icon="Copy"
-                            Label="Copy Parameters" />
+                            Label="Create Launch Script">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xe756;" />
+                            </AppBarButton.Icon>
+                            <i:Interaction.Behaviors>
+                                <behaviors:AncestorBindingBehavior
+                                    AncestorType="ScrollViewer"
+                                    Binding="{Binding DataContext.DialogActivationService}"
+                                    TargetPropertyName="CommandParameter" />
+                            </i:Interaction.Behaviors>
+                        </AppBarButton>
                         <CommandBar.SecondaryCommands>
                             <AppBarButton
                                 x:Uid="Tasks_LaunchPage_AB3"

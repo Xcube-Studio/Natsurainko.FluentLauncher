@@ -1,6 +1,5 @@
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.Globalization;
-using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Dialogs;
 using Nrk.FluentCore.Authentication;
@@ -11,7 +10,7 @@ internal sealed partial class SwitchAccountDialog : ContentDialog
 {
     SwitchAccountDialogViewModel VM => (SwitchAccountDialogViewModel)DataContext;
 
-    public SwitchAccountDialog(SettingsService settingsService)
+    public SwitchAccountDialog()
     {
         InitializeComponent();
     }

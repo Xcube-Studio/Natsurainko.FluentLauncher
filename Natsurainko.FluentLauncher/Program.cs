@@ -102,6 +102,7 @@ dialogs.WithDialog<Views.Dialogs.SwitchAccountDialog, ViewModels.Dialogs.SwitchA
 dialogs.WithDialog<Views.Dialogs.UploadSkinDialog, ViewModels.Dialogs.UploadSkinDialogViewModel>("UploadSkinDialog");
 dialogs.WithDialog<Views.Dialogs.SelectColorDialog, ViewModels.Dialogs.SelectColorDialogViewModel>("SelectColorDialog");
 dialogs.WithDialog<Views.Dialogs.SelectImageThemeColorDialog, ViewModels.Dialogs.SelectImageThemeColorDialogViewModel>("SelectImageThemeColorDialog");
+dialogs.WithDialog<Views.Dialogs.CreateLaunchScriptDialog, ViewModels.Dialogs.CreateLaunchScriptDialogViewModel>("CreateLaunchScriptDialog");
 
 #if FLUENT_LAUNCHER_PREVIEW_CHANNEL
 dialogs.WithDialog<Views.Dialogs.UpdateDialog, ViewModels.Dialogs.UpdateDialogViewModel>("UpdateDialog");

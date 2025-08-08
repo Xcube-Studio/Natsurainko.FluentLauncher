@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentDialog
+    x:Class="Natsurainko.FluentLauncher.Views.Dialogs.CreateLaunchScriptDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Dialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Style="{ThemeResource DefaultContentDialogStyle}"
+    mc:Ignorable="d">
+
+    <ContentDialog.Resources>
+        <Thickness x:Key="ContentDialogPadding">0</Thickness>
+    </ContentDialog.Resources>
+    <ContentDialog.Title>
+        <StackPanel Margin="24,24,24,0">
+            <TextBlock x:Uid="Dialogs_CreateLaunchScriptDialog_Title" Text="Create Launch Script" />
+        </StackPanel>
+    </ContentDialog.Title>
+
+    <Grid>
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.ThemeDictionaries>
+                    <ResourceDictionary x:Key="Light">
+                        <StaticResource x:Key="ContentDialogBorderBrush" ResourceKey="ContentDialogDimmingThemeBrush" />
+                    </ResourceDictionary>
+                    <ResourceDictionary x:Key="Dark">
+                        <StaticResource x:Key="ContentDialogBorderBrush" ResourceKey="ContentDialogSeparatorBorderBrush" />
+                    </ResourceDictionary>
+                </ResourceDictionary.ThemeDictionaries>
+            </ResourceDictionary>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel
+            Padding="24,0,24,20"
+            Background="Transparent"
+            Spacing="8">
+            <AutoSuggestBox
+                x:Uid="Dialogs_CreateLaunchScriptDialog_AutoSuggestBox"
+                Header="Batch Script File Path"
+                QuerySubmitted="AutoSuggestBox_QuerySubmitted"
+                Text="{x:Bind VM.BatchFilePath, Mode=TwoWay}">
+                <AutoSuggestBox.QueryIcon>
+                    <FontIcon FontSize="14" Glyph="&#xED43;" />
+                </AutoSuggestBox.QueryIcon>
+            </AutoSuggestBox>
+            <CheckBox
+                x:Uid="Dialogs_CreateLaunchScriptDialog_CheckBox"
+                Content="Does not contain AccessToken"
+                IsChecked="{x:Bind VM.HideAccessToken, Mode=TwoWay}" />
+            <TextBlock
+                x:Name="Text"
+                x:Uid="Dialogs_CreateLaunchScriptDialog_TextBlock"
+                x:Load="{x:Bind VM.HideAccessToken, Mode=OneWay}"
+                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                Style="{ThemeResource CaptionTextBlockStyle}"
+                Text="Checking this option will prevent the original AccessToken from being included in the created script, which will reduce the chance of AccessToken leakage. However, the game running the script will also lose its login status." />
+        </StackPanel>
+        <Rectangle
+            Grid.Row="1"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Fill="{ThemeResource ContentDialogSmokeFill}" />
+        <Border
+            Grid.Row="1"
+            Padding="24"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Bottom"
+            Background="{ThemeResource ContentDialogBackground}"
+            BorderBrush="{ThemeResource ContentDialogBorderBrush}"
+            BorderThickness="0,1,0,0">
+            <Grid x:Name="CommandSpace" XYFocusKeyboardNavigation="Enabled">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="{ThemeResource ContentDialogButtonSpacing}" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button
+                    Grid.Column="0"
+                    HorizontalAlignment="Stretch"
+                    Command="{x:Bind VM.CreateCommand}"
+                    ElementSoundMode="FocusOnly"
+                    IsTabStop="False"
+                    Style="{ThemeResource AccentButtonStyle}">
+                    <TextBlock x:Uid="Buttons_Create" Text="Create" />
+                </Button>
+                <Button
+                    Grid.Column="2"
+                    HorizontalAlignment="Stretch"
+                    Command="{x:Bind VM.CancelCommand}"
+                    ElementSoundMode="FocusOnly"
+                    IsTabStop="False">
+                    <TextBlock x:Uid="Buttons_Cancel" Text="Cancel" />
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentDialog>

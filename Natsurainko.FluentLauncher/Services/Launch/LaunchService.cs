@@ -59,7 +59,7 @@ internal class LaunchService(
     public int RunningTasks => LaunchTasks.Count(x => x.TaskState == TaskState.Running || x.TaskState == TaskState.Prepared);
 
     public void LaunchFromUI(MinecraftInstance instance)
-    {
+    {   
         LaunchTaskViewModel launchTask = new(instance, this);
         LaunchTasks.Insert(0, launchTask);
         launchTask.EnqueueAsync().Forget();

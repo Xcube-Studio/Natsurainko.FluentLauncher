@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.WinUI;
+using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Notification;
 using FluentLauncher.Infra.UI.Windows;
 using FluentLauncher.Infra.WinUI.Windows;
@@ -823,11 +824,8 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     }
 
     [RelayCommand]
-    void CopyArguments()
-    {
-        ClipboardHepler.SetText(string.Join("\r\n", McProcess!.ArgumentList));
-        App.GetService<INotificationService>().ArgumentsCopied();
-    }
+    async Task CopyArguments(IDialogActivationService<ContentDialogResult> dialogActivationService) 
+        => await dialogActivationService.ShowAsync("CreateLaunchScriptDialog", McProcess);
 
     [RelayCommand]
     void Retry()

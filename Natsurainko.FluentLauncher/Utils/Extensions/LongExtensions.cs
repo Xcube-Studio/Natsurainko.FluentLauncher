@@ -4,12 +4,12 @@ namespace Natsurainko.FluentLauncher.Utils.Extensions;
 
 internal static class LongExtensions
 {
-    public static string ToFileSizeString(long size)
+    public static string ToFileSizeString(long? size)
     {
-        if (size < 0)
+        if (size is null || size.Value < 0)
             return "0 B";
 
-        double d = size;
+        double d = size.Value;
         int i = 0;
 
         while ((d > 1024) && (i < 5))

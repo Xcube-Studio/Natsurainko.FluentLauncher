@@ -12,6 +12,7 @@ using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
 using Natsurainko.FluentLauncher.Exceptions;
 using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
@@ -40,7 +41,6 @@ using static Natsurainko.FluentLauncher.ViewModels.LaunchStageProgress;
 
 using Timer = System.Timers.Timer;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels;
 
 internal abstract partial class TaskViewModel : ObservableObject
@@ -54,7 +54,7 @@ internal abstract partial class TaskViewModel : ObservableObject
 
     protected abstract ILogger Logger { get; }
 
-    protected Timer Timer { get; private set; }
+    protected Timer Timer { get; private set; } = null!;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
@@ -74,7 +74,7 @@ internal abstract partial class TaskViewModel : ObservableObject
 
     #region Task Properties
 
-    protected Task ExecuteTask { get; private set; }
+    protected Task ExecuteTask { get; private set; } = null!;
 
     public bool IsFaulted => ExecuteTask.IsFaulted;
 
@@ -82,9 +82,9 @@ internal abstract partial class TaskViewModel : ObservableObject
 
     public bool IsCompleted => ExecuteTask.IsCompleted;
 
-    public virtual string ExceptionContent => ExecuteTask.Exception?.ToString();
+    public virtual string? ExceptionContent => ExecuteTask!.Exception?.ToString();
 
-    public virtual string ExceptionTitle => ExecuteTask.Exception?.GetType().FullName;
+    public virtual string? ExceptionTitle => ExecuteTask!.Exception?.GetType().FullName;
 
     #endregion
 
@@ -170,7 +170,7 @@ internal abstract partial class TaskViewModel : ObservableObject
         return timer;
     }
 
-    protected virtual void Timer_Elapsed(object sender, ElapsedEventArgs e) 
+    protected virtual void Timer_Elapsed(object? sender, ElapsedEventArgs e) 
         => App.DispatcherQueue.TryEnqueue(() => OnPropertyChanged(nameof(TimeUsage)));
 
     protected virtual void NotifyException(INotificationService notificationService) { }
@@ -185,7 +185,7 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
 
     private readonly Task<string> @getUrlTask;
 
-    private DownloadTask DownloadTask { get; set; }
+    private DownloadTask? DownloadTask { get; set; }
 
     protected override ILogger Logger { get; } = App.GetService<ILogger<DownloadModTaskViewModel>>();
 
@@ -203,6 +203,9 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
                 _fileName = curseForgeFile.FileName;
                 @getUrlTask = Task.Run(() => App.GetService<CurseForgeClient>().GetFileUrlAsync(curseForgeFile));
                 break;
+            default:
+                // Never reached, but added for compiler nullable check
+                throw new NotImplementedException();
         }
     }
 
@@ -232,9 +235,9 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
     [ObservableProperty]
     public partial bool Downloaded { get; set; }
 
-    public string DownloadedBytes => LongExtensions.ToFileSizeString(DownloadTask.DownloadedBytes);
+    public string DownloadedBytes => LongExtensions.ToFileSizeString(DownloadTask?.DownloadedBytes);
 
-    public string TotalBytes => LongExtensions.ToFileSizeString(DownloadTask.TotalBytes.Value);
+    public string TotalBytes => LongExtensions.ToFileSizeString(DownloadTask?.TotalBytes);
 
     #endregion
 
@@ -248,7 +251,7 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
         if (downloadResult.Type == DownloadResultType.Cancelled)
             _tokenSource.Token.ThrowIfCancellationRequested();
         else if (downloadResult.Type == DownloadResultType.Failed)
-            throw downloadResult.Exception;
+            throw downloadResult.Exception!;
 
         await App.DispatcherQueue.EnqueueAsync(() =>
         {
@@ -264,19 +267,21 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
     [RelayCommand]
     void CopyUrl()
     {
+        if (DownloadTask == null) return;
+
         ClipboardHepler.SetText(DownloadTask.Request.Url);
         App.GetService<INotificationService>().DownloadUrlCopied();
     }
 
     #region Timer Override
 
-    protected override void Timer_Elapsed(object sender, ElapsedEventArgs e)
+    protected override void Timer_Elapsed(object? sender, ElapsedEventArgs e)
     {
         base.Timer_Elapsed(sender, e);
 
         double progress = 0;
 
-        if (DownloadTask.TotalBytes != null)
+        if (DownloadTask?.TotalBytes != null)
             progress = DownloadTask.DownloadedBytes / (double)DownloadTask.TotalBytes;
 
         App.DispatcherQueue.TryEnqueue(() =>
@@ -411,19 +416,20 @@ internal partial class InstallInstanceTaskViewModel(
     protected override async Task ExecuteAsync()
     {
         _minecraftInstance = await instanceInstaller.InstallAsync(_tokenSource.Token);
+        InstanceConfig config = _minecraftInstance.GetConfig();
+
+        if (instanceInstallConfig.EnableIndependencyInstance)
+        {
+            config.EnableIndependencyCore = true;
+            config.EnableSpecialSetting = true;
+        }
+
+        App.GetService<GameService>().RefreshGames();
 
         #region Download Mods
 
+        string modsFolder = _minecraftInstance.GetModsDirectory();
         var downloadService = App.GetService<DownloadService>();
-        var instanceConfigService = App.GetService<InstanceConfigService>();
-        var gameService = App.GetService<GameService>();
-
-        gameService.RefreshGames();
-
-        string minecraftFolder = gameService.ActiveMinecraftFolder;
-        string modsFolder = instanceInstallConfig.EnableIndependencyInstance
-            ? Path.Combine(minecraftFolder, "versions", instanceInstallConfig.InstanceId, "mods")
-            : Path.Combine(minecraftFolder, "mods");
 
         if (instanceInstallConfig.SecondaryLoader?.SelectedInstallData is OptiFineInstallData installData)
         {
@@ -435,14 +441,6 @@ internal partial class InstallInstanceTaskViewModel(
 
         foreach (var item in instanceInstallConfig.AdditionalMods)
             downloadService.DownloadModFile(item, modsFolder);
-
-        var config = instanceConfigService.GetConfig(_minecraftInstance);
-
-        if (instanceInstallConfig.EnableIndependencyInstance)
-        {
-            config.EnableIndependencyCore = true;
-            config.EnableSpecialSetting = true;
-        }
 
         #endregion
     }
@@ -493,7 +491,7 @@ class LaunchProgressViewModel : IProgress<LaunchProgress>
         } 
     }
 
-    public event EventHandler<LaunchStageViewModel> CurrentStageChanged;
+    public event EventHandler<LaunchStageViewModel>? CurrentStageChanged;
 
     public LaunchProgressViewModel()
     {
@@ -700,7 +698,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
 
     protected override ILogger Logger { get; } = App.GetService<ILogger<LaunchTaskViewModel>>();
 
-    public MinecraftProcess McProcess { get; private set; }
+    public MinecraftProcess McProcess { get; private set; } = null!;
 
     public ObservableCollection<GameLoggerOutput> ProcessLogger { get; } = [];
 
@@ -755,7 +753,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     public IEnumerable<LaunchStageViewModel> StageViewModels { get; }
 
     [ObservableProperty]
-    public partial LaunchStageViewModel CurrentStage { get; set; }
+    public partial LaunchStageViewModel? CurrentStage { get; set; }
 
     [ObservableProperty]
     public partial int CurrentStageNumber { get; set; } = 1;
@@ -806,7 +804,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
         await McProcess.Process.WaitForExitAsync(_tokenSource.Token);
     }
 
-    async void Process_Exited(object sender, EventArgs e)
+    async void Process_Exited(object? sender, EventArgs e)
     {
         await App.DispatcherQueue.EnqueueAsync(() =>
         {
@@ -837,8 +835,8 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     [RelayCommand]
     void ShowLogger()
     {
-        WinUIWindowService windowService = App.GetService<IActivationService>().ActivateWindow("LoggerWindow") as WinUIWindowService;
-        (windowService.Window as LoggerWindow).Initialize(this);
+        WinUIWindowService windowService = (App.GetService<IActivationService>().ActivateWindow("LoggerWindow") as WinUIWindowService)!;
+        (windowService.Window as LoggerWindow)!.Initialize(this);
 
         windowService.Activate();
     }

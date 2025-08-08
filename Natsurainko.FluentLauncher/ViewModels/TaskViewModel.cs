@@ -222,8 +222,19 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
         TaskState.Failed => "\ue711",
         TaskState.Cancelled => "\ue711",
         TaskState.Finished => "\ue73e",
-        _ => "\ue945",
+        _ => "\uE896",
     };
+
+    #endregion
+
+    #region Download Properties
+
+    [ObservableProperty]
+    public partial bool Downloaded { get; set; }
+
+    public string DownloadedBytes => LongExtensions.ToFileSizeString(DownloadTask.DownloadedBytes);
+
+    public string TotalBytes => LongExtensions.ToFileSizeString(DownloadTask.TotalBytes.Value);
 
     #endregion
 
@@ -238,12 +249,23 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
             _tokenSource.Token.ThrowIfCancellationRequested();
         else if (downloadResult.Type == DownloadResultType.Failed)
             throw downloadResult.Exception;
+
+        await App.DispatcherQueue.EnqueueAsync(() =>
+        {
+            Downloaded = true;
+            OnPropertyChanged(nameof(DownloadedBytes));
+            OnPropertyChanged(nameof(TotalBytes));
+        });
     }
 
     [RelayCommand]
-    void OpenFolder()
+    void OpenFolder() => ExplorerHelper.ShowAndSelectFile(Path.Combine(_folder, _fileName));
+
+    [RelayCommand]
+    void CopyUrl()
     {
-        using var process = Process.Start("explorer.exe", $"/select,{Path.Combine(_folder, _fileName)}");
+        ClipboardHepler.SetText(DownloadTask.Request.Url);
+        App.GetService<INotificationService>().DownloadUrlCopied();
     }
 
     #region Timer Override
@@ -257,7 +279,12 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
         if (DownloadTask.TotalBytes != null)
             progress = DownloadTask.DownloadedBytes / (double)DownloadTask.TotalBytes;
 
-        App.DispatcherQueue.TryEnqueue(() => Progress = progress);
+        App.DispatcherQueue.TryEnqueue(() =>
+        {
+            Progress = progress;
+            OnPropertyChanged(nameof(DownloadedBytes));
+            OnPropertyChanged(nameof(TotalBytes));
+        });
     }
 
     #endregion
@@ -824,7 +851,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     }
 
     [RelayCommand]
-    async Task CopyArguments(IDialogActivationService<ContentDialogResult> dialogActivationService) 
+    async Task CreateScript(IDialogActivationService<ContentDialogResult> dialogActivationService) 
         => await dialogActivationService.ShowAsync("CreateLaunchScriptDialog", McProcess);
 
     [RelayCommand]
@@ -904,6 +931,6 @@ internal static partial class TaskViewModelNotifications
     [ExceptionNotification(Title = "Notifications__TaskFailed_Install", Message = "{reason}")]
     public static partial void InstallFailed(this INotificationService notificationService, Exception exception, string reason);
 
-    [Notification<TeachingTip>(Title = "Notifications__ArgumentsCopied")]
-    public static partial void ArgumentsCopied(this INotificationService notificationService);
+    [Notification<TeachingTip>(Title = "Notifications__DownloadUrlCopied")]
+    public static partial void DownloadUrlCopied(this INotificationService notificationService);
 }

@@ -14,7 +14,6 @@ using Nrk.FluentCore.GameManagement.Instances;
 using Nrk.FluentCore.GameManagement.Mods;
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.System;
@@ -75,10 +74,7 @@ internal partial class ModViewModel(INotificationService notificationService) : 
     }
 
     [RelayCommand]
-    void OpenMod(MinecraftMod modInfo)
-    {
-        using var process = Process.Start(new ProcessStartInfo("explorer.exe", $"/select,{modInfo.AbsolutePath}"));
-    }
+    void OpenMod(MinecraftMod modInfo) => ExplorerHelper.ShowAndSelectFile(modInfo.AbsolutePath);
 
     [RelayCommand]
     async Task SearchMcMod(MinecraftMod modInfo) => await Launcher.LaunchUriAsync(new Uri($"https://search.mcmod.cn/s?key={modInfo.DisplayName}"));

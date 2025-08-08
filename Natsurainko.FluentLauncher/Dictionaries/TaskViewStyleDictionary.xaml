@@ -517,112 +517,210 @@
     </Style>
 
     <DataTemplate x:Key="DownloadModTaskTemplate">
-        <Expander
-            MinHeight="0"
-            Padding="16,10"
-            HorizontalAlignment="Stretch"
-            HorizontalContentAlignment="Stretch"
-            IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
-            <Expander.Header>
-                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Border
+            Background="{ThemeResource SettingsCardBackground}"
+            BorderBrush="{ThemeResource SettingsCardBorderBrush}"
+            BorderThickness="1"
+            CornerRadius="4">
+            <StackPanel>
+                <Grid Padding="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="16" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="12" />
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="16" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <FontIcon Glyph="{Binding TaskIcon}" />
+                    <FontIcon Glyph="{Binding Icon, Mode=OneWay}" />
 
-                    <StackPanel
-                        Grid.Column="2"
-                        Padding="0,15"
-                        Spacing="4">
-
+                    <StackPanel Grid.Column="2" Spacing="4">
                         <TextBlock Style="{ThemeResource BaseTextBlockStyle}">
-                            <Run x:Uid="Dictionaries_TaskViewStyleDictionary_DownloadGameResourceTitle" Text="Download Resource:" /> <Run Text="{Binding Title}" />
+                            <Run x:Uid="Dictionaries_TaskViewStyleDictionary_DownloadGameResourceTitle" Text="Download Resource:" />
+                            <Run Text="{Binding Title, Mode=OneWay}" />
                         </TextBlock>
-
                         <Border Background="{ThemeResource ProgressBarBackgroundThemeBrush}" CornerRadius="1">
                             <ProgressBar
                                 Background="Transparent"
-                                IsIndeterminate="{Binding ProgressBarIsIndeterminate}"
+                                IsIndeterminate="{Binding ProgressBarIsIndeterminate, Mode=OneWay}"
                                 Maximum="1"
-                                ShowError="{Binding ProgressShowError}"
-                                ShowPaused="{Binding ProgressShowPaused}"
+                                ShowError="{Binding IsFaulted}"
+                                ShowPaused="{Binding IsCanceled}"
                                 Value="{Binding Progress}" />
                         </Border>
-
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*" />
-                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
+                            <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Style="{ThemeResource CaptionTextBlockStyle}">
+                                <Run Text="{Binding DownloadedBytes, Mode=OneWay}" />
+                                <Run Text="/" />
+                                <Run Text="{Binding TotalBytes, Mode=OneWay}" />
+                            </TextBlock>
                             <TextBlock
+                                Grid.Column="2"
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
-                                Text="{Binding TaskState, Converter={ThemeResource TaskStateConverter}}"
-                                TextTrimming="CharacterEllipsis"
-                                TextWrapping="NoWrap" />
-                            <StackPanel
-                                Grid.Column="2"
-                                Orientation="Horizontal"
-                                Spacing="10">
-                                <TextBlock
-                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                    Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="{Binding TimeUsage}" />
-                                <TextBlock
-                                    Grid.Column="2"
-                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                    Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="{Binding ProgressPercentage}"
-                                    Visibility="{Binding ProgressBarIsIndeterminate, Converter={ThemeResource InvertedBoolToVisibilityConverter}}" />
-                            </StackPanel>
+                                Text="{Binding TimeUsage, Mode=OneWay}" />
                         </Grid>
                     </StackPanel>
 
-                    <StackPanel Grid.Column="4" Orientation="Horizontal">
-                        <Button Command="{Binding CancelCommand}" Visibility="{Binding CancelButtonVisibility}">
-                            <TextBlock x:Uid="Buttons_Cancel" Text="Cancel" />
-                        </Button>
-                    </StackPanel>
-                </Grid>
-            </Expander.Header>
-
-            <StackPanel Padding="30,5" Spacing="5">
-                <Grid Visibility="{Binding ShowException, Converter={ThemeResource BoolToVisibilityConverter}}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="20" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        TextTrimming="CharacterEllipsis"
-                        TextWrapping="WrapWholeWords">
-                        <Run x:Uid="Tasks_LaunchPage_Item_H5" Text="Reason:" />
-                        <Run Text="{Binding ExceptionReason}" />
-                    </TextBlock>
-
                     <Button
-                        Grid.Column="2"
-                        HorizontalAlignment="Right"
-                        Command="{Binding NotifyExceptionCommand}">
+                        Grid.Column="3"
+                        Margin="16,0,0,0"
+                        Command="{Binding CancelCommand}"
+                        IsEnabled="{Binding CanCancel, Mode=OneWay}"
+                        Style="{ThemeResource DeleteButtonStyle}"
+                        Visibility="{Binding Downloaded, Converter={ThemeResource InvertedBoolToVisibilityConverter}}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
-                            <FontIcon FontSize="14" Glyph="&#xf000;" />
-                            <TextBlock
-                                x:Uid="Tasks_LaunchPage_B4"
-                                Text="Show Details"
-                                TextTrimming="CharacterEllipsis" />
+                            <FontIcon FontSize="13.5" Glyph="&#xe71a;" />
+                            <TextBlock x:Uid="Buttons_Cancel" Text="Cancel" />
                         </StackPanel>
                     </Button>
+
+                    <CommandBar
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Grid.ColumnSpan="2"
+                        HorizontalAlignment="Right"
+                        DefaultLabelPosition="Right"
+                        Visibility="{Binding ProcessLaunched, Converter={ThemeResource BoolToVisibilityConverter}}">
+                        <AppBarButton Command="{Binding OpenFolderCommand}" Label="Show in File Explorer">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE838;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <AppBarButton Command="{Binding CopyUrlCommand}" Label="Copy Download Link">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE8C8;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <CommandBar.SecondaryCommands>
+                            <AppBarButton
+                                Command="{Binding RetryCommand}"
+                                Icon="Refresh"
+                                IsEnabled="{Binding IsCompleted, Mode=OneWay}"
+                                Label="Retry Download">
+                                <AppBarButton.KeyboardAccelerators>
+                                    <KeyboardAccelerator Key="R" Modifiers="Control" />
+                                </AppBarButton.KeyboardAccelerators>
+                            </AppBarButton>
+                            <AppBarButton
+                                x:Uid="Tasks_LaunchPage_AB4"
+                                Command="{Binding RemoveCommand}"
+                                Icon="Delete"
+                                IsEnabled="{Binding IsCompleted, Mode=OneWay}"
+                                Label="Remove Task">
+                                <AppBarButton.KeyboardAccelerators>
+                                    <KeyboardAccelerator Key="D" Modifiers="Control" />
+                                </AppBarButton.KeyboardAccelerators>
+                            </AppBarButton>
+                        </CommandBar.SecondaryCommands>
+                    </CommandBar>
                 </Grid>
+
+                <Expander
+                    Grid.Row="3"
+                    Grid.ColumnSpan="3"
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    Style="{ThemeResource FixedExpanderStyle}"
+                    Visibility="{Binding IsFaulted, Mode=OneWay, Converter={ThemeResource BoolToVisibilityConverter}}">
+                    <Expander.Header>
+                        <Border
+                            Background="{ThemeResource InfoBarErrorSeverityBackgroundBrush}"
+                            BorderBrush="{ThemeResource InfoBarBorderBrush}"
+                            BorderThickness="{ThemeResource InfoBarBorderThickness}"
+                            CornerRadius="{ThemeResource ControlCornerRadius}">
+                            <Grid
+                                MinHeight="{ThemeResource InfoBarMinHeight}"
+                                Padding="{StaticResource InfoBarContentRootPadding}"
+                                CornerRadius="{ThemeResource ControlCornerRadius}">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="32" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid>
+                                    <TextBlock
+                                        Margin="{StaticResource InfoBarIconMargin}"
+                                        VerticalAlignment="Top"
+                                        AutomationProperties.AccessibilityView="Raw"
+                                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                        FontSize="{StaticResource InfoBarIconFontSize}"
+                                        Foreground="{ThemeResource InfoBarErrorSeverityIconBackground}"
+                                        Text="{StaticResource InfoBarIconBackgroundGlyph}" />
+                                    <TextBlock
+                                        Margin="{StaticResource InfoBarIconMargin}"
+                                        VerticalAlignment="Top"
+                                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                        FontSize="{StaticResource InfoBarIconFontSize}"
+                                        Foreground="{ThemeResource InfoBarErrorSeverityIconForeground}"
+                                        Text="{StaticResource InfoBarErrorIconGlyph}" />
+                                </Grid>
+                                <InfoBarPanel
+                                    Grid.Column="1"
+                                    Margin="{StaticResource InfoBarPanelMargin}"
+                                    HorizontalOrientationPadding="{StaticResource InfoBarPanelHorizontalOrientationPadding}"
+                                    VerticalOrientationPadding="{StaticResource InfoBarPanelVerticalOrientationPadding}">
+                                    <TextBlock
+                                        FontSize="{StaticResource InfoBarTitleFontSize}"
+                                        FontWeight="{StaticResource InfoBarTitleFontWeight}"
+                                        Foreground="{ThemeResource InfoBarTitleForeground}"
+                                        InfoBarPanel.HorizontalOrientationMargin="{StaticResource InfoBarTitleHorizontalOrientationMargin}"
+                                        InfoBarPanel.VerticalOrientationMargin="{StaticResource InfoBarTitleVerticalOrientationMargin}"
+                                        Text="{Binding InfoBarTitle, Mode=OneWay}"
+                                        TextWrapping="WrapWholeWords" />
+                                    <TextBlock
+                                        FontSize="{StaticResource InfoBarMessageFontSize}"
+                                        FontWeight="{StaticResource InfoBarMessageFontWeight}"
+                                        Foreground="{ThemeResource InfoBarMessageForeground}"
+                                        InfoBarPanel.HorizontalOrientationMargin="{StaticResource InfoBarMessageHorizontalOrientationMargin}"
+                                        InfoBarPanel.VerticalOrientationMargin="{StaticResource InfoBarMessageVerticalOrientationMargin}"
+                                        Text="{Binding ExceptionTitle, Mode=OneWay}"
+                                        TextWrapping="WrapWholeWords" />
+                                    <Button
+                                        VerticalAlignment="Top"
+                                        InfoBarPanel.HorizontalOrientationMargin="{StaticResource InfoBarActionHorizontalOrientationMargin}"
+                                        InfoBarPanel.VerticalOrientationMargin="{StaticResource InfoBarActionVerticalOrientationMargin}">
+                                        <StackPanel Orientation="Horizontal" Spacing="5">
+                                            <FontIcon FontSize="14" Glyph="&#xf000;" />
+                                            <TextBlock
+                                                x:Uid="Buttons_CopyException"
+                                                Text="Copy Exception"
+                                                TextTrimming="CharacterEllipsis" />
+                                        </StackPanel>
+                                    </Button>
+                                </InfoBarPanel>
+                            </Grid>
+                        </Border>
+
+                    </Expander.Header>
+
+                    <ScrollViewer MaxHeight="250">
+                        <RichTextBlock Margin="16" HorizontalAlignment="Stretch">
+                            <Paragraph>
+                                <Run Text="{Binding ExceptionContent, Mode=OneWay}" />
+                            </Paragraph>
+                        </RichTextBlock>
+                    </ScrollViewer>
+                </Expander>
             </StackPanel>
-        </Expander>
+        </Border>
     </DataTemplate>
     <DataTemplate x:Key="InstallInstanceTaskTemplate">
         <Expander
@@ -930,7 +1028,7 @@
                         </AppBarButton>
                         <AppBarButton
                             x:Uid="Tasks_LaunchPage_AB2"
-                            Command="{Binding CopyArgumentsCommand}"
+                            Command="{Binding CreateScriptCommand}"
                             Label="Create Launch Script">
                             <AppBarButton.Icon>
                                 <FontIcon Glyph="&#xe756;" />

@@ -177,8 +177,10 @@ internal partial class SkinViewModel : SettingsPageVM,
         var textureProfile = await _cacheInterfaceService.RequestTextureProfileAsync(ActiveAccount);
         string skinFilePath = textureProfile.GetSkinTexturePath(out _);
 
-        if (!File.Exists(skinFilePath)) return;
-        using var process = Process.Start(new ProcessStartInfo("explorer.exe", $"/select,{skinFilePath}"));
+        if (!File.Exists(skinFilePath)) 
+            return;
+
+        ExplorerHelper.ShowAndSelectFile(skinFilePath);
     }
 
     private void CompositeHelper_Rendering(object? sender, Microsoft.UI.Xaml.Media.RenderingEventArgs e)

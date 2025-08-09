@@ -6,7 +6,6 @@ using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
 using Microsoft.Windows.Globalization;
-using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI;

@@ -310,7 +310,7 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
                 Width = (int)((AppTitleBar.ActualWidth - Column0.ActualWidth) * scaleAdjustment),
                 Height = height
             };
-            App.MainWindow.AppWindow.TitleBar.SetDragRectangles([rect]);
+            App.MainWindow.AppWindow?.TitleBar.SetDragRectangles([rect]);
         }
         else
         {

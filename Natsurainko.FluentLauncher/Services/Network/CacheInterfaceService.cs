@@ -7,6 +7,7 @@ using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Authentication;
 using Nrk.FluentCore.Utils;
 using System;
+using System.Buffers;
 using System.IO;
 using System.Net.Http;
 using System.Security.Cryptography;
@@ -20,6 +21,7 @@ namespace Natsurainko.FluentLauncher.Services.Network;
 internal class CacheInterfaceService(
     SettingsService settingsService, 
     LocalStorageService localStorageService,
+    DownloadService downloadService,
     HttpClient httpClient)
 {
     public const string LauncherMetaVersionManifest = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json";
@@ -100,16 +102,15 @@ internal class CacheInterfaceService(
             if (writeToLocal)
             {
                 await using var contentStream = await responseMessage.Content.ReadAsStreamAsync();
-                await using (var fileStream = File.Create(fileInfo.FullName))
-                {
-                    using var rentMemory = HttpUtils.MemoryPool.Rent(1024);
-                    int readMemory = 0;
+                await using var fileStream = File.Create(fileInfo.FullName);
 
-                    while ((readMemory = await contentStream.ReadAsync(rentMemory.Memory)) > 0)
-                        await fileStream.WriteAsync(rentMemory.Memory[..readMemory]);
+                using var rentMemory = MemoryPool<byte>.Shared.Rent(1024);
+                int readMemory = 0;
 
-                    await fileStream.FlushAsync();
-                }
+                while ((readMemory = await contentStream.ReadAsync(rentMemory.Memory)) > 0)
+                    await fileStream.WriteAsync(rentMemory.Memory[..readMemory]);
+
+                await fileStream.FlushAsync();
 
                 return File.OpenRead(fileInfo.FullName);
             }
@@ -174,12 +175,12 @@ internal class CacheInterfaceService(
         // If the skin is default, we don't need to download it
         if (isDefalutSkin || textureProfile.ActiveSkin?.Url is null) return;
 
-        await HttpUtils.Downloader.DownloadFileAsync(new(textureProfile.ActiveSkin.Url, skinTexturePath))
+        await downloadService.Downloader.DownloadFileAsync(new(textureProfile.ActiveSkin.Url, skinTexturePath))
             .ContinueWith(t => WeakReferenceMessenger.Default.Send(new SkinTextureUpdatedMessage(account)), TaskContinuationOptions.OnlyOnRanToCompletion);
 
         if (textureProfile.TryGetCapeTexturePath(out string? capeTexturePath) && textureProfile.ActiveCape?.Url is not null)
         {
-            await HttpUtils.Downloader.DownloadFileAsync(new(textureProfile.ActiveCape.Url, capeTexturePath))
+            await downloadService.Downloader.DownloadFileAsync(new(textureProfile.ActiveCape.Url, capeTexturePath))
                 .ContinueWith(t => WeakReferenceMessenger.Default.Send(new CapeTextureUpdatedMessage(account)), TaskContinuationOptions.OnlyOnRanToCompletion);
         }
     }

@@ -29,6 +29,8 @@ internal partial class DownloadService
 
     public IDownloader Downloader { get => _downloader; }
 
+    public IDownloadMirror? DownloadMirror => _settingsService.CurrentDownloadSource == "Bmclapi" ? DownloadMirrors.BmclApi : null;
+
     public int RunningTasks => DownloadTasks.Count(x => x.TaskState == TaskState.Running || x.TaskState == TaskState.Prepared);
 
     public DownloadService(SettingsService settingsService, HttpClient httpClient)
@@ -44,14 +46,14 @@ internal partial class DownloadService
 
     public void DownloadModFile(object modFile, string folder)
     {
-        DownloadModTaskViewModel downloadModTask = new (modFile, folder);
+        DownloadModTaskViewModel downloadModTask = new(this, modFile, folder);
         DownloadTasks.Insert(0, downloadModTask);
         downloadModTask.EnqueueAsync().Forget();
     }
 
-    public void DownloadModFile(string fileName, string url, string folder)
+    public void DownloadModFile(string url, string filePath)
     {
-        DownloadModTaskViewModel downloadModTask = new (fileName, url, folder);
+        DownloadModTaskViewModel downloadModTask = new(this, url, filePath);
         DownloadTasks.Insert(0, downloadModTask);
         downloadModTask.EnqueueAsync().Forget();
     }
@@ -59,6 +61,7 @@ internal partial class DownloadService
     public void InstallInstance(InstanceInstallConfig config)
     {
         InstallInstanceTaskViewModel installInstanceTask = new(
+            this,
             GetInstanceInstaller(config, out var installationStageViews),
             config,
             installationStageViews);
@@ -75,12 +78,12 @@ internal partial class DownloadService
             workersPerDownloadTask: 8,
             concurrentDownloadTasks: _settingsService.MaxDownloadThreads,
             enableMultiPartDownload: _settingsService.EnableFragmentDownload,
-            mirror: _settingsService.CurrentDownloadSource == "Bmclapi" ? DownloadMirrors.BmclApi : null);
+            mirror: DownloadMirror);
     }
 
     IInstanceInstaller GetInstanceInstaller(
         InstanceInstallConfig instanceInstallConfig,
-        out IReadOnlyList<InstallationStageViewModel> installationStageViews)
+        out List<InstallationStageViewModel> installationStageViews)
     {
         var versionManifestItem = instanceInstallConfig.ManifestItem;
         string minecraftFolder = _settingsService.ActiveMinecraftFolder ?? throw new InvalidOperationException();
@@ -95,7 +98,8 @@ internal partial class DownloadService
             return new VanillaInstanceInstaller
             {
                 CheckAllDependencies = true,
-                DownloadMirror = DownloadMirrors.BmclApi,
+                DownloadMirror = DownloadMirror,
+                Downloader = _downloader,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 Progress = installationViewModel
@@ -104,20 +108,18 @@ internal partial class DownloadService
 
         ModLoaderType modLoaderType = instanceInstallConfig.PrimaryLoader.Type;
         object selectedInstallData = instanceInstallConfig.PrimaryLoader.SelectedInstallData;
-        IDownloadMirror? downloadMirror = _settingsService.CurrentDownloadSource == "Bmclapi" ? DownloadMirrors.BmclApi : null;
 
-        installationStageViews = GetInstallationViewModel(modLoaderType, out var vanillaStagesViewModel, out var stagesViewModel);
-
-        IInstanceInstaller installer = modLoaderType switch
+        return modLoaderType switch
         {
             ModLoaderType.Forge => new ForgeInstanceInstaller()
             {
-                DownloadMirror = downloadMirror,
+                Downloader = _downloader,
+                DownloadMirror = DownloadMirror,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
                 InstallData = (ForgeInstallData)selectedInstallData,
-                Progress = (InstallationViewModel<ForgeInstallationStage>)stagesViewModel,
+                Progress = GetInstallationViewModel<ForgeInstallationStage>(out var vanillaStagesViewModel, out installationStageViews),
                 VanillaInstallationProgress = vanillaStagesViewModel,
                 JavaPath = javaPath,
                 IsNeoForgeInstaller = false,
@@ -125,12 +127,13 @@ internal partial class DownloadService
             },
             ModLoaderType.NeoForge => new ForgeInstanceInstaller()
             {
-                DownloadMirror = downloadMirror,
+                Downloader = _downloader,
+                DownloadMirror = DownloadMirror,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
                 InstallData = (ForgeInstallData)selectedInstallData,
-                Progress = (InstallationViewModel<ForgeInstallationStage>)stagesViewModel,
+                Progress = GetInstallationViewModel<ForgeInstallationStage>(out var vanillaStagesViewModel, out installationStageViews),
                 VanillaInstallationProgress = vanillaStagesViewModel,
                 JavaPath = javaPath,
                 IsNeoForgeInstaller = true,
@@ -138,90 +141,56 @@ internal partial class DownloadService
             },
             ModLoaderType.OptiFine => new OptiFineInstanceInstaller()
             {
-                DownloadMirror = downloadMirror,
+                Downloader = _downloader,
+                DownloadMirror = DownloadMirror,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
                 InstallData = (OptiFineInstallData)selectedInstallData,
-                Progress = (InstallationViewModel<OptiFineInstallationStage>)stagesViewModel,
+                Progress = GetInstallationViewModel<OptiFineInstallationStage>(out var vanillaStagesViewModel, out installationStageViews),
                 VanillaInstallationProgress = vanillaStagesViewModel,
                 JavaPath = javaPath,
                 CustomizedInstanceId = customizedInstanceId
             },
             ModLoaderType.Fabric => new FabricInstanceInstaller()
             {
-                DownloadMirror = downloadMirror,
+                Downloader = _downloader,
+                DownloadMirror = DownloadMirror,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
                 InstallData = (FabricInstallData)selectedInstallData,
-                Progress = (InstallationViewModel<FabricInstallationStage>)stagesViewModel,
+                Progress = GetInstallationViewModel<FabricInstallationStage>(out var vanillaStagesViewModel, out installationStageViews),
                 VanillaInstallationProgress = vanillaStagesViewModel,
                 CustomizedInstanceId = customizedInstanceId
             },
             ModLoaderType.Quilt => new QuiltInstanceInstaller()
             {
-                DownloadMirror = downloadMirror,
+                Downloader = _downloader,
+                DownloadMirror = DownloadMirror,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
                 InstallData = (QuiltInstallData)selectedInstallData,
-                Progress = (InstallationViewModel<QuiltInstallationStage>)stagesViewModel,
+                Progress = GetInstallationViewModel<QuiltInstallationStage>(out var vanillaStagesViewModel, out installationStageViews),
                 VanillaInstallationProgress = vanillaStagesViewModel,
                 CustomizedInstanceId = customizedInstanceId
             },
-            _ => throw new InvalidOperationException()
+            _ => throw new NotImplementedException()
         };
-
-        return installer;
     }
 
-    List<InstallationStageViewModel> GetInstallationViewModel(
-        ModLoaderType modLoaderType,
+    static InstallationViewModel<TStage> GetInstallationViewModel<TStage>(
         out InstallationViewModel<VanillaInstallationStage> vanillaStagesViewModel,
-        out object stagesViewModel)
-        {
-            List<InstallationStageViewModel> stageViewModels = [];
-            vanillaStagesViewModel = new();
+        out List<InstallationStageViewModel> installationStagesViewModel) where TStage : notnull
+    {
+        InstallationViewModel<TStage> installationViewModel = new();
+        vanillaStagesViewModel = new();
 
-            if (modLoaderType == ModLoaderType.Quilt)
-            {
-                InstallationViewModel<QuiltInstallationStage> installationViewModel = new();
+        installationStagesViewModel = [];
+        installationStagesViewModel.AddRange(installationViewModel.Stages.Values);
+        installationStagesViewModel.InsertRange(1, vanillaStagesViewModel.Stages.Values);
 
-                stageViewModels.AddRange(installationViewModel.Stages.Values);
-                stageViewModels.InsertRange(1, vanillaStagesViewModel.Stages.Values);
-
-                stagesViewModel = installationViewModel;
-            }
-            else if (modLoaderType == ModLoaderType.Fabric)
-            {
-                InstallationViewModel<FabricInstallationStage> installationViewModel = new();
-
-                stageViewModels.AddRange(installationViewModel.Stages.Values);
-                stageViewModels.InsertRange(1, vanillaStagesViewModel.Stages.Values);
-
-                stagesViewModel = installationViewModel;
-            }
-            else if (modLoaderType == ModLoaderType.Forge || modLoaderType == ModLoaderType.NeoForge)
-            {
-                InstallationViewModel<ForgeInstallationStage> installationViewModel = new();
-
-                stageViewModels.AddRange(installationViewModel.Stages.Values);
-                stageViewModels.InsertRange(1, vanillaStagesViewModel.Stages.Values);
-
-                stagesViewModel = installationViewModel;
-            }
-            else if (modLoaderType == ModLoaderType.OptiFine)
-            {
-                InstallationViewModel<OptiFineInstallationStage> installationViewModel = new();
-
-                stageViewModels.AddRange(installationViewModel.Stages.Values);
-                stageViewModels.InsertRange(1, vanillaStagesViewModel.Stages.Values);
-
-                stagesViewModel = installationViewModel;
-            }
-            else throw new InvalidOperationException();
-
-            return stageViewModels;
-        }
+        return installationViewModel;
+    }
 }

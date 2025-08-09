@@ -74,12 +74,10 @@
                 <Button
                     Grid.Column="0"
                     HorizontalAlignment="Stretch"
-                    Background="{ThemeResource DeleteButtonBackground}"
-                    BorderBrush="{ThemeResource DeleteButtonBorder}"
                     Command="{x:Bind VM.DeleteCommand}"
                     ElementSoundMode="FocusOnly"
                     IsTabStop="False"
-                    Style="{ThemeResource ButtonRevealStyle}">
+                    Style="{ThemeResource DeleteButtonStyle}">
                     <TextBlock
                         x:Uid="Buttons_Delete"
                         Foreground="White"

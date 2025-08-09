@@ -91,10 +91,8 @@
 
                     <Button
                         Name="DeleteButton"
-                        Background="{ThemeResource DeleteButtonBackground}"
-                        BorderBrush="{ThemeResource DeleteButtonBorder}"
                         Command="{x:Bind VM.DeleteGameCommand}"
-                        Style="{ThemeResource ButtonRevealStyle}">
+                        Style="{ThemeResource DeleteButtonStyle}">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <FontIcon
                                 FontSize="14"

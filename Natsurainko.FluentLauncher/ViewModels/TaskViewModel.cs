@@ -27,7 +27,6 @@ using Nrk.FluentCore.GameManagement.Installer;
 using Nrk.FluentCore.GameManagement.Instances;
 using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Resources;
-using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -45,7 +44,7 @@ namespace Natsurainko.FluentLauncher.ViewModels;
 
 internal abstract partial class TaskViewModel : ObservableObject
 {
-    protected readonly CancellationTokenSource _tokenSource = new();
+    private readonly CancellationTokenSource _tokenSource = new();
     protected readonly Stopwatch _stopwatch = new();
 
     protected virtual string StopwatchFormat => "hh\\:mm\\:ss";
@@ -102,6 +101,8 @@ internal abstract partial class TaskViewModel : ObservableObject
 
     public virtual bool ProgressBarIsIndeterminate => Progress <= 0;
 
+    public virtual string? InfoBarTitle => ExecuteTask!.Exception?.Message;
+
     #endregion
 
     public virtual bool CanCancel => TaskState == TaskState.Running;
@@ -113,7 +114,7 @@ internal abstract partial class TaskViewModel : ObservableObject
 
         _stopwatch.Start();
 
-        ExecuteTask = Task.Run(ExecuteAsync, _tokenSource.Token);
+        ExecuteTask = Task.Run(async () => await ExecuteAsync(_tokenSource.Token), _tokenSource.Token);
         await App.DispatcherQueue.EnqueueAsync(() => TaskState = TaskState.Running);
 
         ExecuteTask.ContinueWith(t =>
@@ -151,7 +152,7 @@ internal abstract partial class TaskViewModel : ObservableObject
         WeakReferenceMessenger.Default.Send(new BackgroundTaskCountChangedMessage());
     }
 
-    protected abstract Task ExecuteAsync();
+    protected abstract Task ExecuteAsync(CancellationToken cancellationToken);
 
     [RelayCommand(CanExecute = nameof(CanCancel))]
     public void Cancel()
@@ -180,28 +181,28 @@ internal abstract partial class TaskViewModel : ObservableObject
 
 internal partial class DownloadModTaskViewModel : TaskViewModel
 {
-    private readonly string _folder;
-    private readonly string _fileName;
+    private readonly DownloadService _downloadService;
 
-    private readonly Task<string> @getUrlTask;
+    private readonly string _filePath;
+    private readonly Task<string> _getUrlTask;
 
     private DownloadTask? DownloadTask { get; set; }
 
     protected override ILogger Logger { get; } = App.GetService<ILogger<DownloadModTaskViewModel>>();
 
-    public DownloadModTaskViewModel(object modFile, string folder)
+    public DownloadModTaskViewModel(DownloadService downloadService, object modFile, string folder)
     {
-        _folder = folder;
+        _downloadService = downloadService;
 
         switch (modFile)
         {
             case ModrinthFile modrinthFile:
-                _fileName = modrinthFile.FileName;
-                @getUrlTask = Task.FromResult(modrinthFile.Url);
+                _filePath = Path.Combine(folder, modrinthFile.FileName);
+                _getUrlTask = Task.FromResult(modrinthFile.Url);
                 break;
             case CurseForgeFile curseForgeFile:
-                _fileName = curseForgeFile.FileName;
-                @getUrlTask = Task.Run(() => App.GetService<CurseForgeClient>().GetFileUrlAsync(curseForgeFile));
+                _filePath = Path.Combine(folder, curseForgeFile.FileName);
+                _getUrlTask = Task.Run(() => App.GetService<CurseForgeClient>().GetFileUrlAsync(curseForgeFile));
                 break;
             default:
                 // Never reached, but added for compiler nullable check
@@ -209,16 +210,17 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
         }
     }
 
-    public DownloadModTaskViewModel(string fileName, string url, string folder)
+    public DownloadModTaskViewModel(DownloadService downloadService, string url, string filePath)
     {
-        _fileName = fileName;
-        _folder = folder;
-        @getUrlTask = Task.FromResult(url);
+        _downloadService = downloadService;
+
+        _filePath = filePath;
+        _getUrlTask = Task.FromResult(url);
     }
 
     #region Basic Properties
 
-    public override string Title => _fileName;
+    public override string Title => Path.GetFileName(_filePath);
 
     public override string Icon => TaskState switch
     {
@@ -241,17 +243,19 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
 
     #endregion
 
-    protected override async Task ExecuteAsync()
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        string url = await @getUrlTask;
+        DownloadTask = _downloadService.Downloader.CreateDownloadTask(await _getUrlTask, _filePath);
+        var downloadResult = await DownloadTask.StartAsync(cancellationToken);
 
-        DownloadTask = HttpUtils.Downloader.CreateDownloadTask(url, Path.Combine(_folder, _fileName));
-        var downloadResult = await DownloadTask.StartAsync(_tokenSource.Token);
+        if (downloadResult.Type != DownloadResultType.Successful)
+        {
+            if (File.Exists(_filePath))
+                File.Delete(_filePath);
 
-        if (downloadResult.Type == DownloadResultType.Cancelled)
-            _tokenSource.Token.ThrowIfCancellationRequested();
-        else if (downloadResult.Type == DownloadResultType.Failed)
+            cancellationToken.ThrowIfCancellationRequested();
             throw downloadResult.Exception!;
+        }
 
         await App.DispatcherQueue.EnqueueAsync(() =>
         {
@@ -262,7 +266,7 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
     }
 
     [RelayCommand]
-    void OpenFolder() => ExplorerHelper.ShowAndSelectFile(Path.Combine(_folder, _fileName));
+    void OpenFolder() => ExplorerHelper.ShowAndSelectFile(_filePath);
 
     [RelayCommand]
     void CopyUrl()
@@ -272,6 +276,25 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
         ClipboardHepler.SetText(DownloadTask.Request.Url);
         App.GetService<INotificationService>().DownloadUrlCopied();
     }
+
+    [RelayCommand]
+    void Retry()
+    {
+        if (DownloadTask == null) return;
+
+        _downloadService.DownloadModFile(DownloadTask.Request.Url, _filePath);
+        Remove();
+    }
+
+    [RelayCommand]
+    void Remove() => _downloadService.DownloadTasks.Remove(this);
+
+    #region Exception
+
+    //public override string InfoBarTitle => LocalizedStrings.Notifications__TaskFailed_Install;
+
+
+    #endregion
 
     #region Timer Override
 
@@ -385,11 +408,12 @@ partial class InstallationStageViewModel : ObservableObject
 }
 
 internal partial class InstallInstanceTaskViewModel(
+    DownloadService downloadService,
     IInstanceInstaller instanceInstaller,
     InstanceInstallConfig instanceInstallConfig,
     IEnumerable<InstallationStageViewModel> stageViewModels) : TaskViewModel
 {
-    private MinecraftInstance _minecraftInstance;
+    private MinecraftInstance? _minecraftInstance;
 
     protected override ILogger Logger { get; } = App.GetService<ILogger<InstallInstanceTaskViewModel>>();
 
@@ -413,9 +437,12 @@ internal partial class InstallInstanceTaskViewModel(
 
     #endregion
 
-    protected override async Task ExecuteAsync()
+    [ObservableProperty]
+    public partial bool Installed { get; set; }
+
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        _minecraftInstance = await instanceInstaller.InstallAsync(_tokenSource.Token);
+        _minecraftInstance = await instanceInstaller.InstallAsync(cancellationToken);
         InstanceConfig config = _minecraftInstance.GetConfig();
 
         if (instanceInstallConfig.EnableIndependencyInstance)
@@ -425,18 +452,17 @@ internal partial class InstallInstanceTaskViewModel(
         }
 
         App.GetService<GameService>().RefreshGames();
+        await App.DispatcherQueue.EnqueueAsync(() => Installed = true);
 
         #region Download Mods
 
         string modsFolder = _minecraftInstance.GetModsDirectory();
-        var downloadService = App.GetService<DownloadService>();
 
         if (instanceInstallConfig.SecondaryLoader?.SelectedInstallData is OptiFineInstallData installData)
         {
             downloadService.DownloadModFile(
-                installData.FileName,
                 $"https://bmclapi2.bangbang93.com/optifine/{instanceInstallConfig.ManifestItem.Id}/{installData.Type}/{installData.Patch}",
-                modsFolder);
+                Path.Combine(modsFolder, installData.FileName));
         }
 
         foreach (var item in instanceInstallConfig.AdditionalMods)
@@ -446,9 +472,21 @@ internal partial class InstallInstanceTaskViewModel(
     }
 
     [RelayCommand]
-    void Launch() => App.GetService<LaunchService>().LaunchFromUI(_minecraftInstance);
+    void Launch() => App.GetService<LaunchService>().LaunchFromUI(_minecraftInstance!);
+
+    [RelayCommand]
+    void Retry()
+    {
+        downloadService.InstallInstance(instanceInstallConfig);
+        Remove();
+    }
+
+    [RelayCommand]
+    void Remove() => downloadService.DownloadTasks.Remove(this);
 
     #region Exception
+
+    public override string InfoBarTitle => LocalizedStrings.Notifications__TaskFailed_Install;
 
     public override string ExceptionTitle
     {
@@ -772,7 +810,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
 
     public bool IsGameRunning => ProcessLaunched && !ProcessExited;
 
-    protected override async Task ExecuteAsync()
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         try
         {
@@ -780,7 +818,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
                 _instance,
                 Process_OutputDataReceived,
                 Process_ErrorDataReceived,
-                launchProgressViewModel, _tokenSource.Token);
+                launchProgressViewModel, cancellationToken);
             McProcess.Process.Exited += Process_Exited;
         }
         finally
@@ -799,9 +837,9 @@ internal partial class LaunchTaskViewModel : TaskViewModel
         {
             McProcess.Process.WaitForInputIdle(15 * 1000);
             await App.DispatcherQueue.EnqueueAsync(() => WaitedForInputIdle = true);
-        }).Forget();
+        }, cancellationToken).Forget();
 
-        await McProcess.Process.WaitForExitAsync(_tokenSource.Token);
+        await McProcess.Process.WaitForExitAsync(cancellationToken);
     }
 
     async void Process_Exited(object? sender, EventArgs e)
@@ -867,7 +905,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
 
     #region Exception
 
-    public string InfoBarTitle => LocalizedStrings.Notifications__TaskFailed_Launch;
+    public override string InfoBarTitle => LocalizedStrings.Notifications__TaskFailed_Launch;
 
     public override string ExceptionTitle 
     {
@@ -898,7 +936,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     }
 
     protected override void NotifyException(INotificationService notificationService)
-        => notificationService.LaunchFailed(ExecuteTask.Exception.InnerException, ExceptionTitle);
+        => notificationService.LaunchFailed(ExecuteTask.Exception!.InnerException!, ExceptionTitle);
 
     #endregion
 

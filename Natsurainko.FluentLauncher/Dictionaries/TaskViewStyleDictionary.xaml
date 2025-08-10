@@ -823,6 +823,7 @@
                     <ItemsControl
                         Grid.Row="1"
                         Grid.Column="2"
+                        Grid.ColumnSpan="2"
                         Margin="0,16,0,0"
                         ItemsSource="{Binding StageViewModels}"
                         Visibility="{Binding Installed, Mode=OneWay, Converter={ThemeResource InvertedBoolToVisibilityConverter}}">
@@ -870,18 +871,27 @@
                         Margin="0,16,0,0"
                         HorizontalAlignment="Right"
                         DefaultLabelPosition="Right">
-                        <AppBarButton IsEnabled="{Binding Installed, Mode=OneWay}" Label="Launch Instance">
+                        <AppBarButton
+                            x:Uid="Tasks_DownloadPage_AB6"
+                            Command="{Binding LaunchCommand}"
+                            IsEnabled="{Binding Installed, Mode=OneWay}"
+                            Label="Launch Instance">
                             <AppBarButton.Icon>
                                 <FontIcon Glyph="&#xE945;" />
                             </AppBarButton.Icon>
                         </AppBarButton>
-                        <AppBarButton IsEnabled="{Binding Installed, Mode=OneWay}" Label="Open Mod Folder">
+                        <AppBarButton
+                            x:Uid="Tasks_DownloadPage_AB7"
+                            Command="{Binding OpenInstanceFolderCommand}"
+                            IsEnabled="{Binding Installed, Mode=OneWay}"
+                            Label="Open Instance Folder">
                             <AppBarButton.Icon>
                                 <FontIcon Glyph="&#xe756;" />
                             </AppBarButton.Icon>
                         </AppBarButton>
                         <CommandBar.SecondaryCommands>
                             <AppBarButton
+                                x:Uid="Tasks_DownloadPage_AB5"
                                 Command="{Binding RetryCommand}"
                                 Icon="Refresh"
                                 IsEnabled="{Binding IsCompleted, Mode=OneWay}"

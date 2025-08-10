@@ -161,7 +161,7 @@ internal partial class LaunchViewModel : SettingsPageVM, ISettingsViewModel
         if (!Directory.Exists(folder))
             return;
 
-        _ = Launcher.LaunchFolderPathAsync(folder);
+        ExplorerHelper.OpenFolder(folder);
     }
 
     #endregion

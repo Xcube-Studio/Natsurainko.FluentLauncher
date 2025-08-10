@@ -47,14 +47,14 @@ internal partial class DownloadService
     public void DownloadModFile(object modFile, string folder)
     {
         DownloadModTaskViewModel downloadModTask = new(this, modFile, folder);
-        DownloadTasks.Insert(0, downloadModTask);
+        App.DispatcherQueue.TryEnqueue(() => DownloadTasks.Insert(0, downloadModTask));
         downloadModTask.EnqueueAsync().Forget();
     }
 
     public void DownloadModFile(string url, string filePath)
     {
         DownloadModTaskViewModel downloadModTask = new(this, url, filePath);
-        DownloadTasks.Insert(0, downloadModTask);
+        App.DispatcherQueue.TryEnqueue(() => DownloadTasks.Insert(0, downloadModTask));
         downloadModTask.EnqueueAsync().Forget();
     }
 
@@ -66,7 +66,7 @@ internal partial class DownloadService
             config,
             installationStageViews);
 
-        DownloadTasks.Insert(0, installInstanceTask);
+        App.DispatcherQueue.TryEnqueue(() => DownloadTasks.Insert(0, installInstanceTask));
         installInstanceTask.EnqueueAsync().Forget();
     }
 
@@ -98,7 +98,6 @@ internal partial class DownloadService
             return new VanillaInstanceInstaller
             {
                 CheckAllDependencies = true,
-                DownloadMirror = DownloadMirror,
                 Downloader = _downloader,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
@@ -114,7 +113,6 @@ internal partial class DownloadService
             ModLoaderType.Forge => new ForgeInstanceInstaller()
             {
                 Downloader = _downloader,
-                DownloadMirror = DownloadMirror,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
@@ -128,7 +126,6 @@ internal partial class DownloadService
             ModLoaderType.NeoForge => new ForgeInstanceInstaller()
             {
                 Downloader = _downloader,
-                DownloadMirror = DownloadMirror,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
@@ -142,7 +139,6 @@ internal partial class DownloadService
             ModLoaderType.OptiFine => new OptiFineInstanceInstaller()
             {
                 Downloader = _downloader,
-                DownloadMirror = DownloadMirror,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
@@ -155,7 +151,6 @@ internal partial class DownloadService
             ModLoaderType.Fabric => new FabricInstanceInstaller()
             {
                 Downloader = _downloader,
-                DownloadMirror = DownloadMirror,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
@@ -167,7 +162,6 @@ internal partial class DownloadService
             ModLoaderType.Quilt => new QuiltInstanceInstaller()
             {
                 Downloader = _downloader,
-                DownloadMirror = DownloadMirror,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
@@ -182,7 +176,7 @@ internal partial class DownloadService
 
     static InstallationViewModel<TStage> GetInstallationViewModel<TStage>(
         out InstallationViewModel<VanillaInstallationStage> vanillaStagesViewModel,
-        out List<InstallationStageViewModel> installationStagesViewModel) where TStage : notnull
+        out List<InstallationStageViewModel> installationStagesViewModel) where TStage : struct, Enum
     {
         InstallationViewModel<TStage> installationViewModel = new();
         vanillaStagesViewModel = new();

@@ -1,13 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Navigation;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement.Instances;
 using Nrk.FluentCore.GameManagement.Saves;
-using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using Windows.System;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Instances;
@@ -32,8 +30,8 @@ internal partial class SaveViewModel : PageVM, INavigationAware
     }
 
     [RelayCommand]
-    async Task OpenSavesFolder() => await Launcher.LaunchFolderPathAsync(SavesFolder);
+    void OpenSavesFolder() => ExplorerHelper.OpenFolder(SavesFolder);
 
     [RelayCommand]
-    async Task OpenSaveFolder(SaveInfo saveInfo) => await Launcher.LaunchFolderPathAsync(saveInfo.Folder);
+    void OpenSaveFolder(SaveInfo saveInfo) => ExplorerHelper.OpenFolder(saveInfo.Folder);
 }

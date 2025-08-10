@@ -82,7 +82,7 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
         CancellationTokenSource = new CancellationTokenSource();
 
         // Display user code when received and launch browser
-        var receiveUserCodeAction = (OAuth2DeviceCodeResponse response) =>
+        void ReceiveUserCodeAction(OAuth2DeviceCodeResponse response)
         {
             App.DispatcherQueue.EnqueueAsync(async () =>
             {
@@ -92,11 +92,11 @@ internal partial class DeviceFlowMicrosoftAuthViewModel : WizardViewModelBase
                 CopyCode();
                 await Launcher.LaunchUriAsync(new("https://login.live.com/oauth20_remoteconnect.srf"));
             });
-        };
+        }
 
         try
         {
-            DeviceFlowProcess = _authService.AuthMsaFromDeviceFlowAsync(receiveUserCodeAction, CancellationTokenSource.Token);
+            DeviceFlowProcess = _authService.AuthMsaFromDeviceFlowAsync(ReceiveUserCodeAction, CancellationTokenSource.Token);
             await DeviceFlowProcess;
         }
         catch (OperationCanceledException) { }

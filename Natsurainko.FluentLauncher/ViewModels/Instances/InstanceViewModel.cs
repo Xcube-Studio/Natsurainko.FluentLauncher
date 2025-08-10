@@ -5,6 +5,7 @@ using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Launch;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement;
 using Nrk.FluentCore.GameManagement.Instances;
@@ -67,14 +68,11 @@ internal partial class InstanceViewModel(
         MinecraftInstance = parameter as MinecraftInstance;
         InstanceConfig = MinecraftInstance.GetConfig();
 
-        //Task.Run(MinecraftInstance.GetStatistics).ContinueWith(t =>
-        //    Dispatcher.TryEnqueue(() => GameStorageInfo = t.Result), TaskContinuationOptions.OnlyOnRanToCompletion);
-
-        _ = Task.Run(() =>
+        Task.Run(() =>
         {
             var gameStorageInfo = MinecraftInstance.GetStatistics();
             Dispatcher.TryEnqueue(() => GameStorageInfo = gameStorageInfo);
-        });
+        }).Forget();
 
         jumpList = await JumpList.LoadCurrentAsync();
         Pinned = quickLaunchService.IsExisted(jumpList, MinecraftInstance, out var item, QuickLaunchService.PinnedUri);
@@ -90,7 +88,7 @@ internal partial class InstanceViewModel(
     void CardClick(string tag) => navigationService.NavigateTo(tag, MinecraftInstance);
 
     [RelayCommand]
-    async Task OpenVersionFolder() => await Launcher.LaunchFolderPathAsync(MinecraftInstance.GetGameDirectory());
+    void OpenVersionFolder() => ExplorerHelper.OpenFolder(MinecraftInstance.GetGameDirectory());
 
     [RelayCommand]
     async Task DeleteGame() => await _dialogs.ShowAsync("DeleteInstanceDialog", MinecraftInstance);

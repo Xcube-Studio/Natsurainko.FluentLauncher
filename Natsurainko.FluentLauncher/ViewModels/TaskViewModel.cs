@@ -140,7 +140,7 @@ internal abstract partial class TaskViewModel : ObservableObject
                     TaskState = TaskState.Failed;
                     NotifyException(App.GetService<INotificationService>());
                 }
-                else if (IsCanceled)
+                else if (IsCanceled || _tokenSource.IsCancellationRequested)
                     TaskState = TaskState.Cancelled;
                 else 
                     TaskState = TaskState.Finished;
@@ -155,10 +155,10 @@ internal abstract partial class TaskViewModel : ObservableObject
     protected abstract Task ExecuteAsync(CancellationToken cancellationToken);
 
     [RelayCommand(CanExecute = nameof(CanCancel))]
-    public void Cancel()
+    public async Task Cancel()
     {
-        _tokenSource.Cancel();
         TaskState = TaskState.Canceling;
+        await _tokenSource.CancelAsync();
     }
 
     protected virtual Timer CreateTimer()
@@ -323,14 +323,17 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
 #region Install Instance Task
 
 class InstallationViewModel<TStage> : IProgress<InstallerProgress<TStage>>
-    where TStage : notnull
+    where TStage : struct, Enum
 {
     public Dictionary<TStage, InstallationStageViewModel> Stages { get; } = [];
 
     public InstallationViewModel()
     {
-        foreach (var name in Enum.GetNames(typeof(TStage)))
-            Stages.Add((TStage)Enum.Parse(typeof(TStage), name), new InstallationStageViewModel { TaskName = name });
+        string enumTypeName = typeof(TStage).Name;
+
+        foreach (var name in Enum.GetNames<TStage>())
+            Stages.Add(Enum.Parse<TStage>(name), new InstallationStageViewModel
+                { TaskName = LocalizedStrings.GetString($"Tasks_DownloadPage__{enumTypeName}_{name}") });
     }
 
     public void Report(InstallerProgress<TStage> value)
@@ -473,6 +476,9 @@ internal partial class InstallInstanceTaskViewModel(
 
     [RelayCommand]
     void Launch() => App.GetService<LaunchService>().LaunchFromUI(_minecraftInstance!);
+
+    [RelayCommand]
+    void OpenInstanceFolder() => ExplorerHelper.OpenFolder(_minecraftInstance!.GetGameDirectory());
 
     [RelayCommand]
     void Retry()

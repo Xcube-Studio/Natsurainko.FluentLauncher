@@ -42,7 +42,7 @@ internal partial class ModViewModel(INotificationService notificationService) : 
     }
 
     [RelayCommand]
-    async Task OpenModsFolder() => await Launcher.LaunchFolderPathAsync(ModsFolder);
+    void OpenModsFolder() => ExplorerHelper.OpenFolder(ModsFolder);
 
     [RelayCommand]
     void InstallMods() => GlobalNavigate("ModsDownload/Navigation");

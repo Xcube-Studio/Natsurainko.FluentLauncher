@@ -10,10 +10,12 @@ using Windows.ApplicationModel;
 using Windows.Storage;
 
 #if ENABLE_LOAD_EXTENSIONS
-using Windows.Storage;
+using Microsoft.UI.Xaml;
 using FluentLauncher.Infra.ExtensionHost;
 using FluentLauncher.Infra.ExtensionHost.Assemblies;
 using FluentLauncher.Infra.ExtensionHost.Extensions;
+using FluentLauncher.Infra.WinUI.AppHost;
+using System.Collections.Generic;
 using System.Linq;
 #endif
 
@@ -68,9 +70,9 @@ internal static class DependencyInjectionExtensions
     }
 
 #if ENABLE_LOAD_EXTENSIONS
-    public static void UseApplicationExtensionHost(this WinUIApplicationBuilder builder)
+    public static void UseApplicationExtensionHost<TApp>(this WinUIApplicationBuilder<TApp> builder) where TApp : Application
     {
-        ApplicationExtensionHost.Initialize<App>();
+        ApplicationExtensionHost.Initialize<TApp>();
         List<IExtension> Instances = [];
         List<IExtensionAssembly> Assemblies = [];
 

@@ -139,13 +139,9 @@
                             BorderBrush="{ThemeResource IconBorder}"
                             BorderThickness="2"
                             CornerRadius="4">
-                            <Border CornerRadius="4">
-                                <Image>
-                                    <Image.Source>
-                                        <BitmapImage UriSource="{x:Bind IconUrl}" />
-                                    </Image.Source>
-                                </Image>
-                            </Border>
+                            <Border.Background>
+                                <ImageBrush ImageSource="{Binding IconUrl}" />
+                            </Border.Background>
                         </Border>
                         <StackPanel
                             Grid.Column="2"

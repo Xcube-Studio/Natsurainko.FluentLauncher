@@ -7,6 +7,7 @@ using Microsoft.Win32;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI.Notification;
+using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Environment;
 using System;
 using System.Collections.ObjectModel;
@@ -160,7 +161,7 @@ internal partial class LaunchViewModel : SettingsPageVM, ISettingsViewModel
         if (!Directory.Exists(folder))
             return;
 
-        _ = Launcher.LaunchFolderPathAsync(folder);
+        ExplorerHelper.OpenFolder(folder);
     }
 
     #endregion
@@ -238,7 +239,7 @@ internal partial class LaunchViewModel : SettingsPageVM, ISettingsViewModel
         if (!File.Exists(java))
             return;
 
-        using var process = Process.Start(new ProcessStartInfo("explorer.exe", $"/select,{java}"));
+        ExplorerHelper.ShowAndSelectFile(java);
     }
 
     #endregion

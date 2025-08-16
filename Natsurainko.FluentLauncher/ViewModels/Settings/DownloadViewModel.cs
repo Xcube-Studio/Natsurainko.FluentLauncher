@@ -3,9 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.Storage;
-using System;
-using System.Threading.Tasks;
-using Windows.System;
+using Natsurainko.FluentLauncher.Utils;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
@@ -41,5 +39,5 @@ internal partial class DownloadViewModel : SettingsPageVM, ISettingsViewModel
     }
 
     [RelayCommand]
-    async Task OpenCacheFolder(string folder) => await Launcher.LaunchFolderPathAsync(folder);
+    void OpenCacheFolder(string folder) => ExplorerHelper.OpenFolder(folder);
 }

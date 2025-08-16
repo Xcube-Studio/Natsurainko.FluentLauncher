@@ -28,6 +28,8 @@ class SkinTextureUpdatedMessage(Account value) : ValueChangedMessage<Account>(va
 
 class CapeTextureUpdatedMessage(Account value) : ValueChangedMessage<Account>(value);
 
+class BackgroundTaskCountChangedMessage();
+
 class GlobalNavigationMessage(string pageKey, object? parameter = null) : ValueChangedMessage<string>(pageKey)
 {
     public object? Parameter { get; init; } = parameter;

@@ -17,7 +17,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.System;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Instances;
@@ -90,7 +89,7 @@ internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel, IN
     void NavigateFolder()
     {
         if (Directory.Exists(ActiveMinecraftFolder))
-            _ = Launcher.LaunchFolderPathAsync(ActiveMinecraftFolder);
+            ExplorerHelper.OpenFolder(ActiveMinecraftFolder);
         else
         {
             _notificationService.Show(new ActionNotification

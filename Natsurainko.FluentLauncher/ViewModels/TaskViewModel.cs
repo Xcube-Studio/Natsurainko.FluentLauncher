@@ -1,19 +1,22 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.WinUI;
-using FluentLauncher.Infra.UI.Navigation;
+using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Notification;
 using FluentLauncher.Infra.UI.Windows;
 using FluentLauncher.Infra.WinUI.Windows;
-using Microsoft.UI.Xaml;
+using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
 using Natsurainko.FluentLauncher.Exceptions;
 using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Services.UI.Notification;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
@@ -24,7 +27,6 @@ using Nrk.FluentCore.GameManagement.Installer;
 using Nrk.FluentCore.GameManagement.Instances;
 using Nrk.FluentCore.Launch;
 using Nrk.FluentCore.Resources;
-using Nrk.FluentCore.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -32,226 +34,302 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using static Natsurainko.FluentLauncher.Services.Launch.LaunchProgress;
 using static Natsurainko.FluentLauncher.ViewModels.LaunchStageProgress;
 
-#nullable disable
+using Timer = System.Timers.Timer;
+
 namespace Natsurainko.FluentLauncher.ViewModels;
 
 internal abstract partial class TaskViewModel : ObservableObject
 {
-    protected readonly CancellationTokenSource _tokenSource = new();
-    public readonly Stopwatch Stopwatch = new();
+    private readonly CancellationTokenSource _tokenSource = new();
+    protected readonly Stopwatch _stopwatch = new();
 
-    protected string _stopwatchElapsedFormat = "hh\\:mm\\:ss";
-    protected TimeSpan _timerTimeSpan = TimeSpan.FromSeconds(1);
+    protected virtual string StopwatchFormat => "hh\\:mm\\:ss";
+
+    protected virtual TimeSpan TimerSpan => TimeSpan.FromSeconds(1);
+
+    protected abstract ILogger Logger { get; }
+
+    protected Timer Timer { get; private set; } = null!;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
+    [NotifyPropertyChangedFor(nameof(Icon))]
     [NotifyPropertyChangedFor(nameof(CanCancel))]
-    [NotifyPropertyChangedFor(nameof(TaskIcon))]
-    [NotifyPropertyChangedFor(nameof(ProgressShowPaused))]
-    [NotifyPropertyChangedFor(nameof(ProgressShowError))]
-    [NotifyPropertyChangedFor(nameof(CancelButtonVisibility))]
     public partial TaskState TaskState { get; set; } = TaskState.Prepared;
 
-    [ObservableProperty]
-    public partial string TaskTitle { get; set; }
+    #region Basic Properties
+
+    public abstract string Icon { get; }
+
+    public abstract string Title { get; }
+
+    public string TimeUsage => _stopwatch.Elapsed.ToString(StopwatchFormat);
+
+    #endregion
+
+    #region Task Properties
+
+    protected Task ExecuteTask { get; private set; } = null!;
+
+    public bool IsFaulted => ExecuteTask.IsFaulted;
+
+    public bool IsCanceled => ExecuteTask.IsCanceled;
+
+    public bool IsCompleted => ExecuteTask.IsCompleted;
+
+    public virtual string? ExceptionContent => ExecuteTask!.Exception?.ToString();
+
+    public virtual string? ExceptionTitle => ExecuteTask!.Exception?.GetType().FullName;
+
+    #endregion
+
+    #region UI Properties
 
     [ObservableProperty]
     public partial bool IsExpanded { get; set; } = true;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(ProgressPercentage))]
+    [NotifyPropertyChangedFor(nameof(ProgressBarPercentageText))]
+    [NotifyPropertyChangedFor(nameof(ProgressBarIsIndeterminate))]
     public partial double Progress { get; set; } = 0;
 
-    [ObservableProperty]
-    public partial string TimeUsage { get; set; }
+    public string ProgressBarPercentageText => $"{Progress:P1}";
 
-    [ObservableProperty]
-    public partial bool ProgressBarIsIndeterminate { get; set; } = true;
+    public virtual bool ProgressBarIsIndeterminate => Progress <= 0;
 
-    [ObservableProperty]
-    public partial Visibility ProgressBarVisibility { get; set; } = Visibility.Visible;
+    public virtual string? InfoBarTitle => ExecuteTask!.Exception?.Message;
 
-    [ObservableProperty]
-    public partial bool ShowException { get; set; } = false;
-
-    [ObservableProperty]
-    public partial string ExceptionReason { get; set; }
-
-    public Visibility CancelButtonVisibility => (TaskState == TaskState.Cancelled || TaskState == TaskState.Finished || TaskState == TaskState.Failed) 
-        ? Visibility.Collapsed 
-        : Visibility.Visible;
-
-    public bool ProgressShowError => TaskState == TaskState.Failed;
-
-    public bool ProgressShowPaused => TaskState == TaskState.Cancelled;
-
-    public string ProgressPercentage => Progress.ToString("P1");
+    #endregion
 
     public virtual bool CanCancel => TaskState == TaskState.Running;
 
-    public abstract string TaskIcon { get; }
-
-    public Exception Exception { get; protected set; }
-
-    public virtual void Start()
+    public virtual async Task EnqueueAsync()
     {
-        System.Timers.Timer timer = new(_timerTimeSpan);
-        timer.Elapsed += (sender, e) =>
+        Timer = CreateTimer();
+        Timer.Start();
+
+        _stopwatch.Start();
+
+        Logger.TaskEnqueued();
+
+        ExecuteTask = Task.Run(async () => await ExecuteAsync(_tokenSource.Token), _tokenSource.Token);
+        await App.DispatcherQueue.EnqueueAsync(() => TaskState = TaskState.Running);
+
+        ExecuteTask.ContinueWith(t =>
         {
-            App.DispatcherQueue.TryEnqueue(() => TimeUsage = Stopwatch.Elapsed.ToString(_stopwatchElapsedFormat));
+            _stopwatch.Stop();
 
-            if (this.TaskState == TaskState.Failed || this.TaskState == TaskState.Finished || this.TaskState == TaskState.Cancelled)
+            Timer.Stop();
+            Timer.Dispose();
+
+            App.DispatcherQueue.TryEnqueue(() =>
             {
-                if (Stopwatch.IsRunning)
-                    Stopwatch.Stop();
+                Progress = 1;
 
-                timer.Stop();
-                timer.Dispose();
-            }
-        };
+                OnPropertyChanged(nameof(IsCompleted));
+                OnPropertyChanged(nameof(IsCanceled));
+                OnPropertyChanged(nameof(IsFaulted));
 
-        Stopwatch.Start();
-        Task.Run(timer.Start);
-        Task.Run(Run);
+                if (IsFaulted)
+                {
+                    OnPropertyChanged(nameof(ExceptionTitle));
+                    OnPropertyChanged(nameof(ExceptionContent));
+
+                    TaskState = TaskState.Failed;
+                    Logger.TaskFaulted(t.Exception);
+
+                    NotifyException(App.GetService<INotificationService>());
+                }
+                else if (IsCanceled || _tokenSource.IsCancellationRequested)
+                {
+                    TaskState = TaskState.Cancelled;
+                    Logger.TaskCancelld();
+                }
+                else
+                {
+                    TaskState = TaskState.Finished;
+                    Logger.TaskRanToCompletion();
+                }
+            });
+
+            WeakReferenceMessenger.Default.Send(new BackgroundTaskCountChangedMessage());
+        }).Forget();
+
+        WeakReferenceMessenger.Default.Send(new BackgroundTaskCountChangedMessage());
     }
 
-    protected abstract void Run();
+    protected abstract Task ExecuteAsync(CancellationToken cancellationToken);
 
     [RelayCommand(CanExecute = nameof(CanCancel))]
-    public void Cancel()
+    public async Task Cancel()
     {
-        _tokenSource.Cancel();
         TaskState = TaskState.Canceling;
+        await _tokenSource.CancelAsync();
     }
+
+    [RelayCommand]
+    void CopyExceptionContent()
+    {
+        if (ExceptionContent != null)
+        {
+            App.GetService<INotificationService>().ExceptionCopied();
+            ClipboardHepler.SetText(ExceptionContent);
+        }
+    }
+
+    protected virtual Timer CreateTimer()
+    {
+        TimeSpan timerSpan = TimeSpan.FromSeconds(1);
+
+        Timer timer = new(timerSpan);
+        timer.Elapsed += Timer_Elapsed;
+
+        return timer;
+    }
+
+    protected virtual void Timer_Elapsed(object? sender, ElapsedEventArgs e) 
+        => App.DispatcherQueue.TryEnqueue(() => OnPropertyChanged(nameof(TimeUsage)));
+
+    protected virtual void NotifyException(INotificationService notificationService) { }
 }
 
-#region Download Task
+#region Download Mod Task
 
 internal partial class DownloadModTaskViewModel : TaskViewModel
 {
-    private readonly string _folder;
-    private readonly string _fileName;
+    private readonly DownloadService _downloadService;
 
-    private readonly Task<string> @getUrlTask;
+    private readonly string _filePath;
+    private readonly Task<string> _getUrlTask;
 
-    public DownloadModTaskViewModel(object modFile, string folder)
+    private DownloadTask? DownloadTask { get; set; }
+
+    protected override ILogger Logger { get; } = App.GetService<ILogger<DownloadModTaskViewModel>>();
+
+    public DownloadModTaskViewModel(DownloadService downloadService, CurseForgeFile curseForgeFile, string folder)
     {
-        if (modFile is ModrinthFile modrinthFile)
-        {
-            _fileName = modrinthFile.FileName;
-            @getUrlTask = Task.FromResult(modrinthFile.Url);
-        }
-        else if (modFile is CurseForgeFile curseForgeFile)
-        {
-            _fileName = curseForgeFile.FileName;
-            @getUrlTask = App.GetService<CurseForgeClient>().GetFileUrlAsync(curseForgeFile);
-        }
-        else throw new InvalidDataException();
-
-        _folder = folder;
-
-        IsExpanded = false;
-        TaskTitle = _fileName;
+        _downloadService = downloadService;
+        _filePath = Path.Combine(folder, curseForgeFile.FileName);
+        _getUrlTask = Task.Run(() => App.GetService<CurseForgeClient>().GetFileUrlAsync(curseForgeFile));
     }
 
-    public DownloadModTaskViewModel(string fileName, string url, string folder)
+    public DownloadModTaskViewModel(DownloadService downloadService, ModrinthFile modrinthFile, string folder)
     {
-        IsExpanded = false;
-        TaskTitle = fileName;
-
-        _fileName = fileName;
-        _folder = folder;
-        @getUrlTask = Task.FromResult(url);
+        _downloadService = downloadService;
+        _filePath = Path.Combine(folder, modrinthFile.FileName);
+        _getUrlTask = Task.FromResult(modrinthFile.Url);
     }
 
-    public override string TaskIcon => TaskState switch
+    public DownloadModTaskViewModel(DownloadService downloadService, string url, string filePath)
+    {
+        _downloadService = downloadService;
+
+        _filePath = filePath;
+        _getUrlTask = Task.FromResult(url);
+    }
+
+    #region Basic Properties
+
+    public override string Title => Path.GetFileName(_filePath);
+
+    public override string Icon => TaskState switch
     {
         TaskState.Failed => "\ue711",
         TaskState.Cancelled => "\ue711",
         TaskState.Finished => "\ue73e",
-        _ => "\ue896",
+        _ => "\uE896",
     };
 
-    protected override async void Run()
+    #endregion
+
+    #region Download Properties
+
+    [ObservableProperty]
+    public partial bool Downloaded { get; set; }
+
+    public string DownloadedBytes => LongExtensions.ToFileSizeString(DownloadTask?.DownloadedBytes);
+
+    public string TotalBytes => LongExtensions.ToFileSizeString(DownloadTask?.TotalBytes);
+
+    #endregion
+
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        await App.DispatcherQueue.EnqueueAsync(() => TaskState = TaskState.Running);
-        Timer timer = null;
+        DownloadTask = _downloadService.Downloader.CreateDownloadTask(await _getUrlTask, _filePath);
+        var downloadResult = await DownloadTask.StartAsync(cancellationToken);
 
-        try
+        if (downloadResult.Type != DownloadResultType.Successful)
         {
-            string url = await @getUrlTask;
+            if (File.Exists(_filePath))
+                File.Delete(_filePath);
 
-            var downloadTask = HttpUtils.Downloader.CreateDownloadTask(url, Path.Combine(_folder, _fileName));
-
-            downloadTask.FileSizeReceived += length => 
-                App.DispatcherQueue.TryEnqueue(() => ProgressBarIsIndeterminate = length == null);
-
-
-            void TimerInvoker(object _)
-            {
-                double progress = downloadTask.TotalBytes is not null
-                    ? (double)downloadTask.DownloadedBytes / (double)downloadTask.TotalBytes
-                    : 0;
-
-                App.DispatcherQueue.TryEnqueue(() => Progress = progress);
-            }
-
-            timer = new(TimerInvoker, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
-
-            var downloadResult = await downloadTask.StartAsync(_tokenSource.Token);
-            TimerInvoker(null);
-
-            await App.DispatcherQueue.EnqueueAsync(() =>
-            {
-                TaskState = downloadResult.Type switch
-                {
-                    DownloadResultType.Failed => TaskState.Failed,
-                    DownloadResultType.Cancelled => TaskState.Cancelled,
-                    DownloadResultType.Successful => TaskState.Finished,
-                    _ => throw new InvalidOperationException()
-                };
-
-                if (downloadResult.Exception is not null)
-                {
-                    Exception = downloadResult.Exception;
-                    ShowException = true;
-                    ExceptionReason = downloadResult.Exception.Message;
-                }
-            });
+            cancellationToken.ThrowIfCancellationRequested();
+            throw downloadResult.Exception!;
         }
-        catch (Exception ex)
+
+        await App.DispatcherQueue.EnqueueAsync(() =>
         {
-            await App.DispatcherQueue.EnqueueAsync(() =>
-            {
-                TaskState = TaskState.Failed;
-                Exception = ex;
-
-                ShowException = true;
-                ExceptionReason = ex.Message;
-
-                NotifyException();
-            });
-        }
-        finally
-        {
-            timer?.Dispose();
-        }
+            Downloaded = true;
+            OnPropertyChanged(nameof(DownloadedBytes));
+            OnPropertyChanged(nameof(TotalBytes));
+        });
     }
 
     [RelayCommand]
-    void OpenFolder()
+    void OpenFolder() => ExplorerHelper.ShowAndSelectFile(_filePath);
+
+    [RelayCommand]
+    void CopyUrl()
     {
-        using var process = Process.Start(new ProcessStartInfo("explorer.exe", $"/select,{Path.Combine(_folder, _fileName)}"));
+        if (DownloadTask == null) return;
+
+        ClipboardHepler.SetText(DownloadTask.Request.Url);
+        App.GetService<INotificationService>().DownloadUrlCopied();
     }
 
     [RelayCommand]
-    void NotifyException()
+    void Retry()
     {
+        if (DownloadTask == null) return;
 
+        _downloadService.DownloadModFileAsync(DownloadTask.Request.Url, _filePath).Forget();
+        Remove();
     }
+
+    [RelayCommand]
+    void Remove() => _downloadService.DownloadTasks.Remove(this);
+
+    #region Exception
+
+    public override string InfoBarTitle => LocalizedStrings.Notifications__TaskFailed_ModDownload;
+
+
+    #endregion
+
+    #region Timer Override
+
+    protected override void Timer_Elapsed(object? sender, ElapsedEventArgs e)
+    {
+        base.Timer_Elapsed(sender, e);
+
+        double progress = 0;
+
+        if (DownloadTask?.TotalBytes != null)
+            progress = DownloadTask.DownloadedBytes / (double)DownloadTask.TotalBytes;
+
+        App.DispatcherQueue.TryEnqueue(() =>
+        {
+            Progress = progress;
+            OnPropertyChanged(nameof(DownloadedBytes));
+            OnPropertyChanged(nameof(TotalBytes));
+        });
+    }
+
+    #endregion
 }
 
 #endregion
@@ -259,14 +337,17 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
 #region Install Instance Task
 
 class InstallationViewModel<TStage> : IProgress<InstallerProgress<TStage>>
-    where TStage : notnull
+    where TStage : struct, Enum
 {
     public Dictionary<TStage, InstallationStageViewModel> Stages { get; } = [];
 
     public InstallationViewModel()
     {
-        foreach (var name in Enum.GetNames(typeof(TStage)))
-            Stages.Add((TStage)Enum.Parse(typeof(TStage), name), new InstallationStageViewModel { TaskName = name });
+        string enumTypeName = typeof(TStage).Name;
+
+        foreach (var name in Enum.GetNames<TStage>())
+            Stages.Add(Enum.Parse<TStage>(name), new InstallationStageViewModel
+                { TaskName = LocalizedStrings.GetString($"Tasks_DownloadPage__{enumTypeName}_{name}") });
     }
 
     public void Report(InstallerProgress<TStage> value)
@@ -343,32 +424,21 @@ partial class InstallationStageViewModel : ObservableObject
     }
 }
 
-internal partial class InstallInstanceTaskViewModel : TaskViewModel
+internal partial class InstallInstanceTaskViewModel(
+    DownloadService downloadService,
+    IInstanceInstaller instanceInstaller,
+    InstanceInstallConfig instanceInstallConfig,
+    IEnumerable<InstallationStageViewModel> stageViewModels) : TaskViewModel
 {
-    private readonly IInstanceInstaller _installer;
-    private readonly InstanceInstallConfig _instanceInstallConfig;
-    private MinecraftInstance _minecraftInstance;
+    private MinecraftInstance? _minecraftInstance;
 
-    public IEnumerable<InstallationStageViewModel> StageViewModels { get; }
+    protected override ILogger Logger { get; } = App.GetService<ILogger<InstallInstanceTaskViewModel>>();
 
-    public InstallInstanceTaskViewModel(
-        IInstanceInstaller instanceInstaller,
-        InstanceInstallConfig instanceInstallConfig,
-        IEnumerable<InstallationStageViewModel> stageViewModels)
-    {
-        _installer = instanceInstaller;
-        _instanceInstallConfig = instanceInstallConfig;
+    #region Basic Properties
 
-        StageViewModels = stageViewModels;
-        TaskTitle = _instanceInstallConfig.InstanceId;
-        IsExpanded = true;
-    }
+    public override string Title => instanceInstallConfig.InstanceId;
 
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(LaunchCommand))]
-    public partial bool CanLaunch { get; set; } = false;
-
-    public override string TaskIcon => TaskState switch
+    public override string Icon => TaskState switch
     {
         TaskState.Failed => "\ue711",
         TaskState.Cancelled => "\ue711",
@@ -376,106 +446,85 @@ internal partial class InstallInstanceTaskViewModel : TaskViewModel
         _ => "\ue896",
     };
 
-    protected override async void Run()
+    #endregion
+
+    #region Stage Properties
+
+    public IEnumerable<InstallationStageViewModel> StageViewModels { get; } = stageViewModels;
+
+    #endregion
+
+    [ObservableProperty]
+    public partial bool Installed { get; set; }
+
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        App.DispatcherQueue.TryEnqueue(() => TaskState = TaskState.Running);
-        MinecraftInstance instance = null;
-        TaskState resultState = TaskState.Finished;
+        _minecraftInstance = await instanceInstaller.InstallAsync(cancellationToken);
+        InstanceConfig config = _minecraftInstance.GetConfig();
 
-        try
-        {
-            instance = await _installer.InstallAsync(_tokenSource.Token);
-        }
-        catch (Exception ex)
-        {
-            if (ex.InnerException is OperationCanceledException canceledException)
-            {
-                resultState = TaskState.Cancelled;
-                Exception = canceledException;
-
-                await App.DispatcherQueue.EnqueueAsync(() =>
-                {
-                    ShowException = true;
-                    ExceptionReason = canceledException.Message;
-                });
-            }
-            else
-            {
-                resultState = TaskState.Failed;
-                Exception = ex;
-
-                await App.DispatcherQueue.EnqueueAsync(() =>
-                {
-                    ShowException = true;
-                    ExceptionReason = ex.Message;
-                });
-            }
-        }
-
-        await App.DispatcherQueue.EnqueueAsync(() =>
-        {
-            ProgressBarIsIndeterminate = false;
-            Progress = 1;
-
-            TaskState = resultState;
-            CanLaunch = resultState == TaskState.Finished;
-            _minecraftInstance = instance;
-        });
-
-        if (resultState == TaskState.Finished && instance != null)
-            FinishTask(instance);
-    }
-
-    void FinishTask(MinecraftInstance minecraftInstance)
-    {
-        var downloadService = App.GetService<DownloadService>();
-        var instanceConfigService = App.GetService<InstanceConfigService>();
-        var gameService = App.GetService<GameService>();
-
-        gameService.RefreshGames();
-
-        string minecraftFolder = gameService.ActiveMinecraftFolder;
-        string modsFolder = _instanceInstallConfig.EnableIndependencyInstance
-            ? Path.Combine(minecraftFolder, "versions", _instanceInstallConfig.InstanceId, "mods")
-            : Path.Combine(minecraftFolder, "mods");
-
-        if(_instanceInstallConfig.SecondaryLoader?.SelectedInstallData is OptiFineInstallData installData)
-        {
-            downloadService.DownloadModFile(
-                installData.FileName, 
-                $"https://bmclapi2.bangbang93.com/optifine/{_instanceInstallConfig.ManifestItem.Id}/{installData.Type}/{installData.Patch}", 
-                modsFolder);
-        }
-
-        foreach (var item in _instanceInstallConfig.AdditionalMods)
-            downloadService.DownloadModFile(item, modsFolder);
-
-        var config = instanceConfigService.GetConfig(minecraftInstance);
-
-        if (_instanceInstallConfig.EnableIndependencyInstance)
+        if (instanceInstallConfig.EnableIndependencyInstance)
         {
             config.EnableIndependencyCore = true;
             config.EnableSpecialSetting = true;
         }
+
+        App.GetService<GameService>().RefreshGames();
+        await App.DispatcherQueue.EnqueueAsync(() => Installed = true);
+
+        #region Download Mods
+
+        string modsFolder = _minecraftInstance.GetModsDirectory();
+
+        if (instanceInstallConfig.SecondaryLoader?.SelectedInstallData is OptiFineInstallData installData)
+        {
+            downloadService.DownloadModFileAsync(
+                $"https://bmclapi2.bangbang93.com/optifine/{instanceInstallConfig.ManifestItem.Id}/{installData.Type}/{installData.Patch}",
+                Path.Combine(modsFolder, installData.FileName)).Forget();
+        }
+
+        foreach (var item in instanceInstallConfig.AdditionalMods)
+            downloadService.DownloadModFileAsync(item, modsFolder).Forget();
+
+        #endregion
     }
 
     [RelayCommand]
-    void NotifyException()
+    void Launch() => App.GetService<LaunchService>().LaunchFromUI(_minecraftInstance!);
+
+    [RelayCommand]
+    void OpenInstanceFolder() => ExplorerHelper.OpenFolder(_minecraftInstance!.GetGameDirectory());
+
+    [RelayCommand]
+    void Retry()
     {
-        INotificationService notificationService = App.GetService<INotificationService>();
-
-        string reason = Exception switch
-        {
-            IncompleteDependenciesException => LocalizedStrings.Exceptions__IncompleteDependenciesException,
-            TaskCanceledException => LocalizedStrings.Exceptions__TaskCanceledException,
-            _ => string.Empty
-        };
-
-        notificationService.InstallFailed(Exception, reason);
+        downloadService.InstallInstanceAsync(instanceInstallConfig).Forget();
+        Remove();
     }
 
-    [RelayCommand(CanExecute = nameof(CanLaunch))]
-    void Launch(INavigationService navigationService) => App.GetService<LaunchService>().LaunchFromUI(_minecraftInstance);
+    [RelayCommand]
+    void Remove() => downloadService.DownloadTasks.Remove(this);
+
+    #region Exception
+
+    public override string InfoBarTitle => LocalizedStrings.Notifications__TaskFailed_Install;
+
+    public override string ExceptionTitle
+    {
+        get
+        {
+            return ExecuteTask?.Exception?.InnerException switch
+            {
+                IncompleteDependenciesException => LocalizedStrings.Exceptions__IncompleteDependenciesException,
+                TaskCanceledException => LocalizedStrings.Exceptions__TaskCanceledException,
+                _ => string.Empty
+            };
+        }
+    }
+
+    protected override void NotifyException(INotificationService notificationService)
+        => notificationService.InstallFailed(ExecuteTask.Exception!.InnerException!, ExceptionTitle);
+
+    #endregion
 }
 
 #endregion
@@ -500,7 +549,7 @@ class LaunchProgressViewModel : IProgress<LaunchProgress>
         } 
     }
 
-    public event EventHandler<LaunchStageViewModel> CurrentStageChanged;
+    public event EventHandler<LaunchStageViewModel>? CurrentStageChanged;
 
     public LaunchProgressViewModel()
     {
@@ -704,13 +753,12 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     private readonly MinecraftInstance _instance;
     private readonly LaunchService _launchService;
     private readonly LaunchProgressViewModel launchProgressViewModel = new();
-    private bool _isMcProcessKilled = false;
 
-    public IEnumerable<LaunchStageViewModel> StageViewModels { get; }
+    protected override ILogger Logger { get; } = App.GetService<ILogger<LaunchTaskViewModel>>();
 
-    public MinecraftProcess McProcess { get; private set; }
+    public MinecraftProcess McProcess { get; private set; } = null!;
 
-    public ObservableCollection<GameLoggerOutput> Logger { get; } = [];
+    public ObservableCollection<GameLoggerOutput> ProcessLogger { get; } = [];
 
     public LaunchTaskViewModel(MinecraftInstance instance, LaunchService launchService)
     {
@@ -718,12 +766,6 @@ internal partial class LaunchTaskViewModel : TaskViewModel
         _launchService = launchService;
 
         StageViewModels = launchProgressViewModel.Stages.Values;
-        TaskTitle = _instance.GetDisplayName();
-        IsExpanded = true;
-
-        _stopwatchElapsedFormat = "mm\\:ss\\.fffff";
-        _timerTimeSpan = TimeSpan.FromMilliseconds(250);
-
         launchProgressViewModel.CurrentStageChanged += (sender, vm) =>
         {
             CurrentStage = vm;
@@ -731,10 +773,23 @@ internal partial class LaunchTaskViewModel : TaskViewModel
         };
     }
 
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CanCancel))]
-    [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
-    public partial bool IsLaunching { get; set; } = true;
+    #region Basic Properties
+
+    public override string Title => _instance.GetDisplayName();
+
+    public override string Icon => TaskState switch
+    {
+        TaskState.Failed => "\ue711",
+        TaskState.Cancelled => "\ue711",
+        TaskState.Finished => "\ue73e",
+        _ => "\ue945",
+    };
+
+    #endregion
+
+    #region Process Properties
+
+    private bool _isMcProcessKilled = false;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsGameRunning))]
@@ -747,136 +802,99 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     public partial bool ProcessExited { get; set; }
 
     [ObservableProperty]
-    public partial bool WaitedForInputIdle { get; set; }
+    public partial bool WaitedForInputIdle { get; set; } = false;
+
+    #endregion
+
+    #region Stage Properties
+
+    public IEnumerable<LaunchStageViewModel> StageViewModels { get; }
 
     [ObservableProperty]
-    public partial bool Crashed { get; set; } = false;
-
-    [ObservableProperty]
-    public partial LaunchStageViewModel CurrentStage { get; set; }
+    public partial LaunchStageViewModel? CurrentStage { get; set; }
 
     [ObservableProperty]
     public partial int CurrentStageNumber { get; set; } = 1;
+
+    #endregion
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanCancel))]
+    [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
+    public partial bool IsLaunching { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool Crashed { get; set; } = false;
 
     public override bool CanCancel => IsLaunching && TaskState != TaskState.Canceling;
 
     public bool IsGameRunning => ProcessLaunched && !ProcessExited;
 
-    public override string TaskIcon => TaskState switch
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        TaskState.Failed => "\ue711",
-        TaskState.Cancelled => "\ue711",
-        TaskState.Finished => "\ue73e",
-        _ => "\ue945",
-    };
-
-    protected override async void Run()
-    {
-        await App.DispatcherQueue.EnqueueAsync(() => TaskState = TaskState.Running);
-        TaskState resultState = TaskState.Running;
-
         try
         {
             McProcess = await _launchService.LaunchAsync(
-                _instance, 
+                _instance,
                 Process_OutputDataReceived,
                 Process_ErrorDataReceived,
-                launchProgressViewModel, _tokenSource.Token);
-        }
-        catch (AggregateException aggregateException)
-        {
-            if (aggregateException.InnerException is OperationCanceledException)
-            {
-                resultState = TaskState.Cancelled;
-            }
-        }
-        catch (OperationCanceledException ex)
-        {
-            resultState = TaskState.Cancelled;
-            Exception = ex;
-
-            await App.DispatcherQueue.EnqueueAsync(() =>
-            {
-                ShowException = true;
-                ExceptionReason = ex.Message;
-            });
-        }
-        catch (Exception ex)
-        {
-            resultState = TaskState.Failed;
-            Exception = ex;
-
-            await App.DispatcherQueue.EnqueueAsync(() =>
-            {
-                ShowException = true;
-                ExceptionReason = ex.Message;
-            });
-
-            NotifyException();
+                launchProgressViewModel, cancellationToken);
+            McProcess.Process.Exited += Process_Exited;
         }
         finally
         {
-            Stopwatch.Stop();
+            Timer.Stop();
+            await App.DispatcherQueue.EnqueueAsync(() => IsLaunching = false );
         }
-
-        if (resultState == TaskState.Running)
-            AfterLaunchedProcess();
 
         await App.DispatcherQueue.EnqueueAsync(() =>
         {
-            ProgressBarIsIndeterminate = false;
             Progress = 1;
-
-            IsLaunching = false;
-            TaskState = resultState;
+            ProcessLaunched = true;
         });
-    }
 
-    void AfterLaunchedProcess()
-    {
-        App.DispatcherQueue.TryEnqueue(() => ProcessLaunched = true);
-        McProcess.Process.Exited += Process_Exited;
-
-        Task.Run(() =>
+        Task.Run(async () =>
         {
             McProcess.Process.WaitForInputIdle(15 * 1000);
-            App.DispatcherQueue.TryEnqueue(() => WaitedForInputIdle = true);
-        });
+            await App.DispatcherQueue.EnqueueAsync(() => WaitedForInputIdle = true);
+        }, cancellationToken).Forget();
+
+        await McProcess.Process.WaitForExitAsync(cancellationToken);
     }
 
-    void Process_Exited(object sender, EventArgs e)
+    async void Process_Exited(object? sender, EventArgs e)
     {
-        App.DispatcherQueue.TryEnqueue(() =>
+        await App.DispatcherQueue.EnqueueAsync(() =>
         {
             ProcessExited = true;
-            Crashed = McProcess.Process.ExitCode == 0;
+            Crashed = !_isMcProcessKilled && McProcess.Process.ExitCode != 0;
             TaskState = _isMcProcessKilled 
                 ? TaskState.Finished
                 : Crashed
                     ? TaskState.Finished 
                     : TaskState.Failed;
-
-            McProcess.Dispose();
         });
+
+        McProcess.Dispose();
     }
 
     void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
     {
         if (!string.IsNullOrEmpty(e.Data))
-            Logger.Add(GameLoggerOutput.Parse(e.Data, true));
+            ProcessLogger.Add(GameLoggerOutput.Parse(e.Data, true));
     }
 
     void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
     {
         if (!string.IsNullOrEmpty(e.Data))
-            Logger.Add(GameLoggerOutput.Parse(e.Data));
+            ProcessLogger.Add(GameLoggerOutput.Parse(e.Data));
     }
 
     [RelayCommand]
     void ShowLogger()
     {
-        WinUIWindowService windowService = App.GetService<IActivationService>().ActivateWindow("LoggerWindow") as WinUIWindowService;
-        (windowService.Window as LoggerWindow).Initialize(this);
+        WinUIWindowService windowService = (App.GetService<IActivationService>().ActivateWindow("LoggerWindow") as WinUIWindowService)!;
+        (windowService.Window as LoggerWindow)!.Initialize(this);
 
         windowService.Activate();
     }
@@ -889,41 +907,74 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     }
 
     [RelayCommand]
-    void CopyLaunchArguments()
+    async Task CreateScript(IDialogActivationService<ContentDialogResult> dialogActivationService) 
+        => await dialogActivationService.ShowAsync("CreateLaunchScriptDialog", McProcess);
+
+    [RelayCommand]
+    void Retry()
     {
-        ClipboardHepler.SetText(string.Join("\r\n", McProcess!.ArgumentList));
-        App.GetService<INotificationService>().ArgumentsCopied();
+        _launchService.LaunchFromUI(_instance);
+        Remove();
     }
 
     [RelayCommand]
-    void NotifyException()
+    void Remove() => _launchService.LaunchTasks.Remove(this);
+
+    [RelayCommand]
+    void GoToInstanceSettings() => WeakReferenceMessenger.Default.Send(new GlobalNavigationMessage("Instances/Navigation", _instance));
+
+    #region Exception
+
+    public override string InfoBarTitle => LocalizedStrings.Notifications__TaskFailed_Launch;
+
+    public override string ExceptionTitle 
     {
-        INotificationService notificationService = App.GetService<INotificationService>();
-
-        string reason = Exception switch
+        get
         {
-            InstanceDirectoryNotFoundException instanceDirectoryNotFoundException => LocalizedStrings.Exceptions__InstanceDirectoryNotFoundException
-                .Replace("${instance}", instanceDirectoryNotFoundException.MinecraftInstance.InstanceId)
-                .Replace("${directory}", instanceDirectoryNotFoundException.Directory),
-            JavaRuntimeFileNotFoundException javaRuntimeFileNotFoundException => LocalizedStrings.Exceptions__JavaRuntimeFileNotFoundException
-                .Replace("${file}", javaRuntimeFileNotFoundException.FileName),
-            JavaRuntimeIncompatibleException javaRuntimeIncompatibleException => LocalizedStrings.Exceptions__JavaRuntimeIncompatibleException
-                .Replace("${version}", javaRuntimeIncompatibleException.TargetJavaVersion.ToString()),
-            X86JavaRuntimeMemoryException => LocalizedStrings.Exceptions__X86JavaRuntimeMemoryException,
-            NoActiveJavaRuntimeException => LocalizedStrings.Exceptions__NoActiveJavaRuntimeException,
-            NoActiveAccountException => LocalizedStrings.Exceptions__NoActiveAccountException,
-            AccountNotFoundException accountNotFoundException => LocalizedStrings.Exceptions__AccountNotFoundException
-                .Replace("${account}", accountNotFoundException.Account.Name),
-            YggdrasilAuthenticationException => LocalizedStrings.Exceptions__MicrosoftAuthenticationException,
-            MicrosoftAuthenticationException => LocalizedStrings.Exceptions__MicrosoftAuthenticationException,
-            IncompleteDependenciesException => LocalizedStrings.Exceptions__IncompleteDependenciesException,
-            //UnauthorizedAccessException unauthorizedAccessException => ,
-            TaskCanceledException => LocalizedStrings.Exceptions__TaskCanceledException,
-            _ => string.Empty
-        };
-
-        notificationService.LaunchFailed(Exception, reason);
+            return ExecuteTask?.Exception?.InnerException switch
+            {
+                InstanceDirectoryNotFoundException instanceDirectoryNotFoundException => LocalizedStrings.Exceptions__InstanceDirectoryNotFoundException
+                    .Replace("${instance}", instanceDirectoryNotFoundException.MinecraftInstance.InstanceId)
+                    .Replace("${directory}", instanceDirectoryNotFoundException.Directory),
+                JavaRuntimeFileNotFoundException javaRuntimeFileNotFoundException => LocalizedStrings.Exceptions__JavaRuntimeFileNotFoundException
+                    .Replace("${file}", javaRuntimeFileNotFoundException.FileName),
+                JavaRuntimeIncompatibleException javaRuntimeIncompatibleException => LocalizedStrings.Exceptions__JavaRuntimeIncompatibleException
+                    .Replace("${version}", javaRuntimeIncompatibleException.TargetJavaVersion.ToString()),
+                X86JavaRuntimeMemoryException => LocalizedStrings.Exceptions__X86JavaRuntimeMemoryException,
+                NoActiveJavaRuntimeException => LocalizedStrings.Exceptions__NoActiveJavaRuntimeException,
+                NoActiveAccountException => LocalizedStrings.Exceptions__NoActiveAccountException,
+                AccountNotFoundException accountNotFoundException => LocalizedStrings.Exceptions__AccountNotFoundException
+                    .Replace("${account}", accountNotFoundException.Account.Name),
+                YggdrasilAuthenticationException => LocalizedStrings.Exceptions__MicrosoftAuthenticationException,
+                MicrosoftAuthenticationException => LocalizedStrings.Exceptions__MicrosoftAuthenticationException,
+                IncompleteDependenciesException => LocalizedStrings.Exceptions__IncompleteDependenciesException,
+                //UnauthorizedAccessException unauthorizedAccessException => ,
+                TaskCanceledException => LocalizedStrings.Exceptions__TaskCanceledException,
+                _ => string.Empty
+            };
+        }
     }
+
+    protected override void NotifyException(INotificationService notificationService)
+        => notificationService.LaunchFailed(ExecuteTask.Exception!.InnerException!, ExceptionTitle);
+
+    #endregion
+
+    #region Timer Override
+
+    protected override string StopwatchFormat => "mm\\:ss\\.fff";
+
+    protected override Timer CreateTimer()
+    {
+        TimeSpan timerSpan = TimeSpan.FromMilliseconds(250);
+
+        Timer timer = new(timerSpan);
+        timer.Elapsed += Timer_Elapsed;
+
+        return timer;
+    }
+
+    #endregion
 }
 
 #endregion
@@ -936,6 +987,24 @@ internal static partial class TaskViewModelNotifications
     [ExceptionNotification(Title = "Notifications__TaskFailed_Install", Message = "{reason}")]
     public static partial void InstallFailed(this INotificationService notificationService, Exception exception, string reason);
 
-    [Notification<TeachingTip>(Title = "Notifications__ArgumentsCopied")]
-    public static partial void ArgumentsCopied(this INotificationService notificationService);
+    [Notification<TeachingTip>(Title = "Notifications__DownloadUrlCopied")]
+    public static partial void DownloadUrlCopied(this INotificationService notificationService);
+
+    [Notification<TeachingTip>(Title = "Notifications__ExceptionCopied")]
+    public static partial void ExceptionCopied(this INotificationService notificationService);
+}
+
+internal static partial class TaskViewModelLoggers
+{
+    [LoggerMessage(LogLevel.Information, "Task Enqueued")]
+    public static partial void TaskEnqueued(this ILogger logger);
+
+    [LoggerMessage(LogLevel.Error, "Task Ran To Completion")]
+    public static partial void TaskRanToCompletion(this ILogger logger);
+
+    [LoggerMessage(LogLevel.Warning, "Task Canceld")]
+    public static partial void TaskCancelld(this ILogger logger);
+
+    [LoggerMessage(LogLevel.Error, "Task Faulted")]
+    public static partial void TaskFaulted(this ILogger logger, Exception? ex);
 }

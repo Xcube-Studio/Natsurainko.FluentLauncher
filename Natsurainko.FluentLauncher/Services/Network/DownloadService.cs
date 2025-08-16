@@ -1,15 +1,18 @@
-﻿using Natsurainko.FluentLauncher.Models;
+﻿using CommunityToolkit.WinUI;
+using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.ViewModels;
 using Nrk.FluentCore.GameManagement.Downloader;
 using Nrk.FluentCore.GameManagement.Installer;
+using Nrk.FluentCore.Resources;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 using static Nrk.FluentCore.GameManagement.Installer.FabricInstanceInstaller;
 using static Nrk.FluentCore.GameManagement.Installer.ForgeInstanceInstaller;
 using static Nrk.FluentCore.GameManagement.Installer.OptiFineInstanceInstaller;
@@ -24,11 +27,11 @@ internal partial class DownloadService
     private readonly SettingsService _settingsService;
     private readonly HttpClient _httpClient;
 
-    public event EventHandler? TaskListStateChanged;
-
     public ObservableCollection<TaskViewModel> DownloadTasks { get; } = [];
 
     public IDownloader Downloader { get => _downloader; }
+
+    public IDownloadMirror? DownloadMirror => _settingsService.CurrentDownloadSource == "Bmclapi" ? DownloadMirrors.BmclApi : null;
 
     public int RunningTasks => DownloadTasks.Count(x => x.TaskState == TaskState.Running || x.TaskState == TaskState.Prepared);
 
@@ -43,55 +46,37 @@ internal partial class DownloadService
         _settingsService.CurrentDownloadSourceChanged += (_, _) => SetDownloader();
     }
 
-    public void DownloadModFile(object modFile, string folder)
+    public async Task DownloadModFileAsync(CurseForgeFile curseForgeFile, string folder)
     {
-        var taskViewModel = new DownloadModTaskViewModel(modFile, folder);
-        taskViewModel.PropertyChanged += (_, e) =>
-        {
-            if (e.PropertyName == "TaskState")
-                TaskListStateChanged?.Invoke(this, e);
-        };
-
-        InsertTask(taskViewModel);
-        taskViewModel.Start();
+        DownloadModTaskViewModel downloadModTask = new(this, curseForgeFile, folder);
+        await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadModTask));
+        await downloadModTask.EnqueueAsync();
     }
 
-    public void DownloadModFile(string fileName, string url, string folder)
+    public async Task DownloadModFileAsync(ModrinthFile modrinthFile, string folder)
     {
-        var taskViewModel = new DownloadModTaskViewModel(fileName, url, folder);
-        taskViewModel.PropertyChanged += (_, e) =>
-        {
-            if (e.PropertyName == "TaskState")
-                TaskListStateChanged?.Invoke(this, e);
-        };
-
-        InsertTask(taskViewModel);
-        taskViewModel.Start();
+        DownloadModTaskViewModel downloadModTask = new(this, modrinthFile, folder);
+        await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadModTask));
+        await downloadModTask.EnqueueAsync();
     }
 
-    public void InstallInstance(InstanceInstallConfig config)
+    public async Task DownloadModFileAsync(string url, string filePath)
     {
-        var taskViewModel = new InstallInstanceTaskViewModel(
+        DownloadModTaskViewModel downloadModTask = new(this, url, filePath);
+        await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadModTask));
+        await downloadModTask.EnqueueAsync();
+    }
+
+    public async Task InstallInstanceAsync(InstanceInstallConfig config)
+    {
+        InstallInstanceTaskViewModel installInstanceTask = new(
+            this,
             GetInstanceInstaller(config, out var installationStageViews),
             config,
             installationStageViews);
-        taskViewModel.PropertyChanged += (_, e) =>
-        {
-            if (e.PropertyName == "TaskState")
-                TaskListStateChanged?.Invoke(this, e);
-        };
 
-        InsertTask(taskViewModel);
-        taskViewModel.Start();
-    }
-
-    private void InsertTask(TaskViewModel taskViewModel)
-    {
-        App.DispatcherQueue.TryEnqueue(() =>
-        {
-            DownloadTasks.Insert(0, taskViewModel);
-            TaskListStateChanged?.Invoke(this, EventArgs.Empty);
-        });
+        await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, installInstanceTask));
+        await installInstanceTask.EnqueueAsync();
     }
 
     [MemberNotNull(nameof(_downloader))]
@@ -102,12 +87,12 @@ internal partial class DownloadService
             workersPerDownloadTask: 8,
             concurrentDownloadTasks: _settingsService.MaxDownloadThreads,
             enableMultiPartDownload: _settingsService.EnableFragmentDownload,
-            mirror: _settingsService.CurrentDownloadSource == "Bmclapi" ? DownloadMirrors.BmclApi : null);
+            mirror: DownloadMirror);
     }
 
     IInstanceInstaller GetInstanceInstaller(
         InstanceInstallConfig instanceInstallConfig,
-        out IReadOnlyList<InstallationStageViewModel> installationStageViews)
+        out List<InstallationStageViewModel> installationStageViews)
     {
         var versionManifestItem = instanceInstallConfig.ManifestItem;
         string minecraftFolder = _settingsService.ActiveMinecraftFolder ?? throw new InvalidOperationException();
@@ -122,7 +107,7 @@ internal partial class DownloadService
             return new VanillaInstanceInstaller
             {
                 CheckAllDependencies = true,
-                DownloadMirror = DownloadMirrors.BmclApi,
+                Downloader = _downloader,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 Progress = installationViewModel
@@ -131,20 +116,17 @@ internal partial class DownloadService
 
         ModLoaderType modLoaderType = instanceInstallConfig.PrimaryLoader.Type;
         object selectedInstallData = instanceInstallConfig.PrimaryLoader.SelectedInstallData;
-        IDownloadMirror? downloadMirror = _settingsService.CurrentDownloadSource == "Bmclapi" ? DownloadMirrors.BmclApi : null;
 
-        installationStageViews = GetInstallationViewModel(modLoaderType, out var vanillaStagesViewModel, out var stagesViewModel);
-
-        IInstanceInstaller installer = modLoaderType switch
+        return modLoaderType switch
         {
             ModLoaderType.Forge => new ForgeInstanceInstaller()
             {
-                DownloadMirror = downloadMirror,
+                Downloader = _downloader,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
                 InstallData = (ForgeInstallData)selectedInstallData,
-                Progress = (InstallationViewModel<ForgeInstallationStage>)stagesViewModel,
+                Progress = GetInstallationViewModel<ForgeInstallationStage>(out var vanillaStagesViewModel, out installationStageViews),
                 VanillaInstallationProgress = vanillaStagesViewModel,
                 JavaPath = javaPath,
                 IsNeoForgeInstaller = false,
@@ -152,12 +134,12 @@ internal partial class DownloadService
             },
             ModLoaderType.NeoForge => new ForgeInstanceInstaller()
             {
-                DownloadMirror = downloadMirror,
+                Downloader = _downloader,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
                 InstallData = (ForgeInstallData)selectedInstallData,
-                Progress = (InstallationViewModel<ForgeInstallationStage>)stagesViewModel,
+                Progress = GetInstallationViewModel<ForgeInstallationStage>(out var vanillaStagesViewModel, out installationStageViews),
                 VanillaInstallationProgress = vanillaStagesViewModel,
                 JavaPath = javaPath,
                 IsNeoForgeInstaller = true,
@@ -165,90 +147,53 @@ internal partial class DownloadService
             },
             ModLoaderType.OptiFine => new OptiFineInstanceInstaller()
             {
-                DownloadMirror = downloadMirror,
+                Downloader = _downloader,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
                 InstallData = (OptiFineInstallData)selectedInstallData,
-                Progress = (InstallationViewModel<OptiFineInstallationStage>)stagesViewModel,
+                Progress = GetInstallationViewModel<OptiFineInstallationStage>(out var vanillaStagesViewModel, out installationStageViews),
                 VanillaInstallationProgress = vanillaStagesViewModel,
                 JavaPath = javaPath,
                 CustomizedInstanceId = customizedInstanceId
             },
             ModLoaderType.Fabric => new FabricInstanceInstaller()
             {
-                DownloadMirror = downloadMirror,
+                Downloader = _downloader,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
                 InstallData = (FabricInstallData)selectedInstallData,
-                Progress = (InstallationViewModel<FabricInstallationStage>)stagesViewModel,
+                Progress = GetInstallationViewModel<FabricInstallationStage>(out var vanillaStagesViewModel, out installationStageViews),
                 VanillaInstallationProgress = vanillaStagesViewModel,
                 CustomizedInstanceId = customizedInstanceId
             },
             ModLoaderType.Quilt => new QuiltInstanceInstaller()
             {
-                DownloadMirror = downloadMirror,
+                Downloader = _downloader,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
                 InstallData = (QuiltInstallData)selectedInstallData,
-                Progress = (InstallationViewModel<QuiltInstallationStage>)stagesViewModel,
+                Progress = GetInstallationViewModel<QuiltInstallationStage>(out var vanillaStagesViewModel, out installationStageViews),
                 VanillaInstallationProgress = vanillaStagesViewModel,
                 CustomizedInstanceId = customizedInstanceId
             },
-            _ => throw new InvalidOperationException()
+            _ => throw new NotImplementedException()
         };
-
-        return installer;
     }
 
-    List<InstallationStageViewModel> GetInstallationViewModel(
-        ModLoaderType modLoaderType,
+    static InstallationViewModel<TStage> GetInstallationViewModel<TStage>(
         out InstallationViewModel<VanillaInstallationStage> vanillaStagesViewModel,
-        out object stagesViewModel)
-        {
-            List<InstallationStageViewModel> stageViewModels = [];
-            vanillaStagesViewModel = new();
+        out List<InstallationStageViewModel> installationStagesViewModel) where TStage : struct, Enum
+    {
+        InstallationViewModel<TStage> installationViewModel = new();
+        vanillaStagesViewModel = new();
 
-            if (modLoaderType == ModLoaderType.Quilt)
-            {
-                InstallationViewModel<QuiltInstallationStage> installationViewModel = new();
+        installationStagesViewModel = [];
+        installationStagesViewModel.AddRange(installationViewModel.Stages.Values);
+        installationStagesViewModel.InsertRange(1, vanillaStagesViewModel.Stages.Values);
 
-                stageViewModels.AddRange(installationViewModel.Stages.Values);
-                stageViewModels.InsertRange(1, vanillaStagesViewModel.Stages.Values);
-
-                stagesViewModel = installationViewModel;
-            }
-            else if (modLoaderType == ModLoaderType.Fabric)
-            {
-                InstallationViewModel<FabricInstallationStage> installationViewModel = new();
-
-                stageViewModels.AddRange(installationViewModel.Stages.Values);
-                stageViewModels.InsertRange(1, vanillaStagesViewModel.Stages.Values);
-
-                stagesViewModel = installationViewModel;
-            }
-            else if (modLoaderType == ModLoaderType.Forge || modLoaderType == ModLoaderType.NeoForge)
-            {
-                InstallationViewModel<ForgeInstallationStage> installationViewModel = new();
-
-                stageViewModels.AddRange(installationViewModel.Stages.Values);
-                stageViewModels.InsertRange(1, vanillaStagesViewModel.Stages.Values);
-
-                stagesViewModel = installationViewModel;
-            }
-            else if (modLoaderType == ModLoaderType.OptiFine)
-            {
-                InstallationViewModel<OptiFineInstallationStage> installationViewModel = new();
-
-                stageViewModels.AddRange(installationViewModel.Stages.Values);
-                stageViewModels.InsertRange(1, vanillaStagesViewModel.Stages.Values);
-
-                stagesViewModel = installationViewModel;
-            }
-            else throw new InvalidOperationException();
-
-            return stageViewModels;
-        }
+        return installationViewModel;
+    }
 }

@@ -114,6 +114,8 @@ internal abstract partial class TaskViewModel : ObservableObject
 
         _stopwatch.Start();
 
+        Logger.TaskEnqueued();
+
         ExecuteTask = Task.Run(async () => await ExecuteAsync(_tokenSource.Token), _tokenSource.Token);
         await App.DispatcherQueue.EnqueueAsync(() => TaskState = TaskState.Running);
 
@@ -138,12 +140,20 @@ internal abstract partial class TaskViewModel : ObservableObject
                     OnPropertyChanged(nameof(ExceptionContent));
 
                     TaskState = TaskState.Failed;
+                    Logger.TaskFaulted(t.Exception);
+
                     NotifyException(App.GetService<INotificationService>());
                 }
                 else if (IsCanceled || _tokenSource.IsCancellationRequested)
+                {
                     TaskState = TaskState.Cancelled;
-                else 
+                    Logger.TaskCancelld();
+                }
+                else
+                {
                     TaskState = TaskState.Finished;
+                    Logger.TaskRanToCompletion();
+                }
             });
 
             WeakReferenceMessenger.Default.Send(new BackgroundTaskCountChangedMessage());
@@ -286,7 +296,7 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
     {
         if (DownloadTask == null) return;
 
-        _downloadService.DownloadModFile(DownloadTask.Request.Url, _filePath);
+        _downloadService.DownloadModFileAsync(DownloadTask.Request.Url, _filePath).Forget();
         Remove();
     }
 
@@ -467,13 +477,13 @@ internal partial class InstallInstanceTaskViewModel(
 
         if (instanceInstallConfig.SecondaryLoader?.SelectedInstallData is OptiFineInstallData installData)
         {
-            downloadService.DownloadModFile(
+            downloadService.DownloadModFileAsync(
                 $"https://bmclapi2.bangbang93.com/optifine/{instanceInstallConfig.ManifestItem.Id}/{installData.Type}/{installData.Patch}",
-                Path.Combine(modsFolder, installData.FileName));
+                Path.Combine(modsFolder, installData.FileName)).Forget();
         }
 
         foreach (var item in instanceInstallConfig.AdditionalMods)
-            downloadService.DownloadModFile(item, modsFolder);
+            downloadService.DownloadModFileAsync(item, modsFolder).Forget();
 
         #endregion
     }
@@ -487,7 +497,7 @@ internal partial class InstallInstanceTaskViewModel(
     [RelayCommand]
     void Retry()
     {
-        downloadService.InstallInstance(instanceInstallConfig);
+        downloadService.InstallInstanceAsync(instanceInstallConfig).Forget();
         Remove();
     }
 
@@ -982,4 +992,19 @@ internal static partial class TaskViewModelNotifications
 
     [Notification<TeachingTip>(Title = "Notifications__ExceptionCopied")]
     public static partial void ExceptionCopied(this INotificationService notificationService);
+}
+
+internal static partial class TaskViewModelLoggers
+{
+    [LoggerMessage(LogLevel.Information, "Task Enqueued")]
+    public static partial void TaskEnqueued(this ILogger logger);
+
+    [LoggerMessage(LogLevel.Error, "Task Ran To Completion")]
+    public static partial void TaskRanToCompletion(this ILogger logger);
+
+    [LoggerMessage(LogLevel.Warning, "Task Canceld")]
+    public static partial void TaskCancelld(this ILogger logger);
+
+    [LoggerMessage(LogLevel.Error, "Task Faulted")]
+    public static partial void TaskFaulted(this ILogger logger, Exception? ex);
 }

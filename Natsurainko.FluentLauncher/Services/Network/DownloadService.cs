@@ -1,7 +1,7 @@
-﻿using Natsurainko.FluentLauncher.Models;
+﻿using CommunityToolkit.WinUI;
+using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels;
 using Nrk.FluentCore.GameManagement.Downloader;
 using Nrk.FluentCore.GameManagement.Installer;
@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 using static Nrk.FluentCore.GameManagement.Installer.FabricInstanceInstaller;
 using static Nrk.FluentCore.GameManagement.Installer.ForgeInstanceInstaller;
 using static Nrk.FluentCore.GameManagement.Installer.OptiFineInstanceInstaller;
@@ -45,28 +46,28 @@ internal partial class DownloadService
         _settingsService.CurrentDownloadSourceChanged += (_, _) => SetDownloader();
     }
 
-    public void DownloadModFile(CurseForgeFile curseForgeFile, string folder)
+    public async Task DownloadModFileAsync(CurseForgeFile curseForgeFile, string folder)
     {
         DownloadModTaskViewModel downloadModTask = new(this, curseForgeFile, folder);
-        App.DispatcherQueue.TryEnqueue(() => DownloadTasks.Insert(0, downloadModTask));
-        downloadModTask.EnqueueAsync().Forget();
+        await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadModTask));
+        await downloadModTask.EnqueueAsync();
     }
 
-    public void DownloadModFile(ModrinthFile modrinthFile, string folder)
+    public async Task DownloadModFileAsync(ModrinthFile modrinthFile, string folder)
     {
         DownloadModTaskViewModel downloadModTask = new(this, modrinthFile, folder);
-        App.DispatcherQueue.TryEnqueue(() => DownloadTasks.Insert(0, downloadModTask));
-        downloadModTask.EnqueueAsync().Forget();
+        await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadModTask));
+        await downloadModTask.EnqueueAsync();
     }
 
-    public void DownloadModFile(string url, string filePath)
+    public async Task DownloadModFileAsync(string url, string filePath)
     {
         DownloadModTaskViewModel downloadModTask = new(this, url, filePath);
-        App.DispatcherQueue.TryEnqueue(() => DownloadTasks.Insert(0, downloadModTask));
-        downloadModTask.EnqueueAsync().Forget();
+        await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadModTask));
+        await downloadModTask.EnqueueAsync();
     }
 
-    public void InstallInstance(InstanceInstallConfig config)
+    public async Task InstallInstanceAsync(InstanceInstallConfig config)
     {
         InstallInstanceTaskViewModel installInstanceTask = new(
             this,
@@ -74,8 +75,8 @@ internal partial class DownloadService
             config,
             installationStageViews);
 
-        App.DispatcherQueue.TryEnqueue(() => DownloadTasks.Insert(0, installInstanceTask));
-        installInstanceTask.EnqueueAsync().Forget();
+        await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, installInstanceTask));
+        await installInstanceTask.EnqueueAsync();
     }
 
     [MemberNotNull(nameof(_downloader))]

@@ -221,9 +221,9 @@ internal partial class ModViewModel(
         }
 
         if (SelectedFile is CurseForgeFile)
-            downloadService.DownloadModFile((CurseForgeFile)SelectedFile, savePath);
+            downloadService.DownloadModFileAsync((CurseForgeFile)SelectedFile, savePath).Forget();
         else if (SelectedFile is ModrinthFile)
-            downloadService.DownloadModFile((ModrinthFile)SelectedFile, savePath);
+            downloadService.DownloadModFileAsync((ModrinthFile)SelectedFile, savePath).Forget();
 
         notificationService.ModDownloadTaskCreated(fileName);
     }

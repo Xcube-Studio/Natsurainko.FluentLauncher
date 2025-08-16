@@ -9,6 +9,7 @@ using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.Views.Downloads.Instances;
 using Nrk.FluentCore.GameManagement.Installer;
 using System;
@@ -120,7 +121,7 @@ internal partial class InstallViewModel(
             AdditionalMods = [.. InstanceModItems!.Where(m => m.SelectedModrinthFile != null).Select(m => m.SelectedModrinthFile)]
         };
 
-        downloadService.InstallInstance(installConfig);
+        downloadService.InstallInstanceAsync(installConfig).Forget();
         GlobalNavigate("Tasks/Download");
     }
 

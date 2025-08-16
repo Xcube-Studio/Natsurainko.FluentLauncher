@@ -12,10 +12,6 @@ namespace Natsurainko.FluentLauncher;
 [JsonSerializable(typeof(PatchNoteData))]
 
 // Game management
-[JsonSerializable(typeof(ForgeInstallData[]))]
-[JsonSerializable(typeof(OptiFineInstallData[]))]
-[JsonSerializable(typeof(FabricInstallData[]))]
-[JsonSerializable(typeof(QuiltInstallData[]))]
 [JsonSerializable(typeof(VersionManifestJsonObject))]
 
 // Accounts

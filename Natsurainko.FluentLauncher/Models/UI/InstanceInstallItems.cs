@@ -5,12 +5,13 @@ using CommunityToolkit.WinUI;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement.Installer;
 using Nrk.FluentCore.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.Models.UI;
@@ -103,43 +104,34 @@ internal partial class InstanceLoaderItem : ObservableObject
 
     public static InstanceLoaderItem[] GetInstanceLoaderItems(VersionManifestItem manifestItem)
     {
-        var cacheInterfaceService = App.GetService<CacheInterfaceService>();
-        var items = new List<InstanceLoaderItem>();
+        ModLoaderType[] loaders = [ModLoaderType.NeoForge, ModLoaderType.Forge, ModLoaderType.OptiFine, ModLoaderType.Fabric, ModLoaderType.Quilt];
 
-        foreach (ModLoaderType type in new ModLoaderType[] { ModLoaderType.NeoForge, ModLoaderType.Forge, ModLoaderType.OptiFine, ModLoaderType.Fabric, ModLoaderType.Quilt })
+        return [.. loaders.Select(loader =>
         {
-            var item = new InstanceLoaderItem { Type = type };
-            items.Add(item);
+            InstanceLoaderItem item = new() { Type = loader };
 
-            Task.Run(async () => 
+            Task.Run(async () =>
             {
+                var httpClient = App.GetService<HttpClient>();
+                var downloadService = App.GetService<DownloadService>();
                 object[] installDatas = [];
 
                 try
                 {
-                    string requestUrl = type switch
+                    installDatas = loader switch
                     {
-                        ModLoaderType.NeoForge => $"https://bmclapi2.bangbang93.com/neoforge/list/{manifestItem.Id}",
-                        ModLoaderType.Forge => $"https://bmclapi2.bangbang93.com/forge/minecraft/{manifestItem.Id}",
-                        ModLoaderType.OptiFine => $"https://bmclapi2.bangbang93.com/optifine/{manifestItem.Id}",
-                        ModLoaderType.Fabric => $"https://meta.fabricmc.net/v2/versions/loader/{manifestItem.Id}",
-                        ModLoaderType.Quilt => $"https://meta.quiltmc.org/v3/versions/loader/{manifestItem.Id}",
+                        ModLoaderType.NeoForge => await ForgeInstallDataApi.GetNeoForgeInstallDataAsync(manifestItem.Id, httpClient, downloadService.DownloadMirror),
+                        ModLoaderType.Forge => await ForgeInstallDataApi.GetForgeInstallDataAsync(manifestItem.Id, httpClient, downloadService.DownloadMirror),
+                        ModLoaderType.OptiFine => await OptiFineInstallDataApi.GetOptiFineInstallDataFromBmclApiAsync(manifestItem.Id, httpClient),
+                        ModLoaderType.Fabric => await FabricInstallDataApi.GetFabricInstallDataAsync(manifestItem.Id, httpClient),
+                        ModLoaderType.Quilt => await QuiltInstallDataApi.GetQuiltInstallDataAsync(manifestItem.Id, httpClient),
                         _ => throw new NotImplementedException()
                     };
-
-                    string jsonContent = (await cacheInterfaceService.RequestStringAsync(requestUrl, Services.Network.Data.InterfaceRequestMethod.AlwaysLatest))!;
-
-                    installDatas = type switch
-                    {
-                        ModLoaderType.NeoForge => [.. JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.ForgeInstallDataArray)!.OrderByDescending(x => x, new ForgeVersionComparer())!],
-                        ModLoaderType.Forge => [.. JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.ForgeInstallDataArray)!.OrderByDescending(x => x, new ForgeVersionComparer())!],
-                        ModLoaderType.OptiFine => [.. JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.OptiFineInstallDataArray)!.OrderByDescending(x => x, new OptiFineVersionComparer())!],
-                        ModLoaderType.Fabric => JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.FabricInstallDataArray)!,
-                        ModLoaderType.Quilt => JsonSerializer.Deserialize(jsonContent, FLSerializerContext.Default.QuiltInstallDataArray)!,
-                        _ => throw new InvalidOperationException()
-                    };
                 }
-                catch (Exception) { }
+                catch (Exception ex)
+                {
+                    //TODO: Log Exception
+                }
 
                 await App.DispatcherQueue.EnqueueAsync(() =>
                 {
@@ -147,13 +139,13 @@ internal partial class InstanceLoaderItem : ObservableObject
                     item.Supported = installDatas.Length != 0;
                     item.Loading = false;
 
-                    if (installDatas.Length > 0) 
+                    if (installDatas.Length > 0)
                         item.SelectedInstallData = installDatas[0];
                 });
             });
-        }
 
-        return [.. items]; 
+            return item;
+        })];
     }
 
     public static void ParseLoaderOrder(List<InstanceLoaderItem>? items, out InstanceLoaderItem? primaryLoader, out InstanceLoaderItem? secondaryLoader)
@@ -296,7 +288,7 @@ internal partial class InstanceModItem : ObservableObject
             InstanceModItem instanceMod = new() { ModrinthProject = modrinthProject };
             items.Add(instanceMod);
 
-            _ = Task.Run(async () =>
+            Task.Run(async () =>
             {
                 ModrinthFile[]? modrinthFiles = null;
 
@@ -319,7 +311,7 @@ internal partial class InstanceModItem : ObservableObject
                             instanceMod.SelectedModrinthFile = modrinthFiles[0];
                     });
                 }
-            });
+            }).Forget();
         }
 
         return [.. items];
@@ -338,5 +330,5 @@ internal class InstanceInstallConfig
 
     public InstanceLoaderItem? SecondaryLoader { get; set; }
 
-    public List<object> AdditionalMods { get; set; } = [];
+    public List<ModrinthFile> AdditionalMods { get; set; } = [];
 }

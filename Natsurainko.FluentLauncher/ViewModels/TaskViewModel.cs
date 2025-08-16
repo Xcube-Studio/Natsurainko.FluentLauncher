@@ -161,6 +161,16 @@ internal abstract partial class TaskViewModel : ObservableObject
         await _tokenSource.CancelAsync();
     }
 
+    [RelayCommand]
+    void CopyExceptionContent()
+    {
+        if (ExceptionContent != null)
+        {
+            App.GetService<INotificationService>().ExceptionCopied();
+            ClipboardHepler.SetText(ExceptionContent);
+        }
+    }
+
     protected virtual Timer CreateTimer()
     {
         TimeSpan timerSpan = TimeSpan.FromSeconds(1);
@@ -177,7 +187,7 @@ internal abstract partial class TaskViewModel : ObservableObject
     protected virtual void NotifyException(INotificationService notificationService) { }
 }
 
-#region Download Task
+#region Download Mod Task
 
 internal partial class DownloadModTaskViewModel : TaskViewModel
 {
@@ -190,24 +200,18 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
 
     protected override ILogger Logger { get; } = App.GetService<ILogger<DownloadModTaskViewModel>>();
 
-    public DownloadModTaskViewModel(DownloadService downloadService, object modFile, string folder)
+    public DownloadModTaskViewModel(DownloadService downloadService, CurseForgeFile curseForgeFile, string folder)
     {
         _downloadService = downloadService;
+        _filePath = Path.Combine(folder, curseForgeFile.FileName);
+        _getUrlTask = Task.Run(() => App.GetService<CurseForgeClient>().GetFileUrlAsync(curseForgeFile));
+    }
 
-        switch (modFile)
-        {
-            case ModrinthFile modrinthFile:
-                _filePath = Path.Combine(folder, modrinthFile.FileName);
-                _getUrlTask = Task.FromResult(modrinthFile.Url);
-                break;
-            case CurseForgeFile curseForgeFile:
-                _filePath = Path.Combine(folder, curseForgeFile.FileName);
-                _getUrlTask = Task.Run(() => App.GetService<CurseForgeClient>().GetFileUrlAsync(curseForgeFile));
-                break;
-            default:
-                // Never reached, but added for compiler nullable check
-                throw new NotImplementedException();
-        }
+    public DownloadModTaskViewModel(DownloadService downloadService, ModrinthFile modrinthFile, string folder)
+    {
+        _downloadService = downloadService;
+        _filePath = Path.Combine(folder, modrinthFile.FileName);
+        _getUrlTask = Task.FromResult(modrinthFile.Url);
     }
 
     public DownloadModTaskViewModel(DownloadService downloadService, string url, string filePath)
@@ -291,7 +295,7 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
 
     #region Exception
 
-    //public override string InfoBarTitle => LocalizedStrings.Notifications__TaskFailed_Install;
+    public override string InfoBarTitle => LocalizedStrings.Notifications__TaskFailed_ModDownload;
 
 
     #endregion
@@ -508,7 +512,7 @@ internal partial class InstallInstanceTaskViewModel(
     }
 
     protected override void NotifyException(INotificationService notificationService)
-        => notificationService.InstallFailed(ExecuteTask.Exception.InnerException, ExceptionTitle);
+        => notificationService.InstallFailed(ExecuteTask.Exception!.InnerException!, ExceptionTitle);
 
     #endregion
 }
@@ -975,4 +979,7 @@ internal static partial class TaskViewModelNotifications
 
     [Notification<TeachingTip>(Title = "Notifications__DownloadUrlCopied")]
     public static partial void DownloadUrlCopied(this INotificationService notificationService);
+
+    [Notification<TeachingTip>(Title = "Notifications__ExceptionCopied")]
+    public static partial void ExceptionCopied(this INotificationService notificationService);
 }

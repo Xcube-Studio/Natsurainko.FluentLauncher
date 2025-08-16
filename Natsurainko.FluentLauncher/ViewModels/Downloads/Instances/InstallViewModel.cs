@@ -117,7 +117,7 @@ internal partial class InstallViewModel(
             ManifestItem = CurrentInstance,
             PrimaryLoader = primaryLoader,
             SecondaryLoader = secondaryLoader,
-            AdditionalMods = [.. InstanceModItems!.Where(m => m.SelectedModrinthFile != null)]
+            AdditionalMods = [.. InstanceModItems!.Where(m => m.SelectedModrinthFile != null).Select(m => m.SelectedModrinthFile)]
         };
 
         downloadService.InstallInstance(installConfig);

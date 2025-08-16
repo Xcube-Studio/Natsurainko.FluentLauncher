@@ -192,39 +192,39 @@ internal partial class ModViewModel(
             return;
         }
 
-        string fileName;
-        string savePath;
-
-        if (SelectedFile is ModrinthFile modrinthFile)
-            fileName = modrinthFile.FileName;
-        else if (SelectedFile is CurseForgeFile curseForgeFile)
-            fileName = curseForgeFile.FileName;
-        else return;
-
-        switch (option)
+        string fileName = SelectedFile switch
         {
-            case 0:
-                SaveFileDialog saveFileDialog = new()
-                {
-                    FileName = fileName,
-                    InitialDirectory = gameService.ActiveMinecraftFolder ?? string.Empty,
-                };
+            CurseForgeFile curseForgeFile => curseForgeFile.FileName,
+            ModrinthFile modrinthFile => modrinthFile.FileName,
+            _ => throw new NotImplementedException()
+        };
 
-                if (saveFileDialog.ShowDialog().GetValueOrDefault())
-                    savePath = new FileInfo(saveFileDialog.FileName).DirectoryName;
-                else return;
-                break;
-            case 1:
-                savePath = gameService.ActiveMinecraftFolder;
-                break;
-            case 2:
-                savePath = gameService.ActiveGame.GetModsDirectory();
-                break;
-            default:
+        string savePath = option switch
+        {
+            1 => gameService.ActiveMinecraftFolder,
+            2 => gameService.ActiveGame.GetModsDirectory(),
+            _ => string.Empty
+        };
+
+        if (option == 0)
+        {
+            SaveFileDialog saveFileDialog = new()
+            {
+                FileName = fileName,
+                InitialDirectory = gameService.ActiveMinecraftFolder ?? string.Empty
+            };
+
+            if (!saveFileDialog.ShowDialog().GetValueOrDefault())
                 return;
+
+            savePath = new FileInfo(saveFileDialog.FileName).DirectoryName;
         }
 
-        downloadService.DownloadModFile(SelectedFile, savePath);
+        if (SelectedFile is CurseForgeFile)
+            downloadService.DownloadModFile((CurseForgeFile)SelectedFile, savePath);
+        else if (SelectedFile is ModrinthFile)
+            downloadService.DownloadModFile((ModrinthFile)SelectedFile, savePath);
+
         notificationService.ModDownloadTaskCreated(fileName);
     }
 

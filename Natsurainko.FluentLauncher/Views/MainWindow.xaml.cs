@@ -9,7 +9,6 @@ using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Services.UI.Notification;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-using System.Net.Http;
 using Windows.Graphics;
 using Windows.UI.WindowManagement;
 using Windows.Win32;
@@ -32,8 +31,7 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider, IRecipie
     INavigationService INavigationProvider.NavigationService => _navigationService;
 
     public MainWindow(
-        SettingsService settingsService, 
-        HttpClient httpClient,
+        SettingsService settingsService,
         INavigationService navigationService, 
         ILogger<MainWindow> logger)
     {

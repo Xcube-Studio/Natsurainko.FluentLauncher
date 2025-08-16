@@ -713,6 +713,7 @@
                                         TextWrapping="WrapWholeWords" />
                                     <Button
                                         VerticalAlignment="Top"
+                                        Command="{Binding CopyExceptionContentCommand}"
                                         InfoBarPanel.HorizontalOrientationMargin="{StaticResource InfoBarActionHorizontalOrientationMargin}"
                                         InfoBarPanel.VerticalOrientationMargin="{StaticResource InfoBarActionVerticalOrientationMargin}">
                                         <StackPanel Orientation="Horizontal" Spacing="5">
@@ -981,6 +982,7 @@
                                         TextWrapping="WrapWholeWords" />
                                     <Button
                                         VerticalAlignment="Top"
+                                        Command="{Binding CopyExceptionContentCommand}"
                                         InfoBarPanel.HorizontalOrientationMargin="{StaticResource InfoBarActionHorizontalOrientationMargin}"
                                         InfoBarPanel.VerticalOrientationMargin="{StaticResource InfoBarActionVerticalOrientationMargin}">
                                         <StackPanel Orientation="Horizontal" Spacing="5">
@@ -1299,6 +1301,7 @@
                                         TextWrapping="WrapWholeWords" />
                                     <Button
                                         VerticalAlignment="Top"
+                                        Command="{Binding CopyExceptionContentCommand}"
                                         InfoBarPanel.HorizontalOrientationMargin="{StaticResource InfoBarActionHorizontalOrientationMargin}"
                                         InfoBarPanel.VerticalOrientationMargin="{StaticResource InfoBarActionVerticalOrientationMargin}">
                                         <StackPanel Orientation="Horizontal" Spacing="5">

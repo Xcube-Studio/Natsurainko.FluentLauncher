@@ -5,6 +5,7 @@ using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels;
 using Nrk.FluentCore.GameManagement.Downloader;
 using Nrk.FluentCore.GameManagement.Installer;
+using Nrk.FluentCore.Resources;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -44,9 +45,16 @@ internal partial class DownloadService
         _settingsService.CurrentDownloadSourceChanged += (_, _) => SetDownloader();
     }
 
-    public void DownloadModFile(object modFile, string folder)
+    public void DownloadModFile(CurseForgeFile curseForgeFile, string folder)
     {
-        DownloadModTaskViewModel downloadModTask = new(this, modFile, folder);
+        DownloadModTaskViewModel downloadModTask = new(this, curseForgeFile, folder);
+        App.DispatcherQueue.TryEnqueue(() => DownloadTasks.Insert(0, downloadModTask));
+        downloadModTask.EnqueueAsync().Forget();
+    }
+
+    public void DownloadModFile(ModrinthFile modrinthFile, string folder)
+    {
+        DownloadModTaskViewModel downloadModTask = new(this, modrinthFile, folder);
         App.DispatcherQueue.TryEnqueue(() => DownloadTasks.Insert(0, downloadModTask));
         downloadModTask.EnqueueAsync().Forget();
     }

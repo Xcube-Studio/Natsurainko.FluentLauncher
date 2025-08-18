@@ -40,7 +40,7 @@
                                 <TextBlock x:Uid="Instances_DefaultPage_InstallText" Text="Install Instances" />
                             </StackPanel>
                         </Button>
-                        <Button IsEnabled="False" Style="{ThemeResource AccentButtonStyle}">
+                        <Button Command="{x:Bind VM.ImportModpackCommand}" Style="{ThemeResource AccentButtonStyle}">
                             <StackPanel Orientation="Horizontal" Spacing="8">
                                 <FontIcon FontSize="14" Glyph="&#xe8b5;" />
                                 <TextBlock x:Uid="Instances_DefaultPage_ImportButton" Text="Import Modpack" />

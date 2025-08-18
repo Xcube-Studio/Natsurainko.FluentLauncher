@@ -5,6 +5,7 @@ using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Launch;
+using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Notification;
@@ -12,10 +13,13 @@ using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement;
 using Nrk.FluentCore.GameManagement.Instances;
+using Nrk.FluentCore.Resources;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 #nullable disable
@@ -81,6 +85,12 @@ internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel, IN
 
     [RelayCommand]
     void InstallMinecraft() => GlobalNavigate("InstancesDownload/Navigation");
+
+    [RelayCommand]
+    void ImportModpack()
+    {
+
+    }
 
     [RelayCommand]
     void GoToCoreSettings(MinecraftInstance MinecraftInstance) => _navigationService.NavigateTo("Instances/Instance", MinecraftInstance);

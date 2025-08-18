@@ -336,10 +336,12 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
 
 #region Install Instance Task
 
-class InstallationViewModel<TStage> : IProgress<InstallerProgress<TStage>>
+class InstallationViewModel<TStage> : IProgress<IInstallerProgress>
     where TStage : struct, Enum
 {
     public Dictionary<TStage, InstallationStageViewModel> Stages { get; } = [];
+
+    public event EventHandler<InstallationStageViewModel>? StageSkipped;
 
     public InstallationViewModel()
     {
@@ -350,10 +352,16 @@ class InstallationViewModel<TStage> : IProgress<InstallerProgress<TStage>>
                 { TaskName = LocalizedStrings.GetString($"Tasks_DownloadPage__{enumTypeName}_{name}") });
     }
 
-    public void Report(InstallerProgress<TStage> value)
+    public void Report(IInstallerProgress value)
     {
-        var vm = Stages[value.Stage];
-        App.DispatcherQueue.TryEnqueue(() => vm.UpdateProgress(value.StageProgress));
+        if (value is InstallerProgress<TStage> progress)
+        {
+            var vm = Stages[progress.Stage];
+            App.DispatcherQueue.TryEnqueue(() => vm.UpdateProgress(value.StageProgress));
+
+            if (value.StageProgress.Type == InstallerStageProgressType.Skiped)
+                StageSkipped?.Invoke(this, vm);
+        }
     }
 }
 
@@ -428,9 +436,9 @@ internal partial class InstallInstanceTaskViewModel(
     DownloadService downloadService,
     IInstanceInstaller instanceInstaller,
     InstanceInstallConfig instanceInstallConfig,
-    IEnumerable<InstallationStageViewModel> stageViewModels) : TaskViewModel
+    ObservableCollection<InstallationStageViewModel> stageViewModels) : TaskViewModel
 {
-    private MinecraftInstance? _minecraftInstance;
+    protected MinecraftInstance? _minecraftInstance;
 
     protected override ILogger Logger { get; } = App.GetService<ILogger<InstallInstanceTaskViewModel>>();
 
@@ -450,7 +458,7 @@ internal partial class InstallInstanceTaskViewModel(
 
     #region Stage Properties
 
-    public IEnumerable<InstallationStageViewModel> StageViewModels { get; } = stageViewModels;
+    public ObservableCollection<InstallationStageViewModel> StageViewModels { get; } = stageViewModels;
 
     #endregion
 
@@ -495,14 +503,16 @@ internal partial class InstallInstanceTaskViewModel(
     void OpenInstanceFolder() => ExplorerHelper.OpenFolder(_minecraftInstance!.GetGameDirectory());
 
     [RelayCommand]
-    void Retry()
+    void Retry() => RetryBehavior();
+
+    [RelayCommand]
+    protected void Remove() => downloadService.DownloadTasks.Remove(this);
+
+    protected virtual void RetryBehavior()
     {
         downloadService.InstallInstanceAsync(instanceInstallConfig).Forget();
         Remove();
     }
-
-    [RelayCommand]
-    void Remove() => downloadService.DownloadTasks.Remove(this);
 
     #region Exception
 
@@ -525,6 +535,53 @@ internal partial class InstallInstanceTaskViewModel(
         => notificationService.InstallFailed(ExecuteTask.Exception!.InnerException!, ExceptionTitle);
 
     #endregion
+}
+
+#endregion
+
+#region Install Modpack Task
+
+internal partial class InstallModpackTaskViewModel : InstallInstanceTaskViewModel
+{
+    private readonly DownloadService _downloadService;
+    private readonly IInstanceInstaller _instanceInstaller;
+
+    private readonly ModpackInstallConfig _modpackInstallConfig;
+
+    public InstallModpackTaskViewModel(
+        DownloadService downloadService,
+        IInstanceInstaller instanceInstaller,
+        ModpackInstallConfig modpackInstallConfig,
+        ObservableCollection<InstallationStageViewModel> stageViewModels)
+        : base(downloadService, instanceInstaller, null!, stageViewModels)
+    {
+        _downloadService = downloadService;
+        _instanceInstaller = instanceInstaller;
+
+        _modpackInstallConfig = modpackInstallConfig;
+    }
+
+    protected override ILogger Logger { get; } = App.GetService<ILogger<InstallModpackTaskViewModel>>();
+
+    public override string Title => _modpackInstallConfig.InstanceId;
+
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
+    {
+        _minecraftInstance = await _instanceInstaller.InstallAsync(cancellationToken);
+
+        InstanceConfig config = _minecraftInstance.GetConfig();
+        config.EnableIndependencyCore = true;
+        config.EnableSpecialSetting = true;
+
+        App.GetService<GameService>().RefreshGames();
+        await App.DispatcherQueue.EnqueueAsync(() => Installed = true);
+    }
+
+    protected override void RetryBehavior()
+    {
+        _downloadService.InstallModpackAsync(_modpackInstallConfig).Forget();
+        Remove();
+    }
 }
 
 #endregion

@@ -4,6 +4,7 @@ using Microsoft.Win32;
 using Nrk.FluentCore.Launch;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 
@@ -46,11 +47,12 @@ internal partial class CreateLaunchScriptDialogViewModel : DialogVM
         List<string> arguments = [.. _minecraftProcess.ArgumentList];
 
         if (HideAccessToken)
-        {
             arguments[arguments.FindIndex(a => a.StartsWith("--accessToken"))] = $"--accessToken {Guid.Empty}";
-        }
+
+        //arguments.RemoveAll(a => a.StartsWith("-D") && a.EndsWith(".encoding=UTF-8"));
 
         StringBuilder stringBuilder = new();
+        stringBuilder.AppendLine("chcp 65001");
         stringBuilder.AppendLine("@echo off");
         stringBuilder.AppendLine($"cd /{_minecraftProcess.WorkingDirectory[0]} \"{_minecraftProcess.WorkingDirectory}\"");
         stringBuilder.AppendLine($"\"{_minecraftProcess.JavaPath.Replace("javaw.exe", "java.exe")}\" {string.Join(' ', arguments)}");
@@ -60,6 +62,9 @@ internal partial class CreateLaunchScriptDialogViewModel : DialogVM
 
         if (!fileInfo.Directory!.Exists)
             fileInfo.Directory.Create();
+
+        //File.WriteAllText(BatchFilePath, stringBuilder.ToString(), 
+        //    Encoding.GetEncoding(CultureInfo.CurrentUICulture.TextInfo.ANSICodePage));
 
         File.WriteAllText(BatchFilePath, stringBuilder.ToString());
 

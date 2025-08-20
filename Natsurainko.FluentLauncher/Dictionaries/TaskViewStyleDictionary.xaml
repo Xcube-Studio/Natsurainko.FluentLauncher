@@ -821,14 +821,23 @@
                         </StackPanel>
                     </Button>
 
-                    <ItemsControl
+                    <ListView
                         Grid.Row="1"
                         Grid.Column="2"
                         Grid.ColumnSpan="2"
                         Margin="0,16,0,0"
                         ItemsSource="{Binding StageViewModels}"
+                        SelectionMode="None"
                         Visibility="{Binding Installed, Mode=OneWay, Converter={ThemeResource InvertedBoolToVisibilityConverter}}">
-                        <ItemsControl.ItemTemplate>
+                        <ListView.ItemContainerStyle>
+                            <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="MinHeight" Value="0" />
+                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Margin="0,3.75">
                                     <Grid.ColumnDefinitions>
@@ -857,13 +866,13 @@
                                         TextTrimming="CharacterEllipsis" />
                                 </Grid>
                             </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                        <ItemsControl.ItemsPanel>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Spacing="2" />
                             </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
+                        </ListView.ItemsPanel>
+                    </ListView>
 
                     <CommandBar
                         Grid.Row="2"

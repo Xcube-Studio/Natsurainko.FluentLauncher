@@ -52,7 +52,7 @@ internal partial class InstallViewModel(
     [ObservableProperty]
     public partial bool LoadingMods { get; set; } = true;
 
-    public bool InstanceIdValidity => !string.IsNullOrEmpty(InstanceId) && !gameService.Games.Where(x => x.InstanceId.Equals(InstanceId)).Any();
+    public bool InstanceIdValidity => !string.IsNullOrEmpty(InstanceId) && !gameService.Games.Any(x => x.InstanceId.Equals(InstanceId));
 
     public bool CanInstall => InstanceIdValidity;
 

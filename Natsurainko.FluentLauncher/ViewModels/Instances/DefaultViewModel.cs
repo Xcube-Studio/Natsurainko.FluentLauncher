@@ -1,11 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.Settings.Mvvm;
+using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Launch;
-using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Notification;
@@ -13,16 +13,12 @@ using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement;
 using Nrk.FluentCore.GameManagement.Instances;
-using Nrk.FluentCore.Resources;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 
-#nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Instances;
     
 internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel, INavigationAware
@@ -33,6 +29,7 @@ internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel, IN
     private readonly GameService _gameService;
     private readonly SearchProviderService _searchProviderService;
     private readonly INotificationService _notificationService;
+    private readonly IDialogActivationService<ContentDialogResult> _dialogActivationService;
 
     public ReadOnlyObservableCollection<MinecraftInstance> MinecraftInstances { get; init; }
 
@@ -41,13 +38,15 @@ internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel, IN
         SettingsService settingsService,
         INavigationService navigationService,
         SearchProviderService searchProviderService,
-        INotificationService notificationService)
+        INotificationService notificationService,
+        IDialogActivationService<ContentDialogResult> dialogActivationService)
     {
         _gameService = gameService;
         _settingsService = settingsService;
         _navigationService = navigationService;
         _searchProviderService = searchProviderService;
         _notificationService = notificationService;
+        _dialogActivationService = dialogActivationService;
 
         MinecraftInstances = _gameService.Games;
 
@@ -57,7 +56,7 @@ internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel, IN
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(DisplayFolderPath))]
     [BindToSetting(Path = nameof(SettingsService.ActiveMinecraftFolder))]
-    public partial string ActiveMinecraftFolder { get; set; }
+    public partial string? ActiveMinecraftFolder { get; set; }
 
     [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.CoresFilterIndex))]
@@ -68,7 +67,7 @@ internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel, IN
     public partial int SortByIndex { get; set; }
 
     [ObservableProperty]
-    public partial List<MinecraftInstance> DisplayMinecraftInstances { get; set; }
+    public partial List<MinecraftInstance> DisplayMinecraftInstances { get; set; } = [];
 
     public string DisplayFolderPath => (string.IsNullOrEmpty(ActiveMinecraftFolder) || !Directory.Exists(ActiveMinecraftFolder))
         ? LocalizedStrings.Instances_DefaultPage__FolderError
@@ -78,7 +77,7 @@ internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel, IN
 
     partial void OnSortByIndexChanged(int value) => Task.Run(UpdateDisplayMinecraftInstances);
 
-    void INavigationAware.OnNavigatedTo(object parameter) => Task.Run(UpdateDisplayMinecraftInstances);
+    void INavigationAware.OnNavigatedTo(object? parameter) => Task.Run(UpdateDisplayMinecraftInstances);
 
     [RelayCommand]
     void GoToSettings() => GlobalNavigate("Settings/Navigation", "Settings/Launch");
@@ -87,10 +86,7 @@ internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel, IN
     void InstallMinecraft() => GlobalNavigate("InstancesDownload/Navigation");
 
     [RelayCommand]
-    void ImportModpack()
-    {
-
-    }
+    async Task ImportModpack() => await _dialogActivationService.ShowAsync("ImportModpackDialog");
 
     [RelayCommand]
     void GoToCoreSettings(MinecraftInstance MinecraftInstance) => _navigationService.NavigateTo("Instances/Instance", MinecraftInstance);

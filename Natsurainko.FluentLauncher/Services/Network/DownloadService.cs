@@ -15,6 +15,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using static Nrk.FluentCore.Experimental.GameManagement.Installer.Modpack.CurseForgeModpackInstaller;
+using static Nrk.FluentCore.Experimental.GameManagement.Installer.Modpack.ModrinthModpackInstaller;
 using static Nrk.FluentCore.GameManagement.Installer.FabricInstanceInstaller;
 using static Nrk.FluentCore.GameManagement.Installer.ForgeInstanceInstaller;
 using static Nrk.FluentCore.GameManagement.Installer.OptiFineInstanceInstaller;
@@ -95,7 +96,7 @@ internal partial class DownloadService
         string minecraftFolder = _settingsService.ActiveMinecraftFolder ?? throw new InvalidOperationException();
         string javaPath = _settingsService.ActiveJava;
 
-        RangeObservableCollection<InstallationStageViewModel> installationStagesViewModel;
+        ObservableCollection<InstallationStageViewModel> installationStagesViewModel;
 
         IInstanceInstaller instanceInstaller = modpackInstallConfig.ModpackInfo.ModpackType switch
         {
@@ -108,18 +109,19 @@ internal partial class DownloadService
                 CheckAllDependencies = true,
                 Progress = GetModpackInstallationViewModel<CurseForgeModpackInstallationStage>(out var createProgressReporterDelegate, out installationStagesViewModel),
                 CreateModLoderInstallerProgressReporter = createProgressReporterDelegate,
-                JavaPath = javaPath
+                JavaPath = javaPath,
+                CustomizedInstanceId = modpackInstallConfig.InstanceId
             },
             ModpackType.Modrinth => new ModrinthModpackInstaller
             {
                 ModpackFilePath = modpackInstallConfig.ModpackFilePath,
-                CurseForgeClient = _curseForgeClient,
                 Downloader = _downloader,
                 MinecraftFolder = minecraftFolder,
                 CheckAllDependencies = true,
-                Progress = GetModpackInstallationViewModel<CurseForgeModpackInstallationStage>(out var createProgressReporterDelegate, out installationStagesViewModel),
+                Progress = GetModpackInstallationViewModel<ModrinthModpackInstallationStage>(out var createProgressReporterDelegate, out installationStagesViewModel),
                 CreateModLoderInstallerProgressReporter = createProgressReporterDelegate,
-                JavaPath = javaPath
+                JavaPath = javaPath,
+                CustomizedInstanceId = modpackInstallConfig.InstanceId
             },
             _ => throw new NotImplementedException()
         };
@@ -149,7 +151,7 @@ internal partial class DownloadService
 
     IInstanceInstaller GetInstanceInstaller(
         InstanceInstallConfig instanceInstallConfig,
-        out RangeObservableCollection<InstallationStageViewModel> installationStageViews)
+        out ObservableCollection<InstallationStageViewModel> installationStageViews)
     {
         var versionManifestItem = instanceInstallConfig.ManifestItem;
         string minecraftFolder = _settingsService.ActiveMinecraftFolder ?? throw new InvalidOperationException();
@@ -167,7 +169,8 @@ internal partial class DownloadService
                 Downloader = _downloader,
                 McVersionManifestItem = versionManifestItem,
                 MinecraftFolder = minecraftFolder,
-                Progress = installationViewModel
+                Progress = installationViewModel,
+                CustomizedInstanceId = customizedInstanceId,
             };
         }
 
@@ -242,17 +245,23 @@ internal partial class DownloadService
 
     static InstallationViewModel<TStage> GetInstallationViewModel<TStage>(
         out InstallationViewModel<VanillaInstallationStage> vanillaStagesViewModel,
-        out RangeObservableCollection<InstallationStageViewModel> installationStagesViewModel) where TStage : struct, Enum
+        out ObservableCollection<InstallationStageViewModel> installationStagesViewModel) where TStage : struct, Enum
     {
-        RangeObservableCollection<InstallationStageViewModel> stageViewModels = [];
+        ObservableCollection<InstallationStageViewModel> stageViewModels = [];
 
         InstallationViewModel<TStage> installationViewModel = new();
+        installationViewModel.StageSkipped += (_, stage) =>
+            App.DispatcherQueue.EnqueueAsync(() => stageViewModels.Remove(stage)).Wait();
+
         vanillaStagesViewModel = new();
         vanillaStagesViewModel.StageSkipped += (_, stage) =>
-            App.DispatcherQueue.TryEnqueue(() => stageViewModels.Remove(stage));
+            App.DispatcherQueue.EnqueueAsync(() => stageViewModels.Remove(stage)).Wait();
 
-        stageViewModels.AddRange(installationViewModel.Stages.Values);
-        stageViewModels.InsertRange(1, vanillaStagesViewModel.Stages.Values);
+        foreach (var item in installationViewModel.Stages.Values)
+            stageViewModels.Add(item);
+
+        foreach (var item in vanillaStagesViewModel.Stages.Values.Reverse())
+            stageViewModels.Insert(1, item);
 
         installationStagesViewModel = stageViewModels;
         return installationViewModel;
@@ -260,20 +269,24 @@ internal partial class DownloadService
 
     static InstallationViewModel<TStage> GetModpackInstallationViewModel<TStage>(
         out CreateModLoderInstallerProgressReporterDelegate createProgressReporterDelegate,
-        out RangeObservableCollection<InstallationStageViewModel> installationStagesViewModel) where TStage : struct, Enum
+        out ObservableCollection<InstallationStageViewModel> installationStagesViewModel) where TStage : struct, Enum
     {
         InstallationViewModel<TStage> installationViewModel = new();
 
-        RangeObservableCollection<InstallationStageViewModel> stageViewModels = [];
-        stageViewModels.AddRange(installationViewModel.Stages.Values);
+        ObservableCollection<InstallationStageViewModel> stageViewModels = [];
 
+        foreach (var item in installationViewModel.Stages.Values)
+            stageViewModels.Add(item);
+
+        installationViewModel.StageSkipped += (_, stage) =>
+            App.DispatcherQueue.EnqueueAsync(() => stageViewModels.Remove(stage)).Wait();
         installationStagesViewModel = stageViewModels;
 
         createProgressReporterDelegate = (modLoaderType, out vanillaInstallationProgress) =>
         {
             IProgress<IInstallerProgress> progress;
             InstallationViewModel<VanillaInstallationStage> vanillaStagesViewModel;
-            RangeObservableCollection<InstallationStageViewModel> subStageViewModels;
+            ObservableCollection<InstallationStageViewModel> subStageViewModels;
 
             if (modLoaderType == ModLoaderType.Forge || modLoaderType == ModLoaderType.NeoForge)
             {
@@ -292,10 +305,21 @@ internal partial class DownloadService
             }
             else throw new NotImplementedException();
 
-            vanillaStagesViewModel.StageSkipped += (_, stage) =>
-                App.DispatcherQueue.TryEnqueue(() => stageViewModels.Remove(stage));
+            subStageViewModels.CollectionChanged += (sender, e) =>
+            {
+                if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+                    App.DispatcherQueue.EnqueueAsync(() =>
+                    {
+                        foreach (var item in e.OldItems!)
+                            stageViewModels.Remove((InstallationStageViewModel)item);
+                    }).Wait();
+            };
 
-            App.DispatcherQueue.TryEnqueue(() => stageViewModels.InsertRange(3, subStageViewModels));
+            App.DispatcherQueue.EnqueueAsync(() =>
+            {
+                foreach (var item in subStageViewModels.Reverse())
+                    stageViewModels.Insert(3, item);
+            }).Wait();
 
             return progress;
         };

@@ -295,6 +295,11 @@ internal class LaunchService(
             yield return $"-Dstdout.encoding=UTF-8";
             yield return $"-Dstderr.encoding=UTF-8";
 
+            // 修复部分 Log4j 版本不接受活动代码页 65001
+            // 原来引发的异常 java.nio.charset.unsupportedcharsetexception: cp65001
+            yield return $"-Dsun.stdout.encoding=UTF-8";
+            yield return $"-Dsun.err.encoding=UTF-8";
+
             if (preCheckData.Account is YggdrasilAccount yggdrasil)
             {
                 var content = await httpClient.GetStringAsync(yggdrasil.YggdrasilServerUrl, cancellationToken);

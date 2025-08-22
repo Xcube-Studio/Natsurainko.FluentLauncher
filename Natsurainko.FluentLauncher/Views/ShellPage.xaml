@@ -262,10 +262,10 @@
             IsBackEnabled="{x:Bind CanGoBack, Mode=OneWay}"
             IsPaneToggleButtonVisible="True"
             IsSettingsVisible="False"
-            ItemInvoked="NavigationViewControl_ItemInvoked"
             OpenPaneLength="300"
             PaneClosing="NavigationViewControl_PaneClosing"
-            PaneOpening="NavigationViewControl_PaneOpening">
+            PaneOpening="NavigationViewControl_PaneOpening"
+            SelectionChanged="NavigationViewControl_SelectionChanged">
             <NavigationView.Resources>
                 <SolidColorBrush x:Key="NavigationViewContentBackground" Color="Transparent" />
                 <SolidColorBrush x:Key="NavigationViewContentGridBorderBrush" Color="Transparent" />
@@ -314,13 +314,23 @@
                         <NavigationViewItem
                             x:Uid="ShellPage_NV_SubItem_2"
                             Content="Mods"
-                            Icon="{xh:FontIcon Glyph=&#xe8f1;}"
+                            Icon="{xh:FontIcon Glyph=&#xEA86;}"
                             Tag="ModsDownload/Navigation" />
                         <NavigationViewItem
                             x:Uid="ShellPage_NV_SubItem_3"
                             Content="Modpacks"
-                            Icon="{xh:FontIcon Glyph=&#xe7b8;}"
-                            IsEnabled="False" />
+                            Icon="{xh:FontIcon Glyph=&#xF012;}"
+                            Tag="ModpacksDownload/Navigation" />
+                        <NavigationViewItem
+                            x:Uid="ShellPage_NV_SubItem_4"
+                            Content="TexturePacks"
+                            Icon="{xh:FontIcon Glyph=&#xE91B;}"
+                            Tag="TexturePacksDownload/Navigation" />
+                        <NavigationViewItem
+                            x:Uid="ShellPage_NV_SubItem_5"
+                            Content="Shaders"
+                            Icon="{xh:FontIcon Glyph=&#xE706;}"
+                            Tag="ShadersDownload/Navigation" />
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
                 <NavigationViewItem

@@ -3,23 +3,23 @@ using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
-using Natsurainko.FluentLauncher.ViewModels.Downloads.Mods;
+using Natsurainko.FluentLauncher.ViewModels.Downloads;
 using System;
 using System.Threading.Tasks;
 
-namespace Natsurainko.FluentLauncher.Views.Downloads.Mods;
+namespace Natsurainko.FluentLauncher.Views.Downloads;
 
-internal record ModAuthor(string Name, string WebLink);
+internal record ResourceAuthor(string Name, string WebLink);
 
-public sealed partial class ModPage : Page, IBreadcrumbBarAware
+public sealed partial class ResourcePage : Page, IBreadcrumbBarAware
 {
-    string IBreadcrumbBarAware.Route => "Mod";
+    string IBreadcrumbBarAware.Route => "Resource";
 
-    ModViewModel VM => (ModViewModel)DataContext;
+    ResourceViewModel VM => (ResourceViewModel)DataContext;
 
     public MarkdownConfig MarkdownConfig { get; set; } = new MarkdownConfig();
 
-    public ModPage()
+    public ResourcePage()
     {
         this.InitializeComponent();
     }

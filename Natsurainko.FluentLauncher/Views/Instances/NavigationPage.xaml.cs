@@ -23,9 +23,7 @@ public sealed partial class NavigationPage : Page, INavigationProvider
     {
         var breadcrumbBarAware = (IBreadcrumbBarAware)(contentFrame.Content);
         if (e.NavigationMode == NavigationMode.Back)
-        {
             breadcrumbBar.GoBack();
-        }
         else
         {
             if (contentFrame.Content.GetType() == typeof(InstancePage))

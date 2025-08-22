@@ -7,12 +7,9 @@ using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.Experimental.GameManagement.Modpacks;
-using Nrk.FluentCore.GameManagement.Installer;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection.Metadata;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
 
@@ -66,7 +63,7 @@ internal partial class ImportModpackDialogViewModel(
             if (ModpackInfo.ModLoader != null)
                 tags.Add($"{ModpackInfo.ModLoader.Value.Type} {ModpackInfo.ModLoader.Value.Version}");
 
-            if (ModpackInfo.Author != null)
+            if (!string.IsNullOrEmpty(ModpackInfo.Author))
                 tags.Add(ModpackInfo.Author);
 
             return tags;

@@ -60,23 +60,23 @@ internal partial class DownloadService
 
     public async Task DownloadModFileAsync(CurseForgeFile curseForgeFile, string folder)
     {
-        DownloadModTaskViewModel downloadModTask = new(this, curseForgeFile, folder);
-        await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadModTask));
-        await downloadModTask.EnqueueAsync();
+        DownloadResourceTaskViewModel downloadResourceTaskViewModel = new(this, curseForgeFile, folder);
+        await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadResourceTaskViewModel));
+        await downloadResourceTaskViewModel.EnqueueAsync();
     }
 
     public async Task DownloadModFileAsync(ModrinthFile modrinthFile, string folder)
     {
-        DownloadModTaskViewModel downloadModTask = new(this, modrinthFile, folder);
-        await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadModTask));
-        await downloadModTask.EnqueueAsync();
+        DownloadResourceTaskViewModel downloadResourceTaskViewModel = new(this, modrinthFile, folder);
+        await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadResourceTaskViewModel));
+        await downloadResourceTaskViewModel.EnqueueAsync();
     }
 
     public async Task DownloadModFileAsync(string url, string filePath)
     {
-        DownloadModTaskViewModel downloadModTask = new(this, url, filePath);
-        await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadModTask));
-        await downloadModTask.EnqueueAsync();
+        DownloadResourceTaskViewModel downloadResourceTaskViewModel = new(this, url, filePath);
+        await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadResourceTaskViewModel));
+        await downloadResourceTaskViewModel.EnqueueAsync();
     }
 
     public async Task InstallInstanceAsync(InstanceInstallConfig config)

@@ -5,22 +5,14 @@
     xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:selectors="using:Natsurainko.FluentLauncher.XamlHelpers.Selectors"
     xmlns:toolkit_behaviors="using:CommunityToolkit.WinUI.Behaviors"
     Unloaded="Page_Unloaded">
-    <Page.Resources>
-        <selectors:TaskTemplateSelector
-            x:Key="TemplateSelector"
-            DownloadModTask="{StaticResource DownloadModTaskTemplate}"
-            InstallInstanceTask="{StaticResource InstallInstanceTaskTemplate}"
-            LaunchTask="{StaticResource LaunchTaskTemplate}" />
-    </Page.Resources>
 
     <Grid>
         <ListView
             x:Name="ListView"
             Padding="40,25"
-            ItemTemplateSelector="{StaticResource TemplateSelector}"
+            ItemTemplateSelector="{StaticResource TaskTemplateSelector}"
             ItemsSource="{x:Bind VM.Tasks, Mode=OneWay}"
             SelectionMode="None">
             <ListView.Header>

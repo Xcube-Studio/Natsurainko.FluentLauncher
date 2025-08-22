@@ -9,7 +9,7 @@ internal partial class TaskTemplateSelector : DataTemplateSelector
 {
     public DataTemplate LaunchTask { get; set; }
 
-    public DataTemplate DownloadModTask { get; set; }
+    public DataTemplate DownloadResourceTask { get; set; }
 
     public DataTemplate InstallInstanceTask { get; set; }
 
@@ -17,8 +17,8 @@ internal partial class TaskTemplateSelector : DataTemplateSelector
     {
         if (item is LaunchTaskViewModel)
             return LaunchTask;
-        else if (item is DownloadModTaskViewModel)
-            return DownloadModTask;
+        else if (item is DownloadResourceTaskViewModel)
+            return DownloadResourceTask;
         else if (item is InstallInstanceTaskViewModel)
             return InstallInstanceTask;
 

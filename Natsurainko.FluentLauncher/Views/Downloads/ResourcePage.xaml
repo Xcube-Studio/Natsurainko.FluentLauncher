@@ -1,202 +1,147 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Page
-    x:Class="Natsurainko.FluentLauncher.Views.Downloads.Mods.ModPage"
+    x:Class="Natsurainko.FluentLauncher.Views.Downloads.ResourcePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI.MarkdownTextBlock"
-    xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads.Mods"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resources="using:Nrk.FluentCore.Resources"
     xmlns:selector="using:Natsurainko.FluentLauncher.XamlHelpers.Selectors"
     mc:Ignorable="d">
     <Page.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.ThemeDictionaries>
-                <ResourceDictionary x:Key="Default">
-                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="CardBackgroundFillColorDefaultBrush" />
-                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="ControlFillColorSecondaryBrush" />
-                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
-                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="ControlFillColorDisabledBrush" />
-
-                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="TextFillColorPrimaryBrush" />
-                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
-                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
-                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
-
-                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
-                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="ControlElevationBorderBrush" />
-                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
-                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
-                </ResourceDictionary>
-
-                <ResourceDictionary x:Key="Light">
-                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="CardBackgroundFillColorDefaultBrush" />
-                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="ControlFillColorSecondaryBrush" />
-                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
-                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="ControlFillColorDisabledBrush" />
-
-                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="TextFillColorPrimaryBrush" />
-                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
-                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
-                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
-
-                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
-                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="ControlElevationBorderBrush" />
-                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
-                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
-                </ResourceDictionary>
-
-                <ResourceDictionary x:Key="HighContrast">
-                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="SystemColorButtonFaceColorBrush" />
-                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="SystemColorHighlightTextColorBrush" />
-                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
-                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="SystemControlBackgroundBaseLowBrush" />
-
-                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="SystemColorButtonTextColorBrush" />
-                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="SystemColorHighlightColorBrush" />
-                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
-                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="SystemControlDisabledBaseMediumLowBrush" />
-
-                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="SystemColorButtonTextColorBrush" />
-                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="SystemColorHighlightColorBrush" />
-                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
-                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="SystemControlDisabledTransparentBrush" />
-                </ResourceDictionary>
-            </ResourceDictionary.ThemeDictionaries>
-
-            <DataTemplate x:Key="CurseForgeFileTemplate" x:DataType="resources:CurseForgeFile">
-                <ItemContainer>
-                    <Border
-                        Padding="16,8"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Background="{ThemeResource SettingsCardBackground}"
-                        BorderBrush="{ThemeResource SettingsCardBorderBrush}"
-                        BorderThickness="1"
-                        CornerRadius="4">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="16" />
-                                <ColumnDefinition Width="1*" />
-                            </Grid.ColumnDefinitions>
-                            <FontIcon FontSize="24" Glyph="&#xe8f1;" />
-                            <StackPanel
-                                Grid.Column="2"
-                                VerticalAlignment="Center"
-                                Spacing="2">
+        <DataTemplate x:Key="CurseForgeFileTemplate" x:DataType="resources:CurseForgeFile">
+            <ItemContainer>
+                <Border
+                    Padding="16,8"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="{ThemeResource SettingsCardBackground}"
+                    BorderBrush="{ThemeResource SettingsCardBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <FontIcon FontSize="24" Glyph="&#xe8f1;" />
+                        <StackPanel
+                            Grid.Column="2"
+                            VerticalAlignment="Center"
+                            Spacing="2">
+                            <TextBlock
+                                Style="{ThemeResource BaseTextBlockStyle}"
+                                Text="{x:Bind FileName}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
                                 <TextBlock
-                                    Style="{ThemeResource BaseTextBlockStyle}"
-                                    Text="{x:Bind FileName}"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    MaxLines="1"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                    Text="{x:Bind McVersion}"
                                     TextTrimming="CharacterEllipsis"
                                     TextWrapping="NoWrap" />
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="1*" />
-                                    </Grid.ColumnDefinitions>
+                                <Border
+                                    Grid.Column="2"
+                                    Padding="5,0,5,0.5"
+                                    HorizontalAlignment="Left"
+                                    CornerRadius="2.5">
+                                    <Border.Background>
+                                        <SolidColorBrush Opacity="0.25" Color="{ThemeResource SystemAccentColor}" />
+                                    </Border.Background>
                                     <TextBlock
-                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                        MaxLines="1"
+                                        Margin="0,-1,0,0"
                                         Style="{ThemeResource CaptionTextBlockStyle}"
-                                        Text="{x:Bind McVersion}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                    <Border
-                                        Grid.Column="2"
-                                        Padding="5,0,5,0.5"
-                                        HorizontalAlignment="Left"
-                                        CornerRadius="2.5">
-                                        <Border.Background>
-                                            <SolidColorBrush Opacity="0.25" Color="{ThemeResource SystemAccentColor}" />
-                                        </Border.Background>
-                                        <TextBlock
-                                            Margin="0,-1,0,0"
-                                            Style="{ThemeResource CaptionTextBlockStyle}"
-                                            Text="{x:Bind ModLoaderType}" />
-                                    </Border>
-                                </Grid>
-                            </StackPanel>
-                        </Grid>
-                    </Border>
+                                        Text="{x:Bind ModLoaderType}" />
+                                </Border>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </Border>
 
-                </ItemContainer>
-            </DataTemplate>
+            </ItemContainer>
+        </DataTemplate>
 
-            <DataTemplate x:Key="ModrinthFileTemplate" x:DataType="resources:ModrinthFile">
-                <ItemContainer>
-                    <Border
-                        Padding="16,8"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Background="{ThemeResource SettingsCardBackground}"
-                        BorderBrush="{ThemeResource SettingsCardBorderBrush}"
-                        BorderThickness="1"
-                        CornerRadius="4">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="16" />
-                                <ColumnDefinition Width="1*" />
-                            </Grid.ColumnDefinitions>
-                            <FontIcon FontSize="24" Glyph="&#xe8f1;" />
-                            <StackPanel
-                                Grid.Column="2"
-                                VerticalAlignment="Center"
-                                Spacing="2">
+        <DataTemplate x:Key="ModrinthFileTemplate" x:DataType="resources:ModrinthFile">
+            <ItemContainer>
+                <Border
+                    Padding="16,8"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="{ThemeResource SettingsCardBackground}"
+                    BorderBrush="{ThemeResource SettingsCardBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <FontIcon FontSize="24" Glyph="&#xe8f1;" />
+                        <StackPanel
+                            Grid.Column="2"
+                            VerticalAlignment="Center"
+                            Spacing="2">
+                            <TextBlock
+                                Style="{ThemeResource BaseTextBlockStyle}"
+                                Text="{x:Bind FileName}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
                                 <TextBlock
-                                    Style="{ThemeResource BaseTextBlockStyle}"
-                                    Text="{x:Bind FileName}"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                    MaxLines="1"
+                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                    Text="{x:Bind McVersion}"
                                     TextTrimming="CharacterEllipsis"
                                     TextWrapping="NoWrap" />
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="1*" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock
-                                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-                                        MaxLines="1"
-                                        Style="{ThemeResource CaptionTextBlockStyle}"
-                                        Text="{x:Bind McVersion}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                    <ItemsControl Grid.Column="2" ItemsSource="{x:Bind Loaders}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate x:DataType="x:String">
-                                                <Border Padding="5,0,5,0.5" CornerRadius="2.5">
-                                                    <Border.Background>
-                                                        <SolidColorBrush Opacity="0.25" Color="{ThemeResource SystemAccentColor}" />
-                                                    </Border.Background>
-                                                    <TextBlock
-                                                        Margin="0,-1,0,0"
-                                                        Style="{ThemeResource CaptionTextBlockStyle}"
-                                                        Text="{x:Bind}" />
-                                                </Border>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <StackPanel Orientation="Horizontal" Spacing="4" />
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                    </ItemsControl>
-                                </Grid>
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-                </ItemContainer>
-            </DataTemplate>
+                                <ItemsControl Grid.Column="2" ItemsSource="{x:Bind Loaders}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="x:String">
+                                            <Border Padding="5,0,5,0.5" CornerRadius="2.5">
+                                                <Border.Background>
+                                                    <SolidColorBrush Opacity="0.25" Color="{ThemeResource SystemAccentColor}" />
+                                                </Border.Background>
+                                                <TextBlock
+                                                    Margin="0,-1,0,0"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{x:Bind}" />
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" Spacing="4" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </ItemContainer>
+        </DataTemplate>
 
-            <selector:ModFileTemplateSelector
-                x:Key="ModFileTemplateSelector"
-                CurseForgeTemplate="{StaticResource CurseForgeFileTemplate}"
-                ModrinthTemplate="{StaticResource ModrinthFileTemplate}" />
-        </ResourceDictionary>
+        <selector:ModFileTemplateSelector
+            x:Key="ModFileTemplateSelector"
+            CurseForgeTemplate="{StaticResource CurseForgeFileTemplate}"
+            ModrinthTemplate="{StaticResource ModrinthFileTemplate}" />
     </Page.Resources>
 
     <ScrollViewer>
@@ -234,7 +179,7 @@
                                 Text="{x:Bind VM.Name, Mode=OneWay}" />
                             <ItemsControl Margin="-6,0,0,2" ItemsSource="{x:Bind VM.Authors}">
                                 <ItemsControl.ItemTemplate>
-                                    <DataTemplate x:DataType="local:ModAuthor">
+                                    <DataTemplate x:DataType="local:ResourceAuthor">
                                         <HyperlinkButton Padding="5,0,5,0.5" NavigateUri="{x:Bind WebLink}">
                                             <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind Name}" />
                                         </HyperlinkButton>
@@ -249,14 +194,14 @@
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
                             </ItemsControl>
-                            <ItemsControl ItemsSource="{x:Bind local:DefaultPage.FilterCategories(VM.Categories), Mode=OneWay}">
+                            <ItemsControl ItemsSource="{x:Bind VM.Categories, Converter={StaticResource ResourceFilterCategoriesConverter}, Mode=OneWay}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate x:DataType="x:String">
                                         <Border Padding="5,0,5,0.5" CornerRadius="2.5">
                                             <Border.Background>
                                                 <SolidColorBrush Opacity="0.25" Color="{ThemeResource SystemAccentColor}" />
                                             </Border.Background>
-                                            <TextBlock Margin="0,-1,0,0" Text="{x:Bind local:DefaultPage.GetLocalizedCategories((x:String))}" />
+                                            <TextBlock Margin="0,-1,0,0" Text="{x:Bind Converter={StaticResource ResourceLocalizedCategoriesConverter}}" />
                                         </Border>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
@@ -287,7 +232,7 @@
                                 Margin="0,-1,0,0"
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Style="{ThemeResource CaptionTextBlockStyle}">
-                                <Run x:Uid="Downloads_Mods_ModPage_TipText1" Text="Translation From MCIM" />
+                                <Run x:Uid="Downloads_ResourcePage_TipText1" Text="Translation From MCIM" />
                             </TextBlock>
                         </StackPanel>
                     </StackPanel>
@@ -302,7 +247,7 @@
                                 <SplitButton.Flyout>
                                     <MenuFlyout>
                                         <MenuFlyoutItem
-                                            x:Uid="Downloads_Mods_ModPage_M1"
+                                            x:Uid="Downloads_ResourcePage_M1"
                                             Command="{x:Bind VM.DownloadCommand}"
                                             Text="Download to specified folder">
                                             <MenuFlyoutItem.CommandParameter>
@@ -314,7 +259,7 @@
                                         </MenuFlyoutItem>
                                         <MenuFlyoutSeparator />
                                         <MenuFlyoutItem
-                                            x:Uid="Downloads_Mods_ModPage_M2"
+                                            x:Uid="Downloads_ResourcePage_M2"
                                             Command="{x:Bind VM.DownloadCommand}"
                                             IsEnabled="{x:Bind VM.HasMinecraftDataFolder}"
                                             Text="Download to public mods folder (.minecraft/mods)">
@@ -326,7 +271,7 @@
                                             </MenuFlyoutItem.Icon>
                                         </MenuFlyoutItem>
                                         <MenuFlyoutItem
-                                            x:Uid="Downloads_Mods_ModPage_M3"
+                                            x:Uid="Downloads_ResourcePage_M3"
                                             Command="{x:Bind VM.DownloadCommand}"
                                             IsEnabled="{x:Bind VM.HasCurrentInstance}"
                                             Text="Download to the mods folder of the current instance">
@@ -341,12 +286,12 @@
                                 </SplitButton.Flyout>
                             </SplitButton>
                             <HyperlinkButton
-                                x:Uid="Downloads_Mods_ModPage_HyperlinkButton"
+                                x:Uid="Downloads_ResourcePage_HyperlinkButton"
                                 Content="Web Page"
                                 NavigateUri="{x:Bind VM.WebLink}" />
 
                             <TeachingTip
-                                x:Uid="Downloads_Mods_ModPage_TeachingTip"
+                                x:Uid="Downloads_ResourcePage_TeachingTip"
                                 Title="You should select an item from the &quot;File&quot; list below and click Download"
                                 CloseButtonContent="Got it!"
                                 IsLightDismissEnabled="True"
@@ -363,7 +308,7 @@
                                 Margin="0,-1,0,0"
                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                 Style="{ThemeResource CaptionTextBlockStyle}">
-                                <Run x:Uid="Downloads_Mods_ModPage_TipText2" Text="Data From" /> <Run Text="{x:Bind VM.Source, Mode=OneWay}" />
+                                <Run x:Uid="Downloads_ResourcePage_TipText2" Text="Data From" /> <Run Text="{x:Bind VM.Source, Mode=OneWay}" />
                             </TextBlock>
                         </StackPanel>
                     </StackPanel>
@@ -388,13 +333,13 @@
                             <controls:SegmentedItem IsSelected="{x:Bind VM.ShowFiles, Mode=TwoWay}">
                                 <StackPanel Orientation="Horizontal" Spacing="8">
                                     <FontIcon FontSize="14" Glyph="&#xe896;" />
-                                    <TextBlock x:Uid="Downloads_Mods_ModPage_H1" Text="Files" />
+                                    <TextBlock x:Uid="Downloads_ResourcePage_H1" Text="Files" />
                                 </StackPanel>
                             </controls:SegmentedItem>
                             <controls:SegmentedItem IsSelected="{x:Bind VM.ShowDescription, Mode=TwoWay}">
                                 <StackPanel Orientation="Horizontal" Spacing="8">
                                     <FontIcon FontSize="14" Glyph="&#xe8e4;" />
-                                    <TextBlock x:Uid="Downloads_Mods_ModPage_H2" Text="Description" />
+                                    <TextBlock x:Uid="Downloads_ResourcePage_H2" Text="Description" />
                                 </StackPanel>
                             </controls:SegmentedItem>
                             <controls:SegmentedItem
@@ -403,7 +348,7 @@
                                 IsSelected="{x:Bind VM.ShowScreenShots, Mode=TwoWay}">
                                 <StackPanel Orientation="Horizontal" Spacing="8">
                                     <FontIcon FontSize="14" Glyph="&#xe8b9;" />
-                                    <TextBlock x:Uid="Downloads_Mods_ModPage_H3" Text="ScreenShots" />
+                                    <TextBlock x:Uid="Downloads_ResourcePage_H3" Text="ScreenShots" />
                                 </StackPanel>
                             </controls:SegmentedItem>
                         </controls:Segmented>
@@ -441,7 +386,7 @@
                                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                             Glyph="&#xE71C;" />
                                         <TextBlock
-                                            x:Uid="Downloads_Mods_ModPage_Text1"
+                                            x:Uid="Downloads_ResourcePage_Text1"
                                             VerticalAlignment="Center"
                                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                             Text="Version" />
@@ -454,7 +399,7 @@
                                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                             Glyph="&#xE71C;" />
                                         <TextBlock
-                                            x:Uid="Downloads_Mods_ModPage_Text2"
+                                            x:Uid="Downloads_ResourcePage_Text2"
                                             VerticalAlignment="Center"
                                             Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                             Text="Mod Loader" />

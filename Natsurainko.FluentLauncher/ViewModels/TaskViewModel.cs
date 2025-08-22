@@ -197,9 +197,9 @@ internal abstract partial class TaskViewModel : ObservableObject
     protected virtual void NotifyException(INotificationService notificationService) { }
 }
 
-#region Download Mod Task
+#region Download Resource Task
 
-internal partial class DownloadModTaskViewModel : TaskViewModel
+internal partial class DownloadResourceTaskViewModel : TaskViewModel
 {
     private readonly DownloadService _downloadService;
 
@@ -208,23 +208,23 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
 
     private DownloadTask? DownloadTask { get; set; }
 
-    protected override ILogger Logger { get; } = App.GetService<ILogger<DownloadModTaskViewModel>>();
+    protected override ILogger Logger { get; } = App.GetService<ILogger<DownloadResourceTaskViewModel>>();
 
-    public DownloadModTaskViewModel(DownloadService downloadService, CurseForgeFile curseForgeFile, string folder)
+    public DownloadResourceTaskViewModel(DownloadService downloadService, CurseForgeFile curseForgeFile, string folder)
     {
         _downloadService = downloadService;
         _filePath = Path.Combine(folder, curseForgeFile.FileName);
         _getUrlTask = Task.Run(() => App.GetService<CurseForgeClient>().GetFileUrlAsync(curseForgeFile));
     }
 
-    public DownloadModTaskViewModel(DownloadService downloadService, ModrinthFile modrinthFile, string folder)
+    public DownloadResourceTaskViewModel(DownloadService downloadService, ModrinthFile modrinthFile, string folder)
     {
         _downloadService = downloadService;
         _filePath = Path.Combine(folder, modrinthFile.FileName);
         _getUrlTask = Task.FromResult(modrinthFile.Url);
     }
 
-    public DownloadModTaskViewModel(DownloadService downloadService, string url, string filePath)
+    public DownloadResourceTaskViewModel(DownloadService downloadService, string url, string filePath)
     {
         _downloadService = downloadService;
 

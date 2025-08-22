@@ -133,16 +133,17 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         OnPropertyChanged(nameof(CanGoBack));
     }
 
-    private void NavigationViewControl_ItemInvoked(NavigationView _, NavigationViewItemInvokedEventArgs args)
+    private void NavigationViewControl_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
         if (isUpdatingNavigationItemSelection)
             return;
 
-        NavigationViewItem navigationViewItem = ((NavigationViewItem)args.InvokedItemContainer);
+        if (args.SelectedItemContainer is not NavigationViewItem navigationViewItem)
+            return;
 
         if (!navigationViewItem.SelectsOnInvoked) return;
 
-        string pageTag = navigationViewItem.Tag.ToString() 
+        string pageTag = navigationViewItem.Tag.ToString()
             ?? throw new ArgumentNullException("The invoked item's tag is null.");
 
         VM.NavigationService.NavigateTo(pageTag);
@@ -171,7 +172,12 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
 
                 if (tag is not null && pageProvider.RegisteredPages[tag].PageType == e.SourcePageType)
                 {
+                    if (navigationViewItem.Parent is NavigationViewItem parentItem)
+                        parentItem.IsExpanded = true;
+
                     NavigationViewControl.SelectedItem = navigationViewItem;
+                    navigationViewItem.IsSelected = true;
+
                     break;
                 }
 

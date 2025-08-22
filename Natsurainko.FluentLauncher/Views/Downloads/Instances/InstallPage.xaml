@@ -13,62 +13,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resources="using:Nrk.FluentCore.Resources"
     mc:Ignorable="d">
-    <Page.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.ThemeDictionaries>
-                <ResourceDictionary x:Key="Default">
-                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="CardBackgroundFillColorDefaultBrush" />
-                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="ControlFillColorSecondaryBrush" />
-                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
-                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="ControlFillColorDisabledBrush" />
-
-                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="TextFillColorPrimaryBrush" />
-                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
-                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
-                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
-
-                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
-                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="ControlElevationBorderBrush" />
-                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
-                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
-                </ResourceDictionary>
-
-                <ResourceDictionary x:Key="Light">
-                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="CardBackgroundFillColorDefaultBrush" />
-                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="ControlFillColorSecondaryBrush" />
-                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
-                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="ControlFillColorDisabledBrush" />
-
-                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="TextFillColorPrimaryBrush" />
-                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
-                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
-                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
-
-                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
-                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="ControlElevationBorderBrush" />
-                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
-                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
-                </ResourceDictionary>
-
-                <ResourceDictionary x:Key="HighContrast">
-                    <StaticResource x:Key="SettingsCardBackground" ResourceKey="SystemColorButtonFaceColorBrush" />
-                    <StaticResource x:Key="SettingsCardBackgroundPointerOver" ResourceKey="SystemColorHighlightTextColorBrush" />
-                    <StaticResource x:Key="SettingsCardBackgroundPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
-                    <StaticResource x:Key="SettingsCardBackgroundDisabled" ResourceKey="SystemControlBackgroundBaseLowBrush" />
-
-                    <StaticResource x:Key="SettingsCardForeground" ResourceKey="SystemColorButtonTextColorBrush" />
-                    <StaticResource x:Key="SettingsCardForegroundPointerOver" ResourceKey="SystemColorHighlightColorBrush" />
-                    <StaticResource x:Key="SettingsCardForegroundPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
-                    <StaticResource x:Key="SettingsCardForegroundDisabled" ResourceKey="SystemControlDisabledBaseMediumLowBrush" />
-
-                    <StaticResource x:Key="SettingsCardBorderBrush" ResourceKey="SystemColorButtonTextColorBrush" />
-                    <StaticResource x:Key="SettingsCardBorderBrushPointerOver" ResourceKey="SystemColorHighlightColorBrush" />
-                    <StaticResource x:Key="SettingsCardBorderBrushPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
-                    <StaticResource x:Key="SettingsCardBorderBrushDisabled" ResourceKey="SystemControlDisabledTransparentBrush" />
-                </ResourceDictionary>
-            </ResourceDictionary.ThemeDictionaries>
-        </ResourceDictionary>
-    </Page.Resources>
 
     <ScrollViewer>
         <Border Name="border" Margin="{ThemeResource PageMarginWithBorder}">

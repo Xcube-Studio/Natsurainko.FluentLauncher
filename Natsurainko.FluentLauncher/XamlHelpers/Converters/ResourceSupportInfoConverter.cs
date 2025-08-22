@@ -1,58 +1,33 @@
-using FluentLauncher.Infra.UI.Navigation;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.Windows.Globalization;
-using Natsurainko.FluentLauncher.Utils;
-using Natsurainko.FluentLauncher.ViewModels.Downloads.Mods;
+﻿using Microsoft.UI.Xaml.Data;
 using Nrk.FluentCore.GameManagement.Installer;
 using Nrk.FluentCore.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Natsurainko.FluentLauncher.Views.Downloads.Mods;
+namespace Natsurainko.FluentLauncher.XamlHelpers.Converters;
 
-public sealed partial class DefaultPage : Page, IBreadcrumbBarAware
+internal partial class ResourceSupportInfoConverter : IValueConverter
 {
-    string IBreadcrumbBarAware.Route => "ModsDownload";
-
-    DefaultViewModel VM => (DefaultViewModel)DataContext;
-
-    public DefaultPage()
+    public object? Convert(object value, Type targetType, object parameter, string language)
     {
-        this.InitializeComponent();
-    }
-
-    internal static IEnumerable<string> FilterCategories(IEnumerable<string> categories)
-    {
-        string[] filteredTags = [.. Enum.GetNames<ModLoaderType>().Select(x => x.ToLower())];
-
-        foreach (var category in categories)
+        if (value is ModrinthResource modrinthResource)
         {
-            if (filteredTags.Contains(category))
-                continue;
+            List<string> supportLoaders = [];
 
-            yield return category;
-        }
-    }
-
-    internal static string GetSupportInfo(object mod)
-    {
-        List<string> supportLoaders = [];
-
-        if (mod is ModrinthResource modrinthResource)
-        {
             foreach (var loaderType in Enum.GetValues<ModLoaderType>())
             {
-                string loaderName =  loaderType.ToString();
+                string loaderName = loaderType.ToString();
                 if (modrinthResource.Categories.Contains(loaderName.ToLower()))
                     supportLoaders.Add(loaderName);
             }
 
             return string.Join(" | ", string.Join(", ", supportLoaders), GetVersionInfo(modrinthResource.Versions));
         }
-        else if (mod is CurseForgeResource curseForgeResource)
+        else if (value is CurseForgeResource curseForgeResource)
         {
             List<string> versions = [];
+            List<string> supportLoaders = [];
 
             foreach (var forgeFile in curseForgeResource.Files)
             {
@@ -68,29 +43,15 @@ public sealed partial class DefaultPage : Page, IBreadcrumbBarAware
             return string.Join(" | ", string.Join(", ", supportLoaders), GetVersionInfo(versions));
         }
 
-        return string.Empty;
+        return null;
     }
 
-    internal static string GetLocalizedCategories(string category)
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
     {
-        if (ApplicationLanguages.PrimaryLanguageOverride != "zh-Hans" && ApplicationLanguages.PrimaryLanguageOverride != "zh-Hant")
-            return string.Concat(category[0].ToString().ToUpper(), category.AsSpan(1));
-
-        try
-        {
-            return LocalizedStrings.GetString($"ModCategories__{category
-                .Replace(",", string.Empty)
-                .Replace("\'", string.Empty)
-                .Replace(" ", "_")
-                .Replace("&", string.Empty)
-                .Replace('-', '_')}");
-        }
-        catch { }
-
-        return category;
+        throw new NotImplementedException();
     }
 
-    internal static string GetVersionInfo(IEnumerable<string> versions)
+    private static string GetVersionInfo(IEnumerable<string> versions)
     {
         List<Version> filteredVersions = [.. versions.Where(v => !v.Any(char.IsLetter)).Select(Version.Parse)];
         filteredVersions.Sort();

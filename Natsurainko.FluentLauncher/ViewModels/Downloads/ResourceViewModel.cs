@@ -10,7 +10,7 @@ using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils.Extensions;
-using Natsurainko.FluentLauncher.Views.Downloads.Mods;
+using Natsurainko.FluentLauncher.Views.Downloads;
 using Nrk.FluentCore.Resources;
 using System;
 using System.Collections.Generic;
@@ -20,9 +20,9 @@ using System.Net.Http;
 using System.Text.Json.Nodes;
 
 #nullable disable
-namespace Natsurainko.FluentLauncher.ViewModels.Downloads.Mods;
+namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 
-internal partial class ModViewModel(
+internal partial class ResourceViewModel(
     GameService gameService,
     DownloadService downloadService,
     INotificationService notificationService,
@@ -31,6 +31,7 @@ internal partial class ModViewModel(
     ModrinthClient modrinthClient,
     HttpClient httpClient) : PageVM, INavigationAware
 {
+    private string _pageKey;
     private object _modResource = null!;
 
     #region Basic Properties
@@ -48,7 +49,7 @@ internal partial class ModViewModel(
     public partial string WebLink { get; set; }
 
     [ObservableProperty]
-    public partial ModAuthor[] Authors { get; set; }
+    public partial ResourceAuthor[] Authors { get; set; }
 
     [ObservableProperty]
     public partial string[] Categories { get; set; }
@@ -145,10 +146,12 @@ internal partial class ModViewModel(
             TeachingTipOpen = false;
     }
 
+    void INavigationAware.SetNavigationKey(string key) => _pageKey = key;
+
     void INavigationAware.OnNavigatedTo(object parameter)
     {
-        searchProviderService.OccupyQueryReceiver(this, query => 
-            GlobalNavigate("ModsDownload/Navigation", query));
+        searchProviderService.OccupyQueryReceiver(this, query =>
+            GlobalNavigate(_pageKey.Replace("Resource", "Navigation"), query));
 
         if (parameter is CurseForgeResource curseForgeResource)
         {
@@ -156,7 +159,7 @@ internal partial class ModViewModel(
             Name = curseForgeResource.Name;
             Summary = curseForgeResource.Summary;
             WebLink = curseForgeResource.WebsiteUrl;
-            Authors = [.. curseForgeResource.Authors.Select(author => new ModAuthor(author, $"https://www.curseforge.com/members/{author}"))];
+            Authors = [.. curseForgeResource.Authors.Select(author => new ResourceAuthor(author, $"https://www.curseforge.com/members/{author}"))];
             Categories = [.. curseForgeResource.Categories];
             ScreenshotUrls = [.. curseForgeResource.ScreenshotUrls];
             Source = "CurseForge";
@@ -169,7 +172,7 @@ internal partial class ModViewModel(
             Name = modrinthResource.Name;
             Summary = modrinthResource.Summary;
             WebLink = modrinthResource.WebLink;
-            Authors = [new ModAuthor(modrinthResource.Author, $"https://modrinth.com/user/{modrinthResource.Author}")];
+            Authors = [new ResourceAuthor(modrinthResource.Author, $"https://modrinth.com/user/{modrinthResource.Author}")];
             Categories = [.. modrinthResource.Categories];
             ScreenshotUrls = [.. modrinthResource.ScreenshotUrls];
             Source = "Modrinth";
@@ -354,7 +357,7 @@ internal partial class ModViewModel(
     }
 }
 
-internal static partial class ModViewModelNotifications
+internal static partial class ResourceViewModelNotifications
 {
     [Notification<InfoBar>(Title = "Notifications__TaskCreated_ModDownload", Message = "{fileName}")]
     public static partial void ModDownloadTaskCreated(this INotificationService notificationService, string fileName);

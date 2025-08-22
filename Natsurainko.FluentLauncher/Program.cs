@@ -72,8 +72,20 @@ pages.WithPage<Views.Downloads.Instances.DefaultPage, ViewModels.Downloads.Insta
 pages.WithPage<Views.Downloads.Instances.InstallPage, ViewModels.Downloads.Instances.InstallViewModel>("InstancesDownload/Install");
 
 pages.WithPage<Views.Downloads.Mods.NavigationPage, ViewModels.Downloads.Mods.NavigationViewModel>("ModsDownload/Navigation");
-pages.WithPage<Views.Downloads.Mods.DefaultPage, ViewModels.Downloads.Mods.DefaultViewModel>("ModsDownload/Default");
-pages.WithPage<Views.Downloads.Mods.ModPage, ViewModels.Downloads.Mods.ModViewModel>("ModsDownload/Mod");
+pages.WithPage<Views.Downloads.ResourceDefaultPage, ViewModels.Downloads.Mods.DefaultViewModel>("ModsDownload/Default");
+pages.WithPage<Views.Downloads.ResourcePage, ViewModels.Downloads.ResourceViewModel>("ModsDownload/Resource");
+
+pages.WithPage<Views.Downloads.Modpacks.NavigationPage, ViewModels.Downloads.Modpacks.NavigationViewModel>("ModpacksDownload/Navigation");
+pages.WithPage<Views.Downloads.ResourceDefaultPage, ViewModels.Downloads.Modpacks.DefaultViewModel>("ModpacksDownload/Default");
+pages.WithPage<Views.Downloads.ResourcePage, ViewModels.Downloads.ResourceViewModel>("ModpacksDownload/Resource");
+
+pages.WithPage<Views.Downloads.TexturePacks.NavigationPage, ViewModels.Downloads.TexturePacks.NavigationViewModel>("TexturePacksDownload/Navigation");
+pages.WithPage<Views.Downloads.ResourceDefaultPage, ViewModels.Downloads.TexturePacks.DefaultViewModel>("TexturePacksDownload/Default");
+pages.WithPage<Views.Downloads.ResourcePage, ViewModels.Downloads.ResourceViewModel>("TexturePacksDownload/Resource");
+
+pages.WithPage<Views.Downloads.Shaders.NavigationPage, ViewModels.Downloads.Shaders.NavigationViewModel>("ShadersDownload/Navigation");
+pages.WithPage<Views.Downloads.ResourceDefaultPage, ViewModels.Downloads.Shaders.DefaultViewModel>("ShadersDownload/Default");
+pages.WithPage<Views.Downloads.ResourcePage, ViewModels.Downloads.ResourceViewModel>("ShadersDownload/Resource");
 
 // Tasks page
 pages.WithPage<Views.Tasks.LaunchPage, ViewModels.Tasks.LaunchViewModel>("Tasks/Launch");

@@ -4,7 +4,7 @@
 
         <!-- Preserves all types who's fully qualified type name matches the regular expression -->
 		<type fullname="Natsurainko.FluentLauncher.ViewModels*"/>
-		<type fullname="Natsurainko.FluentLauncher.XamlHelpers*"/>
+		<type fullname="Natsurainko.FluentLauncher.Xaml*"/>
 
         <!-- Preserve all types within the specified namespace -->
 		<!-- namespace fullname="Natsurainko.FluentLauncher.ViewModels" -->

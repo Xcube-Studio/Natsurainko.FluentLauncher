@@ -7,7 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Xaml"
     Title="Import Modpack"
     IsPrimaryButtonEnabled="{x:Bind VM.CanInstall, Mode=OneWay}"
     PrimaryButtonCommand="{x:Bind VM.InstallCommand}"

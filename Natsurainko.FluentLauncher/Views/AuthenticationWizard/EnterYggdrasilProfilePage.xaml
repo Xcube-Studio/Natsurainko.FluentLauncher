@@ -2,7 +2,7 @@
     x:Class="Natsurainko.FluentLauncher.Views.AuthenticationWizard.EnterYggdrasilProfilePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:actions="using:Natsurainko.FluentLauncher.XamlHelpers.Actions"
+    xmlns:actions="using:Natsurainko.FluentLauncher.Xaml.Actions"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"

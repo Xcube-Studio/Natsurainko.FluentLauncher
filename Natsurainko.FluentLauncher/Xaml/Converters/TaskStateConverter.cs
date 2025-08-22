@@ -1,0 +1,23 @@
+﻿using Microsoft.UI.Xaml.Data;
+using Natsurainko.FluentLauncher.Models;
+using Natsurainko.FluentLauncher.Utils;
+using System;
+
+#nullable disable
+namespace Natsurainko.FluentLauncher.Xaml.Converters;
+
+internal partial class TaskStateConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        if (value is TaskState state)
+            return LocalizedStrings.GetString($"Converters__TaskState_{state}");
+
+        return null;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        throw new NotImplementedException();
+    }
+}

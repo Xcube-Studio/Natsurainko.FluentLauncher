@@ -9,7 +9,7 @@
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Downloads"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resources="using:Nrk.FluentCore.Resources"
-    xmlns:selector="using:Natsurainko.FluentLauncher.XamlHelpers.Selectors"
+    xmlns:selector="using:Natsurainko.FluentLauncher.Xaml.Selectors"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:Key="CurseForgeFileTemplate" x:DataType="resources:CurseForgeFile">

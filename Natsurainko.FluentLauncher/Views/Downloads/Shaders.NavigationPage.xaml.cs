@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.ViewModels.Downloads.Shaders;
-using Natsurainko.FluentLauncher.XamlHelpers.Converters;
+using Natsurainko.FluentLauncher.Xaml.Converters;
 using Nrk.FluentCore.Resources;
 
 namespace Natsurainko.FluentLauncher.Views.Downloads.Shaders;

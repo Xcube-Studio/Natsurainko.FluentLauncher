@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.ViewModels.Downloads.Instances;
-using Natsurainko.FluentLauncher.XamlHelpers.Converters;
+using Natsurainko.FluentLauncher.Xaml.Converters;
 using Nrk.FluentCore.GameManagement.Installer;
 
 namespace Natsurainko.FluentLauncher.Views.Downloads.Instances;

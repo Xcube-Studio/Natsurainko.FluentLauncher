@@ -239,52 +239,65 @@
 
                     <StackPanel Spacing="4">
                         <StackPanel Orientation="Horizontal" Spacing="8">
-                            <SplitButton Width="120" Command="{x:Bind VM.DownloadCommand}">
-                                <SplitButton.CommandParameter>
-                                    <x:Int32>0</x:Int32>
-                                </SplitButton.CommandParameter>
-                                <TextBlock x:Uid="Buttons_Download" Text="Download" />
-                                <SplitButton.Flyout>
-                                    <MenuFlyout>
-                                        <MenuFlyoutItem
-                                            x:Uid="Downloads_ResourcePage_M1"
-                                            Command="{x:Bind VM.DownloadCommand}"
-                                            Text="Download to specified folder">
-                                            <MenuFlyoutItem.CommandParameter>
-                                                <x:Int32>0</x:Int32>
-                                            </MenuFlyoutItem.CommandParameter>
-                                            <MenuFlyoutItem.Icon>
-                                                <FontIcon Glyph="&#xe838;" />
-                                            </MenuFlyoutItem.Icon>
-                                        </MenuFlyoutItem>
-                                        <MenuFlyoutSeparator />
-                                        <MenuFlyoutItem
-                                            x:Uid="Downloads_ResourcePage_M2"
-                                            Command="{x:Bind VM.DownloadCommand}"
-                                            IsEnabled="{x:Bind VM.HasMinecraftDataFolder}"
-                                            Text="Download to public mods folder (.minecraft/mods)">
-                                            <MenuFlyoutItem.CommandParameter>
-                                                <x:Int32>1</x:Int32>
-                                            </MenuFlyoutItem.CommandParameter>
-                                            <MenuFlyoutItem.Icon>
-                                                <FontIcon Glyph="&#xe838;" />
-                                            </MenuFlyoutItem.Icon>
-                                        </MenuFlyoutItem>
-                                        <MenuFlyoutItem
-                                            x:Uid="Downloads_ResourcePage_M3"
-                                            Command="{x:Bind VM.DownloadCommand}"
-                                            IsEnabled="{x:Bind VM.HasCurrentInstance}"
-                                            Text="Download to the mods folder of the current instance">
-                                            <MenuFlyoutItem.CommandParameter>
-                                                <x:Int32>2</x:Int32>
-                                            </MenuFlyoutItem.CommandParameter>
-                                            <MenuFlyoutItem.Icon>
-                                                <FontIcon Glyph="&#xe838;" />
-                                            </MenuFlyoutItem.Icon>
-                                        </MenuFlyoutItem>
-                                    </MenuFlyout>
-                                </SplitButton.Flyout>
-                            </SplitButton>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button
+                                    x:Name="InstallButton"
+                                    x:Uid="Downloads_ResourcePage_InstallButton"
+                                    x:Load="{x:Bind VM.IsModpack, Mode=OneWay}"
+                                    Command="{x:Bind VM.InstallCommand}"
+                                    Content="Install"
+                                    IsEnabled="{x:Bind VM.HasMinecraftDataFolder, Mode=OneWay}"
+                                    Style="{ThemeResource AccentButtonStyle}" />
+                                <SplitButton Width="120" Command="{x:Bind VM.DownloadCommand}">
+                                    <SplitButton.CommandParameter>
+                                        <x:Int32>0</x:Int32>
+                                    </SplitButton.CommandParameter>
+                                    <TextBlock x:Uid="Buttons_Download" Text="Download" />
+                                    <SplitButton.Flyout>
+                                        <MenuFlyout>
+                                            <MenuFlyoutItem
+                                                x:Uid="Downloads_ResourcePage_M1"
+                                                Command="{x:Bind VM.DownloadCommand}"
+                                                Text="Download to specified folder">
+                                                <MenuFlyoutItem.CommandParameter>
+                                                    <x:Int32>0</x:Int32>
+                                                </MenuFlyoutItem.CommandParameter>
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xe838;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                            <MenuFlyoutSeparator x:Name="MenuFlyoutSeparator" x:Load="{x:Bind VM.ShowPreferredFolders, Mode=OneWay}" />
+                                            <MenuFlyoutItem
+                                                x:Name="MenuFlyoutItem_1"
+                                                x:Load="{x:Bind VM.ShowPreferredFolders, Mode=OneWay}"
+                                                Command="{x:Bind VM.DownloadCommand}"
+                                                IsEnabled="{x:Bind VM.HasMinecraftDataFolder, Mode=OneWay}"
+                                                Text="{x:Bind local:ResourcePage.GetPreferredFolderOptionText(VM.PreferredFolder, 0), Mode=OneWay}">
+                                                <MenuFlyoutItem.CommandParameter>
+                                                    <x:Int32>1</x:Int32>
+                                                </MenuFlyoutItem.CommandParameter>
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xe838;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                            <MenuFlyoutItem
+                                                x:Name="MenuFlyoutItem_2"
+                                                x:Load="{x:Bind VM.ShowPreferredFolders, Mode=OneWay}"
+                                                Command="{x:Bind VM.DownloadCommand}"
+                                                IsEnabled="{x:Bind VM.HasCurrentInstance, Mode=OneWay}"
+                                                Text="{x:Bind local:ResourcePage.GetPreferredFolderOptionText(VM.PreferredFolder, 1), Mode=OneWay}">
+                                                <MenuFlyoutItem.CommandParameter>
+                                                    <x:Int32>2</x:Int32>
+                                                </MenuFlyoutItem.CommandParameter>
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xe838;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                        </MenuFlyout>
+                                    </SplitButton.Flyout>
+                                </SplitButton>
+
+                            </StackPanel>
                             <HyperlinkButton
                                 x:Uid="Downloads_ResourcePage_HyperlinkButton"
                                 Content="Web Page"

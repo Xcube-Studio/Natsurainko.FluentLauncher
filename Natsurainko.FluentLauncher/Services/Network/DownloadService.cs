@@ -2,6 +2,8 @@
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Services.Storage;
+using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels;
 using Nrk.FluentCore.Experimental.GameManagement.Installer.Modpack;
 using Nrk.FluentCore.Experimental.GameManagement.Modpacks;
@@ -28,10 +30,10 @@ internal partial class DownloadService
 {
     private MultipartDownloader _downloader;
     private readonly SettingsService _settingsService;
-    private readonly HttpClient _httpClient;
+    private readonly LocalStorageService _localStorageService;
 
     private readonly CurseForgeClient _curseForgeClient;
-    private readonly ModrinthClient _modrinthClient;
+    private readonly HttpClient _httpClient;
 
     public ObservableCollection<TaskViewModel> DownloadTasks { get; } = [];
 
@@ -43,13 +45,13 @@ internal partial class DownloadService
 
     public DownloadService(
         SettingsService settingsService,
+        LocalStorageService localStorageService,
         CurseForgeClient curseForgeClient,
-        ModrinthClient modrinthClient,
         HttpClient httpClient)
     {
         _settingsService = settingsService;
+        _localStorageService = localStorageService;
         _curseForgeClient = curseForgeClient;
-        _modrinthClient = modrinthClient;
         _httpClient = httpClient;
 
         SetDownloader();
@@ -58,21 +60,25 @@ internal partial class DownloadService
         _settingsService.CurrentDownloadSourceChanged += (_, _) => SetDownloader();
     }
 
-    public async Task DownloadModFileAsync(CurseForgeFile curseForgeFile, string folder)
+    public async Task<DownloadResourceTaskViewModel> DownloadResourceFileAsync(CurseForgeFile curseForgeFile, string folder)
     {
         DownloadResourceTaskViewModel downloadResourceTaskViewModel = new(this, curseForgeFile, folder);
         await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadResourceTaskViewModel));
         await downloadResourceTaskViewModel.EnqueueAsync();
+
+        return downloadResourceTaskViewModel;
     }
 
-    public async Task DownloadModFileAsync(ModrinthFile modrinthFile, string folder)
+    public async Task<DownloadResourceTaskViewModel> DownloadResourceFileAsync(ModrinthFile modrinthFile, string folder)
     {
         DownloadResourceTaskViewModel downloadResourceTaskViewModel = new(this, modrinthFile, folder);
         await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadResourceTaskViewModel));
         await downloadResourceTaskViewModel.EnqueueAsync();
+
+        return downloadResourceTaskViewModel;
     }
 
-    public async Task DownloadModFileAsync(string url, string filePath)
+    public async Task DownloadResourceFileAsync(string url, string filePath)
     {
         DownloadResourceTaskViewModel downloadResourceTaskViewModel = new(this, url, filePath);
         await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadResourceTaskViewModel));
@@ -110,7 +116,8 @@ internal partial class DownloadService
                 Progress = GetModpackInstallationViewModel<CurseForgeModpackInstallationStage>(out var createProgressReporterDelegate, out installationStagesViewModel),
                 CreateModLoderInstallerProgressReporter = createProgressReporterDelegate,
                 JavaPath = javaPath,
-                CustomizedInstanceId = modpackInstallConfig.InstanceId
+                CustomizedInstanceId = modpackInstallConfig.InstanceId,
+                DeletePackageAfterInstallation = modpackInstallConfig.DeleteModpackFileAfterInstall
             },
             ModpackType.Modrinth => new ModrinthModpackInstaller
             {
@@ -121,7 +128,8 @@ internal partial class DownloadService
                 Progress = GetModpackInstallationViewModel<ModrinthModpackInstallationStage>(out var createProgressReporterDelegate, out installationStagesViewModel),
                 CreateModLoderInstallerProgressReporter = createProgressReporterDelegate,
                 JavaPath = javaPath,
-                CustomizedInstanceId = modpackInstallConfig.InstanceId
+                CustomizedInstanceId = modpackInstallConfig.InstanceId,
+                DeletePackageAfterInstallation = modpackInstallConfig.DeleteModpackFileAfterInstall
             },
             _ => throw new NotImplementedException()
         };
@@ -136,6 +144,54 @@ internal partial class DownloadService
 
         await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, installModpackTaskViewModel));
         await installModpackTaskViewModel.EnqueueAsync();
+    }
+
+    public async Task DownloadAndInstallModpackAsync(CurseForgeFile curseForgeFile, string instanceId)
+    {
+        var directoryInfo = _localStorageService.GetDirectory("cache-downloads");
+        var task = await DownloadResourceFileAsync(curseForgeFile, directoryInfo.FullName);
+
+        task.ContinueWith(f =>
+        {
+            if (ModpackInfoParser.TryParseModpack(f, out var modpackInfo))
+            {
+                InstallModpackAsync(new ModpackInstallConfig
+                {
+                    InstanceId = instanceId,
+                    ModpackFilePath = f,
+                    ModpackInfo = modpackInfo,
+                    DeleteModpackFileAfterInstall = true
+                }).Forget();
+            }
+            else
+            {
+                // Notification
+            }
+        });
+    }
+
+    public async Task DownloadAndInstallModpackAsync(ModrinthFile modrinthFile, string instanceId)
+    {
+        var directoryInfo = _localStorageService.GetDirectory("cache-downloads");
+        var task = await DownloadResourceFileAsync(modrinthFile, directoryInfo.FullName);
+
+        task.ContinueWith(f =>
+        {
+            if (ModpackInfoParser.TryParseModpack(f, out var modpackInfo))
+            {
+                InstallModpackAsync(new ModpackInstallConfig
+                {
+                    InstanceId = instanceId,
+                    ModpackFilePath = f,
+                    ModpackInfo = modpackInfo,
+                    DeleteModpackFileAfterInstall = true
+                }).Forget();
+            }
+            else
+            {
+                // Notification
+            }
+        });
     }
 
     [MemberNotNull(nameof(_downloader))]

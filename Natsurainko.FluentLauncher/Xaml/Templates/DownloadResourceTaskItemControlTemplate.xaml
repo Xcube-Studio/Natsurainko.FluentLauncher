@@ -28,7 +28,7 @@
 
                     <StackPanel Grid.Column="2" Spacing="4">
                         <TextBlock Style="{ThemeResource BaseTextBlockStyle}">
-                            <Run x:Uid="Tasks_DownloadPage_DownloadModTitle" Text="Download Mod:" />
+                            <Run x:Uid="Tasks_DownloadPage_DownloadResourceTitle" Text="Download Resource:" />
                             <Run Text="{Binding Title, Mode=OneWay}" />
                         </TextBlock>
                         <Border Background="{ThemeResource ProgressBarBackgroundThemeBrush}" CornerRadius="1">

@@ -205,6 +205,7 @@ internal partial class DownloadResourceTaskViewModel : TaskViewModel
 
     private readonly string _filePath;
     private readonly Task<string> _getUrlTask;
+    private Action<string>? _downloadedAction;
 
     private DownloadTask? DownloadTask { get; set; }
 
@@ -277,7 +278,11 @@ internal partial class DownloadResourceTaskViewModel : TaskViewModel
             OnPropertyChanged(nameof(DownloadedBytes));
             OnPropertyChanged(nameof(TotalBytes));
         });
+
+        _downloadedAction?.Invoke(_filePath);
     }
+
+    public void ContinueWith(Action<string> action) => _downloadedAction = action;
 
     [RelayCommand]
     void OpenFolder() => ExplorerHelper.ShowAndSelectFile(_filePath);
@@ -296,7 +301,7 @@ internal partial class DownloadResourceTaskViewModel : TaskViewModel
     {
         if (DownloadTask == null) return;
 
-        _downloadService.DownloadModFileAsync(DownloadTask.Request.Url, _filePath).Forget();
+        _downloadService.DownloadResourceFileAsync(DownloadTask.Request.Url, _filePath).Forget();
         Remove();
     }
 
@@ -305,8 +310,7 @@ internal partial class DownloadResourceTaskViewModel : TaskViewModel
 
     #region Exception
 
-    public override string InfoBarTitle => LocalizedStrings.Notifications__TaskFailed_ModDownload;
-
+    public override string InfoBarTitle => LocalizedStrings.Notifications__TaskFailed_ResourceDownload;
 
     #endregion
 
@@ -485,13 +489,13 @@ internal partial class InstallInstanceTaskViewModel(
 
         if (instanceInstallConfig.SecondaryLoader?.SelectedInstallData is OptiFineInstallData installData)
         {
-            downloadService.DownloadModFileAsync(
+            downloadService.DownloadResourceFileAsync(
                 $"https://bmclapi2.bangbang93.com/optifine/{instanceInstallConfig.ManifestItem.Id}/{installData.Type}/{installData.Patch}",
                 Path.Combine(modsFolder, installData.FileName)).Forget();
         }
 
         foreach (var item in instanceInstallConfig.AdditionalMods)
-            downloadService.DownloadModFileAsync(item, modsFolder).Forget();
+            downloadService.DownloadResourceFileAsync(item, modsFolder).Forget();
 
         #endregion
     }

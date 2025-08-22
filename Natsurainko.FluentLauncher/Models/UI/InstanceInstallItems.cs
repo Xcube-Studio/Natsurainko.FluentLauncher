@@ -341,4 +341,6 @@ internal class ModpackInstallConfig
     public required string InstanceId { get; set; }
 
     public required ModpackInfo ModpackInfo { get; set; }
+
+    public bool DeleteModpackFileAfterInstall { get; set; } = false;
 }

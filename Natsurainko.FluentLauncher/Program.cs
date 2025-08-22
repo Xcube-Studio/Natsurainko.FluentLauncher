@@ -116,6 +116,7 @@ dialogs.WithDialog<Views.Dialogs.SelectColorDialog, ViewModels.Dialogs.SelectCol
 dialogs.WithDialog<Views.Dialogs.SelectImageThemeColorDialog, ViewModels.Dialogs.SelectImageThemeColorDialogViewModel>("SelectImageThemeColorDialog");
 dialogs.WithDialog<Views.Dialogs.CreateLaunchScriptDialog, ViewModels.Dialogs.CreateLaunchScriptDialogViewModel>("CreateLaunchScriptDialog");
 dialogs.WithDialog<Views.Dialogs.ImportModpackDialog, ViewModels.Dialogs.ImportModpackDialogViewModel>("ImportModpackDialog");
+dialogs.WithDialog<Views.Dialogs.InputInstanceIdDialog, ViewModels.Dialogs.InputInstanceIdDialogViewModel>("InputInstanceIdDialog");
 
 #if FLUENT_LAUNCHER_PREVIEW_CHANNEL
 dialogs.WithDialog<Views.Dialogs.UpdateDialog, ViewModels.Dialogs.UpdateDialogViewModel>("UpdateDialog");

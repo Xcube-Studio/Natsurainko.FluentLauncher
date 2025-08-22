@@ -3,6 +3,7 @@ using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.Downloads;
 using System;
 using System.Threading.Tasks;
@@ -53,5 +54,17 @@ public sealed partial class ResourcePage : Page, IBreadcrumbBarAware
 
         if (double.TryParse(heightString, out double height))
             webView2.MinHeight = height + 30;
+    }
+
+    internal static string GetPreferredFolderOptionText(string folder, int index)
+    {
+        if (folder == null) return string.Empty;
+
+        return index switch
+        {
+            0 => LocalizedStrings.Downloads_ResourcePage__M2.Replace("${folder}", folder),
+            1 => LocalizedStrings.Downloads_ResourcePage__M3.Replace("${folder}", folder),
+            _ => throw new NotImplementedException()
+        };
     }
 }

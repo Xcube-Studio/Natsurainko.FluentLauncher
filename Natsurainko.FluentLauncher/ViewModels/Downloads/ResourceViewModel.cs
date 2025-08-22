@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
+using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Navigation;
 using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI.Xaml.Controls;
@@ -9,8 +10,10 @@ using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI;
+using Natsurainko.FluentLauncher.Services.UI.Notification;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.Views.Downloads;
+using Natsurainko.FluentLauncher.Views.Instances;
 using Nrk.FluentCore.Resources;
 using System;
 using System.Collections.Generic;
@@ -18,6 +21,8 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json.Nodes;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
@@ -26,6 +31,7 @@ internal partial class ResourceViewModel(
     GameService gameService,
     DownloadService downloadService,
     INotificationService notificationService,
+    IDialogActivationService<ContentDialogResult> dialogActivationService,
     SearchProviderService searchProviderService,
     CurseForgeClient curseForgeClient,
     ModrinthClient modrinthClient,
@@ -81,6 +87,13 @@ internal partial class ResourceViewModel(
     [ObservableProperty]
     public partial bool TeachingTipOpen { get; set; } = false;
 
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShowPreferredFolders))]
+    public partial string PreferredFolder { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsModpack { get; set; }
+
     #region Files
 
     [ObservableProperty]
@@ -128,6 +141,8 @@ internal partial class ResourceViewModel(
 
     #endregion
 
+    public bool ShowPreferredFolders => PreferredFolder != null;
+
     public bool HasMinecraftDataFolder => gameService.ActiveMinecraftFolder != null;
 
     public bool HasCurrentInstance => gameService.ActiveGame != null;
@@ -164,6 +179,16 @@ internal partial class ResourceViewModel(
             ScreenshotUrls = [.. curseForgeResource.ScreenshotUrls];
             Source = "CurseForge";
 
+            PreferredFolder = (CurseForgeResourceType)curseForgeResource.ClassId switch
+            {
+                CurseForgeResourceType.McMod => "mods",
+                CurseForgeResourceType.TexturePack => "resourcepacks",
+                CurseForgeResourceType.Shader => "shaderpacks",
+                _ => null
+            };
+
+            IsModpack = (CurseForgeResourceType)curseForgeResource.ClassId == CurseForgeResourceType.ModPack;
+
             _modResource = curseForgeResource;
         }
         else if (parameter is ModrinthResource modrinthResource)
@@ -176,6 +201,16 @@ internal partial class ResourceViewModel(
             Categories = [.. modrinthResource.Categories];
             ScreenshotUrls = [.. modrinthResource.ScreenshotUrls];
             Source = "Modrinth";
+
+            PreferredFolder = modrinthResource.ProjectType switch
+            {
+                "mod" => "mods",
+                "resourcepack" => "resourcepacks",
+                "shader" => "shaderpacks",
+                _ => null
+            };
+
+            IsModpack = modrinthResource.ProjectType == "modpack";
 
             _modResource = modrinthResource;
         }
@@ -204,8 +239,8 @@ internal partial class ResourceViewModel(
 
         string savePath = option switch
         {
-            1 => gameService.ActiveMinecraftFolder,
-            2 => gameService.ActiveGame.GetModsDirectory(),
+            1 => Path.Combine(gameService.ActiveMinecraftFolder, PreferredFolder),
+            2 => Path.Combine(gameService.ActiveGame.GetGameDirectory(), PreferredFolder),
             _ => string.Empty
         };
 
@@ -224,11 +259,32 @@ internal partial class ResourceViewModel(
         }
 
         if (SelectedFile is CurseForgeFile)
-            downloadService.DownloadModFileAsync((CurseForgeFile)SelectedFile, savePath).Forget();
+            downloadService.DownloadResourceFileAsync((CurseForgeFile)SelectedFile, savePath).Forget();
         else if (SelectedFile is ModrinthFile)
-            downloadService.DownloadModFileAsync((ModrinthFile)SelectedFile, savePath).Forget();
+            downloadService.DownloadResourceFileAsync((ModrinthFile)SelectedFile, savePath).Forget();
 
-        notificationService.ModDownloadTaskCreated(fileName);
+        notificationService.ResourceDownloadTaskCreated(fileName);
+    }
+
+    [RelayCommand]
+    async Task Install()
+    {
+        if (!IsSelectedFile)
+        {
+            TeachingTipOpen = true;
+            return;
+        }
+
+        (ContentDialogResult result, string instanceId) = await dialogActivationService.ShowAsync<string>(
+            "InputInstanceIdDialog", FilterNameRegex().Replace(Name, string.Empty));
+
+        if (result == ContentDialogResult.Primary)
+        {
+            if (SelectedFile is CurseForgeFile curseForgeFile)
+                downloadService.DownloadAndInstallModpackAsync(curseForgeFile, instanceId).Forget();
+            else if (SelectedFile is ModrinthFile modrinthFile)
+                downloadService.DownloadAndInstallModpackAsync(modrinthFile, instanceId).Forget();
+        }
     }
 
     async void TryGetLocalizedSummary()
@@ -355,10 +411,13 @@ internal partial class ResourceViewModel(
                 .Where(f => f.Loaders.Contains(SelectedLoader))];
         };
     }
+
+    [GeneratedRegex("[^A-Za-z0-9\\s]")]
+    private static partial Regex FilterNameRegex();
 }
 
 internal static partial class ResourceViewModelNotifications
 {
-    [Notification<InfoBar>(Title = "Notifications__TaskCreated_ModDownload", Message = "{fileName}")]
-    public static partial void ModDownloadTaskCreated(this INotificationService notificationService, string fileName);
+    [Notification<InfoBar>(Title = "Notifications__TaskCreated_ResourceDownload", Message = "{fileName}")]
+    public static partial void ResourceDownloadTaskCreated(this INotificationService notificationService, string fileName);
 }

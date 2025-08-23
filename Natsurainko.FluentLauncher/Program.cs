@@ -135,16 +135,14 @@ services.UseResourceClients();
 services.AddSingleton<SettingsService>();
 services.AddSingleton<ISettingsStorage, WinRTSettingsStorage>();
 
-// FluentCore Services
+// Services
 services.AddSingleton<GameService>();
 services.AddSingleton<LaunchService>();
 services.AddSingleton<AccountService>();
+services.AddSingleton<AuthenticationService>();
 services.AddSingleton<DownloadService>();
-
-// Services
 services.AddSingleton<LocalStorageService>();
 services.AddSingleton<MessengerService>();
-services.AddSingleton<AuthenticationService>();
 services.AddSingleton<AppearanceService>();
 services.AddSingleton<CacheInterfaceService>();
 services.AddSingleton<QuickLaunchService>();

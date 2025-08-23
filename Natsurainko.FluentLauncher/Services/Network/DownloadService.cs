@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.WinUI;
+using FluentLauncher.Infra.UI.Notification;
+using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Settings;
@@ -29,8 +31,10 @@ namespace Natsurainko.FluentLauncher.Services.Network;
 internal partial class DownloadService
 {
     private MultipartDownloader _downloader;
+
     private readonly SettingsService _settingsService;
     private readonly LocalStorageService _localStorageService;
+    private readonly INotificationService _notificationService;
 
     private readonly CurseForgeClient _curseForgeClient;
     private readonly HttpClient _httpClient;
@@ -46,11 +50,13 @@ internal partial class DownloadService
     public DownloadService(
         SettingsService settingsService,
         LocalStorageService localStorageService,
+        INotificationService notificationService,
         CurseForgeClient curseForgeClient,
         HttpClient httpClient)
     {
         _settingsService = settingsService;
         _localStorageService = localStorageService;
+        _notificationService = notificationService;
         _curseForgeClient = curseForgeClient;
         _httpClient = httpClient;
 
@@ -60,29 +66,28 @@ internal partial class DownloadService
         _settingsService.CurrentDownloadSourceChanged += (_, _) => SetDownloader();
     }
 
-    public async Task<DownloadResourceTaskViewModel> DownloadResourceFileAsync(CurseForgeFile curseForgeFile, string folder)
+    public async Task DownloadResourceFileAsync(CurseForgeFile curseForgeFile, string folder, Action<string>? continueWith = null)
     {
-        DownloadResourceTaskViewModel downloadResourceTaskViewModel = new(this, curseForgeFile, folder);
-        await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadResourceTaskViewModel));
-        await downloadResourceTaskViewModel.EnqueueAsync();
+        DownloadResourceTaskViewModel downloadResourceTask = new(this, curseForgeFile, folder, continueWith);
 
-        return downloadResourceTaskViewModel;
+        await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadResourceTask));
+        await downloadResourceTask.EnqueueAsync();
     }
 
-    public async Task<DownloadResourceTaskViewModel> DownloadResourceFileAsync(ModrinthFile modrinthFile, string folder)
+    public async Task DownloadResourceFileAsync(ModrinthFile modrinthFile, string folder, Action<string>? continueWith = null)
     {
-        DownloadResourceTaskViewModel downloadResourceTaskViewModel = new(this, modrinthFile, folder);
-        await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadResourceTaskViewModel));
-        await downloadResourceTaskViewModel.EnqueueAsync();
+        DownloadResourceTaskViewModel downloadResourceTask = new(this, modrinthFile, folder, continueWith);
 
-        return downloadResourceTaskViewModel;
+        await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadResourceTask));
+        await downloadResourceTask.EnqueueAsync();
     }
 
-    public async Task DownloadResourceFileAsync(string url, string filePath)
+    public async Task DownloadResourceFileAsync(string url, string filePath, Action<string>? continueWith = null)
     {
-        DownloadResourceTaskViewModel downloadResourceTaskViewModel = new(this, url, filePath);
-        await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadResourceTaskViewModel));
-        await downloadResourceTaskViewModel.EnqueueAsync();
+        DownloadResourceTaskViewModel downloadResourceTask = new(this, url, filePath, continueWith);
+
+        await App.DispatcherQueue.EnqueueAsync(() => DownloadTasks.Insert(0, downloadResourceTask));
+        await downloadResourceTask.EnqueueAsync();
     }
 
     public async Task InstallInstanceAsync(InstanceInstallConfig config)
@@ -149,9 +154,7 @@ internal partial class DownloadService
     public async Task DownloadAndInstallModpackAsync(CurseForgeFile curseForgeFile, string instanceId)
     {
         var directoryInfo = _localStorageService.GetDirectory("cache-downloads");
-        var task = await DownloadResourceFileAsync(curseForgeFile, directoryInfo.FullName);
-
-        task.ContinueWith(f =>
+        await DownloadResourceFileAsync(curseForgeFile, directoryInfo.FullName, f =>
         {
             if (ModpackInfoParser.TryParseModpack(f, out var modpackInfo))
             {
@@ -163,19 +166,14 @@ internal partial class DownloadService
                     DeleteModpackFileAfterInstall = true
                 }).Forget();
             }
-            else
-            {
-                // Notification
-            }
+            else _notificationService.ModpackParseFailed();
         });
     }
 
     public async Task DownloadAndInstallModpackAsync(ModrinthFile modrinthFile, string instanceId)
     {
         var directoryInfo = _localStorageService.GetDirectory("cache-downloads");
-        var task = await DownloadResourceFileAsync(modrinthFile, directoryInfo.FullName);
-
-        task.ContinueWith(f =>
+        await DownloadResourceFileAsync(modrinthFile, directoryInfo.FullName, f =>
         {
             if (ModpackInfoParser.TryParseModpack(f, out var modpackInfo))
             {
@@ -187,10 +185,7 @@ internal partial class DownloadService
                     DeleteModpackFileAfterInstall = true
                 }).Forget();
             }
-            else
-            {
-                // Notification
-            }
+            else _notificationService.ModpackParseFailed();
         });
     }
 
@@ -383,4 +378,10 @@ internal partial class DownloadService
 
         return installationViewModel;
     }
+}
+
+internal static partial class DownloadServiceNotifications
+{
+    [Notification<InfoBar>(Title = "Notifications__ModpackParseFailed", Type = NotificationType.Error)]
+    public static partial void ModpackParseFailed(this INotificationService notificationService);
 }

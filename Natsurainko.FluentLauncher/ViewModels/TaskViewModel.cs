@@ -205,32 +205,34 @@ internal partial class DownloadResourceTaskViewModel : TaskViewModel
 
     private readonly string _filePath;
     private readonly Task<string> _getUrlTask;
-    private Action<string>? _downloadedAction;
+    private readonly Action<string>? _downloadedAction;
 
     private DownloadTask? DownloadTask { get; set; }
 
     protected override ILogger Logger { get; } = App.GetService<ILogger<DownloadResourceTaskViewModel>>();
 
-    public DownloadResourceTaskViewModel(DownloadService downloadService, CurseForgeFile curseForgeFile, string folder)
+    public DownloadResourceTaskViewModel(DownloadService downloadService, CurseForgeFile curseForgeFile, string folder, Action<string>? action = null)
     {
         _downloadService = downloadService;
         _filePath = Path.Combine(folder, curseForgeFile.FileName);
         _getUrlTask = Task.Run(() => App.GetService<CurseForgeClient>().GetFileUrlAsync(curseForgeFile));
+        _downloadedAction = action;
     }
 
-    public DownloadResourceTaskViewModel(DownloadService downloadService, ModrinthFile modrinthFile, string folder)
+    public DownloadResourceTaskViewModel(DownloadService downloadService, ModrinthFile modrinthFile, string folder, Action<string>? action = null)
     {
         _downloadService = downloadService;
         _filePath = Path.Combine(folder, modrinthFile.FileName);
         _getUrlTask = Task.FromResult(modrinthFile.Url);
+        _downloadedAction = action;
     }
 
-    public DownloadResourceTaskViewModel(DownloadService downloadService, string url, string filePath)
+    public DownloadResourceTaskViewModel(DownloadService downloadService, string url, string filePath, Action<string>? action = null)
     {
         _downloadService = downloadService;
-
         _filePath = filePath;
         _getUrlTask = Task.FromResult(url);
+        _downloadedAction = action;
     }
 
     #region Basic Properties
@@ -282,8 +284,6 @@ internal partial class DownloadResourceTaskViewModel : TaskViewModel
         _downloadedAction?.Invoke(_filePath);
     }
 
-    public void ContinueWith(Action<string> action) => _downloadedAction = action;
-
     [RelayCommand]
     void OpenFolder() => ExplorerHelper.ShowAndSelectFile(_filePath);
 
@@ -299,9 +299,11 @@ internal partial class DownloadResourceTaskViewModel : TaskViewModel
     [RelayCommand]
     void Retry()
     {
-        if (DownloadTask == null) return;
+        if (DownloadTask == null) 
+            return;
 
-        _downloadService.DownloadResourceFileAsync(DownloadTask.Request.Url, _filePath).Forget();
+        _downloadService.DownloadResourceFileAsync(DownloadTask.Request.Url, _filePath, _downloadedAction).Forget();
+
         Remove();
     }
 

@@ -46,7 +46,7 @@
                         <controls:SettingsCard
                             x:Uid="Instances_ConfigPage_Card2"
                             Description="The game will run at versions\${version} directory"
-                            Header="Core independent"
+                            Header="Isolated Instance"
                             HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
                             <ToggleSwitch IsOn="{x:Bind VM.InstanceConfig.EnableIndependencyCore, Mode=TwoWay}" />
                         </controls:SettingsCard>

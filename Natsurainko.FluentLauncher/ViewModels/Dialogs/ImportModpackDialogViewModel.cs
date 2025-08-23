@@ -86,14 +86,14 @@ internal partial class ImportModpackDialogViewModel(
     [RelayCommand(CanExecute = nameof(CanInstall))]
     void Install()
     {
-        this.Messenger.Send(new GlobalNavigationMessage("Tasks/Download"));
-
         downloadService.InstallModpackAsync(new()
         {
             InstanceId = InstanceId,
             ModpackFilePath = ModpackFilePath!,
             ModpackInfo = ModpackInfo!
         }).Forget();
+
+        this.Messenger.Send(new DownloadTaskCreatedMessage(1));
     }
 
     public void TryParseModpack(string value)

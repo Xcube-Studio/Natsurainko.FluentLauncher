@@ -1,19 +1,18 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Navigation;
-using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
 using Microsoft.Windows.Globalization;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI;
-using Natsurainko.FluentLauncher.Services.UI.Notification;
+using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.Views.Downloads;
-using Natsurainko.FluentLauncher.Views.Instances;
 using Nrk.FluentCore.Resources;
 using System;
 using System.Collections.Generic;
@@ -30,7 +29,6 @@ namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 internal partial class ResourceViewModel(
     GameService gameService,
     DownloadService downloadService,
-    INotificationService notificationService,
     IDialogActivationService<ContentDialogResult> dialogActivationService,
     SearchProviderService searchProviderService,
     CurseForgeClient curseForgeClient,
@@ -263,7 +261,7 @@ internal partial class ResourceViewModel(
         else if (SelectedFile is ModrinthFile)
             downloadService.DownloadResourceFileAsync((ModrinthFile)SelectedFile, savePath).Forget();
 
-        notificationService.ResourceDownloadTaskCreated(fileName);
+        this.Messenger.Send(new DownloadTaskCreatedMessage(0));
     }
 
     [RelayCommand]
@@ -284,6 +282,8 @@ internal partial class ResourceViewModel(
                 downloadService.DownloadAndInstallModpackAsync(curseForgeFile, instanceId).Forget();
             else if (SelectedFile is ModrinthFile modrinthFile)
                 downloadService.DownloadAndInstallModpackAsync(modrinthFile, instanceId).Forget();
+
+            this.Messenger.Send(new DownloadTaskCreatedMessage(1));
         }
     }
 
@@ -414,10 +414,4 @@ internal partial class ResourceViewModel(
 
     [GeneratedRegex("[^A-Za-z0-9\\s]")]
     private static partial Regex FilterNameRegex();
-}
-
-internal static partial class ResourceViewModelNotifications
-{
-    [Notification<InfoBar>(Title = "Notifications__TaskCreated_ResourceDownload", Message = "{fileName}")]
-    public static partial void ResourceDownloadTaskCreated(this INotificationService notificationService, string fileName);
 }

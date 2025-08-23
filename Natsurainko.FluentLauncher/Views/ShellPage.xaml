@@ -342,7 +342,9 @@
 
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem
+                    x:Name="LaunchTaskNavigationViewItem"
                     x:Uid="ShellPage_NV_Item_5"
+                    x:FieldModifier="public"
                     Content="Launch Tasks"
                     Icon="{xh:FontIcon Glyph=&#xE945;}"
                     Tag="Tasks/Launch">
@@ -351,7 +353,9 @@
                     </NavigationViewItem.InfoBadge>
                 </NavigationViewItem>
                 <NavigationViewItem
+                    x:Name="DownloadTaskNavigationViewItem"
                     x:Uid="ShellPage_NV_Item_6"
+                    x:FieldModifier="public"
                     Content="Download Tasks"
                     Icon="{xh:FontIcon Glyph=&#xe896;}"
                     Tag="Tasks/Download">

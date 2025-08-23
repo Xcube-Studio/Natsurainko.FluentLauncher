@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Uid="Dialogs_InputInstanceIdDialog_Dialog"
     Title="Input Instance Id"
     IsPrimaryButtonEnabled="{x:Bind VM.InstanceIdValidity, Mode=OneWay}"
     PrimaryButtonStyle="{ThemeResource AccentButtonStyle}"
@@ -15,9 +16,13 @@
     mc:Ignorable="d">
 
     <StackPanel MinWidth="428" Spacing="8">
-        <TextBox Header="Instance Id:" Text="{x:Bind VM.InstanceId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox
+            x:Uid="Dialogs_InputInstanceIdDialog_TextBox"
+            Header="Instance Id:"
+            Text="{x:Bind VM.InstanceId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <TextBlock
             x:Name="InvalidIdText"
+            x:Uid="Dialogs_InputInstanceIdDialog_Text"
             VerticalAlignment="Center"
             x:Load="{x:Bind VM.InstanceIdValidity, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
             Foreground="{ThemeResource SystemErrorTextColor}"

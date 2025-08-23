@@ -8,6 +8,7 @@
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xh="using:Natsurainko.FluentLauncher.Xaml"
+    x:Uid="Dialogs_ImportModpackDialog_Dialog"
     Title="Import Modpack"
     IsPrimaryButtonEnabled="{x:Bind VM.CanInstall, Mode=OneWay}"
     PrimaryButtonCommand="{x:Bind VM.InstallCommand}"
@@ -40,10 +41,12 @@
                     Glyph="&#xE8E5;" />
                 <StackPanel VerticalAlignment="Center">
                     <TextBlock
+                        x:Uid="Dialogs_ImportModpackDialog_Text1"
                         FontSize="16"
                         Style="{ThemeResource BaseTextBlockStyle}"
                         Text="Drag or click to select an modpack file" />
                     <TextBlock
+                        x:Uid="Dialogs_ImportModpackDialog_Text2"
                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                         Style="{ThemeResource CaptionTextBlockStyle}"
                         Text="Only support CurseForge and Modrinth formats" />
@@ -61,6 +64,7 @@
                 Foreground="{ThemeResource SystemErrorTextColor}"
                 Glyph="&#xE711;" />
             <TextBlock
+                x:Uid="Dialogs_ImportModpackDialog_Tex3"
                 Foreground="{ThemeResource SystemErrorTextColor}"
                 Style="{ThemeResource BaseTextBlockStyle}"
                 Text="Unsupported format, unable to parse the modpack" />
@@ -134,10 +138,14 @@
                 </controls:SettingsCard.Description>
             </controls:SettingsCard>
 
-            <StackPanel>
-                <TextBox Header="Instance Id:" Text="{x:Bind VM.InstanceId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <StackPanel Spacing="8">
+                <TextBox
+                    x:Uid="Dialogs_ImportModpackDialog_TextBox"
+                    Header="Instance Id:"
+                    Text="{x:Bind VM.InstanceId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock
                     x:Name="InvalidIdText"
+                    x:Uid="Dialogs_ImportModpackDialog_Text4"
                     VerticalAlignment="Center"
                     x:Load="{x:Bind VM.InstanceIdValidity, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
                     Foreground="{ThemeResource SystemErrorTextColor}"
@@ -146,7 +154,8 @@
             </StackPanel>
 
             <CheckBox
-                Content="Modpack installation forces version independence"
+                x:Uid="Dialogs_ImportModpackDialog_CheckBox"
+                Content="Modpack installation forces isolated instance"
                 IsChecked="True"
                 IsEnabled="False" />
         </StackPanel>

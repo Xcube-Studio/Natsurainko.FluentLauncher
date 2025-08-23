@@ -4,11 +4,9 @@ using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Services.Launch;
-using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Nrk.FluentCore.GameManagement;
 using Nrk.FluentCore.GameManagement.Instances;
-using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -21,7 +19,7 @@ internal partial class DeleteInstanceDialogViewModel(
     private MinecraftInstance _minecraftInstance = null!;
 
     [ObservableProperty]
-    public partial bool DeleteCoreSettings { get; set; } = true;
+    public partial bool DeleteInstanceSettings { get; set; } = true;
 
     public string Title => $"\"{_minecraftInstance.InstanceId}\"";
 
@@ -49,7 +47,7 @@ internal partial class DeleteInstanceDialogViewModel(
         {
             _minecraftInstance.Delete();
 
-            if (DeleteCoreSettings)
+            if (DeleteInstanceSettings)
             {
                 var file = _minecraftInstance.GetConfig().FilePath;
                 if (File.Exists(file)) File.Delete(file);

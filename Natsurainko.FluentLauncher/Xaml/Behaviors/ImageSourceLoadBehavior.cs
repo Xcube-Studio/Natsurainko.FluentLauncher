@@ -148,7 +148,7 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
 
             AssociatedObject?.SetValue(SourceProperty, bitmapImage);
         }
-        catch (Exception) 
+        catch (Exception)
         {
             AssociatedObject?.SetValue(SourceProperty, null);
         }
@@ -164,6 +164,6 @@ public class ImageSourceLoadBehavior : Behavior<FrameworkElement>
         isUnloaded = true;
 
         if (isLoading)
-            cancellationTokenSource?.Cancel(); 
+            cancellationTokenSource?.Cancel();
     }
 }

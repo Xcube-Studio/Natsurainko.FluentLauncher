@@ -1,11 +1,11 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.GameManagement;
+using Nrk.FluentCore.GameManagement.Installer;
 using Nrk.FluentCore.GameManagement.Instances;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Nrk.FluentCore.GameManagement.Installer;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.Xaml.Converters;

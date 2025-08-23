@@ -15,7 +15,7 @@ public partial class JavaIconConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is not string path || 
+        if (value is not string path ||
             !FileInfoExtensions.TryParse(path, out var fileInfo) || !fileInfo.Exists)
             return new FontIcon() { Glyph = "\ue711" };
 

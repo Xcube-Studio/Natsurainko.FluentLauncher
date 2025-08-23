@@ -58,7 +58,7 @@ internal partial class ImportModpackDialogViewModel(
             if (ModpackInfo == null)
                 return [];
 
-            List<string> tags = [ ModpackInfo.ModpackType.ToString(), ModpackInfo.McVersion ];
+            List<string> tags = [ModpackInfo.ModpackType.ToString(), ModpackInfo.McVersion];
 
             if (ModpackInfo.ModLoader != null)
                 tags.Add($"{ModpackInfo.ModLoader.Value.Type} {ModpackInfo.ModLoader.Value.Version}");
@@ -68,7 +68,7 @@ internal partial class ImportModpackDialogViewModel(
 
             return tags;
         }
-    } 
+    }
 
     [RelayCommand]
     void OpenModpack()

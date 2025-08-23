@@ -9,11 +9,10 @@ using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Services.UI.Notification;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Views;
-using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels;
 
-internal partial class ShellViewModel : PageVM<ShellPage>, INavigationAware, 
+internal partial class ShellViewModel : PageVM<ShellPage>, INavigationAware,
     IRecipient<GlobalNavigationMessage>,
     IRecipient<BackgroundTaskCountChangedMessage>,
     IRecipient<DownloadTaskCreatedMessage>
@@ -37,8 +36,8 @@ internal partial class ShellViewModel : PageVM<ShellPage>, INavigationAware,
     public float DownloadTasksInfoBadgeOpacity => RunningDownloadTasks == 0 ? 0 : 1;
 
     public ShellViewModel(
-        LaunchService launchService, 
-        DownloadService downloadService, 
+        LaunchService launchService,
+        DownloadService downloadService,
         INotificationService notificationService,
         INavigationService shellNavigationService)
     {

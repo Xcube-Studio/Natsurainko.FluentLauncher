@@ -66,7 +66,7 @@ internal static class MinecraftInstanceExtensions
             return string.IsNullOrEmpty(instanceConfig.NickName)
                 ? instance.InstanceId
                 : instanceConfig.NickName;
-        } 
+        }
         catch
         {
             return instance.InstanceId;

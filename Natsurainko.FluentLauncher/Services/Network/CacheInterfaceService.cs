@@ -19,7 +19,7 @@ using static Nrk.FluentCore.Utils.PlayerTextureHelper;
 namespace Natsurainko.FluentLauncher.Services.Network;
 
 internal class CacheInterfaceService(
-    SettingsService settingsService, 
+    SettingsService settingsService,
     LocalStorageService localStorageService,
     DownloadService downloadService,
     HttpClient httpClient)

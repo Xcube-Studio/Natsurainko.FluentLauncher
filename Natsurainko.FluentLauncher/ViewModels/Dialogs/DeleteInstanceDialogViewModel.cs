@@ -41,7 +41,7 @@ internal partial class DeleteInstanceDialogViewModel(
             return false;
         }
 
-        DirectoryInfo directory = new (Path.Combine(_minecraftInstance.MinecraftFolderPath, "versions", _minecraftInstance.InstanceId));
+        DirectoryInfo directory = new(Path.Combine(_minecraftInstance.MinecraftFolderPath, "versions", _minecraftInstance.InstanceId));
 
         if (!ExistsOccupiedFile(directory))
         {

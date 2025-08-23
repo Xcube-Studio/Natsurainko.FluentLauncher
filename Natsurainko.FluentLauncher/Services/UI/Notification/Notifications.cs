@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace Natsurainko.FluentLauncher.Services.UI.Notification;
 
-internal class DefaultNotification : INotification, 
+internal class DefaultNotification : INotification,
     INotification<InfoBar>,
     INotification<TeachingTip>,
     INotification<AppNotification>
@@ -154,7 +154,7 @@ internal class ExceptionNotification : ActionNotification
         this.GetActionButton = () =>
         {
             Button copyButton = new();
-            copyButton.Click += (_,_) => ClipboardHepler.SetText(string.Join("\r\n", [Title, Message, Exception?.ToString()]));
+            copyButton.Click += (_, _) => ClipboardHepler.SetText(string.Join("\r\n", [Title, Message, Exception?.ToString()]));
             copyButton.Content = LocalizedStrings.Buttons_CopyException_Text;
 
             return copyButton;

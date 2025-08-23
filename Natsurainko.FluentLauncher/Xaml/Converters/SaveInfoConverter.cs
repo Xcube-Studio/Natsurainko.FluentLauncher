@@ -13,7 +13,7 @@ public partial class SaveInfoConverter : IValueConverter
         if (value is not SaveInfo saveInfo)
             return null;
 
-        List<string> tags = [ LocalizedStrings.GetString($"Converters__SaveGameType_{saveInfo.GameType}") ];
+        List<string> tags = [LocalizedStrings.GetString($"Converters__SaveGameType_{saveInfo.GameType}")];
 
         if (saveInfo.AllowCommands)
             tags.Add(LocalizedStrings.Converters__SaveCommands);

@@ -14,7 +14,7 @@ public sealed partial class DefaultPage : Page, IBreadcrumbBarAware
 
     public DefaultPage()
     {
-        this.InitializeComponent(); 
+        this.InitializeComponent();
     }
 
     internal static string FormatDate(string date) => DateTime.Parse(date).ToString(CultureInfo.CurrentCulture.DateTimeFormat);

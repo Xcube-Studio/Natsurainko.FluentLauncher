@@ -1,8 +1,5 @@
 using Microsoft.UI.Xaml.Controls;
-using Natsurainko.FluentLauncher.Utils.Extensions;
-using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.ViewModels.OOBE;
-using System.Collections.Generic;
 
 namespace Natsurainko.FluentLauncher.Views.OOBE;
 

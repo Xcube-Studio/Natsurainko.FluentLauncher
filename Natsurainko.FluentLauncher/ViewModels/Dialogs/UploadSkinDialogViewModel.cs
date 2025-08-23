@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
 
 internal partial class UploadSkinDialogViewModel(
-    INotificationService notificationService, 
+    INotificationService notificationService,
     CacheInterfaceService cacheInterfaceService) : DialogVM<UploadSkinDialog>
 {
     private Account _account = null!;

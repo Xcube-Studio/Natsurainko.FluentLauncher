@@ -239,7 +239,7 @@ partial class App
             return "\r\nToo many nested exceptions, unable to display.";
 
         string indent = new(' ', callCount * 2);
-        StringBuilder sb = new ($"{indent}{e.GetType().FullName}\r\n");
+        StringBuilder sb = new($"{indent}{e.GetType().FullName}\r\n");
 
         if (e is AggregateException aggregateException)
         {
@@ -248,7 +248,7 @@ partial class App
             foreach (var inner in aggregateException.InnerExceptions)
                 sb.AppendLine(GetErrorMessage(inner, callCount + 1));
         }
-        else 
+        else
         {
             sb.AppendLine($"{indent}Message: {e.Message}");
             sb.AppendLine($"{indent}Source: {e.Source}");

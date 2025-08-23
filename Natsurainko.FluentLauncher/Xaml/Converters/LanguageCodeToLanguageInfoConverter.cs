@@ -1,9 +1,6 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.Windows.Globalization;
+﻿using Microsoft.UI.Xaml.Data;
 using Natsurainko.FluentLauncher.Models;
 using Natsurainko.FluentLauncher.Utils;
-using Nrk.FluentCore.Authentication;
 using System;
 using System.Linq;
 

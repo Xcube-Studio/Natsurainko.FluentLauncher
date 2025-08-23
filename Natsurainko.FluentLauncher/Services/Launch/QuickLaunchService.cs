@@ -55,7 +55,7 @@ internal class QuickLaunchService
         }
         catch (Exception ex)
         {
-            //_notificationService.NotifyWithoutContent(ex.Message);
+            _notificationService.LaunchFailed(ex, ex.Message);
         }
     }
 
@@ -219,4 +219,10 @@ internal class QuickLaunchService
                 latestStartIndex = i;
         }
     }
+}
+
+internal static partial class QuickLaunchServiceNotifications
+{
+    [ExceptionNotification(Title = "Notifications__TaskFailed_Launch", Message = "{reason}")]
+    public static partial void LaunchFailed(this INotificationService notificationService, Exception exception, string reason);
 }

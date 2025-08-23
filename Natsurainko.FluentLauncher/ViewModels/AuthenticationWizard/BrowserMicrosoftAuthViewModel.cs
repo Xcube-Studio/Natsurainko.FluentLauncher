@@ -96,7 +96,7 @@ internal partial class BrowserMicrosoftAuthViewModel : WizardViewModelBase
                 (p) => App.DispatcherQueue.TryEnqueue(() => confirmProfileViewModel.LoadingProgressText = p.ToString()));
 
             // AccessCode guaranteed by CanNext
-            return [ await _authenticationService.LoginMicrosoftAsync(AccessCode!, progress, cancellationToken)];
+            return [await _authenticationService.LoginMicrosoftAsync(AccessCode!, progress, cancellationToken)];
         });
 
         return confirmProfileViewModel;

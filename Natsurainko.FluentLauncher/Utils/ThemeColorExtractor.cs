@@ -1,7 +1,7 @@
-﻿using System;
+﻿using SharpDX.WIC;
+using System;
 using System.Linq;
 using System.Numerics;
-using SharpDX.WIC;
 
 namespace Natsurainko.FluentLauncher.Utils;
 

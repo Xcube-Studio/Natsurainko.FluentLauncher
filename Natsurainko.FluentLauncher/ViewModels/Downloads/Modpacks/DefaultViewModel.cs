@@ -16,11 +16,11 @@ internal partial class DefaultViewModel(
     protected override ModrinthResourceType ModrinthResourceType => ModrinthResourceType.ModPack;
 
     protected override string[] ModrinthCategories { get; } = [
-        "all", 
+        "all",
     ];
 
     protected override Dictionary<string, int> CurseForgeCategories { get; } = new()
     {
-        { "All", 0 }, 
+        { "All", 0 },
     };
 }

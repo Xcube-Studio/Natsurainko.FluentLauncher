@@ -40,7 +40,12 @@ internal class AuthenticationService(HttpClient httpClient)
         => new YggdrasilAuthenticator(serverUrl, httpClient) { ServerName = serverName }.LoginAsync(email, password, cancellationToken);
 
     public Task<YggdrasilAccount> RefreshAsync(YggdrasilAccount account, CancellationToken cancellationToken = default)
-        => new YggdrasilAuthenticator(account.YggdrasilServerUrl, account.ClientToken, httpClient).RefreshAsync(account, cancellationToken);
+    {
+        if (account.MetaData.TryGetValue("client_token", out var clientToken))
+            return new YggdrasilAuthenticator(account.YggdrasilServerUrl, clientToken, httpClient).RefreshAsync(account, cancellationToken);
+
+        return new YggdrasilAuthenticator(account.YggdrasilServerUrl, httpClient).RefreshAsync(account, cancellationToken);
+    }
 
     //public async Task<YggdrasilAccount> LoginYggdrasilAsync(string serverUrl, OAuth2TokenResponse oAuth2TokenResponse, CancellationToken cancellationToken = default)
     //{

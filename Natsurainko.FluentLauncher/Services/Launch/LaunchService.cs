@@ -59,7 +59,7 @@ internal class LaunchService(
     public int RunningTasks => LaunchTasks.Count(x => x.TaskState == TaskState.Running || x.TaskState == TaskState.Prepared);
 
     public void LaunchFromUI(MinecraftInstance instance)
-    {   
+    {
         LaunchTaskViewModel launchTask = new(instance, this);
         LaunchTasks.Insert(0, launchTask);
         launchTask.EnqueueAsync().Forget();
@@ -163,7 +163,7 @@ internal class LaunchService(
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (settingsService.Javas.Count == 0 || 
+        if (settingsService.Javas.Count == 0 ||
             (!settingsService.EnableAutoJava && string.IsNullOrEmpty(settingsService.ActiveJava)))
             throw new NoActiveJavaRuntimeException();
 
@@ -171,7 +171,7 @@ internal class LaunchService(
         {
             var targetJavaVersion = instance.GetSuitableJavaVersion();
             var javaInfos = settingsService.Javas
-                .Where(f => FileInfoExtensions.TryParse(f, out var fileInfo) && fileInfo.Exists && 
+                .Where(f => FileInfoExtensions.TryParse(f, out var fileInfo) && fileInfo.Exists &&
                     (fileInfo.LinkTarget is null || File.Exists(fileInfo.LinkTarget)))
                 .Select(JavaUtils.GetJavaInfo).ToArray();
 
@@ -373,7 +373,7 @@ internal class LaunchService(
     }
 
     async Task ResolveDependencies(
-        MinecraftInstance instance, 
+        MinecraftInstance instance,
         CancellationToken cancellationToken,
         IProgress<LaunchProgress>? progress)
     {
@@ -425,7 +425,7 @@ internal class LaunchService(
 
     MinecraftProcess BuildProcess(
         MinecraftInstance instance,
-        PreCheckData preCheckData, 
+        PreCheckData preCheckData,
         CancellationToken cancellationToken,
         IProgress<LaunchProgress>? progress)
     {

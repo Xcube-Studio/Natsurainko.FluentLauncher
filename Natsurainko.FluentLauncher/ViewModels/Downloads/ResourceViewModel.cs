@@ -409,7 +409,8 @@ internal partial class ResourceViewModel(
             FilteredFiles = [.. Files.Cast<ModrinthFile>()
                 .Where(f => f.McVersion == SelectedVersion)
                 .Where(f => f.Loaders.Contains(SelectedLoader))];
-        };
+        }
+        ;
     }
 
     [GeneratedRegex("[^A-Za-z0-9\\s]")]

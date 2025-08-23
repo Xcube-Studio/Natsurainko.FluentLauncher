@@ -174,7 +174,7 @@ internal partial class Program
 
     public static IHost AppHost { get; private set; } = null!;
 
-    public static Option<string> MinecraftFolderOption { get; } = new (name: "--minecraftFolder") { IsRequired = true };
+    public static Option<string> MinecraftFolderOption { get; } = new(name: "--minecraftFolder") { IsRequired = true };
 
     public static Option<string> InstanceIdOption { get; } = new(name: "--instanceId") { IsRequired = true };
 
@@ -197,8 +197,8 @@ internal partial class Program
         quickLaunchCommand.AddOption(MinecraftFolderOption);
         quickLaunchCommand.AddOption(InstanceIdOption);
 
-        quickLaunchCommand.SetHandler(async (folder, instanceId) => 
-            await AppHost.Services.GetService<QuickLaunchService>()!.LaunchFromArguments(folder, instanceId), 
+        quickLaunchCommand.SetHandler(async (folder, instanceId) =>
+            await AppHost.Services.GetService<QuickLaunchService>()!.LaunchFromArguments(folder, instanceId),
             MinecraftFolderOption, InstanceIdOption);
 
         return quickLaunchCommand;

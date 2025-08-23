@@ -18,13 +18,13 @@ internal partial class ModInfoConverter : IValueConverter
 
             var strings = new List<string>();
 
-            if (mod.SupportedModLoaders != null && mod.SupportedModLoaders.Length != 0) 
+            if (mod.SupportedModLoaders != null && mod.SupportedModLoaders.Length != 0)
                 strings.Add(string.Join(",", mod.SupportedModLoaders));
 
-            if (!string.IsNullOrEmpty(mod.Version)) 
+            if (!string.IsNullOrEmpty(mod.Version))
                 strings.Add(mod.Version);
 
-            if (!string.IsNullOrEmpty(mod.Description)) 
+            if (!string.IsNullOrEmpty(mod.Description))
                 strings.Add(mod.Description);
 
             return string.Join(" | ", strings);

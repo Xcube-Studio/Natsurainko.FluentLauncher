@@ -62,7 +62,7 @@ internal partial class DownloadService
 
         SetDownloader();
 
-        _settingsService.MaxDownloadThreadsChanged += (_,_) => SetDownloader();
+        _settingsService.MaxDownloadThreadsChanged += (_, _) => SetDownloader();
         _settingsService.CurrentDownloadSourceChanged += (_, _) => SetDownloader();
     }
 
@@ -141,7 +141,7 @@ internal partial class DownloadService
 
         InstallModpackTaskViewModel installModpackTaskViewModel = new
         (
-            this, 
+            this,
             instanceInstaller,
             modpackInstallConfig,
             installationStagesViewModel

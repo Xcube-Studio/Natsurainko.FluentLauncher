@@ -20,7 +20,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Instances;
-    
+
 internal partial class DefaultViewModel : SettingsPageVM, ISettingsViewModel, INavigationAware
 {
     [SettingsProvider]

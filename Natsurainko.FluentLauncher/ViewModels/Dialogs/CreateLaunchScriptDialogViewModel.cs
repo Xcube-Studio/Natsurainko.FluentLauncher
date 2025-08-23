@@ -4,7 +4,6 @@ using Microsoft.Win32;
 using Nrk.FluentCore.Launch;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Text;
 
@@ -31,9 +30,9 @@ internal partial class CreateLaunchScriptDialogViewModel : DialogVM
 
     public void SelectFilePath()
     {
-        SaveFileDialog saveFileDialog = new() 
-        { 
-            FileName = "cmd-launch.bat", 
+        SaveFileDialog saveFileDialog = new()
+        {
+            FileName = "cmd-launch.bat",
             Filter = "Batch files (*.bat)|*.bat|All files (*.*)|*.*",
         };
 

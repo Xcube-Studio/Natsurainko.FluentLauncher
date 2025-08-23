@@ -57,7 +57,7 @@ internal partial class InstanceConfig(string filePath) : ObservableObject
         if (!string.IsNullOrEmpty(FilePath))
         {
             File.WriteAllText(
-                FilePath, 
+                FilePath,
                 JsonSerializer.Serialize(this, InstanceConfigSerializerContext.Default.InstanceConfig));
         }
     }

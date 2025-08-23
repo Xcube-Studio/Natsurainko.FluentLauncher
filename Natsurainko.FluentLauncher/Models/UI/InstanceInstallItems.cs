@@ -129,10 +129,7 @@ internal partial class InstanceLoaderItem : ObservableObject
                         _ => throw new NotImplementedException()
                     };
                 }
-                catch (Exception ex)
-                {
-                    //TODO: Log Exception
-                }
+                catch (Exception) { }
 
                 await App.DispatcherQueue.EnqueueAsync(() =>
                 {
@@ -271,7 +268,7 @@ internal partial class InstanceModItem : ObservableObject
         var modrinthClient = App.GetService<ModrinthClient>();
         var items = new List<InstanceModItem>();
 
-        string[] modrinthIds = 
+        string[] modrinthIds =
         [
             "P7dR8mSH", // Fabric Api
             "qvIfYCYJ", // QSL

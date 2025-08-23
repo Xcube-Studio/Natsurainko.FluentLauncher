@@ -66,7 +66,7 @@ internal class LoggerColorLightLanguage : ILanguage
 
     public string? FirstLinePattern => null;
 
-    public IList<LanguageRule> Rules => 
+    public IList<LanguageRule> Rules =>
     [
         new(@"INFO", new Dictionary<int, string> { { 0, "INFO" } }),
         new(@"WARN", new Dictionary<int, string> { { 0, "WARN" } }),

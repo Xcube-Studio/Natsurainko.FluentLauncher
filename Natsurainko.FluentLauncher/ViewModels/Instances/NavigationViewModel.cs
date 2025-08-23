@@ -3,7 +3,7 @@ using Nrk.FluentCore.GameManagement.Instances;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Instances;
 
-internal partial class NavigationViewModel(INavigationService navigationService) 
+internal partial class NavigationViewModel(INavigationService navigationService)
     : NavigationPageVM<MinecraftInstance>(navigationService), INavigationAware
 {
     protected override string RootPageKey => "Instances";

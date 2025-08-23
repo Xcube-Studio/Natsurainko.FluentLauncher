@@ -108,7 +108,7 @@ internal class GameService
         }
 
         instance ??= _games.FirstOrDefault();
-        
+
         ActivateGame(instance);
     }
 

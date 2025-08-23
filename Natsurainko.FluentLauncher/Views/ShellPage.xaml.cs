@@ -165,7 +165,7 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         {
             foreach (object item in menuItems)
             {
-                if (item is not NavigationViewItem navigationViewItem) 
+                if (item is not NavigationViewItem navigationViewItem)
                     continue;
 
                 string? tag = navigationViewItem.GetTag();
@@ -215,9 +215,9 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
 
     private void UseBackgroundMaskChanged(SettingsContainer sender, SettingChangedEventArgs e)
     {
-        NavViewPaneBackground.Visibility = 
-        TopNavViewPaneBackground.Visibility = 
-        SearchBoxAreaBackgroundBorder.Visibility = 
+        NavViewPaneBackground.Visibility =
+        TopNavViewPaneBackground.Visibility =
+        SearchBoxAreaBackgroundBorder.Visibility =
             _settings.UseBackgroundMask ? Visibility.Visible : Visibility.Collapsed;
 
         SearchBoxAreaGrid.Shadow = _settings.UseBackgroundMask ? SharedShadow : null;
@@ -272,7 +272,7 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         RootSplitView.Padding = new Thickness(1);
 
         var PaneContentGrid = NavigationViewControl.FindChild<Grid>("PaneContentGrid")!;
-        PaneContentGrid.Padding = new Thickness(1,0,0,0);
+        PaneContentGrid.Padding = new Thickness(1, 0, 0, 0);
 
 #if ENABLE_LOAD_EXTENSIONS
         foreach (var extension in App.GetService<List<global::FluentLauncher.Infra.ExtensionHost.Extensions.IExtension>>())

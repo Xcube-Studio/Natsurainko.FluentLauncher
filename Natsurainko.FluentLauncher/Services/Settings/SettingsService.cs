@@ -191,7 +191,7 @@ public partial class SettingsService : SettingsContainer
     public SettingsService(ISettingsStorage storage) : base(storage)
     {
         // Configure JsonSerializerContext for NativeAOT-compatible JsonStringConverter
-        JsonStringConverterConfig.SerializerContext = new FLSerializerContext(new JsonSerializerOptions 
+        JsonStringConverterConfig.SerializerContext = new FLSerializerContext(new JsonSerializerOptions
         {
             IncludeFields = true,
         });

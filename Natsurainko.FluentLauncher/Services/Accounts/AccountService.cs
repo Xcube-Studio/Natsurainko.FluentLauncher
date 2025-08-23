@@ -144,7 +144,7 @@ internal class AccountService
         if (ActiveAccount == account && !dontActive)
             this.ActivateAccount(_accounts.Count != 0 ? _accounts[0] : null);
 
-         return result;
+        return result;
     }
 
     public void ActivateAccount(Account? account)
@@ -168,7 +168,7 @@ internal class AccountService
         };
 
         // Update stored account
-        Account? oldAccount = Accounts.FirstOrDefault(x => x.ProfileEquals(account)) 
+        Account? oldAccount = Accounts.FirstOrDefault(x => x.ProfileEquals(account))
             ?? throw new Exception($"{account} does not exist in AccountService");
 
         bool isActiveAccount = ActiveAccount == oldAccount;

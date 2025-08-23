@@ -72,8 +72,8 @@ public class EmptyListVisibleBehavior : DependencyObject, IBehavior
         var uIElement = AssociatedObject as FrameworkElement;
 
         if (uIElement != null)
-            uIElement.Visibility = (ItemsSource == null || ItemsSource.Count == 0) 
-                ? Visibility.Visible 
+            uIElement.Visibility = (ItemsSource == null || ItemsSource.Count == 0)
+                ? Visibility.Visible
                 : Visibility.Collapsed;
     }
 }

@@ -191,7 +191,7 @@ internal abstract partial class TaskViewModel : ObservableObject
         return timer;
     }
 
-    protected virtual void Timer_Elapsed(object? sender, ElapsedEventArgs e) 
+    protected virtual void Timer_Elapsed(object? sender, ElapsedEventArgs e)
         => App.DispatcherQueue.TryEnqueue(() => OnPropertyChanged(nameof(TimeUsage)));
 
     protected virtual void NotifyException(INotificationService notificationService) { }
@@ -299,7 +299,7 @@ internal partial class DownloadResourceTaskViewModel : TaskViewModel
     [RelayCommand]
     void Retry()
     {
-        if (DownloadTask == null) 
+        if (DownloadTask == null)
             return;
 
         _downloadService.DownloadResourceFileAsync(DownloadTask.Request.Url, _filePath, _downloadedAction).Forget();
@@ -355,7 +355,7 @@ class InstallationViewModel<TStage> : IProgress<IInstallerProgress>
 
         foreach (var name in Enum.GetNames<TStage>())
             Stages.Add(Enum.Parse<TStage>(name), new InstallationStageViewModel
-                { TaskName = LocalizedStrings.GetString($"Tasks_DownloadPage__{enumTypeName}_{name}") });
+            { TaskName = LocalizedStrings.GetString($"Tasks_DownloadPage__{enumTypeName}_{name}") });
     }
 
     public void Report(IInstallerProgress value)
@@ -599,17 +599,17 @@ class LaunchProgressViewModel : IProgress<LaunchProgress>
     public Dictionary<LaunchStage, LaunchStageViewModel> Stages { get; } = [];
 
     private LaunchStage _currentStage;
-    public LaunchStage CurrentStage 
-    { 
+    public LaunchStage CurrentStage
+    {
         get => _currentStage;
-        set 
+        set
         {
             if (_currentStage != value)
             {
                 _currentStage = value;
                 CurrentStageChanged?.Invoke(this, Stages[value]);
             }
-        } 
+        }
     }
 
     public event EventHandler<LaunchStageViewModel>? CurrentStageChanged;
@@ -617,8 +617,8 @@ class LaunchProgressViewModel : IProgress<LaunchProgress>
     public LaunchProgressViewModel()
     {
         foreach (var name in Enum.GetNames<LaunchStage>())
-            Stages.Add(Enum.Parse<LaunchStage>(name), new LaunchStageViewModel 
-                { TaskName = LocalizedStrings.GetString($"Tasks_LaunchPage__TaskName_{name}") });
+            Stages.Add(Enum.Parse<LaunchStage>(name), new LaunchStageViewModel
+            { TaskName = LocalizedStrings.GetString($"Tasks_LaunchPage__TaskName_{name}") });
     }
 
     public virtual void Report(LaunchProgress value)
@@ -645,7 +645,7 @@ class QuickLaunchProgressViewModel : LaunchProgressViewModel
 
     public string InstanceDisplayName { get; }
 
-    public QuickLaunchProgressViewModel(MinecraftInstance instance) : base() 
+    public QuickLaunchProgressViewModel(MinecraftInstance instance) : base()
     {
         _minecraftInstance = instance;
         InstanceDisplayName = instance.GetDisplayName();
@@ -907,7 +907,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
         finally
         {
             Timer.Stop();
-            await App.DispatcherQueue.EnqueueAsync(() => IsLaunching = false );
+            await App.DispatcherQueue.EnqueueAsync(() => IsLaunching = false);
         }
 
         await App.DispatcherQueue.EnqueueAsync(() =>
@@ -931,10 +931,10 @@ internal partial class LaunchTaskViewModel : TaskViewModel
         {
             ProcessExited = true;
             Crashed = !_isMcProcessKilled && McProcess.Process.ExitCode != 0;
-            TaskState = _isMcProcessKilled 
+            TaskState = _isMcProcessKilled
                 ? TaskState.Finished
                 : Crashed
-                    ? TaskState.Finished 
+                    ? TaskState.Finished
                     : TaskState.Failed;
         });
 
@@ -970,7 +970,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     }
 
     [RelayCommand]
-    async Task CreateScript(IDialogActivationService<ContentDialogResult> dialogActivationService) 
+    async Task CreateScript(IDialogActivationService<ContentDialogResult> dialogActivationService)
         => await dialogActivationService.ShowAsync("CreateLaunchScriptDialog", McProcess);
 
     [RelayCommand]
@@ -990,7 +990,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
 
     public override string InfoBarTitle => LocalizedStrings.Notifications__TaskFailed_Launch;
 
-    public override string ExceptionTitle 
+    public override string ExceptionTitle
     {
         get
         {

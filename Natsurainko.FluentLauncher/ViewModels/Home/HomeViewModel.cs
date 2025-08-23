@@ -94,7 +94,7 @@ internal partial class HomeViewModel : PageVM, IRecipient<TrackLaunchTaskChanged
 
     public Visibility AccountTag => ActiveAccount is null ? Visibility.Collapsed : Visibility.Visible;
 
-    public string InstanceSelectorText => ActiveMinecraftInstance == null 
+    public string InstanceSelectorText => ActiveMinecraftInstance == null
         ? LocalizedStrings.Home_HomePage__NoInstanceSelected
         : ActiveMinecraftInstance.GetDisplayName();
 
@@ -129,7 +129,7 @@ internal partial class HomeViewModel : PageVM, IRecipient<TrackLaunchTaskChanged
     partial void OnActiveAccountChanged(Account value) => _accountService.ActivateAccount(value);
 
     [RelayCommand(CanExecute = nameof(CanExecuteLaunch))]
-    private void Launch()
+    async Task Launch()
     {
         if (!_settingsService.EnableHomeLaunchTaskTrack)
         {
@@ -142,7 +142,7 @@ internal partial class HomeViewModel : PageVM, IRecipient<TrackLaunchTaskChanged
             if (TrackingTask.ProcessLaunched)
                 TrackingTask.KillProcess();
             else if (TrackingTask.CanCancel)
-                TrackingTask.Cancel();
+                await TrackingTask.Cancel();
 
             return;
         }

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.News;
 
-internal partial class DefaultViewModel(INavigationService navigationService, CacheInterfaceService cacheInterfaceService) 
+internal partial class DefaultViewModel(INavigationService navigationService, CacheInterfaceService cacheInterfaceService)
     : PageVM, INavigationAware
 {
     private readonly INavigationService _navigationService = navigationService;

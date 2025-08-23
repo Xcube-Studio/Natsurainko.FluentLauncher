@@ -54,8 +54,8 @@ internal partial class EnterYggdrasilProfileViewModel : WizardViewModelBase
 
     public override WizardViewModelBase GetNextViewModel()
     {
-        return new ConfirmProfileViewModel(async cancellationToken => await _authenticationService.LoginYggdrasilAsync(Url, Email, Password, ServerName, cancellationToken)) 
-            { LoadingProgressText = "Authenticating with Yggdrasil Server" };
+        return new ConfirmProfileViewModel(async cancellationToken => await _authenticationService.LoginYggdrasilAsync(Url, Email, Password, ServerName, cancellationToken))
+        { LoadingProgressText = "Authenticating with Yggdrasil Server" };
     }
 
     partial void OnUrlChanged(string value)

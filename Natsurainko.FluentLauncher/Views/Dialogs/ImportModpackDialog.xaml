@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentDialog
+    x:Class="Natsurainko.FluentLauncher.Views.Dialogs.ImportModpackDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Dialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Xaml"
+    x:Uid="Dialogs_ImportModpackDialog_Dialog"
+    Title="Import Modpack"
+    IsPrimaryButtonEnabled="{x:Bind VM.CanInstall, Mode=OneWay}"
+    PrimaryButtonCommand="{x:Bind VM.InstallCommand}"
+    PrimaryButtonStyle="{ThemeResource AccentButtonStyle}"
+    PrimaryButtonText="Install"
+    SecondaryButtonText="Cancel"
+    Style="{ThemeResource DefaultContentDialogStyle}"
+    mc:Ignorable="d">
+
+    <StackPanel MinWidth="428" Spacing="8">
+        <Button
+            x:Name="ModpackReceiverButton"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            x:Load="{x:Bind VM.ModpackParsed, Mode=OneWay, Converter={StaticResource InvertBoolConverter}}"
+            AllowDrop="True"
+            BorderBrush="{ThemeResource AccentAAFillColorDefaultBrush}"
+            BorderThickness="3"
+            Command="{x:Bind VM.OpenModpackCommand}"
+            CornerRadius="4"
+            DragEnter="Button_DragEnter"
+            Drop="Button_Drop">
+            <StackPanel
+                Margin="16,24"
+                Orientation="Horizontal"
+                Spacing="8">
+                <FontIcon
+                    VerticalAlignment="Center"
+                    FontSize="32"
+                    Glyph="&#xE8E5;" />
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock
+                        x:Uid="Dialogs_ImportModpackDialog_Text1"
+                        FontSize="16"
+                        Style="{ThemeResource BaseTextBlockStyle}"
+                        Text="Drag or click to select an modpack file" />
+                    <TextBlock
+                        x:Uid="Dialogs_ImportModpackDialog_Text2"
+                        Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                        Style="{ThemeResource CaptionTextBlockStyle}"
+                        Text="Only support CurseForge and Modrinth formats" />
+                </StackPanel>
+            </StackPanel>
+        </Button>
+        <StackPanel
+            x:Name="ModpackParseFailedPanel"
+            x:Load="{x:Bind VM.ModpackParseFailed, Mode=OneWay}"
+            Orientation="Horizontal"
+            Spacing="8">
+            <FontIcon
+                FontSize="14"
+                FontWeight="SemiBold"
+                Foreground="{ThemeResource SystemErrorTextColor}"
+                Glyph="&#xE711;" />
+            <TextBlock
+                x:Uid="Dialogs_ImportModpackDialog_Tex3"
+                Foreground="{ThemeResource SystemErrorTextColor}"
+                Style="{ThemeResource BaseTextBlockStyle}"
+                Text="Unsupported format, unable to parse the modpack" />
+        </StackPanel>
+
+        <StackPanel
+            x:Name="ModpackInstallPanel"
+            x:Load="{x:Bind VM.ModpackParsed, Mode=OneWay}"
+            Spacing="8">
+            <controls:SettingsCard>
+                <controls:SettingsCard.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="4" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Margin="0,-4,0,0"
+                            FontSize="16"
+                            FontWeight="SemiBold"
+                            Text="{x:Bind VM.ModpackInfo.Name, Mode=OneWay}"
+                            TextTrimming="CharacterEllipsis" />
+
+                        <Border
+                            x:Name="ModpackVersionTag"
+                            Grid.Column="2"
+                            Padding="5,0,5,0.5"
+                            VerticalAlignment="Center"
+                            x:Load="{x:Bind VM.ShowModpackVersionTag, Mode=OneWay}"
+                            CornerRadius="2.5">
+                            <Border.Background>
+                                <SolidColorBrush Opacity="0.25" Color="{ThemeResource SystemAccentColor}" />
+                            </Border.Background>
+                            <TextBlock
+                                Margin="0,-1,0,0"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                Text="{x:Bind VM.ModpackVersion, Mode=OneWay}"
+                                ToolTipService.ToolTip="{x:Bind VM.ModpackVersion, Mode=OneWay}" />
+                        </Border>
+                    </Grid>
+                </controls:SettingsCard.Header>
+                <controls:SettingsCard.Description>
+                    <StackPanel Margin="0,4,0,0" Spacing="4">
+                        <ItemsControl ItemsSource="{x:Bind VM.ModpackInfoTags, Mode=OneWay}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <Border Padding="5,0,5,0.5" CornerRadius="2.5">
+                                        <Border.Background>
+                                            <SolidColorBrush Opacity="0.25" Color="{ThemeResource SystemAccentColor}" />
+                                        </Border.Background>
+                                        <TextBlock
+                                            Margin="0,-1,0,0"
+                                            Style="{ThemeResource CaptionTextBlockStyle}"
+                                            Text="{x:Bind}"
+                                            ToolTipService.ToolTip="{x:Bind}" />
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" Spacing="4" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                        <TextBlock
+                            x:Name="ModDescriptionText"
+                            x:Load="{x:Bind VM.ShowModpackDescription, Mode=OneWay}"
+                            Text="{x:Bind VM.ModpackDescription, Mode=OneWay}" />
+                    </StackPanel>
+                </controls:SettingsCard.Description>
+            </controls:SettingsCard>
+
+            <StackPanel Spacing="8">
+                <TextBox
+                    x:Uid="Dialogs_ImportModpackDialog_TextBox"
+                    Header="Instance Id:"
+                    Text="{x:Bind VM.InstanceId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock
+                    x:Name="InvalidIdText"
+                    x:Uid="Dialogs_ImportModpackDialog_Text4"
+                    VerticalAlignment="Center"
+                    x:Load="{x:Bind VM.InstanceIdValidity, Converter={StaticResource InvertBoolConverter}, Mode=OneWay}"
+                    Foreground="{ThemeResource SystemErrorTextColor}"
+                    Style="{ThemeResource CaptionTextBlockStyle}"
+                    Text="Id not available" />
+            </StackPanel>
+
+            <CheckBox
+                x:Uid="Dialogs_ImportModpackDialog_CheckBox"
+                Content="Modpack installation forces isolated instance"
+                IsChecked="True"
+                IsEnabled="False" />
+        </StackPanel>
+    </StackPanel>
+</ContentDialog>

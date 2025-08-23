@@ -2,7 +2,7 @@ using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Natsurainko.FluentLauncher.ViewModels.Instances;
-using Natsurainko.FluentLauncher.XamlHelpers.Converters;
+using Natsurainko.FluentLauncher.Xaml.Converters;
 using Nrk.FluentCore.GameManagement.Instances;
 
 namespace Natsurainko.FluentLauncher.Views.Instances;
@@ -23,9 +23,7 @@ public sealed partial class NavigationPage : Page, INavigationProvider
     {
         var breadcrumbBarAware = (IBreadcrumbBarAware)(contentFrame.Content);
         if (e.NavigationMode == NavigationMode.Back)
-        {
             breadcrumbBar.GoBack();
-        }
         else
         {
             if (contentFrame.Content.GetType() == typeof(InstancePage))

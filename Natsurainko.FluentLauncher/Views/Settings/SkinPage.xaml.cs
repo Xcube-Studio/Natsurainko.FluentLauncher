@@ -20,7 +20,7 @@ public sealed partial class SkinPage : Page, IBreadcrumbBarAware
 
     private async void Page_Loaded(object sender, RoutedEventArgs e)
     {
-        Viewport.BackgroundColor = ActualTheme switch 
+        Viewport.BackgroundColor = ActualTheme switch
         {
             ElementTheme.Dark => Colors.Black,
             ElementTheme.Light => Colors.White,

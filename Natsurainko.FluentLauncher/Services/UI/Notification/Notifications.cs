@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace Natsurainko.FluentLauncher.Services.UI.Notification;
 
-internal class DefaultNotification : INotification, 
+internal class DefaultNotification : INotification,
     INotification<InfoBar>,
     INotification<TeachingTip>,
     INotification<AppNotification>
@@ -154,7 +154,7 @@ internal class ExceptionNotification : ActionNotification
         this.GetActionButton = () =>
         {
             Button copyButton = new();
-            copyButton.Click += (_,_) => ClipboardHepler.SetText(string.Join("\r\n", [Title, Message, Exception?.ToString()]));
+            copyButton.Click += (_, _) => ClipboardHepler.SetText(string.Join("\r\n", [Title, Message, Exception?.ToString()]));
             copyButton.Content = LocalizedStrings.Buttons_CopyException_Text;
 
             return copyButton;
@@ -162,4 +162,37 @@ internal class ExceptionNotification : ActionNotification
     }
 
     public required Exception Exception { get; init; }
+}
+
+internal class TargetNotification : INotification, INotification<TeachingTip>
+{
+    public NotificationType Type { get; init; } = NotificationType.Info;
+
+    public required string Title { get; init; }
+
+    public string? Message { get; init; }
+
+    public string? FontIcon { get; init; }
+
+    public bool IsClosable { get; init; } = true;
+
+    public double Delay { get; init; } = 5;
+
+    public FrameworkElement? Target { get; init; }
+
+    TeachingTip INotification<TeachingTip>.ConstructUI()
+    {
+        return new TeachingTip()
+        {
+            Title = Title,
+            Subtitle = Message,
+            PreferredPlacement = TeachingTipPlacementMode.Auto,
+            IsLightDismissEnabled = true,
+            Target = Target,
+            IconSource = new FontIconSource
+            {
+                Glyph = FontIcon
+            }
+        };
+    }
 }

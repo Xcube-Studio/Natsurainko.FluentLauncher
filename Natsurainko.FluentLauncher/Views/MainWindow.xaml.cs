@@ -32,7 +32,7 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider, IRecipie
 
     public MainWindow(
         SettingsService settingsService,
-        INavigationService navigationService, 
+        INavigationService navigationService,
         ILogger<MainWindow> logger)
     {
         _settingsService = settingsService;

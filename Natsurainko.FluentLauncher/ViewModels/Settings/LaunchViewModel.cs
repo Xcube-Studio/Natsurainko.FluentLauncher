@@ -11,12 +11,10 @@ using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Environment;
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage.Pickers;
-using Windows.System;
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
@@ -207,7 +205,7 @@ internal partial class LaunchViewModel : SettingsPageVM, ISettingsViewModel
             OnPropertyChanged(nameof(Javas));
             _notificationService.JavaSearched();
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             _notificationService.JavaSearchFailed(ex);
         }

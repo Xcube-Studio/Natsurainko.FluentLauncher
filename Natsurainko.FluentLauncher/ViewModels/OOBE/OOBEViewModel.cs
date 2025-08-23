@@ -247,7 +247,7 @@ internal partial class OOBEViewModel : ObservableObject, INavigationAware, ISett
                 return;
             }
 
-            JavaRuntimes.Add(openFileDialog.FileName); 
+            JavaRuntimes.Add(openFileDialog.FileName);
             OnPropertyChanged(nameof(JavaRuntimes));
 
             ActiveJavaRuntime = openFileDialog.FileName;

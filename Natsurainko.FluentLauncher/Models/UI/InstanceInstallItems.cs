@@ -6,6 +6,7 @@ using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
+using Nrk.FluentCore.Experimental.GameManagement.Modpacks;
 using Nrk.FluentCore.GameManagement.Installer;
 using Nrk.FluentCore.Resources;
 using System;
@@ -128,10 +129,7 @@ internal partial class InstanceLoaderItem : ObservableObject
                         _ => throw new NotImplementedException()
                     };
                 }
-                catch (Exception ex)
-                {
-                    //TODO: Log Exception
-                }
+                catch (Exception) { }
 
                 await App.DispatcherQueue.EnqueueAsync(() =>
                 {
@@ -270,7 +268,7 @@ internal partial class InstanceModItem : ObservableObject
         var modrinthClient = App.GetService<ModrinthClient>();
         var items = new List<InstanceModItem>();
 
-        string[] modrinthIds = 
+        string[] modrinthIds =
         [
             "P7dR8mSH", // Fabric Api
             "qvIfYCYJ", // QSL
@@ -331,4 +329,15 @@ internal class InstanceInstallConfig
     public InstanceLoaderItem? SecondaryLoader { get; set; }
 
     public List<ModrinthFile> AdditionalMods { get; set; } = [];
+}
+
+internal class ModpackInstallConfig
+{
+    public required string ModpackFilePath { get; set; }
+
+    public required string InstanceId { get; set; }
+
+    public required ModpackInfo ModpackInfo { get; set; }
+
+    public bool DeleteModpackFileAfterInstall { get; set; } = false;
 }

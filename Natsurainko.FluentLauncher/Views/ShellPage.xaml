@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:searchService="using:Natsurainko.FluentLauncher.Services.UI"
-    xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Xaml"
     Loaded="Page_Loaded"
     SizeChanged="Page_SizeChanged"
     mc:Ignorable="d">
@@ -262,10 +262,10 @@
             IsBackEnabled="{x:Bind CanGoBack, Mode=OneWay}"
             IsPaneToggleButtonVisible="True"
             IsSettingsVisible="False"
-            ItemInvoked="NavigationViewControl_ItemInvoked"
             OpenPaneLength="300"
             PaneClosing="NavigationViewControl_PaneClosing"
-            PaneOpening="NavigationViewControl_PaneOpening">
+            PaneOpening="NavigationViewControl_PaneOpening"
+            SelectionChanged="NavigationViewControl_SelectionChanged">
             <NavigationView.Resources>
                 <SolidColorBrush x:Key="NavigationViewContentBackground" Color="Transparent" />
                 <SolidColorBrush x:Key="NavigationViewContentGridBorderBrush" Color="Transparent" />
@@ -314,13 +314,23 @@
                         <NavigationViewItem
                             x:Uid="ShellPage_NV_SubItem_2"
                             Content="Mods"
-                            Icon="{xh:FontIcon Glyph=&#xe8f1;}"
+                            Icon="{xh:FontIcon Glyph=&#xEA86;}"
                             Tag="ModsDownload/Navigation" />
                         <NavigationViewItem
                             x:Uid="ShellPage_NV_SubItem_3"
                             Content="Modpacks"
-                            Icon="{xh:FontIcon Glyph=&#xe7b8;}"
-                            IsEnabled="False" />
+                            Icon="{xh:FontIcon Glyph=&#xF012;}"
+                            Tag="ModpacksDownload/Navigation" />
+                        <NavigationViewItem
+                            x:Uid="ShellPage_NV_SubItem_4"
+                            Content="TexturePacks"
+                            Icon="{xh:FontIcon Glyph=&#xE91B;}"
+                            Tag="TexturePacksDownload/Navigation" />
+                        <NavigationViewItem
+                            x:Uid="ShellPage_NV_SubItem_5"
+                            Content="Shaders"
+                            Icon="{xh:FontIcon Glyph=&#xE706;}"
+                            Tag="ShadersDownload/Navigation" />
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
                 <NavigationViewItem
@@ -332,7 +342,9 @@
 
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem
+                    x:Name="LaunchTaskNavigationViewItem"
                     x:Uid="ShellPage_NV_Item_5"
+                    x:FieldModifier="public"
                     Content="Launch Tasks"
                     Icon="{xh:FontIcon Glyph=&#xE945;}"
                     Tag="Tasks/Launch">
@@ -341,7 +353,9 @@
                     </NavigationViewItem.InfoBadge>
                 </NavigationViewItem>
                 <NavigationViewItem
+                    x:Name="DownloadTaskNavigationViewItem"
                     x:Uid="ShellPage_NV_Item_6"
+                    x:FieldModifier="public"
                     Content="Download Tasks"
                     Icon="{xh:FontIcon Glyph=&#xe896;}"
                     Tag="Tasks/Download">

@@ -2,7 +2,7 @@
 
 namespace Natsurainko.FluentLauncher.ViewModels.Settings;
 
-internal partial class NavigationViewModel(INavigationService navigationService) 
+internal partial class NavigationViewModel(INavigationService navigationService)
     : NavigationPageVM(navigationService), INavigationAware
 {
     protected override string RootPageKey => "Settings";

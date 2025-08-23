@@ -17,8 +17,8 @@ using System.Threading.Tasks;
 namespace Natsurainko.FluentLauncher.ViewModels.Dialogs;
 
 internal partial class AuthenticateDialogViewModel(
-    AccountService accountService, 
-    INotificationService notificationService, 
+    AccountService accountService,
+    INotificationService notificationService,
     AuthenticationService authService) : DialogVM<AuthenticateDialog>
 {
     [ObservableProperty]
@@ -119,7 +119,7 @@ internal partial class AuthenticateDialogViewModel(
         {
             if (account is YggdrasilAccount yggdrasilAccount)
                 account = await authService.RefreshAsync(yggdrasilAccount);
-        } 
+        }
         catch (Exception ex)
         {
             this.Dialog.Hide();

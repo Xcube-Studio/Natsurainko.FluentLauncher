@@ -1,12 +1,9 @@
 using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
-using Nrk.FluentCore.GameManagement;
 using Nrk.FluentCore.GameManagement.Installer;
 using Nrk.FluentCore.GameManagement.Instances;
-using System;
 using System.IO;
-using System.Linq;
 
 namespace Natsurainko.FluentLauncher.Utils.Extensions;
 
@@ -18,16 +15,23 @@ internal static class MinecraftInstanceExtensions
     {
         if (instance.IsVanilla) return false;
 
-        var loaders = instance.GetModLoaders().Select(x => x.Type).ToArray();
+        if (instance is ModifiedMinecraftInstance modifiedInstance)
+        {
+            foreach (var item in modifiedInstance.ModLoaders)
+            {
+                switch (item.Type)
+                {
+                    case ModLoaderType.Forge:
+                    case ModLoaderType.LiteLoader:
+                    case ModLoaderType.Fabric:
+                    case ModLoaderType.Quilt:
+                    case ModLoaderType.NeoForge:
+                        return true;
+                }
+            }
+        }
 
-        if (!(loaders.Contains(ModLoaderType.Forge) ||
-            loaders.Contains(ModLoaderType.Fabric) ||
-            loaders.Contains(ModLoaderType.NeoForge) ||
-            loaders.Contains(ModLoaderType.Quilt) ||
-            loaders.Contains(ModLoaderType.LiteLoader)))
-            return false;
-
-        return true;
+        return false;
     }
 
     public static string GetGameDirectory(this MinecraftInstance instance)
@@ -62,7 +66,7 @@ internal static class MinecraftInstanceExtensions
             return string.IsNullOrEmpty(instanceConfig.NickName)
                 ? instance.InstanceId
                 : instanceConfig.NickName;
-        } 
+        }
         catch
         {
             return instance.InstanceId;

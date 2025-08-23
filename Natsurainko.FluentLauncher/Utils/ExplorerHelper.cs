@@ -14,7 +14,7 @@ internal static partial class ExplorerHelper
 
     public static void OpenFolder(string? folderPath)
     {
-        if (folderPath == null) 
+        if (folderPath == null)
             return;
 
         using var process = Process.Start("explorer.exe", $"/root,{folderPath}");

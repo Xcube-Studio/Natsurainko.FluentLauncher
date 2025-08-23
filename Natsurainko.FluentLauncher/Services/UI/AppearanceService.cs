@@ -71,7 +71,7 @@ internal class AppearanceService
                 break;
             case 1:
                 if (DesktopAcrylicController.IsSupported())
-                    RegisteredWindow!.SystemBackdrop = new DesktopAcrylicBackdrop(); 
+                    RegisteredWindow!.SystemBackdrop = new DesktopAcrylicBackdrop();
                 control.Background = new SolidColorBrush(Colors.Transparent);
                 break;
             case 2:
@@ -145,7 +145,7 @@ internal class AppearanceService
             resources["SystemAccentColorDark2"] = rawSystemAccentColor;
             resources["SystemAccentColorDark3"] = rawSystemAccentColor;
             resources["SystemAccentColor"] = rawSystemAccentColor;
-        } 
+        }
         else
         {
             resources["SystemAccentColorLight1"] = _settingsService.CustomThemeColor.GetValueOrDefault();
@@ -218,7 +218,7 @@ internal class AppearanceService
             Set(control.Resources, "NavigationViewContentBackground", new SolidColorBrush(Colors.Transparent));
             Set(control.Resources, "NavigationViewContentGridBorderThickness", new Thickness(0));
             Set(control.Resources, "BackgroundBorder", new Thickness(0));
-        } 
+        }
         else
         {
             Set(control.Resources, "NavigationViewContentBackground", App.Current.Resources["LayerFillColorDefaultBrush"]);

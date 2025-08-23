@@ -30,6 +30,8 @@ class CapeTextureUpdatedMessage(Account value) : ValueChangedMessage<Account>(va
 
 class BackgroundTaskCountChangedMessage();
 
+class DownloadTaskCreatedMessage(int eventId) : ValueChangedMessage<int>(eventId);
+
 class GlobalNavigationMessage(string pageKey, object? parameter = null) : ValueChangedMessage<string>(pageKey)
 {
     public object? Parameter { get; init; } = parameter;

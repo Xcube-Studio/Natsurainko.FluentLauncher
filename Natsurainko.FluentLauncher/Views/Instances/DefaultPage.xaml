@@ -2,15 +2,15 @@
     x:Class="Natsurainko.FluentLauncher.Views.Instances.DefaultPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:behaviors="using:Natsurainko.FluentLauncher.XamlHelpers.Behaviors"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.Xaml.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
-    xmlns:converters="using:Natsurainko.FluentLauncher.XamlHelpers.Converters"
+    xmlns:converters="using:Natsurainko.FluentLauncher.Xaml.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:inst="using:Nrk.FluentCore.GameManagement.Instances"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit_behaviors="using:CommunityToolkit.WinUI.Behaviors"
-    xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Xaml"
     Unloaded="Page_Unloaded"
     mc:Ignorable="d">
     <Page.Resources>
@@ -40,7 +40,7 @@
                                 <TextBlock x:Uid="Instances_DefaultPage_InstallText" Text="Install Instances" />
                             </StackPanel>
                         </Button>
-                        <Button IsEnabled="False" Style="{ThemeResource AccentButtonStyle}">
+                        <Button Command="{x:Bind VM.ImportModpackCommand}" Style="{ThemeResource AccentButtonStyle}">
                             <StackPanel Orientation="Horizontal" Spacing="8">
                                 <FontIcon FontSize="14" Glyph="&#xe8b5;" />
                                 <TextBlock x:Uid="Instances_DefaultPage_ImportButton" Text="Import Modpack" />

@@ -69,7 +69,7 @@ internal sealed partial class LoggerWindow : WindowEx, INotifyPropertyChanged
 
     internal static UIElement ConvertLoggerOutput(GameLoggerOutput output)
     {
-        RichTextBlock richTextBlock = new() 
+        RichTextBlock richTextBlock = new()
         {
             FontWeight = FontWeights.SemiBold
         };

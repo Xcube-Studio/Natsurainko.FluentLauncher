@@ -66,7 +66,7 @@ internal partial class AccountViewModel : SettingsPageVM, ISettingsViewModel, IR
     [RelayCommand]
     async Task Refresh()
     {
-        await _accountService.RefreshAccountAsync(ActiveAccount).ContinueWith(task => 
+        await _accountService.RefreshAccountAsync(ActiveAccount).ContinueWith(task =>
         {
             if (task.IsFaulted)
                 _notificationService.AccountRefreshFailed(task.Exception);

@@ -22,7 +22,7 @@ internal partial class AppearanceViewModel : SettingsPageVM<AppearancePage>, ISe
     private readonly IDialogActivationService<ContentDialogResult> _dialogActivationService;
 
     public AppearanceViewModel(
-        SettingsService settingsService, 
+        SettingsService settingsService,
         INotificationService notificationService,
         IDialogActivationService<ContentDialogResult> dialogActivationService)
     {

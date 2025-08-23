@@ -11,7 +11,6 @@ using Nrk.FluentCore.GameManagement;
 using Nrk.FluentCore.GameManagement.Instances;
 using System;
 using System.Threading.Tasks;
-using Windows.System;
 using Windows.UI.StartScreen;
 
 #nullable disable

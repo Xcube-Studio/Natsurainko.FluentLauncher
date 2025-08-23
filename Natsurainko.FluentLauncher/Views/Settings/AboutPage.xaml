@@ -5,7 +5,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Xaml"
     Background="Transparent"
     mc:Ignorable="d">
 

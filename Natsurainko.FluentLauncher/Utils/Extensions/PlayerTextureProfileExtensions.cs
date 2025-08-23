@@ -84,12 +84,12 @@ internal static class PlayerTextureProfileExtensions
                 ? "steve.png" : "alex.png";
 
             return Path.Combine(
-                Package.Current.InstalledLocation.Path, 
+                Package.Current.InstalledLocation.Path,
                 "Assets", "Textures", defaultSkin);
         }
 
         return Path.Combine(
-            LocalStorageService.LocalFolderPath, 
+            LocalStorageService.LocalFolderPath,
             $"cache-textures\\{GetProfileServiceIdentifier(profile)}\\skins\\" +
             $"{profile.Uuid}.png");
     }
@@ -100,7 +100,7 @@ internal static class PlayerTextureProfileExtensions
         if (profile.ActiveCape == null) return false;
 
         path = Path.Combine(
-            LocalStorageService.LocalFolderPath, 
+            LocalStorageService.LocalFolderPath,
             $"cache-textures\\{GetProfileServiceIdentifier(profile)}\\capes\\" +
             $"{profile.ActiveCape.Alias}.png");
 

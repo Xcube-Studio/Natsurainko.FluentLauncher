@@ -8,7 +8,7 @@ internal static class ControlExtensions
 {
     public static string? GetTag(this Control item) => item.Tag?.ToString();
 
-    public static TElement? FindChild<TElement>(this DependencyObject dependencyObject, string name) 
+    public static TElement? FindChild<TElement>(this DependencyObject dependencyObject, string name)
         where TElement : FrameworkElement
     {
         if (dependencyObject is null) return null;

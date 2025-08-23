@@ -38,7 +38,7 @@ class MessengerService(AccountService accountService, SettingsService settingsSe
     private void SettingsService_SettingsStringValueChanged(SettingsContainer sender, SettingChangedEventArgs e)
         => Messenger.Send(new SettingsStringValueChangedMessage(e.NewValue?.ToString() ?? string.Empty, e.Path));
 
-    private void SettingsService_DisplayThemeChanged(SettingsContainer sender, SettingChangedEventArgs e) 
+    private void SettingsService_DisplayThemeChanged(SettingsContainer sender, SettingChangedEventArgs e)
         => Messenger.Send(new SettingsRequestThemeChangedMessage((ElementTheme)e.NewValue!));
 
     private void SettingsService_CurrentLanguageChanged(SettingsContainer sender, SettingChangedEventArgs e)

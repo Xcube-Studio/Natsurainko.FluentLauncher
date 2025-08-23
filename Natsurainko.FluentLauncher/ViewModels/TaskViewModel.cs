@@ -191,45 +191,48 @@ internal abstract partial class TaskViewModel : ObservableObject
         return timer;
     }
 
-    protected virtual void Timer_Elapsed(object? sender, ElapsedEventArgs e) 
+    protected virtual void Timer_Elapsed(object? sender, ElapsedEventArgs e)
         => App.DispatcherQueue.TryEnqueue(() => OnPropertyChanged(nameof(TimeUsage)));
 
     protected virtual void NotifyException(INotificationService notificationService) { }
 }
 
-#region Download Mod Task
+#region Download Resource Task
 
-internal partial class DownloadModTaskViewModel : TaskViewModel
+internal partial class DownloadResourceTaskViewModel : TaskViewModel
 {
     private readonly DownloadService _downloadService;
 
     private readonly string _filePath;
     private readonly Task<string> _getUrlTask;
+    private readonly Action<string>? _downloadedAction;
 
     private DownloadTask? DownloadTask { get; set; }
 
-    protected override ILogger Logger { get; } = App.GetService<ILogger<DownloadModTaskViewModel>>();
+    protected override ILogger Logger { get; } = App.GetService<ILogger<DownloadResourceTaskViewModel>>();
 
-    public DownloadModTaskViewModel(DownloadService downloadService, CurseForgeFile curseForgeFile, string folder)
+    public DownloadResourceTaskViewModel(DownloadService downloadService, CurseForgeFile curseForgeFile, string folder, Action<string>? action = null)
     {
         _downloadService = downloadService;
         _filePath = Path.Combine(folder, curseForgeFile.FileName);
         _getUrlTask = Task.Run(() => App.GetService<CurseForgeClient>().GetFileUrlAsync(curseForgeFile));
+        _downloadedAction = action;
     }
 
-    public DownloadModTaskViewModel(DownloadService downloadService, ModrinthFile modrinthFile, string folder)
+    public DownloadResourceTaskViewModel(DownloadService downloadService, ModrinthFile modrinthFile, string folder, Action<string>? action = null)
     {
         _downloadService = downloadService;
         _filePath = Path.Combine(folder, modrinthFile.FileName);
         _getUrlTask = Task.FromResult(modrinthFile.Url);
+        _downloadedAction = action;
     }
 
-    public DownloadModTaskViewModel(DownloadService downloadService, string url, string filePath)
+    public DownloadResourceTaskViewModel(DownloadService downloadService, string url, string filePath, Action<string>? action = null)
     {
         _downloadService = downloadService;
-
         _filePath = filePath;
         _getUrlTask = Task.FromResult(url);
+        _downloadedAction = action;
     }
 
     #region Basic Properties
@@ -277,6 +280,8 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
             OnPropertyChanged(nameof(DownloadedBytes));
             OnPropertyChanged(nameof(TotalBytes));
         });
+
+        _downloadedAction?.Invoke(_filePath);
     }
 
     [RelayCommand]
@@ -294,9 +299,11 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
     [RelayCommand]
     void Retry()
     {
-        if (DownloadTask == null) return;
+        if (DownloadTask == null)
+            return;
 
-        _downloadService.DownloadModFileAsync(DownloadTask.Request.Url, _filePath).Forget();
+        _downloadService.DownloadResourceFileAsync(DownloadTask.Request.Url, _filePath, _downloadedAction).Forget();
+
         Remove();
     }
 
@@ -305,8 +312,7 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
 
     #region Exception
 
-    public override string InfoBarTitle => LocalizedStrings.Notifications__TaskFailed_ModDownload;
-
+    public override string InfoBarTitle => LocalizedStrings.Notifications__TaskFailed_ResourceDownload;
 
     #endregion
 
@@ -336,10 +342,12 @@ internal partial class DownloadModTaskViewModel : TaskViewModel
 
 #region Install Instance Task
 
-class InstallationViewModel<TStage> : IProgress<InstallerProgress<TStage>>
+class InstallationViewModel<TStage> : IProgress<IInstallerProgress>
     where TStage : struct, Enum
 {
     public Dictionary<TStage, InstallationStageViewModel> Stages { get; } = [];
+
+    public event EventHandler<InstallationStageViewModel>? StageSkipped;
 
     public InstallationViewModel()
     {
@@ -347,13 +355,19 @@ class InstallationViewModel<TStage> : IProgress<InstallerProgress<TStage>>
 
         foreach (var name in Enum.GetNames<TStage>())
             Stages.Add(Enum.Parse<TStage>(name), new InstallationStageViewModel
-                { TaskName = LocalizedStrings.GetString($"Tasks_DownloadPage__{enumTypeName}_{name}") });
+            { TaskName = LocalizedStrings.GetString($"Tasks_DownloadPage__{enumTypeName}_{name}") });
     }
 
-    public void Report(InstallerProgress<TStage> value)
+    public void Report(IInstallerProgress value)
     {
-        var vm = Stages[value.Stage];
-        App.DispatcherQueue.TryEnqueue(() => vm.UpdateProgress(value.StageProgress));
+        if (value is InstallerProgress<TStage> progress)
+        {
+            var vm = Stages[progress.Stage];
+            App.DispatcherQueue.TryEnqueue(() => vm.UpdateProgress(value.StageProgress));
+
+            if (value.StageProgress.Type == InstallerStageProgressType.Skiped)
+                StageSkipped?.Invoke(this, vm);
+        }
     }
 }
 
@@ -428,9 +442,9 @@ internal partial class InstallInstanceTaskViewModel(
     DownloadService downloadService,
     IInstanceInstaller instanceInstaller,
     InstanceInstallConfig instanceInstallConfig,
-    IEnumerable<InstallationStageViewModel> stageViewModels) : TaskViewModel
+    ObservableCollection<InstallationStageViewModel> stageViewModels) : TaskViewModel
 {
-    private MinecraftInstance? _minecraftInstance;
+    protected MinecraftInstance? _minecraftInstance;
 
     protected override ILogger Logger { get; } = App.GetService<ILogger<InstallInstanceTaskViewModel>>();
 
@@ -450,7 +464,7 @@ internal partial class InstallInstanceTaskViewModel(
 
     #region Stage Properties
 
-    public IEnumerable<InstallationStageViewModel> StageViewModels { get; } = stageViewModels;
+    public ObservableCollection<InstallationStageViewModel> StageViewModels { get; } = stageViewModels;
 
     #endregion
 
@@ -477,13 +491,13 @@ internal partial class InstallInstanceTaskViewModel(
 
         if (instanceInstallConfig.SecondaryLoader?.SelectedInstallData is OptiFineInstallData installData)
         {
-            downloadService.DownloadModFileAsync(
+            downloadService.DownloadResourceFileAsync(
                 $"https://bmclapi2.bangbang93.com/optifine/{instanceInstallConfig.ManifestItem.Id}/{installData.Type}/{installData.Patch}",
                 Path.Combine(modsFolder, installData.FileName)).Forget();
         }
 
         foreach (var item in instanceInstallConfig.AdditionalMods)
-            downloadService.DownloadModFileAsync(item, modsFolder).Forget();
+            downloadService.DownloadResourceFileAsync(item, modsFolder).Forget();
 
         #endregion
     }
@@ -495,14 +509,16 @@ internal partial class InstallInstanceTaskViewModel(
     void OpenInstanceFolder() => ExplorerHelper.OpenFolder(_minecraftInstance!.GetGameDirectory());
 
     [RelayCommand]
-    void Retry()
+    void Retry() => RetryBehavior();
+
+    [RelayCommand]
+    protected void Remove() => downloadService.DownloadTasks.Remove(this);
+
+    protected virtual void RetryBehavior()
     {
         downloadService.InstallInstanceAsync(instanceInstallConfig).Forget();
         Remove();
     }
-
-    [RelayCommand]
-    void Remove() => downloadService.DownloadTasks.Remove(this);
 
     #region Exception
 
@@ -529,6 +545,53 @@ internal partial class InstallInstanceTaskViewModel(
 
 #endregion
 
+#region Install Modpack Task
+
+internal partial class InstallModpackTaskViewModel : InstallInstanceTaskViewModel
+{
+    private readonly DownloadService _downloadService;
+    private readonly IInstanceInstaller _instanceInstaller;
+
+    private readonly ModpackInstallConfig _modpackInstallConfig;
+
+    public InstallModpackTaskViewModel(
+        DownloadService downloadService,
+        IInstanceInstaller instanceInstaller,
+        ModpackInstallConfig modpackInstallConfig,
+        ObservableCollection<InstallationStageViewModel> stageViewModels)
+        : base(downloadService, instanceInstaller, null!, stageViewModels)
+    {
+        _downloadService = downloadService;
+        _instanceInstaller = instanceInstaller;
+
+        _modpackInstallConfig = modpackInstallConfig;
+    }
+
+    protected override ILogger Logger { get; } = App.GetService<ILogger<InstallModpackTaskViewModel>>();
+
+    public override string Title => _modpackInstallConfig.InstanceId;
+
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
+    {
+        _minecraftInstance = await _instanceInstaller.InstallAsync(cancellationToken);
+
+        InstanceConfig config = _minecraftInstance.GetConfig();
+        config.EnableIndependencyCore = true;
+        config.EnableSpecialSetting = true;
+
+        App.GetService<GameService>().RefreshGames();
+        await App.DispatcherQueue.EnqueueAsync(() => Installed = true);
+    }
+
+    protected override void RetryBehavior()
+    {
+        _downloadService.InstallModpackAsync(_modpackInstallConfig).Forget();
+        Remove();
+    }
+}
+
+#endregion
+
 #region Launch Task
 
 class LaunchProgressViewModel : IProgress<LaunchProgress>
@@ -536,17 +599,17 @@ class LaunchProgressViewModel : IProgress<LaunchProgress>
     public Dictionary<LaunchStage, LaunchStageViewModel> Stages { get; } = [];
 
     private LaunchStage _currentStage;
-    public LaunchStage CurrentStage 
-    { 
+    public LaunchStage CurrentStage
+    {
         get => _currentStage;
-        set 
+        set
         {
             if (_currentStage != value)
             {
                 _currentStage = value;
                 CurrentStageChanged?.Invoke(this, Stages[value]);
             }
-        } 
+        }
     }
 
     public event EventHandler<LaunchStageViewModel>? CurrentStageChanged;
@@ -554,8 +617,8 @@ class LaunchProgressViewModel : IProgress<LaunchProgress>
     public LaunchProgressViewModel()
     {
         foreach (var name in Enum.GetNames<LaunchStage>())
-            Stages.Add(Enum.Parse<LaunchStage>(name), new LaunchStageViewModel 
-                { TaskName = LocalizedStrings.GetString($"Tasks_LaunchPage__TaskName_{name}") });
+            Stages.Add(Enum.Parse<LaunchStage>(name), new LaunchStageViewModel
+            { TaskName = LocalizedStrings.GetString($"Tasks_LaunchPage__TaskName_{name}") });
     }
 
     public virtual void Report(LaunchProgress value)
@@ -582,7 +645,7 @@ class QuickLaunchProgressViewModel : LaunchProgressViewModel
 
     public string InstanceDisplayName { get; }
 
-    public QuickLaunchProgressViewModel(MinecraftInstance instance) : base() 
+    public QuickLaunchProgressViewModel(MinecraftInstance instance) : base()
     {
         _minecraftInstance = instance;
         InstanceDisplayName = instance.GetDisplayName();
@@ -844,7 +907,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
         finally
         {
             Timer.Stop();
-            await App.DispatcherQueue.EnqueueAsync(() => IsLaunching = false );
+            await App.DispatcherQueue.EnqueueAsync(() => IsLaunching = false);
         }
 
         await App.DispatcherQueue.EnqueueAsync(() =>
@@ -868,10 +931,10 @@ internal partial class LaunchTaskViewModel : TaskViewModel
         {
             ProcessExited = true;
             Crashed = !_isMcProcessKilled && McProcess.Process.ExitCode != 0;
-            TaskState = _isMcProcessKilled 
+            TaskState = _isMcProcessKilled
                 ? TaskState.Finished
                 : Crashed
-                    ? TaskState.Finished 
+                    ? TaskState.Finished
                     : TaskState.Failed;
         });
 
@@ -907,7 +970,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
     }
 
     [RelayCommand]
-    async Task CreateScript(IDialogActivationService<ContentDialogResult> dialogActivationService) 
+    async Task CreateScript(IDialogActivationService<ContentDialogResult> dialogActivationService)
         => await dialogActivationService.ShowAsync("CreateLaunchScriptDialog", McProcess);
 
     [RelayCommand]
@@ -927,7 +990,7 @@ internal partial class LaunchTaskViewModel : TaskViewModel
 
     public override string InfoBarTitle => LocalizedStrings.Notifications__TaskFailed_Launch;
 
-    public override string ExceptionTitle 
+    public override string ExceptionTitle
     {
         get
         {

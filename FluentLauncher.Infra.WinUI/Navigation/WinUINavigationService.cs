@@ -131,7 +131,10 @@ public class WinUINavigationService : INavigationService
             // After navigation
             if (page.ReadLocalValue(FrameworkElement.DataContextProperty) != DependencyProperty.UnsetValue && // Requires VM set for the page, rather than inherited
                 page.DataContext is INavigationAware vmAfter)
+            {
+                vmAfter.SetNavigationKey(key);
                 vmAfter.OnNavigatedTo(parameter);
+            }
         }
     }
 }

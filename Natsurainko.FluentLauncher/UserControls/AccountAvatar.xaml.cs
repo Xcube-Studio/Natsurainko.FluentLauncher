@@ -98,7 +98,7 @@ public sealed partial class AccountAvatar : UserControl, IRecipient<SkinTextureU
 
     void IRecipient<SkinTextureUpdatedMessage>.Receive(SkinTextureUpdatedMessage message)
     {
-        DispatcherQueue.TryEnqueue(() => 
+        DispatcherQueue.TryEnqueue(() =>
         {
             if (message.Value.ProfileEquals(Account))
                 RenderAvatar().Forget();

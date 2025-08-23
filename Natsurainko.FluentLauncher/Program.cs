@@ -72,8 +72,20 @@ pages.WithPage<Views.Downloads.Instances.DefaultPage, ViewModels.Downloads.Insta
 pages.WithPage<Views.Downloads.Instances.InstallPage, ViewModels.Downloads.Instances.InstallViewModel>("InstancesDownload/Install");
 
 pages.WithPage<Views.Downloads.Mods.NavigationPage, ViewModels.Downloads.Mods.NavigationViewModel>("ModsDownload/Navigation");
-pages.WithPage<Views.Downloads.Mods.DefaultPage, ViewModels.Downloads.Mods.DefaultViewModel>("ModsDownload/Default");
-pages.WithPage<Views.Downloads.Mods.ModPage, ViewModels.Downloads.Mods.ModViewModel>("ModsDownload/Mod");
+pages.WithPage<Views.Downloads.ResourceDefaultPage, ViewModels.Downloads.Mods.DefaultViewModel>("ModsDownload/Default");
+pages.WithPage<Views.Downloads.ResourcePage, ViewModels.Downloads.ResourceViewModel>("ModsDownload/Resource");
+
+pages.WithPage<Views.Downloads.Modpacks.NavigationPage, ViewModels.Downloads.Modpacks.NavigationViewModel>("ModpacksDownload/Navigation");
+pages.WithPage<Views.Downloads.ResourceDefaultPage, ViewModels.Downloads.Modpacks.DefaultViewModel>("ModpacksDownload/Default");
+pages.WithPage<Views.Downloads.ResourcePage, ViewModels.Downloads.ResourceViewModel>("ModpacksDownload/Resource");
+
+pages.WithPage<Views.Downloads.TexturePacks.NavigationPage, ViewModels.Downloads.TexturePacks.NavigationViewModel>("TexturePacksDownload/Navigation");
+pages.WithPage<Views.Downloads.ResourceDefaultPage, ViewModels.Downloads.TexturePacks.DefaultViewModel>("TexturePacksDownload/Default");
+pages.WithPage<Views.Downloads.ResourcePage, ViewModels.Downloads.ResourceViewModel>("TexturePacksDownload/Resource");
+
+pages.WithPage<Views.Downloads.Shaders.NavigationPage, ViewModels.Downloads.Shaders.NavigationViewModel>("ShadersDownload/Navigation");
+pages.WithPage<Views.Downloads.ResourceDefaultPage, ViewModels.Downloads.Shaders.DefaultViewModel>("ShadersDownload/Default");
+pages.WithPage<Views.Downloads.ResourcePage, ViewModels.Downloads.ResourceViewModel>("ShadersDownload/Resource");
 
 // Tasks page
 pages.WithPage<Views.Tasks.LaunchPage, ViewModels.Tasks.LaunchViewModel>("Tasks/Launch");
@@ -103,6 +115,8 @@ dialogs.WithDialog<Views.Dialogs.UploadSkinDialog, ViewModels.Dialogs.UploadSkin
 dialogs.WithDialog<Views.Dialogs.SelectColorDialog, ViewModels.Dialogs.SelectColorDialogViewModel>("SelectColorDialog");
 dialogs.WithDialog<Views.Dialogs.SelectImageThemeColorDialog, ViewModels.Dialogs.SelectImageThemeColorDialogViewModel>("SelectImageThemeColorDialog");
 dialogs.WithDialog<Views.Dialogs.CreateLaunchScriptDialog, ViewModels.Dialogs.CreateLaunchScriptDialogViewModel>("CreateLaunchScriptDialog");
+dialogs.WithDialog<Views.Dialogs.ImportModpackDialog, ViewModels.Dialogs.ImportModpackDialogViewModel>("ImportModpackDialog");
+dialogs.WithDialog<Views.Dialogs.InputInstanceIdDialog, ViewModels.Dialogs.InputInstanceIdDialogViewModel>("InputInstanceIdDialog");
 
 #if FLUENT_LAUNCHER_PREVIEW_CHANNEL
 dialogs.WithDialog<Views.Dialogs.UpdateDialog, ViewModels.Dialogs.UpdateDialogViewModel>("UpdateDialog");
@@ -121,16 +135,14 @@ services.UseResourceClients();
 services.AddSingleton<SettingsService>();
 services.AddSingleton<ISettingsStorage, WinRTSettingsStorage>();
 
-// FluentCore Services
+// Services
 services.AddSingleton<GameService>();
 services.AddSingleton<LaunchService>();
 services.AddSingleton<AccountService>();
+services.AddSingleton<AuthenticationService>();
 services.AddSingleton<DownloadService>();
-
-// Services
 services.AddSingleton<LocalStorageService>();
 services.AddSingleton<MessengerService>();
-services.AddSingleton<AuthenticationService>();
 services.AddSingleton<AppearanceService>();
 services.AddSingleton<CacheInterfaceService>();
 services.AddSingleton<QuickLaunchService>();
@@ -162,7 +174,7 @@ internal partial class Program
 
     public static IHost AppHost { get; private set; } = null!;
 
-    public static Option<string> MinecraftFolderOption { get; } = new (name: "--minecraftFolder") { IsRequired = true };
+    public static Option<string> MinecraftFolderOption { get; } = new(name: "--minecraftFolder") { IsRequired = true };
 
     public static Option<string> InstanceIdOption { get; } = new(name: "--instanceId") { IsRequired = true };
 
@@ -185,8 +197,8 @@ internal partial class Program
         quickLaunchCommand.AddOption(MinecraftFolderOption);
         quickLaunchCommand.AddOption(InstanceIdOption);
 
-        quickLaunchCommand.SetHandler(async (folder, instanceId) => 
-            await AppHost.Services.GetService<QuickLaunchService>()!.LaunchFromArguments(folder, instanceId), 
+        quickLaunchCommand.SetHandler(async (folder, instanceId) =>
+            await AppHost.Services.GetService<QuickLaunchService>()!.LaunchFromArguments(folder, instanceId),
             MinecraftFolderOption, InstanceIdOption);
 
         return quickLaunchCommand;

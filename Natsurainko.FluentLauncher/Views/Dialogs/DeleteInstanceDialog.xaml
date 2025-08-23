@@ -8,7 +8,7 @@
     mc:Ignorable="d">
     <ContentDialog.Title>
         <TextBlock Margin="24,24,24,0">
-            <Run x:Uid="Dialogs_DeleteGameDialog_T" Text="Delete Core" />
+            <Run x:Uid="Dialogs_DeleteInstanceDialog_Title" Text="Delete Instance" />
             <Run Text="{x:Bind VM.Title, Mode=OneWay}" />
         </TextBlock>
     </ContentDialog.Title>
@@ -41,15 +41,15 @@
             Padding="24,0,24,20"
             Spacing="5">
             <TextBlock Style="{ThemeResource BaseTextBlockStyle}">
-                <Run x:Uid="Dialogs_DeleteGameDialog_D1" Text="Are you sure you want to delete this core?" />
+                <Run x:Uid="Dialogs_DeleteInstanceDialog_Text1" Text="Are you sure you want to delete this instance?" />
                 <LineBreak />
                 <Run Text="{x:Bind VM.Title, Mode=OneWay}" />
-                <Run x:Uid="Dialogs_DeleteGameDialog_D2" Text="will be lost forever! (A long time)" />
+                <Run x:Uid="Dialogs_DeleteInstanceDialog_Text2" Text="will be lost forever! (A long time)" />
             </TextBlock>
             <CheckBox
-                x:Uid="Dialogs_DeleteGameDialog_CheckBox"
-                Content="Delete together with stored core settings"
-                IsChecked="{x:Bind VM.DeleteCoreSettings, Mode=TwoWay}" />
+                x:Uid="Dialogs_DeleteInstanceDialog_CheckBox"
+                Content="Delete together with stored instance settings"
+                IsChecked="{x:Bind VM.DeleteInstanceSettings, Mode=TwoWay}" />
         </StackPanel>
 
         <Rectangle

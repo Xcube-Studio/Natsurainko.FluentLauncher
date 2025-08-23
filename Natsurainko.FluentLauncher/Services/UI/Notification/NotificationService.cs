@@ -5,11 +5,11 @@ using System.Linq;
 namespace Natsurainko.FluentLauncher.Services.UI.Notification;
 
 internal class NotificationService(
-    InfoBarPresenter infoBarPresenter, 
-    SystemNotificationPresenter systemNotificationPresenter, 
+    InfoBarPresenter infoBarPresenter,
+    SystemNotificationPresenter systemNotificationPresenter,
     TeachingTipPresenter teachingTipPresenter) : INotificationService
 {
-    public List<INotificationPresenter> Presenters { get; } = 
+    public List<INotificationPresenter> Presenters { get; } =
     [
         infoBarPresenter,
         systemNotificationPresenter,

@@ -25,7 +25,7 @@ internal class ForgeVersionComparer : IComparer<ForgeInstallData>
         {
             if (x.Build == y.Build)
                 return 0;
-            else if (x.Build > y.Build) 
+            else if (x.Build > y.Build)
                 return 1;
             else return -1;
         }

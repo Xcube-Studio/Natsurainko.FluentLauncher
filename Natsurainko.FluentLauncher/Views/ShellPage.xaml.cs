@@ -133,16 +133,17 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         OnPropertyChanged(nameof(CanGoBack));
     }
 
-    private void NavigationViewControl_ItemInvoked(NavigationView _, NavigationViewItemInvokedEventArgs args)
+    private void NavigationViewControl_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
         if (isUpdatingNavigationItemSelection)
             return;
 
-        NavigationViewItem navigationViewItem = ((NavigationViewItem)args.InvokedItemContainer);
+        if (args.SelectedItemContainer is not NavigationViewItem navigationViewItem)
+            return;
 
         if (!navigationViewItem.SelectsOnInvoked) return;
 
-        string pageTag = navigationViewItem.Tag.ToString() 
+        string pageTag = navigationViewItem.Tag.ToString()
             ?? throw new ArgumentNullException("The invoked item's tag is null.");
 
         VM.NavigationService.NavigateTo(pageTag);
@@ -164,14 +165,19 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         {
             foreach (object item in menuItems)
             {
-                if (item is not NavigationViewItem navigationViewItem) 
+                if (item is not NavigationViewItem navigationViewItem)
                     continue;
 
                 string? tag = navigationViewItem.GetTag();
 
                 if (tag is not null && pageProvider.RegisteredPages[tag].PageType == e.SourcePageType)
                 {
+                    if (navigationViewItem.Parent is NavigationViewItem parentItem)
+                        parentItem.IsExpanded = true;
+
                     NavigationViewControl.SelectedItem = navigationViewItem;
+                    navigationViewItem.IsSelected = true;
+
                     break;
                 }
 
@@ -209,9 +215,9 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
 
     private void UseBackgroundMaskChanged(SettingsContainer sender, SettingChangedEventArgs e)
     {
-        NavViewPaneBackground.Visibility = 
-        TopNavViewPaneBackground.Visibility = 
-        SearchBoxAreaBackgroundBorder.Visibility = 
+        NavViewPaneBackground.Visibility =
+        TopNavViewPaneBackground.Visibility =
+        SearchBoxAreaBackgroundBorder.Visibility =
             _settings.UseBackgroundMask ? Visibility.Visible : Visibility.Collapsed;
 
         SearchBoxAreaGrid.Shadow = _settings.UseBackgroundMask ? SharedShadow : null;
@@ -266,7 +272,7 @@ public sealed partial class ShellPage : Page, INavigationProvider, INotifyProper
         RootSplitView.Padding = new Thickness(1);
 
         var PaneContentGrid = NavigationViewControl.FindChild<Grid>("PaneContentGrid")!;
-        PaneContentGrid.Padding = new Thickness(1,0,0,0);
+        PaneContentGrid.Padding = new Thickness(1, 0, 0, 0);
 
 #if ENABLE_LOAD_EXTENSIONS
         foreach (var extension in App.GetService<List<global::FluentLauncher.Infra.ExtensionHost.Extensions.IExtension>>())

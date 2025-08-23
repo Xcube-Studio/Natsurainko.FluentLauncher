@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Natsurainko.FluentLauncher.ViewModels.News;
 
-internal partial class NoteViewModel(CacheInterfaceService cacheInterfaceService) 
+internal partial class NoteViewModel(CacheInterfaceService cacheInterfaceService)
     : PageVM<NotePage>, INavigationAware
 {
     [ObservableProperty]

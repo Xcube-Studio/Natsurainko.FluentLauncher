@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Instances;
 
-internal partial class ConfigViewModel(AccountService accountService, IDialogActivationService<ContentDialogResult> dialogs) 
+internal partial class ConfigViewModel(AccountService accountService, IDialogActivationService<ContentDialogResult> dialogs)
     : PageVM, INavigationAware
 {
 

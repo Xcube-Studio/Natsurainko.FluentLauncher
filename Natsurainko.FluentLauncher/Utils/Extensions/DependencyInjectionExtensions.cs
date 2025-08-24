@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Http;
 using Nrk.FluentCore.Resources;
 using Serilog;
 using System;
@@ -35,6 +37,8 @@ internal static class DependencyInjectionExtensions
             {
                 builder.ConfigureHttpClient(c => c.DefaultRequestHeaders.UserAgent.Add(userAgent));
             });
+
+        services.Replace(ServiceDescriptor.Singleton<IHttpMessageHandlerBuilderFilter, CustomHttpMessageHandlerBuilderFilter>());
 
         return services;
     }

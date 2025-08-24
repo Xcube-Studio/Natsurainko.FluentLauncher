@@ -2,6 +2,10 @@ using FluentLauncher.Infra.UI.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.ViewModels.Settings;
 
+#if FLUENT_LAUNCHER_PREVIEW_CHANNEL
+using Natsurainko.FluentLauncher.Utils;
+#endif
+
 namespace Natsurainko.FluentLauncher.Views.Settings;
 
 public sealed partial class AboutPage : Page, IBreadcrumbBarAware

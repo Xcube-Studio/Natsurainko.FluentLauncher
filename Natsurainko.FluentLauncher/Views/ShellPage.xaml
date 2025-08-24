@@ -256,6 +256,7 @@
             x:Name="NavigationViewControl"
             Grid.Row="0"
             Grid.RowSpan="3"
+            x:FieldModifier="public"
             BackRequested="NavigationViewControl_BackRequested"
             DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
             IsBackButtonVisible="Visible"

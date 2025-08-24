@@ -97,7 +97,7 @@ internal abstract partial class ResourceDefaultViewModel(
         SearchReceiveHandle(string.Empty);
     }
 
-    void SearchReceiveHandle(string query)
+    void SearchReceiveHandle(string query, bool slugMode = false)
     {
         if (!IsActive) return;
 
@@ -122,6 +122,7 @@ internal abstract partial class ResourceDefaultViewModel(
                     0 => (await curseForgeClient.SearchResourcesAsync(query, CurseForgeResourceType,
                             categoryId: CurseForgeCategories[SelectedCategory],
                             version: FilteredVersion == LocalizedStrings.ResourceCategories__All ? null : FilteredVersion,
+                            slugMode: slugMode,
                             cancellationToken: _cancellationTokenSource.Token)).ToArray(),
                     1 => (await modrinthClient.SearchResourcesAsync(query, ModrinthResourceType,
                             categories: SelectedCategory == "all" ? null : SelectedCategory,
@@ -142,6 +143,9 @@ internal abstract partial class ResourceDefaultViewModel(
                     SearchResult = result == null ? null : new(result);
                     Searched = !string.IsNullOrEmpty(query);
                     SearchQuery = query;
+
+                    if (slugMode && ResourceSource == 0 && result?.Length == 1)
+                        ResourceItemInvoke(result.First());
                 });
             }
         }, _cancellationTokenSource.Token);
@@ -159,7 +163,9 @@ internal abstract partial class ResourceDefaultViewModel(
 
     protected override void OnLoaded()
     {
-        searchProviderService.OccupyQueryReceiver(this, SearchReceiveHandle);
+        searchProviderService.OccupyQueryReceiver(this, query => SearchReceiveHandle(query));
+        searchProviderService.RegisterSuggestionProvider(this, SuggestionProvider);
+
         SearchReceiveHandle(SearchQuery);
 
         depressCategoryChangedInvokeSearch = false;
@@ -167,10 +173,20 @@ internal abstract partial class ResourceDefaultViewModel(
 
     protected override void OnUnloaded()
     {
+        searchProviderService.UnregisterSuggestionProvider(this);
+
         _cancellationTokenSource?.Cancel();
         _cancellationTokenSource?.Dispose();
 
         GC.Collect();
+    }
+
+    private IEnumerable<Suggestion> SuggestionProvider(string query)
+    {
+        if (CurseForgeResourceType != CurseForgeResourceType.McMod || string.IsNullOrEmpty(query))
+            return [];
+
+        return SuggestionHelper.GetSearchModSuggestions(query, ResourceSource, slug => SearchReceiveHandle(slug, true));
     }
 
     public static readonly string[] MinecraftVersions = [

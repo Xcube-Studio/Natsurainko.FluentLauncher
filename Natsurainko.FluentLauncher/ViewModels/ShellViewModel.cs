@@ -77,8 +77,9 @@ internal partial class ShellViewModel : PageVM<ShellPage>, INavigationAware,
                 },
                 Message = LocalizedStrings.Notifications__TaskCreated_Description_Download,
                 FontIcon = "\uE945",
-                IsClosable = true,
-                Target = Page.DownloadTaskNavigationViewItem
+                Target = Page.NavigationViewControl.DisplayMode == Microsoft.UI.Xaml.Controls.NavigationViewDisplayMode.Minimal
+                    ? null
+                    : Page.DownloadTaskNavigationViewItem
             });
         });
     }

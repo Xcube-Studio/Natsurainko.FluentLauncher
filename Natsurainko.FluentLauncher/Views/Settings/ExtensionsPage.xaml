@@ -7,7 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Natsurainko.FluentLauncher.Views.Settings"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:xh="using:Natsurainko.FluentLauncher.XamlHelpers"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Xaml"
     mc:Ignorable="d">
 
     <ScrollViewer>

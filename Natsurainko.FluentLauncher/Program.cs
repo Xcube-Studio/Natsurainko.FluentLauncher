@@ -98,6 +98,7 @@ pages.WithPage<Views.Settings.LaunchPage, ViewModels.Settings.LaunchViewModel>("
 pages.WithPage<Views.Settings.AccountPage, ViewModels.Settings.AccountViewModel>("Settings/Account");
 pages.WithPage<Views.Settings.DownloadPage, ViewModels.Settings.DownloadViewModel>("Settings/Download");
 pages.WithPage<Views.Settings.AppearancePage, ViewModels.Settings.AppearanceViewModel>("Settings/Appearance");
+pages.WithPage<Views.Settings.LauncherPage, ViewModels.Settings.LauncherViewModel>("Settings/Launcher");
 pages.WithPage<Views.Settings.AboutPage, ViewModels.Settings.AboutViewModel>("Settings/About");
 pages.WithPage<Views.Settings.SkinPage, ViewModels.Settings.SkinViewModel>("Settings/Account/Skin");
 

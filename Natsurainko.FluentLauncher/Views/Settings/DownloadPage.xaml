@@ -26,21 +26,36 @@
                 <TextBlock
                     x:Uid="Settings_DownloadPage_T1"
                     Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
-                    Text="Download" />
+                    Text="Network" />
 
                 <controls:SettingsCard
                     x:Uid="Settings_DownloadPage_Card1"
-                    Header="Current download sources"
+                    Description="Applicable to Minecraft original list pull and instance installation, loader installation, not applicable to other resource interfaces"
+                    Header="Current download source"
                     HeaderIcon="{xh:FontIcon Glyph=&#xEBD3;}">
-                    <ComboBox SelectedItem="{x:Bind VM.CurrentDownloadSource, Mode=TwoWay}">
-                        <x:String>Mojang</x:String>
-                        <x:String>Bmclapi</x:String>
+                    <ComboBox MinWidth="200" SelectedIndex="{x:Bind VM.CurrentDownloadSource, Mode=TwoWay}">
+                        <ComboBoxItem x:Uid="Settings_DownloadPage_Item1" Content="Official Download Sources (except OptiFine)" />
+                        <ComboBoxItem x:Uid="Settings_DownloadPage_Item2" Content="bangbang93's Mirror Download Source" />
                     </ComboBox>
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
                     x:Uid="Settings_DownloadPage_Card2"
-                    Description="Please optimize and adjust according to the actual network environment"
+                    Description="Community-provided mirror interfaces (Mcim)"
+                    Header="Mirror interfaces for third-party resources (for CurseForge and Modrinth)"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xEBD3;}"
+                    IsEnabled="False">
+                    <ToggleSwitch />
+                </controls:SettingsCard>
+
+                <TextBlock
+                    x:Uid="Settings_DownloadPage_T2"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Download Behavior" />
+
+                <controls:SettingsCard
+                    x:Uid="Settings_DownloadPage_Card3"
+                    Description="We recommend that this value should not be higher than 64. Too high a number of download threads may be considered an attack or an unreasonable request by the server and the connection may be rejected."
                     Header="Maximum number of download threads"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE713;}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
@@ -62,48 +77,63 @@
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
-                    x:Uid="Settings_DownloadPage_Card3"
+                    x:Uid="Settings_DownloadPage_Card4"
                     Description="Can effectively speed up when encountering large files"
                     Header="Enable fragmented download of large files"
                     HeaderIcon="{xh:FontIcon Glyph=&#xEC4A;}">
                     <ToggleSwitch IsOn="{x:Bind VM.EnableFragmentDownload, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
-                <TextBlock
-                    x:Uid="Settings_DownloadPage_T2"
-                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
-                    Text="Cache" />
-
                 <controls:SettingsCard
-                    x:Uid="Settings_DownloadPage_Card4"
-                    ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
-                    Command="{x:Bind VM.OpenCacheFolderCommand}"
-                    CommandParameter="{x:Bind VM.CoreConfigurationsFolder, Mode=OneWay}"
-                    Header="Specific core configuration storage directory"
-                    HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
-                    IsClickEnabled="True">
-                    <controls:SettingsCard.Description>
+                    x:Uid="Settings_DownloadPage_Card5"
+                    Description="We recommend that this value should not be higher than 8. Too high a number of download threads may be considered an attack or an unreasonable request by the server and the connection may be rejected."
+                    Header="Number of download shards"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xE713;}"
+                    IsEnabled="{x:Bind VM.EnableFragmentDownload, Mode=OneWay}">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
                         <TextBlock
-                            Text="{x:Bind VM.CoreConfigurationsFolder, Mode=OneWay}"
-                            TextTrimming="CharacterEllipsis"
-                            TextWrapping="NoWrap" />
-                    </controls:SettingsCard.Description>
+                            VerticalAlignment="Center"
+                            Style="{ThemeResource BaseTextBlockStyle}"
+                            Text="{x:Bind VM.FragmentDownloadWorkerCount, Mode=OneWay}" />
+
+                        <Slider
+                            Width="128"
+                            Maximum="16"
+                            Minimum="4"
+                            SnapsTo="Ticks"
+                            TickFrequency="2"
+                            TickPlacement="Outside"
+                            Value="{x:Bind VM.FragmentDownloadWorkerCount, Mode=TwoWay}">
+                            <i:Interaction.Behaviors>
+                                <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
+                            </i:Interaction.Behaviors>
+                        </Slider>
+                    </StackPanel>
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
-                    x:Uid="Settings_DownloadPage_Card5"
-                    ActionIcon="{xh:FontIcon Glyph=&#xED43;}"
-                    Command="{x:Bind VM.OpenCacheFolderCommand}"
-                    CommandParameter="{x:Bind VM.LauncherCacheFolder, Mode=OneWay}"
-                    Header="Launcher cache folder (including caches of images, texts, interfaces, etc.)"
-                    HeaderIcon="{xh:FontIcon Glyph=&#xED43;}"
-                    IsClickEnabled="True">
-                    <controls:SettingsCard.Description>
+                    x:Uid="Settings_DownloadPage_Card6"
+                    Header="Maximum number of retries when download fails"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xE72C;}">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
                         <TextBlock
-                            Text="{x:Bind VM.LauncherCacheFolder, Mode=OneWay}"
-                            TextTrimming="CharacterEllipsis"
-                            TextWrapping="NoWrap" />
-                    </controls:SettingsCard.Description>
+                            VerticalAlignment="Center"
+                            Style="{ThemeResource BaseTextBlockStyle}"
+                            Text="{x:Bind VM.MaxRetryCount, Mode=OneWay}" />
+
+                        <Slider
+                            Width="128"
+                            Maximum="8"
+                            Minimum="4"
+                            SnapsTo="Ticks"
+                            TickFrequency="2"
+                            TickPlacement="Outside"
+                            Value="{x:Bind VM.MaxRetryCount, Mode=TwoWay}">
+                            <i:Interaction.Behaviors>
+                                <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
+                            </i:Interaction.Behaviors>
+                        </Slider>
+                    </StackPanel>
                 </controls:SettingsCard>
 
             </StackPanel>

@@ -64,6 +64,8 @@ internal partial class DownloadService
 
         _settingsService.MaxDownloadThreadsChanged += (_, _) => SetDownloader();
         _settingsService.CurrentDownloadSourceChanged += (_, _) => SetDownloader();
+        _settingsService.MaxRetryCountChanged += (_, _) => SetDownloader();
+        _settingsService.EnableFragmentDownloadChanged += (_, _) => SetDownloader();
     }
 
     public async Task DownloadResourceFileAsync(CurseForgeFile curseForgeFile, string folder, Action<string>? continueWith = null)
@@ -194,10 +196,11 @@ internal partial class DownloadService
     {
         _downloader = new(
             httpClient: _httpClient,
-            workersPerDownloadTask: 8,
+            workersPerDownloadTask: _settingsService.FragmentDownloadWorkerCount,
             concurrentDownloadTasks: _settingsService.MaxDownloadThreads,
             enableMultiPartDownload: _settingsService.EnableFragmentDownload,
-            mirror: DownloadMirror);
+            mirror: DownloadMirror,
+            maxRetryCount: _settingsService.MaxRetryCount);
     }
 
     IInstanceInstaller GetInstanceInstaller(

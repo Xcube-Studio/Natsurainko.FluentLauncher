@@ -34,12 +34,6 @@ internal class CacheInterfaceService(
         _ => LauncherMetaVersionManifest
     };
 
-    public string VersionManifestFileName => settingsService.CurrentDownloadSource switch
-    {
-        "Bmclapi" => "cache-interfaces\\bmclapi2.bangbang93.com\\version_manifest_v2.json",
-        _ => "cache-interfaces\\piston-meta.mojang.com\\version_manifest_v2.json"
-    };
-
     public Task<string?> RequestStringAsync(string url, InterfaceRequestMethod method, string? targetFileName = default)
         => RequestStringAsync(url, method, task => { }, targetFileName);
 

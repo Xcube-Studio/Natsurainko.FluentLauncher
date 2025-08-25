@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using Windows.Storage;
 using Windows.Win32.UI.WindowsAndMessaging;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Natsurainko.FluentLauncher.Services.Settings;
 
@@ -87,14 +88,20 @@ public partial class SettingsService : SettingsContainer
 
     #region Download Settings
 
-    [SettingItem(Default = "Mojang", Converter = typeof(JsonStringConverter<string>))]
+    [SettingItem(Default = "Official", Converter = typeof(JsonStringConverter<string>))]
     public partial string CurrentDownloadSource { get; set; }
 
     [SettingItem(Default = true, Converter = typeof(JsonStringConverter<bool>))]
     public partial bool EnableFragmentDownload { get; set; }
 
+    [SettingItem(Default = 4, Converter = typeof(JsonStringConverter<int>))]
+    public partial int FragmentDownloadWorkerCount { get; set; }
+
     [SettingItem(Default = 64, Converter = typeof(JsonStringConverter<int>))]
     public partial int MaxDownloadThreads { get; set; }
+
+    [SettingItem(Default = 6, Converter = typeof(JsonStringConverter<int>))]
+    public partial int MaxRetryCount { get; set; }
 
     #endregion
 

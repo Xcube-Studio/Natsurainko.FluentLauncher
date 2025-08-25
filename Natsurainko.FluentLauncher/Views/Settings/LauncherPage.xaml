@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="Natsurainko.FluentLauncher.Views.Settings.LauncherPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="using:Natsurainko.FluentLauncher.Xaml.Behaviors"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Settings"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xh="using:Natsurainko.FluentLauncher.Xaml"
+    mc:Ignorable="d">
+
+    <ScrollViewer>
+        <Border x:Name="border" Margin="{ThemeResource PageMarginWithBorder}">
+            <StackPanel
+                MaxWidth="1000"
+                HorizontalAlignment="Stretch"
+                Spacing="{StaticResource SettingsCardSpacing}">
+                <StackPanel.ChildrenTransitions>
+                    <EntranceThemeTransition FromVerticalOffset="50" />
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                </StackPanel.ChildrenTransitions>
+
+                <TextBlock Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}" Text="启动器行为" />
+
+                <controls:SettingsCard
+                    Description="转到启动任务页面或是留在主页由启动按钮控制该启动任务"
+                    Header="主页启动按钮点击后行为"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xe724;}">
+                    <ComboBox>
+                        <ComboBoxItem Content="转到启动任务页面" />
+                        <ComboBoxItem Content="由启动按钮继续控制" />
+                    </ComboBox>
+                </controls:SettingsCard>
+
+                <controls:SettingsCard Header="实例启动后启动器窗口行为" HeaderIcon="{xh:FontIcon Glyph=&#xe724;}">
+                    <ComboBox>
+                        <ComboBoxItem Content="无行为" />
+                        <ComboBoxItem Content="最小化主窗口" />
+                        <ComboBoxItem Content="打开日志窗口并最小化主窗口" />
+                    </ComboBox>
+                </controls:SettingsCard>
+
+                <controls:SettingsCard
+                    Description="目前仅支持中文搜索模组资源时提供建议"
+                    Header="资源搜索时提供本地化建议"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xE82F;}">
+                    <ToggleSwitch />
+                </controls:SettingsCard>
+
+                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="启动器存储设置" />
+
+                <controls:SettingsCard
+                    Description="启动器删除时，这些文件将被一起清理"
+                    Header="启动器存储文件夹"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xE838;}"
+                    IsClickEnabled="True" />
+
+                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="启动器日志" />
+
+                <controls:SettingsCard
+                    Description="启动器运行时，将会在该文件夹下记录相关运行日志，这些日志只会在本地存储"
+                    Header="启动器日志文件夹"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xE838;}"
+                    IsClickEnabled="True" />
+            </StackPanel>
+        </Border>
+
+        <!--  Visual states reflect the application's window size  -->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="LayoutVisualStates">
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger>
+                            <AdaptiveTrigger.MinWindowWidth>
+                                <x:Double>641</x:Double>
+                            </AdaptiveTrigger.MinWindowWidth>
+                        </AdaptiveTrigger>
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="border.Margin" Value="20, 0, 20, 20" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </ScrollViewer>
+</Page>

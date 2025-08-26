@@ -131,7 +131,7 @@ internal partial class HomeViewModel : PageVM, IRecipient<TrackLaunchTaskChanged
     [RelayCommand(CanExecute = nameof(CanExecuteLaunch))]
     async Task Launch()
     {
-        if (!_settingsService.EnableHomeLaunchTaskTrack)
+        if (_settingsService.HomePageLaunchButtonBehavior == 0)
         {
             _launchService.LaunchFromUI(ActiveMinecraftInstance);
             return;

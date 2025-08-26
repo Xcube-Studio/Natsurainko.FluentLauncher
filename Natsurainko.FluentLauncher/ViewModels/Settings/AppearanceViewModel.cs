@@ -82,10 +82,6 @@ internal partial class AppearanceViewModel : SettingsPageVM<AppearancePage>, ISe
     [BindToSetting(Path = nameof(SettingsService.HomeLaunchButtonSize))]
     public partial int HomeLaunchButtonSize { get; set; }
 
-    [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.EnableHomeLaunchTaskTrack))]
-    public partial bool EnableHomeLaunchTaskTrack { get; set; }
-
     public Color CurrentThemeColor => UseSystemAccentColor ? (Color)App.Current.Resources["RawSystemAccentColor"] : CustomThemeColor.GetValueOrDefault();
 
     public bool AcrylicIsSupported => DesktopAcrylicController.IsSupported();

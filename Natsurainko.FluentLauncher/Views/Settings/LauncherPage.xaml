@@ -23,48 +23,87 @@
                     <RepositionThemeTransition IsStaggeringEnabled="False" />
                 </StackPanel.ChildrenTransitions>
 
-                <TextBlock Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}" Text="启动器行为" />
+                <TextBlock
+                    x:Uid="Settings_LauncherPage_T1"
+                    Style="{ThemeResource SettingsTitleSectionHeaderTextBlockStyle}"
+                    Text="Launcher Behavior" />
 
                 <controls:SettingsCard
-                    Description="转到启动任务页面或是留在主页由启动按钮控制该启动任务"
-                    Header="主页启动按钮点击后行为"
+                    x:Uid="Settings_LauncherPage_Card1"
+                    Description="Navigate to the launch task page or stay on the home page to control the launch task using the launch button"
+                    Header="Behavior of the launcher window after clicking the home page launch button"
                     HeaderIcon="{xh:FontIcon Glyph=&#xe724;}">
-                    <ComboBox>
-                        <ComboBoxItem Content="转到启动任务页面" />
-                        <ComboBoxItem Content="由启动按钮继续控制" />
-                    </ComboBox>
-                </controls:SettingsCard>
-
-                <controls:SettingsCard Header="实例启动后启动器窗口行为" HeaderIcon="{xh:FontIcon Glyph=&#xe724;}">
-                    <ComboBox>
-                        <ComboBoxItem Content="无行为" />
-                        <ComboBoxItem Content="最小化主窗口" />
-                        <ComboBoxItem Content="打开日志窗口并最小化主窗口" />
-                    </ComboBox>
+                    <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items1}" SelectedIndex="{x:Bind VM.HomePageLaunchButtonBehavior, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
-                    Description="目前仅支持中文搜索模组资源时提供建议"
-                    Header="资源搜索时提供本地化建议"
+                    x:Uid="Settings_LauncherPage_Card2"
+                    Header="Behavior of the launcher window after the instance is launched"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xe724;}">
+                    <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items2}" SelectedIndex="{x:Bind VM.AfterInstanceLaunchedBehavior, Mode=TwoWay}" />
+                </controls:SettingsCard>
+
+                <controls:SettingsCard
+                    x:Uid="Settings_LauncherPage_Card3"
+                    Description="Currently only supports Chinese language search for mod resources"
+                    Header="Localized suggestions are provided during resource searches"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE82F;}">
-                    <ToggleSwitch />
+                    <ToggleSwitch IsOn="{x:Bind VM.EnableLocalizedResourceSuggestions, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
-                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="启动器存储设置" />
+                <TextBlock
+                    x:Uid="Settings_LauncherPage_T2"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Launcher Storage" />
 
                 <controls:SettingsCard
-                    Description="启动器删除时，这些文件将被一起清理"
-                    Header="启动器存储文件夹"
+                    x:Uid="Settings_LauncherPage_Card4"
+                    Command="{x:Bind VM.OpenStorageFolderCommand}"
+                    Description="These files will be cleaned up when the launcher is deleted"
+                    Header="Launcher storage folder"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE838;}"
                     IsClickEnabled="True" />
 
-                <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="启动器日志" />
+                <TextBlock
+                    x:Uid="Settings_LauncherPage_T3"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Launcher Logs" />
 
                 <controls:SettingsCard
-                    Description="启动器运行时，将会在该文件夹下记录相关运行日志，这些日志只会在本地存储"
-                    Header="启动器日志文件夹"
+                    x:Uid="Settings_LauncherPage_Card5"
+                    Command="{x:Bind VM.OpenLogFolderCommand}"
+                    Description="When the launcher is running, relevant operation logs will be recorded in this folder. These logs are only stored locally"
+                    Header="Launcher log folder"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE838;}"
                     IsClickEnabled="True" />
+
+                <TextBlock
+                    x:Uid="Settings_LauncherPage_T4"
+                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="System Integration" />
+
+                <controls:SettingsCard
+                    x:Uid="Settings_LauncherPage_Card6"
+                    Description="Maximum number of items in the Latest group to keep in the taskbar"
+                    Header="Latest item maximum number"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xebc6;}">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Style="{ThemeResource BaseTextBlockStyle}"
+                            Text="{x:Bind VM.MaxQuickLaunchLatestItem, Mode=OneWay}" />
+
+                        <Slider
+                            Width="128"
+                            Maximum="16"
+                            Minimum="3"
+                            Value="{x:Bind VM.MaxQuickLaunchLatestItem, Mode=TwoWay}">
+                            <i:Interaction.Behaviors>
+                                <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
+                            </i:Interaction.Behaviors>
+                        </Slider>
+                    </StackPanel>
+                </controls:SettingsCard>
             </StackPanel>
         </Border>
 

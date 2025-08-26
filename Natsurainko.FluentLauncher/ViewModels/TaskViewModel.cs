@@ -16,6 +16,7 @@ using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Network;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Services.UI.Notification;
 using Natsurainko.FluentLauncher.Utils;
@@ -35,6 +36,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using WinUIEx;
 using static Natsurainko.FluentLauncher.Services.Launch.LaunchProgress;
 using static Natsurainko.FluentLauncher.ViewModels.LaunchStageProgress;
 
@@ -915,6 +917,20 @@ internal partial class LaunchTaskViewModel : TaskViewModel
             Progress = 1;
             ProcessLaunched = true;
         });
+
+        App.DispatcherQueue.EnqueueAsync(() =>
+        {
+            switch (App.GetService<SettingsService>().AfterInstanceLaunchedBehavior)
+            {
+                case 1:
+                    App.MainWindow.Minimize();
+                    break;
+                case 2:
+                    App.MainWindow.Minimize();
+                    ShowLogger();
+                    break;
+            }
+        }).Forget();
 
         Task.Run(async () =>
         {

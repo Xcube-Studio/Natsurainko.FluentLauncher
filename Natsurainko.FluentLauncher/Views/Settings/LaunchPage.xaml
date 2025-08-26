@@ -322,39 +322,11 @@
                 </controls:SettingsCard>
 
                 <controls:SettingsCard
-                    x:Uid="Settings_LaunchPage_Card12"
+                    x:Uid="Settings_LaunchPage_Card11"
                     Description="File verification methods will affect the launch time. Verifying the file Sha1 is more accurate, but much slower than verifying the file size."
                     Header="Preferred Game File Verification Method"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE721;}">
                     <ComboBox ItemsSource="{xh:ComboBox ResourceKey=_Items1}" SelectedIndex="{x:Bind VM.GameFilePreferredVerificationMethod, Mode=TwoWay}" />
-                </controls:SettingsCard>
-
-                <TextBlock
-                    x:Uid="Settings_LaunchPage_T4"
-                    Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"
-                    Text="Quick Launch Settings" />
-
-                <controls:SettingsCard
-                    x:Uid="Settings_LaunchPage_Card11"
-                    Description="Maximum number of items in the Latest group to keep in the taskbar"
-                    Header="Latest item maximum number"
-                    HeaderIcon="{xh:FontIcon Glyph=&#xebc6;}">
-                    <StackPanel Orientation="Horizontal" Spacing="10">
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            Style="{ThemeResource BaseTextBlockStyle}"
-                            Text="{x:Bind VM.MaxQuickLaunchLatestItem, Mode=OneWay}" />
-
-                        <Slider
-                            Width="128"
-                            Maximum="16"
-                            Minimum="3"
-                            Value="{x:Bind VM.MaxQuickLaunchLatestItem, Mode=TwoWay}">
-                            <i:Interaction.Behaviors>
-                                <behaviors:SettingsCardContentMaxWidthBehavior AscendentType="Grid" AutoMaxWidth="True" />
-                            </i:Interaction.Behaviors>
-                        </Slider>
-                    </StackPanel>
                 </controls:SettingsCard>
             </StackPanel>
         </Border>

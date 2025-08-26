@@ -78,10 +78,6 @@ internal partial class LaunchViewModel : SettingsPageVM, ISettingsViewModel
     public partial bool EnableIndependencyCore { get; set; }
 
     [ObservableProperty]
-    [BindToSetting(Path = nameof(SettingsService.MaxQuickLaunchLatestItem))]
-    public partial int MaxQuickLaunchLatestItem { get; set; }
-
-    [ObservableProperty]
     [BindToSetting(Path = nameof(SettingsService.GameFilePreferredVerificationMethod))]
     public partial int GameFilePreferredVerificationMethod { get; set; }
 

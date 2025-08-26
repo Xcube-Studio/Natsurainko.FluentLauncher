@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Navigation;
+using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Utils;
 using Nrk.FluentCore.Resources;
@@ -17,6 +18,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.Downloads;
 internal abstract partial class ResourceDefaultViewModel(
     CurseForgeClient curseForgeClient,
     ModrinthClient modrinthClient,
+    SettingsService settingsService,
     INavigationService navigationService,
     SearchProviderService searchProviderService) : PageVM, INavigationAware
 {
@@ -183,6 +185,9 @@ internal abstract partial class ResourceDefaultViewModel(
 
     private IEnumerable<Suggestion> SuggestionProvider(string query)
     {
+        if (!settingsService.EnableLocalizedResourceSuggestions)
+            return [];
+
         if (CurseForgeResourceType != CurseForgeResourceType.McMod || string.IsNullOrEmpty(query))
             return [];
 

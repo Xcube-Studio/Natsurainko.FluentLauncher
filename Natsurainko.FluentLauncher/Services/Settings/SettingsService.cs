@@ -1,4 +1,5 @@
-﻿using FluentLauncher.Infra.Settings;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using FluentLauncher.Infra.Settings;
 using FluentLauncher.Infra.Settings.Converters;
 using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Utils;
@@ -9,7 +10,6 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using Windows.Storage;
 using Windows.Win32.UI.WindowsAndMessaging;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Natsurainko.FluentLauncher.Services.Settings;
 
@@ -63,13 +63,6 @@ public partial class SettingsService : SettingsContainer
 
     [SettingItem(Default = 1, Converter = typeof(JsonStringConverter<int>))]
     public partial int GameFilePreferredVerificationMethod { get; set; }
-
-    #endregion
-
-    #region Quick Launch Settings
-
-    [SettingItem(Default = 6, Converter = typeof(JsonStringConverter<int>))]
-    public partial int MaxQuickLaunchLatestItem { get; set; }
 
     #endregion
 
@@ -155,8 +148,21 @@ public partial class SettingsService : SettingsContainer
     [SettingItem(Default = 1, Converter = typeof(JsonStringConverter<int>))]
     public partial int HomeLaunchButtonSize { get; set; }
 
-    [SettingItem(Default = false, Converter = typeof(JsonStringConverter<bool>))]
-    public partial bool EnableHomeLaunchTaskTrack { get; set; }
+    #endregion
+
+    #region Launcher Settings
+
+    [SettingItem(Default = 1, Converter = typeof(JsonStringConverter<int>))]
+    public partial int HomePageLaunchButtonBehavior { get; set; }
+
+    [SettingItem(Default = 0, Converter = typeof(JsonStringConverter<int>))]
+    public partial int AfterInstanceLaunchedBehavior { get; set; }
+
+    [SettingItem(Default = true, Converter = typeof(JsonStringConverter<bool>))]
+    public partial bool EnableLocalizedResourceSuggestions { get; set; }
+
+    [SettingItem(Default = 6, Converter = typeof(JsonStringConverter<int>))]
+    public partial int MaxQuickLaunchLatestItem { get; set; }
 
     #endregion
 

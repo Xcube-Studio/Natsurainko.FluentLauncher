@@ -108,6 +108,14 @@
                                 <TextBlock Text="bangbang93.com" />
                             </HyperlinkButton>
                         </controls:SettingsCard>
+                        <controls:SettingsCard
+                            x:Uid="Settings_AboutPage_SubCard4"
+                            Description="Provide community resource mirror interface and translation"
+                            Header="MCIM">
+                            <HyperlinkButton NavigateUri="https://github.com/mcmod-info-mirror" ToolTipService.ToolTip="https://github.com/mcmod-info-mirror">
+                                <TextBlock Text="mcmod-info-mirror" />
+                            </HyperlinkButton>
+                        </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
             </StackPanel>

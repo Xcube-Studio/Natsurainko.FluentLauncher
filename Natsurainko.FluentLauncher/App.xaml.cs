@@ -1,4 +1,5 @@
-﻿using FluentLauncher.Infra.UI.Windows;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using FluentLauncher.Infra.UI.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Dispatching;
@@ -149,6 +150,8 @@ partial class App
 /// </summary>
 partial class App
 {
+    private static bool _exceptionDialogShowing = false;
+
     /// <summary>
     /// Configure the exception handling for the application.
     /// </summary>
@@ -216,7 +219,15 @@ partial class App
         {
             try
             {
-                await new ExceptionDialog(GetErrorMessage(exception)).ShowAsync();
+                if (_exceptionDialogShowing)
+                {
+                    WeakReferenceMessenger.Default.Send(new ExceptionDialogRepeatedlyRequestMessage(exception));
+                    return;
+                }
+
+                _exceptionDialogShowing = true;
+                await new ExceptionDialog(exception).ShowAsync();
+                _exceptionDialogShowing = false;
             }
             catch (Exception ex)
             {
@@ -232,7 +243,7 @@ partial class App
     /// <param name="e"></param>
     /// <param name="callCount"></param>
     /// <returns></returns>
-    static string GetErrorMessage(Exception e, int callCount = 0)
+    public static string GetErrorMessage(Exception e, int callCount = 0)
     {
         if (e is null) return string.Empty;
         if (callCount > 5) // Prevent infinite recursion
@@ -250,17 +261,17 @@ partial class App
         }
         else
         {
-            sb.AppendLine($"{indent}Message: {e.Message}");
-            sb.AppendLine($"{indent}Source: {e.Source}");
-            sb.AppendLine($"{indent}TargetSite: {e.TargetSite}");
-            sb.AppendLine($"{indent}StackTrace: {e.StackTrace}");
+            if (!string.IsNullOrEmpty(e.Message)) sb.AppendLine($"{indent}Message: {e.Message.TrimEnd()}");
+            if (!string.IsNullOrEmpty(e.Source)) sb.AppendLine($"{indent}Source: {e.Source}");
+            if (!string.IsNullOrEmpty(e.TargetSite?.ToString())) sb.AppendLine($"{indent}TargetSite: {e.TargetSite}");
+            if (!string.IsNullOrEmpty(e.StackTrace?.ToString())) sb.AppendLine($"{indent}StackTrace: {e.StackTrace}");
 
             if (e.Data != null && e.Data.Count > 0)
             {
                 sb.AppendLine($"{indent}Data:");
 
                 foreach (var key in e.Data.Keys)
-                    sb.AppendLine($"{indent}  {key}: {e.Data[key]}");
+                    if (!string.IsNullOrEmpty(e.Data[key]?.ToString())) sb.AppendLine($"{indent}  {key}: {e.Data[key]!.ToString()!.TrimEnd()}");
             }
 
             if (e.InnerException != null)

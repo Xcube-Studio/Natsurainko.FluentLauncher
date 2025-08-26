@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml;
 using Natsurainko.FluentLauncher.Models.UI;
 using Natsurainko.FluentLauncher.ViewModels;
 using Nrk.FluentCore.Authentication;
+using System;
 using System.Collections.Generic;
 
 namespace Natsurainko.FluentLauncher.Services.UI.Messaging;
@@ -36,3 +37,5 @@ class GlobalNavigationMessage(string pageKey, object? parameter = null) : ValueC
 {
     public object? Parameter { get; init; } = parameter;
 }
+
+class ExceptionDialogRepeatedlyRequestMessage(Exception exception) : ValueChangedMessage<Exception>(exception);

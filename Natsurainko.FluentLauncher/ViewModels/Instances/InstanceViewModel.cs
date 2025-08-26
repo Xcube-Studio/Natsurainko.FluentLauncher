@@ -50,15 +50,14 @@ internal partial class InstanceViewModel(
 
     async partial void OnPinnedChanged(bool value)
     {
-        if (value && jumpList != null)
+        if (jumpList == null) return;
+
+        if (value)
+            await quickLaunchService.AddPinMinecraftInstance(MinecraftInstance);
+        else if (quickLaunchService.IsExisted(jumpList, MinecraftInstance, out var jumpListItem, QuickLaunchService.PinnedUri))
         {
-            if (Pinned)
-                await quickLaunchService.AddPinMinecraftInstance(MinecraftInstance);
-            else if (!Pinned && quickLaunchService.IsExisted(jumpList, MinecraftInstance, out var jumpListItem, QuickLaunchService.PinnedUri))
-            {
-                jumpList.Items.Remove(jumpListItem);
-                await jumpList.SaveAsync();
-            }
+            jumpList.Items.Remove(jumpListItem);
+            await jumpList.SaveAsync();
         }
     }
 

@@ -109,7 +109,7 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider, IRecipie
             _navigationService.NavigateTo("OOBENavigationPage");
             _logger.NavigateToOOBEPage();
         }
-        else _navigationService.NavigateTo("ShellPage", "Settings/Navigation");
+        else _navigationService.NavigateTo("ShellPage");
     }
 }
 

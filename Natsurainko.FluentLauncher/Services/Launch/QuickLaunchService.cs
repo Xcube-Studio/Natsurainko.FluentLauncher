@@ -3,6 +3,7 @@ using Microsoft.Windows.AppLifecycle;
 using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
 using Natsurainko.FluentLauncher.Services.Settings;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Natsurainko.FluentLauncher.ViewModels;
 using Nrk.FluentCore.GameManagement;
@@ -18,21 +19,13 @@ using Windows.UI.StartScreen;
 
 namespace Natsurainko.FluentLauncher.Services.Launch;
 
-internal class QuickLaunchService
+internal class QuickLaunchService(
+    LaunchService launchService, 
+    SettingsService settingsService, 
+    INotificationService notificationService)
 {
-    private readonly LaunchService _launchService;
-    private readonly SettingsService _settingsService;
-    private readonly INotificationService _notificationService;
-
     public const string PinnedUri = "ms-resource:///Resources/JumpList__Pinned";
     public const string LatestUri = "ms-resource:///Resources/JumpList__Latest";
-
-    public QuickLaunchService(LaunchService launchService, SettingsService settingsService, INotificationService notificationService)
-    {
-        _launchService = launchService;
-        _settingsService = settingsService;
-        _notificationService = notificationService;
-    }
 
     public void LaunchFromActivatedEventArgs(string[] args)
     {
@@ -51,11 +44,11 @@ internal class QuickLaunchService
                 .FirstOrDefault(x => (x?.InstanceId.Equals(instanceId)).GetValueOrDefault(false), null)
                 ?? throw new Exception("The target Minecraft instance could not be found");
 
-            _launchService.LaunchFromUI(instance);
+            launchService.LaunchFromUI(instance);
         }
         catch (Exception ex)
         {
-            _notificationService.LaunchFailed(ex, ex.Message);
+            notificationService.LaunchFailed(ex, ex.Message);
         }
     }
 
@@ -65,7 +58,7 @@ internal class QuickLaunchService
         {
             var appInstance = AppInstance.GetCurrent();
             var appActivationArguments = appInstance.GetActivatedEventArgs();
-            var mainInstance = AppInstance.FindOrRegisterForKey("Main");
+            var mainInstance = AppInstance.FindOrRegisterForKey("FluentLauncher.Process.Main");
 
             if (!mainInstance.IsCurrent)
             {
@@ -81,15 +74,15 @@ internal class QuickLaunchService
             QuickLaunchProgressViewModel progressViewModel = new(instance);
             AppNotificationManager.Default.Show(progressViewModel.AppNotification);
 
-            using var process = await _launchService.LaunchAsync(instance, progress: progressViewModel);
+            using var process = await launchService.LaunchAsync(instance, progress: progressViewModel);
             await process.Process.WaitForExitAsync();
             await AppNotificationManager.Default.RemoveAllAsync();
 
             if (process.Process.ExitCode != 0)
             {
                 AppNotificationManager.Default.Show(new AppNotificationBuilder()
-                    .AddText($"Minecraft: {instance.GetDisplayName} Crashed")
-                    .AddText("Quick Launch cannot provide further error information")
+                    .AddText(LocalizedStrings.Notifications__QuickLaunch_Crashed.Replace("${instance}", instance.GetDisplayName()))
+                    .AddText(LocalizedStrings.Notifications__QuickLaunch_CrashedDescription)
                     .BuildNotification());
             }
         }
@@ -121,9 +114,9 @@ internal class QuickLaunchService
 
         GetStartIndexOfGroups(jumpList, out pinStartIndex, out latestStartIndex);
 
-        if (jumpList.Items.Count - latestStartIndex > _settingsService.MaxQuickLaunchLatestItem)
+        if (jumpList.Items.Count - latestStartIndex > settingsService.MaxQuickLaunchLatestItem)
         {
-            jumpList.Items.Skip(_settingsService.MaxQuickLaunchLatestItem)
+            jumpList.Items.Skip(settingsService.MaxQuickLaunchLatestItem)
                 .ToList()
                 .ForEach(item => jumpList.Items.Remove(item));
         }

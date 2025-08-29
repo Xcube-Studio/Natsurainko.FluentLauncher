@@ -16,7 +16,10 @@ using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Services.UI.Notification;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using System;
+using System.Collections.Generic;
 using System.CommandLine;
+using System.Linq;
+using System.Web;
 using ViewModels = Natsurainko.FluentLauncher.ViewModels;
 using Views = Natsurainko.FluentLauncher.Views;
 
@@ -167,6 +170,7 @@ services.AddSingleton<UpdateService>();
 var app = builder.Build();
 AppHost = app.Host;
 
+HandleUriCommandParameters(ref args);
 await BuildRootCommand(app).InvokeAsync(args);
 
 internal partial class Program
@@ -197,12 +201,32 @@ internal partial class Program
         var quickLaunchCommand = new Command("quickLaunch");
         quickLaunchCommand.AddOption(MinecraftFolderOption);
         quickLaunchCommand.AddOption(InstanceIdOption);
+        quickLaunchCommand.AddAlias("quicklaunch");
 
         quickLaunchCommand.SetHandler(async (folder, instanceId) =>
             await AppHost.Services.GetService<QuickLaunchService>()!.LaunchFromArguments(folder, instanceId),
             MinecraftFolderOption, InstanceIdOption);
 
         return quickLaunchCommand;
+    }
+
+    public static void HandleUriCommandParameters(ref string[] args)
+    {
+        if (args.Length != 1 || !args[0].StartsWith("fluent-launcher://"))
+            return;
+
+        Uri requestUri = new(args[0]);
+        var collection = HttpUtility.ParseQueryString(requestUri.Query);
+
+        List<string> handledArgs = [requestUri.Host];
+
+        foreach (var key in collection.Keys.OfType<string>())
+        {
+            handledArgs.Add($"--{key}");
+            handledArgs.Add(collection[key]!);
+        }
+
+        args = [.. handledArgs];
     }
 }
 

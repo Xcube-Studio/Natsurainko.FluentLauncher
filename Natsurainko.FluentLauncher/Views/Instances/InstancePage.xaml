@@ -131,6 +131,14 @@
                     <ToggleSwitch IsOn="{x:Bind VM.Pinned, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
+                <controls:SettingsCard
+                    x:Uid="Instances_InstancePage_Card7"
+                    Command="{x:Bind VM.CreateShortcutCommand}"
+                    Description="Use the shortcut to quickly launch the instance without opening the launcher window"
+                    Header="Create a desktop shortcut"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xE8A7;}"
+                    IsClickEnabled="True" />
+
                 <TextBlock
                     x:Uid="Instances_InstancePage_T2"
                     Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}"

@@ -655,8 +655,8 @@ class QuickLaunchProgressViewModel : LaunchProgressViewModel
         AppNotification = new AppNotificationBuilder()
             .AddArgument("guid", Guid.ToString())
             //.SetAppLogoOverride(new Uri(icon), AppNotificationImageCrop.Default)
-            .AddText($"Launching Game: {InstanceDisplayName}")
-            .AddText("This may take some time, please wait")
+            .AddText(LocalizedStrings.Notifications__QuickLaunch_Launching.Replace("${instance}", InstanceDisplayName))
+            .AddText(LocalizedStrings.Notifications__QuickLaunch_LaunchingDescription)
             .AddProgressBar(new AppNotificationProgressBar()
                 .BindTitle()
                 .BindValue()
@@ -698,8 +698,8 @@ class QuickLaunchProgressViewModel : LaunchProgressViewModel
         await AppNotificationManager.Default.RemoveByTagAndGroupAsync(Guid.ToString(), GroupName);
         var appNotification = new AppNotificationBuilder()
             //.SetAppLogoOverride(new Uri(icon), AppNotificationImageCrop.Default)
-            .AddText($"Minecraft: {InstanceDisplayName} Launched successfully")
-            .AddText("Waiting for the game window to appear")
+            .AddText(LocalizedStrings.Notifications__QuickLaunch_Launched.Replace("${instance}", InstanceDisplayName))
+            .AddText(LocalizedStrings.Notifications__QuickLaunch_LaunchedDescription)
             .BuildNotification();
 
         AppNotificationManager.Default.Show(appNotification);

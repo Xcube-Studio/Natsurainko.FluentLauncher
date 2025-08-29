@@ -3,7 +3,10 @@ using Natsurainko.FluentLauncher.Services.Launch;
 using Natsurainko.FluentLauncher.Services.Settings;
 using Nrk.FluentCore.GameManagement.Installer;
 using Nrk.FluentCore.GameManagement.Instances;
+using System;
 using System.IO;
+using System.Web;
+using Windows.ApplicationModel;
 
 namespace Natsurainko.FluentLauncher.Utils.Extensions;
 
@@ -71,5 +74,23 @@ internal static class MinecraftInstanceExtensions
         {
             return instance.InstanceId;
         }
+    }
+
+    public static void CreateShortcut(this MinecraftInstance instance, string? folder = null)
+    {
+        folder ??= Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+        string shortcutContent = "[{{000214A0-0000-0000-C000-000000000046}}]\r\n" +
+        $"""
+        Prop3=19,0
+        [InternetShortcut]
+        IDList=
+        URL="fluent-launcher://quickLaunch/?minecraftFolder={HttpUtility.UrlEncode(instance.MinecraftFolderPath)}&instanceId={HttpUtility.UrlEncode(instance.InstanceId)}"
+        IconIndex=0
+        HotKey=0
+        IconFile={Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\Icons", "minecraft.ico")}
+        """;
+
+        File.WriteAllText(Path.Combine(folder, $"{instance.GetDisplayName()}.url"), shortcutContent);
     }
 }

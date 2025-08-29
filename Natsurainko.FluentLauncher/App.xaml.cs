@@ -92,6 +92,16 @@ public partial class App : Application
                     Logger.RedirectedActivationFrom(redirectedArgs);
                     GetService<QuickLaunchService>().LaunchFromActivatedEventArgs(redirectedArgs.Arguments.Split(' '));
                 }
+
+                // Handle the protocolActivated arguments
+                if (e.Data is Windows.ApplicationModel.Activation.ProtocolActivatedEventArgs protocolActivatedEventArgs)
+                {
+                    string[] args = [protocolActivatedEventArgs.Uri.OriginalString];
+                    Program.HandleUriCommandParameters(ref args);
+
+                    Logger.RedirectedActivationFrom(protocolActivatedEventArgs);
+                    GetService<QuickLaunchService>().LaunchFromActivatedEventArgs(args);
+                }
             };
 
 #if ENABLE_LOAD_EXTENSIONS
@@ -298,4 +308,7 @@ internal static partial class AppLoggers
 
     [LoggerMessage(LogLevel.Information, "Redirected activation from the other instance with EventArgs {@eventArgs}")]
     public static partial void RedirectedActivationFrom(this ILogger logger, Windows.ApplicationModel.Activation.LaunchActivatedEventArgs eventArgs);
+
+    [LoggerMessage(LogLevel.Information, "Redirected activation from the other instance with EventArgs {@eventArgs}")]
+    public static partial void RedirectedActivationFrom(this ILogger logger, Windows.ApplicationModel.Activation.ProtocolActivatedEventArgs eventArgs);
 }

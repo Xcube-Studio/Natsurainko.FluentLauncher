@@ -43,7 +43,6 @@
         Square44x44Logo="Assets\PackageIcons\Dev\Square44x44Logo.png">
         <uap:DefaultTile Wide310x150Logo="Assets\PackageIcons\Dev\Wide310x150Logo.png"  Square71x71Logo="Assets\PackageIcons\Dev\SmallTile.png" Square310x310Logo="Assets\PackageIcons\Dev\LargeTile.png" ShortName="Fluent Launcher (Dev)"/>
         <uap:SplashScreen Image="Assets\PackageIcons\Dev\SplashScreen.png"/>
-        
       </uap:VisualElements>
 
       <Extensions>
@@ -52,6 +51,11 @@
         <desktop:Extension Category="windows.toastNotificationActivation">
             <desktop:ToastNotificationActivation ToastActivatorCLSID="053EFB0E-6705-4A11-94B9-980C4C9E0047" />
         </desktop:Extension>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="fluent-launcher">
+            <uap:DisplayName>Fluent Launcher</uap:DisplayName>
+          </uap:Protocol>
+        </uap:Extension>
 
 		</Extensions>
     </Application>

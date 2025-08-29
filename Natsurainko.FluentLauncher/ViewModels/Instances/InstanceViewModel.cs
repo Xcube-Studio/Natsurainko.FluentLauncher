@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using FluentLauncher.Infra.UI.Dialogs;
 using FluentLauncher.Infra.UI.Navigation;
+using FluentLauncher.Infra.UI.Notification;
 using Microsoft.UI.Xaml.Controls;
 using Natsurainko.FluentLauncher.Models.Launch;
 using Natsurainko.FluentLauncher.Services.Launch;
@@ -18,6 +19,7 @@ namespace Natsurainko.FluentLauncher.ViewModels.Instances;
 
 internal partial class InstanceViewModel(
     INavigationService navigationService,
+    INotificationService notificationService,
     QuickLaunchService quickLaunchService,
     IDialogActivationService<ContentDialogResult> dialogs) : PageVM, INavigationAware
 {
@@ -89,5 +91,18 @@ internal partial class InstanceViewModel(
     void OpenVersionFolder() => ExplorerHelper.OpenFolder(MinecraftInstance.GetGameDirectory());
 
     [RelayCommand]
+    void CreateShortcut()
+    {
+        MinecraftInstance.CreateShortcut();
+        notificationService.InstanceShortcutCreated();
+    }
+
+    [RelayCommand]
     async Task DeleteGame() => await _dialogs.ShowAsync("DeleteInstanceDialog", MinecraftInstance);
+}
+
+internal static partial class InstanceViewModelNotifications
+{
+    [Notification<InfoBar>(Title = "Notifications__InstanceShortcutCreated")]
+    public static partial void InstanceShortcutCreated(this INotificationService notificationService);
 }

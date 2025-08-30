@@ -58,9 +58,9 @@ internal class QuickLaunchService(
         {
             var appInstance = AppInstance.GetCurrent();
             var appActivationArguments = appInstance.GetActivatedEventArgs();
-            var mainInstance = AppInstance.FindOrRegisterForKey("FluentLauncher.Process.Main");
+            var mainInstance = AppInstance.GetInstances().FirstOrDefault(x => x.Key == "FluentLauncher.Process.Main");
 
-            if (!mainInstance.IsCurrent)
+            if (mainInstance!= null && !mainInstance.IsCurrent)
             {
                 await mainInstance.RedirectActivationToAsync(appActivationArguments);
                 return;

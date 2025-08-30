@@ -34,45 +34,11 @@ public partial class App : Application
         DispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
         ConfigureExceptionHandling();
-        ConfigureLanguage();
+        Program.ConfigureLanguage(logger);
 
         GetService<MessengerService>().SubscribeEvents();
         GetService<AppearanceService>().RegisterApp(this);
         GetService<QuickLaunchService>().CleanRemovedJumpListItem();
-    }
-
-    static void ConfigureLanguage()
-    {
-        var settings = App.GetService<SettingsService>();
-        var selectedLangCode = settings.CurrentLanguage;
-
-        // Choose language using system language preference on first launch
-        if (selectedLangCode == "")
-        {
-            foreach (string langCode in GlobalizationPreferences.Languages)
-            {
-                // Match the language preference with supported languages
-                // StartsWith is used to match the language code with the region code, for example "zh-hans-CN" with "zh-Hans"
-                var suitableLanguages = LocalizedStrings.SupportedLanguages.Where(x => langCode.StartsWith(x.LanguageCode));
-                if (suitableLanguages.Any())
-                {
-                    // Store a LanguageCode in LocalizedStrings.SupportedLanguages ​​for conversion by LanguageCodeToLanguageInfoConverter.
-                    // Storing langCode directly, such as "zh-Hans-CN", will cause Converter to throw an exception.
-
-                    selectedLangCode = suitableLanguages.First().LanguageCode;
-                    settings.CurrentLanguage = selectedLangCode;
-                    break;
-                }
-            }
-
-            // Fall back to English if no match
-            if (selectedLangCode == "")
-                selectedLangCode = "en-US";
-        }
-
-        // Apply the language
-        LocalizedStrings.ApplyLanguage(selectedLangCode);
-        Logger.ConfiguredLanguage(selectedLangCode);
     }
 
     protected override async void OnLaunched(LaunchActivatedEventArgs args)

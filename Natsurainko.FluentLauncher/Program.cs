@@ -14,12 +14,14 @@ using Natsurainko.FluentLauncher.Services.Storage;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Services.UI.Notification;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using System;
 using System.Collections.Generic;
 using System.CommandLine;
 using System.Linq;
 using System.Web;
+using Windows.System.UserProfile;
 using ViewModels = Natsurainko.FluentLauncher.ViewModels;
 using Views = Natsurainko.FluentLauncher.Views;
 
@@ -204,8 +206,10 @@ internal partial class Program
         quickLaunchCommand.AddAlias("quicklaunch");
 
         quickLaunchCommand.SetHandler(async (folder, instanceId) =>
-            await AppHost.Services.GetService<QuickLaunchService>()!.LaunchFromArguments(folder, instanceId),
-            MinecraftFolderOption, InstanceIdOption);
+        {
+            ConfigureLanguage();
+            await AppHost.Services.GetService<QuickLaunchService>()!.LaunchFromArguments(folder, instanceId);
+        }, MinecraftFolderOption, InstanceIdOption);
 
         return quickLaunchCommand;
     }
@@ -228,10 +232,47 @@ internal partial class Program
 
         args = [.. handledArgs];
     }
+
+    public static void ConfigureLanguage(ILogger? logger = null)
+    {
+        var settings = App.GetService<SettingsService>();
+        var selectedLangCode = settings.CurrentLanguage;
+
+        // Choose language using system language preference on first launch
+        if (selectedLangCode == "")
+        {
+            foreach (string langCode in GlobalizationPreferences.Languages)
+            {
+                // Match the language preference with supported languages
+                // StartsWith is used to match the language code with the region code, for example "zh-hans-CN" with "zh-Hans"
+                var suitableLanguages = LocalizedStrings.SupportedLanguages.Where(x => langCode.StartsWith(x.LanguageCode));
+                if (suitableLanguages.Any())
+                {
+                    // Store a LanguageCode in LocalizedStrings.SupportedLanguages ​​for conversion by LanguageCodeToLanguageInfoConverter.
+                    // Storing langCode directly, such as "zh-Hans-CN", will cause Converter to throw an exception.
+
+                    selectedLangCode = suitableLanguages.First().LanguageCode;
+                    settings.CurrentLanguage = selectedLangCode;
+                    break;
+                }
+            }
+
+            // Fall back to English if no match
+            if (selectedLangCode == "")
+                selectedLangCode = "en-US";
+        }
+
+        // Apply the language
+        LocalizedStrings.ApplyLanguage(selectedLangCode);
+        logger?.ConfiguredLanguage(selectedLangCode);
+    }
 }
 
 internal static partial class ProgramLoggers
 {
     [LoggerMessage(LogLevel.Information, "Starting WinUIApplication.RunAsync ...")]
     public static partial void Starting(this ILogger logger);
+
+    [LoggerMessage(LogLevel.Information, "Configured launguage {languageCode} for application")]
+    public static partial void ConfiguredLanguage(this ILogger logger, string languageCode);
 }

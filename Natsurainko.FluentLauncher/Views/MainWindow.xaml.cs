@@ -8,6 +8,7 @@ using Natsurainko.FluentLauncher.Services.Settings;
 using Natsurainko.FluentLauncher.Services.UI;
 using Natsurainko.FluentLauncher.Services.UI.Messaging;
 using Natsurainko.FluentLauncher.Services.UI.Notification;
+using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
 using Windows.Graphics;
 using Windows.UI.WindowManagement;
@@ -91,6 +92,14 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider, IRecipie
         this.SizeChanged += MainWindow_SizeChanged;
         this.PositionChanged += MainWindow_PositionChanged;
 
+        var lang = _settingsService.CurrentLanguage;
+        if (!string.IsNullOrEmpty(lang))
+        {
+            (this.Content as FrameworkElement)!.FlowDirection = LocalizedStrings.IsRightToLeftLanguage(lang)
+                ? FlowDirection.RightToLeft
+                : FlowDirection.LeftToRight;
+        }
+
         _logger.MainWindowInitialized();
     }
 
@@ -104,6 +113,10 @@ public sealed partial class MainWindow : WindowEx, INavigationProvider, IRecipie
 
     void IRecipient<LanguageChangedMessage>.Receive(LanguageChangedMessage message)
     {
+        (this.Content as FrameworkElement)!.FlowDirection = LocalizedStrings.IsRightToLeftLanguage(message.Value)
+            ? FlowDirection.RightToLeft
+            : FlowDirection.LeftToRight;
+
         if (!_settingsService.FinishGuide)
         {
             _navigationService.NavigateTo("OOBENavigationPage");

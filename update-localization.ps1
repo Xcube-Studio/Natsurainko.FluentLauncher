@@ -30,5 +30,5 @@ if ($latestReswDate -ge $latestCsvDate) {
     exit
 }
 
-# Generate .resw files if trnaslations are updated
-dotnet run --project $localizerProject -- --src $csvFolder --out $reswFolder --languages en-US zh-Hans zh-Hant ru-RU uk-UA --default-language en-US
+# Generate .resw files if translations are updated
+dotnet run --project $localizerProject -- --src $csvFolder --out $reswFolder --languages en-US zh-Hans zh-Hant ru-RU uk-UA pl-PL ja-JP de-DE ar-SA fr-FR es-ES it-IT --default-language en-US

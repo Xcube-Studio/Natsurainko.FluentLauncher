@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <Package
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
@@ -27,8 +27,16 @@
   <Resources>
     <Resource Language="en-US"/>
     <Resource Language="zh-CN"/>
-	<Resource Language="zh-TW"/>
-	<Resource Language="ru-RU"/>
+    <Resource Language="zh-TW"/>
+    <Resource Language="ru-RU"/>
+    <Resource Language="uk-UA"/>
+    <Resource Language="pl-PL"/>
+    <Resource Language="ja-JP"/>
+    <Resource Language="de-DE"/>
+    <Resource Language="ar-SA"/>
+    <Resource Language="fr-FR"/>
+    <Resource Language="es-ES"/>
+    <Resource Language="it-IT"/>
   </Resources>
 	
   <Applications>

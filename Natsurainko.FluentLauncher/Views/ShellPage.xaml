@@ -399,6 +399,7 @@
             x:Name="AppTitleBar"
             Padding="0,2"
             x:FieldModifier="public"
+            FlowDirection="LeftToRight"
             IsHitTestVisible="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="Column0" Width="Auto" />

@@ -342,6 +342,16 @@
                             Content="Shaders"
                             Icon="{xh:FontIcon Glyph=&#xE706;}"
                             Tag="ShadersDownload/Navigation" />
+                        <NavigationViewItem
+                            x:Uid="ShellPage_NV_SubItem_6"
+                            Content="Data Packs"
+                            Icon="{xh:FontIcon Glyph=&#xEA38;}"
+                            Tag="DataPacksDownload/Navigation" />
+                        <NavigationViewItem
+                            x:Uid="ShellPage_NV_SubItem_7"
+                            Content="Maps"
+                            Icon="{xh:FontIcon Glyph=&#xE81E;}"
+                            Tag="WorldsDownload/Navigation" />
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
                 <NavigationViewItem

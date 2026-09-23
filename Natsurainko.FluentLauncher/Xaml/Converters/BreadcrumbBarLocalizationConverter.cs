@@ -1,4 +1,4 @@
-﻿using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Data;
 using Natsurainko.FluentLauncher.Utils;
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,14 @@ public partial class BreadcrumbBarLocalizationConverter : IValueConverter
         if (IgnoredText.Contains(text))
             return text;
 
-        return LocalizedStrings.GetString($"{BasePath}__{text}");
+        try
+        {
+            return LocalizedStrings.GetString($"{BasePath}__{text}");
+        }
+        catch
+        {
+            return text;
+        }
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)

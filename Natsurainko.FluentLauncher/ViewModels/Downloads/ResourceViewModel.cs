@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.WinUI;
@@ -185,6 +185,8 @@ internal partial class ResourceViewModel(
                 CurseForgeResourceType.McMod => "mods",
                 CurseForgeResourceType.TexturePack => "resourcepacks",
                 CurseForgeResourceType.Shader => "shaderpacks",
+                CurseForgeResourceType.DataPack => "datapacks",
+                CurseForgeResourceType.World => "saves",
                 _ => null
             };
 
@@ -208,6 +210,7 @@ internal partial class ResourceViewModel(
                 "mod" => "mods",
                 "resourcepack" => "resourcepacks",
                 "shader" => "shaderpacks",
+                "datapack" => "datapacks",
                 _ => null
             };
 

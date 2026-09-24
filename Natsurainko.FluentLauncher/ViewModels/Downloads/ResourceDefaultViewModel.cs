@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Navigation;
@@ -54,6 +54,8 @@ internal abstract partial class ResourceDefaultViewModel(
 
     [ObservableProperty]
     public partial string SearchQuery { get; set; } = string.Empty;
+
+    public virtual bool EnableModrinthSource => true;
 
     protected abstract CurseForgeResourceType CurseForgeResourceType { get; }
 
@@ -148,10 +150,10 @@ internal abstract partial class ResourceDefaultViewModel(
                             version: FilteredVersion == LocalizedStrings.ResourceCategories__All ? null : FilteredVersion,
                             slugMode: slugMode,
                             cancellationToken: _cancellationTokenSource.Token)).ToArray(),
-                    1 => (await modrinthClient.SearchResourcesAsync(query, ModrinthResourceType,
+                    1 => EnableModrinthSource ? (await modrinthClient.SearchResourcesAsync(query, ModrinthResourceType,
                             categories: SelectedCategory == "all" ? null : SelectedCategory,
                             version: FilteredVersion == LocalizedStrings.ResourceCategories__All ? null : FilteredVersion,
-                            cancellationToken: _cancellationTokenSource.Token)).ToArray(),
+                            cancellationToken: _cancellationTokenSource.Token)).ToArray() : [],
                     _ => null
                 };
             }

@@ -1,4 +1,4 @@
-﻿using FluentLauncher.Infra.Settings;
+using FluentLauncher.Infra.Settings;
 using FluentLauncher.Infra.UI.Notification;
 using FluentLauncher.Infra.WinUI.AppHost;
 using FluentLauncher.Infra.WinUI.Settings;
@@ -91,6 +91,14 @@ pages.WithPage<Views.Downloads.ResourcePage, ViewModels.Downloads.ResourceViewMo
 pages.WithPage<Views.Downloads.Shaders.NavigationPage, ViewModels.Downloads.Shaders.NavigationViewModel>("ShadersDownload/Navigation");
 pages.WithPage<Views.Downloads.ResourceDefaultPage, ViewModels.Downloads.Shaders.DefaultViewModel>("ShadersDownload/Default");
 pages.WithPage<Views.Downloads.ResourcePage, ViewModels.Downloads.ResourceViewModel>("ShadersDownload/Resource");
+
+pages.WithPage<Views.Downloads.DataPacks.NavigationPage, ViewModels.Downloads.DataPacks.NavigationViewModel>("DataPacksDownload/Navigation");
+pages.WithPage<Views.Downloads.ResourceDefaultPage, ViewModels.Downloads.DataPacks.DefaultViewModel>("DataPacksDownload/Default");
+pages.WithPage<Views.Downloads.ResourcePage, ViewModels.Downloads.ResourceViewModel>("DataPacksDownload/Resource");
+
+pages.WithPage<Views.Downloads.Worlds.NavigationPage, ViewModels.Downloads.Worlds.NavigationViewModel>("WorldsDownload/Navigation");
+pages.WithPage<Views.Downloads.ResourceDefaultPage, ViewModels.Downloads.Worlds.DefaultViewModel>("WorldsDownload/Default");
+pages.WithPage<Views.Downloads.ResourcePage, ViewModels.Downloads.ResourceViewModel>("WorldsDownload/Resource");
 
 // Tasks page
 pages.WithPage<Views.Tasks.LaunchPage, ViewModels.Tasks.LaunchViewModel>("Tasks/Launch");

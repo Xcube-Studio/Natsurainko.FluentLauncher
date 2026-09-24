@@ -50,7 +50,7 @@
                                 <TextBlock Text="CurseForge" />
                             </StackPanel>
                         </controls:SegmentedItem>
-                        <controls:SegmentedItem>
+                        <controls:SegmentedItem IsEnabled="{x:Bind VM.EnableModrinthSource, Mode=OneWay}">
                             <StackPanel Orientation="Horizontal" Spacing="8">
                                 <FontIcon FontSize="14" Glyph="&#xe774;" />
                                 <TextBlock Text="Modrinth" />

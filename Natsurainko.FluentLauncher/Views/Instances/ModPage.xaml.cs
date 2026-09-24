@@ -65,15 +65,21 @@ public sealed partial class ModPage : Page, IBreadcrumbBarAware
 
     private void MenuFlyout_Opened(object sender, object e)
     {
-        MenuFlyout menuFlyout = (sender as MenuFlyout)!;
-        ICommand?[] commands = [VM.OpenModCommand, VM.ConfirmDeleteCommand, VM.SearchMcModCommand];
-        int index = 0;
+        if (sender is not MenuFlyout menuFlyout) return;
 
         foreach (var item in menuFlyout.Items)
         {
             if (item is MenuFlyoutItem menuItem)
             {
-                menuItem.Command = commands[index++];
+                menuItem.Command = (menuItem.Tag as string) switch
+                {
+                    "Open" => VM.OpenModCommand,
+                    "Delete" => VM.ConfirmDeleteCommand,
+                    "CheckUpdate" => VM.CheckUpdateCommand,
+                    "InstallDependencies" => VM.InstallDependenciesCommand,
+                    "SearchMcMod" => VM.SearchMcModCommand,
+                    _ => menuItem.Command
+                };
             }
         }
     }

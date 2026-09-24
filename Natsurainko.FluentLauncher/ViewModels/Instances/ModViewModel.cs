@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
 using FluentLauncher.Infra.UI.Navigation;
@@ -7,21 +7,27 @@ using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Natsurainko.FluentLauncher.Services.Network;
 using Natsurainko.FluentLauncher.Services.UI.Notification;
 using Natsurainko.FluentLauncher.Utils;
 using Natsurainko.FluentLauncher.Utils.Extensions;
+using Nrk.FluentCore.GameManagement;
 using Nrk.FluentCore.GameManagement.Instances;
 using Nrk.FluentCore.GameManagement.Mods;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.System;
 
 #nullable disable
 namespace Natsurainko.FluentLauncher.ViewModels.Instances;
 
-internal partial class ModViewModel(INotificationService notificationService) : PageVM, INavigationAware
+internal partial class ModViewModel(
+    INotificationService notificationService,
+    ResourceUpdateService resourceUpdateService,
+    DownloadService downloadService) : PageVM, INavigationAware
 {
     public string ModsFolder { get; private set; }
 
@@ -86,6 +92,133 @@ internal partial class ModViewModel(INotificationService notificationService) : 
         Task.Run(LoadModsAsync).Forget();
 
         notificationService.ModDeleted();
+    }
+
+    [RelayCommand]
+    async Task CheckUpdate(MinecraftMod modInfo)
+    {
+        notificationService.Show<InfoBar>(new DefaultNotification
+        {
+            Title = "Checking Updates",
+            Message = $"Searching update for {modInfo.DisplayName}...",
+            Type = NotificationType.Info
+        });
+
+        var loaders = MinecraftInstance.GetModLoaders().ToList();
+        string loader = loaders.Count > 0 ? loaders[0].Type.ToString() : "";
+        string mcVersion = MinecraftInstance != null ? MinecraftInstance.Version.VersionId : "";
+
+        var updateInfo = await resourceUpdateService.CheckForUpdateAsync(
+            modInfo.DisplayName ?? Path.GetFileNameWithoutExtension(modInfo.AbsolutePath),
+            modInfo.Version,
+            mcVersion,
+            loader,
+            "mod");
+
+        if (updateInfo != null && updateInfo.HasUpdate && !string.IsNullOrEmpty(updateInfo.DownloadUrl))
+        {
+            notificationService.Show<InfoBar>(new ActionNotification
+            {
+                Type = NotificationType.Success,
+                Title = "Update Available",
+                Message = $"Found newer version: {updateInfo.LatestVersion} ({updateInfo.FileName})",
+                GetActionButton = () => new Button
+                {
+                    Content = "Update Now",
+                    Command = new RelayCommand(() =>
+                    {
+                        if (updateInfo.ModrinthFile != null)
+                        {
+                            downloadService.DownloadResourceFileAsync(updateInfo.ModrinthFile, ModsFolder, _ =>
+                            {
+                                try { File.Delete(modInfo.AbsolutePath); } catch { }
+                                Task.Run(LoadModsAsync).Forget();
+                                notificationService.Show<InfoBar>(new DefaultNotification
+                                {
+                                    Title = "Updated",
+                                    Message = $"Updated {modInfo.DisplayName} to {updateInfo.LatestVersion}!",
+                                    Type = NotificationType.Success
+                                });
+                            }).Forget();
+                        }
+                    })
+                }
+            });
+        }
+        else
+        {
+            notificationService.Show<InfoBar>(new DefaultNotification
+            {
+                Title = "Up to Date",
+                Message = $"{modInfo.DisplayName} is already up to date.",
+                Type = NotificationType.Info
+            });
+        }
+    }
+
+    [RelayCommand]
+    async Task InstallDependencies(MinecraftMod modInfo)
+    {
+        notificationService.Show<InfoBar>(new DefaultNotification
+        {
+            Title = "Dependencies",
+            Message = $"Checking dependencies for {modInfo.DisplayName}...",
+            Type = NotificationType.Info
+        });
+
+        var loaders = MinecraftInstance.GetModLoaders().ToList();
+        string loader = loaders.Count > 0 ? loaders[0].Type.ToString() : "";
+        string mcVersion = MinecraftInstance != null ? MinecraftInstance.Version.VersionId : "";
+        var existingFiles = Directory.EnumerateFiles(ModsFolder).Select(Path.GetFileName);
+
+        var dependencies = await resourceUpdateService.GetDependenciesAsync(
+            modInfo.DisplayName ?? Path.GetFileNameWithoutExtension(modInfo.AbsolutePath),
+            mcVersion,
+            loader,
+            existingFiles);
+
+        var missing = dependencies.Where(d => !d.IsInstalled && d.ModrinthFile != null).ToList();
+
+        if (missing.Count == 0)
+        {
+            notificationService.Show<InfoBar>(new DefaultNotification
+            {
+                Title = "Dependencies",
+                Message = "All required dependencies are already installed!",
+                Type = NotificationType.Success
+            });
+            return;
+        }
+
+        notificationService.Show<InfoBar>(new ActionNotification
+        {
+            Type = NotificationType.Info,
+            Title = "Missing Dependencies Found",
+            Message = $"Found {missing.Count} missing dependencies: {string.Join(", ", missing.Select(m => m.Name))}",
+            GetActionButton = () => new Button
+            {
+                Content = "Install All",
+                Command = new RelayCommand(() =>
+                {
+                    foreach (var dep in missing)
+                    {
+                        if (dep.ModrinthFile != null)
+                        {
+                            downloadService.DownloadResourceFileAsync(dep.ModrinthFile, ModsFolder, _ =>
+                            {
+                                Task.Run(LoadModsAsync).Forget();
+                            }).Forget();
+                        }
+                    }
+                    notificationService.Show<InfoBar>(new DefaultNotification
+                    {
+                        Title = "Dependencies",
+                        Message = $"Installing {missing.Count} dependencies...",
+                        Type = NotificationType.Success
+                    });
+                })
+            }
+        });
     }
 }
 

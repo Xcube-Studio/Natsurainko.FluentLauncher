@@ -8,6 +8,7 @@
     xmlns:data="using:Nrk.FluentCore.GameManagement.Saves"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:Natsurainko.FluentLauncher.Views.Instances"
     xmlns:toolkit_behaviors="using:CommunityToolkit.WinUI.Behaviors"
     xmlns:xh="using:Natsurainko.FluentLauncher.Xaml"
     mc:Ignorable="d">
@@ -47,13 +48,13 @@
                     VerticalAlignment="Center"
                     Spacing="4">
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                        <FontIcon FontSize="32" Glyph="&#xe74c;" />
+                        <FontIcon FontSize="32" Glyph="&#xE81E;" />
                         <TextBlock
                             x:Uid="Instances_SavePage_Text1"
                             Margin="0,-4,0,0"
                             FontSize="28"
                             Style="{ThemeResource BaseTextBlockStyle}"
-                            Text="No Mods" />
+                            Text="No Worlds / Saves" />
                     </StackPanel>
 
                     <i:Interaction.Behaviors>
@@ -114,6 +115,32 @@
                             </StackPanel>
                         </Grid>
                     </controls:SettingsCard.Header>
+                    <controls:SettingsCard.ContextFlyout>
+                        <MenuFlyout Opened="MenuFlyout_Opened" Placement="Bottom">
+                            <MenuFlyoutItem
+                                Tag="Open"
+                                CommandParameter="{x:Bind}"
+                                Text="Show in Explorer">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xEC51;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem
+                                Tag="Backup"
+                                CommandParameter="{x:Bind}"
+                                Text="Backup to ZIP">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE8B7;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutSeparator />
+                            <MenuFlyoutItem
+                                Tag="Delete"
+                                CommandParameter="{x:Bind}"
+                                Icon="Delete"
+                                Text="Delete" />
+                        </MenuFlyout>
+                    </controls:SettingsCard.ContextFlyout>
 
                     <i:Interaction.Behaviors>
                         <behaviors:AncestorBindingBehavior

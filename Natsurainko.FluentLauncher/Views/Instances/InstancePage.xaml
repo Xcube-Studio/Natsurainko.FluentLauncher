@@ -154,11 +154,27 @@
                     IsClickEnabled="True" />
 
                 <controls:SettingsCard
+                    Command="{x:Bind VM.CardClickCommand}"
+                    CommandParameter="Instances/ResourcePack"
+                    Description="Import, enable/disable, delete and update resource packs"
+                    Header="Resource Pack Management"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xEA86;}"
+                    IsClickEnabled="True" />
+
+                <controls:SettingsCard
+                    Command="{x:Bind VM.CardClickCommand}"
+                    CommandParameter="Instances/Shader"
+                    Description="Import, enable/disable, delete and update shaders"
+                    Header="Shaderpack Management"
+                    HeaderIcon="{xh:FontIcon Glyph=&#xE706;}"
+                    IsClickEnabled="True" />
+
+                <controls:SettingsCard
                     x:Uid="Instances_InstancePage_Card4"
                     Command="{x:Bind VM.CardClickCommand}"
                     CommandParameter="Instances/Save"
-                    Description="View and manage your game saves"
-                    Header="Save Management"
+                    Description="View, backup, and manage your worlds and saves"
+                    Header="Maps &amp; Saves Management"
                     HeaderIcon="{xh:FontIcon Glyph=&#xE81E;}"
                     IsClickEnabled="True" />
 

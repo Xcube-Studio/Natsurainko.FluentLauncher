@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <LangVersion>preview</LangVersion>
@@ -252,7 +252,7 @@
 
   <!-- Update localization before compilation -->
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="cd ..&#xD;&#xA;pwsh ./update-localization.ps1" />
+    <Exec Command="cd ..&#xD;&#xA;powershell ./update-localization.ps1" />
   </Target>
 
   <!-- Add .resw files as additional files for source generation -->

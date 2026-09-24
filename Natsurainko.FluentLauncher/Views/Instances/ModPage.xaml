@@ -151,6 +151,7 @@
                         <MenuFlyout Opened="MenuFlyout_Opened" Placement="Bottom">
                             <MenuFlyoutItem
                                 x:Uid="Instances_ModPage_MenuItem1"
+                                Tag="Open"
                                 CommandParameter="{x:Bind Mod}"
                                 Text="Show in Explorer">
                                 <MenuFlyoutItem.Icon>
@@ -159,13 +160,32 @@
                             </MenuFlyoutItem>
                             <MenuFlyoutItem
                                 x:Uid="Instances_ModPage_MenuItem2"
+                                Tag="Delete"
                                 CommandParameter="{x:Bind Mod}"
                                 Icon="Delete"
                                 Text="Delete" />
+                            <MenuFlyoutSeparator />
+                            <MenuFlyoutItem
+                                Tag="CheckUpdate"
+                                CommandParameter="{x:Bind Mod}"
+                                Text="Check for Updates">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE895;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem
+                                Tag="InstallDependencies"
+                                CommandParameter="{x:Bind Mod}"
+                                Text="Install Dependencies">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE896;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
                             <MenuFlyoutSeparator x:Name="MenuFlyoutSeparator" x:Load="{x:Bind local:ModPage.ShowMcModSearchOption()}" />
                             <MenuFlyoutItem
                                 x:Name="MenuFlyoutItem"
                                 x:Uid="Instances_ModPage_MenuItem3"
+                                Tag="SearchMcMod"
                                 x:Load="{x:Bind local:ModPage.ShowMcModSearchOption()}"
                                 CommandParameter="{x:Bind Mod}"
                                 Text="Search on mcmod.cn">

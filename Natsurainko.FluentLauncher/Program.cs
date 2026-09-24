@@ -1,4 +1,4 @@
-﻿using FluentLauncher.Infra.Settings;
+using FluentLauncher.Infra.Settings;
 using FluentLauncher.Infra.UI.Notification;
 using FluentLauncher.Infra.WinUI.AppHost;
 using FluentLauncher.Infra.WinUI.Settings;
@@ -63,6 +63,8 @@ pages.WithPage<Views.Instances.DefaultPage, ViewModels.Instances.DefaultViewMode
 pages.WithPage<Views.Instances.InstancePage, ViewModels.Instances.InstanceViewModel>("Instances/Instance");
 pages.WithPage<Views.Instances.ConfigPage, ViewModels.Instances.ConfigViewModel>("Instances/Config");
 pages.WithPage<Views.Instances.ModPage, ViewModels.Instances.ModViewModel>("Instances/Mod");
+pages.WithPage<Views.Instances.ShaderPage, ViewModels.Instances.ShaderViewModel>("Instances/Shader");
+pages.WithPage<Views.Instances.ResourcePackPage, ViewModels.Instances.ResourcePackViewModel>("Instances/ResourcePack");
 pages.WithPage<Views.Instances.SavePage, ViewModels.Instances.SaveViewModel>("Instances/Save");
 
 // News page
@@ -154,6 +156,7 @@ services.AddSingleton<CacheInterfaceService>();
 services.AddSingleton<QuickLaunchService>();
 services.AddSingleton<SearchProviderService>();
 services.AddSingleton<InstanceConfigService>();
+services.AddSingleton<ResourceUpdateService>();
 
 // Notification Services
 services.AddSingleton<INotificationService, NotificationService>();
